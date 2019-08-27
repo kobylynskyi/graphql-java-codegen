@@ -1,0 +1,59 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class EventProperty {
+
+    private Float floatVal;
+    private Boolean booleanVal;
+    private Integer intVal;
+    private String stringVal;
+    private Collection<EventProperty> child;
+    private Event parent;
+
+    public EventProperty() {
+    }
+
+    public Float getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(Float floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public Integer getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(Integer intVal) {
+        this.intVal = intVal;
+    }
+
+    public String getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public Collection<EventProperty> getChild() {
+        return child;
+    }
+    public void setChild(Collection<EventProperty> child) {
+        this.child = child;
+    }
+
+    public Event getParent() {
+        return parent;
+    }
+    public void setParent(Event parent) {
+        this.parent = parent;
+    }
+
+}

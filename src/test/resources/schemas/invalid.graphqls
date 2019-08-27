@@ -1,0 +1,12 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    # The query root.
+    query: Query
+
+    # The mutation root.
+    mutation: Mutation
+}
+
+type Query 1 {
+
+}

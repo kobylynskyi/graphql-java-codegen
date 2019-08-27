@@ -1,0 +1,9 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public interface Mutation {
+
+    Event createEvent(String categoryId, String createdBy) throws Exception;
+
+}

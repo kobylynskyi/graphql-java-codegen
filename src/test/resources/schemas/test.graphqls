@@ -1,0 +1,60 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    # The query root.
+    query: Query
+
+    # The mutation root.
+    mutation: Mutation
+}
+
+type Query {
+    # Version of the application.
+    version: String
+
+    # List of events of a specified category.
+    eventsByCategoryAndStatus(categoryId: ID!, status: EventStatus): [Event]
+
+    # Single event by ID.
+    eventById(id: ID!): Event
+}
+
+type Mutation {
+    # Create a new event.
+    createEvent(categoryId: String!,
+                createdBy: String!): Event
+}
+
+
+# An event that describes a thing that happens
+type Event {
+    id: ID
+    categoryId: String
+    properties: [EventProperty]
+    status: EventStatus
+    createdBy: String
+    createdDateTime: DateTime
+    active: Boolean
+    rating: Int
+}
+
+# An event property have all possible types
+type EventProperty {
+    floatVal: Float
+    booleanVal: Boolean
+    intVal: Int
+    stringVal: String
+    child: [EventProperty]
+    parent: Event
+}
+
+# Custom DateTime scalar
+# Format: yyyy-MM-dd'T'HH:mm:ssZ
+scalar DateTime
+
+
+# Possible statuses of the event
+enum EventStatus {
+    OPEN
+    IN_PROGRESS
+    LOGGED
+}

@@ -1,0 +1,315 @@
+package com.github.graphql;
+
+import java.util.*;
+
+public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO{
+
+    private String abbreviatedOid;
+    private Integer additions;
+    private GithubPullRequestConnectionTO associatedPullRequests;
+    private GithubGitActorTO author;
+    private Boolean authoredByCommitter;
+    private String authoredDate;
+    private GithubBlameTO blame;
+    private Integer changedFiles;
+    private GithubCommitCommentConnectionTO comments;
+    private String commitResourcePath;
+    private String commitUrl;
+    private String committedDate;
+    private Boolean committedViaWeb;
+    private GithubGitActorTO committer;
+    private Integer deletions;
+    private GithubDeploymentConnectionTO deployments;
+    private GithubCommitHistoryConnectionTO history;
+    private String id;
+    private String message;
+    private String messageBody;
+    private String messageBodyHTML;
+    private String messageHeadline;
+    private String messageHeadlineHTML;
+    private String oid;
+    private GithubCommitConnectionTO parents;
+    private String pushedDate;
+    private GithubRepositoryTO repository;
+    private String resourcePath;
+    private GithubGitSignatureTO signature;
+    private GithubStatusTO status;
+    private String tarballUrl;
+    private GithubTreeTO tree;
+    private String treeResourcePath;
+    private String treeUrl;
+    private String url;
+    private Boolean viewerCanSubscribe;
+    private GithubSubscriptionStateTO viewerSubscription;
+    private String zipballUrl;
+
+    public GithubCommitTO() {
+    }
+
+    public String getAbbreviatedOid() {
+        return abbreviatedOid;
+    }
+    public void setAbbreviatedOid(String abbreviatedOid) {
+        this.abbreviatedOid = abbreviatedOid;
+    }
+
+    public Integer getAdditions() {
+        return additions;
+    }
+    public void setAdditions(Integer additions) {
+        this.additions = additions;
+    }
+
+    public GithubPullRequestConnectionTO getAssociatedPullRequests() {
+        return associatedPullRequests;
+    }
+    public void setAssociatedPullRequests(GithubPullRequestConnectionTO associatedPullRequests) {
+        this.associatedPullRequests = associatedPullRequests;
+    }
+
+    public GithubGitActorTO getAuthor() {
+        return author;
+    }
+    public void setAuthor(GithubGitActorTO author) {
+        this.author = author;
+    }
+
+    public Boolean getAuthoredByCommitter() {
+        return authoredByCommitter;
+    }
+    public void setAuthoredByCommitter(Boolean authoredByCommitter) {
+        this.authoredByCommitter = authoredByCommitter;
+    }
+
+    public String getAuthoredDate() {
+        return authoredDate;
+    }
+    public void setAuthoredDate(String authoredDate) {
+        this.authoredDate = authoredDate;
+    }
+
+    public GithubBlameTO getBlame() {
+        return blame;
+    }
+    public void setBlame(GithubBlameTO blame) {
+        this.blame = blame;
+    }
+
+    public Integer getChangedFiles() {
+        return changedFiles;
+    }
+    public void setChangedFiles(Integer changedFiles) {
+        this.changedFiles = changedFiles;
+    }
+
+    public GithubCommitCommentConnectionTO getComments() {
+        return comments;
+    }
+    public void setComments(GithubCommitCommentConnectionTO comments) {
+        this.comments = comments;
+    }
+
+    public String getCommitResourcePath() {
+        return commitResourcePath;
+    }
+    public void setCommitResourcePath(String commitResourcePath) {
+        this.commitResourcePath = commitResourcePath;
+    }
+
+    public String getCommitUrl() {
+        return commitUrl;
+    }
+    public void setCommitUrl(String commitUrl) {
+        this.commitUrl = commitUrl;
+    }
+
+    public String getCommittedDate() {
+        return committedDate;
+    }
+    public void setCommittedDate(String committedDate) {
+        this.committedDate = committedDate;
+    }
+
+    public Boolean getCommittedViaWeb() {
+        return committedViaWeb;
+    }
+    public void setCommittedViaWeb(Boolean committedViaWeb) {
+        this.committedViaWeb = committedViaWeb;
+    }
+
+    public GithubGitActorTO getCommitter() {
+        return committer;
+    }
+    public void setCommitter(GithubGitActorTO committer) {
+        this.committer = committer;
+    }
+
+    public Integer getDeletions() {
+        return deletions;
+    }
+    public void setDeletions(Integer deletions) {
+        this.deletions = deletions;
+    }
+
+    public GithubDeploymentConnectionTO getDeployments() {
+        return deployments;
+    }
+    public void setDeployments(GithubDeploymentConnectionTO deployments) {
+        this.deployments = deployments;
+    }
+
+    public GithubCommitHistoryConnectionTO getHistory() {
+        return history;
+    }
+    public void setHistory(GithubCommitHistoryConnectionTO history) {
+        this.history = history;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessageBody() {
+        return messageBody;
+    }
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
+    }
+
+    public String getMessageBodyHTML() {
+        return messageBodyHTML;
+    }
+    public void setMessageBodyHTML(String messageBodyHTML) {
+        this.messageBodyHTML = messageBodyHTML;
+    }
+
+    public String getMessageHeadline() {
+        return messageHeadline;
+    }
+    public void setMessageHeadline(String messageHeadline) {
+        this.messageHeadline = messageHeadline;
+    }
+
+    public String getMessageHeadlineHTML() {
+        return messageHeadlineHTML;
+    }
+    public void setMessageHeadlineHTML(String messageHeadlineHTML) {
+        this.messageHeadlineHTML = messageHeadlineHTML;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public GithubCommitConnectionTO getParents() {
+        return parents;
+    }
+    public void setParents(GithubCommitConnectionTO parents) {
+        this.parents = parents;
+    }
+
+    public String getPushedDate() {
+        return pushedDate;
+    }
+    public void setPushedDate(String pushedDate) {
+        this.pushedDate = pushedDate;
+    }
+
+    public GithubRepositoryTO getRepository() {
+        return repository;
+    }
+    public void setRepository(GithubRepositoryTO repository) {
+        this.repository = repository;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+    }
+
+    public GithubGitSignatureTO getSignature() {
+        return signature;
+    }
+    public void setSignature(GithubGitSignatureTO signature) {
+        this.signature = signature;
+    }
+
+    public GithubStatusTO getStatus() {
+        return status;
+    }
+    public void setStatus(GithubStatusTO status) {
+        this.status = status;
+    }
+
+    public String getTarballUrl() {
+        return tarballUrl;
+    }
+    public void setTarballUrl(String tarballUrl) {
+        this.tarballUrl = tarballUrl;
+    }
+
+    public GithubTreeTO getTree() {
+        return tree;
+    }
+    public void setTree(GithubTreeTO tree) {
+        this.tree = tree;
+    }
+
+    public String getTreeResourcePath() {
+        return treeResourcePath;
+    }
+    public void setTreeResourcePath(String treeResourcePath) {
+        this.treeResourcePath = treeResourcePath;
+    }
+
+    public String getTreeUrl() {
+        return treeUrl;
+    }
+    public void setTreeUrl(String treeUrl) {
+        this.treeUrl = treeUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Boolean getViewerCanSubscribe() {
+        return viewerCanSubscribe;
+    }
+    public void setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+        this.viewerCanSubscribe = viewerCanSubscribe;
+    }
+
+    public GithubSubscriptionStateTO getViewerSubscription() {
+        return viewerSubscription;
+    }
+    public void setViewerSubscription(GithubSubscriptionStateTO viewerSubscription) {
+        this.viewerSubscription = viewerSubscription;
+    }
+
+    public String getZipballUrl() {
+        return zipballUrl;
+    }
+    public void setZipballUrl(String zipballUrl) {
+        this.zipballUrl = zipballUrl;
+    }
+
+}

@@ -1,0 +1,75 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class Event {
+
+    private String id;
+    private String categoryId;
+    private Collection<EventProperty> properties;
+    private EventStatus status;
+    private String createdBy;
+    private String createdDateTime;
+    private Boolean active;
+    private Integer rating;
+
+    public Event() {
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Collection<EventProperty> getProperties() {
+        return properties;
+    }
+    public void setProperties(Collection<EventProperty> properties) {
+        this.properties = properties;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+}
