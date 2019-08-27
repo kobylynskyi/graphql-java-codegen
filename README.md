@@ -5,7 +5,7 @@
 
 ## Plugins
 
-Please refer [graphl-java-codegen-gradle-plugin](https://github.com/kobylynskyi/graphl-java-codegen-gradle-plugin) or [graphl-java-codegen-maven-plugin](https://github.com/kobylynskyi/graphl-java-codegen-maven-plugin) 
+Please refer [grapqhl-java-codegen-gradle-plugin](https://github.com/kobylynskyi/graphql-java-codegen-gradle-plugin) or [grapqhl-java-codegen-maven-plugin](https://github.com/kobylynskyi/grapqhl-java-codegen-maven-plugin) 
 
 
 ### Inspired by
