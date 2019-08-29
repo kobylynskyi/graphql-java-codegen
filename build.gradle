@@ -7,7 +7,7 @@ plugins {
 }
 
 version = "1.0"
-group = "com.github.kobylynskyi"
+group = "io.github.kobylynskyi"
 
 repositories {
     mavenCentral()
@@ -57,7 +57,7 @@ publishing {
                 description = "Java Code Generator based on GraphQL schema"
                 url = "https://github.com/kobylynskyi/graphql-java-codegen"
                 organization {
-                    name = "com.github.kobylynskyi"
+                    name = "io.github.kobylynskyi"
                     url = "https://github.com/kobylynskyi"
                 }
                 issueManagement {
