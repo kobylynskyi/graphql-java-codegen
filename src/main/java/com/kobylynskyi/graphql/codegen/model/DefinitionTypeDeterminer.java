@@ -2,12 +2,11 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.*;
-
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 public class DefinitionTypeDeterminer {
 
-    public static DefinitionType determine(@Nonnull Definition definition) {
+    public static DefinitionType determine(@NonNull Definition definition) {
         if (definition instanceof ObjectTypeDefinition) {
             ObjectTypeDefinition typeDef = (ObjectTypeDefinition) definition;
             if (Utils.isGraphqlOperation(typeDef.getName())) {

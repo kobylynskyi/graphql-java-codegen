@@ -11,6 +11,7 @@ public class MappingConfig {
     /**
      * Scalars mapping can be defined here.
      * e.g.: DateTime -> String
+     * e.g.: Price.Float -> java.math.BigDecimal
      */
     private Map<String, String> customTypesMapping = new HashMap<>();
     private String packageName;

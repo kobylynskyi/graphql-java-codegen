@@ -32,7 +32,8 @@ public class ObjectDefinitionToDataModelMapper {
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, Utils.capitalize(typeDefinition.getName()));
         List<Object> operations = typeDefinition.getFieldDefinitions().stream()
-                .map(fieldDef -> FieldDefinitionToDataModelMapper.mapFieldDefinition(mappingConfig, fieldDef))
+                .map(fieldDef ->
+                        FieldDefinitionToDataModelMapper.mapFieldDefinition(mappingConfig, fieldDef, typeDefinition.getName()))
                 .collect(Collectors.toList());
         dataModel.put(OPERATIONS, operations);
         return dataModel;

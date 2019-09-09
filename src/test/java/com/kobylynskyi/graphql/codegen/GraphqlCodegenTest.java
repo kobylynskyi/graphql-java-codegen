@@ -77,6 +77,28 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_CustomMappings_Nested() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<>(
+                Collections.singletonMap("EventProperty.intVal", "java.math.BigInteger")));
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        // As per mapping, only EventProperty.intVal should be mapped to java.math.BigInteger
+        File eventPropertyFile = Arrays.stream(files)
+                .filter(file -> file.getName().equalsIgnoreCase("EventProperty.java"))
+                .findFirst().orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventPropertyFile.getPath()),
+                StringContains.containsString("private java.math.BigInteger intVal;"));
+        File eventFile = Arrays.stream(files)
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
+                .findFirst().orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()),
+                StringContains.containsString("private Integer rating;"));
+    }
+
+    @Test
     void generate_NoCustomMappings() throws Exception {
         generator.generate();
 

@@ -42,10 +42,10 @@ public class TypeDefinitionToDataModelMapper {
 
         Set<Parameter> allParameters = new LinkedHashSet<>();
         // Merge attributes from the type and attributes from the interface
-        allParameters.addAll(FieldDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getFieldDefinitions()));
+        allParameters.addAll(FieldDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName()));
         List<InterfaceTypeDefinition> interfaces = getInterfacesOfType(mappingConfig, typeDefinition, document);
         interfaces.stream()
-                .map(i -> FieldDefinitionToParameterMapper.map(mappingConfig, i.getFieldDefinitions()))
+                .map(i -> FieldDefinitionToParameterMapper.map(mappingConfig, i.getFieldDefinitions(), i.getName()))
                 .forEach(allParameters::addAll);
         dataModel.put(FIELDS, allParameters);
 

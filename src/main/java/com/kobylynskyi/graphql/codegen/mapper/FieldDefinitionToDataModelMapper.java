@@ -23,17 +23,17 @@ public class FieldDefinitionToDataModelMapper {
      *
      * @param mappingConfig   Global mapping configuration
      * @param fieldDefinition GraphQL field definition
-     * @param objectType      Object type (e.g.: "Query", "Mutation" or "Subscription")
+     * @param objectTypeName  Object type (e.g.: "Query", "Mutation" or "Subscription")
      * @return Freemarker data model of the GraphQL field
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, FieldDefinition fieldDefinition,
-                                          String objectType) {
+                                          String objectTypeName) {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
-        dataModel.put(CLASS_NAME, getClassName(fieldDefinition.getName(), objectType));
-        Operation operation = mapFieldDefinition(mappingConfig, fieldDefinition);
+        dataModel.put(CLASS_NAME, getClassName(fieldDefinition.getName(), objectTypeName));
+        Operation operation = mapFieldDefinition(mappingConfig, fieldDefinition, objectTypeName);
         dataModel.put(OPERATIONS, Collections.singletonList(operation));
         return dataModel;
     }
@@ -41,16 +41,18 @@ public class FieldDefinitionToDataModelMapper {
     /**
      * Map GraphQL's FieldDefinition to a Freemarker-understandable format of operation
      *
-     * @param mappingConfig   Global mapping configuration
-     * @param fieldDefinition GraphQL field definition
+     * @param mappingConfig  Global mapping configuration
+     * @param fieldDef       GraphQL field definition
+     * @param parentTypeName Name of the parent type
      * @return Freemarker-understandable format of operation
      */
-    static Operation mapFieldDefinition(MappingConfig mappingConfig, FieldDefinition fieldDefinition) {
+    static Operation mapFieldDefinition(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
         Operation operation = new Operation();
-        operation.setName(fieldDefinition.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig, fieldDefinition.getType()));
+        operation.setName(fieldDef.getName());
+        operation.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig,
+                fieldDef.getType(), fieldDef.getName(), parentTypeName));
         operation.setParameters(
-                InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDefinition.getInputValueDefinitions()));
+                InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDef.getInputValueDefinitions()));
         return operation;
     }
 

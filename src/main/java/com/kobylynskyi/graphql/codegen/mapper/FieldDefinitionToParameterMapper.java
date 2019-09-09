@@ -15,19 +15,30 @@ import java.util.stream.Collectors;
  */
 public class FieldDefinitionToParameterMapper {
 
-    public static List<Parameter> map(MappingConfig mappingConfig, List<FieldDefinition> fieldDefinitions) {
+    /**
+     * Map field definition to a Freemarker-understandable data model type
+     *
+     * @param mappingConfig    Global mapping configuration
+     * @param fieldDefinitions List of GraphQL field definitions
+     * @param parentTypeName   Name of the parent GraphQL type
+     * @return Freemarker data model of the GraphQL interface
+     */
+    public static List<Parameter> map(MappingConfig mappingConfig,
+                                      List<FieldDefinition> fieldDefinitions,
+                                      String parentTypeName) {
         if (fieldDefinitions == null) {
             return Collections.emptyList();
         }
         return fieldDefinitions.stream()
-                .map(fieldDefinition -> map(mappingConfig, fieldDefinition))
+                .map(fieldDefinition -> map(mappingConfig, fieldDefinition, parentTypeName))
                 .collect(Collectors.toList());
     }
 
-    private static Parameter map(MappingConfig mappingConfig, FieldDefinition fieldDefinition) {
+    private static Parameter map(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
         Parameter parameter = new Parameter();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDefinition.getName()));
-        parameter.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig, fieldDefinition.getType()));
+        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
+        parameter.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig,
+                fieldDef.getType(), fieldDef.getName(), parentTypeName));
         return parameter;
     }
 

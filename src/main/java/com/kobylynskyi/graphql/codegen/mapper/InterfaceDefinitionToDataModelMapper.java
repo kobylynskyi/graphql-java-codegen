@@ -18,17 +18,17 @@ public class InterfaceDefinitionToDataModelMapper {
     /**
      * Map interface definition to a Freemarker data model
      *
-     * @param mappingConfig  Global mapping configuration
-     * @param typeDefinition GraphQL interface definition
+     * @param mappingConfig Global mapping configuration
+     * @param typeDef       GraphQL interface definition
      * @return Freemarker data model of the GraphQL interface
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, InterfaceTypeDefinition typeDefinition) {
+    public static Map<String, Object> map(MappingConfig mappingConfig, InterfaceTypeDefinition typeDef) {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
-        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
-        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getFieldDefinitions()));
+        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDef));
+        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.map(mappingConfig, typeDef.getFieldDefinitions(), typeDef.getName()));
         return dataModel;
     }
 
