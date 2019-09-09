@@ -19,4 +19,10 @@ public class MappingConfig {
     private String modelNamePrefix;
     private String modelNameSuffix;
 
+    public void putCustomTypeMappingIfAbsent(String from, String to) {
+        if (!customTypesMapping.containsKey(from)) {
+            customTypesMapping.put(from, to);
+        }
+    }
+
 }

@@ -1,21 +1,16 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.DefinitionType;
 import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import graphql.language.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +40,7 @@ public class GraphqlCodegen {
     }
 
     public void generate() throws Exception {
-        prepareOutputDir();
+        GraphqlCodegenFileCreator.prepareOutputDir(outputDir);
         for (String schema : schemas) {
             long startTime = System.currentTimeMillis();
             Document document = GraphqlDocumentParser.getDocument(schema);
@@ -84,76 +79,46 @@ public class GraphqlCodegen {
 
     private void generateUnion(UnionTypeDefinition definition) throws IOException, TemplateException {
         Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingConfig, definition);
-        generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir);
     }
 
     private void generateInterface(InterfaceTypeDefinition definition) throws IOException, TemplateException {
         Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
-        generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
     }
 
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
         for (FieldDefinition fieldDef : definition.getFieldDefinitions()) {
             Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, fieldDef, definition.getName());
-            generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel);
+            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
         // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
         Map<String, Object> dataModel = ObjectDefinitionToDataModelMapper.map(mappingConfig, definition);
-        generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
     }
 
     private void generateType(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingConfig, definition, document);
-        generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
     }
 
     private void generateInput(InputObjectTypeDefinition definition) throws IOException, TemplateException {
         Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingConfig, definition);
-        generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
     }
 
     private void generateEnum(EnumTypeDefinition definition) throws IOException, TemplateException {
         Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingConfig, definition);
-        generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, outputDir);
     }
 
     private void addScalarsToCustomMappingConfig(Document document) {
         for (Definition definition : document.getDefinitions()) {
             if (definition instanceof ScalarTypeDefinition) {
                 String scalarName = ((ScalarTypeDefinition) definition).getName();
-                if (!mappingConfig.getCustomTypesMapping().containsKey(scalarName)) {
-                    mappingConfig.getCustomTypesMapping().put(scalarName, "String");
-                }
+                mappingConfig.putCustomTypeMappingIfAbsent(scalarName, "String");
             }
         }
-    }
-
-    private void generateFile(Template template, Map<String, Object> dataModel) throws IOException, TemplateException {
-        String fileName = dataModel.get(DataModelFields.CLASS_NAME) + ".java";
-        File fileOutputDir = getFileTargetDirectory(dataModel);
-        File javaSourceFile = new File(fileOutputDir, fileName);
-        boolean fileCreated = javaSourceFile.createNewFile();
-        if (!fileCreated) {
-            throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
-        }
-        template.process(dataModel, new FileWriter(javaSourceFile));
-    }
-
-    private void prepareOutputDir() throws IOException {
-        Utils.deleteDir(outputDir);
-        Utils.createDirIfAbsent(outputDir);
-    }
-
-    private File getFileTargetDirectory(Map<String, Object> dataModel) throws IOException {
-        File targetDir;
-        Object packageName = dataModel.get(DataModelFields.PACKAGE);
-        if (packageName != null && !Utils.isBlank(packageName.toString())) {
-            targetDir = new File(outputDir, packageName.toString().replace(".", File.separator));
-        } else {
-            targetDir = outputDir;
-        }
-        Utils.createDirIfAbsent(targetDir);
-        return targetDir;
     }
 
 }
