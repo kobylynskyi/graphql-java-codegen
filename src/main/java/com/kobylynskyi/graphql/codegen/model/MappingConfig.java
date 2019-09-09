@@ -21,6 +21,9 @@ public class MappingConfig {
     private String modelNameSuffix;
 
     public void putCustomTypeMappingIfAbsent(String from, String to) {
+        if (customTypesMapping == null) {
+            customTypesMapping = new HashMap<>();
+        }
         if (!customTypesMapping.containsKey(from)) {
             customTypesMapping.put(from, to);
         }

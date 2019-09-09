@@ -111,6 +111,19 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_NullCustomMappings() throws Exception {
+        mappingConfig.setCustomTypesMapping(null);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        File eventFile = Arrays.stream(files)
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
+                .findFirst().orElseThrow(FileNotFoundException::new);
+
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("String createdDateTime;"));
+    }
+
+    @Test
     void generate_NoPackage() throws Exception {
         mappingConfig.setPackageName(null);
         generator.generate();
