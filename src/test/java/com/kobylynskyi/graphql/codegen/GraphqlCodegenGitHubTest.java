@@ -2,7 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.gradle.internal.impldep.org.hamcrest.core.StringContains;
+import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import static org.gradle.internal.impldep.org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphqlCodegenGitHubTest {
