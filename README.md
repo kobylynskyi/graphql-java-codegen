@@ -1,6 +1,6 @@
 # GraphQL Codegen #
 
-[![Build Status](https://travis-ci.com/kobylynskyi/graphql-java-codegen.svg?branch=master)](https://travis-ci.com/kobylynskyi/graphql-java-codegen)
+[![CircleCI](https://circleci.com/gh/kobylynskyi/graphql-java-codegen/tree/master.svg?style=svg)](https://circleci.com/gh/kobylynskyi/graphql-java-codegen/tree/master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Plugins
@@ -8,7 +8,6 @@
 Please refer to:
 * Gradle plugin: [grapqhl-java-codegen-gradle-plugin](https://github.com/kobylynskyi/graphql-java-codegen-gradle-plugin)
 * Maven plugin: [grapqhl-java-codegen-maven-plugin](https://github.com/kobylynskyi/grapqhl-java-codegen-maven-plugin) 
-
 
 
 ## Supported Options
