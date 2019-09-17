@@ -23,10 +23,11 @@ class GraphqlTypeToJavaTypeMapper {
         return parameter;
     }
 
-    public static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition) {
+    public static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition, String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
         parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
+        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName));
         return parameter;
     }
 
@@ -69,7 +70,7 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName) {
-        return getAnnotations(mappingConfig, type, name, parentTypeName, true);
+        return getAnnotations(mappingConfig, type, name, parentTypeName, false);
     }
 
     private static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName,

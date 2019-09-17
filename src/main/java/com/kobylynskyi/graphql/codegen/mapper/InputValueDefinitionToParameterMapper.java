@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
  */
 public class InputValueDefinitionToParameterMapper {
 
-    public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions) {
+    public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
         if (valueDefinitions == null) {
             return Collections.emptyList();
         }
         return valueDefinitions.stream()
-                .map(inputValueDefinition -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, inputValueDefinition))
+                .map(inputValueDefinition -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, inputValueDefinition, parentTypeName))
                 .collect(Collectors.toList());
     }
 

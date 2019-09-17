@@ -75,8 +75,8 @@ class GraphqlCodegenGitHubTest {
                 StringContains.containsString("public interface GithubAssigneeTO "));
 
         // verify proper class name for GraphQL input
-        assertThat(getGeneratedFileContent(files, "GithubChangeUserStatusInputTO.java"),
-                StringContains.containsString("public class GithubChangeUserStatusInputTO "));
+        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt").getPath()),
+                getGeneratedFileContent(files, "GithubAcceptTopicSuggestionInputTO.java"));
 
         // verify proper class name for GraphQL type and references to interfaces/types/unions for GraphQL type
         assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/GithubCommitTO.java.txt").getPath()),
