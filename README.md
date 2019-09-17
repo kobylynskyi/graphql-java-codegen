@@ -22,7 +22,7 @@ Please refer to:
 | generateApis              | Boolean            | True                                  | Java package for generated model classes (type, input, interface, enum, union). |
 | customTypesMapping        | Map(String,String) | Empty                                 | Can be used to supply custom mappings for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
 | customAnnotationsMapping  | Map(String,String) | Empty                                 | Can be used to supply custom annotations (serializers) for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
-| modelValidationAnnotation | String             | @javax.validation.constraints.NotNull | Annotation for mandatory (NonNull) fields. Can be null/empty. |
+| modelValidationAnnotation | String             | @javax.validation.<br>constraints.NotNull | Annotation for mandatory (NonNull) fields. Can be null/empty. |
 | modelNamePrefix           | String             | Empty                                 | Sets the prefix for GraphQL model classes (type, input, interface, enum, union). |
 | modelNameSuffix           | String             | Empty                                 | Sets the suffix for GraphQL model classes (type, input, interface, enum, union). |
 
