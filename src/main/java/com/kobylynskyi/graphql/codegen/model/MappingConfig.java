@@ -14,6 +14,7 @@ public class MappingConfig {
      * e.g.: Price.amount -> java.math.BigDecimal
      */
     private Map<String, String> customTypesMapping = new HashMap<>();
+    private boolean generateApis = true;
     private String packageName;
     private String apiPackageName;
     private String modelPackageName;

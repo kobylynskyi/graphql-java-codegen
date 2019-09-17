@@ -215,4 +215,14 @@ class GraphqlCodegenTest {
         assertEquals(0, files.length);
     }
 
+    @Test
+    void generate_OnlyModel() throws Exception {
+        mappingConfig.setGenerateApis(false);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java"), generatedFileNames);
+    }
+
 }

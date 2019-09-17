@@ -83,18 +83,22 @@ public class GraphqlCodegen {
     }
 
     private void generateInterface(InterfaceTypeDefinition definition) throws IOException, TemplateException {
-        Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
+        if (mappingConfig.isGenerateApis()) {
+            Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
+            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
+        }
     }
 
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
-        for (FieldDefinition fieldDef : definition.getFieldDefinitions()) {
-            Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, fieldDef, definition.getName());
+        if (mappingConfig.isGenerateApis()) {
+            for (FieldDefinition fieldDef : definition.getFieldDefinitions()) {
+                Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, fieldDef, definition.getName());
+                GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
+            }
+            // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
+            Map<String, Object> dataModel = ObjectDefinitionToDataModelMapper.map(mappingConfig, definition);
             GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
-        // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
-        Map<String, Object> dataModel = ObjectDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
     }
 
     private void generateType(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
