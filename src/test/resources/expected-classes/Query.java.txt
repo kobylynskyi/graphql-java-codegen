@@ -4,10 +4,13 @@ import java.util.*;
 
 public interface Query {
 
+    @javax.validation.constraints.NotNull
     String version() throws Exception;
 
+    @javax.validation.constraints.NotNull
     Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
 
+    @javax.validation.constraints.NotNull
     Event eventById(String id) throws Exception;
 
 }

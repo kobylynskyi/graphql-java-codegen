@@ -4,43 +4,73 @@ import java.util.*;
 
 public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO{
 
+    @javax.validation.constraints.NotNull
     private String abbreviatedOid;
+    @javax.validation.constraints.NotNull
     private Integer additions;
     private GithubPullRequestConnectionTO associatedPullRequests;
     private GithubGitActorTO author;
+    @javax.validation.constraints.NotNull
     private Boolean authoredByCommitter;
+    @javax.validation.constraints.NotNull
     private String authoredDate;
+    @javax.validation.constraints.NotNull
     private GithubBlameTO blame;
+    @javax.validation.constraints.NotNull
     private Integer changedFiles;
+    @javax.validation.constraints.NotNull
     private GithubCommitCommentConnectionTO comments;
+    @javax.validation.constraints.NotNull
     private String commitResourcePath;
+    @javax.validation.constraints.NotNull
     private String commitUrl;
+    @javax.validation.constraints.NotNull
     private String committedDate;
+    @javax.validation.constraints.NotNull
     private Boolean committedViaWeb;
     private GithubGitActorTO committer;
+    @javax.validation.constraints.NotNull
     private Integer deletions;
     private GithubDeploymentConnectionTO deployments;
+    @javax.validation.constraints.NotNull
     private GithubCommitHistoryConnectionTO history;
+    @javax.validation.constraints.NotNull
     private String id;
+    @javax.validation.constraints.NotNull
     private String message;
+    @javax.validation.constraints.NotNull
     private String messageBody;
+    @javax.validation.constraints.NotNull
     private String messageBodyHTML;
+    @javax.validation.constraints.NotNull
     private String messageHeadline;
+    @javax.validation.constraints.NotNull
     private String messageHeadlineHTML;
+    @javax.validation.constraints.NotNull
     private String oid;
+    @javax.validation.constraints.NotNull
     private GithubCommitConnectionTO parents;
     private String pushedDate;
+    @javax.validation.constraints.NotNull
     private GithubRepositoryTO repository;
+    @javax.validation.constraints.NotNull
     private String resourcePath;
     private GithubGitSignatureTO signature;
     private GithubStatusTO status;
+    @javax.validation.constraints.NotNull
     private String tarballUrl;
+    @javax.validation.constraints.NotNull
     private GithubTreeTO tree;
+    @javax.validation.constraints.NotNull
     private String treeResourcePath;
+    @javax.validation.constraints.NotNull
     private String treeUrl;
+    @javax.validation.constraints.NotNull
     private String url;
+    @javax.validation.constraints.NotNull
     private Boolean viewerCanSubscribe;
     private GithubSubscriptionStateTO viewerSubscription;
+    @javax.validation.constraints.NotNull
     private String zipballUrl;
 
     public GithubCommitTO() {

@@ -21,12 +21,13 @@ public class MappingConfig {
      */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
 
-    private boolean generateApis = true;
+    private boolean generateApis = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS;
     private String packageName;
     private String apiPackageName;
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
+    private String modelValidationAnnotation = DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION;
 
     public void putCustomTypeMappingIfAbsent(String from, String to) {
         if (customTypesMapping == null) {

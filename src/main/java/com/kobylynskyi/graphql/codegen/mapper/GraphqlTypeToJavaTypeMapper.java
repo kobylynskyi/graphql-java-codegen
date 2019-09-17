@@ -19,7 +19,7 @@ class GraphqlTypeToJavaTypeMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
-        parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
         return parameter;
     }
 
@@ -69,19 +69,29 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName) {
+        return getAnnotations(mappingConfig, type, name, parentTypeName, true);
+    }
+
+    private static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName,
+                                               boolean mandatory) {
         if (type instanceof TypeName) {
-            return getAnnotations(mappingConfig, ((TypeName) type).getName(), name, parentTypeName);
+            return getAnnotations(mappingConfig, ((TypeName) type).getName(), name, parentTypeName, mandatory);
         } else if (type instanceof ListType) {
-            return getAnnotations(mappingConfig, ((ListType) type).getType(), name, parentTypeName);
+            return getAnnotations(mappingConfig, ((ListType) type).getType(), name, parentTypeName, mandatory);
         } else if (type instanceof NonNullType) {
-            return getAnnotations(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName);
+            return getAnnotations(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName, true);
         }
         return null;
     }
 
-    private static List<String> getAnnotations(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName) {
+    private static List<String> getAnnotations(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
-        // Todo: https://github.com/kobylynskyi/graphql-java-codegen/issues/3
+        if (mandatory) {
+            String modelValidationAnnotation = mappingConfig.getModelValidationAnnotation();
+            if (modelValidationAnnotation != null && !modelValidationAnnotation.trim().isEmpty()) {
+                annotations.add(modelValidationAnnotation);
+            }
+        }
         Map<String, String> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
         if (name != null && parentTypeName != null && customAnnotationsMapping.containsKey(parentTypeName + "." + name)) {
             annotations.add(customAnnotationsMapping.get(parentTypeName + "." + name));

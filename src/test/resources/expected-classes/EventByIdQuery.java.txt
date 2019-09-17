@@ -4,6 +4,7 @@ import java.util.*;
 
 public interface EventByIdQuery {
 
+    @javax.validation.constraints.NotNull
     Event eventById(String id) throws Exception;
 
 }

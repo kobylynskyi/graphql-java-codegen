@@ -83,6 +83,18 @@ class GraphqlCodegenGitHubTest {
                 getGeneratedFileContent(files, "GithubCommitTO.java"));
     }
 
+    @Test
+    void generate_NoValidationAnnotation() throws Exception {
+        mappingConfig.setModelValidationAnnotation(null);
+
+        generator.generate();
+        File commitFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                .filter(file -> file.getName().equalsIgnoreCase("Commit.java"))
+                .findFirst().orElseThrow(FileNotFoundException::new);
+        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt").getPath()),
+                Utils.getFileContent(commitFile.getPath()));
+    }
+
     private static String getGeneratedFileContent(File[] files, String fileName) throws IOException {
         File file = Arrays.stream(files).filter(f -> f.getName().equalsIgnoreCase(fileName))
                 .findFirst().orElseThrow(FileNotFoundException::new);

@@ -4,6 +4,7 @@ import java.util.*;
 
 public interface EventsByCategoryAndStatusQuery {
 
+    @javax.validation.constraints.NotNull
     Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
 
 }
