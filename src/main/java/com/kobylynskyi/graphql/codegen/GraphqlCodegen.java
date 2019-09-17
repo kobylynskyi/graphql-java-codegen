@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.DefinitionType;
+import com.kobylynskyi.graphql.codegen.model.GraphqlDefinitionType;
 import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import freemarker.template.TemplateException;
@@ -52,7 +52,7 @@ public class GraphqlCodegen {
 
     private void processDocument(Document document) throws IOException, TemplateException {
         for (Definition definition : document.getDefinitions()) {
-            DefinitionType definitionType = DefinitionTypeDeterminer.determine(definition);
+            GraphqlDefinitionType definitionType = DefinitionTypeDeterminer.determine(definition);
             switch (definitionType) {
                 case OPERATION:
                     generateOperation((ObjectTypeDefinition) definition);

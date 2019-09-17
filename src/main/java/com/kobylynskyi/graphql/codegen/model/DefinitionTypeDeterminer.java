@@ -6,26 +6,26 @@ import lombok.NonNull;
 
 public class DefinitionTypeDeterminer {
 
-    public static DefinitionType determine(@NonNull Definition definition) {
+    public static GraphqlDefinitionType determine(@NonNull Definition definition) {
         if (definition instanceof ObjectTypeDefinition) {
             ObjectTypeDefinition typeDef = (ObjectTypeDefinition) definition;
             if (Utils.isGraphqlOperation(typeDef.getName())) {
-                return DefinitionType.OPERATION;
+                return GraphqlDefinitionType.OPERATION;
             } else {
-                return DefinitionType.TYPE;
+                return GraphqlDefinitionType.TYPE;
             }
         } else if (definition instanceof EnumTypeDefinition) {
-            return DefinitionType.ENUM;
+            return GraphqlDefinitionType.ENUM;
         } else if (definition instanceof InputObjectTypeDefinition) {
-            return DefinitionType.INPUT;
+            return GraphqlDefinitionType.INPUT;
         } else if (definition instanceof SchemaDefinition) {
-            return DefinitionType.SCHEMA;
+            return GraphqlDefinitionType.SCHEMA;
         } else if (definition instanceof UnionTypeDefinition) {
-            return DefinitionType.UNION;
+            return GraphqlDefinitionType.UNION;
         } else if (definition instanceof ScalarTypeDefinition) {
-            return DefinitionType.SCALAR;
+            return GraphqlDefinitionType.SCALAR;
         } else if (definition instanceof InterfaceTypeDefinition) {
-            return DefinitionType.INTERFACE;
+            return GraphqlDefinitionType.INTERFACE;
         } else {
             throw new UnsupportedGraphqlDefinitionException(definition);
         }

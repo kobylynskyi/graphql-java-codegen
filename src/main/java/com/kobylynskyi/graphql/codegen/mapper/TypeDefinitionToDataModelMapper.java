@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.Parameter;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import graphql.language.Document;
 import graphql.language.InterfaceTypeDefinition;
 import graphql.language.ObjectTypeDefinition;
@@ -36,11 +36,11 @@ public class TypeDefinitionToDataModelMapper {
         Set<String> allInterfaces = new LinkedHashSet<>();
         allInterfaces.addAll(MapperUtils.getUnionsHavingType(mappingConfig, typeDefinition, document));
         typeDefinition.getImplements().stream()
-                .map(anImplement -> GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig, anImplement))
+                .map(anImplement -> GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, anImplement))
                 .forEach(allInterfaces::add);
         dataModel.put(IMPLEMENTS, allInterfaces);
 
-        Set<Parameter> allParameters = new LinkedHashSet<>();
+        Set<ParameterDefinition> allParameters = new LinkedHashSet<>();
         // Merge attributes from the type and attributes from the interface
         allParameters.addAll(FieldDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName()));
         List<InterfaceTypeDefinition> interfaces = getInterfacesOfType(mappingConfig, typeDefinition, document);
@@ -67,7 +67,7 @@ public class TypeDefinitionToDataModelMapper {
             return Collections.emptyList();
         }
         Set<String> typeImplements = definition.getImplements().stream()
-                .map(type -> GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig, type))
+                .map(type -> GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, type))
                 .collect(Collectors.toSet());
         return document.getDefinitions().stream()
                 .filter(def -> def instanceof InterfaceTypeDefinition)

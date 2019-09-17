@@ -14,6 +14,13 @@ public class MappingConfig {
      * e.g.: Price.amount -> java.math.BigDecimal
      */
     private Map<String, String> customTypesMapping = new HashMap<>();
+
+    /**
+     * Custom annotations for fields can be defined here.
+     * e.g.: EpochMillis -> com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
+     */
+    private Map<String, String> customAnnotationsMapping = new HashMap<>();
+
     private boolean generateApis = true;
     private String packageName;
     private String apiPackageName;

@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-public enum DefinitionType {
+public enum GraphqlDefinitionType {
 
     SCHEMA,
     OPERATION, // Query/Mutation/Subscription

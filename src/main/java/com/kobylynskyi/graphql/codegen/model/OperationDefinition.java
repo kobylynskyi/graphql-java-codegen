@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +11,11 @@ import java.util.List;
  * @author kobylynskyi
  */
 @Data
-public class Operation {
+public class OperationDefinition {
 
     private String name;
     private String type;
-    private List<Parameter> parameters;
+    private List<String> annotations = new ArrayList<>();
+    private List<ParameterDefinition> parameters = new ArrayList<>();
 
 }

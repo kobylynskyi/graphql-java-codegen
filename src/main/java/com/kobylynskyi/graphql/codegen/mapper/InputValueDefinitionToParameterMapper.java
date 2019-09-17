@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.Parameter;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import graphql.language.InputValueDefinition;
 
 import java.util.Collections;
@@ -15,20 +15,13 @@ import java.util.stream.Collectors;
  */
 public class InputValueDefinitionToParameterMapper {
 
-    public static List<Parameter> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions) {
+    public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions) {
         if (valueDefinitions == null) {
             return Collections.emptyList();
         }
         return valueDefinitions.stream()
-                .map(inputValueDefinition -> map(mappingConfig, inputValueDefinition))
+                .map(inputValueDefinition -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, inputValueDefinition))
                 .collect(Collectors.toList());
-    }
-
-    public static Parameter map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition) {
-        Parameter parameter = new Parameter();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
-        parameter.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig, inputValueDefinition.getType()));
-        return parameter;
     }
 
 }

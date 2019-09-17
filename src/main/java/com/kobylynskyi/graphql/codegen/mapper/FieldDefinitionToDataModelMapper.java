@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.Operation;
+import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 
@@ -33,7 +33,7 @@ public class FieldDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, getClassName(fieldDefinition.getName(), objectTypeName));
-        Operation operation = mapFieldDefinition(mappingConfig, fieldDefinition, objectTypeName);
+        OperationDefinition operation = mapFieldDefinition(mappingConfig, fieldDefinition, objectTypeName);
         dataModel.put(OPERATIONS, Collections.singletonList(operation));
         return dataModel;
     }
@@ -46,13 +46,12 @@ public class FieldDefinitionToDataModelMapper {
      * @param parentTypeName Name of the parent type
      * @return Freemarker-understandable format of operation
      */
-    static Operation mapFieldDefinition(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
-        Operation operation = new Operation();
+    static OperationDefinition mapFieldDefinition(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
+        OperationDefinition operation = new OperationDefinition();
         operation.setName(fieldDef.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.mapToJavaType(mappingConfig,
-                fieldDef.getType(), fieldDef.getName(), parentTypeName));
-        operation.setParameters(
-                InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDef.getInputValueDefinitions()));
+        operation.setType(GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        operation.setParameters(InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDef.getInputValueDefinitions()));
         return operation;
     }
 

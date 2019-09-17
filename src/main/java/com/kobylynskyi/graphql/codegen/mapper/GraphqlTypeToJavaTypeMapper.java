@@ -1,11 +1,11 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import graphql.language.ListType;
-import graphql.language.NonNullType;
-import graphql.language.Type;
-import graphql.language.TypeName;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import graphql.language.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,23 +15,38 @@ import java.util.Map;
  */
 class GraphqlTypeToJavaTypeMapper {
 
-    static String mapToJavaType(MappingConfig mappingConfig, Type type) {
-        return mapToJavaType(mappingConfig, type, null, null);
+    public static ParameterDefinition map(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
+        ParameterDefinition parameter = new ParameterDefinition();
+        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
+        parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        return parameter;
     }
 
-    static String mapToJavaType(MappingConfig mappingConfig, Type type, String name, String parentTypeName) {
+    public static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition) {
+        ParameterDefinition parameter = new ParameterDefinition();
+        parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
+        parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
+        return parameter;
+    }
+
+    static String getJavaType(MappingConfig mappingConfig, Type type) {
+        return getJavaType(mappingConfig, type, null, null);
+    }
+
+    static String getJavaType(MappingConfig mappingConfig, Type type, String name, String parentTypeName) {
         if (type instanceof TypeName) {
-            return mapToJavaType(mappingConfig, ((TypeName) type).getName(), name, parentTypeName);
+            return getJavaType(mappingConfig, ((TypeName) type).getName(), name, parentTypeName);
         } else if (type instanceof ListType) {
-            String mappedCollectionType = mapToJavaType(mappingConfig, ((ListType) type).getType(), name, parentTypeName);
+            String mappedCollectionType = getJavaType(mappingConfig, ((ListType) type).getType(), name, parentTypeName);
             return wrapIntoJavaCollection(mappedCollectionType);
         } else if (type instanceof NonNullType) {
-            return mapToJavaType(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName);
+            return getJavaType(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName);
         }
         return null;
     }
 
-    private static String mapToJavaType(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName) {
+    private static String getJavaType(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName) {
         Map<String, String> customTypesMapping = mappingConfig.getCustomTypesMapping();
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             return customTypesMapping.get(parentTypeName + "." + name);
@@ -51,6 +66,29 @@ class GraphqlTypeToJavaTypeMapper {
                 // We need to refer other custom types/interfaces/unions with prefix and suffix
                 return MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, graphlType);
         }
+    }
+
+    static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName) {
+        if (type instanceof TypeName) {
+            return getAnnotations(mappingConfig, ((TypeName) type).getName(), name, parentTypeName);
+        } else if (type instanceof ListType) {
+            return getAnnotations(mappingConfig, ((ListType) type).getType(), name, parentTypeName);
+        } else if (type instanceof NonNullType) {
+            return getAnnotations(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName);
+        }
+        return null;
+    }
+
+    private static List<String> getAnnotations(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName) {
+        List<String> annotations = new ArrayList<>();
+        // Todo: https://github.com/kobylynskyi/graphql-java-codegen/issues/3
+        Map<String, String> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
+        if (name != null && parentTypeName != null && customAnnotationsMapping.containsKey(parentTypeName + "." + name)) {
+            annotations.add(customAnnotationsMapping.get(parentTypeName + "." + name));
+        } else if (customAnnotationsMapping.containsKey(graphlType)) {
+            annotations.add(customAnnotationsMapping.get(graphlType));
+        }
+        return annotations;
     }
 
     private static String wrapIntoJavaCollection(String type) {
