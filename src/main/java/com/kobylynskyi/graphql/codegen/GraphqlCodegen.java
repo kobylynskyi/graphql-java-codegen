@@ -53,8 +53,9 @@ public class GraphqlCodegen {
 
     private void processDocument(Document document) throws IOException, TemplateException {
         for (Definition definition : document.getDefinitions()) {
+            GraphqlDefinitionType definitionType;
             try {
-                GraphqlDefinitionType definitionType = DefinitionTypeDeterminer.determine(definition);
+                definitionType = DefinitionTypeDeterminer.determine(definition);
             } catch (UnsupportedGraphqlDefinitionException ex) {
                 continue;
             }
