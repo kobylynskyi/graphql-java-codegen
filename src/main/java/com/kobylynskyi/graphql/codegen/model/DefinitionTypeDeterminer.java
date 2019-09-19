@@ -26,6 +26,8 @@ public class DefinitionTypeDeterminer {
             return GraphqlDefinitionType.SCALAR;
         } else if (definition instanceof InterfaceTypeDefinition) {
             return GraphqlDefinitionType.INTERFACE;
+        } else if (definition instanceof DirectiveDefinition) {
+            return GraphqlDefinitionType.DIRECTIVE;
         } else {
             throw new UnsupportedGraphqlDefinitionException(definition);
         }
