@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.GraphqlDefinitionType;
 import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
+import com.kobylynskyi.graphql.codegen.model.GraphqlDefinitionType;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.UnsupportedGraphqlDefinitionException;
 import freemarker.template.TemplateException;
@@ -89,10 +89,8 @@ public class GraphqlCodegen {
     }
 
     private void generateInterface(InterfaceTypeDefinition definition) throws IOException, TemplateException {
-        if (mappingConfig.isGenerateApis()) {
-            Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
-            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
-        }
+        Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
+        GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
     }
 
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
