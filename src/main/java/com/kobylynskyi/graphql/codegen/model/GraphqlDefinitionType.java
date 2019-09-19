@@ -9,6 +9,7 @@ public enum GraphqlDefinitionType {
     INPUT,
     UNION,
     ENUM,
-    SCALAR;
+    SCALAR,
+    DIRECTIVE;
 
 }
