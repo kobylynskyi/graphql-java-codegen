@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.mapper.*;
 import com.kobylynskyi.graphql.codegen.model.GraphqlDefinitionType;
 import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.UnsupportedGraphqlDefinitionException;
 import freemarker.template.TemplateException;
 import graphql.language.*;
 import lombok.Getter;
@@ -52,7 +53,11 @@ public class GraphqlCodegen {
 
     private void processDocument(Document document) throws IOException, TemplateException {
         for (Definition definition : document.getDefinitions()) {
-            GraphqlDefinitionType definitionType = DefinitionTypeDeterminer.determine(definition);
+            try {
+                GraphqlDefinitionType definitionType = DefinitionTypeDeterminer.determine(definition);
+            } catch (UnsupportedGraphqlDefinitionException ex) {
+                continue;
+            }
             switch (definitionType) {
                 case OPERATION:
                     generateOperation((ObjectTypeDefinition) definition);
