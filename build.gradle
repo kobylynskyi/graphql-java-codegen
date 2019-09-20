@@ -1,9 +1,10 @@
 plugins {
-    id "java-library"
-    id "maven-publish"
-    id "signing"
-    id "idea"
     id "java"
+    id "idea"
+    id "jacoco"
+    id "java-library"
+    id "signing"
+    id "maven-publish"
 }
 
 version = "1.2.1"
@@ -25,6 +26,23 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.1"
     testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
 }
+
+test.useJUnitPlatform()
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("build/jacoco/*.exec")
+
+    sourceSets sourceSets.main
+
+    reports {
+        xml.enabled true
+        xml.destination file("${buildDir}/reports/jacoco/report.xml")
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn test
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava

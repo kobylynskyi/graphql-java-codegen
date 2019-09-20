@@ -19,3 +19,5 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
+      - run: gradle codeCoverageReport
+      - run: bash <(curl -s https://codecov.io/bash)
