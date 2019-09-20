@@ -76,6 +76,47 @@ public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO
     public GithubCommitTO() {
     }
 
+    public GithubCommitTO(String abbreviatedOid, Integer additions, GithubPullRequestConnectionTO associatedPullRequests, GithubGitActorTO author, Boolean authoredByCommitter, String authoredDate, GithubBlameTO blame, Integer changedFiles, GithubCommitCommentConnectionTO comments, String commitResourcePath, String commitUrl, String committedDate, Boolean committedViaWeb, GithubGitActorTO committer, Integer deletions, GithubDeploymentConnectionTO deployments, GithubCommitHistoryConnectionTO history, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, GithubCommitConnectionTO parents, String pushedDate, GithubRepositoryTO repository, String resourcePath, GithubGitSignatureTO signature, GithubStatusTO status, String tarballUrl, GithubTreeTO tree, String treeResourcePath, String treeUrl, String url, Boolean viewerCanSubscribe, GithubSubscriptionStateTO viewerSubscription, String zipballUrl) {
+        this.abbreviatedOid = abbreviatedOid;
+        this.additions = additions;
+        this.associatedPullRequests = associatedPullRequests;
+        this.author = author;
+        this.authoredByCommitter = authoredByCommitter;
+        this.authoredDate = authoredDate;
+        this.blame = blame;
+        this.changedFiles = changedFiles;
+        this.comments = comments;
+        this.commitResourcePath = commitResourcePath;
+        this.commitUrl = commitUrl;
+        this.committedDate = committedDate;
+        this.committedViaWeb = committedViaWeb;
+        this.committer = committer;
+        this.deletions = deletions;
+        this.deployments = deployments;
+        this.history = history;
+        this.id = id;
+        this.message = message;
+        this.messageBody = messageBody;
+        this.messageBodyHTML = messageBodyHTML;
+        this.messageHeadline = messageHeadline;
+        this.messageHeadlineHTML = messageHeadlineHTML;
+        this.oid = oid;
+        this.parents = parents;
+        this.pushedDate = pushedDate;
+        this.repository = repository;
+        this.resourcePath = resourcePath;
+        this.signature = signature;
+        this.status = status;
+        this.tarballUrl = tarballUrl;
+        this.tree = tree;
+        this.treeResourcePath = treeResourcePath;
+        this.treeUrl = treeUrl;
+        this.url = url;
+        this.viewerCanSubscribe = viewerCanSubscribe;
+        this.viewerSubscription = viewerSubscription;
+        this.zipballUrl = zipballUrl;
+    }
+
     public String getAbbreviatedOid() {
         return abbreviatedOid;
     }

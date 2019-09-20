@@ -16,6 +16,17 @@ public class Event {
     public Event() {
     }
 
+    public Event(String id, String categoryId, Collection<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.properties = properties;
+        this.status = status;
+        this.createdBy = createdBy;
+        this.createdDateTime = createdDateTime;
+        this.active = active;
+        this.rating = rating;
+    }
+
     public String getId() {
         return id;
     }

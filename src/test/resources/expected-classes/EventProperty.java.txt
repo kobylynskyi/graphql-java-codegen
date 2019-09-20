@@ -14,6 +14,15 @@ public class EventProperty {
     public EventProperty() {
     }
 
+    public EventProperty(Float floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventProperty> child, Event parent) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.child = child;
+        this.parent = parent;
+    }
+
     public Float getFloatVal() {
         return floatVal;
     }

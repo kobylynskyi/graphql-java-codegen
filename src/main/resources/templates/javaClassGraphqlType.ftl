@@ -18,6 +18,14 @@ public class ${className} <#if implements?has_content>implements <#list implemen
     public ${className}() {
     }
 
+<#if fields?has_content>
+    public ${className}(<#list fields as field>${field.type} ${field.name}<#if field_has_next>, </#if></#list>) {
+<#list fields as field>
+        this.${field.name} = ${field.name};
+</#list>
+    }
+</#if>
+
 <#list fields as field>
     public ${field.type} get${field.name?cap_first}() {
         return ${field.name};

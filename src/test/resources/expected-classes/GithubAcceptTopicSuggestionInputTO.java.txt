@@ -13,6 +13,12 @@ public class GithubAcceptTopicSuggestionInputTO {
     public GithubAcceptTopicSuggestionInputTO() {
     }
 
+    public GithubAcceptTopicSuggestionInputTO(String clientMutationId, String name, String repositoryId) {
+        this.clientMutationId = clientMutationId;
+        this.name = name;
+        this.repositoryId = repositoryId;
+    }
+
     public String getClientMutationId() {
         return clientMutationId;
     }
