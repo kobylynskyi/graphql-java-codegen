@@ -240,9 +240,13 @@ class GraphqlCodegenTest {
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertEquals(2, files.length);
         assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EmptyMutation.java.txt"),
-                Utils.getFileContent(files[0].getPath()));
+                Utils.getFileContent(Arrays.stream(files)
+                        .filter(f -> f.getName().equals("Mutation.java"))
+                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
         assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EmptyQuery.java.txt"),
-                Utils.getFileContent(files[1].getPath()));
+                Utils.getFileContent(Arrays.stream(files)
+                        .filter(f -> f.getName().equals("Query.java"))
+                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test
