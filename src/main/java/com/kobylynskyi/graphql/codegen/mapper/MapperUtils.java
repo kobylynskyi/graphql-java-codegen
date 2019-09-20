@@ -92,11 +92,11 @@ public class MapperUtils {
      */
     static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, String definitionName) {
         StringBuilder classNameBuilder = new StringBuilder();
-        if (mappingConfig.getModelNamePrefix() != null) {
+        if (!Utils.isBlank(mappingConfig.getModelNamePrefix())) {
             classNameBuilder.append(mappingConfig.getModelNamePrefix());
         }
         classNameBuilder.append(Utils.capitalize(definitionName));
-        if (mappingConfig.getModelNameSuffix() != null) {
+        if (!Utils.isBlank(mappingConfig.getModelNameSuffix())) {
             classNameBuilder.append(mappingConfig.getModelNameSuffix());
         }
         return classNameBuilder.toString();

@@ -20,8 +20,7 @@ type Query {
 
 type Mutation {
     # Create a new event.
-    createEvent(categoryId: String!,
-                createdBy: String!): Event!
+    createEvent(categoryId: String!, createdBy: String!): Event! @auth(role:"admin")
 }
 
 

@@ -100,6 +100,7 @@ class GraphqlCodegenTest {
 
     @Test
     void generate_NoCustomMappings() throws Exception {
+        mappingConfig.setModelNameSuffix(" ");
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -123,7 +124,6 @@ class GraphqlCodegenTest {
         assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("String createdDateTime;"));
     }
 
-
     @Test
     void generate_CustomAnnotationMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap(
@@ -133,8 +133,6 @@ class GraphqlCodegenTest {
                 "Event.createdDateTime", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
                 .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
