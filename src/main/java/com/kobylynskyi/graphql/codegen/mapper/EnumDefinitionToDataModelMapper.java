@@ -2,9 +2,13 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import graphql.language.EnumTypeDefinition;
+import graphql.language.EnumValueDefinition;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
@@ -28,8 +32,24 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, enumDef));
-        dataModel.put(FIELDS, EnumValueDefinitionToStringMapper.map(enumDef.getEnumValueDefinitions()));
+        dataModel.put(FIELDS, map(enumDef.getEnumValueDefinitions()));
         return dataModel;
+    }
+
+    /**
+     * Mapper from GraphQL's EnumValueDefinition to a Freemarker-understandable format
+     *
+     * @param enumValueDefinitions list of GraphQL EnumValueDefinition types
+     * @return list of strings
+     */
+    private static List<String> map(List<EnumValueDefinition> enumValueDefinitions) {
+        if (enumValueDefinitions == null) {
+            return Collections.emptyList();
+        }
+        return enumValueDefinitions.stream()
+                .map(EnumValueDefinition::getName)
+                .map(MapperUtils::capitalizeIfRestricted)
+                .collect(Collectors.toList());
     }
 
 }
