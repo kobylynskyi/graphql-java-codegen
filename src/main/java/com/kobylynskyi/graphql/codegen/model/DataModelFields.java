@@ -14,4 +14,5 @@ public final class DataModelFields {
     public static final String FIELDS = "fields";
     public static final String IMPLEMENTS = "implements";
     public static final String OPERATIONS = "operations";
+    public static final String EQUALS_AND_HASH_CODE = "equalsAndHashCode";
 }

@@ -18,6 +18,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class GraphqlCodegenTest {
@@ -209,6 +210,36 @@ class GraphqlCodegenTest {
                 fail(e);
             }
         });
+    }
+
+    @Test
+    void generate_EqualsAndHashCode() throws Exception {
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        mappingConfig.setModelNameSuffix("TO");
+
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertNotEquals(files.length, 0);
+
+        for (File eventFile : files) {
+            if (eventFile.getName().endsWith("TO.java")) {
+                String content = Utils.getFileContent(eventFile.getPath());
+
+              if (content.contains("public interface ") || content.contains("public enum ")) {
+                  continue;
+              }
+
+              assertThat(content,
+                  StringContains.containsString("public boolean equals(Object obj)"));
+
+              assertThat(content,
+                  StringContains.containsString("public int hashCode()"));
+            }
+        }
+
+
     }
 
     @Test

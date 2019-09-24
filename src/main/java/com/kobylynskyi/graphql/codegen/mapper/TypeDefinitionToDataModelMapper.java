@@ -48,6 +48,7 @@ public class TypeDefinitionToDataModelMapper {
                 .map(i -> FieldDefinitionToParameterMapper.map(mappingConfig, i.getFieldDefinitions(), i.getName()))
                 .forEach(allParameters::addAll);
         dataModel.put(FIELDS, allParameters);
+        dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.isGenerateEqualsAndHashCode());
 
         return dataModel;
     }

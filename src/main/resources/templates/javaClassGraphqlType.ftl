@@ -35,4 +35,26 @@ public class ${className} <#if implements?has_content>implements <#list implemen
     }
 
 </#list>
+<#if equalsAndHashCode>
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (that == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ${className} that = (FormField) obj;
+        return <#list fields as field>Objects.equals(${field.name}, that.${field.name}) <#if field_has_next>
+            && </#if></#list>;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+<#list fields as field>
+            ${field.name}<#if field_has_next>, </#if>
+</#list>;
+    }
+</#if>
 }
