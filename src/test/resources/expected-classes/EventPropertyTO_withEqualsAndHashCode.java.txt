@@ -1,0 +1,89 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class EventPropertyTO {
+
+    private Float floatVal;
+    private Boolean booleanVal;
+    private Integer intVal;
+    private String stringVal;
+    private Collection<EventPropertyTO> child;
+    private EventTO parent;
+
+    public EventPropertyTO() {
+    }
+
+    public EventPropertyTO(Float floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventPropertyTO> child, EventTO parent) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.child = child;
+        this.parent = parent;
+    }
+
+    public Float getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(Float floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public Integer getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(Integer intVal) {
+        this.intVal = intVal;
+    }
+
+    public String getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public Collection<EventPropertyTO> getChild() {
+        return child;
+    }
+    public void setChild(Collection<EventPropertyTO> child) {
+        this.child = child;
+    }
+
+    public EventTO getParent() {
+        return parent;
+    }
+    public void setParent(EventTO parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final EventPropertyTO that = (EventPropertyTO) obj;
+        return Objects.equals(floatVal, that.floatVal)
+            && Objects.equals(booleanVal, that.booleanVal)
+            && Objects.equals(intVal, that.intVal)
+            && Objects.equals(stringVal, that.stringVal)
+            && Objects.equals(child, that.child)
+            && Objects.equals(parent, that.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(floatVal, booleanVal, intVal, stringVal, child, parent);
+    }
+}

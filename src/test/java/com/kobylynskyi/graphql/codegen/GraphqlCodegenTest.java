@@ -217,7 +217,6 @@ class GraphqlCodegenTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setModelNameSuffix("TO");
 
-
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -239,7 +238,10 @@ class GraphqlCodegenTest {
             }
         }
 
-
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EventPropertyTO_withEqualsAndHashCode.java.txt"),
+                Utils.getFileContent(Arrays.stream(files)
+                        .filter(f -> f.getName().equals("EventPropertyTO.java"))
+                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test
