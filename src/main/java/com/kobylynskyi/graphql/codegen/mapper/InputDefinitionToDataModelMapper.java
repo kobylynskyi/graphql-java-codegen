@@ -30,6 +30,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
         dataModel.put(NAME, typeDefinition.getName());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getInputValueDefinitions(), typeDefinition.getName()));
+        dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.isGenerateEqualsAndHashCode());
         return dataModel;
     }
 
