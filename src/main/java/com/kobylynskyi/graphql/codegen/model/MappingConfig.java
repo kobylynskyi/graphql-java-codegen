@@ -29,6 +29,7 @@ public class MappingConfig {
     private String modelNameSuffix;
     private String modelValidationAnnotation = DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION;
     private boolean generateEqualsAndHashCode = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE;
+    private boolean generateToString = DefaultMappingConfigValues.DEFAULT_TO_STRING;
 
     public void putCustomTypeMappingIfAbsent(String from, String to) {
         if (customTypesMapping == null) {
