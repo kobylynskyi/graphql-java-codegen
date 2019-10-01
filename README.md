@@ -27,7 +27,7 @@ Please refer to:
 | modelNamePrefix           | String             | Empty                                 | Sets the prefix for GraphQL model classes (type, input, interface, enum, union). |
 | modelNameSuffix           | String             | Empty                                 | Sets the suffix for GraphQL model classes (type, input, interface, enum, union). |
 | generateEqualsAndHashCode | Boolean            | False                                 | Specifies whether generated model classes should have equals and hashCode methods defined. |
-
+| generateToString          | Boolean            | False                                 | Specifies whether generated model classes should have toString method defined. |
 
 ### Inspired by
 [swagger-codegen](https://github.com/swagger-api/swagger-codegen)

@@ -49,6 +49,7 @@ public class TypeDefinitionToDataModelMapper {
                 .forEach(allParameters::addAll);
         dataModel.put(FIELDS, allParameters);
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.isGenerateEqualsAndHashCode());
+        dataModel.put(TO_STRING, mappingConfig.isGenerateToString());
 
         return dataModel;
     }
