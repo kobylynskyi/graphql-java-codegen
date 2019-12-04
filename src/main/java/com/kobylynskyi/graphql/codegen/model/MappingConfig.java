@@ -35,6 +35,8 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private String modelNameSuffix;
     private String modelValidationAnnotation;
     private Boolean generateEqualsAndHashCode;
+    private Boolean generateToString;
+
 
     /**
      * Put custom type mapping if absent.
@@ -73,6 +75,8 @@ public class MappingConfig implements Combinable<MappingConfig> {
             this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
             this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
             this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
+            this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
+
         }
     }
 }

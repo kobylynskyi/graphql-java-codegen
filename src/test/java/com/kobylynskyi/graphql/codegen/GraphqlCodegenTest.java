@@ -245,6 +245,30 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_toString() throws Exception {
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setModelNameSuffix("TO");
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertNotEquals(files.length, 0);
+
+        for (File eventFile : files) {
+            if (eventFile.getName().endsWith("TO.java")) {
+                String content = Utils.getFileContent(eventFile.getPath());
+
+                if (content.contains("public interface ") || content.contains("public enum ")) {
+                    continue;
+                }
+
+                assertThat(content,
+                    StringContains.containsString("public String toString()"));
+            }
+        }
+    }
+
+    @Test
     void generate_NoSchemas() throws Exception {
         generator.setSchemas(Collections.emptyList());
         generator.generate();
