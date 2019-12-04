@@ -2,3 +2,7 @@ out
 build
 .idea
 .gradle
+*.iml
+modules.xml
+.idea/misc.xml
+*.ipr

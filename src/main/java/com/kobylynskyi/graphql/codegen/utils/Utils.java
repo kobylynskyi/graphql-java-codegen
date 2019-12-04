@@ -1,8 +1,12 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
+import com.google.gson.GsonBuilder;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import graphql.language.OperationDefinition;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -113,4 +117,6 @@ public final class Utils {
             throw new IOException("Unable to create output directory");
         }
     }
+
+
 }
