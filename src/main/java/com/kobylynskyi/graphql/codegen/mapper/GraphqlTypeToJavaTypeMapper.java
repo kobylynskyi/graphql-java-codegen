@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import static graphql.language.OperationDefinition.*;
+
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import graphql.language.*;
@@ -16,7 +18,7 @@ import java.util.Map;
 class GraphqlTypeToJavaTypeMapper {
 
     /**
-     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of operation
+     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
      *
      * @param mappingConfig  Global mapping configuration
      * @param fieldDef       GraphQL field definition
@@ -62,19 +64,19 @@ class GraphqlTypeToJavaTypeMapper {
      * Convert GraphQL type to a corresponding Java type
      *
      * @param mappingConfig  Global mapping configuration
-     * @param graphlType     GraphQL type
+     * @param graphqlType    GraphQL type
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
      * @return Corresponding Java type
      */
-    static String getJavaType(MappingConfig mappingConfig, Type graphlType, String name, String parentTypeName) {
-        if (graphlType instanceof TypeName) {
-            return getJavaType(mappingConfig, ((TypeName) graphlType).getName(), name, parentTypeName);
-        } else if (graphlType instanceof ListType) {
-            String mappedCollectionType = getJavaType(mappingConfig, ((ListType) graphlType).getType(), name, parentTypeName);
+    static String getJavaType(MappingConfig mappingConfig, Type graphqlType, String name, String parentTypeName) {
+        if (graphqlType instanceof TypeName) {
+            return getJavaType(mappingConfig, ((TypeName) graphqlType).getName(), name, parentTypeName);
+        } else if (graphqlType instanceof ListType) {
+            String mappedCollectionType = getJavaType(mappingConfig, ((ListType) graphqlType).getType(), name, parentTypeName);
             return wrapIntoJavaCollection(mappedCollectionType);
-        } else if (graphlType instanceof NonNullType) {
-            return getJavaType(mappingConfig, ((NonNullType) graphlType).getType(), name, parentTypeName);
+        } else if (graphqlType instanceof NonNullType) {
+            return getJavaType(mappingConfig, ((NonNullType) graphqlType).getType(), name, parentTypeName);
         }
         return null;
     }
@@ -154,6 +156,15 @@ class GraphqlTypeToJavaTypeMapper {
 
     private static String wrapIntoJavaCollection(String type) {
         return String.format("Collection<%s>", type);
+    }
+
+    static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
+        if (parentTypeName.equalsIgnoreCase(Operation.SUBSCRIPTION.name())
+                && mappingConfig.getSubscriptionReturnType() != null
+                && !mappingConfig.getSubscriptionReturnType().trim().isEmpty()) {
+            return String.format("%s<%s>", mappingConfig.getSubscriptionReturnType(), javaTypeName);
+        }
+        return javaTypeName;
     }
 
 }

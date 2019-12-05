@@ -1,0 +1,10 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public interface EventsCreatedSubscription {
+
+    @javax.validation.constraints.NotNull
+    Collection<Event> eventsCreated() throws Exception;
+
+}

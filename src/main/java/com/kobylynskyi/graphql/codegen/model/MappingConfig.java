@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import freemarker.template.utility.CollectionUtils;
 import lombok.Data;
 
 /**
@@ -42,6 +41,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String modelValidationAnnotation;
+    private String subscriptionReturnType;
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
 
@@ -88,6 +88,8 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.modelNamePrefix = source.modelNamePrefix != null ? source.modelNamePrefix : this.modelNamePrefix;
         this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
+        this.subscriptionReturnType = source.subscriptionReturnType
+                != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
     }
