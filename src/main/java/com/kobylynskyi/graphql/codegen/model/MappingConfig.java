@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import freemarker.template.utility.CollectionUtils;
 import lombok.Data;
 
 /**
