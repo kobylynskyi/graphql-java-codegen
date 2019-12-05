@@ -6,6 +6,9 @@ package ${package};
 import ${import}.*;
 </#list>
 
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public class ${className} <#if implements?has_content>implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
 <#list fields as field>

@@ -1,7 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -26,6 +28,11 @@ public class MappingConfig implements Combinable<MappingConfig> {
      * e.g.: EpochMillis -> com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
      */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
+
+    /**
+     * Custom annotations for model classes.
+     */
+    private Set<String> modelAnnotations = new HashSet<>();
 
     private Boolean generateApis;
     private String packageName;
@@ -67,6 +74,11 @@ public class MappingConfig implements Combinable<MappingConfig> {
             } else if (this.customAnnotationsMapping == null && source.customAnnotationsMapping != null) {
                 this.customAnnotationsMapping = source.customAnnotationsMapping;
             }
+            if (this.modelAnnotations != null && source.modelAnnotations != null) {
+                this.modelAnnotations.addAll(source.modelAnnotations);
+            } else if (this.modelAnnotations == null && source.modelAnnotations != null) {
+                this.modelAnnotations = source.modelAnnotations;
+            }
             this.generateApis = source.generateApis != null ? source.generateApis : this.generateApis;
             this.packageName = source.packageName != null ? source.packageName : this.packageName;
             this.apiPackageName = source.apiPackageName != null ? source.apiPackageName : this.apiPackageName;
@@ -76,7 +88,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
             this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
             this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
             this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
-
         }
     }
 }

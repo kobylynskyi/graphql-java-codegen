@@ -33,16 +33,17 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
-        Set<String> allInterfaces = new LinkedHashSet<>();
-        allInterfaces.addAll(MapperUtils.getUnionsHavingType(mappingConfig, typeDefinition, document));
+        dataModel.put(ANNOTATIONS, mappingConfig.getModelAnnotations());
+        Set<String> allInterfaces = new LinkedHashSet<>(
+                MapperUtils.getUnionsHavingType(mappingConfig, typeDefinition, document));
         typeDefinition.getImplements().stream()
                 .map(anImplement -> GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, anImplement))
                 .forEach(allInterfaces::add);
         dataModel.put(IMPLEMENTS, allInterfaces);
 
-        Set<ParameterDefinition> allParameters = new LinkedHashSet<>();
         // Merge attributes from the type and attributes from the interface
-        allParameters.addAll(FieldDefinitionToParameterMapper.map(mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName()));
+        Set<ParameterDefinition> allParameters = new LinkedHashSet<>(FieldDefinitionToParameterMapper
+                .map(mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName()));
         List<InterfaceTypeDefinition> interfaces = getInterfacesOfType(mappingConfig, typeDefinition, document);
         interfaces.stream()
                 .map(i -> FieldDefinitionToParameterMapper.map(mappingConfig, i.getFieldDefinitions(), i.getName()))
@@ -50,7 +51,6 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(FIELDS, allParameters);
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
         dataModel.put(TO_STRING, mappingConfig.getGenerateToString());
-
 
         return dataModel;
     }

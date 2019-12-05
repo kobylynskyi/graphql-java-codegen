@@ -144,6 +144,19 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_ModelAnnotations() throws Exception {
+        mappingConfig.setModelAnnotations(new HashSet<>(Arrays.asList("lombok.Builder", "lombok.Data")));
+
+        generator.generate();
+
+        File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
+                .findFirst().orElseThrow(FileNotFoundException::new);
+        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/Event_with_lombok_annotations.java.txt").getPath()),
+                Utils.getFileContent(eventFile.getPath()));
+    }
+
+    @Test
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap(
                 "DateTime", "org.joda.time.DateTime")));
