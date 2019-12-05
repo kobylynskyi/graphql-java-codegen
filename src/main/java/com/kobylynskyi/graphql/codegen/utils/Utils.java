@@ -1,11 +1,11 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
-import graphql.language.OperationDefinition;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import graphql.language.OperationDefinition;
 
 /**
  * Various utilities
@@ -113,4 +113,6 @@ public final class Utils {
             throw new IOException("Unable to create output directory");
         }
     }
+
+
 }

@@ -1,10 +1,8 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
-import com.kobylynskyi.graphql.codegen.model.GraphqlDefinitionType;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.UnsupportedGraphqlDefinitionException;
+import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import freemarker.template.TemplateException;
 import graphql.language.*;
 import lombok.Getter;
@@ -14,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Generator of:
@@ -25,6 +24,7 @@ import java.util.Map;
  * - Class for each GraphQL scalar type
  *
  * @author kobylynskyi
+ * @author valinhadev
  */
 @Getter
 @Setter
@@ -33,12 +33,36 @@ public class GraphqlCodegen {
     private List<String> schemas;
     private File outputDir;
     private MappingConfig mappingConfig;
+    private MappingConfig result;
 
     public GraphqlCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig) {
+        this(schemas, outputDir, mappingConfig, null);
+    }
+
+
+    public GraphqlCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         this.schemas = schemas;
         this.outputDir = outputDir;
         this.mappingConfig = mappingConfig;
+        this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
+        initDefaultValues(mappingConfig);
     }
+
+    private void initDefaultValues(MappingConfig mappingConfig) {
+        if (mappingConfig.getModelValidationAnnotation() == null) {
+            mappingConfig.setModelValidationAnnotation(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION);
+        }
+        if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
+            mappingConfig.setGenerateEqualsAndHashCode(DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE);
+        }
+        if (mappingConfig.getGenerateToString() == null) {
+            mappingConfig.setGenerateToString(DefaultMappingConfigValues.DEFAULT_TO_STRING);
+        }
+        if (mappingConfig.getGenerateApis() == null) {
+            mappingConfig.setGenerateApis(DefaultMappingConfigValues.DEFAULT_GENERATE_APIS);
+        }
+    }
+
 
     public void generate() throws Exception {
         GraphqlCodegenFileCreator.prepareOutputDir(outputDir);
@@ -94,7 +118,7 @@ public class GraphqlCodegen {
     }
 
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
-        if (mappingConfig.isGenerateApis()) {
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
             for (FieldDefinition fieldDef : definition.getFieldDefinitions()) {
                 Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, fieldDef, definition.getName());
                 GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
