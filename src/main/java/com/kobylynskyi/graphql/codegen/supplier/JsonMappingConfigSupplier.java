@@ -1,11 +1,11 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
-import com.google.gson.GsonBuilder;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
+import com.google.gson.GsonBuilder;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 
 /**
  * Retrieve a MappingConfig fro json configuration file.

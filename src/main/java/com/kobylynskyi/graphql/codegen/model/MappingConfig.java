@@ -1,9 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.Data;
 
 /**
  * The type Mapping config.
