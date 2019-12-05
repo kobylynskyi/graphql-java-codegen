@@ -45,7 +45,7 @@ class GraphqlCodegenTest {
 
     @AfterEach
     void cleanup() throws IOException {
-        Utils.deleteDir(new File("build/generated"));
+        //Utils.deleteDir(new File("build/generated"));
     }
 
     @Test
@@ -208,9 +208,9 @@ class GraphqlCodegenTest {
 
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
-        assertEquals(
-                Arrays.asList("CreateEventMutation.java", "EventByIdQuery.java", "EventsByCategoryAndStatusQuery.java",
-                        "Mutation.java", "Query.java", "VersionQuery.java"), generatedApiFileNames);
+        assertEquals(Arrays.asList("CreateEventMutation.java", "EventByIdQuery.java",
+                "EventsByCategoryAndStatusQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
+                "Subscription.java", "VersionQuery.java"), generatedApiFileNames);
         Arrays.stream(apiFiles).forEach(file -> {
             try {
                 assertThat(Utils.getFileContent(file.getPath()),
