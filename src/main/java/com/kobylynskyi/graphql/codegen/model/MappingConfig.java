@@ -29,11 +29,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
      */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
 
-    /**
-     * Custom annotations for model classes.
-     */
-    private Set<String> modelAnnotations = new HashSet<>();
-
     private Boolean generateApis;
     private String packageName;
     private String apiPackageName;
@@ -75,11 +70,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
             this.customAnnotationsMapping.putAll(source.customAnnotationsMapping);
         } else if (this.customAnnotationsMapping == null) {
             this.customAnnotationsMapping = source.customAnnotationsMapping;
-        }
-        if (this.modelAnnotations != null && source.modelAnnotations != null) {
-            this.modelAnnotations.addAll(source.modelAnnotations);
-        } else if (this.modelAnnotations == null) {
-            this.modelAnnotations = source.modelAnnotations;
         }
         this.generateApis = source.generateApis != null ? source.generateApis : this.generateApis;
         this.packageName = source.packageName != null ? source.packageName : this.packageName;

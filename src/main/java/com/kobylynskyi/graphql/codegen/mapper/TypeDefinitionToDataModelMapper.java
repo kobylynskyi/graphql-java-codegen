@@ -33,7 +33,6 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
-        dataModel.put(ANNOTATIONS, mappingConfig.getModelAnnotations());
         Set<String> allInterfaces = new LinkedHashSet<>(
                 MapperUtils.getUnionsHavingType(mappingConfig, typeDefinition, document));
         typeDefinition.getImplements().stream()

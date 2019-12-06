@@ -26,7 +26,6 @@ Please refer to:
 | modelValidationAnnotation | String             | @javax.validation.<br>constraints.NotNull | Annotation for mandatory (NonNull) fields. Can be null/empty. |
 | modelNamePrefix           | String             | Empty                                 | Sets the prefix for GraphQL model classes (type, input, interface, enum, union). |
 | modelNameSuffix           | String             | Empty                                 | Sets the suffix for GraphQL model classes (type, input, interface, enum, union). |
-| modelAnnotations          | String             | Empty                                 | Annotations that will be added to model classes (type, input). |
 | subscriptionReturnType    | String             | Empty                                 | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
 | generateEqualsAndHashCode | Boolean            | False                                 | Specifies whether generated model classes should have equals and hashCode methods defined. |
 | generateToString          | Boolean            | False                                 | Specifies whether generated model classes should have toString method defined. |
