@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
