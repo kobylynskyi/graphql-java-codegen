@@ -5,6 +5,9 @@ schema {
 
     # The mutation root.
     mutation: Mutation
+
+    # The subscription root.
+    subscription: Subscription
 }
 
 type Query {
@@ -21,6 +24,11 @@ type Query {
 type Mutation {
     # Create a new event.
     createEvent(categoryId: String!, createdBy: String!): Event! @auth(role:"admin")
+}
+
+type Subscription {
+    # Subscribe to events
+    eventsCreated: [Event!]!
 }
 
 

@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class MappingConfigTest {
 
     @Test
-    public void combineDefaultWithNull() {
+    void combineDefaultWithNull() {
         MappingConfig mappingConfig = buildEmptyMappingConfig();
         mappingConfig.combine(null);
 
@@ -68,6 +66,7 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
+        assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
     }
 
     @Test
@@ -88,6 +87,7 @@ class MappingConfigTest {
         assertEquals("ModelPackageName2", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation2", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName2", mappingConfig.getPackageName());
+        assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -108,6 +108,7 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName");
         config.setModelValidationAnnotation("ModelValidationAnnotation");
         config.setPackageName("PackageName");
+        config.setSubscriptionReturnType("SubscriptionsReturnType");
         return config;
     }
 
@@ -124,6 +125,7 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName2");
         config.setModelValidationAnnotation("ModelValidationAnnotation2");
         config.setPackageName("PackageName2");
+        config.setSubscriptionReturnType("SubscriptionsReturnType2");
         return config;
     }
 

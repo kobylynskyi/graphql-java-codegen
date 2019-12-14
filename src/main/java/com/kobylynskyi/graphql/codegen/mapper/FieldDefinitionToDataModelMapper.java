@@ -49,7 +49,8 @@ public class FieldDefinitionToDataModelMapper {
     static OperationDefinition mapFieldDefinition(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
         OperationDefinition operation = new OperationDefinition();
         operation.setName(fieldDef.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
+        String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoSubscriptionIfRequired(mappingConfig, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
         operation.setParameters(InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
         return operation;

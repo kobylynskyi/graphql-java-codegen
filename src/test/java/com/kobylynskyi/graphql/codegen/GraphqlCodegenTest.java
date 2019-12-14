@@ -1,7 +1,22 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.AfterEach;
@@ -9,17 +24,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import java.util.*;
-
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 class GraphqlCodegenTest {
 
@@ -39,7 +45,7 @@ class GraphqlCodegenTest {
 
     @AfterEach
     void cleanup() throws IOException {
-        Utils.deleteDir(new File("build/generated"));
+        //Utils.deleteDir(new File("build/generated"));
     }
 
     @Test
@@ -48,19 +54,16 @@ class GraphqlCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("CreateEventMutation.java", "Event.java", "EventByIdQuery.java",
-                "EventProperty.java", "EventStatus.java", "EventsByCategoryAndStatusQuery.java",
-                "Mutation.java", "Query.java", "VersionQuery.java"),
-                generatedFileNames);
+        assertEquals(
+                Arrays.asList("CreateEventMutation.java", "Event.java", "EventByIdQuery.java",
+                        "EventProperty.java", "EventStatus.java", "EventsByCategoryAndStatusQuery.java",
+                        "EventsCreatedSubscription.java", "Mutation.java", "Query.java", "Subscription.java",
+                        "VersionQuery.java"), generatedFileNames);
 
-        Arrays.stream(files).forEach(file -> {
-            try {
-                File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
-                assertEquals(Utils.getFileContent(expected.getPath()), Utils.getFileContent(file.getPath()));
-            } catch (IOException e) {
-                fail(e);
-            }
-        });
+        for (File file : files) {
+            File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
+            assertEquals(Utils.getFileContent(expected.getPath()), Utils.getFileContent(file.getPath()));
+        }
     }
 
     @Test
@@ -70,17 +73,17 @@ class GraphqlCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        File eventFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
 
-        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("java.util.Date createdDateTime;"));
+        assertThat(Utils.getFileContent(eventFile.getPath()),
+                StringContains.containsString("java.util.Date createdDateTime;"));
     }
 
     @Test
     void generate_CustomMappings_Nested() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(
-                Collections.singletonMap("EventProperty.intVal", "java.math.BigInteger")));
+        mappingConfig.setCustomTypesMapping(
+                new HashMap<>(Collections.singletonMap("EventProperty.intVal", "java.math.BigInteger")));
 
         generator.generate();
 
@@ -88,15 +91,13 @@ class GraphqlCodegenTest {
 
         // As per mapping, only EventProperty.intVal should be mapped to java.math.BigInteger
         File eventPropertyFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("EventProperty.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+                .filter(file -> file.getName().equalsIgnoreCase("EventProperty.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
         assertThat(Utils.getFileContent(eventPropertyFile.getPath()),
                 StringContains.containsString("private java.math.BigInteger intVal;"));
-        File eventFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertThat(Utils.getFileContent(eventFile.getPath()),
-                StringContains.containsString("private Integer rating;"));
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("private Integer rating;"));
     }
 
     @Test
@@ -105,9 +106,8 @@ class GraphqlCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        File eventFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
 
         assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("String createdDateTime;"));
     }
@@ -118,47 +118,59 @@ class GraphqlCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        File eventFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
 
         assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString("String createdDateTime;"));
     }
 
     @Test
     void generate_CustomAnnotationMappings() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap(
-                "Event.createdDateTime", "org.joda.time.DateTime")));
+        mappingConfig.setCustomTypesMapping(
+                new HashMap<>(Collections.singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
 
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap(
-                "Event.createdDateTime", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("Event.createdDateTime",
+                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
 
         File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertThat(Utils.getFileContent(eventFile.getPath()),
-                StringContains.containsString("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)" +
-                        System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;"));
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString(
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;"));
     }
 
     @Test
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap(
-                "DateTime", "org.joda.time.DateTime")));
+        mappingConfig
+                .setCustomTypesMapping(new HashMap<>(Collections.singletonMap("DateTime", "org.joda.time.DateTime")));
 
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap(
-                "Event.createdDateTime", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("Event.createdDateTime",
+                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
 
         File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertThat(Utils.getFileContent(eventFile.getPath()),
-                StringContains.containsString("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)" +
-                        System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;"));
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString(
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;"));
+    }
+
+    @Test
+    void generate_CustomSubscriptionReturnType() throws Exception {
+        mappingConfig.setSubscriptionReturnType("org.reactivestreams.Publisher");
+
+        generator.generate();
+
+        File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                .filter(file -> file.getName().equalsIgnoreCase("EventsCreatedSubscription.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString(
+                "org.reactivestreams.Publisher<Collection<Event>> eventsCreated() throws Exception;"));
     }
 
     @Test
@@ -167,14 +179,11 @@ class GraphqlCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-        File eventFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("Event.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
 
-        assertThat(Utils.getFileContent(eventFile.getPath()),
-                StringStartsWith.startsWith("import java.util.*;" +
-                        System.lineSeparator() + System.lineSeparator() +
-                        "public class Event {"));
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringStartsWith.startsWith(
+                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() + "public class Event {"));
     }
 
     @Test
@@ -183,12 +192,11 @@ class GraphqlCodegenTest {
         mappingConfig.setApiPackageName("com.kobylynskyi.graphql.test1.api");
         generator.generate();
 
-
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutation.java", "EventByIdQuery.java",
-                "EventsByCategoryAndStatusQuery.java", "Mutation.java", "Query.java", "VersionQuery.java"),
-                generatedApiFileNames);
+                "EventsByCategoryAndStatusQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
+                "Subscription.java", "VersionQuery.java"), generatedApiFileNames);
         Arrays.stream(apiFiles).forEach(file -> {
             try {
                 assertThat(Utils.getFileContent(file.getPath()),
@@ -200,8 +208,7 @@ class GraphqlCodegenTest {
 
         File[] modelFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "model").listFiles());
         List<String> generatedModelFileNames = Arrays.stream(modelFiles).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java"),
-                generatedModelFileNames);
+        assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java"), generatedModelFileNames);
         Arrays.stream(modelFiles).forEach(file -> {
             try {
                 assertThat(Utils.getFileContent(file.getPath()),
@@ -226,22 +233,21 @@ class GraphqlCodegenTest {
             if (eventFile.getName().endsWith("TO.java")) {
                 String content = Utils.getFileContent(eventFile.getPath());
 
-              if (content.contains("public interface ") || content.contains("public enum ")) {
-                  continue;
-              }
+                if (content.contains("public interface ") || content.contains("public enum ")) {
+                    continue;
+                }
 
-              assertThat(content,
-                  StringContains.containsString("public boolean equals(Object obj)"));
+                assertThat(content, StringContains.containsString("public boolean equals(Object obj)"));
 
-              assertThat(content,
-                  StringContains.containsString("public int hashCode()"));
+                assertThat(content, StringContains.containsString("public int hashCode()"));
             }
         }
 
-        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EventPropertyTO_withEqualsAndHashCode.java.txt"),
-                Utils.getFileContent(Arrays.stream(files)
-                        .filter(f -> f.getName().equals("EventPropertyTO.java"))
-                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
+        assertEquals(Utils.getFileContent(
+                "src/test/resources/expected-classes/EventPropertyTO_withEqualsAndHashCode.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("EventPropertyTO.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test
@@ -262,8 +268,7 @@ class GraphqlCodegenTest {
                     continue;
                 }
 
-                assertThat(content,
-                    StringContains.containsString("public String toString()"));
+                assertThat(content, StringContains.containsString("public String toString()"));
             }
         }
     }
@@ -281,9 +286,7 @@ class GraphqlCodegenTest {
     void generate_WrongSchema() {
         generator.setSchemas(Collections.singletonList("src/test/resources/schemas/wrong.graphqls"));
 
-        Assertions.assertThrows(NoSuchFileException.class, () -> {
-            generator.generate();
-        });
+        Assertions.assertThrows(NoSuchFileException.class, () -> generator.generate());
     }
 
     @Test
@@ -295,13 +298,13 @@ class GraphqlCodegenTest {
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertEquals(2, files.length);
         assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EmptyMutation.java.txt"),
-                Utils.getFileContent(Arrays.stream(files)
-                        .filter(f -> f.getName().equals("Mutation.java"))
-                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("Mutation.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
         assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EmptyQuery.java.txt"),
-                Utils.getFileContent(Arrays.stream(files)
-                        .filter(f -> f.getName().equals("Query.java"))
-                        .map(File::getPath).findFirst().orElseThrow(FileNotFoundException::new)));
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("Query.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test
