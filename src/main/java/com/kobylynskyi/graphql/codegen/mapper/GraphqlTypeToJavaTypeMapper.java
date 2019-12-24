@@ -4,6 +4,7 @@ import static graphql.language.OperationDefinition.*;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.*;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ class GraphqlTypeToJavaTypeMapper {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String modelValidationAnnotation = mappingConfig.getModelValidationAnnotation();
-            if (modelValidationAnnotation != null && !modelValidationAnnotation.trim().isEmpty()) {
+            if (!Utils.isBlank(modelValidationAnnotation)) {
                 annotations.add(modelValidationAnnotation);
             }
         }
@@ -160,8 +161,7 @@ class GraphqlTypeToJavaTypeMapper {
 
     static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
         if (parentTypeName.equalsIgnoreCase(Operation.SUBSCRIPTION.name())
-                && mappingConfig.getSubscriptionReturnType() != null
-                && !mappingConfig.getSubscriptionReturnType().trim().isEmpty()) {
+                && !Utils.isBlank(mappingConfig.getSubscriptionReturnType())) {
             return String.format("%s<%s>", mappingConfig.getSubscriptionReturnType(), javaTypeName);
         }
         return javaTypeName;

@@ -13,7 +13,6 @@ import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ class GraphqlCodegenTest {
 
     @AfterEach
     void cleanup() throws IOException {
-        //Utils.deleteDir(new File("build/generated"));
+        Utils.deleteDir(new File("build/generated"));
     }
 
     @Test
@@ -130,6 +129,24 @@ class GraphqlCodegenTest {
                 new HashMap<>(Collections.singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
 
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("Event.createdDateTime",
+                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+
+        generator.generate();
+
+        File eventFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                .filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString(
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;"));
+    }
+
+    @Test
+    void generate_CustomAnnotationMappings_Type() throws Exception {
+        mappingConfig.setCustomTypesMapping(
+                new HashMap<>(Collections.singletonMap("DateTime", "org.joda.time.DateTime")));
+
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("DateTime",
                 "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
