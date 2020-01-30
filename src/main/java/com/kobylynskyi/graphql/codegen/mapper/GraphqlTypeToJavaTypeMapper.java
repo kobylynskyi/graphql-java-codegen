@@ -155,10 +155,28 @@ class GraphqlTypeToJavaTypeMapper {
         return annotations;
     }
 
+    /**
+     * Wrap java type into collection. E.g.: "String" becomes "Collection<String"
+     *
+     * @param type Anything that will be wrapped into Collection<>
+     * @return String wrapped into Collection<>
+     */
     private static String wrapIntoJavaCollection(String type) {
         return String.format("Collection<%s>", type);
     }
 
+    /**
+     * Wraps type into subscriptionReturnType (defined in the mapping configuration.
+     * Example:
+     * Given GraphQL schema:                           type Subscription { eventsCreated: [Event!]! }
+     * Given subscriptionReturnType in mapping config: org.reactivestreams.Publisher
+     * Return: org.reactivestreams.Publisher<Event>
+     *
+     * @param mappingConfig  Global mapping configuration
+     * @param javaTypeName   The type that will be wrapped into
+     * @param parentTypeName Name of the parent type
+     * @return Java type wrapped into the subscriptionReturnType
+     */
     static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
         if (parentTypeName.equalsIgnoreCase(Operation.SUBSCRIPTION.name())
                 && !Utils.isBlank(mappingConfig.getSubscriptionReturnType())) {

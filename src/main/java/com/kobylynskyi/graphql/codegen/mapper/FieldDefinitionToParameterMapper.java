@@ -21,7 +21,7 @@ public class FieldDefinitionToParameterMapper {
      * @param mappingConfig    Global mapping configuration
      * @param fieldDefinitions List of GraphQL field definitions
      * @param parentTypeName   Name of the parent GraphQL type
-     * @return Freemarker data model of the GraphQL interface
+     * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ParameterDefinition> map(MappingConfig mappingConfig,
                                                 List<FieldDefinition> fieldDefinitions,

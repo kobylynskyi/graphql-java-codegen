@@ -15,6 +15,14 @@ import java.util.stream.Collectors;
  */
 public class InputValueDefinitionToParameterMapper {
 
+    /**
+     * Map input value definition to a Freemarker-understandable data model type
+     *
+     * @param mappingConfig    Global mapping configuration
+     * @param valueDefinitions List of GraphQL value definitions
+     * @param parentTypeName   Name of the parent GraphQL type
+     * @return Freemarker data model of the GraphQL input value definition
+     */
     public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
         if (valueDefinitions == null) {
             return Collections.emptyList();
