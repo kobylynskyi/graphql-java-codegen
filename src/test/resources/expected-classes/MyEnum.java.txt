@@ -1,0 +1,9 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+public enum MyEnum {
+
+    ONE, 
+    TWO, 
+    THREE
+
+}

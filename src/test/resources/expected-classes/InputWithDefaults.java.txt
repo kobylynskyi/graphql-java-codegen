@@ -1,0 +1,114 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+import java.util.*;
+
+public class InputWithDefaults {
+
+    private Float floatVal = 1.23f;
+    private Boolean booleanVal = false;
+    private Integer intVal = 42;
+    private String stringVal = "my-default";
+    private MyEnum enumVal = MyEnum.ONE;
+    @javax.validation.constraints.NotNull
+    private MyEnum nonNullEnumVal = MyEnum.TWO;
+    private SomeObject objectWithNullDefault = null;
+    private SomeObject objectWithNonNullDefault;
+    private Collection<Integer> intList = List.of(1, 2, 3);
+    private Collection<Integer> intListEmptyDefault = Collections.emptyList();
+    private Collection<SomeObject> objectListEmptyDefault = Collections.emptyList();
+
+    public InputWithDefaults() {
+    }
+
+    public InputWithDefaults(Float floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, Collection<Integer> intList, Collection<Integer> intListEmptyDefault, Collection<SomeObject> objectListEmptyDefault) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.enumVal = enumVal;
+        this.nonNullEnumVal = nonNullEnumVal;
+        this.objectWithNullDefault = objectWithNullDefault;
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+        this.intList = intList;
+        this.intListEmptyDefault = intListEmptyDefault;
+        this.objectListEmptyDefault = objectListEmptyDefault;
+    }
+
+    public Float getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(Float floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public Integer getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(Integer intVal) {
+        this.intVal = intVal;
+    }
+
+    public String getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public MyEnum getEnumVal() {
+        return enumVal;
+    }
+    public void setEnumVal(MyEnum enumVal) {
+        this.enumVal = enumVal;
+    }
+
+    public MyEnum getNonNullEnumVal() {
+        return nonNullEnumVal;
+    }
+    public void setNonNullEnumVal(MyEnum nonNullEnumVal) {
+        this.nonNullEnumVal = nonNullEnumVal;
+    }
+
+    public SomeObject getObjectWithNullDefault() {
+        return objectWithNullDefault;
+    }
+    public void setObjectWithNullDefault(SomeObject objectWithNullDefault) {
+        this.objectWithNullDefault = objectWithNullDefault;
+    }
+
+    public SomeObject getObjectWithNonNullDefault() {
+        return objectWithNonNullDefault;
+    }
+    public void setObjectWithNonNullDefault(SomeObject objectWithNonNullDefault) {
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+    }
+
+    public Collection<Integer> getIntList() {
+        return intList;
+    }
+    public void setIntList(Collection<Integer> intList) {
+        this.intList = intList;
+    }
+
+    public Collection<Integer> getIntListEmptyDefault() {
+        return intListEmptyDefault;
+    }
+    public void setIntListEmptyDefault(Collection<Integer> intListEmptyDefault) {
+        this.intListEmptyDefault = intListEmptyDefault;
+    }
+
+    public Collection<SomeObject> getObjectListEmptyDefault() {
+        return objectListEmptyDefault;
+    }
+    public void setObjectListEmptyDefault(Collection<SomeObject> objectListEmptyDefault) {
+        this.objectListEmptyDefault = objectListEmptyDefault;
+    }
+
+}

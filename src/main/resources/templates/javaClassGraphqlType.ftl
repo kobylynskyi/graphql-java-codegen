@@ -12,7 +12,7 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    private ${field.type} ${field.name};
+    private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
 
     public ${className}() {

@@ -15,6 +15,6 @@ public class ParameterDefinition {
 
     private String type;
     private String name;
+    private String defaultValue;
     private List<String> annotations = new ArrayList<>();
-
 }
