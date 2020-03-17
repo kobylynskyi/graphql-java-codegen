@@ -4,7 +4,7 @@ import java.util.*;
 
 public class InputWithDefaults {
 
-    private Float floatVal = 1.23f;
+    private Double floatVal = 1.23;
     private Boolean booleanVal = false;
     private Integer intVal = 42;
     private String stringVal = "my-default";
@@ -20,7 +20,7 @@ public class InputWithDefaults {
     public InputWithDefaults() {
     }
 
-    public InputWithDefaults(Float floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, Collection<Integer> intList, Collection<Integer> intListEmptyDefault, Collection<SomeObject> objectListEmptyDefault) {
+    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, Collection<Integer> intList, Collection<Integer> intListEmptyDefault, Collection<SomeObject> objectListEmptyDefault) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -34,10 +34,10 @@ public class InputWithDefaults {
         this.objectListEmptyDefault = objectListEmptyDefault;
     }
 
-    public Float getFloatVal() {
+    public Double getFloatVal() {
         return floatVal;
     }
-    public void setFloatVal(Float floatVal) {
+    public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
     }
 

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class EventProperty {
 
-    private Float floatVal;
+    private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;
     private String stringVal;
@@ -14,7 +14,7 @@ public class EventProperty {
     public EventProperty() {
     }
 
-    public EventProperty(Float floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventProperty> child, Event parent) {
+    public EventProperty(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventProperty> child, Event parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -23,10 +23,10 @@ public class EventProperty {
         this.parent = parent;
     }
 
-    public Float getFloatVal() {
+    public Double getFloatVal() {
         return floatVal;
     }
-    public void setFloatVal(Float floatVal) {
+    public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
     }
 
