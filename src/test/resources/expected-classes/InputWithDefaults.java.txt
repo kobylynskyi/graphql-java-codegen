@@ -13,7 +13,7 @@ public class InputWithDefaults {
     private MyEnum nonNullEnumVal = MyEnum.TWO;
     private SomeObject objectWithNullDefault = null;
     private SomeObject objectWithNonNullDefault;
-    private Collection<Integer> intList = List.of(1, 2, 3);
+    private Collection<Integer> intList = Arrays.asList(1, 2, 3);
     private Collection<Integer> intListEmptyDefault = Collections.emptyList();
     private Collection<SomeObject> objectListEmptyDefault = Collections.emptyList();
 

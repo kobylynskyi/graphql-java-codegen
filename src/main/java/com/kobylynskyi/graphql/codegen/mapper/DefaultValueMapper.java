@@ -94,6 +94,6 @@ public class DefaultValueMapper {
         Type<?> elementType = ((ListType) graphQLType).getType();
         return values.stream()
                      .map(v -> map(v, elementType))
-                     .collect(Collectors.joining(", ", "List.of(", ")"));
+                     .collect(Collectors.joining(", ", "Arrays.asList(", ")"));
     }
 }
