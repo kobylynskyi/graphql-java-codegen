@@ -1,0 +1,23 @@
+
+# This input has all possible types
+input InputWithDefaults {
+    floatVal: Float = 1.23
+    booleanVal: Boolean = false
+    intVal: Int = 42
+    stringVal: String = "my-default"
+    enumVal: MyEnum = ONE
+    nonNullEnumVal: MyEnum! = TWO
+    objectWithNullDefault: SomeObject = null
+    objectWithNonNullDefault: SomeObject = { name: "Bob" }
+    intList: [Int] = [1, 2, 3]
+    intListEmptyDefault: [Int] = []
+    objectListEmptyDefault: [SomeObject] = []
+}
+
+input SomeObject {
+    name: String!
+}
+
+enum MyEnum {
+    ONE, TWO, THREE
+}
