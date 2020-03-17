@@ -104,8 +104,9 @@ class GraphqlTypeToJavaTypeMapper {
                 return "String";
             case "Int":
                 return "Integer";
-            case "String":
             case "Float":
+                return "Double";
+            case "String":
             case "Boolean":
                 return graphlType;
             default:

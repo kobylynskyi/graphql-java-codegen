@@ -61,7 +61,7 @@ public class DefaultValueMapper {
     }
 
     private static String mapFloat(FloatValue defaultValue) {
-        return defaultValue.getValue() + "f";
+        return String.valueOf(defaultValue.getValue());
     }
 
     private static String mapString(StringValue defaultValue) {
