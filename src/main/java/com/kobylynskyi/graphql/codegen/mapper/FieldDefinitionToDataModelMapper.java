@@ -31,7 +31,7 @@ public class FieldDefinitionToDataModelMapper {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
+        dataModel.put(IMPORTS, MapperUtils.getImportsForFieldDefinition(mappingConfig, packageName, objectTypeName));
         dataModel.put(CLASS_NAME, getClassName(fieldDefinition.getName(), objectTypeName));
         OperationDefinition operation = mapFieldDefinition(mappingConfig, fieldDefinition, objectTypeName);
         dataModel.put(OPERATIONS, Collections.singletonList(operation));

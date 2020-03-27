@@ -186,13 +186,9 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Java type wrapped into the subscriptionReturnType
      */
     static String wrapIntoAsyncIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
-        boolean isAsyncApi = mappingConfig.getAsyncApi() != null && mappingConfig.getAsyncApi().booleanValue();
-
-        if (isAsyncApi && (Operation.QUERY.name().equalsIgnoreCase(parentTypeName) || Operation.MUTATION.name()
-            .equalsIgnoreCase(parentTypeName))) {
+        if (MapperUtils.isAsyncQueryOrMutation(mappingConfig, parentTypeName)) {
             return wrapIntoJavaCompletableFuture(javaTypeName);
         }
-
 
         return wrapIntoSubscriptionIfRequired(mappingConfig, javaTypeName, parentTypeName);
     }

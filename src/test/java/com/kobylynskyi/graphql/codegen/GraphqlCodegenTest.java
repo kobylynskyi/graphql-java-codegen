@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.AfterEach;
@@ -337,41 +338,54 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_WithoutAsyncApis() throws Exception {
+        mappingConfig.setGenerateAsyncApi(false);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "VersionQuery.java", "String version()");
+    }
+
+    @Test
     void generate_AsyncQueryApis() throws Exception {
-        mappingConfig.setAsyncApi(true);
+        mappingConfig.setGenerateAsyncApi(true);
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertContainsMethodSignature(files, "VersionQuery.java", "CompletableFuture<String> version()");
+        String importJavaUtilConcurrent = "import java.util.concurrent";
 
-        assertContainsMethodSignature(files, "EventsByCategoryAndStatusQuery.java",
+        assertFileContainsElements(files, "VersionQuery.java", importJavaUtilConcurrent,
+                "CompletableFuture<String> version()");
+
+        assertFileContainsElements(files, "EventsByCategoryAndStatusQuery.java", importJavaUtilConcurrent,
                 "CompletableFuture<Collection<Event>> eventsByCategoryAndStatus(");
 
-        assertContainsMethodSignature(files, "EventByIdQuery.java",
+        assertFileContainsElements(files, "EventByIdQuery.java", importJavaUtilConcurrent,
                 "CompletableFuture<Event> eventById(");
 
     }
 
     @Test
     void generate_AsyncMutationApis() throws Exception {
-        mappingConfig.setAsyncApi(true);
+        mappingConfig.setGenerateAsyncApi(true);
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertContainsMethodSignature(files, "CreateEventMutation.java",
-                "CompletableFuture<Event> createEvent(");
+        assertFileContainsElements(files, "CreateEventMutation.java",
+                "import java.util.concurrent","CompletableFuture<Event> createEvent(");
 
     }
 
-    private void assertContainsMethodSignature(File[] files, String fileName, String methodSignature) throws IOException {
+    private void assertFileContainsElements(File[] files, String fileName, String...elements)
+            throws IOException {
         File file = getFile(files, fileName);
 
         assertNotNull(file);
 
         String fileContent = Utils.getFileContent(file.getPath());
-        assertThat(fileContent, StringContains.containsString(methodSignature));
+        assertThat(fileContent, Matchers.stringContainsInOrder(elements));
     }
 
     private File getFile(File[] files, String fileName) {
