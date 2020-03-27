@@ -168,6 +168,36 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     /**
+     * Wrap java type into {@link java.util.concurrent.CompletableFuture}. E.g.: "String" becomes "CompletableFuture<String>"
+     *
+     * @param type Anything that will be wrapped into CompletableFuture<>
+     * @return String wrapped into CompletableFuture<>
+     */
+    private static String wrapIntoJavaCompletableFuture(String type) {
+        return String.format("CompletableFuture<%s>", type);
+    }
+
+    /**
+     * Wraps type taking into account if an async api is needed, whether it is a Query, Mutation or Subscription
+     *
+     * @param mappingConfig  Global mapping configuration
+     * @param javaTypeName   The type that will be wrapped into
+     * @param parentTypeName Name of the parent type
+     * @return Java type wrapped into the subscriptionReturnType
+     */
+    static String wrapIntoAsyncIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
+        boolean isAsyncApi = mappingConfig.getAsyncApi() != null && mappingConfig.getAsyncApi().booleanValue();
+
+        if (isAsyncApi && (Operation.QUERY.name().equalsIgnoreCase(parentTypeName) || Operation.MUTATION.name()
+            .equalsIgnoreCase(parentTypeName))) {
+            return wrapIntoJavaCompletableFuture(javaTypeName);
+        }
+
+
+        return wrapIntoSubscriptionIfRequired(mappingConfig, javaTypeName, parentTypeName);
+    }
+
+    /**
      * Wraps type into subscriptionReturnType (defined in the mapping configuration.
      * Example:
      * Given GraphQL schema:                           type Subscription { eventsCreated: [Event!]! }
