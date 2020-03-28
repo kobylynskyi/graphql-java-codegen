@@ -1,21 +1,8 @@
 package com.kobylynskyi.graphql.codegen;
 
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.AfterEach;
@@ -23,8 +10,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GraphqlCodegenTest {
 
@@ -341,6 +335,61 @@ class GraphqlCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java"), generatedFileNames);
+    }
+
+    @Test
+    void generate_WithoutAsyncApis() throws Exception {
+        mappingConfig.setGenerateAsyncApi(false);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "VersionQuery.java", "String version()");
+    }
+
+    @Test
+    void generate_AsyncQueryApis() throws Exception {
+        mappingConfig.setGenerateAsyncApi(true);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        String importJavaUtilConcurrent = "import java.util.concurrent";
+
+        assertFileContainsElements(files, "VersionQuery.java", importJavaUtilConcurrent,
+                "CompletableFuture<String> version()");
+
+        assertFileContainsElements(files, "EventsByCategoryAndStatusQuery.java", importJavaUtilConcurrent,
+                "CompletableFuture<Collection<Event>> eventsByCategoryAndStatus(");
+
+        assertFileContainsElements(files, "EventByIdQuery.java", importJavaUtilConcurrent,
+                "CompletableFuture<Event> eventById(");
+
+    }
+
+    @Test
+    void generate_AsyncMutationApis() throws Exception {
+        mappingConfig.setGenerateAsyncApi(true);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertFileContainsElements(files, "CreateEventMutation.java",
+                "import java.util.concurrent","CompletableFuture<Event> createEvent(");
+
+    }
+
+    private void assertFileContainsElements(File[] files, String fileName, String...elements)
+            throws IOException {
+        File file = getFile(files, fileName);
+
+        assertNotNull(file);
+
+        String fileContent = Utils.getFileContent(file.getPath());
+        assertThat(fileContent, Matchers.stringContainsInOrder(elements));
+    }
+
+    private File getFile(File[] files, String fileName) {
+        return Arrays.stream(files).filter(f -> f.getName().equals(fileName)).findFirst().get();
     }
 
 }

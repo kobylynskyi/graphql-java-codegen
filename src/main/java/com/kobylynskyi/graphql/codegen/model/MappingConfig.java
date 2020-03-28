@@ -1,9 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import lombok.Data;
 
@@ -39,6 +37,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private String subscriptionReturnType;
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
+    private Boolean generateAsyncApi;
 
 
     /**
@@ -81,5 +80,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.subscriptionReturnType = source.subscriptionReturnType  != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
+        this.generateAsyncApi = source.generateAsyncApi != null? source.generateAsyncApi : this.generateAsyncApi;
     }
 }

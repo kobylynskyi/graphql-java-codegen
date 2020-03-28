@@ -31,7 +31,7 @@ public class FieldDefinitionToDataModelMapper {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
+        dataModel.put(IMPORTS, MapperUtils.getImportsForFieldDefinition(mappingConfig, packageName, objectTypeName));
         dataModel.put(CLASS_NAME, getClassName(fieldDefinition.getName(), objectTypeName));
         OperationDefinition operation = mapFieldDefinition(mappingConfig, fieldDefinition, objectTypeName);
         dataModel.put(OPERATIONS, Collections.singletonList(operation));
@@ -50,7 +50,7 @@ public class FieldDefinitionToDataModelMapper {
         OperationDefinition operation = new OperationDefinition();
         operation.setName(fieldDef.getName());
         String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName);
-        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoSubscriptionIfRequired(mappingConfig, javaType, parentTypeName));
+        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingConfig, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
         operation.setParameters(InputValueDefinitionToParameterMapper.map(mappingConfig, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
         return operation;

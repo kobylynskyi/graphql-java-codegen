@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Document;
 import graphql.language.NamedNode;
+import graphql.language.OperationDefinition.Operation;
 import graphql.language.UnionTypeDefinition;
 
 import java.util.Arrays;
@@ -157,5 +158,38 @@ public class MapperUtils {
         }
         imports.add("java.util");
         return imports;
+    }
+
+    /**
+     * Returns imports required for the particular case of field definitions (operations), taking into account async
+     * operations, etc.
+     *
+     * @param mappingConfig
+     * @param packageName
+     * @param objectTypeName
+     * @return
+     */
+    static Set<String> getImportsForFieldDefinition(MappingConfig mappingConfig, String packageName, String objectTypeName) {
+        final Set<String> imports = getImports(mappingConfig, packageName);
+
+        if (isAsyncQueryOrMutation(mappingConfig, objectTypeName)) {
+            imports.add("java.util.concurrent");
+        }
+
+        return imports;
+    }
+
+    /**
+     * Determines if the specified operation is an async query or mutation
+     *
+     * @param mappingConfig
+     * @param objectTypeName
+     * @return true if the given operation is an async query or mutation, false otherwise
+     */
+    static boolean isAsyncQueryOrMutation(MappingConfig mappingConfig, String objectTypeName) {
+        boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi().booleanValue();
+
+        return isAsyncApi && (Operation.QUERY.name().equalsIgnoreCase(objectTypeName) || Operation.MUTATION.name()
+                .equalsIgnoreCase(objectTypeName));
     }
 }

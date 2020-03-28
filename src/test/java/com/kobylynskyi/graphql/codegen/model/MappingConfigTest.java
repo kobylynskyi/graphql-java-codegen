@@ -67,6 +67,7 @@ class MappingConfigTest {
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
+        assertFalse(mappingConfig.getGenerateAsyncApi());
     }
 
     @Test
@@ -88,6 +89,7 @@ class MappingConfigTest {
         assertEquals("ModelValidationAnnotation2", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName2", mappingConfig.getPackageName());
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
+        assertTrue(mappingConfig.getGenerateAsyncApi());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -109,6 +111,7 @@ class MappingConfigTest {
         config.setModelValidationAnnotation("ModelValidationAnnotation");
         config.setPackageName("PackageName");
         config.setSubscriptionReturnType("SubscriptionsReturnType");
+        config.setGenerateAsyncApi(false);
         return config;
     }
 
@@ -126,6 +129,7 @@ class MappingConfigTest {
         config.setModelValidationAnnotation("ModelValidationAnnotation2");
         config.setPackageName("PackageName2");
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
+        config.setGenerateAsyncApi(true);
         return config;
     }
 
