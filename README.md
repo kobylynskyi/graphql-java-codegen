@@ -29,6 +29,7 @@ Please refer to:
 | subscriptionReturnType    | String             | Empty                                     | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
 | generateEqualsAndHashCode | Boolean            | False                                     | Specifies whether generated model classes should have equals and hashCode methods defined. |
 | generateToString          | Boolean            | False                                     | Specifies whether generated model classes should have toString method defined. |
+| generateAsyncApi          | Boolean            | False                                     | If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType` |
 | jsonConfigurationFile     | String             | Empty                                     | Path to an external mapping configuration. |
 
 ### External mapping configuration
