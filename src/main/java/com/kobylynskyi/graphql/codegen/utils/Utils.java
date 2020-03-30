@@ -72,7 +72,7 @@ public final class Utils {
      * @throws IOException unable to read the file.
      */
     public static String getFileContent(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath))).trim();
+        return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 
     /**
