@@ -65,13 +65,14 @@ public class GraphqlCodegen {
 
     public void generate() throws Exception {
         GraphqlCodegenFileCreator.prepareOutputDir(outputDir);
-        for (String schema : schemas) {
-            long startTime = System.currentTimeMillis();
-            Document document = GraphqlDocumentParser.getDocument(schema);
+        long startTime = System.currentTimeMillis();
+        if (!schemas.isEmpty()) {
+            Document document = GraphqlDocumentParser.getDocument(schemas);
             addScalarsToCustomMappingConfig(document);
             processDocument(document);
-            System.out.println(String.format("Finished processing schema '%s' in %d ms", schema, System.currentTimeMillis() - startTime));
         }
+        long elapsed = System.currentTimeMillis() - startTime;
+        System.out.println(String.format("Finished processing %d schemas in %d ms", schemas.size(), elapsed));
     }
 
     private void processDocument(Document document) throws IOException, TemplateException {

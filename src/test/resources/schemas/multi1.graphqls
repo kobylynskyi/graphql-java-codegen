@@ -1,0 +1,5 @@
+type UnionMember1 {
+    someField: Int
+}
+
+union MyUnion = UnionMember1 | UnionMember2

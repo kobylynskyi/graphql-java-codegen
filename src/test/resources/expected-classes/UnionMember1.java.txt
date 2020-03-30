@@ -1,0 +1,23 @@
+package com.kobylynskyi.graphql.multifiles;
+
+import java.util.*;
+
+public class UnionMember1 implements MyUnion{
+
+    private Integer someField;
+
+    public UnionMember1() {
+    }
+
+    public UnionMember1(Integer someField) {
+        this.someField = someField;
+    }
+
+    public Integer getSomeField() {
+        return someField;
+    }
+    public void setSomeField(Integer someField) {
+        this.someField = someField;
+    }
+
+}
