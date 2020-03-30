@@ -1,0 +1,7 @@
+package com.kobylynskyi.graphql.multifiles;
+
+import java.util.*;
+
+public interface MyUnion {
+
+}
