@@ -47,7 +47,7 @@ class GraphqlCodegenDefaultsTest {
 
         for (File file : files) {
             File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
-            assertEquals(Utils.getFileContent(expected.getPath()), Utils.getFileContent(file.getPath()));
+            TestUtils.assertSameTrimmedContent(expected, file);
         }
     }
 }

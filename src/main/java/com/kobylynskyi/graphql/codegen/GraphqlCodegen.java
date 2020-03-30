@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Generator of:
@@ -76,7 +75,7 @@ public class GraphqlCodegen {
     }
 
     private void processDocument(Document document) throws IOException, TemplateException {
-        for (Definition definition : document.getDefinitions()) {
+        for (Definition<?> definition : document.getDefinitions()) {
             GraphqlDefinitionType definitionType;
             try {
                 definitionType = DefinitionTypeDeterminer.determine(definition);
@@ -145,12 +144,11 @@ public class GraphqlCodegen {
     }
 
     private void addScalarsToCustomMappingConfig(Document document) {
-        for (Definition definition : document.getDefinitions()) {
+        for (Definition<?> definition : document.getDefinitions()) {
             if (definition instanceof ScalarTypeDefinition) {
                 String scalarName = ((ScalarTypeDefinition) definition).getName();
                 mappingConfig.putCustomTypeMappingIfAbsent(scalarName, "String");
             }
         }
     }
-
 }

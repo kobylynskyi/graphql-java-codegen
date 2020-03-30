@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphqlCodegenGitHubTest {
 
@@ -41,16 +41,11 @@ class GraphqlCodegenGitHubTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        File commitFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Commit.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/Commit.java.txt").getPath()),
-                Utils.getFileContent(commitFile.getPath()));
+        File commitFile = getGeneratedFile(files, "Commit.java");
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit.java.txt"), commitFile);
 
-
-        File profileOwner = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("ProfileOwner.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/ProfileOwner.java.txt").getPath()),
-                Utils.getFileContent(profileOwner.getPath()));
+        File profileOwner = getGeneratedFile(files, "ProfileOwner.java");
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProfileOwner.java.txt"), profileOwner);
     }
 
     @Test
@@ -75,12 +70,13 @@ class GraphqlCodegenGitHubTest {
                 StringContains.containsString("public interface GithubAssigneeTO "));
 
         // verify proper class name for GraphQL input
-        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt").getPath()),
-                getGeneratedFileContent(files, "GithubAcceptTopicSuggestionInputTO.java"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt"),
+                getGeneratedFile(files, "GithubAcceptTopicSuggestionInputTO.java"));
 
         // verify proper class name for GraphQL type and references to interfaces/types/unions for GraphQL type
-        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/GithubCommitTO.java.txt").getPath()),
-                getGeneratedFileContent(files, "GithubCommitTO.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubCommitTO.java.txt"),
+                getGeneratedFile(files, "GithubCommitTO.java"));
     }
 
     @Test
@@ -88,17 +84,20 @@ class GraphqlCodegenGitHubTest {
         mappingConfig.setModelValidationAnnotation(null);
 
         generator.generate();
-        File commitFile = Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
-                .filter(file -> file.getName().equalsIgnoreCase("Commit.java"))
-                .findFirst().orElseThrow(FileNotFoundException::new);
-        assertEquals(Utils.getFileContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt").getPath()),
-                Utils.getFileContent(commitFile.getPath()));
+        File commitFile = getGeneratedFile(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
+                commitFile);
     }
 
     private static String getGeneratedFileContent(File[] files, String fileName) throws IOException {
-        File file = Arrays.stream(files).filter(f -> f.getName().equalsIgnoreCase(fileName))
-                .findFirst().orElseThrow(FileNotFoundException::new);
+        File file = getGeneratedFile(files, fileName);
         return Utils.getFileContent(file.getPath());
     }
 
+    private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
+        return Arrays.stream(files)
+                     .filter(f -> f.getName().equalsIgnoreCase(fileName))
+                     .findFirst()
+                     .orElseThrow(FileNotFoundException::new);
+    }
 }
