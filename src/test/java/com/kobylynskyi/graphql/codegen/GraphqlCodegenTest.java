@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.*;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +56,7 @@ class GraphqlCodegenTest {
 
         for (File file : files) {
             File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
-            assertEquals(Utils.getFileContent(expected.getPath()), Utils.getFileContent(file.getPath()));
+            assertSameTrimmedContent(expected, file);
         }
     }
 
