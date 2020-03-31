@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import static graphql.language.OperationDefinition.*;
-
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -10,6 +8,8 @@ import graphql.language.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static graphql.language.OperationDefinition.Operation;
 
 /**
  * Map GraphQL type to Java type

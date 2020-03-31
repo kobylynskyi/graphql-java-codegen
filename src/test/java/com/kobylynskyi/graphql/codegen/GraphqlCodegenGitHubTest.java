@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.core.StringContains;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,12 +27,13 @@ class GraphqlCodegenGitHubTest {
 
     @BeforeEach
     void init() {
+        mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         mappingConfig.setPackageName("com.github.graphql");
         generator = new GraphqlCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig);
     }
 
-    //@AfterEach
+    @AfterEach
     void cleanup() throws IOException {
         Utils.deleteDir(new File("build/generated"));
     }

@@ -1,0 +1,20 @@
+package com.github.graphql;
+
+import java.util.*;
+import graphql.schema.*;
+
+public interface CommitResolver {
+
+    PullRequestConnection associatedPullRequests(Commit commit, String after, String before, Integer first, Integer last, PullRequestOrder orderBy, DataFetchingEnvironment env) throws Exception;
+
+    Blame blame(Commit commit, String path, DataFetchingEnvironment env) throws Exception;
+
+    CommitCommentConnection comments(Commit commit, String after, String before, Integer first, Integer last, DataFetchingEnvironment env) throws Exception;
+
+    DeploymentConnection deployments(Commit commit, String after, String before, Collection<String> environments, Integer first, Integer last, DeploymentOrder orderBy, DataFetchingEnvironment env) throws Exception;
+
+    CommitHistoryConnection history(Commit commit, String after, CommitAuthor author, String before, Integer first, Integer last, String path, String since, String until, DataFetchingEnvironment env) throws Exception;
+
+    CommitConnection parents(Commit commit, String after, String before, Integer first, Integer last, DataFetchingEnvironment env) throws Exception;
+
+}

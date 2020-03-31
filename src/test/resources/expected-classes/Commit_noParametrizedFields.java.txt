@@ -1,0 +1,328 @@
+package com.github.graphql;
+
+import java.util.*;
+
+public class Commit implements Closer, IssueTimelineItem, PullRequestTimelineItem, GitObject, Node, Subscribable, UniformResourceLocatable{
+
+    @javax.validation.constraints.NotNull
+    private String abbreviatedOid;
+    @javax.validation.constraints.NotNull
+    private Integer additions;
+    private GitActor author;
+    @javax.validation.constraints.NotNull
+    private Boolean authoredByCommitter;
+    @javax.validation.constraints.NotNull
+    private String authoredDate;
+    @javax.validation.constraints.NotNull
+    private Integer changedFiles;
+    @javax.validation.constraints.NotNull
+    private String commitResourcePath;
+    @javax.validation.constraints.NotNull
+    private String commitUrl;
+    @javax.validation.constraints.NotNull
+    private String committedDate;
+    @javax.validation.constraints.NotNull
+    private Boolean committedViaWeb;
+    private GitActor committer;
+    @javax.validation.constraints.NotNull
+    private Integer deletions;
+    @javax.validation.constraints.NotNull
+    private String id;
+    @javax.validation.constraints.NotNull
+    private String message;
+    @javax.validation.constraints.NotNull
+    private String messageBody;
+    @javax.validation.constraints.NotNull
+    private String messageBodyHTML;
+    @javax.validation.constraints.NotNull
+    private String messageHeadline;
+    @javax.validation.constraints.NotNull
+    private String messageHeadlineHTML;
+    @javax.validation.constraints.NotNull
+    private String oid;
+    private String pushedDate;
+    @javax.validation.constraints.NotNull
+    private Repository repository;
+    @javax.validation.constraints.NotNull
+    private String resourcePath;
+    private GitSignature signature;
+    private Status status;
+    @javax.validation.constraints.NotNull
+    private String tarballUrl;
+    @javax.validation.constraints.NotNull
+    private Tree tree;
+    @javax.validation.constraints.NotNull
+    private String treeResourcePath;
+    @javax.validation.constraints.NotNull
+    private String treeUrl;
+    @javax.validation.constraints.NotNull
+    private String url;
+    @javax.validation.constraints.NotNull
+    private Boolean viewerCanSubscribe;
+    private SubscriptionState viewerSubscription;
+    @javax.validation.constraints.NotNull
+    private String zipballUrl;
+
+    public Commit() {
+    }
+
+    public Commit(String abbreviatedOid, Integer additions, GitActor author, Boolean authoredByCommitter, String authoredDate, Integer changedFiles, String commitResourcePath, String commitUrl, String committedDate, Boolean committedViaWeb, GitActor committer, Integer deletions, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, String pushedDate, Repository repository, String resourcePath, GitSignature signature, Status status, String tarballUrl, Tree tree, String treeResourcePath, String treeUrl, String url, Boolean viewerCanSubscribe, SubscriptionState viewerSubscription, String zipballUrl) {
+        this.abbreviatedOid = abbreviatedOid;
+        this.additions = additions;
+        this.author = author;
+        this.authoredByCommitter = authoredByCommitter;
+        this.authoredDate = authoredDate;
+        this.changedFiles = changedFiles;
+        this.commitResourcePath = commitResourcePath;
+        this.commitUrl = commitUrl;
+        this.committedDate = committedDate;
+        this.committedViaWeb = committedViaWeb;
+        this.committer = committer;
+        this.deletions = deletions;
+        this.id = id;
+        this.message = message;
+        this.messageBody = messageBody;
+        this.messageBodyHTML = messageBodyHTML;
+        this.messageHeadline = messageHeadline;
+        this.messageHeadlineHTML = messageHeadlineHTML;
+        this.oid = oid;
+        this.pushedDate = pushedDate;
+        this.repository = repository;
+        this.resourcePath = resourcePath;
+        this.signature = signature;
+        this.status = status;
+        this.tarballUrl = tarballUrl;
+        this.tree = tree;
+        this.treeResourcePath = treeResourcePath;
+        this.treeUrl = treeUrl;
+        this.url = url;
+        this.viewerCanSubscribe = viewerCanSubscribe;
+        this.viewerSubscription = viewerSubscription;
+        this.zipballUrl = zipballUrl;
+    }
+
+    public String getAbbreviatedOid() {
+        return abbreviatedOid;
+    }
+    public void setAbbreviatedOid(String abbreviatedOid) {
+        this.abbreviatedOid = abbreviatedOid;
+    }
+
+    public Integer getAdditions() {
+        return additions;
+    }
+    public void setAdditions(Integer additions) {
+        this.additions = additions;
+    }
+
+    public GitActor getAuthor() {
+        return author;
+    }
+    public void setAuthor(GitActor author) {
+        this.author = author;
+    }
+
+    public Boolean getAuthoredByCommitter() {
+        return authoredByCommitter;
+    }
+    public void setAuthoredByCommitter(Boolean authoredByCommitter) {
+        this.authoredByCommitter = authoredByCommitter;
+    }
+
+    public String getAuthoredDate() {
+        return authoredDate;
+    }
+    public void setAuthoredDate(String authoredDate) {
+        this.authoredDate = authoredDate;
+    }
+
+    public Integer getChangedFiles() {
+        return changedFiles;
+    }
+    public void setChangedFiles(Integer changedFiles) {
+        this.changedFiles = changedFiles;
+    }
+
+    public String getCommitResourcePath() {
+        return commitResourcePath;
+    }
+    public void setCommitResourcePath(String commitResourcePath) {
+        this.commitResourcePath = commitResourcePath;
+    }
+
+    public String getCommitUrl() {
+        return commitUrl;
+    }
+    public void setCommitUrl(String commitUrl) {
+        this.commitUrl = commitUrl;
+    }
+
+    public String getCommittedDate() {
+        return committedDate;
+    }
+    public void setCommittedDate(String committedDate) {
+        this.committedDate = committedDate;
+    }
+
+    public Boolean getCommittedViaWeb() {
+        return committedViaWeb;
+    }
+    public void setCommittedViaWeb(Boolean committedViaWeb) {
+        this.committedViaWeb = committedViaWeb;
+    }
+
+    public GitActor getCommitter() {
+        return committer;
+    }
+    public void setCommitter(GitActor committer) {
+        this.committer = committer;
+    }
+
+    public Integer getDeletions() {
+        return deletions;
+    }
+    public void setDeletions(Integer deletions) {
+        this.deletions = deletions;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessageBody() {
+        return messageBody;
+    }
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
+    }
+
+    public String getMessageBodyHTML() {
+        return messageBodyHTML;
+    }
+    public void setMessageBodyHTML(String messageBodyHTML) {
+        this.messageBodyHTML = messageBodyHTML;
+    }
+
+    public String getMessageHeadline() {
+        return messageHeadline;
+    }
+    public void setMessageHeadline(String messageHeadline) {
+        this.messageHeadline = messageHeadline;
+    }
+
+    public String getMessageHeadlineHTML() {
+        return messageHeadlineHTML;
+    }
+    public void setMessageHeadlineHTML(String messageHeadlineHTML) {
+        this.messageHeadlineHTML = messageHeadlineHTML;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    public String getPushedDate() {
+        return pushedDate;
+    }
+    public void setPushedDate(String pushedDate) {
+        this.pushedDate = pushedDate;
+    }
+
+    public Repository getRepository() {
+        return repository;
+    }
+    public void setRepository(Repository repository) {
+        this.repository = repository;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+    }
+
+    public GitSignature getSignature() {
+        return signature;
+    }
+    public void setSignature(GitSignature signature) {
+        this.signature = signature;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getTarballUrl() {
+        return tarballUrl;
+    }
+    public void setTarballUrl(String tarballUrl) {
+        this.tarballUrl = tarballUrl;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+    public void setTree(Tree tree) {
+        this.tree = tree;
+    }
+
+    public String getTreeResourcePath() {
+        return treeResourcePath;
+    }
+    public void setTreeResourcePath(String treeResourcePath) {
+        this.treeResourcePath = treeResourcePath;
+    }
+
+    public String getTreeUrl() {
+        return treeUrl;
+    }
+    public void setTreeUrl(String treeUrl) {
+        this.treeUrl = treeUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Boolean getViewerCanSubscribe() {
+        return viewerCanSubscribe;
+    }
+    public void setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+        this.viewerCanSubscribe = viewerCanSubscribe;
+    }
+
+    public SubscriptionState getViewerSubscription() {
+        return viewerSubscription;
+    }
+    public void setViewerSubscription(SubscriptionState viewerSubscription) {
+        this.viewerSubscription = viewerSubscription;
+    }
+
+    public String getZipballUrl() {
+        return zipballUrl;
+    }
+    public void setZipballUrl(String zipballUrl) {
+        this.zipballUrl = zipballUrl;
+    }
+
+}

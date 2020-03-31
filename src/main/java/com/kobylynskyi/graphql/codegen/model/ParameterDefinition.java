@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author kobylynskyi
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ParameterDefinition {
 
     private String type;
