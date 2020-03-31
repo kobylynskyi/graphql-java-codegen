@@ -1,17 +1,12 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import static java.util.Collections.singletonMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
+import static java.util.Collections.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("unchecked")
 class MappingConfigTest {
@@ -48,6 +43,9 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
+        assertFalse(mappingConfig.getGenerateAsyncApi());
+        assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
+        assertEquals(singleton("5"), mappingConfig.getFieldsResolvers());
     }
 
     @Test
@@ -68,6 +66,8 @@ class MappingConfigTest {
         assertEquals("PackageName", mappingConfig.getPackageName());
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertFalse(mappingConfig.getGenerateAsyncApi());
+        assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
+        assertEquals(singleton("5"), mappingConfig.getFieldsResolvers());
     }
 
     @Test
@@ -90,6 +90,8 @@ class MappingConfigTest {
         assertEquals("PackageName2", mappingConfig.getPackageName());
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
         assertTrue(mappingConfig.getGenerateAsyncApi());
+        assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
+        assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsResolvers());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -112,6 +114,8 @@ class MappingConfigTest {
         config.setPackageName("PackageName");
         config.setSubscriptionReturnType("SubscriptionsReturnType");
         config.setGenerateAsyncApi(false);
+        config.setGenerateParameterizedFieldsResolvers(true);
+        config.setFieldsResolvers(new HashSet<>(singletonList("5")));
         return config;
     }
 
@@ -130,6 +134,8 @@ class MappingConfigTest {
         config.setPackageName("PackageName2");
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
         config.setGenerateAsyncApi(true);
+        config.setGenerateParameterizedFieldsResolvers(false);
+        config.setFieldsResolvers(singleton("55"));
         return config;
     }
 
@@ -137,6 +143,7 @@ class MappingConfigTest {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setCustomTypesMapping(null);
         mappingConfig.setCustomAnnotationsMapping(null);
+        mappingConfig.setFieldsResolvers(null);
         return mappingConfig;
     }
 
