@@ -64,4 +64,8 @@ workflows:
     jobs:
       - build
       - build-graphql-java-codegen-maven-plugin
+          requires:
+            - build
       - build-graphql-java-codegen-gradle-plugin
+          requires:
+            - build
