@@ -59,13 +59,13 @@ jobs:
           key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
       - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
 workflows:
-  version: 2
   build-library-and-plugins:
     jobs:
       - build
-      - build-graphql-java-codegen-maven-plugin
-        requires:
-          - build
-      - build-graphql-java-codegen-gradle-plugin
-        requires:
-          - build
+      - build-graphql-java-codegen-maven-plugin:
+          requires:
+            - build
+      - build-graphql-java-codegen-gradle-plugin:
+          requires:
+            - build
+  version: 2
