@@ -29,11 +29,11 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run: cd plugins/graphql-java-codegen-maven-plugin
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
-      - run: cd plugins/graphql-java-codegen-maven-plugin
       - run: mvn dependency:go-offline
       - save_cache:
           paths:
@@ -49,11 +49,11 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+      - run: cd plugins/graphql-java-codegen-gradle-plugin
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
-      - run: cd plugins/graphql-java-codegen-gradle-plugin
       - run: gradle dependencies
       - save_cache:
           paths:
