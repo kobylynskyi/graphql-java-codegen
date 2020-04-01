@@ -29,17 +29,16 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: cd plugins/graphql-java-codegen-maven-plugin
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "plugins/graphql-java-codegen-maven-plugin/pom.xml" }}
             - v1-dependencies-
-      - run: mvn dependency:go-offline
+      - run: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-      - run: mvn package
+            - ~/plugins/graphql-java-codegen-maven-plugin/.m2
+          key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-maven-plugin/pom.xml" }}
+      - run: cd plugins/graphql-java-codegen-maven-plugin && mvn package
   build-graphql-java-codegen-gradle-plugin:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -49,17 +48,16 @@ jobs:
       TERM: dumb
     steps:
       - checkout
-      - run: cd plugins/graphql-java-codegen-gradle-plugin
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
             - v1-dependencies-
-      - run: gradle dependencies
+      - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle test
+            - ~/plugins/graphql-java-codegen-gradle-plugin/.gradle
+          key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
+      - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
 workflows:
   version: 2
   build-library-and-plugins:
