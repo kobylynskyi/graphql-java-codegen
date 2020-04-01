@@ -1,0 +1,48 @@
+plugins {
+    id "com.gradle.plugin-publish" version "0.11.0"
+    id "java-gradle-plugin"
+}
+
+repositories {
+    maven {
+        url 'https://repo.gradle.org/gradle/libs-releases-local'
+    }
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "maven-publish"
+
+group = "io.github.kobylynskyi"
+version = "1.4.2"
+description = "Provides a task for generating Java code based on GraphQL schema"
+
+dependencies {
+    compile gradleApi()
+
+    compile 'io.github.kobylynskyi:graphql-java-codegen:1.4.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+}
+
+gradlePlugin {
+    plugins {
+        graphqlCodegen {
+            id = 'io.github.kobylynskyi.graphql.codegen'
+            displayName = 'GraphQL Java Codegen'
+            description = project.description
+            implementationClass = 'io.github.kobylynskyi.graphql.codegen.gradle.GraphqlCodegenGradlePlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/kobylynskyi/graphql-java-codegen-gradle-plugin'
+    vcsUrl = 'https://github.com/kobylynskyi/graphql-java-codegen-gradle-plugin'
+    description = 'Gradle plugin for GraphQL Java code generation'
+    tags = ['graphql', 'graphql-java', 'graphql-java-codegen', 'graphql-codegen']
+}

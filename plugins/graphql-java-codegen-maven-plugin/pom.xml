@@ -1,0 +1,247 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.github.kobylynskyi</groupId>
+    <artifactId>graphql-codegen-maven-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+    <version>1.4.3-SNAPSHOT</version>
+
+    <name>graphql-codegen-maven-plugin</name>
+    <description>Provides a goal for generating Java code based on GraphQL schema</description>
+    <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin/blob/master/LICENSE.md</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>kobylynskyi</id>
+            <name>Bogdan Kobylynskyi</name>
+            <url>https://github.com/kobylynskyi</url>
+            <email>92bogdan@gmail.com</email>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/kobylynskyi/graphql-java-codegen-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen-maven-plugin.git
+        </developerConnection>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+        <tag>v1.4.0</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+    </ciManagement>
+
+    <properties>
+        <version.maven-plugin-api>3.6.2</version.maven-plugin-api>
+        <version.maven-core>3.6.2</version.maven-core>
+        <version.maven-plugin-annotations>3.6.0</version.maven-plugin-annotations>
+        <version.maven-plugin-plugin>3.6.0</version.maven-plugin-plugin>
+        <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+        <version.maven-resources-plugin>3.1.0</version.maven-resources-plugin>
+        <version.maven-source-plugin>3.1.0</version.maven-source-plugin>
+        <version.maven-javadoc-plugin>3.1.1</version.maven-javadoc-plugin>
+        <version.maven-deploy-plugin>3.0.0-M1</version.maven-deploy-plugin>
+        <version.nexus-staging-maven-plugin>1.6.8</version.nexus-staging-maven-plugin>
+        <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
+        <version.maven-scm-provider-gitexe>1.11.2</version.maven-scm-provider-gitexe>
+        <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
+
+        <version.graphql-java-codegen>1.4.2</version.graphql-java-codegen>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${version.maven-plugin-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${version.maven-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${version.maven-plugin-annotations}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.kobylynskyi</groupId>
+            <artifactId>graphql-java-codegen</artifactId>
+            <version>${version.graphql-java-codegen}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>NOTICE*</include>
+                    <include>LICENSE*</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${version.maven-plugin-plugin}</version>
+                <configuration>
+                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mojo-descriptor</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>help-goal</id>
+                        <goals>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven-compiler-plugin}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${version.maven-resources-plugin}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${version.maven-source-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${version.maven-javadoc-plugin}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadoc</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${version.maven-deploy-plugin}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${version.nexus-staging-maven-plugin}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+
+
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <!-- GPG Signature on release -->
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${version.maven-gpg-plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
