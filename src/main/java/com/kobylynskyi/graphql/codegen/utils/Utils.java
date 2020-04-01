@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 import graphql.language.OperationDefinition;
 
@@ -37,11 +38,20 @@ public final class Utils {
      * @return capitalized string
      */
     public static String capitalize(String aString) {
-        if (Utils.isBlank(aString)) {
-            return aString;
-        }
         char[] chars = aString.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
+        return new String(chars);
+    }
+
+    /**
+     * Uncapitalize a string. Make first letter as lowercase
+     *
+     * @param aString string to uncapitalize
+     * @return uncapitalized string
+     */
+    public static String uncapitalize(String aString) {
+        char[] chars = aString.toCharArray();
+        chars[0] = Character.toLowerCase(chars[0]);
         return new String(chars);
     }
 
@@ -114,5 +124,14 @@ public final class Utils {
         }
     }
 
+    /**
+     * Check if collection is empty.
+     *
+     * @param collection that will be checked for emptiness
+     * @return true if collection is null or empty
+     */
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
 
 }

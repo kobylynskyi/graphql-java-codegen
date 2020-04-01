@@ -1,9 +1,11 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.Data;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The type Mapping config.
@@ -38,22 +40,14 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
     private Boolean generateAsyncApi;
-
+    private Boolean generateParameterizedFieldsResolvers;
 
     /**
-     * Put custom type mapping if absent.
-     *
-     * @param from the from
-     * @param to   the to
+     * Fields that require Resolvers should be defined here in format: TypeName.fieldName
+     * E.g.: "Person.friends"
+     * If just type is specified, then all fields of this type will
      */
-    public void putCustomTypeMappingIfAbsent(String from, String to) {
-        if (customTypesMapping == null) {
-            customTypesMapping = new HashMap<>();
-        }
-        if (!customTypesMapping.containsKey(from)) {
-            customTypesMapping.put(from, to);
-        }
-    }
+    private Set<String> fieldsResolvers = new HashSet<>();
 
     @Override
     public void combine(MappingConfig source) {
@@ -77,9 +71,30 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.modelNamePrefix = source.modelNamePrefix != null ? source.modelNamePrefix : this.modelNamePrefix;
         this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
-        this.subscriptionReturnType = source.subscriptionReturnType  != null ? source.subscriptionReturnType : this.subscriptionReturnType;
+        this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
-        this.generateAsyncApi = source.generateAsyncApi != null? source.generateAsyncApi : this.generateAsyncApi;
+        this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
+        this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
+        if (this.fieldsResolvers != null && source.fieldsResolvers != null) {
+            this.fieldsResolvers.addAll(source.fieldsResolvers);
+        } else if (this.fieldsResolvers == null) {
+            this.fieldsResolvers = source.fieldsResolvers;
+        }
+    }
+
+    /**
+     * Put custom type mapping if absent.
+     *
+     * @param from the from
+     * @param to   the to
+     */
+    public void putCustomTypeMappingIfAbsent(String from, String to) {
+        if (customTypesMapping == null) {
+            customTypesMapping = new HashMap<>();
+        }
+        if (!customTypesMapping.containsKey(from)) {
+            customTypesMapping.put(from, to);
+        }
     }
 }

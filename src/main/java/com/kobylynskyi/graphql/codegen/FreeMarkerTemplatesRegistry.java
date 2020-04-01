@@ -14,6 +14,7 @@ class FreeMarkerTemplatesRegistry {
     static Template unionTemplate;
     static Template interfaceTemplate;
     static Template operationsTemplate;
+    static Template fieldsResolverTemplate;
 
     static {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
@@ -29,6 +30,7 @@ class FreeMarkerTemplatesRegistry {
             unionTemplate = configuration.getTemplate("templates/javaClassGraphqlUnion.ftl");
             interfaceTemplate = configuration.getTemplate("templates/javaClassGraphqlInterface.ftl");
             operationsTemplate = configuration.getTemplate("templates/javaClassGraphqlOperations.ftl");
+            fieldsResolverTemplate = configuration.getTemplate("templates/javaClassGraphqlFieldsResolver.ftl");
         } catch (IOException e) {
             throw new UnableToLoadFreeMarkerTemplateException(e);
         }

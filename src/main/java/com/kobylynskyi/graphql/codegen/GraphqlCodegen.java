@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Generator of:
  * - Interface for each GraphQL query
@@ -38,7 +40,6 @@ public class GraphqlCodegen {
         this(schemas, outputDir, mappingConfig, null);
     }
 
-
     public GraphqlCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         this.schemas = schemas;
         this.outputDir = outputDir;
@@ -59,6 +60,9 @@ public class GraphqlCodegen {
         }
         if (mappingConfig.getGenerateApis() == null) {
             mappingConfig.setGenerateApis(DefaultMappingConfigValues.DEFAULT_GENERATE_APIS);
+        }
+        if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
+            mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
     }
 
@@ -89,6 +93,7 @@ public class GraphqlCodegen {
                     break;
                 case TYPE:
                     generateType((ObjectTypeDefinition) definition, document);
+                    generateFieldResolvers((ObjectTypeDefinition) definition);
                     break;
                 case INTERFACE:
                     generateInterface((InterfaceTypeDefinition) definition);
@@ -132,6 +137,16 @@ public class GraphqlCodegen {
     private void generateType(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingConfig, definition, document);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
+    }
+
+    private void generateFieldResolvers(ObjectTypeDefinition definition) throws IOException, TemplateException {
+        List<FieldDefinition> fieldDefsWithResolvers = definition.getFieldDefinitions().stream()
+                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definition.getName()))
+                .collect(toList());
+        if (!fieldDefsWithResolvers.isEmpty()) {
+            Map<String, Object> dataModel = FieldResolverDefinitionToDataModelMapper.map(mappingConfig, fieldDefsWithResolvers, definition.getName());
+            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.fieldsResolverTemplate, dataModel, outputDir);
+        }
     }
 
     private void generateInput(InputObjectTypeDefinition definition) throws IOException, TemplateException {

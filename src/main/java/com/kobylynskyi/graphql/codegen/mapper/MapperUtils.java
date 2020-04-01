@@ -164,10 +164,10 @@ public class MapperUtils {
      * Returns imports required for the particular case of field definitions (operations), taking into account async
      * operations, etc.
      *
-     * @param mappingConfig
-     * @param packageName
-     * @param objectTypeName
-     * @return
+     * @param mappingConfig  Global mapping configuration
+     * @param packageName    Package name of the generated class which will be ignored
+     * @param objectTypeName Object type: Query/Mutation/Subscription
+     * @return all imports required for a generated class
      */
     static Set<String> getImportsForFieldDefinition(MappingConfig mappingConfig, String packageName, String objectTypeName) {
         final Set<String> imports = getImports(mappingConfig, packageName);
@@ -180,14 +180,27 @@ public class MapperUtils {
     }
 
     /**
+     * Returns imports required for the fields resolvers class
+     *
+     * @param mappingConfig Global mapping configuration
+     * @param packageName   Package name of the generated class which will be ignored
+     * @return all imports required for a generated class
+     */
+    static Set<String> getImportsForFieldResolvers(MappingConfig mappingConfig, String packageName) {
+        Set<String> imports = getImports(mappingConfig, packageName);
+        imports.add("graphql.schema");
+        return imports;
+    }
+
+    /**
      * Determines if the specified operation is an async query or mutation
      *
-     * @param mappingConfig
-     * @param objectTypeName
+     * @param mappingConfig  Global mapping configuration
+     * @param objectTypeName Parent object type (Query/Mutation)
      * @return true if the given operation is an async query or mutation, false otherwise
      */
     static boolean isAsyncQueryOrMutation(MappingConfig mappingConfig, String objectTypeName) {
-        boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi().booleanValue();
+        boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi();
 
         return isAsyncApi && (Operation.QUERY.name().equalsIgnoreCase(objectTypeName) || Operation.MUTATION.name()
                 .equalsIgnoreCase(objectTypeName));

@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 
 import java.util.Collections;
@@ -30,8 +31,17 @@ public class FieldDefinitionToParameterMapper {
             return Collections.emptyList();
         }
         return fieldDefinitions.stream()
-                .map(fieldDefinition -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, fieldDefinition, parentTypeName))
+                .filter(fieldDef -> !generateResolversForField(mappingConfig, fieldDef, parentTypeName))
+                .map(fieldDef -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, fieldDef, parentTypeName))
                 .collect(Collectors.toList());
+    }
+
+    public static boolean generateResolversForField(MappingConfig mappingConfig,
+                                                    FieldDefinition fieldDef,
+                                                    String parentTypeName) {
+        boolean resolverForParamField = mappingConfig.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
+        boolean resolverForSpecificField = mappingConfig.getFieldsResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        return resolverForParamField || resolverForSpecificField;
     }
 
 }
