@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-graphql-java-codegen:
+  build:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo/graphql-java-codegen
