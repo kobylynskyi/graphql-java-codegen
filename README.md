@@ -11,6 +11,11 @@ Please refer to:
 * Maven plugin: [grapqhl-java-codegen-maven-plugin](plugins/graphql-java-codegen-maven-plugin) 
 
 
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
 ## Inspired by
 [swagger-codegen](https://github.com/swagger-api/swagger-codegen)
 
