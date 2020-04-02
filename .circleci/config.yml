@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    description:
+      Build core library
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo/graphql-java-codegen
@@ -9,19 +11,29 @@ jobs:
       TERM: dumb
     steps:
       - checkout
-      - run: date +%Y-%m > .circle-cache-key
+      - run:
+          name: Generate cache key
+          command: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
             - deps-{{checksum ".circle-cache-key"}}
-      - run: gradle install
+      - run:
+          name: Build and run unit tests
+          command: gradle install
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
           key: deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
-      - run: gradle codeCoverageReport
-      - run: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Generate Code Coverage Report
+          command: gradle codeCoverageReport
+      - run:
+          name: Publish Code Coverage Report
+          command: bash <(curl -s https://codecov.io/bash)
   build-graphql-java-codegen-maven-plugin:
+    description:
+      Build maven plugin
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo/graphql-java-codegen-maven-plugin
@@ -29,19 +41,27 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: date +%Y-%m > .circle-cache-key
+      - run:
+          name: Generate cache key
+          command: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
             - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - deps-{{checksum ".circle-cache-key"}}
-      - run: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
+      - run:
+          name: Load all dependencies
+          command: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
           key: deps-{{checksum ".circle-cache-key"}}
-      - run: cd plugins/graphql-java-codegen-maven-plugin && mvn package
+      - run:
+          name: Build and run unit tests
+          command: cd plugins/graphql-java-codegen-maven-plugin && mvn package
   build-graphql-java-codegen-gradle-plugin:
+    description:
+      Build gradle plugin
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo/graphql-java-codegen-gradle-plugin
@@ -50,18 +70,24 @@ jobs:
       TERM: dumb
     steps:
       - checkout
-      - run: date +%Y-%m > .circle-cache-key
+      - run:
+          name: Generate cache key
+          command: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
             - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - deps-{{checksum ".circle-cache-key"}}
-      - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
+      - run:
+          name: Load all dependencies
+          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
           key: deps-{{checksum ".circle-cache-key"}}
-      - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
+      - run:
+          name: Build and run unit tests
+          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
 workflows:
   build-library-and-plugins:
     jobs:
