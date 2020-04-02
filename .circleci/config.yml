@@ -17,6 +17,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
+            - ~/.m2
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
       - run: gradle codeCoverageReport
@@ -36,7 +37,8 @@ jobs:
       - run: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
-            - ~/plugins/graphql-java-codegen-maven-plugin/.m2
+            - ~/.gradle
+            - ~/.m2
           key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-maven-plugin/pom.xml" }}
       - run: cd plugins/graphql-java-codegen-maven-plugin && mvn package
   build-graphql-java-codegen-gradle-plugin:
@@ -55,7 +57,8 @@ jobs:
       - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
-            - ~/plugins/graphql-java-codegen-gradle-plugin/.gradle
+            - ~/.gradle
+            - ~/.m2
           key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
       - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
 workflows:

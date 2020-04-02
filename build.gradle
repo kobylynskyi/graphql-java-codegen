@@ -1,13 +1,14 @@
 plugins {
     id "java"
     id "idea"
+    id "maven"
     id "jacoco"
     id "java-library"
     id "signing"
     id "maven-publish"
 }
 
-version = "1.4.2"
+version = "1.5.0-SNAPSHOT"
 group = "io.github.kobylynskyi"
 
 repositories {
