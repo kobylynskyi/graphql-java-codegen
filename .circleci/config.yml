@@ -9,17 +9,16 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+      - run: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            - v1-dependencies-
-      - run: gradle dependencies
+            - deps-{{checksum ".circle-cache-key"}}
+      - run: gradle install
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle test
+          key: deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - run: gradle codeCoverageReport
       - run: bash <(curl -s https://codecov.io/bash)
   build-graphql-java-codegen-maven-plugin:
@@ -30,16 +29,17 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "plugins/graphql-java-codegen-maven-plugin/pom.xml" }}
-            - v1-dependencies-
+            - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - deps-{{checksum ".circle-cache-key"}}
       - run: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
-          key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-maven-plugin/pom.xml" }}
+          key: deps-{{checksum ".circle-cache-key"}}
       - run: cd plugins/graphql-java-codegen-maven-plugin && mvn package
   build-graphql-java-codegen-gradle-plugin:
     docker:
@@ -50,16 +50,17 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+      - run: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
-            - v1-dependencies-
+            - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - deps-{{checksum ".circle-cache-key"}}
       - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
-          key: v1-dependencies-{{ checksum "plugins/graphql-java-codegen-gradle-plugin/build.gradle" }}
+          key: deps-{{checksum ".circle-cache-key"}}
       - run: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
 workflows:
   build-library-and-plugins:
