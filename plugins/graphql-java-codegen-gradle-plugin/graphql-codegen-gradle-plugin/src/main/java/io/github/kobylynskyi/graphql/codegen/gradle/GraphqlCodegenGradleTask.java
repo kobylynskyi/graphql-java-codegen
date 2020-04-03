@@ -176,7 +176,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
-    public boolean getGenerateEqualsAndHashCode() {
+    public Boolean getGenerateEqualsAndHashCode() {
         return generateEqualsAndHashCode;
     }
 
