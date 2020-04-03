@@ -23,7 +23,7 @@ description = "Provides a task for generating Java code based on GraphQL schema"
 dependencies {
     compile gradleApi()
 
-    compile 'io.github.kobylynskyi:graphql-java-codegen:1.5.0-SNAPSHOT'
+    compile "io.github.kobylynskyi:graphql-java-codegen:${version}"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
