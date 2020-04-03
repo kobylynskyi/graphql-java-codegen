@@ -22,7 +22,7 @@ Please follow the steps below in order to make the changes:
 
    ```shell script
    # This will install the library (including your recent changes) in your local maven repository.
-   ./gradlew clean install
+   ./gradlew clean build publishToMavenLocal
    ```
    
 4. Build the plugin project with updated `graphql-java-codegen` library.
@@ -43,7 +43,7 @@ Please follow the steps below in order to make the changes:
    ```shell script
    # Install Gradle plugin
    cd plugins/graphql-java-codegen-gradle-plugin/graphql-codegen-gradle-plugin
-   ./gradlew clean install
+   ./gradlew clean build publishToMavenLocal
    
    # Install Maven plugin
    cd plugins/graphql-java-codegen-maven-plugin
