@@ -41,15 +41,21 @@ public class SchemaFinder {
     }
 
     /**
-     * Sets whether the file search should be recursive.
+     * Sets whether this finder should recursively search in nested directories.
+     *
+     * @param recursive
+     *         whether the file search should be recursive
      */
     public void setRecursive(boolean recursive) {
         this.recursive = recursive;
     }
 
     /**
-     * Sets the Java pattern that filenames should match to be included in the result. Matching files are only included
-     * if they're not part of the excluded files.
+     * Sets the pattern that filenames should match to be included in the result. Matching files are only included if
+     * they're not part of the excluded files.
+     *
+     * @param includePattern
+     *         a regular expression pattern as defined by the {@link Pattern} class
      *
      * @see #setExcludedFiles(Set)
      */
@@ -60,6 +66,9 @@ public class SchemaFinder {
     /**
      * Sets a set of paths to exclude from the search even if they match the include pattern. The provided paths are
      * either absolute or relative to the root directory provided in the constructor.
+     *
+     * @param excludedFiles
+     *         a set of exact file paths to exclude from the search
      *
      * @see #setIncludePattern(String)
      */
