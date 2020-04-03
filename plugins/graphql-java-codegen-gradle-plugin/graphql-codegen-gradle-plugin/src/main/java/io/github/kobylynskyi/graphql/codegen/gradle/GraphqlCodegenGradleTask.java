@@ -4,13 +4,18 @@ import com.kobylynskyi.graphql.codegen.GraphqlCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -21,6 +26,7 @@ import java.util.*;
 public class GraphqlCodegenGradleTask extends DefaultTask {
 
     private List<String> graphqlSchemaPaths;
+    private final SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
     private File outputDir;
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
@@ -56,7 +62,21 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
 
-        new GraphqlCodegen(graphqlSchemaPaths, outputDir, mappingConfig, buildJsonSupplier()).generate();
+        new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
+    }
+
+    private List<String> getSchemas() throws IOException {
+        if (graphqlSchemaPaths != null) {
+            return graphqlSchemaPaths;
+        }
+        if (graphqlSchemas != null) {
+            SchemaFinder finder = new SchemaFinder(Paths.get(graphqlSchemas.getRootDir()));
+            finder.setRecursive(graphqlSchemas.isRecursive());
+            finder.setIncludePattern(graphqlSchemas.getIncludePattern());
+            finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
+            return finder.findSchemas();
+        }
+        throw new IllegalStateException("One of graphqlSchemaPaths or graphqlSchemas parameters must be provided");
     }
 
     private MappingConfigSupplier buildJsonSupplier() {
@@ -67,12 +87,23 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     }
 
     @Input
+    @Optional
     public List<String> getGraphqlSchemaPaths() {
         return graphqlSchemaPaths;
     }
 
     public void setGraphqlSchemaPaths(List<String> graphqlSchemaPaths) {
         this.graphqlSchemaPaths = graphqlSchemaPaths;
+    }
+
+    @Nested
+    @Optional
+    public SchemaFinderConfig getGraphqlSchemas() {
+        return graphqlSchemas;
+    }
+
+    public void graphqlSchemas(Action<? super SchemaFinderConfig> action) {
+        action.execute(graphqlSchemas);
     }
 
     @OutputDirectory
