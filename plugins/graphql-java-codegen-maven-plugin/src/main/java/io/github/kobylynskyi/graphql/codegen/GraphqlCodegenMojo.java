@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.GraphqlCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -12,13 +13,18 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GraphqlCodegenMojo extends AbstractMojo {
 
-    @Parameter(required = true)
+    @Parameter
     private String[] graphqlSchemaPaths;
+
+    @Parameter
+    private SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
 
     @Parameter(required = true)
     private File outputDir;
@@ -101,11 +107,25 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
         try {
-            new GraphqlCodegen(Arrays.asList(graphqlSchemaPaths), outputDir, mappingConfig, mappingConfigSupplier).generate();
+            new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, mappingConfigSupplier).generate();
         } catch (Exception e) {
             getLog().error(e);
             throw new MojoExecutionException("Code generation failed. See above for the full exception.");
         }
+    }
+
+    private List<String> getSchemas() throws MojoExecutionException, IOException {
+        if (graphqlSchemaPaths != null) {
+            return Arrays.asList(graphqlSchemaPaths);
+        }
+        if (graphqlSchemas != null) {
+            SchemaFinder finder = new SchemaFinder(Paths.get(graphqlSchemas.getRootDir()));
+            finder.setRecursive(graphqlSchemas.isRecursive());
+            finder.setIncludePattern(graphqlSchemas.getIncludePattern());
+            finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
+            return finder.findSchemas();
+        }
+        throw new MojoExecutionException("One of graphqlSchemaPaths or graphqlSchemas parameters must be provided");
     }
 
     private MappingConfigSupplier buildJsonSupplier(String jsonConfigurationFile) {
@@ -121,18 +141,20 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         project.addCompileSourceRoot(path);
     }
 
-    private static Map<String, String> convertToMap(Properties properties) {
-        Map<String, String> map = new HashMap<>();
-        properties.forEach((key, value) -> map.put((String) key, (String) value));
-        return map;
-    }
-
     public String[] getGraphqlSchemaPaths() {
         return graphqlSchemaPaths;
     }
 
     public void setGraphqlSchemaPaths(String[] graphqlSchemaPaths) {
         this.graphqlSchemaPaths = graphqlSchemaPaths;
+    }
+
+    public SchemaFinderConfig getGraphqlSchemas() {
+        return graphqlSchemas;
+    }
+
+    public void setGraphqlSchemas(SchemaFinderConfig graphqlSchemas) {
+        this.graphqlSchemas = graphqlSchemas;
     }
 
     public File getOutputDir() {
