@@ -11,9 +11,7 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Gradle task for GraphQL code generation
@@ -37,6 +35,8 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     private Boolean generateEqualsAndHashCode = false;
     private Boolean generateToString = false;
     private Boolean generateAsyncApi = false;
+    private Boolean generateParameterizedFieldsResolvers = true;
+    private Set<String> fieldsResolvers = new HashSet<>();
     private String jsonConfigurationFile;
 
     @TaskAction
@@ -212,6 +212,26 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     public void setGenerateAsyncApi(Boolean generateAsyncApi) {
         this.generateAsyncApi = generateAsyncApi;
+    }
+
+    @Input
+    @Optional
+    public Boolean getGenerateParameterizedFieldsResolvers() {
+        return generateParameterizedFieldsResolvers;
+    }
+
+    public void setGenerateParameterizedFieldsResolvers(Boolean generateParameterizedFieldsResolvers) {
+        this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    @Input
+    @Optional
+    public Set<String> getFieldsResolvers() {
+        return fieldsResolvers;
+    }
+
+    public void setFieldsResolvers(Set<String> fieldsResolvers) {
+        this.fieldsResolvers = fieldsResolvers;
     }
 
     @Input

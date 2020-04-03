@@ -12,10 +12,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GraphqlCodegenMojo extends AbstractMojo {
@@ -28,8 +25,10 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     @Parameter
     private Map<String, String> customTypesMapping;
+
     @Parameter
     private Map<String, String> customAnnotationsMapping;
+
     @Parameter
     private String packageName;
 
@@ -44,12 +43,16 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     @Parameter
     private String apiPackageName;
+
     @Parameter
     private String modelPackageName;
+
     @Parameter
     private String modelNamePrefix;
+
     @Parameter
     private String modelNameSuffix;
+
     @Parameter
     private String subscriptionReturnType;
 
@@ -58,6 +61,12 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "javax.validation.constraints.NotNull")
     private String modelValidationAnnotation;
+
+    @Parameter(defaultValue = "true")
+    private boolean generateParameterizedFieldsResolvers;
+
+    @Parameter
+    private Set<String> fieldsResolvers = new HashSet<>();
 
     @Parameter(name = "jsonConfigurationFile", required = false)
     private String jsonConfigurationFile;
@@ -74,20 +83,20 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
-        mappingConfig.setCustomTypesMapping(
-                customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
         mappingConfig.setModelPackageName(modelPackageName);
         mappingConfig.setGenerateApis(generateApis);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
-        mappingConfig.setCustomAnnotationsMapping(
-                customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
+        mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
+        mappingConfig.setFieldsResolvers(fieldsResolvers != null ? fieldsResolvers : new HashSet<>());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -244,5 +253,21 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     public String getSubscriptionReturnType() {
         return subscriptionReturnType;
+    }
+
+    public boolean isGenerateParameterizedFieldsResolvers() {
+        return generateParameterizedFieldsResolvers;
+    }
+
+    public void setGenerateParameterizedFieldsResolvers(boolean generateParameterizedFieldsResolvers) {
+        this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    public Set<String> getFieldsResolvers() {
+        return fieldsResolvers;
+    }
+
+    public void setFieldsResolvers(Set<String> fieldsResolvers) {
+        this.fieldsResolvers = fieldsResolvers;
     }
 }
