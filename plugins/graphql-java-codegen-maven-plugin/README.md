@@ -72,7 +72,7 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 | generateToString                     | Boolean            | False                                     | Specifies whether generated model classes should have toString method defined. |
 | generateAsyncApi                     | Boolean            | False                                     | If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType` |
 | generateParameterizedFieldsResolvers | Boolean            | True                                      | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
-| fieldsResolvers                      | Set(String)        | Empty                                     | Fields that require Resolvers should be defined here in format: `TypeName.fieldName`. |
+| fieldsWithResolvers                  | Set(String)        | Empty                                     | Fields that require Resolvers should be defined here in format: `TypeName.fieldName`. |
 | jsonConfigurationFile                | String             | Empty                                     | Path to an external mapping configuration. |
 
 

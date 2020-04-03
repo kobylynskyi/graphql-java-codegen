@@ -40,7 +40,7 @@ public class FieldDefinitionToParameterMapper {
                                                     FieldDefinition fieldDef,
                                                     String parentTypeName) {
         boolean resolverForParamField = mappingConfig.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
-        boolean resolverForSpecificField = mappingConfig.getFieldsResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        boolean resolverForSpecificField = mappingConfig.getFieldsWithResolvers().contains(parentTypeName + "." + fieldDef.getName());
         return resolverForParamField || resolverForSpecificField;
     }
 

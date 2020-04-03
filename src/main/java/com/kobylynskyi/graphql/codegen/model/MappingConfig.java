@@ -47,7 +47,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
      * E.g.: "Person.friends"
      * If just type is specified, then all fields of this type will
      */
-    private Set<String> fieldsResolvers = new HashSet<>();
+    private Set<String> fieldsWithResolvers = new HashSet<>();
 
     @Override
     public void combine(MappingConfig source) {
@@ -76,10 +76,10 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
         this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
         this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
-        if (this.fieldsResolvers != null && source.fieldsResolvers != null) {
-            this.fieldsResolvers.addAll(source.fieldsResolvers);
-        } else if (this.fieldsResolvers == null) {
-            this.fieldsResolvers = source.fieldsResolvers;
+        if (this.fieldsWithResolvers != null && source.fieldsWithResolvers != null) {
+            this.fieldsWithResolvers.addAll(source.fieldsWithResolvers);
+        } else if (this.fieldsWithResolvers == null) {
+            this.fieldsWithResolvers = source.fieldsWithResolvers;
         }
     }
 

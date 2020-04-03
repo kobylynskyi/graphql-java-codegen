@@ -36,7 +36,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     private Boolean generateToString = false;
     private Boolean generateAsyncApi = false;
     private Boolean generateParameterizedFieldsResolvers = true;
-    private Set<String> fieldsResolvers = new HashSet<>();
+    private Set<String> fieldsWithResolvers = new HashSet<>();
     private String jsonConfigurationFile;
 
     @TaskAction
@@ -226,12 +226,12 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
-    public Set<String> getFieldsResolvers() {
-        return fieldsResolvers;
+    public Set<String> getFieldsWithResolvers() {
+        return fieldsWithResolvers;
     }
 
-    public void setFieldsResolvers(Set<String> fieldsResolvers) {
-        this.fieldsResolvers = fieldsResolvers;
+    public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
+        this.fieldsWithResolvers = fieldsWithResolvers;
     }
 
     @Input

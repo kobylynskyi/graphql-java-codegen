@@ -45,7 +45,7 @@ class MappingConfigTest {
         assertEquals("PackageName", mappingConfig.getPackageName());
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
-        assertEquals(singleton("5"), mappingConfig.getFieldsResolvers());
+        assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
     }
 
     @Test
@@ -67,7 +67,7 @@ class MappingConfigTest {
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
-        assertEquals(singleton("5"), mappingConfig.getFieldsResolvers());
+        assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
     }
 
     @Test
@@ -91,7 +91,7 @@ class MappingConfigTest {
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
         assertTrue(mappingConfig.getGenerateAsyncApi());
         assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
-        assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsResolvers());
+        assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -115,7 +115,7 @@ class MappingConfigTest {
         config.setSubscriptionReturnType("SubscriptionsReturnType");
         config.setGenerateAsyncApi(false);
         config.setGenerateParameterizedFieldsResolvers(true);
-        config.setFieldsResolvers(new HashSet<>(singletonList("5")));
+        config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
         return config;
     }
 
@@ -135,7 +135,7 @@ class MappingConfigTest {
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
         config.setGenerateAsyncApi(true);
         config.setGenerateParameterizedFieldsResolvers(false);
-        config.setFieldsResolvers(singleton("55"));
+        config.setFieldsWithResolvers(singleton("55"));
         return config;
     }
 
@@ -143,7 +143,7 @@ class MappingConfigTest {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setCustomTypesMapping(null);
         mappingConfig.setCustomAnnotationsMapping(null);
-        mappingConfig.setFieldsResolvers(null);
+        mappingConfig.setFieldsWithResolvers(null);
         return mappingConfig;
     }
 

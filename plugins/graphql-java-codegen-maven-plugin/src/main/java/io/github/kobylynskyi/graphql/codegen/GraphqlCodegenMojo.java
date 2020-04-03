@@ -66,7 +66,7 @@ public class GraphqlCodegenMojo extends AbstractMojo {
     private boolean generateParameterizedFieldsResolvers;
 
     @Parameter
-    private Set<String> fieldsResolvers = new HashSet<>();
+    private Set<String> fieldsWithResolvers = new HashSet<>();
 
     @Parameter(name = "jsonConfigurationFile", required = false)
     private String jsonConfigurationFile;
@@ -96,7 +96,7 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
-        mappingConfig.setFieldsResolvers(fieldsResolvers != null ? fieldsResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -263,11 +263,11 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
     }
 
-    public Set<String> getFieldsResolvers() {
-        return fieldsResolvers;
+    public Set<String> getFieldsWithResolvers() {
+        return fieldsWithResolvers;
     }
 
-    public void setFieldsResolvers(Set<String> fieldsResolvers) {
-        this.fieldsResolvers = fieldsResolvers;
+    public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
+        this.fieldsWithResolvers = fieldsWithResolvers;
     }
 }
