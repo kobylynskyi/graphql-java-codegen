@@ -55,7 +55,7 @@ class GraphqlCodegenFieldsResolversTest {
 
     @Test
     void generate_CustomFieldsResolvers() throws Exception {
-        mappingConfig.setFieldsResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
         generator.generate();
 
