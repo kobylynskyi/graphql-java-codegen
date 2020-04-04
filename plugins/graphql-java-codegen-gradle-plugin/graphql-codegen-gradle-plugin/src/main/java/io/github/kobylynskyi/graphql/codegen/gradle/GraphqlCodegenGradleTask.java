@@ -7,14 +7,17 @@ import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -69,14 +72,34 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         if (graphqlSchemaPaths != null) {
             return graphqlSchemaPaths;
         }
-        if (graphqlSchemas != null) {
-            SchemaFinder finder = new SchemaFinder(Paths.get(graphqlSchemas.getRootDir()));
-            finder.setRecursive(graphqlSchemas.isRecursive());
-            finder.setIncludePattern(graphqlSchemas.getIncludePattern());
-            finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
-            return finder.findSchemas();
+        Path rootDir = getSchemasRootDir();
+        SchemaFinder finder = new SchemaFinder(rootDir);
+        finder.setRecursive(graphqlSchemas.isRecursive());
+        finder.setIncludePattern(graphqlSchemas.getIncludePattern());
+        finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
+        return finder.findSchemas();
+    }
+
+    private Path getSchemasRootDir() {
+        String rootDir = graphqlSchemas.getRootDir();
+        if (rootDir == null) {
+            return findDefaultResourcesDir().orElseThrow(() -> new IllegalStateException(
+                    "Default resource folder not found, please provide graphqlSchemas.rootDir"));
         }
-        throw new IllegalStateException("One of graphqlSchemaPaths or graphqlSchemas parameters must be provided");
+        return Paths.get(rootDir);
+    }
+
+    private java.util.Optional<Path> findDefaultResourcesDir() {
+        return getProject().getConvention()
+                    .getPlugin(JavaPluginConvention.class)
+                    .getSourceSets()
+                    .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                    .getResources()
+                    .getSourceDirectories()
+                    .getFiles()
+                    .stream()
+                    .findFirst()
+                    .map(File::toPath);
     }
 
     private MappingConfigSupplier buildJsonSupplier() {
