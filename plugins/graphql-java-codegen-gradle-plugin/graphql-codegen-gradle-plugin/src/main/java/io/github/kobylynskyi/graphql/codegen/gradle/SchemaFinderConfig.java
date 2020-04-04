@@ -5,6 +5,10 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import java.util.Collections;
 import java.util.Set;
 
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.InputFiles;
+
 public class SchemaFinderConfig {
 
     private String rootDir;
@@ -15,6 +19,7 @@ public class SchemaFinderConfig {
 
     private Set<String> excludedFiles = Collections.emptySet();
 
+    @InputFile
     public String getRootDir() {
         return rootDir;
     }
@@ -23,6 +28,7 @@ public class SchemaFinderConfig {
         this.rootDir = rootDir;
     }
 
+    @Input
     public boolean isRecursive() {
         return recursive;
     }
@@ -31,6 +37,7 @@ public class SchemaFinderConfig {
         this.recursive = recursive;
     }
 
+    @Input
     public String getIncludePattern() {
         return includePattern;
     }
@@ -39,6 +46,7 @@ public class SchemaFinderConfig {
         this.includePattern = includePattern;
     }
 
+    @InputFiles
     public Set<String> getExcludedFiles() {
         return excludedFiles;
     }
