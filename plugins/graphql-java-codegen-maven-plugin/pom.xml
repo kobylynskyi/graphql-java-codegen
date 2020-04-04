@@ -7,12 +7,12 @@
 
     <name>graphql-codegen-maven-plugin</name>
     <description>Provides a goal for generating Java code based on GraphQL schema</description>
-    <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+    <url>https://github.com/kobylynskyi/graphql-java-codegen</url>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin/blob/master/LICENSE.md</url>
+            <url>https://github.com/kobylynskyi/graphql-java-codegen/blob/master/LICENSE.md</url>
         </license>
     </licenses>
 
@@ -31,10 +31,10 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git://github.com/kobylynskyi/graphql-java-codegen-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen-maven-plugin.git
+        <connection>scm:git:git://github.com/kobylynskyi/graphql-java-codegen.git</connection>
+        <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
-        <url>https://github.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/graphql-java-codegen-maven-plugin</url>
         <tag>v1.4.2</tag>
     </scm>
 
@@ -50,8 +50,8 @@
     </distributionManagement>
 
     <ciManagement>
-        <system>Travis</system>
-        <url>https://travis-ci.com/kobylynskyi/graphql-java-codegen-maven-plugin</url>
+        <system>CircleCI</system>
+        <url>https://app.circleci.com/pipelines/github/kobylynskyi/graphql-java-codegen</url>
     </ciManagement>
 
     <properties>
