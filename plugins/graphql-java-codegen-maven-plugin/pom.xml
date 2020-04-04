@@ -3,7 +3,7 @@
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0</version>
 
     <name>graphql-codegen-maven-plugin</name>
     <description>Provides a goal for generating Java code based on GraphQL schema</description>
@@ -69,7 +69,7 @@
         <version.maven-scm-provider-gitexe>1.11.2</version.maven-scm-provider-gitexe>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
 
-        <version.graphql-java-codegen>${version}</version.graphql-java-codegen>
+        <version.graphql-java-codegen>1.5.0</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
@@ -93,7 +93,7 @@
         <dependency>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-java-codegen</artifactId>
-            <version>${version.graphql-java-codegen}</version>
+            <version>1.5.0</version>
         </dependency>
     </dependencies>
 
