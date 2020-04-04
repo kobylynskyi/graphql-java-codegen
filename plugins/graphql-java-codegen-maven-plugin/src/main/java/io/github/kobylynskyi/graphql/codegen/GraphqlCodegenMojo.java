@@ -5,6 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -14,6 +15,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -114,18 +116,29 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         }
     }
 
-    private List<String> getSchemas() throws MojoExecutionException, IOException {
+    private List<String> getSchemas() throws IOException {
         if (graphqlSchemaPaths != null) {
             return Arrays.asList(graphqlSchemaPaths);
         }
-        if (graphqlSchemas != null) {
-            SchemaFinder finder = new SchemaFinder(Paths.get(graphqlSchemas.getRootDir()));
-            finder.setRecursive(graphqlSchemas.isRecursive());
-            finder.setIncludePattern(graphqlSchemas.getIncludePattern());
-            finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
-            return finder.findSchemas();
+        Path schemasRootDir = getSchemasRootDir();
+        SchemaFinder finder = new SchemaFinder(schemasRootDir);
+        finder.setRecursive(graphqlSchemas.isRecursive());
+        finder.setIncludePattern(graphqlSchemas.getIncludePattern());
+        finder.setExcludedFiles(graphqlSchemas.getExcludedFiles());
+        return finder.findSchemas();
+    }
+
+    private Path getSchemasRootDir() {
+        String rootDir = graphqlSchemas.getRootDir();
+        if (rootDir == null) {
+            return getDefaultResourcesDirectory().orElseThrow(() -> new IllegalStateException(
+                    "Default resource folder not found, please provide <rootDir> in <graphqlSchemas>"));
         }
-        throw new MojoExecutionException("One of graphqlSchemaPaths or graphqlSchemas parameters must be provided");
+        return Paths.get(rootDir);
+    }
+
+    private Optional<Path> getDefaultResourcesDirectory() {
+        return project.getResources().stream().findFirst().map(Resource::getDirectory).map(Paths::get);
     }
 
     private MappingConfigSupplier buildJsonSupplier(String jsonConfigurationFile) {
