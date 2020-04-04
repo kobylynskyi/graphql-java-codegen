@@ -94,7 +94,8 @@ check.dependsOn(graphqlCodegen)
 
 | Key                                  | Data Type          | Default value                             | Description |
 | ------------------------------------ | ------------------ | ----------------------------------------- | ----------- |
-| graphqlSchemaPaths                   | List(String)       | None                                      | GraphQL schema locations. You can supply multiple paths to GraphQL schemas. |
+| graphqlSchemaPaths                   | List(String)       | (falls back to `graphqlSchemas`)          | GraphQL schema locations. You can supply multiple paths to GraphQL schemas. To include many schemas from a folder hierarchy, use the `graphqlSchemas` block instead. |
+| graphqlSchemas                       | (see table below)  | All `.graphqls` files in resources        | Block to define the input GraphQL schemas, when exact paths are too cumbersome. See table below for a list of options. |
 | packageName                          | String             | Empty                                     | Java package for generated classes. |
 | outputDir                            | String             | None                                      | The output target directory into which code will be generated. |
 | apiPackage                           | String             | Empty                                     | Java package for generated api classes (Query, Mutation, Subscription). |
@@ -113,6 +114,15 @@ check.dependsOn(graphqlCodegen)
 | fieldsWithResolvers                  | Set(String)        | Empty                                     | Fields that require Resolvers should be defined here in format: `TypeName.fieldName`. |
 | jsonConfigurationFile                | String             | Empty                                     | Path to an external mapping configuration. |
 
+When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `graphqlSchemas { ... }` block.
+The parameters inside that block are the following:
+
+| Key               | Data Type    | Default value      | Description |
+| ----------------- | ------------ | ------------------ | ----------- |
+| `rootDir`         | String       | Main resources dir | The root directory from which to start searching for schema files. |
+| `recursive`       | Boolean      | `true`             | Whether to recursively look into sub directories. |
+| `includePattern`  | String       | `.*\.graphqls`     | A Java regex that file names must match to be included. It should be a regex as defined by the [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html) JDK class. It will be used to match only the file name without path. |
+| `excludedFiles`   | Set<String>  | (empty set)        | A set of files to exclude, even if they match the include pattern. These paths should be either absolute or relative to the provided `rootDir`. |
 
 #### External mapping configuration
 
