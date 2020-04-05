@@ -5,5 +5,4 @@ pluginManagement {
     }
 }
 
-include  'graphql-java-codegen-gradle-plugin'
-include  'example'
+rootProject.name = "example"
