@@ -157,9 +157,9 @@ task graphqlCodegenService2(type: GraphqlCodegenGradleTask) {
 
 Later on you can call each task separately or together:
 
-* `gradlew clean graphqlCodegenService1 build`
-* `gradlew clean graphqlCodegenService2 build`
-* `gradlew clean graphqlCodegenService1 graphqlCodegenService2 build`
+* `gradle clean graphqlCodegenService1 build`
+* `gradle clean graphqlCodegenService2 build`
+* `gradle clean graphqlCodegenService1 graphqlCodegenService2 build`
 
 
 ### Convert generated Java classes to Kotlin classes
@@ -170,7 +170,7 @@ Access to classes from your code as normal Kotlin classes.
 
 ### Example
 
-[graphql-codegen-gradle-plugin-example](graphql-codegen-gradle-plugin-example)
+[example](example)
 
 
 ### Inspired by

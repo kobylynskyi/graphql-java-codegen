@@ -8,18 +8,20 @@ import java.util.Set;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Optional;
 
 public class SchemaFinderConfig {
 
     private String rootDir;
 
-    private boolean recursive = SchemaFinder.DEFAULT_RECURSIVE;
+    private Boolean recursive = SchemaFinder.DEFAULT_RECURSIVE;
 
     private String includePattern = SchemaFinder.DEFAULT_INCLUDE_PATTERN;
 
     private Set<String> excludedFiles = Collections.emptySet();
 
     @InputFile
+    @Optional
     public String getRootDir() {
         return rootDir;
     }
@@ -29,15 +31,17 @@ public class SchemaFinderConfig {
     }
 
     @Input
-    public boolean isRecursive() {
+    @Optional
+    public Boolean isRecursive() {
         return recursive;
     }
 
-    public void setRecursive(boolean recursive) {
+    public void setRecursive(Boolean recursive) {
         this.recursive = recursive;
     }
 
     @Input
+    @Optional
     public String getIncludePattern() {
         return includePattern;
     }
@@ -47,6 +51,7 @@ public class SchemaFinderConfig {
     }
 
     @InputFiles
+    @Optional
     public Set<String> getExcludedFiles() {
         return excludedFiles;
     }

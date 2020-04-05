@@ -1,5 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
@@ -34,7 +36,7 @@
         <connection>scm:git:git://github.com/kobylynskyi/graphql-java-codegen.git</connection>
         <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
-        <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/graphql-java-codegen-maven-plugin</url>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven/graphql-java-codegen-maven-plugin</url>
         <tag>v1.5.0</tag>
     </scm>
 
@@ -207,9 +209,6 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-
-
-
         </plugins>
     </build>
 

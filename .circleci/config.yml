@@ -5,7 +5,7 @@ jobs:
       Build core library
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo/graphql-java-codegen
+    working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
@@ -36,7 +36,7 @@ jobs:
       Build maven plugin
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo/graphql-java-codegen-maven-plugin
+    working_directory: ~/repo
     environment:
       MAVEN_OPTS: -Xmx3200m
     steps:
@@ -50,7 +50,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
+          command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
             - ~/.gradle
@@ -58,13 +58,16 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd plugins/graphql-java-codegen-maven-plugin && mvn package
+          command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
+      - run:
+          name: Build example project
+          command: cd ~/repo/plugins/maven/example && mvn package
   build-graphql-java-codegen-gradle-plugin:
     description:
       Build gradle plugin
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo/graphql-java-codegen-gradle-plugin
+    working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
@@ -79,7 +82,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
+          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -87,7 +90,10 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
+          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
+      - run:
+          name: Build example project
+          command: cd ~/repo/plugins/gradle/example && gradle test
 workflows:
   build-library-and-plugins:
     jobs:

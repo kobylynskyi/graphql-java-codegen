@@ -7,8 +7,8 @@
 ## Plugins
 
 Please refer to:
-* Gradle plugin: [graphql-java-codegen-gradle-plugin](plugins/graphql-java-codegen-gradle-plugin)
-* Maven plugin: [grapqhl-java-codegen-maven-plugin](plugins/graphql-java-codegen-maven-plugin) 
+* Gradle plugin: [graphql-java-codegen-gradle-plugin](plugins/gradle)
+* Maven plugin: [grapqhl-java-codegen-maven-plugin](plugins/maven) 
 
 
 ## Contributing
