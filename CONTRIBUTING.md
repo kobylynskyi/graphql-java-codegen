@@ -29,11 +29,11 @@ Please follow the steps below in order to make the changes:
 
    ```shell script
    # Build Gradle plugin
-   cd plugins/graphql-java-codegen-gradle-plugin/graphql-codegen-gradle-plugin
+   cd plugins/gradle
    ./gradlew clean build
    
    # Build Maven plugin
-   cd plugins/graphql-java-codegen-maven-plugin
+   cd plugins/maven
    mvn clean verify 
    ```
 
@@ -42,11 +42,11 @@ Please follow the steps below in order to make the changes:
 
    ```shell script
    # Install Gradle plugin
-   cd plugins/graphql-java-codegen-gradle-plugin/graphql-codegen-gradle-plugin
+   cd plugins/gradle
    ./gradlew clean build publishToMavenLocal
    
    # Install Maven plugin
-   cd plugins/graphql-java-codegen-maven-plugin
+   cd plugins/maven
    mvn clean install 
    ```
 

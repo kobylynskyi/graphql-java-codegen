@@ -131,7 +131,7 @@ If you want to have different configuration for different `.graphqls` files (e.g
 
 ### Example
 
-[example project](example)
+[example](example)
 
 
 ### Inspired by

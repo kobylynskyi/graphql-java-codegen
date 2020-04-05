@@ -170,7 +170,7 @@ Access to classes from your code as normal Kotlin classes.
 
 ### Example
 
-[graphql-codegen-gradle-plugin-example](graphql-codegen-gradle-plugin-example)
+[example](example)
 
 
 ### Inspired by

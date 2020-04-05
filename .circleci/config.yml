@@ -50,7 +50,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd plugins/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
+          command: cd plugins/maven && mvn dependency:go-offline
       - save_cache:
           paths:
             - ~/.gradle
@@ -58,7 +58,7 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd plugins/graphql-java-codegen-maven-plugin && mvn package
+          command: cd plugins/maven && mvn package
   build-graphql-java-codegen-gradle-plugin:
     description:
       Build gradle plugin
@@ -79,7 +79,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle dependencies
+          command: cd plugins/gradle && gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -87,7 +87,7 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd plugins/graphql-java-codegen-gradle-plugin && gradle test
+          command: cd plugins/gradle && gradle test
 workflows:
   build-library-and-plugins:
     jobs:
