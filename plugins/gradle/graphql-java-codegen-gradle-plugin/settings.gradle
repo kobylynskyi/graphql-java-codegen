@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "example"
+rootProject.name = "graphql-java-codegen-gradle-plugin"
