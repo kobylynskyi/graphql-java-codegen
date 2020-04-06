@@ -25,6 +25,8 @@ class GraphqlCodegenRequestTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
+        mappingConfig.setResponseProjectionSuffix("ResponseProjection");
+        mappingConfig.setRequestSuffix("Request");
         mappingConfig.setGenerateRequests(true);
         mappingConfig.setGenerateToString(false); // should be overridden to true
         mappingConfig.setGenerateApis(false);

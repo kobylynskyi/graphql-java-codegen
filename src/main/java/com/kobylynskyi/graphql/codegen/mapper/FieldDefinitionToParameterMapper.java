@@ -83,7 +83,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         String nestedType = getNestedTypeName(fieldDef.getType());
         if (typeNames.contains(nestedType)) {
-            parameter.setType(nestedType + "ResponseProjection");
+            parameter.setType(nestedType + mappingConfig.getResponseProjectionSuffix());
         }
         return parameter;
     }

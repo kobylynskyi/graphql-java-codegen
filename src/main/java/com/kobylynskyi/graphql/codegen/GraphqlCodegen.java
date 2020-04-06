@@ -64,6 +64,9 @@ public class GraphqlCodegen {
         if (mappingConfig.getRequestSuffix() == null) {
             mappingConfig.setRequestSuffix(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX);
         }
+        if (mappingConfig.getResponseProjectionSuffix() == null) {
+            mappingConfig.setResponseProjectionSuffix(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
+        }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(DefaultMappingConfigValues.DEFAULT_TO_STRING);
         }

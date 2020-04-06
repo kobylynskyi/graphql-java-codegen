@@ -29,8 +29,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
      */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
 
-    private Boolean generateRequests;
-    private String requestSuffix;
     private Boolean generateApis;
     private String packageName;
     private String apiPackageName;
@@ -51,6 +49,11 @@ public class MappingConfig implements Combinable<MappingConfig> {
      */
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
+    // client-side codegen configs:
+    private Boolean generateRequests;
+    private String requestSuffix;
+    private String responseProjectionSuffix;
+
     @Override
     public void combine(MappingConfig source) {
         if (source == null) {
@@ -66,8 +69,6 @@ public class MappingConfig implements Combinable<MappingConfig> {
         } else if (this.customAnnotationsMapping == null) {
             this.customAnnotationsMapping = source.customAnnotationsMapping;
         }
-        this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
-        this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
         this.generateApis = source.generateApis != null ? source.generateApis : this.generateApis;
         this.packageName = source.packageName != null ? source.packageName : this.packageName;
         this.apiPackageName = source.apiPackageName != null ? source.apiPackageName : this.apiPackageName;
@@ -85,6 +86,9 @@ public class MappingConfig implements Combinable<MappingConfig> {
         } else if (this.fieldsWithResolvers == null) {
             this.fieldsWithResolvers = source.fieldsWithResolvers;
         }
+        this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
+        this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
+        this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;
     }
 
     /**
