@@ -27,10 +27,9 @@ public class InputValueDefinitionToParameterMapper {
      * @return Freemarker data model of the GraphQL input value definition
      */
     public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
-        if (valueDefinitions == null) {
-            return Collections.emptyList();
-        }
-        return valueDefinitions.stream().map(inputValueDef -> map(mappingConfig, inputValueDef, parentTypeName)).collect(toList());
+        return valueDefinitions.stream()
+                .map(inputValueDef -> map(mappingConfig, inputValueDef, parentTypeName))
+                .collect(toList());
     }
 
     /**

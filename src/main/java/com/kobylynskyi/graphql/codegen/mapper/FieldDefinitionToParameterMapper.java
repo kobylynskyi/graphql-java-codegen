@@ -30,9 +30,6 @@ public class FieldDefinitionToParameterMapper {
      */
     public static List<ParameterDefinition> mapFields(MappingConfig mappingConfig, List<FieldDefinition> fieldDefinitions,
                                                       String parentTypeName) {
-        if (fieldDefinitions == null) {
-            return Collections.emptyList();
-        }
         return fieldDefinitions.stream()
                 .filter(fieldDef -> !generateResolversForField(mappingConfig, fieldDef, parentTypeName))
                 .map(fieldDef -> mapFields(mappingConfig, fieldDef, parentTypeName))
@@ -51,9 +48,6 @@ public class FieldDefinitionToParameterMapper {
     public static List<ProjectionParameterDefinition> mapProjectionFields(MappingConfig mappingConfig,
                                                                           List<FieldDefinition> fieldDefinitions,
                                                                           String parentTypeName, Set<String> typeNames) {
-        if (fieldDefinitions == null) {
-            return Collections.emptyList();
-        }
         return fieldDefinitions.stream()
                 .map(fieldDef -> mapProjectionFields(mappingConfig, fieldDef, parentTypeName, typeNames))
                 .collect(toList());
