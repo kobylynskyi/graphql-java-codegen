@@ -1,0 +1,9 @@
+package com.github.graphql;
+
+public enum EventStatusTO {
+
+    OPEN,
+    IN_PROGRESS,
+    LOGGED
+
+}

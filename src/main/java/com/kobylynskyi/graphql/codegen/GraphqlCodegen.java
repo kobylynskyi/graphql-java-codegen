@@ -1,8 +1,12 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.DefinitionTypeDeterminer;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.UnsupportedGraphqlDefinitionException;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import freemarker.template.TemplateException;
 import graphql.language.*;
 import lombok.Getter;
@@ -12,17 +16,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 /**
  * Generator of:
- * - Interface for each GraphQL query
- * - Interface for each GraphQL mutation
- * - Interface for each GraphQL subscription
- * - Class for each GraphQL data type
- * - Class for each GraphQL enum type
- * - Class for each GraphQL scalar type
+ * - Interface for each GraphQL query, mutation, subscription, union and field resolvers
+ * - POJO Class for each GraphQL type and input
+ * - Enum Class for each GraphQL enum
  *
  * @author kobylynskyi
  * @author valinhadev
@@ -55,6 +58,15 @@ public class GraphqlCodegen {
         if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
             mappingConfig.setGenerateEqualsAndHashCode(DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE);
         }
+        if (mappingConfig.getGenerateRequests() == null) {
+            mappingConfig.setGenerateRequests(DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS);
+        }
+        if (mappingConfig.getRequestSuffix() == null) {
+            mappingConfig.setRequestSuffix(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX);
+        }
+        if (mappingConfig.getResponseProjectionSuffix() == null) {
+            mappingConfig.setResponseProjectionSuffix(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
+        }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(DefaultMappingConfigValues.DEFAULT_TO_STRING);
         }
@@ -64,6 +76,10 @@ public class GraphqlCodegen {
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
+        if (mappingConfig.getGenerateRequests()) {
+            // required for request serialization
+            mappingConfig.setGenerateToString(true);
+        }
     }
 
 
@@ -72,44 +88,46 @@ public class GraphqlCodegen {
         long startTime = System.currentTimeMillis();
         if (!schemas.isEmpty()) {
             Document document = GraphqlDocumentParser.getDocument(schemas);
-            addScalarsToCustomMappingConfig(document);
+            initCustomTypeMappings(document);
             processDocument(document);
         }
         long elapsed = System.currentTimeMillis() - startTime;
-        System.out.println(String.format("Finished processing %d schemas in %d ms", schemas.size(), elapsed));
+        System.out.println(String.format("Finished processing %d schema(s) in %d ms", schemas.size(), elapsed));
     }
 
     private void processDocument(Document document) throws IOException, TemplateException {
+        Set<String> typeNames = getAllTypeNames(document);
         for (Definition<?> definition : document.getDefinitions()) {
-            GraphqlDefinitionType definitionType;
             try {
-                definitionType = DefinitionTypeDeterminer.determine(definition);
-            } catch (UnsupportedGraphqlDefinitionException ex) {
-                continue;
-            }
-            switch (definitionType) {
-                case OPERATION:
-                    generateOperation((ObjectTypeDefinition) definition);
-                    break;
-                case TYPE:
-                    generateType((ObjectTypeDefinition) definition, document);
-                    generateFieldResolvers((ObjectTypeDefinition) definition);
-                    break;
-                case INTERFACE:
-                    generateInterface((InterfaceTypeDefinition) definition);
-                    break;
-                case ENUM:
-                    generateEnum((EnumTypeDefinition) definition);
-                    break;
-                case INPUT:
-                    generateInput((InputObjectTypeDefinition) definition);
-                    break;
-                case UNION:
-                    generateUnion((UnionTypeDefinition) definition);
+                processDefinition(document, definition, typeNames);
+            } catch (UnsupportedGraphqlDefinitionException ignored) {
             }
         }
         System.out.println(String.format("Generated %d definitions in folder '%s'", document.getDefinitions().size(),
                 outputDir.getAbsolutePath()));
+    }
+
+    private void processDefinition(Document document, Definition<?> definition, Set<String> typeNames) throws IOException, TemplateException {
+        switch (DefinitionTypeDeterminer.determine(definition)) {
+            case OPERATION:
+                generateOperation((ObjectTypeDefinition) definition);
+                break;
+            case TYPE:
+                generateType((ObjectTypeDefinition) definition, document, typeNames);
+                generateFieldResolvers((ObjectTypeDefinition) definition);
+                break;
+            case INTERFACE:
+                generateInterface((InterfaceTypeDefinition) definition);
+                break;
+            case ENUM:
+                generateEnum((EnumTypeDefinition) definition);
+                break;
+            case INPUT:
+                generateInput((InputObjectTypeDefinition) definition);
+                break;
+            case UNION:
+                generateUnion((UnionTypeDefinition) definition);
+        }
     }
 
     private void generateUnion(UnionTypeDefinition definition) throws IOException, TemplateException {
@@ -124,19 +142,32 @@ public class GraphqlCodegen {
 
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
-            for (FieldDefinition fieldDef : definition.getFieldDefinitions()) {
-                Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, fieldDef, definition.getName());
+            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
+                Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, operationDef, definition.getName());
                 GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
             }
             // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
             Map<String, Object> dataModel = ObjectDefinitionToDataModelMapper.map(mappingConfig, definition);
             GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
+
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
+            // generate request objects for graphql operations
+            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
+                Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName());
+                GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir);
+            }
+        }
     }
 
-    private void generateType(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
+    private void generateType(ObjectTypeDefinition definition, Document document, Set<String> typeNames) throws IOException, TemplateException {
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingConfig, definition, document);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
+
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
+            Map<String, Object> responseProjDataModel = TypeDefinitionToDataModelMapper.mapResponseProjection(mappingConfig, definition, document, typeNames);
+            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir);
+        }
     }
 
     private void generateFieldResolvers(ObjectTypeDefinition definition) throws IOException, TemplateException {
@@ -154,17 +185,30 @@ public class GraphqlCodegen {
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
     }
 
+    private static Set<String> getAllTypeNames(Document document) {
+        return document.getDefinitionsOfType(ObjectTypeDefinition.class)
+                .stream()
+                .filter(typeDef -> !Utils.isGraphqlOperation(typeDef.getName()))
+                .map(ObjectTypeDefinition::getName)
+                .collect(Collectors.toSet());
+    }
+
     private void generateEnum(EnumTypeDefinition definition) throws IOException, TemplateException {
         Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingConfig, definition);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, outputDir);
     }
 
-    private void addScalarsToCustomMappingConfig(Document document) {
+    private void initCustomTypeMappings(Document document) {
         for (Definition<?> definition : document.getDefinitions()) {
             if (definition instanceof ScalarTypeDefinition) {
                 String scalarName = ((ScalarTypeDefinition) definition).getName();
                 mappingConfig.putCustomTypeMappingIfAbsent(scalarName, "String");
             }
         }
+        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
+        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
+        mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
     }
 }

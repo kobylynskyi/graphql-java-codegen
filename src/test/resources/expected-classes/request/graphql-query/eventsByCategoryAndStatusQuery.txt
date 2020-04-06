@@ -1,0 +1,17 @@
+query {
+  eventsByCategoryAndStatus(categoryId: "categoryIdValue1", status: OPEN){
+    id
+    active
+    properties {
+      floatVal
+      child {
+        intVal
+        parent {
+          id
+        }
+      }
+      booleanVal
+    }
+    status
+  }
+}

@@ -2,8 +2,8 @@ package com.kobylynskyi.graphql.testdefaults;
 
 public enum MyEnum {
 
-    ONE, 
-    TWO, 
+    ONE,
+    TWO,
     THREE
 
 }

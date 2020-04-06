@@ -17,6 +17,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,11 +49,11 @@ class GraphqlCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(
-                Arrays.asList("CreateEventMutation.java", "Event.java", "EventByIdQuery.java",
-                        "EventProperty.java", "EventStatus.java", "EventsByCategoryAndStatusQuery.java",
-                        "EventsCreatedSubscription.java", "Mutation.java", "Query.java", "Subscription.java",
-                        "VersionQuery.java"), generatedFileNames);
+        assertEquals(Arrays.asList(
+                "CreateEventMutation.java", "Event.java", "EventByIdQuery.java", "EventProperty.java",
+                "EventStatus.java", "EventsByCategoryAndStatusQuery.java", "EventsByIdsQuery.java",
+                "EventsCreatedSubscription.java", "Mutation.java", "Query.java", "Subscription.java",
+                "VersionQuery.java"), generatedFileNames);
 
         for (File file : files) {
             File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
@@ -62,7 +63,7 @@ class GraphqlCodegenTest {
 
     @Test
     void generate_CustomMappings() throws Exception {
-        mappingConfig.setCustomTypesMapping(Collections.singletonMap("DateTime", "java.util.Date"));
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "java.util.Date")));
 
         generator.generate();
 
@@ -76,8 +77,7 @@ class GraphqlCodegenTest {
 
     @Test
     void generate_CustomMappings_Nested() throws Exception {
-        mappingConfig.setCustomTypesMapping(
-                new HashMap<>(Collections.singletonMap("EventProperty.intVal", "java.math.BigInteger")));
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));
 
         generator.generate();
 
@@ -121,9 +121,9 @@ class GraphqlCodegenTest {
     @Test
     void generate_CustomAnnotationMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(
-                new HashMap<>(Collections.singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
+                new HashMap<>(singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
 
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("Event.createdDateTime",
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
                 "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
@@ -139,9 +139,9 @@ class GraphqlCodegenTest {
     @Test
     void generate_CustomAnnotationMappings_Type() throws Exception {
         mappingConfig.setCustomTypesMapping(
-                new HashMap<>(Collections.singletonMap("DateTime", "org.joda.time.DateTime")));
+                new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
 
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("DateTime",
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
                 "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
@@ -157,9 +157,9 @@ class GraphqlCodegenTest {
     @Test
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig
-                .setCustomTypesMapping(new HashMap<>(Collections.singletonMap("DateTime", "org.joda.time.DateTime")));
+                .setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
 
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(Collections.singletonMap("Event.createdDateTime",
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
                 "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generator.generate();
@@ -207,7 +207,7 @@ class GraphqlCodegenTest {
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutation.java", "EventByIdQuery.java",
-                "EventsByCategoryAndStatusQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
+                "EventsByCategoryAndStatusQuery.java", "EventsByIdsQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
                 "Subscription.java", "VersionQuery.java"), generatedApiFileNames);
         Arrays.stream(apiFiles).forEach(file -> {
             try {
@@ -375,11 +375,11 @@ class GraphqlCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertFileContainsElements(files, "CreateEventMutation.java",
-                "import java.util.concurrent","CompletableFuture<Event> createEvent(");
+                "import java.util.concurrent", "CompletableFuture<Event> createEvent(");
 
     }
 
-    private void assertFileContainsElements(File[] files, String fileName, String...elements)
+    private void assertFileContainsElements(File[] files, String fileName, String... elements)
             throws IOException {
         File file = getFile(files, fileName);
 

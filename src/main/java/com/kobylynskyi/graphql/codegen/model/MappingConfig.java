@@ -49,6 +49,11 @@ public class MappingConfig implements Combinable<MappingConfig> {
      */
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
+    // client-side codegen configs:
+    private Boolean generateRequests;
+    private String requestSuffix;
+    private String responseProjectionSuffix;
+
     @Override
     public void combine(MappingConfig source) {
         if (source == null) {
@@ -81,6 +86,9 @@ public class MappingConfig implements Combinable<MappingConfig> {
         } else if (this.fieldsWithResolvers == null) {
             this.fieldsWithResolvers = source.fieldsWithResolvers;
         }
+        this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
+        this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
+        this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;
     }
 
     /**

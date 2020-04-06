@@ -43,9 +43,6 @@ public class EnumDefinitionToDataModelMapper {
      * @return list of strings
      */
     private static List<String> map(List<EnumValueDefinition> enumValueDefinitions) {
-        if (enumValueDefinitions == null) {
-            return Collections.emptyList();
-        }
         return enumValueDefinitions.stream()
                 .map(EnumValueDefinition::getName)
                 .map(MapperUtils::capitalizeIfRestricted)

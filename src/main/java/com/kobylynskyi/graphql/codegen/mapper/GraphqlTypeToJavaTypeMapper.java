@@ -1,9 +1,11 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.*;
+import graphql.language.ListType;
+import graphql.language.NonNullType;
+import graphql.language.Type;
+import graphql.language.TypeName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,39 +19,6 @@ import static graphql.language.OperationDefinition.Operation;
  * @author kobylynskyi
  */
 class GraphqlTypeToJavaTypeMapper {
-
-    /**
-     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
-     *
-     * @param mappingConfig  Global mapping configuration
-     * @param fieldDef       GraphQL field definition
-     * @param parentTypeName Name of the parent type
-     * @return Freemarker-understandable format of parameter (field)
-     */
-    public static ParameterDefinition map(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
-        ParameterDefinition parameter = new ParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
-        parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
-        parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
-        return parameter;
-    }
-
-    /**
-     * Map GraphQL's InputValueDefinition to a Freemarker-understandable format of operation
-     *
-     * @param mappingConfig        Global mapping configuration
-     * @param inputValueDefinition GraphQL input value definition
-     * @param parentTypeName       Name of the parent type
-     * @return Freemarker-understandable format of parameter (field)
-     */
-    public static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition, String parentTypeName) {
-        ParameterDefinition parameter = new ParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
-        parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
-        parameter.setDefaultValue(DefaultValueMapper.map(inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName));
-        return parameter;
-    }
 
     /**
      * Convert GraphQL type to a corresponding Java type
@@ -84,6 +53,27 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     /**
+     * Get nested type of GraphQL Type. Example:
+     * Event -> Event
+     * Event! -> Event
+     * [Event!]! -> Event
+     * [[Event]] -> Event
+     *
+     * @param graphqlType GraphQL type
+     * @return GraphQL type without List/NonNull wrapping
+     */
+    static String getNestedTypeName(Type graphqlType) {
+        if (graphqlType instanceof TypeName) {
+            return ((TypeName) graphqlType).getName();
+        } else if (graphqlType instanceof ListType) {
+            return getNestedTypeName(((ListType) graphqlType).getType());
+        } else if (graphqlType instanceof NonNullType) {
+            return getNestedTypeName(((NonNullType) graphqlType).getType());
+        }
+        return null;
+    }
+
+    /**
      * Convert GraphQL type to a corresponding Java type
      *
      * @param mappingConfig  Global mapping configuration
@@ -99,20 +89,7 @@ class GraphqlTypeToJavaTypeMapper {
         } else if (customTypesMapping.containsKey(graphlType)) {
             return customTypesMapping.get(graphlType);
         }
-        switch (graphlType) {
-            case "ID":
-                return "String";
-            case "Int":
-                return "Integer";
-            case "Float":
-                return "Double";
-            case "String":
-            case "Boolean":
-                return graphlType;
-            default:
-                // We need to refer other custom types/interfaces/unions with prefix and suffix
-                return MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, graphlType);
-        }
+        return MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, graphlType);
     }
 
     /**
@@ -128,8 +105,8 @@ class GraphqlTypeToJavaTypeMapper {
         return getAnnotations(mappingConfig, graphlType, name, parentTypeName, false);
     }
 
-    private static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName,
-                                               boolean mandatory) {
+    static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName,
+                                       boolean mandatory) {
         if (type instanceof TypeName) {
             return getAnnotations(mappingConfig, ((TypeName) type).getName(), name, parentTypeName, mandatory);
         } else if (type instanceof ListType) {
@@ -205,7 +182,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @param parentTypeName Name of the parent type
      * @return Java type wrapped into the subscriptionReturnType
      */
-    static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
+    private static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
         if (parentTypeName.equalsIgnoreCase(Operation.SUBSCRIPTION.name())
                 && !Utils.isBlank(mappingConfig.getSubscriptionReturnType())) {
             return String.format("%s<%s>", mappingConfig.getSubscriptionReturnType(), javaTypeName);

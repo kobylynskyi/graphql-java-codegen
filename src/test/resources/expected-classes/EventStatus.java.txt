@@ -2,8 +2,8 @@ package com.kobylynskyi.graphql.test1;
 
 public enum EventStatus {
 
-    OPEN, 
-    IN_PROGRESS, 
+    OPEN,
+    IN_PROGRESS,
     LOGGED
 
 }

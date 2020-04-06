@@ -1,0 +1,57 @@
+package com.github.graphql;
+
+import java.util.*;
+
+public class CodeOfConductResponseProjection implements com.kobylynskyi.graphql.codegen.model.request.GraphQLResponseProjection {
+
+    private Map<String, Object> fields = new LinkedHashMap<>();
+
+    public CodeOfConductResponseProjection() {
+    }
+
+    public CodeOfConductResponseProjection body() {
+        fields.put("body", null);
+        return this;
+    }
+
+    public CodeOfConductResponseProjection id() {
+        fields.put("id", null);
+        return this;
+    }
+
+    public CodeOfConductResponseProjection key() {
+        fields.put("key", null);
+        return this;
+    }
+
+    public CodeOfConductResponseProjection name() {
+        fields.put("name", null);
+        return this;
+    }
+
+    public CodeOfConductResponseProjection resourcePath() {
+        fields.put("resourcePath", null);
+        return this;
+    }
+
+    public CodeOfConductResponseProjection url() {
+        fields.put("url", null);
+        return this;
+    }
+
+
+    @Override
+    public String toString() {
+        if (fields.isEmpty()) {
+            return "";
+        }
+        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
+        for (Map.Entry<String, Object> property : fields.entrySet()) {
+            joiner.add(property.getKey());
+            if (property.getValue() != null) {
+                joiner.add(" ").add(property.getValue().toString());
+            }
+        }
+        return joiner.toString();
+    }
+}

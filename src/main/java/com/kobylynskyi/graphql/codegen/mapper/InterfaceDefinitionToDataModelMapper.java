@@ -28,7 +28,7 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDef));
-        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.map(mappingConfig, typeDef.getFieldDefinitions(), typeDef.getName()));
+        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(mappingConfig, typeDef.getFieldDefinitions(), typeDef.getName()));
         return dataModel;
     }
 

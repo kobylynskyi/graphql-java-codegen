@@ -19,6 +19,9 @@ type Query {
 
     # Single event by ID.
     eventById(id: ID!): Event!
+
+    # Events by IDs.
+    eventsByIds(ids: [ID!]!): [Event!]!
 }
 
 type Mutation {

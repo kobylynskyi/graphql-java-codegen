@@ -1,0 +1,57 @@
+package com.github.graphql;
+
+import java.util.*;
+
+public class AcceptTopicSuggestionInput {
+
+    private String clientMutationId;
+    @javax.validation.constraints.NotNull
+    private String name;
+    @javax.validation.constraints.NotNull
+    private String repositoryId;
+
+    public AcceptTopicSuggestionInput() {
+    }
+
+    public AcceptTopicSuggestionInput(String clientMutationId, String name, String repositoryId) {
+        this.clientMutationId = clientMutationId;
+        this.name = name;
+        this.repositoryId = repositoryId;
+    }
+
+    public String getClientMutationId() {
+        return clientMutationId;
+    }
+    public void setClientMutationId(String clientMutationId) {
+        this.clientMutationId = clientMutationId;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRepositoryId() {
+        return repositoryId;
+    }
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (clientMutationId != null) {
+            joiner.add("clientMutationId: \"" + clientMutationId + "\"");
+        }
+        if (name != null) {
+            joiner.add("name: \"" + name + "\"");
+        }
+        if (repositoryId != null) {
+            joiner.add("repositoryId: \"" + repositoryId + "\"");
+        }
+        return joiner.toString();
+    }
+}
