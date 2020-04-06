@@ -1,20 +1,20 @@
-package com.github.graphql;
+package com.kobylynskyi.graphql.codegen.model.request.data;
 
 import java.util.*;
 import graphql.language.*;
 
-public class UpdateRepositoryMutationRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+public class EventsByIdsQueryRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.MUTATION;
-    private static final String OPERATION_NAME = "updateRepository";
+    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.QUERY;
+    private static final String OPERATION_NAME = "eventsByIds";
 
     private Map<String, Object> input = new LinkedHashMap<>();
 
-    public UpdateRepositoryMutationRequest() {
+    public EventsByIdsQueryRequest() {
     }
 
-    public void setInput(UpdateRepositoryInput input) {
-        this.input.put("input", input);
+    public void setIds(Collection<String> ids) {
+        this.input.put("ids", ids);
     }
 
     @Override

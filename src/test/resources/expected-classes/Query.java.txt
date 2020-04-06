@@ -13,4 +13,7 @@ public interface Query {
     @javax.validation.constraints.NotNull
     Event eventById(String id) throws Exception;
 
+    @javax.validation.constraints.NotNull
+    Collection<Event> eventsByIds(Collection<String> ids) throws Exception;
+
 }

@@ -38,9 +38,6 @@ public class EventsByCategoryAndStatusQueryRequest implements com.kobylynskyi.gr
 
     @Override
     public String toString() {
-        return "EventsByCategoryAndStatusQueryRequest{"
-            + "categoryId='" + categoryId + "',"
-            + "status='" + status + "'"
-            + "}";
+        return Objects.toString(input);
     }
 }

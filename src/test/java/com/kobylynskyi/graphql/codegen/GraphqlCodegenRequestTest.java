@@ -26,7 +26,7 @@ class GraphqlCodegenRequestTest {
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
         mappingConfig.setGenerateRequests(true);
-        mappingConfig.setGenerateToString(false); // should be overriden to true
+        mappingConfig.setGenerateToString(false); // should be overridden to true
         mappingConfig.setGenerateApis(false);
     }
 
@@ -50,6 +50,8 @@ class GraphqlCodegenRequestTest {
                 getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/VersionQueryRequest.java.txt"),
                 getGeneratedFile(files, "VersionQueryRequest.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByIdsQueryRequest.java.txt"),
+                getGeneratedFile(files, "EventsByIdsQueryRequest.java"));
     }
 
     @Test

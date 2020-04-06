@@ -49,11 +49,11 @@ class GraphqlCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(
-                Arrays.asList("CreateEventMutation.java", "Event.java", "EventByIdQuery.java",
-                        "EventProperty.java", "EventStatus.java", "EventsByCategoryAndStatusQuery.java",
-                        "EventsCreatedSubscription.java", "Mutation.java", "Query.java", "Subscription.java",
-                        "VersionQuery.java"), generatedFileNames);
+        assertEquals(Arrays.asList(
+                "CreateEventMutation.java", "Event.java", "EventByIdQuery.java", "EventProperty.java",
+                "EventStatus.java", "EventsByCategoryAndStatusQuery.java", "EventsByIdsQuery.java",
+                "EventsCreatedSubscription.java", "Mutation.java", "Query.java", "Subscription.java",
+                "VersionQuery.java"), generatedFileNames);
 
         for (File file : files) {
             File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
@@ -207,7 +207,7 @@ class GraphqlCodegenTest {
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutation.java", "EventByIdQuery.java",
-                "EventsByCategoryAndStatusQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
+                "EventsByCategoryAndStatusQuery.java", "EventsByIdsQuery.java", "EventsCreatedSubscription.java", "Mutation.java", "Query.java",
                 "Subscription.java", "VersionQuery.java"), generatedApiFileNames);
         Arrays.stream(apiFiles).forEach(file -> {
             try {

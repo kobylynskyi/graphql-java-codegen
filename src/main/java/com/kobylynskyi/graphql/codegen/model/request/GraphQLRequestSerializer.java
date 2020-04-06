@@ -46,7 +46,7 @@ public class GraphQLRequestSerializer {
             Collection<?> inputCollection = (Collection) input;
             return inputCollection.stream()
                     .map(GraphQLRequestSerializer::getEntry)
-                    .collect(Collectors.joining(",", "[", "]"));
+                    .collect(Collectors.joining(", ", "[ ", " ]"));
         }
         if (input instanceof Enum<?>) {
             return input.toString();

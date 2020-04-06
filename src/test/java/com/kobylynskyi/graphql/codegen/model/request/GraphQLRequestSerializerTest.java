@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -26,7 +27,7 @@ class GraphQLRequestSerializerTest {
     void serialize_noResponseProjection() throws IOException {
         String fileContent = getExpectedQueryString("versionQuery.txt");
         GraphQLRequest graphQLRequest = new GraphQLRequest(new VersionQueryRequest());
-        String serializedQuery = GraphQLRequestSerializer.serialize(graphQLRequest).replaceAll(" +", " ").trim();
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
         assertEquals(fileContent, serializedQuery);
     }
 
@@ -49,7 +50,7 @@ class GraphQLRequestSerializerTest {
                                 .booleanVal())
                         .status()
         );
-        String serializedQuery = GraphQLRequestSerializer.serialize(graphQLRequest).replaceAll(" +", " ").trim();
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
         assertEquals(fileContent, serializedQuery);
     }
 
@@ -64,7 +65,20 @@ class GraphQLRequestSerializerTest {
                         .issue(new IssueResponseProjection()
                                 .activeLockReason())
         );
-        String serializedQuery = GraphQLRequestSerializer.serialize(graphQLRequest).replaceAll(" +", " ").trim();
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
+        assertEquals(fileContent, serializedQuery);
+    }
+
+    @Test
+    void serialize_collectionRequest() throws IOException {
+        String fileContent = getExpectedQueryString("eventsByIdsQuery.txt");
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest();
+        request.setIds(Arrays.asList("4", "5", "6"));
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+        );
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
         assertEquals(fileContent, serializedQuery);
     }
 

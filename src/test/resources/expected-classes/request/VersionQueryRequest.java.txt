@@ -30,7 +30,6 @@ public class VersionQueryRequest implements com.kobylynskyi.graphql.codegen.mode
 
     @Override
     public String toString() {
-        return "VersionQueryRequest{"
-            + "}";
+        return Objects.toString(input);
     }
 }

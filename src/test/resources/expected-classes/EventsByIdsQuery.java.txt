@@ -1,0 +1,10 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public interface EventsByIdsQuery {
+
+    @javax.validation.constraints.NotNull
+    Collection<Event> eventsByIds(Collection<String> ids) throws Exception;
+
+}

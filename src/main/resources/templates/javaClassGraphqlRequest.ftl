@@ -60,13 +60,7 @@ public class ${className} implements com.kobylynskyi.graphql.codegen.model.reque
 <#if toString>
     @Override
     public String toString() {
-        return "${className}{"
-<#if fields?has_content>
-<#list fields as field>
-            + "${field.name}='" + ${field.name} + "'<#if field_has_next>,</#if>"
-</#list>
-</#if>
-            + "}";
+        return Objects.toString(input);
     }
 </#if>
 }
