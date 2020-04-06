@@ -46,6 +46,9 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
+        assertEquals("6", mappingConfig.getRequestSuffix());
+        assertEquals("7", mappingConfig.getResponseProjectionSuffix());
+        assertFalse(mappingConfig.getGenerateRequests());
     }
 
     @Test
@@ -68,6 +71,9 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
+        assertEquals("6", mappingConfig.getRequestSuffix());
+        assertEquals("7", mappingConfig.getResponseProjectionSuffix());
+        assertFalse(mappingConfig.getGenerateRequests());
     }
 
     @Test
@@ -92,6 +98,9 @@ class MappingConfigTest {
         assertTrue(mappingConfig.getGenerateAsyncApi());
         assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
+        assertEquals("66", mappingConfig.getRequestSuffix());
+        assertEquals("77", mappingConfig.getResponseProjectionSuffix());
+        assertTrue(mappingConfig.getGenerateRequests());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -116,6 +125,9 @@ class MappingConfigTest {
         config.setGenerateAsyncApi(false);
         config.setGenerateParameterizedFieldsResolvers(true);
         config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
+        config.setRequestSuffix("6");
+        config.setResponseProjectionSuffix("7");
+        config.setGenerateRequests(false);
         return config;
     }
 
@@ -136,6 +148,9 @@ class MappingConfigTest {
         config.setGenerateAsyncApi(true);
         config.setGenerateParameterizedFieldsResolvers(false);
         config.setFieldsWithResolvers(singleton("55"));
+        config.setRequestSuffix("66");
+        config.setResponseProjectionSuffix("77");
+        config.setGenerateRequests(true);
         return config;
     }
 
