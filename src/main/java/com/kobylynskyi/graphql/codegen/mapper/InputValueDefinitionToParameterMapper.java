@@ -6,7 +6,10 @@ import graphql.language.InputValueDefinition;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getAnnotations;
+import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getJavaType;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Mapper from GraphQL's InputValueDefinition to a Freemarker-understandable format
@@ -27,9 +30,24 @@ public class InputValueDefinitionToParameterMapper {
         if (valueDefinitions == null) {
             return Collections.emptyList();
         }
-        return valueDefinitions.stream()
-                .map(inputValueDefinition -> GraphqlTypeToJavaTypeMapper.map(mappingConfig, inputValueDefinition, parentTypeName))
-                .collect(Collectors.toList());
+        return valueDefinitions.stream().map(inputValueDef -> map(mappingConfig, inputValueDef, parentTypeName)).collect(toList());
+    }
+
+    /**
+     * Map GraphQL's InputValueDefinition to a Freemarker-understandable format of operation
+     *
+     * @param mappingConfig        Global mapping configuration
+     * @param inputValueDefinition GraphQL input value definition
+     * @param parentTypeName       Name of the parent type
+     * @return Freemarker-understandable format of parameter (field)
+     */
+    private static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition, String parentTypeName) {
+        ParameterDefinition parameter = new ParameterDefinition();
+        parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
+        parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
+        parameter.setDefaultValue(DefaultValueMapper.map(inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName));
+        return parameter;
     }
 
 }

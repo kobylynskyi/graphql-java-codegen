@@ -29,6 +29,8 @@ public class MappingConfig implements Combinable<MappingConfig> {
      */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
 
+    private Boolean generateRequests;
+    private String requestSuffix;
     private Boolean generateApis;
     private String packageName;
     private String apiPackageName;
@@ -64,6 +66,8 @@ public class MappingConfig implements Combinable<MappingConfig> {
         } else if (this.customAnnotationsMapping == null) {
             this.customAnnotationsMapping = source.customAnnotationsMapping;
         }
+        this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
+        this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
         this.generateApis = source.generateApis != null ? source.generateApis : this.generateApis;
         this.packageName = source.packageName != null ? source.packageName : this.packageName;
         this.apiPackageName = source.apiPackageName != null ? source.apiPackageName : this.apiPackageName;

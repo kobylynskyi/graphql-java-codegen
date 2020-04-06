@@ -193,6 +193,19 @@ public class MapperUtils {
     }
 
     /**
+     * Returns imports required for the request class.
+     *
+     * @param mappingConfig Global mapping configuration
+     * @param packageName   Package name of the generated class which will be ignored
+     * @return all imports required for a generated request class
+     */
+    static Set<String> getImportsForRequests(MappingConfig mappingConfig, String packageName) {
+        Set<String> imports = getImports(mappingConfig, packageName);
+        imports.add("graphql.language");
+        return imports;
+    }
+
+    /**
      * Determines if the specified operation is an async query or mutation
      *
      * @param mappingConfig  Global mapping configuration

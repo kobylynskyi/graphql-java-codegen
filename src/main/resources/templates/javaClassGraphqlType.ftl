@@ -61,13 +61,19 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#if toString>
     @Override
     public String toString() {
-        return "${className}{"
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
 <#if fields?has_content>
 <#list fields as field>
-            + "${field.name}='" + ${field.name} + "'<#if field_has_next>,</#if>"
+        if (${field.name} != null) {
+<#if field.type == "String">
+            joiner.add("${field.name}: \"" + ${field.name} + "\"");
+<#else>
+            joiner.add("${field.name}: " + ${field.name});
+</#if>
+        }
 </#list>
 </#if>
-            + "}";
+        return joiner.toString();
     }
 </#if>
 }

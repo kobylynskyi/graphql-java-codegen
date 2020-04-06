@@ -1,0 +1,16 @@
+mutation {
+  updateIssue(input: {
+    floatVal: 1.23,
+    booleanVal: false,
+    intVal: 42,
+    stringVal: "my-default",
+    enumVal: OPEN,
+    intList: [1, 2, 3],
+    intListEmptyDefault: []
+  }){
+    clientMutationId
+    issue {
+      activeLockReason
+    }
+  }
+}
