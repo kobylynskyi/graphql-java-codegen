@@ -2,8 +2,6 @@ package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
 
-@lombok.Builder
-@lombok.Data
 public class Event {
 
     private String id;
@@ -84,5 +82,7 @@ public class Event {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
+
+
 
 }

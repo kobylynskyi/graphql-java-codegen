@@ -83,4 +83,66 @@ public class Event {
         this.rating = rating;
     }
 
+
+
+    public static class Builder {
+
+        private String id;
+        private String categoryId;
+        private Collection<EventProperty> properties;
+        private EventStatus status;
+        private String createdBy;
+        private String createdDateTime;
+        private Boolean active;
+        private Integer rating;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setProperties(Collection<EventProperty> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder setRating(Integer rating) {
+            this.rating = rating;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(id, categoryId, properties, status, createdBy, createdDateTime, active, rating);
+        }
+
+    }
 }

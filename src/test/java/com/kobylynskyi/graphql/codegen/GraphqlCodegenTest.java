@@ -62,6 +62,17 @@ class GraphqlCodegenTest {
     }
 
     @Test
+    void generate_NoBuilder() throws Exception {
+        mappingConfig.setGenerateBuilder(false);
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
+                .orElseThrow(FileNotFoundException::new);
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Event_noBuilder.java.txt"), eventFile);
+    }
+
+    @Test
     void generate_CustomMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "java.util.Date")));
 

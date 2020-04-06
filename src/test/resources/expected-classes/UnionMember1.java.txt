@@ -20,4 +20,24 @@ public class UnionMember1 implements MyUnion{
         this.someField = someField;
     }
 
+
+
+    public static class Builder {
+
+        private Integer someField;
+
+        public Builder() {
+        }
+
+        public Builder setSomeField(Integer someField) {
+            this.someField = someField;
+            return this;
+        }
+
+
+        public UnionMember1 build() {
+            return new UnionMember1(someField);
+        }
+
+    }
 }

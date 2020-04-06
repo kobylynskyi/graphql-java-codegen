@@ -43,6 +43,7 @@ public class TypeDefinitionToDataModelMapper {
                 .forEach(allInterfaces::add);
         dataModel.put(IMPLEMENTS, allInterfaces);
         dataModel.put(FIELDS, getFields(mappingConfig, typeDefinition, document));
+        dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
         dataModel.put(TO_STRING, mappingConfig.getGenerateToString());
         return dataModel;
@@ -67,8 +68,9 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, Utils.capitalize(typeDefinition.getName()) + mappingConfig.getResponseProjectionSuffix());
         dataModel.put(FIELDS, getProjectionFields(mappingConfig, typeDefinition, document, typeNames));
+        dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
-        // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); already generated for serialization purposes
+        // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }
 

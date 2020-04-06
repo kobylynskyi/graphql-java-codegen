@@ -20,4 +20,24 @@ public class AcceptTopicSuggestionPayload {
         this.clientMutationId = clientMutationId;
     }
 
+
+
+    public static class Builder {
+
+        private String clientMutationId;
+
+        public Builder() {
+        }
+
+        public Builder setClientMutationId(String clientMutationId) {
+            this.clientMutationId = clientMutationId;
+            return this;
+        }
+
+
+        public AcceptTopicSuggestionPayload build() {
+            return new AcceptTopicSuggestionPayload(clientMutationId);
+        }
+
+    }
 }

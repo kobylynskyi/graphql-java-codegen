@@ -325,4 +325,210 @@ public class Commit implements Closer, IssueTimelineItem, PullRequestTimelineIte
         this.zipballUrl = zipballUrl;
     }
 
+
+
+    public static class Builder {
+
+        private String abbreviatedOid;
+        private Integer additions;
+        private GitActor author;
+        private Boolean authoredByCommitter;
+        private String authoredDate;
+        private Integer changedFiles;
+        private String commitResourcePath;
+        private String commitUrl;
+        private String committedDate;
+        private Boolean committedViaWeb;
+        private GitActor committer;
+        private Integer deletions;
+        private String id;
+        private String message;
+        private String messageBody;
+        private String messageBodyHTML;
+        private String messageHeadline;
+        private String messageHeadlineHTML;
+        private String oid;
+        private String pushedDate;
+        private Repository repository;
+        private String resourcePath;
+        private GitSignature signature;
+        private Status status;
+        private String tarballUrl;
+        private Tree tree;
+        private String treeResourcePath;
+        private String treeUrl;
+        private String url;
+        private Boolean viewerCanSubscribe;
+        private SubscriptionState viewerSubscription;
+        private String zipballUrl;
+
+        public Builder() {
+        }
+
+        public Builder setAbbreviatedOid(String abbreviatedOid) {
+            this.abbreviatedOid = abbreviatedOid;
+            return this;
+        }
+
+        public Builder setAdditions(Integer additions) {
+            this.additions = additions;
+            return this;
+        }
+
+        public Builder setAuthor(GitActor author) {
+            this.author = author;
+            return this;
+        }
+
+        public Builder setAuthoredByCommitter(Boolean authoredByCommitter) {
+            this.authoredByCommitter = authoredByCommitter;
+            return this;
+        }
+
+        public Builder setAuthoredDate(String authoredDate) {
+            this.authoredDate = authoredDate;
+            return this;
+        }
+
+        public Builder setChangedFiles(Integer changedFiles) {
+            this.changedFiles = changedFiles;
+            return this;
+        }
+
+        public Builder setCommitResourcePath(String commitResourcePath) {
+            this.commitResourcePath = commitResourcePath;
+            return this;
+        }
+
+        public Builder setCommitUrl(String commitUrl) {
+            this.commitUrl = commitUrl;
+            return this;
+        }
+
+        public Builder setCommittedDate(String committedDate) {
+            this.committedDate = committedDate;
+            return this;
+        }
+
+        public Builder setCommittedViaWeb(Boolean committedViaWeb) {
+            this.committedViaWeb = committedViaWeb;
+            return this;
+        }
+
+        public Builder setCommitter(GitActor committer) {
+            this.committer = committer;
+            return this;
+        }
+
+        public Builder setDeletions(Integer deletions) {
+            this.deletions = deletions;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder setMessageBody(String messageBody) {
+            this.messageBody = messageBody;
+            return this;
+        }
+
+        public Builder setMessageBodyHTML(String messageBodyHTML) {
+            this.messageBodyHTML = messageBodyHTML;
+            return this;
+        }
+
+        public Builder setMessageHeadline(String messageHeadline) {
+            this.messageHeadline = messageHeadline;
+            return this;
+        }
+
+        public Builder setMessageHeadlineHTML(String messageHeadlineHTML) {
+            this.messageHeadlineHTML = messageHeadlineHTML;
+            return this;
+        }
+
+        public Builder setOid(String oid) {
+            this.oid = oid;
+            return this;
+        }
+
+        public Builder setPushedDate(String pushedDate) {
+            this.pushedDate = pushedDate;
+            return this;
+        }
+
+        public Builder setRepository(Repository repository) {
+            this.repository = repository;
+            return this;
+        }
+
+        public Builder setResourcePath(String resourcePath) {
+            this.resourcePath = resourcePath;
+            return this;
+        }
+
+        public Builder setSignature(GitSignature signature) {
+            this.signature = signature;
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setTarballUrl(String tarballUrl) {
+            this.tarballUrl = tarballUrl;
+            return this;
+        }
+
+        public Builder setTree(Tree tree) {
+            this.tree = tree;
+            return this;
+        }
+
+        public Builder setTreeResourcePath(String treeResourcePath) {
+            this.treeResourcePath = treeResourcePath;
+            return this;
+        }
+
+        public Builder setTreeUrl(String treeUrl) {
+            this.treeUrl = treeUrl;
+            return this;
+        }
+
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+            this.viewerCanSubscribe = viewerCanSubscribe;
+            return this;
+        }
+
+        public Builder setViewerSubscription(SubscriptionState viewerSubscription) {
+            this.viewerSubscription = viewerSubscription;
+            return this;
+        }
+
+        public Builder setZipballUrl(String zipballUrl) {
+            this.zipballUrl = zipballUrl;
+            return this;
+        }
+
+
+        public Commit build() {
+            return new Commit(abbreviatedOid, additions, author, authoredByCommitter, authoredDate, changedFiles, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl);
+        }
+
+    }
 }

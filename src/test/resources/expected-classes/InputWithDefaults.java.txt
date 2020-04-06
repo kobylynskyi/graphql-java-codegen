@@ -111,4 +111,84 @@ public class InputWithDefaults {
         this.objectListEmptyDefault = objectListEmptyDefault;
     }
 
+
+
+    public static class Builder {
+
+        private Double floatVal = 1.23;
+        private Boolean booleanVal = false;
+        private Integer intVal = 42;
+        private String stringVal = "my-default";
+        private MyEnum enumVal = MyEnum.ONE;
+        private MyEnum nonNullEnumVal = MyEnum.TWO;
+        private SomeObject objectWithNullDefault = null;
+        private SomeObject objectWithNonNullDefault;
+        private Collection<Integer> intList = Arrays.asList(1, 2, 3);
+        private Collection<Integer> intListEmptyDefault = Collections.emptyList();
+        private Collection<SomeObject> objectListEmptyDefault = Collections.emptyList();
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(Integer intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setEnumVal(MyEnum enumVal) {
+            this.enumVal = enumVal;
+            return this;
+        }
+
+        public Builder setNonNullEnumVal(MyEnum nonNullEnumVal) {
+            this.nonNullEnumVal = nonNullEnumVal;
+            return this;
+        }
+
+        public Builder setObjectWithNullDefault(SomeObject objectWithNullDefault) {
+            this.objectWithNullDefault = objectWithNullDefault;
+            return this;
+        }
+
+        public Builder setObjectWithNonNullDefault(SomeObject objectWithNonNullDefault) {
+            this.objectWithNonNullDefault = objectWithNonNullDefault;
+            return this;
+        }
+
+        public Builder setIntList(Collection<Integer> intList) {
+            this.intList = intList;
+            return this;
+        }
+
+        public Builder setIntListEmptyDefault(Collection<Integer> intListEmptyDefault) {
+            this.intListEmptyDefault = intListEmptyDefault;
+            return this;
+        }
+
+        public Builder setObjectListEmptyDefault(Collection<SomeObject> objectListEmptyDefault) {
+            this.objectListEmptyDefault = objectListEmptyDefault;
+            return this;
+        }
+
+
+        public InputWithDefaults build() {
+            return new InputWithDefaults(floatVal, booleanVal, intVal, stringVal, enumVal, nonNullEnumVal, objectWithNullDefault, objectWithNonNullDefault, intList, intListEmptyDefault, objectListEmptyDefault);
+        }
+
+    }
 }
