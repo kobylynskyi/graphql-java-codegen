@@ -6,7 +6,6 @@ import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +31,7 @@ public class FieldDefinitionToParameterMapper {
                                                       String parentTypeName) {
         return fieldDefinitions.stream()
                 .filter(fieldDef -> !generateResolversForField(mappingConfig, fieldDef, parentTypeName))
-                .map(fieldDef -> mapFields(mappingConfig, fieldDef, parentTypeName))
+                .map(fieldDef -> mapField(mappingConfig, fieldDef, parentTypeName))
                 .collect(toList());
     }
 
@@ -49,7 +48,7 @@ public class FieldDefinitionToParameterMapper {
                                                                           List<FieldDefinition> fieldDefinitions,
                                                                           String parentTypeName, Set<String> typeNames) {
         return fieldDefinitions.stream()
-                .map(fieldDef -> mapProjectionFields(mappingConfig, fieldDef, parentTypeName, typeNames))
+                .map(fieldDef -> mapProjectionField(mappingConfig, fieldDef, parentTypeName, typeNames))
                 .collect(toList());
     }
 
@@ -61,7 +60,7 @@ public class FieldDefinitionToParameterMapper {
      * @param parentTypeName Name of the parent type
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ParameterDefinition mapFields(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
+    private static ParameterDefinition mapField(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
@@ -78,7 +77,7 @@ public class FieldDefinitionToParameterMapper {
      * @param typeNames      Names of all GraphQL types
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ProjectionParameterDefinition mapProjectionFields(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName, Set<String> typeNames) {
+    private static ProjectionParameterDefinition mapProjectionField(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName, Set<String> typeNames) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         String nestedType = getNestedTypeName(fieldDef.getType());
