@@ -18,7 +18,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           command: |
-            export GPG_KEY_FILE=`mktemp`
+            export GPG_KEY_FILE='mktemp'
             echo "export GPG_KEY=$GPG_KEY_FILE" >> $BASH_ENV
           name: Prepare GPG keystore file
       - run:
