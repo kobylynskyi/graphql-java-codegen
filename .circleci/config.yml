@@ -19,12 +19,12 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: gradle install
+          command: gradle build
       - save_cache:
           paths:
             - ~/.gradle
             - ~/.m2
-          key: deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+          key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Generate Code Coverage Report
           command: gradle codeCoverageReport
@@ -46,7 +46,6 @@ jobs:
           command: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
-            - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
@@ -57,10 +56,13 @@ jobs:
             - ~/.m2
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
-          name: Build and run unit tests
+          name: Build library
+          command: cd ~/repo && gradle build publishToMavenLocal -x test
+      - run:
+          name: Build plugin and run unit tests
           command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
       - run:
-          name: Build example project
+          name: Build example plugin project
           command: cd ~/repo/plugins/maven/example && mvn package
   build-graphql-java-codegen-gradle-plugin:
     description:
@@ -78,7 +80,6 @@ jobs:
           command: date +%Y-%m > .circle-cache-key
       - restore_cache:
           keys:
-            - deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
@@ -89,10 +90,13 @@ jobs:
             - ~/.m2
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
-          name: Build and run unit tests
+          name: Build library
+          command: cd ~/repo && gradle build publishToMavenLocal -x test
+      - run:
+          name: Build plugin and run unit tests
           command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
       - run:
-          name: Build example project
+          name: Build example plugin project
           command: cd ~/repo/plugins/gradle/example && gradle test
 workflows:
   build-library-and-plugins:
