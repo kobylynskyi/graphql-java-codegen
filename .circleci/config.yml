@@ -8,7 +8,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    working_directory: ~
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -38,7 +38,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     environment:
       MAVEN_OPTS: -Xmx3200m
-    working_directory: ~
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -50,7 +50,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd ~/plugins/maven/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
+          command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
       - save_cache:
           paths:
             - ~/.gradle
@@ -58,10 +58,10 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd ~/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
+          command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
       - run:
           name: Build example project
-          command: cd ~/plugins/maven/example && mvn package
+          command: cd ~/repo/plugins/maven/example && mvn package
   build-graphql-java-codegen-gradle-plugin:
     description:
       Build gradle plugin
@@ -70,7 +70,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    working_directory: ~
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -82,7 +82,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle dependencies
+          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle dependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -90,10 +90,10 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
+          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
       - run:
           name: Build example project
-          command: cd ~/plugins/gradle/example && gradle test
+          command: cd ~/repo/plugins/gradle/example && gradle test
 workflows:
   build-library-and-plugins:
     jobs:
