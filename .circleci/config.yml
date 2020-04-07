@@ -18,8 +18,8 @@ jobs:
           keys:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
-          name: Build and run unit tests
-          command: gradle install
+          name: Build and publish to local Maven repo
+          command: gradle build publishToMavenLocal
       - save_cache:
           paths:
             - ~/.gradle
