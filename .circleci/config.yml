@@ -17,31 +17,8 @@ jobs:
           keys:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
-          command: |
-            export GPG_KEY_FILE='mktemp'
-            echo "export GPG_KEY=$GPG_KEY_FILE" >> $BASH_ENV
-          name: Prepare GPG keystore file
-      - run:
-          command: echo $<< parameters.base64_key >> | base64 --decode > $GPG_KEY
-          name: Base64 decode gpg keystore to file
-      - run:
-          command: gpg --batch --import $GPG_KEY
-          name: Import GPG keys
-      - run:
-          command: echo $<< parameters.gpg_key_name >> | gpg --batch --pinentry-mode=loopback
-            --passphrase-fd 0 --export-secret-keys > ~/.gnupg/secring.gpg
-          name: Fixing GPG compatablity
-      - run:
-          command: |
-            echo "signing.password=$<< parameters.gpg_key_name >>" >> gradle.properties
-            echo "signing.secretKeyRingFile=~/.gnupg/secring.gpg" >> gradle.properties
-          name: Setting up Gradle signing
-      - run:
-          command: ./gradlew << parameters.deploy_task >>
-          name: Deploy artifacts
-      - run:
-          name: Build and publish to local Maven repo
-          command: gradle build publishToMavenLocal
+          name: Build and run unit tests
+          command: gradle install
       - save_cache:
           paths:
             - ~/.gradle
@@ -88,7 +65,6 @@ jobs:
       Build gradle plugin
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
