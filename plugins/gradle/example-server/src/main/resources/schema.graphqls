@@ -4,42 +4,40 @@ schema {
 }
 
 type Query {
-    bikes: [Bike]
-    bikesByType(type: BikeType!): [Bike]
+    products: [Product]
+    productById(id: ID!): Product
+    productsByIds(ids: [ID!]!): [Product]
 }
 
 type Mutation {
-    newBike(bike: BikeInput!): Bike
+    create(productInput: ProductInput!): Product
 }
 
-type Bike {
+type Product {
     id: ID
-    type: BikeType
-    brand: String
-    size: String
-    year: Int
+    title: String
+    description: String
     price: BigDecimal
+    sku: String
+    stockStatus: StockStatus
     addedDateTime: DateTime
 }
 
-input BikeInput {
-    type: BikeType!
-    brand: String!
-    size: String!
-    year: Int!
+input ProductInput {
+    title: String!
+    description: String
     price: BigDecimal
+    sku: String!
+    stockStatus: StockStatus
 }
 
-enum BikeType {
-    ROAD
-    TOURING
-    TRIAL
-    TRACK
-    MOUNTAIN
-    HYBRID
-    BMX
+enum StockStatus {
+    IN_STOCK
+    SPECIAL_ORDER
+    BACK_ORDERED
+    COMING_SOON
+    SOLD_OUT
+    DISCONTINUED
 }
 
-# Format: "yyyy-MM-dd HH:mm:ss Z"
 scalar DateTime
-scalar BigDecimal

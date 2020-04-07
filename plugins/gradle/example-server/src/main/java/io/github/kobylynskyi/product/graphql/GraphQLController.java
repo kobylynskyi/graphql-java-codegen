@@ -1,4 +1,4 @@
-package io.github.kobylynskyi.bikeshop.graphql;
+package io.github.kobylynskyi.product.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionInput;

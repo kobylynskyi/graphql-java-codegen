@@ -1,4 +1,4 @@
-package io.github.kobylynskyi.bikeshop.graphql.config;
+package io.github.kobylynskyi.product.graphql.config;
 
 import graphql.GraphQL;
 import graphql.execution.AsyncExecutionStrategy;

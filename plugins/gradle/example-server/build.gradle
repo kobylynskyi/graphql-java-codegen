@@ -31,8 +31,8 @@ sourceSets.main.java.srcDir "$buildDir/generated"
 graphqlCodegen {
     graphqlSchemaPaths = ["$projectDir/src/main/resources/schema.graphqls".toString()]
     outputDir = new File("$buildDir/generated")
-    apiPackageName = "io.github.kobylynskyi.bikeshop.graphql.api"
-    modelPackageName = "io.github.kobylynskyi.bikeshop.graphql.model"
+    apiPackageName = "io.github.kobylynskyi.product.graphql.api"
+    modelPackageName = "io.github.kobylynskyi.product.graphql.model"
     customTypesMapping = [
             DateTime: "java.util.Date"
     ]
