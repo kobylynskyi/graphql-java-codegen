@@ -8,7 +8,8 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-    steps:
+  working_directory: ~
+  steps:
       - checkout
       - run:
           name: Generate cache key
@@ -37,6 +38,7 @@ jobs:
       - image: circleci/openjdk:8-jdk
     environment:
       MAVEN_OPTS: -Xmx3200m
+    working_directory: ~
     steps:
       - checkout
       - run:
@@ -68,6 +70,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
+    working_directory: ~
     steps:
       - checkout
       - run:
