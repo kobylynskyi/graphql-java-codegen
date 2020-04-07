@@ -121,12 +121,8 @@ publishing {
     }
 }
 
-signing {
-    // this workaround should be obsolete in gradle 6.2: https://github.com/gradle/gradle/issues/11387
-    def version = String.valueOf(project.version)
-    if (version.endsWith("-SNAPSHOT")) {
-        project.version = version.substring(0, version.lastIndexOf("-SNAPSHOT"))
+if (project.hasProperty("signing.keyId")) {
+    signing {
+        sign publishing.publications.mavenJava
     }
-    sign publishing.publications.mavenJava
-    project.version = version
 }
