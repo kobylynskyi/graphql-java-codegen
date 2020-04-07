@@ -57,7 +57,7 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build library
-          command: cd ~/repo && gradle build publishToMavenLocal -x test
+          command: cd ~/repo && gradle install -x test
       - run:
           name: Build plugin and run unit tests
           command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
@@ -91,7 +91,7 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build library
-          command: cd ~/repo && gradle build publishToMavenLocal -x test
+          command: cd ~/repo && gradle publishToMavenLocal -x test
       - run:
           name: Build plugin and run unit tests
           command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
