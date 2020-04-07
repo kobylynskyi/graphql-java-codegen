@@ -17,31 +17,8 @@ jobs:
           keys:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
-          command: |
-            export GPG_KEY_FILE='mktemp'
-            echo "export GPG_KEY=$GPG_KEY_FILE" >> $BASH_ENV
-          name: Prepare GPG keystore file
-      - run:
-          command: echo $<< parameters.base64_key >> | base64 --decode > $GPG_KEY
-          name: Base64 decode gpg keystore to file
-      - run:
-          command: gpg --batch --import $GPG_KEY
-          name: Import GPG keys
-      - run:
-          command: echo $<< parameters.gpg_key_name >> | gpg --batch --pinentry-mode=loopback
-            --passphrase-fd 0 --export-secret-keys > ~/.gnupg/secring.gpg
-          name: Fixing GPG compatablity
-      - run:
-          command: |
-            echo "signing.password=$<< parameters.gpg_key_name >>" >> gradle.properties
-            echo "signing.secretKeyRingFile=~/.gnupg/secring.gpg" >> gradle.properties
-          name: Setting up Gradle signing
-      - run:
-          command: ./gradlew << parameters.deploy_task >>
-          name: Deploy artifacts
-      - run:
           name: Build and publish to local Maven repo
-          command: gradle build publishToMavenLocal
+          command: ./gradlew build publishToMavenLocal
       - save_cache:
           paths:
             - ~/.gradle
@@ -49,7 +26,7 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
       - run:
           name: Generate Code Coverage Report
-          command: gradle codeCoverageReport
+          command: ./gradlew codeCoverageReport
       - run:
           name: Publish Code Coverage Report
           command: bash <(curl -s https://codecov.io/bash)
@@ -103,7 +80,7 @@ jobs:
             - deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Load all dependencies
-          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle dependencies
+          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && ./gradlew dependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -111,10 +88,10 @@ jobs:
           key: deps-{{checksum ".circle-cache-key"}}
       - run:
           name: Build and run unit tests
-          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
+          command: cd ~/plugins/gradle/graphql-java-codegen-gradle-plugin && ./gradlew build publishToMavenLocal
       - run:
           name: Build example project
-          command: cd ~/plugins/gradle/example && gradle test
+          command: cd ~/plugins/gradle/example && ./gradlew test
 workflows:
   build-library-and-plugins:
     jobs:
