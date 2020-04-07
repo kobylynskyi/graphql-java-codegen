@@ -55,6 +55,9 @@ public class GraphqlCodegen {
         if (mappingConfig.getModelValidationAnnotation() == null) {
             mappingConfig.setModelValidationAnnotation(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION);
         }
+        if (mappingConfig.getGenerateBuilder() == null) {
+            mappingConfig.setGenerateBuilder(DefaultMappingConfigValues.DEFAULT_BUILDER);
+        }
         if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
             mappingConfig.setGenerateEqualsAndHashCode(DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE);
         }

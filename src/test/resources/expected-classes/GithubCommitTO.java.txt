@@ -383,4 +383,246 @@ public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO
         this.zipballUrl = zipballUrl;
     }
 
+
+
+    public static class Builder {
+
+        private String abbreviatedOid;
+        private Integer additions;
+        private GithubPullRequestConnectionTO associatedPullRequests;
+        private GithubGitActorTO author;
+        private Boolean authoredByCommitter;
+        private String authoredDate;
+        private GithubBlameTO blame;
+        private Integer changedFiles;
+        private GithubCommitCommentConnectionTO comments;
+        private String commitResourcePath;
+        private String commitUrl;
+        private String committedDate;
+        private Boolean committedViaWeb;
+        private GithubGitActorTO committer;
+        private Integer deletions;
+        private GithubDeploymentConnectionTO deployments;
+        private GithubCommitHistoryConnectionTO history;
+        private String id;
+        private String message;
+        private String messageBody;
+        private String messageBodyHTML;
+        private String messageHeadline;
+        private String messageHeadlineHTML;
+        private String oid;
+        private GithubCommitConnectionTO parents;
+        private String pushedDate;
+        private GithubRepositoryTO repository;
+        private String resourcePath;
+        private GithubGitSignatureTO signature;
+        private GithubStatusTO status;
+        private String tarballUrl;
+        private GithubTreeTO tree;
+        private String treeResourcePath;
+        private String treeUrl;
+        private String url;
+        private Boolean viewerCanSubscribe;
+        private GithubSubscriptionStateTO viewerSubscription;
+        private String zipballUrl;
+
+        public Builder() {
+        }
+
+        public Builder setAbbreviatedOid(String abbreviatedOid) {
+            this.abbreviatedOid = abbreviatedOid;
+            return this;
+        }
+
+        public Builder setAdditions(Integer additions) {
+            this.additions = additions;
+            return this;
+        }
+
+        public Builder setAssociatedPullRequests(GithubPullRequestConnectionTO associatedPullRequests) {
+            this.associatedPullRequests = associatedPullRequests;
+            return this;
+        }
+
+        public Builder setAuthor(GithubGitActorTO author) {
+            this.author = author;
+            return this;
+        }
+
+        public Builder setAuthoredByCommitter(Boolean authoredByCommitter) {
+            this.authoredByCommitter = authoredByCommitter;
+            return this;
+        }
+
+        public Builder setAuthoredDate(String authoredDate) {
+            this.authoredDate = authoredDate;
+            return this;
+        }
+
+        public Builder setBlame(GithubBlameTO blame) {
+            this.blame = blame;
+            return this;
+        }
+
+        public Builder setChangedFiles(Integer changedFiles) {
+            this.changedFiles = changedFiles;
+            return this;
+        }
+
+        public Builder setComments(GithubCommitCommentConnectionTO comments) {
+            this.comments = comments;
+            return this;
+        }
+
+        public Builder setCommitResourcePath(String commitResourcePath) {
+            this.commitResourcePath = commitResourcePath;
+            return this;
+        }
+
+        public Builder setCommitUrl(String commitUrl) {
+            this.commitUrl = commitUrl;
+            return this;
+        }
+
+        public Builder setCommittedDate(String committedDate) {
+            this.committedDate = committedDate;
+            return this;
+        }
+
+        public Builder setCommittedViaWeb(Boolean committedViaWeb) {
+            this.committedViaWeb = committedViaWeb;
+            return this;
+        }
+
+        public Builder setCommitter(GithubGitActorTO committer) {
+            this.committer = committer;
+            return this;
+        }
+
+        public Builder setDeletions(Integer deletions) {
+            this.deletions = deletions;
+            return this;
+        }
+
+        public Builder setDeployments(GithubDeploymentConnectionTO deployments) {
+            this.deployments = deployments;
+            return this;
+        }
+
+        public Builder setHistory(GithubCommitHistoryConnectionTO history) {
+            this.history = history;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder setMessageBody(String messageBody) {
+            this.messageBody = messageBody;
+            return this;
+        }
+
+        public Builder setMessageBodyHTML(String messageBodyHTML) {
+            this.messageBodyHTML = messageBodyHTML;
+            return this;
+        }
+
+        public Builder setMessageHeadline(String messageHeadline) {
+            this.messageHeadline = messageHeadline;
+            return this;
+        }
+
+        public Builder setMessageHeadlineHTML(String messageHeadlineHTML) {
+            this.messageHeadlineHTML = messageHeadlineHTML;
+            return this;
+        }
+
+        public Builder setOid(String oid) {
+            this.oid = oid;
+            return this;
+        }
+
+        public Builder setParents(GithubCommitConnectionTO parents) {
+            this.parents = parents;
+            return this;
+        }
+
+        public Builder setPushedDate(String pushedDate) {
+            this.pushedDate = pushedDate;
+            return this;
+        }
+
+        public Builder setRepository(GithubRepositoryTO repository) {
+            this.repository = repository;
+            return this;
+        }
+
+        public Builder setResourcePath(String resourcePath) {
+            this.resourcePath = resourcePath;
+            return this;
+        }
+
+        public Builder setSignature(GithubGitSignatureTO signature) {
+            this.signature = signature;
+            return this;
+        }
+
+        public Builder setStatus(GithubStatusTO status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setTarballUrl(String tarballUrl) {
+            this.tarballUrl = tarballUrl;
+            return this;
+        }
+
+        public Builder setTree(GithubTreeTO tree) {
+            this.tree = tree;
+            return this;
+        }
+
+        public Builder setTreeResourcePath(String treeResourcePath) {
+            this.treeResourcePath = treeResourcePath;
+            return this;
+        }
+
+        public Builder setTreeUrl(String treeUrl) {
+            this.treeUrl = treeUrl;
+            return this;
+        }
+
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+            this.viewerCanSubscribe = viewerCanSubscribe;
+            return this;
+        }
+
+        public Builder setViewerSubscription(GithubSubscriptionStateTO viewerSubscription) {
+            this.viewerSubscription = viewerSubscription;
+            return this;
+        }
+
+        public Builder setZipballUrl(String zipballUrl) {
+            this.zipballUrl = zipballUrl;
+            return this;
+        }
+
+
+        public GithubCommitTO build() {
+            return new GithubCommitTO(abbreviatedOid, additions, associatedPullRequests, author, authoredByCommitter, authoredDate, blame, changedFiles, comments, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, deployments, history, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, parents, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl);
+        }
+
+    }
 }

@@ -58,6 +58,7 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 </#if>
     }
 </#if>
+
 <#if toString>
     @Override
     public String toString() {
@@ -74,6 +75,31 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 </#list>
 </#if>
         return joiner.toString();
+    }
+</#if>
+
+<#if builder>
+    public static class Builder {
+
+<#list fields as field>
+        private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
+</#list>
+
+        public Builder() {
+        }
+
+<#list fields as field>
+        public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
+            this.${field.name} = ${field.name};
+            return this;
+        }
+
+</#list>
+
+        public ${className} build() {
+            return new ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);
+        }
+
     }
 </#if>
 }

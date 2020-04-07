@@ -65,4 +65,54 @@ public class EventProperty {
         this.parent = parent;
     }
 
+
+
+    public static class Builder {
+
+        private Double floatVal;
+        private Boolean booleanVal;
+        private Integer intVal;
+        private String stringVal;
+        private Collection<EventProperty> child;
+        private Event parent;
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(Integer intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setChild(Collection<EventProperty> child) {
+            this.child = child;
+            return this;
+        }
+
+        public Builder setParent(Event parent) {
+            this.parent = parent;
+            return this;
+        }
+
+
+        public EventProperty build() {
+            return new EventProperty(floatVal, booleanVal, intVal, stringVal, child, parent);
+        }
+
+    }
 }

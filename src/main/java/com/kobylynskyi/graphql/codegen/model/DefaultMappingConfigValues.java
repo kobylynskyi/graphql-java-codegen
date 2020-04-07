@@ -7,6 +7,7 @@ public class DefaultMappingConfigValues {
     public static final String DEFAULT_REQUEST_SUFFIX = "Request";
     public static final String DEFAULT_RESPONSE_PROJECTION_SUFFIX = "ResponseProjection";
     public static final boolean DEFAULT_GENERATE_APIS = true;
+    public static final boolean DEFAULT_BUILDER = true;
     public static final boolean DEFAULT_EQUALS_AND_HASHCODE = false;
     public static final boolean DEFAULT_TO_STRING = false;
     public static final boolean DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS = true;
