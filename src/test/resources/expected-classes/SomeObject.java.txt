@@ -21,4 +21,24 @@ public class SomeObject {
         this.name = name;
     }
 
+
+
+    public static class Builder {
+
+        private String name;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+
+        public SomeObject build() {
+            return new SomeObject(name);
+        }
+
+    }
 }

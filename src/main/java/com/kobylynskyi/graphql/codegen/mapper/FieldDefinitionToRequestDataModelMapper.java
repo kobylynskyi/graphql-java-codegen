@@ -34,6 +34,7 @@ public class FieldDefinitionToRequestDataModelMapper {
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(OPERATION_TYPE, objectTypeName.toUpperCase());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingConfig, operationDef.getInputValueDefinitions(), operationDef.getName()));
+        dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
         dataModel.put(TO_STRING, mappingConfig.getGenerateToString());
         return dataModel;

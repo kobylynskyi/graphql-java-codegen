@@ -41,6 +41,9 @@ public class GraphqlCodegenMojo extends AbstractMojo {
     private String packageName;
 
     @Parameter(defaultValue = "true")
+    private boolean generateBuilder;
+
+    @Parameter(defaultValue = "true")
     private boolean generateApis;
 
     @Parameter(defaultValue = "false")
@@ -96,6 +99,7 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
         mappingConfig.setModelPackageName(modelPackageName);
+        mappingConfig.setGenerateBuilder(generateBuilder);
         mappingConfig.setGenerateApis(generateApis);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
@@ -240,6 +244,14 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     public void setModelValidationAnnotation(String modelValidationAnnotation) {
         this.modelValidationAnnotation = modelValidationAnnotation;
+    }
+
+    public boolean isGenerateBuilder() {
+        return generateBuilder;
+    }
+
+    public void setGenerateBuilder(boolean generateBuilder) {
+        this.generateBuilder = generateBuilder;
     }
 
     public boolean isGenerateApis() {

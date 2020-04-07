@@ -40,6 +40,7 @@ public class AcceptTopicSuggestionInput {
         this.repositoryId = repositoryId;
     }
 
+
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
@@ -53,5 +54,36 @@ public class AcceptTopicSuggestionInput {
             joiner.add("repositoryId: \"" + repositoryId + "\"");
         }
         return joiner.toString();
+    }
+
+    public static class Builder {
+
+        private String clientMutationId;
+        private String name;
+        private String repositoryId;
+
+        public Builder() {
+        }
+
+        public Builder setClientMutationId(String clientMutationId) {
+            this.clientMutationId = clientMutationId;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setRepositoryId(String repositoryId) {
+            this.repositoryId = repositoryId;
+            return this;
+        }
+
+
+        public AcceptTopicSuggestionInput build() {
+            return new AcceptTopicSuggestionInput(clientMutationId, name, repositoryId);
+        }
+
     }
 }

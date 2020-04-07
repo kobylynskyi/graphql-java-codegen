@@ -35,6 +35,7 @@ class MappingConfigTest {
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
         assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
+        assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
         assertTrue(mappingConfig.getGenerateEqualsAndHashCode());
         assertTrue(mappingConfig.getGenerateToString());
@@ -59,6 +60,7 @@ class MappingConfigTest {
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
         assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
+        assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
         assertTrue(mappingConfig.getGenerateEqualsAndHashCode());
         assertTrue(mappingConfig.getGenerateToString());
@@ -86,6 +88,7 @@ class MappingConfigTest {
         assertEquals(hashMap(new HashMap.SimpleEntry<>("3", "4"), new HashMap.SimpleEntry<>("33", "44")),
                 mappingConfig.getCustomAnnotationsMapping());
         assertEquals("ApiPackageName2", mappingConfig.getApiPackageName());
+        assertFalse(mappingConfig.getGenerateBuilder());
         assertFalse(mappingConfig.getGenerateApis());
         assertFalse(mappingConfig.getGenerateEqualsAndHashCode());
         assertFalse(mappingConfig.getGenerateToString());
@@ -113,6 +116,7 @@ class MappingConfigTest {
         config.setCustomTypesMapping(new HashMap<>(singletonMap("1", "2")));
         config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", "4")));
         config.setApiPackageName("ApiPackageName");
+        config.setGenerateBuilder(true);
         config.setGenerateApis(true);
         config.setGenerateEqualsAndHashCode(true);
         config.setGenerateToString(true);
@@ -136,6 +140,7 @@ class MappingConfigTest {
         config.setCustomTypesMapping(new HashMap<>(singletonMap("11", "22")));
         config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", "44")));
         config.setApiPackageName("ApiPackageName2");
+        config.setGenerateBuilder(false);
         config.setGenerateApis(false);
         config.setGenerateEqualsAndHashCode(false);
         config.setGenerateToString(false);

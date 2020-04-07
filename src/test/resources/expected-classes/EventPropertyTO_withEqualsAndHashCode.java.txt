@@ -86,4 +86,54 @@ public class EventPropertyTO {
     public int hashCode() {
         return Objects.hash(floatVal, booleanVal, intVal, stringVal, child, parent);
     }
+
+
+    public static class Builder {
+
+        private Double floatVal;
+        private Boolean booleanVal;
+        private Integer intVal;
+        private String stringVal;
+        private Collection<EventPropertyTO> child;
+        private EventTO parent;
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(Integer intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setChild(Collection<EventPropertyTO> child) {
+            this.child = child;
+            return this;
+        }
+
+        public Builder setParent(EventTO parent) {
+            this.parent = parent;
+            return this;
+        }
+
+
+        public EventPropertyTO build() {
+            return new EventPropertyTO(floatVal, booleanVal, intVal, stringVal, child, parent);
+        }
+
+    }
 }

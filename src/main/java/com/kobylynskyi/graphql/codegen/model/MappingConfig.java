@@ -37,6 +37,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private String modelNameSuffix;
     private String modelValidationAnnotation;
     private String subscriptionReturnType;
+    private Boolean generateBuilder;
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
     private Boolean generateAsyncApi;
@@ -77,6 +78,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
         this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
+        this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;
         this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
         this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;

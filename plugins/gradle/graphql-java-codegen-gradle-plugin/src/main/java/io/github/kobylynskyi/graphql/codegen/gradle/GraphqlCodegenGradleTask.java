@@ -39,6 +39,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String subscriptionReturnType;
+    private Boolean generateBuilder = true;
     private Boolean generateApis = true;
     private String modelValidationAnnotation;
     private Boolean generateEqualsAndHashCode = false;
@@ -57,6 +58,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
         mappingConfig.setModelPackageName(modelPackageName);
+        mappingConfig.setGenerateBuilder(generateBuilder);
         mappingConfig.setGenerateApis(generateApis);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
@@ -196,6 +198,16 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     public void setModelPackageName(String modelPackageName) {
         this.modelPackageName = modelPackageName;
+    }
+
+    @Input
+    @Optional
+    public Boolean getGenerateBuilder() {
+        return generateBuilder;
+    }
+
+    public void setGenerateBuilder(Boolean generateBuilder) {
+        this.generateBuilder = generateBuilder;
     }
 
     @Input

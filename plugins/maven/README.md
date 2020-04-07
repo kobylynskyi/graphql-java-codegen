@@ -62,6 +62,7 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 | outputDir                            | String             | None                                      | The output target directory into which code will be generated. |
 | apiPackage                           | String             | Empty                                     | Java package for generated api classes (Query, Mutation, Subscription). |
 | modelPackage                         | String             | Empty                                     | Java package for generated model classes (type, input, interface, enum, union). |
+| generateBuilder                      | Boolean            | True                                      | Specifies whether generated model classes should have builder. |
 | generateApis                         | Boolean            | True                                      | Specifies whether api classes should be generated as well as model classes. |
 | customTypesMapping                   | Map(String,String) | Empty                                     | Can be used to supply custom mappings for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
 | customAnnotationsMapping             | Map(String,String) | Empty                                     | Can be used to supply custom annotations (serializers) for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |

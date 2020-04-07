@@ -1,38 +1,38 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+name: Bug Report
+about: Create a report to help us improve graphql-java-codegen
+title: "[Short Description] (Version: [graphql-java-codegen version])"
+labels: bug
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Issue Description
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+*Describe your bug in detail.*
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Steps to Reproduce
+*List in detail the exact steps to reproduce the unexpected behavior.*
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Expected Result
+*Explain in detail what behavior you expected to happen.*
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Actual Result
+*Explain in detail what behavior actually happened.*
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+## Your Environment and Setup
 
-**Additional context**
+* **graphql-java-codegen**: *E.g.: 1.5.0*
+* **Build tool**: *E.g.: Maven*
+* **Java tool**: *E.g.: Oracle 8u241*
+* **Mapping Config**: *E.g.:* 
+
+```xml
+<configuration>
+    <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
+    <packageName>io.github.kobylynskyi.graphql.model</packageName>
+</configuration>
+```
+
+## Additional context
 Add any other context about the problem here.
