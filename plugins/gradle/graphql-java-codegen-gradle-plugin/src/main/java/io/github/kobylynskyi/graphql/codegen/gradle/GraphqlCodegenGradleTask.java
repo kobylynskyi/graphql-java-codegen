@@ -66,6 +66,8 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
+        mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
+        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
 
         new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
