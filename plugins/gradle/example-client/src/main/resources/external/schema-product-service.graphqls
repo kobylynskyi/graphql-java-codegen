@@ -26,7 +26,7 @@ type Product {
 input ProductInput {
     title: String!
     description: String
-    price: BigDecimal!
+    price: BigDecimal
     sku: String!
     stockStatus: StockStatus
 }
