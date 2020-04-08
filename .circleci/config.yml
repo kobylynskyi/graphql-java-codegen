@@ -96,8 +96,11 @@ jobs:
           name: Build plugin and run unit tests
           command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
       - run:
-          name: Build example plugin project
-          command: cd ~/repo/plugins/gradle/example && gradle test
+          name: Build example-server plugin project
+          command: cd ~/repo/plugins/gradle/example-server && gradle test
+      - run:
+          name: Build example-client plugin project
+          command: cd ~/repo/plugins/gradle/example-client && gradle test
 workflows:
   build-library-and-plugins:
     jobs:

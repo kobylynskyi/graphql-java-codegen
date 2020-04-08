@@ -171,7 +171,8 @@ Access to classes from your code as normal Kotlin classes.
 
 ### Example
 
-[example](example)
+* GraphQL server code generation: [example-server](example-server)
+* GraphQL client code generation: [example-client](example-client)
 
 
 ### Inspired by
