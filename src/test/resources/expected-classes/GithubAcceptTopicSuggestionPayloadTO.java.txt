@@ -2,14 +2,14 @@ package com.github.graphql;
 
 import java.util.*;
 
-public class AcceptTopicSuggestionPayload {
+public class GithubAcceptTopicSuggestionPayloadTO {
 
     private String clientMutationId;
 
-    public AcceptTopicSuggestionPayload() {
+    public GithubAcceptTopicSuggestionPayloadTO() {
     }
 
-    public AcceptTopicSuggestionPayload(String clientMutationId) {
+    public GithubAcceptTopicSuggestionPayloadTO(String clientMutationId) {
         this.clientMutationId = clientMutationId;
     }
 
@@ -35,8 +35,8 @@ public class AcceptTopicSuggestionPayload {
         }
 
 
-        public AcceptTopicSuggestionPayload build() {
-            return new AcceptTopicSuggestionPayload(clientMutationId);
+        public GithubAcceptTopicSuggestionPayloadTO build() {
+            return new GithubAcceptTopicSuggestionPayloadTO(clientMutationId);
         }
 
     }

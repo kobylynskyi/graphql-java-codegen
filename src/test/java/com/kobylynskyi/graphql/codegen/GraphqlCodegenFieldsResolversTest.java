@@ -55,16 +55,18 @@ class GraphqlCodegenFieldsResolversTest {
 
     @Test
     void generate_CustomFieldsResolvers() throws Exception {
+        mappingConfig.setModelNamePrefix("Github");
+        mappingConfig.setModelNameSuffix("TO");
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/AcceptTopicSuggestionPayload.java.txt"),
-                getGeneratedFile(files, "AcceptTopicSuggestionPayload.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/AcceptTopicSuggestionPayloadResolver.java.txt"),
-                getGeneratedFile(files, "AcceptTopicSuggestionPayloadResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTO.java.txt"),
+                getGeneratedFile(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTOResolver.java.txt"),
+                getGeneratedFile(files, "GithubAcceptTopicSuggestionPayloadTOResolver.java"));
     }
 
     private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {

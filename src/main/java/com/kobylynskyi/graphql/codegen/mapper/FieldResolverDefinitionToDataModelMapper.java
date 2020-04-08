@@ -33,13 +33,15 @@ public class FieldResolverDefinitionToDataModelMapper {
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, List<FieldDefinition> fieldDefs,
                                           String typeName) {
-        Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
+        String typeNameNormalized = MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeName);
+
+        Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImportsForFieldResolvers(mappingConfig, packageName));
-        dataModel.put(CLASS_NAME, getClassName(typeName));
+        dataModel.put(CLASS_NAME, getClassName(typeNameNormalized));
         dataModel.put(FIELDS, fieldDefs.stream()
-                .map(fieldDef -> mapFieldDefinition(mappingConfig, fieldDef, typeName))
+                .map(fieldDef -> mapFieldDefinition(mappingConfig, fieldDef, typeNameNormalized))
                 .collect(Collectors.toList()));
         return dataModel;
     }
@@ -83,7 +85,7 @@ public class FieldResolverDefinitionToDataModelMapper {
      * - PersonResolver
      */
     private static String getClassName(String typeName) {
-        return Utils.capitalize(typeName) + "Resolver";
+        return typeName + "Resolver";
     }
 
 }

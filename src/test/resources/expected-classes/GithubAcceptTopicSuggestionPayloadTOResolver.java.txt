@@ -1,0 +1,10 @@
+package com.github.graphql;
+
+import java.util.*;
+import graphql.schema.*;
+
+public interface GithubAcceptTopicSuggestionPayloadTOResolver {
+
+    GithubTopicTO topic(GithubAcceptTopicSuggestionPayloadTO githubAcceptTopicSuggestionPayloadTO, DataFetchingEnvironment env) throws Exception;
+
+}
