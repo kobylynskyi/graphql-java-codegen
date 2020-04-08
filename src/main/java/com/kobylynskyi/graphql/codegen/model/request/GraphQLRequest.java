@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.request;
 
+/**
+ * Class which represents GraphQL Request
+ */
 public class GraphQLRequest {
 
     private final GraphQLOperationRequest request;
