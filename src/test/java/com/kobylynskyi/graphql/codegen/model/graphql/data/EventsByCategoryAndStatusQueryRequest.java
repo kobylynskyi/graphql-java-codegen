@@ -1,11 +1,14 @@
-package com.kobylynskyi.graphql.codegen.model.request.data;
+package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import java.util.*;
-import graphql.language.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 
-public class EventsByCategoryAndStatusQueryRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.QUERY;
+public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
+
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -22,7 +25,7 @@ public class EventsByCategoryAndStatusQueryRequest implements com.kobylynskyi.gr
     }
 
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

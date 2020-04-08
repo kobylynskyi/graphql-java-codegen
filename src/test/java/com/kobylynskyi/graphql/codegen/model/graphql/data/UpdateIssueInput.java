@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen.model.request.data;
+package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
 import java.util.Arrays;
 import java.util.Collection;

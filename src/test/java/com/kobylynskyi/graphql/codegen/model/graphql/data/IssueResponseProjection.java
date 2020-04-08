@@ -1,10 +1,12 @@
-package com.kobylynskyi.graphql.codegen.model.request.data;
+package com.kobylynskyi.graphql.codegen.model.graphql.data;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
-public class IssueResponseProjection implements com.kobylynskyi.graphql.codegen.model.request.GraphQLResponseProjection {
+public class IssueResponseProjection implements GraphQLResponseProjection {
 
     private Map<String, Object> fields = new LinkedHashMap<>();
 

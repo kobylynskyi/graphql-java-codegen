@@ -1,13 +1,14 @@
-package com.kobylynskyi.graphql.codegen.model.request.data;
+package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import graphql.language.OperationDefinition;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class UpdateIssueMutationRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+public class UpdateIssueMutationRequest implements GraphQLOperationRequest {
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.MUTATION;
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
     private static final String OPERATION_NAME = "updateIssue";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -20,7 +21,7 @@ public class UpdateIssueMutationRequest implements com.kobylynskyi.graphql.codeg
     }
 
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

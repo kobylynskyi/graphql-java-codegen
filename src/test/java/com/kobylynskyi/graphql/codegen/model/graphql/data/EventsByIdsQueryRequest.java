@@ -1,11 +1,16 @@
-package com.kobylynskyi.graphql.codegen.model.request.data;
+package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import java.util.*;
-import graphql.language.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 
-public class EventsByIdsQueryRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.QUERY;
+public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
+
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByIds";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -18,7 +23,7 @@ public class EventsByIdsQueryRequest implements com.kobylynskyi.graphql.codegen.
     }
 
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

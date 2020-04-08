@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen.model.request;
+package com.kobylynskyi.graphql.codegen.model.graphql;
 
 /**
  * The implementation class should basically contain the fields of the particular type which

@@ -1,4 +1,6 @@
-package com.kobylynskyi.graphql.codegen.model.request;
+package com.kobylynskyi.graphql.codegen.model.graphql;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,8 +38,7 @@ public class GraphQLRequestSerializer {
             builder.append(graphQLRequest.getResponseProjection().toString());
         }
         builder.append(" }");
-        String escapedString = builder.toString().replaceAll("\"", "\\\\\"");
-        return String.format("{\"query\":\"%s\"}", escapedString);
+        return String.format("{\"query\":\"%s\"}", StringEscapeUtils.escapeJava(builder.toString()));
     }
 
     private static String getEntry(Object input) {

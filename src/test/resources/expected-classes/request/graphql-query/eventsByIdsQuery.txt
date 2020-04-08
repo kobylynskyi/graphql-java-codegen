@@ -1,5 +1,5 @@
 query {
-  eventsByIds(ids: [ \"4\", \"5\", \"6\" ]){
+  eventsByIds(ids: [ \"\u1234\", \"\"\", \"\n\" ]){
     id
   }
 }

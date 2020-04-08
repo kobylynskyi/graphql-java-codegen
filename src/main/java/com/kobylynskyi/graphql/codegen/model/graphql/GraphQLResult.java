@@ -1,6 +1,5 @@
-package com.kobylynskyi.graphql.codegen.model.request;
+package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import graphql.GraphQLError;
 import lombok.Data;
 
 import java.util.List;

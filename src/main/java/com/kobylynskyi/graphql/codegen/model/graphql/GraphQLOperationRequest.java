@@ -1,6 +1,4 @@
-package com.kobylynskyi.graphql.codegen.model.request;
-
-import graphql.language.OperationDefinition;
+package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import java.util.Map;
 
@@ -11,11 +9,11 @@ public interface GraphQLOperationRequest {
 
     /**
      * Type of GraphQL operation.
-     * Can be one of {@link graphql.language.OperationDefinition.Operation}
+     * Can be one of {@link GraphQLOperation}
      *
      * @return type of GraphQL operation
      */
-    OperationDefinition.Operation getOperationType();
+    GraphQLOperation getOperationType();
 
     /**
      * Name of GraphQL operation.

@@ -1,10 +1,7 @@
 package io.github.kobylynskyi.order.service;
 
 import io.github.kobylynskyi.order.external.ProductServiceGraphQLClient;
-import io.github.kobylynskyi.order.model.Item;
-import io.github.kobylynskyi.order.model.Order;
-import io.github.kobylynskyi.order.model.OrderNotFoundException;
-import io.github.kobylynskyi.order.model.Product;
+import io.github.kobylynskyi.order.model.*;
 import io.github.kobylynskyi.order.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +34,7 @@ public class OrderService {
         return saved;
     }
 
-    public Order addProduct(String orderId, String productId, int quantity) throws OrderNotFoundException {
+    public Order addProduct(String orderId, String productId, int quantity) throws OrderNotFoundException, UnableToRetrieveProductException {
         Order order = getOrderById(orderId);
 
         Product product = productService.getProduct(productId);

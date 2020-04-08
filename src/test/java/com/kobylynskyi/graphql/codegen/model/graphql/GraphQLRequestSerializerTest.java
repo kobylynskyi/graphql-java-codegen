@@ -1,6 +1,6 @@
-package com.kobylynskyi.graphql.codegen.model.request;
+package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import com.kobylynskyi.graphql.codegen.model.request.data.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.*;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.Test;
 
@@ -73,7 +73,7 @@ class GraphQLRequestSerializerTest {
     void serialize_collectionRequest() throws IOException {
         String fileContent = getExpectedQueryString("eventsByIdsQuery.txt");
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest();
-        request.setIds(Arrays.asList("4", "5", "6"));
+        request.setIds(Arrays.asList("\u1234", "\"", "\n"));
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
                         .id()

@@ -1,9 +1,9 @@
 package io.github.kobylynskyi.order.external;
 
-import com.kobylynskyi.graphql.codegen.model.request.GraphQLRequest;
-import com.kobylynskyi.graphql.codegen.model.request.GraphQLResult;
-import graphql.execution.DataFetcherResult;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
 import io.github.kobylynskyi.order.model.Product;
+import io.github.kobylynskyi.order.model.UnableToRetrieveProductException;
 import io.github.kobylynskyi.product.graphql.model.ProductByIdQueryRequest;
 import io.github.kobylynskyi.product.graphql.model.ProductResponseProjection;
 import io.github.kobylynskyi.product.graphql.model.ProductTO;
@@ -33,7 +33,7 @@ public class ProductServiceGraphQLClient {
     @Value("${external.service.product.url}")
     private String productUrl;
 
-    public Product getProduct(String productId) {
+    public Product getProduct(String productId) throws UnableToRetrieveProductException {
         ProductByIdQueryRequest getProductRequest = new ProductByIdQueryRequest();
         getProductRequest.setId(productId);
         GraphQLRequest request = new GraphQLRequest(getProductRequest,
@@ -47,6 +47,10 @@ public class ProductServiceGraphQLClient {
                 httpEntity(request),
                 new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {
                 }).getBody();
+        assert result != null;
+        if (result.hasErrors()) {
+            throw new UnableToRetrieveProductException(productId, result.getErrors().get(0).getMessage());
+        }
         return productMapper.map(result.getData().get(getProductRequest.getOperationName()));
     }
 

@@ -6,7 +6,7 @@ package ${package};
 import ${import}.*;
 </#list>
 
-public class ${className} implements com.kobylynskyi.graphql.codegen.model.request.GraphQLResponseProjection {
+public class ${className} implements GraphQLResponseProjection {
 
     private Map<String, Object> fields = new LinkedHashMap<>();
 

@@ -20,6 +20,7 @@ dependencies {
     implementation "org.freemarker:freemarker:2.3.28"
     implementation "com.graphql-java:graphql-java:13.0"
     implementation "com.google.code.gson:gson:2.8.6"
+    implementation "org.apache.commons:commons-text:1.8"
 
     implementation "org.projectlombok:lombok:1.18.8"
     annotationProcessor "org.projectlombok:lombok:1.18.8"

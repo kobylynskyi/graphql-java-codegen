@@ -17,7 +17,7 @@ public class MutationsResolver implements Mutation, GraphQLMutationResolver {
     private OrderMapper mapper;
 
     @Override
-    public OrderTO create() throws Exception {
+    public OrderTO create() {
         return mapper.map(service.create());
     }
 

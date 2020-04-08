@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen.model.request;
+package com.kobylynskyi.graphql.codegen.model.graphql;
 
 /**
  * Class which represents GraphQL Request
