@@ -1,5 +1,5 @@
 query {
-  eventsByCategoryAndStatus(categoryId: "categoryIdValue1", status: OPEN){
+  eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){
     id
     active
     properties {

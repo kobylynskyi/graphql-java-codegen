@@ -12,7 +12,6 @@ public class GraphQLRequestSerializer {
             return null;
         }
         StringBuilder builder = new StringBuilder();
-        builder.append("{\"query\":\"");
         builder.append(graphQLRequest.getRequest().getOperationType().name().toLowerCase());
         builder.append(" { ");
         builder.append(graphQLRequest.getRequest().getOperationName());
@@ -37,8 +36,8 @@ public class GraphQLRequestSerializer {
             builder.append(graphQLRequest.getResponseProjection().toString());
         }
         builder.append(" }");
-        builder.append("\"}");
-        return builder.toString();
+        String escapedString = builder.toString().replaceAll("\"", "\\\\\"");
+        return String.format("{\"query\":\"%s\"}", escapedString);
     }
 
     private static String getEntry(Object input) {
