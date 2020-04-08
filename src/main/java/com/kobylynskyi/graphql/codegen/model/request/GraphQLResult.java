@@ -28,7 +28,7 @@ public class GraphQLResult<T> {
      * @return true if there are any errors present
      */
     public boolean hasErrors() {
-        return !errors.isEmpty();
+        return errors != null && !errors.isEmpty();
     }
 
 }
