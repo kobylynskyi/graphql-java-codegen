@@ -70,7 +70,7 @@ class GraphQLRequestSerializerTest {
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
         assertEquals(expected("mutation { updateIssue(input: { " +
                 "floatVal: 1.23, booleanVal: false, intVal: 42, " +
-                "stringVal: \\\"default \\\\\" \\\\ \\b \\f \\n \\r \\t ሴ \\\", " +
+                "stringVal: \\\"default \\\\\\\" \\\\\\\\ \\\\b \\\\f \\\\n \\\\r \\\\t ሴ \\\", " +
                 "enumVal: OPEN, intList: [1, 2, 3], intListEmptyDefault: [] }){ " +
                 "clientMutationId issue { activeLockReason } } }"), serializedQuery);
     }
@@ -85,13 +85,13 @@ class GraphQLRequestSerializerTest {
         );
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
         assertEquals(expected("query { eventsByIds(ids: [ " +
-                "\\\"\\\\\"\\\", " +
-                "\\\"\\\\\\\", " +
-                "\\\"\\b\\\", " +
-                "\\\"\\f\\\", " +
-                "\\\"\\n\\\", " +
-                "\\\"\\r\\\", " +
-                "\\\"\\t\\\", " +
+                "\\\"\\\\\\\"\\\", " +
+                "\\\"\\\\\\\\\\\", " +
+                "\\\"\\\\b\\\", " +
+                "\\\"\\\\f\\\", " +
+                "\\\"\\\\n\\\", " +
+                "\\\"\\\\r\\\", " +
+                "\\\"\\\\t\\\", " +
                 "\\\"ሴ\\\" ]){ id } }"), serializedQuery);
     }
 

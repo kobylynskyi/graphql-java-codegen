@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,7 +46,13 @@ public class GraphQLRequestSerializer {
     }
 
     private static String buildJsonQuery(String queryString) {
-        return "{\"query\":\"" + queryString.replace("\"", "\\\"") + "\"}";
+        ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
+        objectNode.put("query", queryString);
+        try {
+            return OBJECT_MAPPER.writeValueAsString(objectNode);
+        } catch (JsonProcessingException e) {
+            throw new UnableToBuildJsonQueryException(e);
+        }
     }
 
     private static String getEntry(Object input) {
