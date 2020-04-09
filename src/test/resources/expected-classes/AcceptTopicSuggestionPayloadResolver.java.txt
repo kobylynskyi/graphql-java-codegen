@@ -4,7 +4,7 @@ import java.util.*;
 import graphql.schema.*;
 import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
-public interface GithubAcceptTopicSuggestionPayloadTOResolver {
+public interface AcceptTopicSuggestionPayloadResolver {
 
     GithubTopicTO topic(GithubAcceptTopicSuggestionPayloadTO githubAcceptTopicSuggestionPayloadTO, DataFetchingEnvironment env) throws Exception;
 
