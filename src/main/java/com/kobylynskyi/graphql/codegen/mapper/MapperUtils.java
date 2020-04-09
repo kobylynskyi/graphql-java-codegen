@@ -1,10 +1,10 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Document;
 import graphql.language.NamedNode;
-import graphql.language.OperationDefinition.Operation;
 import graphql.language.UnionTypeDefinition;
 
 import java.util.Arrays;
@@ -201,7 +201,7 @@ public class MapperUtils {
      */
     static Set<String> getImportsForRequests(MappingConfig mappingConfig, String packageName) {
         Set<String> imports = getImports(mappingConfig, packageName);
-        imports.add("graphql.language");
+        imports.add(GraphQLOperation.class.getPackage().getName());
         return imports;
     }
 
@@ -215,7 +215,8 @@ public class MapperUtils {
     static boolean isAsyncQueryOrMutation(MappingConfig mappingConfig, String objectTypeName) {
         boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi();
 
-        return isAsyncApi && (Operation.QUERY.name().equalsIgnoreCase(objectTypeName) || Operation.MUTATION.name()
-                .equalsIgnoreCase(objectTypeName));
+        return isAsyncApi && (
+                GraphQLOperation.QUERY.name().equalsIgnoreCase(objectTypeName) ||
+                        GraphQLOperation.MUTATION.name().equalsIgnoreCase(objectTypeName));
     }
 }

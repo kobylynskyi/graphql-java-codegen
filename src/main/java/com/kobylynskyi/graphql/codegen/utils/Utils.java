@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
 
-import graphql.language.OperationDefinition;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 
 /**
  * Various utilities
@@ -26,9 +26,9 @@ public final class Utils {
      */
     public static boolean isGraphqlOperation(String typeDef) {
         String typeDefNormalized = typeDef.toUpperCase();
-        return typeDefNormalized.equals(OperationDefinition.Operation.QUERY.name()) ||
-                typeDefNormalized.equals(OperationDefinition.Operation.MUTATION.name()) ||
-                typeDefNormalized.equals(OperationDefinition.Operation.SUBSCRIPTION.name());
+        return typeDefNormalized.equals(GraphQLOperation.QUERY.name()) ||
+                typeDefNormalized.equals(GraphQLOperation.MUTATION.name()) ||
+                typeDefNormalized.equals(GraphQLOperation.SUBSCRIPTION.name());
     }
 
     /**

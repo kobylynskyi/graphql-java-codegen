@@ -1,0 +1,141 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class EventPropertyTO {
+
+    private Double floatVal;
+    private Boolean booleanVal;
+    private Integer intVal;
+    private String stringVal;
+    private Collection<EventPropertyTO> child;
+    private EventTO parent;
+
+    public EventPropertyTO() {
+    }
+
+    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventPropertyTO> child, EventTO parent) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.child = child;
+        this.parent = parent;
+    }
+
+    public Double getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(Double floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public Integer getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(Integer intVal) {
+        this.intVal = intVal;
+    }
+
+    public String getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public Collection<EventPropertyTO> getChild() {
+        return child;
+    }
+    public void setChild(Collection<EventPropertyTO> child) {
+        this.child = child;
+    }
+
+    public EventTO getParent() {
+        return parent;
+    }
+    public void setParent(EventTO parent) {
+        this.parent = parent;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (floatVal != null) {
+            joiner.add("floatVal: " + floatVal);
+        }
+        if (booleanVal != null) {
+            joiner.add("booleanVal: " + booleanVal);
+        }
+        if (intVal != null) {
+            joiner.add("intVal: " + intVal);
+        }
+        if (stringVal != null) {
+            joiner.add("stringVal: \"" + stringVal + "\"");
+        }
+        if (child != null) {
+            joiner.add("child: " + child);
+        }
+        if (parent != null) {
+            joiner.add("parent: " + parent);
+        }
+        return joiner.toString();
+    }
+
+    public static class Builder {
+
+        private Double floatVal;
+        private Boolean booleanVal;
+        private Integer intVal;
+        private String stringVal;
+        private Collection<EventPropertyTO> child;
+        private EventTO parent;
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(Integer intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setChild(Collection<EventPropertyTO> child) {
+            this.child = child;
+            return this;
+        }
+
+        public Builder setParent(EventTO parent) {
+            this.parent = parent;
+            return this;
+        }
+
+
+        public EventPropertyTO build() {
+            return new EventPropertyTO(floatVal, booleanVal, intVal, stringVal, child, parent);
+        }
+
+    }
+}

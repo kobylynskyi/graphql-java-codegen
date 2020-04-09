@@ -50,4 +50,4 @@ Please follow the steps below in order to make the changes:
    mvn clean install 
    ```
 
-7. Make sure that `example` project is compiling and running.
+7. Make sure that `example` projects are compiling and running.

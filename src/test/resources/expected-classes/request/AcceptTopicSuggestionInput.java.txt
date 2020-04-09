@@ -45,13 +45,13 @@ public class AcceptTopicSuggestionInput {
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
         if (clientMutationId != null) {
-            joiner.add("clientMutationId: \"" + clientMutationId + "\"");
+            joiner.add("clientMutationId: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(clientMutationId) + "\"");
         }
         if (name != null) {
-            joiner.add("name: \"" + name + "\"");
+            joiner.add("name: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(name) + "\"");
         }
         if (repositoryId != null) {
-            joiner.add("repositoryId: \"" + repositoryId + "\"");
+            joiner.add("repositoryId: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(repositoryId) + "\"");
         }
         return joiner.toString();
     }

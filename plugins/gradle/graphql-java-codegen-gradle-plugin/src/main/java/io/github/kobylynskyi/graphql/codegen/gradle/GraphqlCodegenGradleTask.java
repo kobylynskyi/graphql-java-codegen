@@ -47,6 +47,9 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     private Boolean generateAsyncApi = false;
     private Boolean generateParameterizedFieldsResolvers = true;
     private Set<String> fieldsWithResolvers = new HashSet<>();
+    private Boolean generateRequests;
+    private String requestSuffix;
+    private String responseProjectionSuffix;
     private String jsonConfigurationFile;
 
     @TaskAction
@@ -68,6 +71,9 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
+        mappingConfig.setGenerateRequests(generateRequests);
+        mappingConfig.setRequestSuffix(requestSuffix);
+        mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
 
         new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -300,6 +306,36 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
         this.fieldsWithResolvers = fieldsWithResolvers;
+    }
+
+    @Input
+    @Optional
+    public Boolean getGenerateRequests() {
+        return generateRequests;
+    }
+
+    public void setGenerateRequests(Boolean generateRequests) {
+        this.generateRequests = generateRequests;
+    }
+
+    @Input
+    @Optional
+    public String getRequestSuffix() {
+        return requestSuffix;
+    }
+
+    public void setRequestSuffix(String requestSuffix) {
+        this.requestSuffix = requestSuffix;
+    }
+
+    @Input
+    @Optional
+    public String getResponseProjectionSuffix() {
+        return responseProjectionSuffix;
+    }
+
+    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
+        this.responseProjectionSuffix = responseProjectionSuffix;
     }
 
     @Input

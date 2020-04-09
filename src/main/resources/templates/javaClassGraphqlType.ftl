@@ -67,7 +67,11 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#list fields as field>
         if (${field.name} != null) {
 <#if field.type == "String">
+<#if toStringEscapeJson>
+            joiner.add("${field.name}: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(${field.name}) + "\"");
+<#else>
             joiner.add("${field.name}: \"" + ${field.name} + "\"");
+</#if>
 <#else>
             joiner.add("${field.name}: " + ${field.name});
 </#if>

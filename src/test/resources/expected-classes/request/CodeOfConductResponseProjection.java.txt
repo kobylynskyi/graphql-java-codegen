@@ -1,8 +1,9 @@
 package com.github.graphql;
 
 import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
-public class CodeOfConductResponseProjection implements com.kobylynskyi.graphql.codegen.model.request.GraphQLResponseProjection {
+public class CodeOfConductResponseProjection implements GraphQLResponseProjection {
 
     private Map<String, Object> fields = new LinkedHashMap<>();
 

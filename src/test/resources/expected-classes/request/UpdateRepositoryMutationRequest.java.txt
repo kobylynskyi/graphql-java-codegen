@@ -1,11 +1,11 @@
 package com.github.graphql;
 
 import java.util.*;
-import graphql.language.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
-public class UpdateRepositoryMutationRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest {
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.MUTATION;
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
     private static final String OPERATION_NAME = "updateRepository";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -18,7 +18,7 @@ public class UpdateRepositoryMutationRequest implements com.kobylynskyi.graphql.
     }
 
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

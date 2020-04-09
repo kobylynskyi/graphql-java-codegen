@@ -296,6 +296,10 @@ class GraphqlCodegenTest {
                 assertThat(content, StringContains.containsString("public String toString()"));
             }
         }
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EventPropertyTO_toString.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("EventPropertyTO.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test

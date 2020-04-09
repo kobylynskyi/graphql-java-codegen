@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.ListType;
 import graphql.language.NonNullType;
@@ -10,8 +11,6 @@ import graphql.language.TypeName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static graphql.language.OperationDefinition.Operation;
 
 /**
  * Map GraphQL type to Java type
@@ -183,7 +182,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Java type wrapped into the subscriptionReturnType
      */
     private static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
-        if (parentTypeName.equalsIgnoreCase(Operation.SUBSCRIPTION.name())
+        if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())
                 && !Utils.isBlank(mappingConfig.getSubscriptionReturnType())) {
             return String.format("%s<%s>", mappingConfig.getSubscriptionReturnType(), javaTypeName);
         }

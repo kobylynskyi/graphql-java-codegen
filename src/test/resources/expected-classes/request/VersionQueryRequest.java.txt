@@ -1,11 +1,11 @@
 package com.github.graphql;
 
 import java.util.*;
-import graphql.language.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
-public class VersionQueryRequest implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+public class VersionQueryRequest implements GraphQLOperationRequest {
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.QUERY;
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "version";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -14,7 +14,7 @@ public class VersionQueryRequest implements com.kobylynskyi.graphql.codegen.mode
     }
 
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

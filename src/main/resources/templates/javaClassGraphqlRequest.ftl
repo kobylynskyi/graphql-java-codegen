@@ -6,9 +6,9 @@ package ${package};
 import ${import}.*;
 </#list>
 
-public class ${className} implements com.kobylynskyi.graphql.codegen.model.request.GraphQLOperationRequest {
+public class ${className} implements GraphQLOperationRequest {
 
-    private static final OperationDefinition.Operation OPERATION_TYPE = OperationDefinition.Operation.${operationType};
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};
     private static final String OPERATION_NAME = "${operationName}";
 
     private Map<String, Object> input = new LinkedHashMap<>();
@@ -23,7 +23,7 @@ public class ${className} implements com.kobylynskyi.graphql.codegen.model.reque
 
 </#list>
     @Override
-    public OperationDefinition.Operation getOperationType() {
+    public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
     }
 

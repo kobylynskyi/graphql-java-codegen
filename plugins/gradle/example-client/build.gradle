@@ -1,0 +1,70 @@
+import io.github.kobylynskyi.graphql.codegen.gradle.GraphqlCodegenGradleTask
+
+plugins {
+    id "java"
+    id "idea"
+    id "application"
+    id "net.ltgt.apt" version "0.20"
+    id "io.github.kobylynskyi.graphql.codegen" version "1.6.0-SNAPSHOT"
+}
+
+mainClassName = "io.github.kobylynskyi.bikeshop.Application"
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web:2.1.7.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-data-mongodb:2.1.7.RELEASE"
+    compile "org.springframework.data:spring-data-commons:2.1.10.RELEASE"
+
+    compile "com.graphql-java-kickstart:graphql-java-tools:5.6.1"
+    compile "com.graphql-java-kickstart:graphql-spring-boot-starter:5.10.0"
+    compile "com.graphql-java-kickstart:graphiql-spring-boot-starter:5.10.0"
+
+    compile "io.github.kobylynskyi:graphql-java-codegen:1.6.0-SNAPSHOT"
+
+    compile "org.apache.httpcomponents:httpclient:4.5.12"
+
+    implementation "org.mapstruct:mapstruct:1.3.0.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.3.0.Final"
+
+    compileOnly "org.projectlombok:lombok:1.18.8"
+    annotationProcessor "org.projectlombok:lombok:1.18.8"
+}
+
+/**
+ * Generate requests and model from external service
+ */
+compileJava.dependsOn "graphqlCodegenProductService"
+sourceSets.main.java.srcDirs "$buildDir/generated-client"
+task graphqlCodegenProductService(type: GraphqlCodegenGradleTask) {
+    graphqlSchemaPaths = ["$projectDir/src/main/resources/external/schema-product-service.graphqls".toString()]
+    outputDir = new File("$buildDir/generated-client")
+    modelPackageName = "io.github.kobylynskyi.product.graphql.model"
+    customTypesMapping = [
+            DateTime: "java.util.Date"
+    ]
+    modelNameSuffix = "TO"
+    generateRequests = true
+    generateApis = false
+}
+
+/**
+ * Generate apis and model
+ */
+compileJava.dependsOn "graphqlCodegenOrderService"
+sourceSets.main.java.srcDirs "$buildDir/generated-server"
+task graphqlCodegenOrderService(type: GraphqlCodegenGradleTask) {
+    graphqlSchemaPaths = ["$projectDir/src/main/resources/schema.graphqls".toString()]
+    outputDir = new File("$buildDir/generated-server")
+    apiPackageName = "io.github.kobylynskyi.order.graphql.api"
+    modelPackageName = "io.github.kobylynskyi.order.graphql.model"
+    customTypesMapping = [
+            DateTime: "java.util.Date"
+    ]
+    modelNameSuffix = "TO"
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
