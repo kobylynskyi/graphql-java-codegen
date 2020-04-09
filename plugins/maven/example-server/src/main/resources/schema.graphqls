@@ -1,0 +1,44 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    products: [Product]
+    productById(id: ID!): Product
+    productsByIds(ids: [ID!]!): [Product]
+}
+
+type Mutation {
+    create(productInput: ProductInput!): Product
+}
+
+type Product {
+    id: ID!
+    title: String!
+    description: String
+    price: BigDecimal!
+    sku: String!
+    stockStatus: StockStatus
+    addedDateTime: DateTime!
+}
+
+input ProductInput {
+    title: String!
+    description: String
+    price: BigDecimal!
+    sku: String!
+    stockStatus: StockStatus
+}
+
+enum StockStatus {
+    IN_STOCK
+    SPECIAL_ORDER
+    BACK_ORDERED
+    COMING_SOON
+    SOLD_OUT
+    DISCONTINUED
+}
+
+scalar DateTime
+scalar BigDecimal

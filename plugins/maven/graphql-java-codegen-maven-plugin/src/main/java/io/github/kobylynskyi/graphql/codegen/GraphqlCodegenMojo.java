@@ -79,6 +79,15 @@ public class GraphqlCodegenMojo extends AbstractMojo {
     @Parameter
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
+    @Parameter(defaultValue = "false")
+    private boolean generateRequests;
+
+    @Parameter(defaultValue = "Request")
+    private String requestSuffix;
+
+    @Parameter(defaultValue = "ResponseProjection")
+    private String responseProjectionSuffix;
+
     @Parameter(name = "jsonConfigurationFile", required = false)
     private String jsonConfigurationFile;
 
@@ -109,6 +118,9 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
+        mappingConfig.setGenerateRequests(generateRequests);
+        mappingConfig.setRequestSuffix(requestSuffix);
+        mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -316,5 +328,29 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
         this.fieldsWithResolvers = fieldsWithResolvers;
+    }
+
+    public boolean isGenerateRequests() {
+        return generateRequests;
+    }
+
+    public void setGenerateRequests(boolean generateRequests) {
+        this.generateRequests = generateRequests;
+    }
+
+    public String getRequestSuffix() {
+        return requestSuffix;
+    }
+
+    public void setRequestSuffix(String requestSuffix) {
+        this.requestSuffix = requestSuffix;
+    }
+
+    public String getResponseProjectionSuffix() {
+        return responseProjectionSuffix;
+    }
+
+    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
+        this.responseProjectionSuffix = responseProjectionSuffix;
     }
 }

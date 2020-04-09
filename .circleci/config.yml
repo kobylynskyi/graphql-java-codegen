@@ -62,8 +62,11 @@ jobs:
           name: Build plugin and run unit tests
           command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
       - run:
-          name: Build example plugin project
-          command: cd ~/repo/plugins/maven/example && mvn package
+          name: Build example-server plugin project
+          command: cd ~/repo/plugins/maven/example-server && mvn package
+      - run:
+          name: Build example-client plugin project
+          command: cd ~/repo/plugins/maven/example-client && mvn package
   build-graphql-java-codegen-gradle-plugin:
     description:
       Build gradle plugin
