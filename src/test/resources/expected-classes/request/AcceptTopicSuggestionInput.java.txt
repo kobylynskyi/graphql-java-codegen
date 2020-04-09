@@ -1,7 +1,6 @@
 package com.github.graphql;
 
 import java.util.*;
-import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class AcceptTopicSuggestionInput {
 
@@ -46,13 +45,13 @@ public class AcceptTopicSuggestionInput {
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
         if (clientMutationId != null) {
-            joiner.add("clientMutationId: \"" + GraphQLRequestSerializer.escapeJsonString(clientMutationId) + "\"");
+            joiner.add("clientMutationId: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(clientMutationId) + "\"");
         }
         if (name != null) {
-            joiner.add("name: \"" + GraphQLRequestSerializer.escapeJsonString(name) + "\"");
+            joiner.add("name: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(name) + "\"");
         }
         if (repositoryId != null) {
-            joiner.add("repositoryId: \"" + GraphQLRequestSerializer.escapeJsonString(repositoryId) + "\"");
+            joiner.add("repositoryId: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(repositoryId) + "\"");
         }
         return joiner.toString();
     }

@@ -2,7 +2,6 @@ package com.github.graphql;
 
 import java.util.*;
 import graphql.schema.*;
-import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public interface CommitResolver {
 

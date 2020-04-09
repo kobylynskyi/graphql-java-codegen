@@ -1,7 +1,6 @@
 package com.kobylynskyi.graphql.testdefaults;
 
 import java.util.*;
-import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class SomeObject {
 

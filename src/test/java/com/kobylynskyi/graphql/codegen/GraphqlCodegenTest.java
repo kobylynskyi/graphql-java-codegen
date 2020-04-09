@@ -207,13 +207,8 @@ class GraphqlCodegenTest {
         File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
                 .orElseThrow(FileNotFoundException::new);
 
-        assertThat(Utils.getFileContent(eventFile.getPath()),
-                StringStartsWith.startsWith(
-                        "import java.util.*;" +
-                                System.lineSeparator() +
-                                "import com.kobylynskyi.graphql.codegen.model.graphql.*;" +
-                                System.lineSeparator() + System.lineSeparator() +
-                                "public class Event {"));
+        assertThat(Utils.getFileContent(eventFile.getPath()), StringStartsWith.startsWith(
+                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() + "public class Event {"));
     }
 
     @Test
@@ -301,6 +296,10 @@ class GraphqlCodegenTest {
                 assertThat(content, StringContains.containsString("public String toString()"));
             }
         }
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/EventPropertyTO_toString.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("EventPropertyTO.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
     @Test

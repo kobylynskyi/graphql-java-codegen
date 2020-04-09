@@ -65,28 +65,30 @@ public class EventPropertyTO {
         this.parent = parent;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final EventPropertyTO that = (EventPropertyTO) obj;
-        return Objects.equals(floatVal, that.floatVal)
-            && Objects.equals(booleanVal, that.booleanVal)
-            && Objects.equals(intVal, that.intVal)
-            && Objects.equals(stringVal, that.stringVal)
-            && Objects.equals(child, that.child)
-            && Objects.equals(parent, that.parent);
-    }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(floatVal, booleanVal, intVal, stringVal, child, parent);
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (floatVal != null) {
+            joiner.add("floatVal: " + floatVal);
+        }
+        if (booleanVal != null) {
+            joiner.add("booleanVal: " + booleanVal);
+        }
+        if (intVal != null) {
+            joiner.add("intVal: " + intVal);
+        }
+        if (stringVal != null) {
+            joiner.add("stringVal: \"" + stringVal + "\"");
+        }
+        if (child != null) {
+            joiner.add("child: " + child);
+        }
+        if (parent != null) {
+            joiner.add("parent: " + parent);
+        }
+        return joiner.toString();
     }
-
 
     public static class Builder {
 
