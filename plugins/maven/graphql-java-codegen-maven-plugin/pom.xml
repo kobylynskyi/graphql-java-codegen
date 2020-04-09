@@ -36,7 +36,7 @@
         <connection>scm:git:git://github.com/kobylynskyi/graphql-java-codegen.git</connection>
         <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
-        <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven/graphql-java-codegen-maven-plugin</url>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven</url>
         <tag>v1.5.0</tag>
     </scm>
 

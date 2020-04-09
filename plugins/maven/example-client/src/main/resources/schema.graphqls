@@ -1,0 +1,29 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    orders: [Order]
+    orderById(id: ID!): Order
+}
+
+type Mutation {
+    create: Order
+    addProductToOrder(orderId: ID!, productId: ID!, quantity: Int = 0): Order
+}
+
+type Order {
+    id: ID!
+    items: [Item!]!
+    total: BigDecimal!
+}
+
+type Item {
+    quantity: Int!
+    productId: ID!
+    total: BigDecimal!
+}
+
+scalar DateTime
+scalar BigDecimal
