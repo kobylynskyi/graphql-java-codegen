@@ -65,8 +65,8 @@ class GraphqlCodegenFieldsResolversTest {
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTO.java.txt"),
                 getGeneratedFile(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTOResolver.java.txt"),
-                getGeneratedFile(files, "GithubAcceptTopicSuggestionPayloadTOResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/AcceptTopicSuggestionPayloadResolver.java.txt"),
+                getGeneratedFile(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
 
     private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {

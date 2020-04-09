@@ -3,7 +3,7 @@ package com.github.graphql;
 import java.util.*;
 import graphql.schema.*;
 
-public interface GithubAcceptTopicSuggestionPayloadTOResolver {
+public interface AcceptTopicSuggestionPayloadResolver {
 
     GithubTopicTO topic(GithubAcceptTopicSuggestionPayloadTO githubAcceptTopicSuggestionPayloadTO, DataFetchingEnvironment env) throws Exception;
 
