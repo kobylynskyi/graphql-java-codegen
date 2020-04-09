@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.multifiles;
 
 import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class UnionMember1 implements MyUnion{
 

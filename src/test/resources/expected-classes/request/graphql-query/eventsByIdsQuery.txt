@@ -1,5 +1,0 @@
-query {
-  eventsByIds(ids: [ \"\u1234\", \"\"\", \"\n\" ]){
-    id
-  }
-}

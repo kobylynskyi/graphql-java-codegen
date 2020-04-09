@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +12,7 @@ public class UpdateIssueInput {
     private Double floatVal = 1.23;
     private Boolean booleanVal = false;
     private Integer intVal = 42;
-    private String stringVal = "my-default";
+    private String stringVal = "default \" \\ \b \f \n \r \t \u1234 ";
     private Status enumVal = Status.OPEN;
     private UpdateIssueInput objectWithNullDefault = null;
     private Collection<Integer> intList = Arrays.asList(1, 2, 3);
@@ -43,7 +45,7 @@ public class UpdateIssueInput {
             joiner.add("intVal: " + intVal);
         }
         if (stringVal != null) {
-            joiner.add("stringVal: \"" + stringVal + "\"");
+            joiner.add("stringVal: \"" + GraphQLRequestSerializer.escapeJsonString(stringVal) + "\"");
         }
         if (enumVal != null) {
             joiner.add("enumVal: " + enumVal);

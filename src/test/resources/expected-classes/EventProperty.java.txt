@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class EventProperty {
 

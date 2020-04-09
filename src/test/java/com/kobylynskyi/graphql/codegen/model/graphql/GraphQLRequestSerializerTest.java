@@ -1,11 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.data.*;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,16 +21,14 @@ class GraphQLRequestSerializerTest {
     }
 
     @Test
-    void serialize_noResponseProjection() throws IOException {
-        String fileContent = getExpectedQueryString("versionQuery.txt");
+    void serialize_noResponseProjection() {
         GraphQLRequest graphQLRequest = new GraphQLRequest(new VersionQueryRequest());
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
-        assertEquals(fileContent, serializedQuery);
+        assertEquals(expected("query { version }"), serializedQuery);
     }
 
     @Test
-    void serialize_withResponseProjection() throws IOException {
-        String fileContent = getExpectedQueryString("eventsByCategoryAndStatusQuery.txt");
+    void serialize_withResponseProjection() {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest();
         request.setCategoryId("categoryIdValue1");
         request.setStatus(Status.OPEN);
@@ -51,12 +46,19 @@ class GraphQLRequestSerializerTest {
                         .status()
         );
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
-        assertEquals(fileContent, serializedQuery);
+        assertEquals(expected("query { " +
+                "eventsByCategoryAndStatus(categoryId: \\\"categoryIdValue1\\\", status: OPEN){ " +
+                "id " +
+                "active " +
+                "properties { " +
+                "floatVal child { intVal parent { id } } booleanVal } " +
+                "status " +
+                "} " +
+                "}"), serializedQuery);
     }
 
     @Test
-    void serialize_complexRequestWithDefaultData() throws IOException {
-        String fileContent = getExpectedQueryString("updateIssueMutation.txt");
+    void serialize_complexRequestWithDefaultData() {
         UpdateIssueMutationRequest requestWithDefaultData = new UpdateIssueMutationRequest();
         requestWithDefaultData.setInput(new UpdateIssueInput());
         GraphQLRequest graphQLRequest = new GraphQLRequest(requestWithDefaultData,
@@ -66,28 +68,35 @@ class GraphQLRequestSerializerTest {
                                 .activeLockReason())
         );
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
-        assertEquals(fileContent, serializedQuery);
+        assertEquals(expected("mutation { updateIssue(input: { " +
+                "floatVal: 1.23, booleanVal: false, intVal: 42, " +
+                "stringVal: \\\"default \\\\\" \\\\ \\b \\f \\n \\r \\t ሴ \\\", " +
+                "enumVal: OPEN, intList: [1, 2, 3], intListEmptyDefault: [] }){ " +
+                "clientMutationId issue { activeLockReason } } }"), serializedQuery);
     }
 
     @Test
-    void serialize_collectionRequest() throws IOException {
-        String fileContent = getExpectedQueryString("eventsByIdsQuery.txt");
+    void serialize_collectionRequest() {
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest();
-        request.setIds(Arrays.asList("\u1234", "\"", "\n"));
+        request.setIds(Arrays.asList("\"", "\\", "\b", "\f", "\n", "\r", "\t", "\u1234"));
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
                         .id()
         );
         String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
-        assertEquals(fileContent, serializedQuery);
+        assertEquals(expected("query { eventsByIds(ids: [ " +
+                "\\\"\\\\\"\\\", " +
+                "\\\"\\\\\\\", " +
+                "\\\"\\b\\\", " +
+                "\\\"\\f\\\", " +
+                "\\\"\\n\\\", " +
+                "\\\"\\r\\\", " +
+                "\\\"\\t\\\", " +
+                "\\\"ሴ\\\" ]){ id } }"), serializedQuery);
     }
 
-    private static String getExpectedQueryString(final String fileName) throws IOException {
-        String trimmedContent = Utils.getFileContent(
-                new File("src/test/resources/expected-classes/request/graphql-query/" + fileName).getPath())
-                .replaceAll(System.lineSeparator(), " ")
-                .replaceAll(" +", " ").trim();
-        return String.format("{\"query\":\"%s\"}", trimmedContent);
+    private static String expected(String expectedQuery) {
+        return String.format("{\"query\":\"%s\"}", expectedQuery);
     }
 
 }

@@ -1,10 +1,9 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
 
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 
 /**
@@ -13,6 +12,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
  * @author valinha
  */
 public class JsonMappingConfigSupplier implements MappingConfigSupplier {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private String jsonConfigFile;
 
@@ -29,8 +30,8 @@ public class JsonMappingConfigSupplier implements MappingConfigSupplier {
     public MappingConfig get() {
         if (jsonConfigFile != null && !jsonConfigFile.isEmpty()) {
             try {
-                return new GsonBuilder().create().fromJson(new FileReader(new File(jsonConfigFile)), MappingConfig.class);
-            } catch (FileNotFoundException e) {
+                return OBJECT_MAPPER.readValue(new File(jsonConfigFile), MappingConfig.class);
+            } catch (IOException e) {
                 throw new IllegalArgumentException(e);
             }
         }

@@ -67,7 +67,7 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#list fields as field>
         if (${field.name} != null) {
 <#if field.type == "String">
-            joiner.add("${field.name}: \"" + ${field.name} + "\"");
+            joiner.add("${field.name}: \"" + GraphQLRequestSerializer.escapeJsonString(${field.name}) + "\"");
 <#else>
             joiner.add("${field.name}: " + ${field.name});
 </#if>

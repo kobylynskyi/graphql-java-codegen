@@ -1,4 +1,5 @@
 import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public interface Query {
 

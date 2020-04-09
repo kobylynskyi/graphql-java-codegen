@@ -207,8 +207,13 @@ class GraphqlCodegenTest {
         File eventFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("Event.java")).findFirst()
                 .orElseThrow(FileNotFoundException::new);
 
-        assertThat(Utils.getFileContent(eventFile.getPath()), StringStartsWith.startsWith(
-                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() + "public class Event {"));
+        assertThat(Utils.getFileContent(eventFile.getPath()),
+                StringStartsWith.startsWith(
+                        "import java.util.*;" +
+                                System.lineSeparator() +
+                                "import com.kobylynskyi.graphql.codegen.model.graphql.*;" +
+                                System.lineSeparator() + System.lineSeparator() +
+                                "public class Event {"));
     }
 
     @Test
