@@ -15,7 +15,6 @@ This Gradle plugin is able to generate the following classes based on your Graph
 * Enum classes for GraphQL enums
 * Interface Resolvers for GraphQL type fields
 * Client Request classes for GraphQL queries, mutations and subscriptions
-* FieldResolver interfaces for GraphQL types
 
 
 ### Plugin Setup
@@ -175,7 +174,7 @@ Later on you can call each task separately or together:
 
 ### Convert generated Java classes to Kotlin classes
 
-1. Navigate in InteliJ IDEA to the `./build/generated/graphql/` folder and press `Cmd+Alt+Shift+K`
+1. Navigate in IntelliJ IDEA to the `./build/generated/graphql/` folder and press `Cmd+Alt+Shift+K`
 2. Access generated classes as normal Kotlin classes.
 
 

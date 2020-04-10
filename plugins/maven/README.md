@@ -15,7 +15,6 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 * Enum classes for GraphQL enums
 * Interface Resolvers for GraphQL type fields
 * Client Request classes for GraphQL queries, mutations and subscriptions
-* FieldResolver interfaces for GraphQL types
 
 
 ### Plugin Setup and Configuration
