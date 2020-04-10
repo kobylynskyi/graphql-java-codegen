@@ -7,14 +7,19 @@ public interface CommitResolver {
 
     PullRequestConnection associatedPullRequests(Commit commit, String after, String before, Integer first, Integer last, PullRequestOrder orderBy, DataFetchingEnvironment env) throws Exception;
 
+    @javax.validation.constraints.NotNull
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)
     Blame blame(Commit commit, String path, DataFetchingEnvironment env) throws Exception;
 
+    @javax.validation.constraints.NotNull
     CommitCommentConnection comments(Commit commit, String after, String before, Integer first, Integer last, DataFetchingEnvironment env) throws Exception;
 
     DeploymentConnection deployments(Commit commit, String after, String before, Collection<String> environments, Integer first, Integer last, DeploymentOrder orderBy, DataFetchingEnvironment env) throws Exception;
 
+    @javax.validation.constraints.NotNull
     CommitHistoryConnection history(Commit commit, String after, CommitAuthor author, String before, Integer first, Integer last, String path, String since, String until, DataFetchingEnvironment env) throws Exception;
 
+    @javax.validation.constraints.NotNull
     CommitConnection parents(Commit commit, String after, String before, Integer first, Integer last, DataFetchingEnvironment env) throws Exception;
 
 }

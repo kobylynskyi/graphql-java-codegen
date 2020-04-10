@@ -40,6 +40,7 @@ class GraphqlCodegenFieldsResolversTest {
     @Test
     void generate_ParametrizedFields() throws Exception {
         mappingConfig.setGenerateParameterizedFieldsResolvers(true);
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap(
                 "Commit.blame", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
@@ -57,6 +58,7 @@ class GraphqlCodegenFieldsResolversTest {
     void generate_CustomFieldsResolvers() throws Exception {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
         generator.generate();

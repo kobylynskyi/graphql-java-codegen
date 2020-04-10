@@ -79,6 +79,9 @@ public class GraphqlCodegen {
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
+        if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis() == null) {
+            mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV);
+        }
         if (mappingConfig.getGenerateRequests()) {
             // required for request serialization
             mappingConfig.setGenerateToString(true);
@@ -146,11 +149,11 @@ public class GraphqlCodegen {
     private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
             for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> dataModel = FieldDefinitionToDataModelMapper.map(mappingConfig, operationDef, definition.getName());
+                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
                 GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
             }
             // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
-            Map<String, Object> dataModel = ObjectDefinitionToDataModelMapper.map(mappingConfig, definition);
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingConfig, definition);
             GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
 
@@ -178,8 +181,8 @@ public class GraphqlCodegen {
                 .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definition.getName()))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {
-            Map<String, Object> dataModel = FieldResolverDefinitionToDataModelMapper.map(mappingConfig, fieldDefsWithResolvers, definition.getName());
-            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.fieldsResolverTemplate, dataModel, outputDir);
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingConfig, fieldDefsWithResolvers, definition.getName());
+            GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
     }
 

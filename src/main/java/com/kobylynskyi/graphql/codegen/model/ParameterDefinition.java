@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 /**
  * Freemarker-understandable format of method parameter and field definition
  *
@@ -16,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParameterDefinition {
+
+    public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition("DataFetchingEnvironment", "env", null, emptyList());
 
     private String type;
     private String name;
