@@ -30,6 +30,10 @@ class GraphqlTypeToJavaTypeMapper {
         return getJavaType(mappingConfig, type, null, null);
     }
 
+    static String getJavaType(MappingConfig mappingConfig, String graphqlTypeName) {
+        return getJavaType(mappingConfig, graphqlTypeName, null, null);
+    }
+
     /**
      * Convert GraphQL type to a corresponding Java type
      *
@@ -162,7 +166,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Java type wrapped into the subscriptionReturnType
      */
     static String wrapIntoAsyncIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
-        if (MapperUtils.isAsyncQueryOrMutation(mappingConfig, parentTypeName)) {
+        if (MapperUtils.shouldUseAsyncMethods(mappingConfig, parentTypeName)) {
             return wrapIntoJavaCompletableFuture(javaTypeName);
         }
 

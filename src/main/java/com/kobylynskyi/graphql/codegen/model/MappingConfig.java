@@ -42,6 +42,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private Boolean generateToString;
     private Boolean generateAsyncApi;
     private Boolean generateParameterizedFieldsResolvers;
+    private Boolean generateDataFetchingEnvironmentArgumentInApis;
 
     /**
      * Fields that require Resolvers should be defined here in format: TypeName.fieldName
@@ -83,6 +84,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
         this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
         this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
+        this.generateDataFetchingEnvironmentArgumentInApis = source.generateDataFetchingEnvironmentArgumentInApis != null ? source.generateDataFetchingEnvironmentArgumentInApis : this.generateDataFetchingEnvironmentArgumentInApis;
         if (this.fieldsWithResolvers != null && source.fieldsWithResolvers != null) {
             this.fieldsWithResolvers.addAll(source.fieldsWithResolvers);
         } else if (this.fieldsWithResolvers == null) {

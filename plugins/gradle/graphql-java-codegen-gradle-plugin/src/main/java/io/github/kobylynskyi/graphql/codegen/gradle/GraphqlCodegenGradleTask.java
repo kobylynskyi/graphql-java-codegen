@@ -46,6 +46,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
     private Boolean generateToString = false;
     private Boolean generateAsyncApi = false;
     private Boolean generateParameterizedFieldsResolvers = true;
+    private Boolean generateDataFetchingEnvironmentArgumentInApis = false;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Boolean generateRequests;
     private String requestSuffix;
@@ -70,6 +71,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
@@ -296,6 +298,16 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
 
     public void setGenerateParameterizedFieldsResolvers(Boolean generateParameterizedFieldsResolvers) {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    @Input
+    @Optional
+    public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
+        return generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
+        this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
     }
 
     @Input

@@ -161,34 +161,20 @@ public class MapperUtils {
     }
 
     /**
-     * Returns imports required for the particular case of field definitions (operations), taking into account async
-     * operations, etc.
-     *
-     * @param mappingConfig  Global mapping configuration
-     * @param packageName    Package name of the generated class which will be ignored
-     * @param objectTypeName Object type: Query/Mutation/Subscription
-     * @return all imports required for a generated class
-     */
-    static Set<String> getImportsForFieldDefinition(MappingConfig mappingConfig, String packageName, String objectTypeName) {
-        final Set<String> imports = getImports(mappingConfig, packageName);
-
-        if (isAsyncQueryOrMutation(mappingConfig, objectTypeName)) {
-            imports.add("java.util.concurrent");
-        }
-
-        return imports;
-    }
-
-    /**
      * Returns imports required for the fields resolvers class
      *
      * @param mappingConfig Global mapping configuration
      * @param packageName   Package name of the generated class which will be ignored
      * @return all imports required for a generated class
      */
-    static Set<String> getImportsForFieldResolvers(MappingConfig mappingConfig, String packageName) {
+    static Set<String> getImportsForFieldResolvers(MappingConfig mappingConfig, String packageName, String objectTypeName) {
         Set<String> imports = getImports(mappingConfig, packageName);
-        imports.add("graphql.schema");
+        if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis()) {
+            imports.add("graphql.schema");
+        }
+        if (shouldUseAsyncMethods(mappingConfig, objectTypeName)) {
+            imports.add("java.util.concurrent");
+        }
         return imports;
     }
 
@@ -206,17 +192,15 @@ public class MapperUtils {
     }
 
     /**
-     * Determines if the specified operation is an async query or mutation
+     * Determines if the methods of the given type should use async return types.
      *
      * @param mappingConfig  Global mapping configuration
-     * @param objectTypeName Parent object type (Query/Mutation)
-     * @return true if the given operation is an async query or mutation, false otherwise
+     * @param typeName       Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
+     * @return true if the methods of the given type should be generated with async return types, false otherwise
      */
-    static boolean isAsyncQueryOrMutation(MappingConfig mappingConfig, String objectTypeName) {
+    static boolean shouldUseAsyncMethods(MappingConfig mappingConfig, String typeName) {
         boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi();
 
-        return isAsyncApi && (
-                GraphQLOperation.QUERY.name().equalsIgnoreCase(objectTypeName) ||
-                        GraphQLOperation.MUTATION.name().equalsIgnoreCase(objectTypeName));
+        return isAsyncApi && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
     }
 }

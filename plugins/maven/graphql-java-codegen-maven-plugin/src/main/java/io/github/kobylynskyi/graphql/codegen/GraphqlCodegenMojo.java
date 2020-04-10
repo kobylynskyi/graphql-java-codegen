@@ -76,6 +76,9 @@ public class GraphqlCodegenMojo extends AbstractMojo {
     @Parameter(defaultValue = "true")
     private boolean generateParameterizedFieldsResolvers;
 
+    @Parameter(defaultValue = "false")
+    private boolean generateDataFetchingEnvironmentArgumentInApis;
+
     @Parameter
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
@@ -117,6 +120,7 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
@@ -320,6 +324,14 @@ public class GraphqlCodegenMojo extends AbstractMojo {
 
     public void setGenerateParameterizedFieldsResolvers(boolean generateParameterizedFieldsResolvers) {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    public boolean isGenerateDataFetchingEnvironmentArgumentInApis() {
+        return generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    public void setGenerateDataFetchingEnvironmentArgumentInApis(boolean generateDataFetchingEnvironmentArgumentInApis) {
+        this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
     }
 
     public Set<String> getFieldsWithResolvers() {
