@@ -5,7 +5,7 @@ plugins {
     id "idea"
     id "application"
     id "net.ltgt.apt" version "0.20"
-    id "io.github.kobylynskyi.graphql.codegen" version "1.6.0"
+    id "io.github.kobylynskyi.graphql.codegen" version "1.6.1-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.bikeshop.Application"
@@ -19,7 +19,7 @@ dependencies {
     compile "com.graphql-java-kickstart:graphql-spring-boot-starter:5.10.0"
     compile "com.graphql-java-kickstart:graphiql-spring-boot-starter:5.10.0"
 
-    compile "io.github.kobylynskyi:graphql-java-codegen:1.6.0"
+    compile "io.github.kobylynskyi:graphql-java-codegen:1.6.1-SNAPSHOT"
 
     compile "org.apache.httpcomponents:httpclient:4.5.12"
 
