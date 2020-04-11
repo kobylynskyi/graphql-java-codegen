@@ -3,7 +3,7 @@ plugins {
     id "idea"
     id "application"
     id "net.ltgt.apt" version "0.20"
-    id "io.github.kobylynskyi.graphql.codegen" version "1.6.0-SNAPSHOT"
+    id "io.github.kobylynskyi.graphql.codegen" version "1.6.0"
 }
 
 mainClassName = "io.github.kobylynskyi.bikeshop.Application"

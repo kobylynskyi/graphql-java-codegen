@@ -26,7 +26,7 @@ This Maven plugin is able to generate the following classes based on your GraphQ
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.0</version>
             <executions>
                 <execution>
                     <goals>

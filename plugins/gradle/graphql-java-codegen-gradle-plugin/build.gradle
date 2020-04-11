@@ -17,7 +17,7 @@ apply plugin: "idea"
 apply plugin: "maven-publish"
 
 group = "io.github.kobylynskyi"
-version = "1.6.0-SNAPSHOT"
+version = "1.6.0"
 description = "Provides a task for generating Java code based on GraphQL schema"
 
 dependencies {
