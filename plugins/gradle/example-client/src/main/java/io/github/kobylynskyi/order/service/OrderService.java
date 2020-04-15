@@ -34,10 +34,12 @@ public class OrderService {
         return saved;
     }
 
-    public Order addProduct(String orderId, String productId, int quantity) throws OrderNotFoundException, UnableToRetrieveProductException {
+    public Order addProduct(String orderId, String productId, int quantity) throws OrderNotFoundException, UnableToRetrieveProductException, UnableToRetrieveProductsException {
         Order order = getOrderById(orderId);
 
         Product product = productService.getProduct(productId);
+        // for bulk use:
+        // Product product = productService.getProducts(Collections.singletonList(productId)).get(0);
         Item item = order.getItems().stream()
                 .filter(p -> p.getProductId().equals(productId))
                 .findFirst()
