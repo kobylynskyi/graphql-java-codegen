@@ -11,7 +11,7 @@ plugins {
     id "io.github.kobylynskyi.graphql.codegen" version "1.6.1-SNAPSHOT"
 }
 
-mainClassName = "io.github.kobylynskyi.bikeshop.Application"
+mainClassName = "io.github.kobylynskyi.order.Application"
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:2.1.7.RELEASE"
