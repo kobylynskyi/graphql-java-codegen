@@ -3,12 +3,10 @@ package io.github.kobylynskyi.order.external;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
 import io.github.kobylynskyi.order.model.Product;
+import io.github.kobylynskyi.order.model.UnableToCreateProductException;
 import io.github.kobylynskyi.order.model.UnableToRetrieveProductException;
 import io.github.kobylynskyi.order.model.UnableToRetrieveProductsException;
-import io.github.kobylynskyi.product.graphql.model.ProductByIdQueryRequest;
-import io.github.kobylynskyi.product.graphql.model.ProductResponseProjection;
-import io.github.kobylynskyi.product.graphql.model.ProductTO;
-import io.github.kobylynskyi.product.graphql.model.ProductsByIdsQueryRequest;
+import io.github.kobylynskyi.product.graphql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,8 +49,8 @@ public class ProductServiceGraphQLClient {
         GraphQLResult<Map<String, ProductTO>> result = restTemplate.exchange(URI.create(productUrl),
                 HttpMethod.POST,
                 httpEntity(request),
-                new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {
-                }).getBody();
+                new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {})
+                .getBody();
         assert result != null;
         if (result.hasErrors()) {
             throw new UnableToRetrieveProductException(productId, result.getErrors().get(0).getMessage());
@@ -71,14 +70,41 @@ public class ProductServiceGraphQLClient {
         GraphQLResult<Map<String, List<ProductTO>>> result = restTemplate.exchange(URI.create(productUrl),
                 HttpMethod.POST,
                 httpEntity(request),
-                new ParameterizedTypeReference<GraphQLResult<Map<String, List<ProductTO>>>>() {
-                }).getBody();
+                new ParameterizedTypeReference<GraphQLResult<Map<String, List<ProductTO>>>>() {})
+                .getBody();
         assert result != null;
         if (result.hasErrors()) {
             throw new UnableToRetrieveProductsException(productIds, result.getErrors().get(0).getMessage());
         }
         List<ProductTO> productTOs = result.getData().get(getProductRequest.getOperationName());
         return productTOs.stream().map(productMapper::map).collect(Collectors.toList());
+    }
+
+    public Product createProduct(String productTitle, String productSku, BigDecimal productPrice) throws UnableToCreateProductException {
+        CreateMutationRequest createProductRequest = new CreateMutationRequest();
+        createProductRequest.setProductInput(new ProductInputTO.Builder()
+                .setTitle(productTitle)
+                .setPrice(productPrice.toString())
+                .setSku(productSku)
+                .build());
+        GraphQLRequest request = new GraphQLRequest(createProductRequest,
+                new ProductResponseProjection()
+                        .id()
+                        .title()
+                        .price()
+                        .sku());
+
+        GraphQLResult<Map<String, ProductTO>> result = restTemplate.exchange(URI.create(productUrl),
+                HttpMethod.POST,
+                httpEntity(request),
+                new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {})
+                .getBody();
+        assert result != null;
+        if (result.hasErrors()) {
+            throw new UnableToCreateProductException(result.getErrors().get(0).getMessage());
+        }
+        ProductTO productTO = result.getData().get(createProductRequest.getOperationName());
+        return productMapper.map(productTO);
     }
 
     private static HttpEntity<String> httpEntity(Object request) {
