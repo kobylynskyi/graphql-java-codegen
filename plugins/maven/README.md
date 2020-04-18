@@ -112,7 +112,20 @@ Sample content of the file:
 }
 ```
 
-### Different configuration for each graphql schema
+
+### Examples
+
+* GraphQL **server** code generation: [example-server](example-server)
+  * [Plugin configuration in pom.xml](example-server/pom.xml)
+  * [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
+* GraphQL **client** code generation: [example-client](example-client)
+  * [Plugin configuration in pom.xml](example-client/pom.xml)
+  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
+  * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
+
+
+### Different configurations for graphql schemas
+
 If you want to have different configuration for different `.graphqls` files (e.g.: different javaPackage, outputDir, etc.), then you will need to define separate executions for each set of schemas. E.g.:
 
 ```xml
@@ -139,11 +152,6 @@ If you want to have different configuration for different `.graphqls` files (e.g
     </execution>
 </executions>
 ```
-
-### Example
-
-* GraphQL server code generation: [example-server](example-server)
-* GraphQL client code generation: [example-client](example-client)
 
 
 ### Inspired by

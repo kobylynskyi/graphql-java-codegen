@@ -150,7 +150,19 @@ Sample content of the file:
 }
 ```
 
-### Different configuration for each graphql schema
+
+### Examples
+
+* GraphQL **server** code generation: [example-server](example-server)
+  * [Plugin configuration in build.gradle](example-server/build.gradle)
+  * [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
+* GraphQL **client** code generation: [example-client](example-client)
+  * [Plugin configuration in build.gradle](example-client/build.gradle)
+  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
+  * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
+
+
+### Different configurations for graphql schemas
 
 If you want to have different configuration for different `.graphqls` files (e.g.: different javaPackage, outputDir, etc.), then you will need to create separate gradle tasks for each set of schemas. E.g.:
 
@@ -177,12 +189,6 @@ Later on you can call each task separately or together:
 
 1. Navigate in IntelliJ IDEA to the `./build/generated/graphql/` folder and press `Cmd+Alt+Shift+K`
 2. Access generated classes as normal Kotlin classes.
-
-
-### Example
-
-* GraphQL server code generation: [example-server](example-server)
-* GraphQL client code generation: [example-client](example-client)
 
 
 ### Inspired by

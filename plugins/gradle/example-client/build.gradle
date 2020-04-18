@@ -33,6 +33,10 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:1.18.8"
     annotationProcessor "org.projectlombok:lombok:1.18.8"
+
+    testImplementation "io.rest-assured:rest-assured:4.3.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.1"
 }
 
 /**
