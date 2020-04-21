@@ -1,0 +1,9 @@
+import java.util.*;
+
+public interface Node {
+
+    String getId();
+
+    String getCreatedBy();
+
+}

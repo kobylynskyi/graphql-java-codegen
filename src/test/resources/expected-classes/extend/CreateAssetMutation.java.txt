@@ -1,0 +1,8 @@
+import java.util.*;
+
+public interface CreateAssetMutation {
+
+    @javax.validation.constraints.NotNull
+    Asset createAsset(AssetInput input) throws Exception;
+
+}

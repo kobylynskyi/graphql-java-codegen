@@ -37,7 +37,6 @@ public class GraphqlCodegen {
     private List<String> schemas;
     private File outputDir;
     private MappingConfig mappingConfig;
-    private MappingConfig result;
 
     public GraphqlCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig) {
         this(schemas, outputDir, mappingConfig, null);
@@ -116,20 +115,20 @@ public class GraphqlCodegen {
     private void processDefinition(Document document, Definition<?> definition, Set<String> typeNames) throws IOException, TemplateException {
         switch (DefinitionTypeDeterminer.determine(definition)) {
             case OPERATION:
-                generateOperation((ObjectTypeDefinition) definition);
+                generateOperation((ObjectTypeDefinition) definition, document);
                 break;
             case TYPE:
                 generateType((ObjectTypeDefinition) definition, document, typeNames);
-                generateFieldResolvers((ObjectTypeDefinition) definition);
+                generateFieldResolvers((ObjectTypeDefinition) definition, document);
                 break;
             case INTERFACE:
-                generateInterface((InterfaceTypeDefinition) definition);
+                generateInterface((InterfaceTypeDefinition) definition, document);
                 break;
             case ENUM:
-                generateEnum((EnumTypeDefinition) definition);
+                generateEnum((EnumTypeDefinition) definition, document);
                 break;
             case INPUT:
-                generateInput((InputObjectTypeDefinition) definition);
+                generateInput((InputObjectTypeDefinition) definition, document);
                 break;
             case UNION:
                 generateUnion((UnionTypeDefinition) definition);
@@ -141,25 +140,25 @@ public class GraphqlCodegen {
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir);
     }
 
-    private void generateInterface(InterfaceTypeDefinition definition) throws IOException, TemplateException {
-        Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
+    private void generateInterface(InterfaceTypeDefinition definition, Document document) throws IOException, TemplateException {
+        Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition, document);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
     }
 
-    private void generateOperation(ObjectTypeDefinition definition) throws IOException, TemplateException {
+    private void generateOperation(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
-            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
+            for (FieldDefinition operationDef : getRootTypeFieldDefinitions(definition, document)) {
+                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName(), document);
                 GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
             }
             // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingConfig, definition);
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingConfig, definition, document);
             GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             // generate request objects for graphql operations
-            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
+            for (FieldDefinition operationDef : getRootTypeFieldDefinitions(definition, document)) {
                 Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName());
                 GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir);
             }
@@ -176,7 +175,7 @@ public class GraphqlCodegen {
         }
     }
 
-    private void generateFieldResolvers(ObjectTypeDefinition definition) throws IOException, TemplateException {
+    private void generateFieldResolvers(ObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
         List<FieldDefinition> fieldDefsWithResolvers = definition.getFieldDefinitions().stream()
                 .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definition.getName()))
                 .collect(toList());
@@ -186,21 +185,13 @@ public class GraphqlCodegen {
         }
     }
 
-    private void generateInput(InputObjectTypeDefinition definition) throws IOException, TemplateException {
-        Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingConfig, definition);
+    private void generateInput(InputObjectTypeDefinition definition, Document document) throws IOException, TemplateException {
+        Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingConfig, definition, document);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
     }
 
-    private static Set<String> getAllTypeNames(Document document) {
-        return document.getDefinitionsOfType(ObjectTypeDefinition.class)
-                .stream()
-                .filter(typeDef -> !Utils.isGraphqlOperation(typeDef.getName()))
-                .map(ObjectTypeDefinition::getName)
-                .collect(Collectors.toSet());
-    }
-
-    private void generateEnum(EnumTypeDefinition definition) throws IOException, TemplateException {
-        Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingConfig, definition);
+    private void generateEnum(EnumTypeDefinition definition, Document document) throws IOException, TemplateException {
+        Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingConfig, definition, document);
         GraphqlCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, outputDir);
     }
 
@@ -217,4 +208,26 @@ public class GraphqlCodegen {
         mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
     }
+
+    private static Set<String> getAllTypeNames(Document document) {
+        return document.getDefinitionsOfType(ObjectTypeDefinition.class)
+                .stream()
+                .filter(typeDef -> !Utils.isGraphqlOperation(typeDef.getName()))
+                .map(ObjectTypeDefinition::getName)
+                .collect(Collectors.toSet());
+    }
+
+    private static List<FieldDefinition> getRootTypeFieldDefinitions(ObjectTypeDefinition definition,
+                                                                     Document document) {
+        List<FieldDefinition> definitions = definition.getFieldDefinitions();
+        // Merge all field definitions from the object type with field definitions from object type extension
+        document.getDefinitions().stream()
+                .filter(d -> ObjectTypeExtensionDefinition.class.isAssignableFrom(d.getClass()))
+                .map(ObjectTypeExtensionDefinition.class::cast)
+                .filter(d -> d.getName().equals(definition.getName()))
+                .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
+                .forEach(definitions::addAll);
+        return definitions;
+    }
+
 }

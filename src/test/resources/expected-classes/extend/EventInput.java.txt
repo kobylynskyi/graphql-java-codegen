@@ -1,0 +1,58 @@
+import java.util.*;
+
+public class EventInput {
+
+    @javax.validation.constraints.NotNull
+    private Status status;
+    @javax.validation.constraints.NotNull
+    private Collection<AssetInput> assets;
+
+    public EventInput() {
+    }
+
+    public EventInput(Status status, Collection<AssetInput> assets) {
+        this.status = status;
+        this.assets = assets;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Collection<AssetInput> getAssets() {
+        return assets;
+    }
+    public void setAssets(Collection<AssetInput> assets) {
+        this.assets = assets;
+    }
+
+
+
+    public static class Builder {
+
+        private Status status;
+        private Collection<AssetInput> assets;
+
+        public Builder() {
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setAssets(Collection<AssetInput> assets) {
+            this.assets = assets;
+            return this;
+        }
+
+
+        public EventInput build() {
+            return new EventInput(status, assets);
+        }
+
+    }
+}

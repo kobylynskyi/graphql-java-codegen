@@ -1,0 +1,46 @@
+import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
+
+public class AssetResponseProjection implements GraphQLResponseProjection {
+
+    private Map<String, Object> fields = new LinkedHashMap<>();
+
+    public AssetResponseProjection() {
+    }
+
+    public AssetResponseProjection name() {
+        fields.put("name", null);
+        return this;
+    }
+
+    public AssetResponseProjection status() {
+        fields.put("status", null);
+        return this;
+    }
+
+    public AssetResponseProjection id() {
+        fields.put("id", null);
+        return this;
+    }
+
+    public AssetResponseProjection createdBy() {
+        fields.put("createdBy", null);
+        return this;
+    }
+
+
+    @Override
+    public String toString() {
+        if (fields.isEmpty()) {
+            return "";
+        }
+        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
+        for (Map.Entry<String, Object> property : fields.entrySet()) {
+            joiner.add(property.getKey());
+            if (property.getValue() != null) {
+                joiner.add(" ").add(property.getValue().toString());
+            }
+        }
+        return joiner.toString();
+    }
+}
