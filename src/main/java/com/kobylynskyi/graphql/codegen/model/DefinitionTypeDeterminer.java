@@ -6,27 +6,35 @@ import lombok.NonNull;
 
 public class DefinitionTypeDeterminer {
 
-    public static GraphqlDefinitionType determine(@NonNull Definition definition) {
-        if (definition instanceof ObjectTypeDefinition) {
+    /**
+     * Determine the type of GraphQL definition.
+     * Comparing using <code>.getClass()</code> in order to ignore subclasses (ExtensionDefinitions in our case)
+     *
+     * @param definition GraphQL definition
+     * @return one of {@link GraphqlDefinitionType}
+     */
+    public static GraphqlDefinitionType determine(@NonNull Definition<?> definition) {
+        Class<?> definitionClass = definition.getClass();
+        if (definitionClass.equals(ObjectTypeDefinition.class)) {
             ObjectTypeDefinition typeDef = (ObjectTypeDefinition) definition;
             if (Utils.isGraphqlOperation(typeDef.getName())) {
                 return GraphqlDefinitionType.OPERATION;
             } else {
                 return GraphqlDefinitionType.TYPE;
             }
-        } else if (definition instanceof EnumTypeDefinition) {
+        } else if (definitionClass.equals(EnumTypeDefinition.class)) {
             return GraphqlDefinitionType.ENUM;
-        } else if (definition instanceof InputObjectTypeDefinition) {
+        } else if (definitionClass.equals(InputObjectTypeDefinition.class)) {
             return GraphqlDefinitionType.INPUT;
-        } else if (definition instanceof SchemaDefinition) {
+        } else if (definitionClass.equals(SchemaDefinition.class)) {
             return GraphqlDefinitionType.SCHEMA;
-        } else if (definition instanceof UnionTypeDefinition) {
+        } else if (definitionClass.equals(UnionTypeDefinition.class)) {
             return GraphqlDefinitionType.UNION;
-        } else if (definition instanceof ScalarTypeDefinition) {
+        } else if (definitionClass.equals(ScalarTypeDefinition.class)) {
             return GraphqlDefinitionType.SCALAR;
-        } else if (definition instanceof InterfaceTypeDefinition) {
+        } else if (definitionClass.equals(InterfaceTypeDefinition.class)) {
             return GraphqlDefinitionType.INTERFACE;
-        } else if (definition instanceof DirectiveDefinition) {
+        } else if (definitionClass.equals(DirectiveDefinition.class)) {
             return GraphqlDefinitionType.DIRECTIVE;
         } else {
             throw new UnsupportedGraphqlDefinitionException(definition);

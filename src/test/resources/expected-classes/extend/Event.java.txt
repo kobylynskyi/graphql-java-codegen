@@ -1,0 +1,105 @@
+import java.util.*;
+
+public class Event implements PinnableItem, Node{
+
+    @javax.validation.constraints.NotNull
+    private Status status;
+    @javax.validation.constraints.NotNull
+    private String createdDateTime;
+    @javax.validation.constraints.NotNull
+    private String id;
+    private String createdBy;
+    @javax.validation.constraints.NotNull
+    private Collection<Asset> assets;
+
+    public Event() {
+    }
+
+    public Event(Status status, String createdDateTime, String id, String createdBy, Collection<Asset> assets) {
+        this.status = status;
+        this.createdDateTime = createdDateTime;
+        this.id = id;
+        this.createdBy = createdBy;
+        this.assets = assets;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Collection<Asset> getAssets() {
+        return assets;
+    }
+    public void setAssets(Collection<Asset> assets) {
+        this.assets = assets;
+    }
+
+
+
+    public static class Builder {
+
+        private Status status;
+        private String createdDateTime;
+        private String id;
+        private String createdBy;
+        private Collection<Asset> assets;
+
+        public Builder() {
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder setAssets(Collection<Asset> assets) {
+            this.assets = assets;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(status, createdDateTime, id, createdBy, assets);
+        }
+
+    }
+}

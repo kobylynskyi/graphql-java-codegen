@@ -1,0 +1,43 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+extend type Query {
+    assets: [Asset!]
+}
+
+extend type Mutation {
+    createAsset(input: AssetInput!): Asset!
+}
+
+type Asset implements Node {
+    name: String!
+    status: Status!
+}
+
+input AssetInput {
+    name: String!
+}
+
+extend type Event {
+    assets: [Asset!]
+}
+
+extend input EventInput {
+    assets: [AssetInput!]
+}
+
+extend enum Status {
+    ASSIGNED
+}
+
+extend interface Node {
+    createdBy: String
+}
+
+extend union PinnableItem = Asset
+
+
+extend scalar DateTime @javaType(name: "java.util.Date")

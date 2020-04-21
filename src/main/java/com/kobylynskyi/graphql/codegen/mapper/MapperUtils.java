@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.Definition;
 import graphql.language.Document;
 import graphql.language.NamedNode;
 import graphql.language.UnionTypeDefinition;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MapperUtils {
+class MapperUtils {
 
     private static final Set<String> JAVA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
@@ -46,15 +47,36 @@ public class MapperUtils {
      * @param document      Parent GraphQL document
      * @return Names of all unions that requested <code>definition</code> is part of.
      */
-    static List<String> getUnionsHavingType(MappingConfig mappingConfig,
-                                            NamedNode definition,
-                                            Document document) {
+    static List<String> getUnionNamesHavingType(MappingConfig mappingConfig,
+                                                NamedNode<?> definition,
+                                                Document document) {
         return document.getDefinitions().stream()
-                .filter(def -> def instanceof UnionTypeDefinition)
+                // should cover extensions too
+                .filter(def -> UnionTypeDefinition.class.isAssignableFrom(def.getClass()))
                 .map(def -> (UnionTypeDefinition) def)
                 .filter(union -> isDefinitionPartOfUnion(definition, union))
                 .map(UnionTypeDefinition::getName)
                 .map(unionName -> getClassNameWithPrefixAndSuffix(mappingConfig, unionName))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of definitions of the specific type and name.
+     * It uses {@link java.lang.Class#isAssignableFrom(Class)} for the test
+     *
+     * @param definitionClass the definition class
+     * @param definitionName  the definition name
+     * @param <T>             the type of definition
+     * @return a list of definitions of that class/name or empty list
+     */
+    static <T extends Definition<?>> List<T> getDefinitionsOfType(Document document,
+                                                                  Class<T> definitionClass,
+                                                                  String definitionName) {
+        return document.getDefinitions().stream()
+                .filter(d -> definitionClass.isAssignableFrom(d.getClass()) &&
+                        NamedNode.class.isAssignableFrom(d.getClass()))
+                .filter(d -> ((NamedNode<?>) d).getName().equals(definitionName))
+                .map(definitionClass::cast)
                 .collect(Collectors.toList());
     }
 
@@ -65,11 +87,11 @@ public class MapperUtils {
      * @param union      GraphQL Union definition
      * @return <b>true</b> if <code>definition</code> is a part of <code>union</code>. <b>false</b>if <code>definition</code> is a part of <code>union</code>.
      */
-    private static boolean isDefinitionPartOfUnion(NamedNode definition,
+    private static boolean isDefinitionPartOfUnion(NamedNode<?> definition,
                                                    UnionTypeDefinition union) {
         return union.getMemberTypes().stream()
                 .filter(member -> member instanceof NamedNode)
-                .map(member -> (NamedNode) member)
+                .map(member -> (NamedNode<?>) member)
                 .anyMatch(member -> member.getName().equals(definition.getName()));
     }
 
@@ -80,7 +102,7 @@ public class MapperUtils {
      * @param definition    GraphQL node
      * @return Class name of GraphQL node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, NamedNode definition) {
+    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, NamedNode<?> definition) {
         return getClassNameWithPrefixAndSuffix(mappingConfig, definition.getName());
     }
 
@@ -194,8 +216,8 @@ public class MapperUtils {
     /**
      * Determines if the methods of the given type should use async return types.
      *
-     * @param mappingConfig  Global mapping configuration
-     * @param typeName       Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
+     * @param mappingConfig Global mapping configuration
+     * @param typeName      Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
      * @return true if the methods of the given type should be generated with async return types, false otherwise
      */
     static boolean shouldUseAsyncMethods(MappingConfig mappingConfig, String typeName) {

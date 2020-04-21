@@ -1,0 +1,11 @@
+import java.util.*;
+
+public interface Query {
+
+    @javax.validation.constraints.NotNull
+    Collection<Event> events() throws Exception;
+
+    @javax.validation.constraints.NotNull
+    Collection<Asset> assets() throws Exception;
+
+}

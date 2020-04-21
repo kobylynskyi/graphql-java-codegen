@@ -7,12 +7,12 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Document;
 import graphql.language.InterfaceTypeDefinition;
 import graphql.language.ObjectTypeDefinition;
+import graphql.language.ObjectTypeExtensionDefinition;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
-import static java.util.Collections.emptySet;
 
 /**
  * Map type definition to a Freemarker data model
@@ -31,17 +31,13 @@ public class TypeDefinitionToDataModelMapper {
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, ObjectTypeDefinition typeDefinition,
                                           Document document) {
-        Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
+
+        Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
-        Set<String> allInterfaces = new LinkedHashSet<>(
-                MapperUtils.getUnionsHavingType(mappingConfig, typeDefinition, document));
-        typeDefinition.getImplements().stream()
-                .map(anImplement -> GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, anImplement))
-                .forEach(allInterfaces::add);
-        dataModel.put(IMPLEMENTS, allInterfaces);
+        dataModel.put(IMPLEMENTS, getInterfaces(mappingConfig, typeDefinition, document));
         dataModel.put(FIELDS, getFields(mappingConfig, typeDefinition, document));
         dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
@@ -49,7 +45,6 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(TO_STRING_ESCAPE_JSON, mappingConfig.getGenerateRequests());
         return dataModel;
     }
-
 
     /**
      * Map type definition to a Freemarker data model of Response Projection.
@@ -83,16 +78,26 @@ public class TypeDefinitionToDataModelMapper {
      * @param document       Parent GraphQL document
      * @return Freemarker data model of the GraphQL type
      */
-    @SuppressWarnings("CollectionAddAllCanBeReplacedWithConstructor")
     private static Set<ParameterDefinition> getFields(MappingConfig mappingConfig, ObjectTypeDefinition typeDefinition,
                                                       Document document) {
+        List<ParameterDefinition> typeParameters = FieldDefinitionToParameterMapper.mapFields(mappingConfig,
+                typeDefinition.getFieldDefinitions(), typeDefinition.getName());
+        List<ParameterDefinition> typeParametersFromInterfaces = getInterfacesOfType(mappingConfig, typeDefinition, document)
+                .stream()
+                .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig, i.getFieldDefinitions(), i.getName()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<ParameterDefinition> typeParametersFromExtensions = MapperUtils.getDefinitionsOfType(document,
+                ObjectTypeExtensionDefinition.class, typeDefinition.getName())
+                .stream()
+                .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig, i.getFieldDefinitions(), i.getName()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
         Set<ParameterDefinition> allParameters = new LinkedHashSet<>();
-        allParameters.addAll(FieldDefinitionToParameterMapper.mapFields(mappingConfig,
-                typeDefinition.getFieldDefinitions(), typeDefinition.getName()));
-        List<InterfaceTypeDefinition> interfaces = getInterfacesOfType(mappingConfig, typeDefinition, document);
-        interfaces.stream().map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig,
-                i.getFieldDefinitions(), i.getName()))
-                .forEach(allParameters::addAll);
+        allParameters.addAll(typeParameters);
+        allParameters.addAll(typeParametersFromInterfaces);
+        allParameters.addAll(typeParametersFromExtensions);
         return allParameters;
     }
 
@@ -105,16 +110,26 @@ public class TypeDefinitionToDataModelMapper {
      * @param typeNames      Names of all GraphQL types
      * @return Freemarker data model of the GraphQL type
      */
-    @SuppressWarnings("CollectionAddAllCanBeReplacedWithConstructor")
     private static Set<ProjectionParameterDefinition> getProjectionFields(MappingConfig mappingConfig, ObjectTypeDefinition typeDefinition,
                                                                           Document document, Set<String> typeNames) {
+        List<ProjectionParameterDefinition> typeParameters = FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig,
+                typeDefinition.getFieldDefinitions(), typeDefinition.getName(), typeNames);
+        List<ProjectionParameterDefinition> typeParametersFromInterfaces = getInterfacesOfType(mappingConfig, typeDefinition, document)
+                .stream().map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig,
+                        i.getFieldDefinitions(), i.getName(), typeNames))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<ProjectionParameterDefinition> typeParametersFromExtensions = MapperUtils.getDefinitionsOfType(document, ObjectTypeExtensionDefinition.class, typeDefinition.getName())
+                .stream()
+                .map(ext -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig,
+                        ext.getFieldDefinitions(), ext.getName(), typeNames))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
         Set<ProjectionParameterDefinition> allParameters = new LinkedHashSet<>();
-        allParameters.addAll(FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig,
-                typeDefinition.getFieldDefinitions(), typeDefinition.getName(), typeNames));
-        List<InterfaceTypeDefinition> interfaces = getInterfacesOfType(mappingConfig, typeDefinition, document);
-        interfaces.stream().map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig,
-                i.getFieldDefinitions(), i.getName(), typeNames))
-                .forEach(allParameters::addAll);
+        allParameters.addAll(typeParameters);
+        allParameters.addAll(typeParametersFromInterfaces);
+        allParameters.addAll(typeParametersFromExtensions);
         return allParameters;
     }
 
@@ -140,6 +155,15 @@ public class TypeDefinitionToDataModelMapper {
                 .map(def -> (InterfaceTypeDefinition) def)
                 .filter(def -> typeImplements.contains(def.getName()))
                 .collect(Collectors.toList());
+    }
+
+    private static Set<String> getInterfaces(MappingConfig mappingConfig, ObjectTypeDefinition typeDefinition, Document document) {
+        Set<String> allInterfaces = new LinkedHashSet<>(
+                MapperUtils.getUnionNamesHavingType(mappingConfig, typeDefinition, document));
+        typeDefinition.getImplements().stream()
+                .map(anImplement -> GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, anImplement))
+                .forEach(allInterfaces::add);
+        return allInterfaces;
     }
 
 }
