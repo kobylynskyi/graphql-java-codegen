@@ -4,16 +4,10 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Definition;
-import graphql.language.Document;
-import graphql.language.NamedNode;
-import graphql.language.UnionTypeDefinition;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 class MapperUtils {
 
@@ -38,41 +32,6 @@ class MapperUtils {
             return Utils.capitalize(fieldName);
         }
         return fieldName;
-    }
-
-    /**
-     * Returns a list of definitions of the specific type and name.
-     * It uses {@link java.lang.Class#isAssignableFrom(Class)} for the test
-     *
-     * @param definitionClass the definition class
-     * @param definitionName  the definition name
-     * @param <T>             the type of definition
-     * @return a list of definitions of that class/name or empty list
-     */
-    static <T extends Definition<?>> List<T> getDefinitionsOfType(Document document,
-                                                                  Class<T> definitionClass,
-                                                                  String definitionName) {
-        return document.getDefinitions().stream()
-                .filter(d -> definitionClass.isAssignableFrom(d.getClass()) &&
-                        NamedNode.class.isAssignableFrom(d.getClass()))
-                .filter(d -> ((NamedNode<?>) d).getName().equals(definitionName))
-                .map(definitionClass::cast)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Find out if a definition is a part of a union.
-     *
-     * @param definition GraphQL definition (type / interface / object / union / etc.)
-     * @param union      GraphQL Union definition
-     * @return <b>true</b> if <code>definition</code> is a part of <code>union</code>. <b>false</b>if <code>definition</code> is a part of <code>union</code>.
-     */
-    private static boolean isDefinitionPartOfUnion(NamedNode<?> definition,
-                                                   UnionTypeDefinition union) {
-        return union.getMemberTypes().stream()
-                .filter(member -> member instanceof NamedNode)
-                .map(member -> (NamedNode<?>) member)
-                .anyMatch(member -> member.getName().equals(definition.getName()));
     }
 
     /**
