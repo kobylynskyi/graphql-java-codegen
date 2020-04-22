@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
-import com.kobylynskyi.graphql.codegen.GraphqlCodegen;
+import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
@@ -26,7 +26,7 @@ import java.util.*;
  *
  * @author kobylynskyi
  */
-public class GraphqlCodegenGradleTask extends DefaultTask {
+public class GraphQLCodegenGradleTask extends DefaultTask {
 
     private List<String> graphqlSchemaPaths;
     private final SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
@@ -77,7 +77,7 @@ public class GraphqlCodegenGradleTask extends DefaultTask {
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
 
-        new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
+        new GraphQLCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
 
     private List<String> getSchemas() throws IOException {

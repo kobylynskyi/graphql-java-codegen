@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
-import com.kobylynskyi.graphql.codegen.GraphqlCodegenValidate;
+import com.kobylynskyi.graphql.codegen.GraphQLCodegenValidate;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
@@ -13,13 +13,13 @@ import java.util.List;
  *
  * @author kobylynskyi
  */
-public class GraphqlCodegenValidateGradleTask extends DefaultTask {
+public class GraphQLCodegenValidateGradleTask extends DefaultTask {
 
     private List<String> graphqlSchemaPaths;
 
     @TaskAction
     public void validate() throws IOException {
-        new GraphqlCodegenValidate(graphqlSchemaPaths).validate();
+        new GraphQLCodegenValidate(graphqlSchemaPaths).validate();
     }
 
     @Input

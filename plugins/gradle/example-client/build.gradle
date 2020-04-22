@@ -1,4 +1,4 @@
-import io.github.kobylynskyi.graphql.codegen.gradle.GraphqlCodegenGradleTask
+import io.github.kobylynskyi.graphql.codegen.gradle.GraphQLCodegenGradleTask
 
 plugins {
     id "java"
@@ -44,7 +44,7 @@ dependencies {
  */
 compileJava.dependsOn "graphqlCodegenProductService"
 sourceSets.main.java.srcDirs "$buildDir/generated-client"
-task graphqlCodegenProductService(type: GraphqlCodegenGradleTask) {
+task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
     graphqlSchemaPaths = ["$projectDir/src/main/resources/external/schema-product-service.graphqls".toString()]
     outputDir = new File("$buildDir/generated-client")
     modelPackageName = "io.github.kobylynskyi.product.graphql.model"
@@ -61,7 +61,7 @@ task graphqlCodegenProductService(type: GraphqlCodegenGradleTask) {
  */
 compileJava.dependsOn "graphqlCodegenOrderService"
 sourceSets.main.java.srcDirs "$buildDir/generated-server"
-task graphqlCodegenOrderService(type: GraphqlCodegenGradleTask) {
+task graphqlCodegenOrderService(type: GraphQLCodegenGradleTask) {
     graphqlSchemaPaths = ["$projectDir/src/main/resources/schema.graphqls".toString()]
     outputDir = new File("$buildDir/generated-server")
     apiPackageName = "io.github.kobylynskyi.order.graphql.api"
