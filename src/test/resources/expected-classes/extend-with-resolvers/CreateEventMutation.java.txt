@@ -1,0 +1,8 @@
+import java.util.*;
+
+public interface CreateEventMutation {
+
+    @javax.validation.constraints.NotNull
+    Event createEvent(EventInput input) throws Exception;
+
+}

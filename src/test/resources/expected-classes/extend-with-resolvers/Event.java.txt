@@ -1,0 +1,74 @@
+import java.util.*;
+
+public class Event implements PinnableItem, Node{
+
+    @javax.validation.constraints.NotNull
+    private Status status;
+    @javax.validation.constraints.NotNull
+    private String createdDateTime;
+    @javax.validation.constraints.NotNull
+    private String id;
+
+    public Event() {
+    }
+
+    public Event(Status status, String createdDateTime, String id) {
+        this.status = status;
+        this.createdDateTime = createdDateTime;
+        this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+    public static class Builder {
+
+        private Status status;
+        private String createdDateTime;
+        private String id;
+
+        public Builder() {
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(status, createdDateTime, id);
+        }
+
+    }
+}

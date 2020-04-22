@@ -42,14 +42,24 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private Boolean generateToString;
     private Boolean generateAsyncApi;
     private Boolean generateParameterizedFieldsResolvers;
+    private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
 
     /**
      * Fields that require Resolvers should be defined here in format: TypeName.fieldName
      * E.g.: "Person.friends"
-     * If just type is specified, then all fields of this type will
+     * If just type is specified, then all fields of this type will have resolvers
      */
     private Set<String> fieldsWithResolvers = new HashSet<>();
+
+    /**
+     * Fields that DO NOT require Resolvers should be defined here in format: TypeName.fieldName
+     * E.g.: "Person.friends"
+     * If just type is specified, then all fields of this type will NOT have resolvers
+     *
+     * Can be used in conjunction with "generateExtensionFieldsResolvers"
+     */
+    private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
     // client-side codegen configs:
     private Boolean generateRequests;
@@ -84,11 +94,17 @@ public class MappingConfig implements Combinable<MappingConfig> {
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
         this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
         this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
+        this.generateExtensionFieldsResolvers = source.generateExtensionFieldsResolvers != null ? source.generateExtensionFieldsResolvers : this.generateExtensionFieldsResolvers;
         this.generateDataFetchingEnvironmentArgumentInApis = source.generateDataFetchingEnvironmentArgumentInApis != null ? source.generateDataFetchingEnvironmentArgumentInApis : this.generateDataFetchingEnvironmentArgumentInApis;
         if (this.fieldsWithResolvers != null && source.fieldsWithResolvers != null) {
             this.fieldsWithResolvers.addAll(source.fieldsWithResolvers);
         } else if (this.fieldsWithResolvers == null) {
             this.fieldsWithResolvers = source.fieldsWithResolvers;
+        }
+        if (this.fieldsWithoutResolvers != null && source.fieldsWithoutResolvers != null) {
+            this.fieldsWithoutResolvers.addAll(source.fieldsWithoutResolvers);
+        } else if (this.fieldsWithoutResolvers == null) {
+            this.fieldsWithoutResolvers = source.fieldsWithoutResolvers;
         }
         this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
         this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;

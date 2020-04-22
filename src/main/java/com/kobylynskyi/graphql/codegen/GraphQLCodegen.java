@@ -74,6 +74,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
+        if (mappingConfig.getGenerateExtensionFieldsResolvers() == null) {
+            mappingConfig.setGenerateExtensionFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS);
+        }
         if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis() == null) {
             mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV);
         }
@@ -99,12 +102,13 @@ public class GraphQLCodegen {
     private void processDefinitions(ExtendedDocument document) {
         Set<String> typeNames = document.getTypeNames();
         document.getTypeDefinitions().forEach(definition -> generateType(definition, document, typeNames));
+        document.getTypeDefinitions().forEach(definition -> generateFieldResolvers(definition.getFieldDefinitions(), definition.getName()));
         document.getOperationDefinitions().forEach(this::generateOperation);
-        document.getTypeDefinitions().forEach(this::generateFieldResolvers);
         document.getInputDefinitions().forEach(this::generateInput);
         document.getEnumDefinitions().forEach(this::generateEnum);
         document.getUnionDefinitions().forEach(this::generateUnion);
         document.getInterfaceDefinitions().forEach(this::generateInterface);
+        document.getInterfaceDefinitions().forEach(definition -> generateFieldResolvers(definition.getFieldDefinitions(), definition.getName()));
 
         System.out.println(String.format("Generated definition classes in folder %s", outputDir.getAbsolutePath()));
     }
@@ -121,7 +125,7 @@ public class GraphQLCodegen {
 
     private void generateOperation(ExtendedObjectTypeDefinition definition) {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
-            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
+            for (FieldDefinitionFromExtension operationDef : definition.getFieldDefinitions()) {
                 Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
                 GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
             }
@@ -149,12 +153,12 @@ public class GraphQLCodegen {
         }
     }
 
-    private void generateFieldResolvers(ExtendedObjectTypeDefinition definition) {
-        List<FieldDefinition> fieldDefsWithResolvers = definition.getFieldDefinitions().stream()
-                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definition.getName()))
+    private void generateFieldResolvers(List<FieldDefinitionFromExtension> fieldDefinitions, String definitionName) {
+        List<FieldDefinitionFromExtension> fieldDefsWithResolvers = fieldDefinitions.stream()
+                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definitionName))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingConfig, fieldDefsWithResolvers, definition.getName());
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingConfig, fieldDefsWithResolvers, definitionName);
             GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
         }
     }

@@ -1,0 +1,74 @@
+import java.util.*;
+
+public class Asset implements PinnableItem, Node{
+
+    @javax.validation.constraints.NotNull
+    private String name;
+    @javax.validation.constraints.NotNull
+    private Status status;
+    @javax.validation.constraints.NotNull
+    private String id;
+
+    public Asset() {
+    }
+
+    public Asset(String name, Status status, String id) {
+        this.name = name;
+        this.status = status;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+    public static class Builder {
+
+        private String name;
+        private Status status;
+        private String id;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Asset build() {
+            return new Asset(name, status, id);
+        }
+
+    }
+}
