@@ -1,0 +1,8 @@
+import java.util.*;
+
+public interface EventResolver {
+
+    @javax.validation.constraints.NotNull
+    Collection<Asset> assets(Event event) throws Exception;
+
+}

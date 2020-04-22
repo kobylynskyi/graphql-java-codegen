@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.FieldDefinitionFromExtension;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 import graphql.language.TypeName;
@@ -27,7 +28,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName Name of the type for which Resolver will be generated
      * @return Freemarker data model of the GraphQL parametrized field
      */
-    public static Map<String, Object> mapToTypeResolver(MappingConfig mappingConfig, List<FieldDefinition> fieldDefs,
+    public static Map<String, Object> mapToTypeResolver(MappingConfig mappingConfig,
+                                                        List<FieldDefinitionFromExtension> fieldDefs,
                                                         String parentTypeName) {
         // Example: PersonResolver
         String className = parentTypeName + "Resolver";
@@ -42,11 +44,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param rootTypeName    Object type (e.g.: "Query", "Mutation" or "Subscription")
      * @return Freemarker data model of the GraphQL field
      */
-    public static Map<String, Object> mapRootTypeField(MappingConfig mappingConfig, FieldDefinition fieldDefinition,
+    public static Map<String, Object> mapRootTypeField(MappingConfig mappingConfig,
+                                                       FieldDefinitionFromExtension fieldDefinition,
                                                        String rootTypeName) {
         // Examples: VersionQuery, CreateEventMutation (rootTypeName is "Query" or the likes)
         String className = Utils.capitalize(fieldDefinition.getName()) + rootTypeName;
-        List<FieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
+        List<FieldDefinitionFromExtension> fieldDefs = Collections.singletonList(fieldDefinition);
         return mapToResolverModel(mappingConfig, rootTypeName, className, fieldDefs);
     }
 
@@ -57,7 +60,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param definition    GraphQL object definition of a root type like Query
      * @return Freemarker data model of the GraphQL object
      */
-    public static Map<String, Object> mapRootTypeFields(MappingConfig mappingConfig, ExtendedObjectTypeDefinition definition) {
+    public static Map<String, Object> mapRootTypeFields(MappingConfig mappingConfig,
+                                                        ExtendedObjectTypeDefinition definition) {
         String parentTypeName = definition.getName();
         String className = Utils.capitalize(parentTypeName);
         // For root types like "Query", we create resolvers for all fields
@@ -65,7 +69,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
     }
 
     private static Map<String, Object> mapToResolverModel(MappingConfig mappingConfig, String parentTypeName,
-                                                          String className, List<FieldDefinition> fieldDefinitions) {
+                                                          String className,
+                                                          List<FieldDefinitionFromExtension> fieldDefinitions) {
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
         Set<String> imports = MapperUtils.getImportsForFieldResolvers(mappingConfig, packageName, parentTypeName);
         List<OperationDefinition> operations = mapToOperations(mappingConfig, fieldDefinitions, parentTypeName);
@@ -87,7 +92,9 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName   Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operations
      */
-    private static List<OperationDefinition> mapToOperations(MappingConfig mappingConfig, List<FieldDefinition> fieldDefinitions, String parentTypeName) {
+    private static List<OperationDefinition> mapToOperations(MappingConfig mappingConfig,
+                                                             List<FieldDefinitionFromExtension> fieldDefinitions,
+                                                             String parentTypeName) {
         return fieldDefinitions.stream()
                 .map(fieldDef -> map(mappingConfig, fieldDef, parentTypeName))
                 .collect(Collectors.toList());
@@ -101,17 +108,22 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operation
      */
-    private static OperationDefinition map(MappingConfig mappingConfig, FieldDefinition resolvedField, String parentTypeName) {
-        String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName);
+    private static OperationDefinition map(MappingConfig mappingConfig, FieldDefinition resolvedField,
+                                           String parentTypeName) {
+        String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
+                mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName);
         OperationDefinition operation = new OperationDefinition();
         operation.setName(resolvedField.getName());
         operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingConfig, javaType, parentTypeName));
-        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName));
+        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(
+                mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName));
         operation.setParameters(getOperationParameters(mappingConfig, resolvedField, parentTypeName));
         return operation;
     }
 
-    private static List<ParameterDefinition> getOperationParameters(MappingConfig mappingConfig, FieldDefinition resolvedField, String parentTypeName) {
+    private static List<ParameterDefinition> getOperationParameters(MappingConfig mappingConfig,
+                                                                    FieldDefinition resolvedField,
+                                                                    String parentTypeName) {
         List<ParameterDefinition> parameters = new ArrayList<>();
 
         // 1. First parameter is the parent object for which we are resolving fields (unless it's the root Query)

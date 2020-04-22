@@ -1,0 +1,7 @@
+public enum Status {
+
+    CREATED,
+    IN_PROGRESS,
+    ASSIGNED
+
+}

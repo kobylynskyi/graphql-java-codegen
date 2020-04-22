@@ -71,6 +71,20 @@ class GraphQLCodegenFieldsResolversTest {
                 getGeneratedFile(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
 
+    @Test
+    void generate_ResolverForWholeType() throws Exception {
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("CommentDeletedEvent"));
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEventResolver.java.txt"),
+                getGeneratedFile(files, "CommentDeletedEventResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEvent.java.txt"),
+                getGeneratedFile(files, "CommentDeletedEvent.java"));
+    }
+
     private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
         return Arrays.stream(files)
                 .filter(f -> f.getName().equalsIgnoreCase(fileName))

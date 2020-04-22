@@ -11,5 +11,6 @@ public class DefaultMappingConfigValues {
     public static final boolean DEFAULT_EQUALS_AND_HASHCODE = false;
     public static final boolean DEFAULT_TO_STRING = false;
     public static final boolean DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS = true;
+    public static final boolean DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS = false;
     public static final boolean DEFAULT_GENERATE_DATA_FETCHING_ENV = false;
 }

@@ -1,0 +1,7 @@
+import java.util.*;
+
+public interface NodeResolver {
+
+    String createdBy(Node node) throws Exception;
+
+}

@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class AssetInput {
+
+    @javax.validation.constraints.NotNull
+    private String name;
+
+    public AssetInput() {
+    }
+
+    public AssetInput(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public static class Builder {
+
+        private String name;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+
+        public AssetInput build() {
+            return new AssetInput(name);
+        }
+
+    }
+}

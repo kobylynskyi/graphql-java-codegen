@@ -11,10 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static java.util.Arrays.asList;
@@ -40,6 +37,48 @@ class GraphQLCodegenExtendTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
+        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
+                "EventsQuery.java", "AssetsQuery.java",
+                "CreateEventMutation.java", "CreateAssetMutation.java",
+                "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
+                "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/extend/%s.txt", file.getName())),
+                    file);
+        }
+    }
+
+    @Test
+    void generateServerSideClasses_ExtensionFieldsResolvers() throws Exception {
+        mappingConfig.setGenerateExtensionFieldsResolvers(true);
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
+        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
+                "EventsQuery.java", "AssetsQuery.java",
+                "EventResolver.java", "NodeResolver.java",
+                "CreateEventMutation.java", "CreateAssetMutation.java",
+                "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
+                "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/extend-with-resolvers/%s.txt", file.getName())),
+                    file);
+        }
+    }
+
+    @Test
+    void generateServerSideClasses_ExtensionFieldsResolvers_WithExclusions() throws Exception {
+        mappingConfig.setGenerateExtensionFieldsResolvers(true);
+        mappingConfig.setFieldsWithoutResolvers(new HashSet<>(asList("Node", "Event.assets")));
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
