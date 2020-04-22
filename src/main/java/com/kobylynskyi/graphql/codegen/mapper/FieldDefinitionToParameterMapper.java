@@ -100,10 +100,6 @@ public class FieldDefinitionToParameterMapper {
     public static boolean generateResolversForField(MappingConfig mappingConfig,
                                                     FieldDefinitionFromExtension fieldDef,
                                                     String parentTypeName) {
-        boolean resolverForParamField = mappingConfig.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
-        if (resolverForParamField) {
-            return true;
-        }
         boolean noResolverForWholeType = mappingConfig.getFieldsWithoutResolvers().contains(parentTypeName);
         if (noResolverForWholeType) {
             return false;
@@ -111,6 +107,10 @@ public class FieldDefinitionToParameterMapper {
         boolean noResolverForSpecificField = mappingConfig.getFieldsWithoutResolvers().contains(parentTypeName + "." + fieldDef.getName());
         if (noResolverForSpecificField) {
             return false;
+        }
+        boolean resolverForParamField = mappingConfig.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
+        if (resolverForParamField) {
+            return true;
         }
         boolean resolverForExtendedType = mappingConfig.getGenerateExtensionFieldsResolvers() && fieldDef.isFromExtension();
         if (resolverForExtendedType) {
