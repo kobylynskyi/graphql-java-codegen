@@ -4,6 +4,57 @@ schema {
     mutation: Mutation
 }
 
+type Query
+
+type Mutation
+
+type Event
+
+input EventInput
+
+enum Status
+
+interface Node
+
+union PinnableItem
+
+
+
+
+
+
+extend type Query {
+    events: [Event!]
+}
+
+extend type Mutation {
+    createEvent(input: EventInput!): Event!
+}
+
+extend type Event implements Node {
+    status: Status!
+    createdDateTime: DateTime!
+}
+
+extend input EventInput {
+    status: Status!
+}
+
+extend enum Status {
+    CREATED
+    IN_PROGRESS
+}
+
+extend interface Node {
+    id: ID!
+}
+
+extend union PinnableItem = Event
+
+scalar DateTime
+
+
+
 extend type Query {
     assets: [Asset!]
 }
@@ -40,3 +91,4 @@ extend interface Node {
 extend union PinnableItem = Asset
 
 extend scalar DateTime @javaType(name: "java.util.Date")
+
