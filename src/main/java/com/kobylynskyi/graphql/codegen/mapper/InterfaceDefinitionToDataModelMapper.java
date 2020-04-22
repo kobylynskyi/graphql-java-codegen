@@ -1,10 +1,8 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import graphql.language.Document;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 import graphql.language.FieldDefinition;
-import graphql.language.InterfaceTypeDefinition;
-import graphql.language.InterfaceTypeExtensionDefinition;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,37 +21,19 @@ public class InterfaceDefinitionToDataModelMapper {
      * Map interface definition to a Freemarker data model
      *
      * @param mappingConfig Global mapping configuration
-     * @param typeDef       GraphQL interface definition
-     * @param document      GraphQL document
+     * @param definition    Definition of interface type including base definition and its extensions
      * @return Freemarker data model of the GraphQL interface
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, InterfaceTypeDefinition typeDef,
-                                          Document document) {
+    public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedInterfaceTypeDefinition definition) {
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        List<FieldDefinition> fieldDefinitions = getFieldDefinitions(typeDef, document);
+        List<FieldDefinition> fieldDefinitions = definition.getFieldDefinitions();
 
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
-        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDef));
-        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(mappingConfig, fieldDefinitions, typeDef.getName()));
+        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(mappingConfig, fieldDefinitions, definition.getName()));
         return dataModel;
-    }
-
-    /**
-     * Merge interface field definitions from the definition and its extensions
-     *
-     * @param typeDefinition InterfaceTypeDefinition definition
-     * @param document       GraphQL document. Used to fetch all extensions of the same definition
-     * @return list of all interface field definitions
-     */
-    private static List<FieldDefinition> getFieldDefinitions(InterfaceTypeDefinition typeDefinition,
-                                                             Document document) {
-        List<FieldDefinition> definitions = typeDefinition.getFieldDefinitions();
-        MapperUtils.getDefinitionsOfType(document, InterfaceTypeExtensionDefinition.class, typeDefinition.getName()).stream()
-                .map(InterfaceTypeDefinition::getFieldDefinitions)
-                .forEach(definitions::addAll);
-        return definitions;
     }
 
 }

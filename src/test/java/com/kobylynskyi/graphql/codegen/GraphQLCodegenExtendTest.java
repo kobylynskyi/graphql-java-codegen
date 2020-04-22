@@ -21,7 +21,7 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GraphqlCodegenExtendTest {
+class GraphQLCodegenExtendTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated");
@@ -29,7 +29,7 @@ class GraphqlCodegenExtendTest {
     private final SchemaFinder schemaFinder = new SchemaFinder(Paths.get("src/test/resources"));
 
     @BeforeEach
-    void init() throws IOException {
+    void init() {
         schemaFinder.setIncludePattern("extend.*\\.graphqls");
     }
 
@@ -40,7 +40,7 @@ class GraphqlCodegenExtendTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
-        new GraphqlCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -61,7 +61,7 @@ class GraphqlCodegenExtendTest {
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateRequests(true);
-        new GraphqlCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

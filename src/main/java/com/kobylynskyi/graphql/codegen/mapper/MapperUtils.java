@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Definition;
@@ -37,27 +38,6 @@ class MapperUtils {
             return Utils.capitalize(fieldName);
         }
         return fieldName;
-    }
-
-    /**
-     * Iterate through all unions across the document and find all that given <code>definition</code> is part of.
-     *
-     * @param mappingConfig Global mapping configuration
-     * @param definition    GraphQL NamedNode definition
-     * @param document      Parent GraphQL document
-     * @return Names of all unions that requested <code>definition</code> is part of.
-     */
-    static List<String> getUnionNamesHavingType(MappingConfig mappingConfig,
-                                                NamedNode<?> definition,
-                                                Document document) {
-        return document.getDefinitions().stream()
-                // should cover extensions too
-                .filter(def -> UnionTypeDefinition.class.isAssignableFrom(def.getClass()))
-                .map(def -> (UnionTypeDefinition) def)
-                .filter(union -> isDefinitionPartOfUnion(definition, union))
-                .map(UnionTypeDefinition::getName)
-                .map(unionName -> getClassNameWithPrefixAndSuffix(mappingConfig, unionName))
-                .collect(Collectors.toList());
     }
 
     /**
@@ -98,12 +78,13 @@ class MapperUtils {
     /**
      * Generates a class name including prefix and suffix (if any)
      *
-     * @param mappingConfig Global mapping configuration
-     * @param definition    GraphQL node
+     * @param mappingConfig      Global mapping configuration
+     * @param extendedDefinition GraphQL extended definition
      * @return Class name of GraphQL node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, NamedNode<?> definition) {
-        return getClassNameWithPrefixAndSuffix(mappingConfig, definition.getName());
+    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig,
+                                                  ExtendedDefinition<?, ?> extendedDefinition) {
+        return getClassNameWithPrefixAndSuffix(mappingConfig, extendedDefinition.getName());
     }
 
     /**

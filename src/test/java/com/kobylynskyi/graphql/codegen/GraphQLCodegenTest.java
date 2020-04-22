@@ -23,10 +23,10 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class GraphqlCodegenTest {
+class GraphQLCodegenTest {
 
     private MappingConfig mappingConfig;
-    private GraphqlCodegen generator;
+    private GraphQLCodegen generator;
 
     private File outputBuildDir = new File("build/generated");
     private File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/test1");
@@ -35,7 +35,7 @@ class GraphqlCodegenTest {
     void init() {
         mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
-        generator = new GraphqlCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig);
     }
 
@@ -65,7 +65,7 @@ class GraphqlCodegenTest {
     @Test
     void generate_NoBuilder() throws Exception {
         mappingConfig.setGenerateBuilder(false);
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

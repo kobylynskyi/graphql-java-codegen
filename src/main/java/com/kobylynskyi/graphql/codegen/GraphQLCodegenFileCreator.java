@@ -1,13 +1,12 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
+import com.kobylynskyi.graphql.codegen.model.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Map;
 
@@ -16,28 +15,30 @@ import java.util.Map;
  *
  * @author kobylynskyi
  */
-class GraphqlCodegenFileCreator {
+class GraphQLCodegenFileCreator {
 
     private static final String EXTENSION = ".java";
 
-    static void generateFile(Template template, Map<String, Object> dataModel, File outputDir)
-            throws IOException, TemplateException {
+    static void generateFile(Template template, Map<String, Object> dataModel, File outputDir) {
         String fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
         File javaSourceFile = new File(fileOutputDir, fileName);
-        boolean fileCreated = javaSourceFile.createNewFile();
-        if (!fileCreated) {
-            throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
+        try {
+            if (!javaSourceFile.createNewFile()) {
+                throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
+            }
+            template.process(dataModel, new FileWriter(javaSourceFile));
+        } catch (Exception e) {
+            throw new UnableToCreateFileException(e);
         }
-        template.process(dataModel, new FileWriter(javaSourceFile));
     }
 
-    static void prepareOutputDir(File outputDir) throws IOException {
+    static void prepareOutputDir(File outputDir) {
         Utils.deleteDir(outputDir);
         Utils.createDirIfAbsent(outputDir);
     }
 
-    private static File getFileTargetDirectory(Map<String, Object> dataModel, File outputDir) throws IOException {
+    private static File getFileTargetDirectory(Map<String, Object> dataModel, File outputDir) {
         File targetDir;
         Object packageName = dataModel.get(DataModelFields.PACKAGE);
         if (packageName != null && !Utils.isBlank(packageName.toString())) {

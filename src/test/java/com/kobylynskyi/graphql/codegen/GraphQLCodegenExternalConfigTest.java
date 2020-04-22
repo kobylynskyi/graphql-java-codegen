@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  *
  * @author valinha
  */
-class GraphqlCodegenExternalConfigTest {
+class GraphQLCodegenExternalConfigTest {
 
     /**
      * Check mapping config from json file.

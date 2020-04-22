@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import graphql.language.InputValueDefinition;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getAnnotations;

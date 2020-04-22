@@ -1,12 +1,14 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
+import com.kobylynskyi.graphql.codegen.model.UnableToCreateDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.UnableToDeleteDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
-
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 
 /**
  * Various utilities
@@ -89,9 +91,9 @@ public final class Utils {
      * Deletes a given directory recursively.
      *
      * @param dir directory to delete
-     * @throws IOException unable to delete a directory
+     * @throws UnableToDeleteDirectoryException if unable to delete a directory
      */
-    public static void deleteDir(File dir) throws IOException {
+    public static void deleteDir(File dir) {
         if (!dir.exists()) {
             return;
         }
@@ -101,26 +103,34 @@ public final class Utils {
                 if (subFile.isDirectory()) {
                     deleteDir(subFile);
                 } else {
-                    Files.delete(subFile.toPath());
+                    try {
+                        Files.delete(subFile.toPath());
+                    } catch (IOException e) {
+                        throw new UnableToDeleteDirectoryException(e);
+                    }
                 }
             }
         }
-        Files.delete(dir.toPath());
+        try {
+            Files.delete(dir.toPath());
+        } catch (IOException e) {
+            throw new UnableToDeleteDirectoryException(e);
+        }
     }
 
     /**
      * Create directory if it is absent. Will do nothing if it is already present.
      *
      * @param dir to create if it is absent.
-     * @throws IOException if unable to create a directory
+     * @throws UnableToCreateDirectoryException if unable to create a directory
      */
-    public static void createDirIfAbsent(File dir) throws IOException {
+    public static void createDirIfAbsent(File dir) {
         if (dir.exists()) {
             return;
         }
         boolean outputDirCreated = dir.mkdirs();
         if (!outputDirCreated) {
-            throw new IOException("Unable to create output directory");
+            throw new UnableToCreateDirectoryException(dir.getName());
         }
     }
 

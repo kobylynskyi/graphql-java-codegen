@@ -17,9 +17,9 @@ import java.util.Objects;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class GraphqlCodegenGitHubTest {
+class GraphQLCodegenGitHubTest {
 
-    private GraphqlCodegen generator;
+    private GraphQLCodegen generator;
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
@@ -29,7 +29,7 @@ class GraphqlCodegenGitHubTest {
     void init() {
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         mappingConfig.setPackageName("com.github.graphql");
-        generator = new GraphqlCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
+        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig);
     }
 
