@@ -13,7 +13,7 @@ import java.util.List;
  * @author kobylynskyi
  */
 @AllArgsConstructor
-public class GraphqlCodegenValidate {
+public class GraphQLCodegenValidate {
 
     private final List<String> schemas;
 
@@ -21,7 +21,7 @@ public class GraphqlCodegenValidate {
         for (String schema : schemas) {
             try {
                 long startTime = System.currentTimeMillis();
-                GraphqlDocumentParser.getDocument(schema);
+                GraphQLDocumentParser.getDocument(schema);
                 System.out.println(String.format("Validated schema '%s' in %d ms",
                         schema, System.currentTimeMillis() - startTime));
             } catch (GraphQLException e) {

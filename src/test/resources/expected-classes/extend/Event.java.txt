@@ -7,20 +7,20 @@ public class Event implements PinnableItem, Node{
     @javax.validation.constraints.NotNull
     private String createdDateTime;
     @javax.validation.constraints.NotNull
+    private Collection<Asset> assets;
+    @javax.validation.constraints.NotNull
     private String id;
     private String createdBy;
-    @javax.validation.constraints.NotNull
-    private Collection<Asset> assets;
 
     public Event() {
     }
 
-    public Event(Status status, String createdDateTime, String id, String createdBy, Collection<Asset> assets) {
+    public Event(Status status, String createdDateTime, Collection<Asset> assets, String id, String createdBy) {
         this.status = status;
         this.createdDateTime = createdDateTime;
+        this.assets = assets;
         this.id = id;
         this.createdBy = createdBy;
-        this.assets = assets;
     }
 
     public Status getStatus() {
@@ -37,6 +37,13 @@ public class Event implements PinnableItem, Node{
         this.createdDateTime = createdDateTime;
     }
 
+    public Collection<Asset> getAssets() {
+        return assets;
+    }
+    public void setAssets(Collection<Asset> assets) {
+        this.assets = assets;
+    }
+
     public String getId() {
         return id;
     }
@@ -51,22 +58,15 @@ public class Event implements PinnableItem, Node{
         this.createdBy = createdBy;
     }
 
-    public Collection<Asset> getAssets() {
-        return assets;
-    }
-    public void setAssets(Collection<Asset> assets) {
-        this.assets = assets;
-    }
-
 
 
     public static class Builder {
 
         private Status status;
         private String createdDateTime;
+        private Collection<Asset> assets;
         private String id;
         private String createdBy;
-        private Collection<Asset> assets;
 
         public Builder() {
         }
@@ -81,6 +81,11 @@ public class Event implements PinnableItem, Node{
             return this;
         }
 
+        public Builder setAssets(Collection<Asset> assets) {
+            this.assets = assets;
+            return this;
+        }
+
         public Builder setId(String id) {
             this.id = id;
             return this;
@@ -91,14 +96,9 @@ public class Event implements PinnableItem, Node{
             return this;
         }
 
-        public Builder setAssets(Collection<Asset> assets) {
-            this.assets = assets;
-            return this;
-        }
-
 
         public Event build() {
-            return new Event(status, createdDateTime, id, createdBy, assets);
+            return new Event(status, createdDateTime, assets, id, createdBy);
         }
 
     }

@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.GraphqlCodegen;
+import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GraphqlCodegenMojo extends AbstractMojo {
+public class GraphQLCodegenMojo extends AbstractMojo {
 
     @Parameter
     private String[] graphqlSchemaPaths;
@@ -129,7 +129,7 @@ public class GraphqlCodegenMojo extends AbstractMojo {
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
         try {
-            new GraphqlCodegen(getSchemas(), outputDir, mappingConfig, mappingConfigSupplier).generate();
+            new GraphQLCodegen(getSchemas(), outputDir, mappingConfig, mappingConfigSupplier).generate();
         } catch (Exception e) {
             getLog().error(e);
             throw new MojoExecutionException("Code generation failed. See above for the full exception.");

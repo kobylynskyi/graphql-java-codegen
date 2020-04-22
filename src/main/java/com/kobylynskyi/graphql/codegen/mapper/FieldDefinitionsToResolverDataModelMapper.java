@@ -3,8 +3,10 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.*;
+import graphql.language.FieldDefinition;
+import graphql.language.TypeName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,11 +40,10 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param mappingConfig   Global mapping configuration
      * @param fieldDefinition GraphQL field definition
      * @param rootTypeName    Object type (e.g.: "Query", "Mutation" or "Subscription")
-     * @param document        GraphQL document
      * @return Freemarker data model of the GraphQL field
      */
     public static Map<String, Object> mapRootTypeField(MappingConfig mappingConfig, FieldDefinition fieldDefinition,
-                                                       String rootTypeName, Document document) {
+                                                       String rootTypeName) {
         // Examples: VersionQuery, CreateEventMutation (rootTypeName is "Query" or the likes)
         String className = Utils.capitalize(fieldDefinition.getName()) + rootTypeName;
         List<FieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
@@ -52,25 +53,15 @@ public class FieldDefinitionsToResolverDataModelMapper {
     /**
      * Map a root object type definition to a Freemarker data model for a resolver with all its fields.
      *
-     * @param mappingConfig      Global mapping configuration
-     * @param rootTypeDefinition GraphQL object definition of a root type like Query
+     * @param mappingConfig Global mapping configuration
+     * @param definition    GraphQL object definition of a root type like Query
      * @return Freemarker data model of the GraphQL object
      */
-    public static Map<String, Object> mapRootTypeFields(MappingConfig mappingConfig, ObjectTypeDefinition rootTypeDefinition, Document document) {
-        String parentTypeName = rootTypeDefinition.getName();
+    public static Map<String, Object> mapRootTypeFields(MappingConfig mappingConfig, ExtendedObjectTypeDefinition definition) {
+        String parentTypeName = definition.getName();
         String className = Utils.capitalize(parentTypeName);
         // For root types like "Query", we create resolvers for all fields
-        List<FieldDefinition> fieldDefinitions = getFieldDefinitions(rootTypeDefinition, document);
-        return mapToResolverModel(mappingConfig, parentTypeName, className, fieldDefinitions);
-    }
-
-    private static List<FieldDefinition> getFieldDefinitions(ObjectTypeDefinition rootTypeDefinition, Document document) {
-        List<FieldDefinition> definitions = rootTypeDefinition.getFieldDefinitions();
-        MapperUtils.getDefinitionsOfType(document, ObjectTypeExtensionDefinition.class, rootTypeDefinition.getName())
-                .stream()
-                .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
-                .forEach(definitions::addAll);
-        return definitions;
+        return mapToResolverModel(mappingConfig, parentTypeName, className, definition.getFieldDefinitions());
     }
 
     private static Map<String, Object> mapToResolverModel(MappingConfig mappingConfig, String parentTypeName,

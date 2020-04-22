@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import graphql.language.UnionTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,16 +18,16 @@ public class UnionDefinitionToDataModelMapper {
     /**
      * Map union definition to a Freemarker data model
      *
-     * @param mappingConfig  Global mapping configuration
-     * @param typeDefinition GraphQL union definition
+     * @param mappingConfig Global mapping configuration
+     * @param definition    Definition of union type including base definition and its extensions
      * @return Freemarker data model of the GraphQL union
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, UnionTypeDefinition typeDefinition) {
+    public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedUnionTypeDefinition definition) {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
-        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeDefinition));
+        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
         return dataModel;
     }
 

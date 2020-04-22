@@ -9,13 +9,13 @@ import org.gradle.api.tasks.TaskContainer;
  *
  * @author kobylynskyi
  */
-public class GraphqlCodegenGradlePlugin implements Plugin<Project> {
+public class GraphQLCodegenGradlePlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
         TaskContainer tasks = project.getTasks();
-        tasks.create("graphqlCodegen", GraphqlCodegenGradleTask.class);
-        tasks.create("graphqlCodegenValidate", GraphqlCodegenValidateGradleTask.class);
+        tasks.create("graphqlCodegen", GraphQLCodegenGradleTask.class);
+        tasks.create("graphqlCodegenValidate", GraphQLCodegenValidateGradleTask.class);
     }
 
 }

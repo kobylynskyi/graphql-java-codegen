@@ -1,21 +1,9 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import graphql.language.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import graphql.language.ArrayValue;
-import graphql.language.BooleanValue;
-import graphql.language.EnumValue;
-import graphql.language.FloatValue;
-import graphql.language.IntValue;
-import graphql.language.ListType;
-import graphql.language.NonNullType;
-import graphql.language.NullValue;
-import graphql.language.ObjectValue;
-import graphql.language.StringValue;
-import graphql.language.Type;
-import graphql.language.TypeName;
-import graphql.language.Value;
 
 public class DefaultValueMapper {
 
@@ -24,13 +12,13 @@ public class DefaultValueMapper {
             return mapNullValue();
         }
         if (defaultValue instanceof BooleanValue) {
-            return mapBoolean((BooleanValue)defaultValue);
+            return mapBoolean((BooleanValue) defaultValue);
         }
         if (defaultValue instanceof IntValue) {
-            return mapInt((IntValue)defaultValue);
+            return mapInt((IntValue) defaultValue);
         }
         if (defaultValue instanceof FloatValue) {
-            return mapFloat((FloatValue)defaultValue);
+            return mapFloat((FloatValue) defaultValue);
         }
         if (defaultValue instanceof StringValue) {
             return mapString((StringValue) defaultValue);
@@ -93,7 +81,7 @@ public class DefaultValueMapper {
         }
         Type<?> elementType = ((ListType) graphQLType).getType();
         return values.stream()
-                     .map(v -> map(v, elementType))
-                     .collect(Collectors.joining(", ", "Arrays.asList(", ")"));
+                .map(v -> map(v, elementType))
+                .collect(Collectors.joining(", ", "Arrays.asList(", ")"));
     }
 }

@@ -16,7 +16,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class GraphqlCodegenRequestTest {
+class GraphQLCodegenRequestTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
@@ -39,7 +39,7 @@ class GraphqlCodegenRequestTest {
 
     @Test
     void generate_RequestAndResponseProjections() throws Exception {
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -59,7 +59,7 @@ class GraphqlCodegenRequestTest {
     @Test
     void generate_WithModelSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -72,7 +72,7 @@ class GraphqlCodegenRequestTest {
 
     @Test
     void generate_RequestAndResponseProjections_github() throws Exception {
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -86,7 +86,7 @@ class GraphqlCodegenRequestTest {
 
     @Test
     void generate_ToStringIsEnabledForInput() throws Exception {
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -98,7 +98,7 @@ class GraphqlCodegenRequestTest {
     @Test
     void generate_emptyRequestSuffix() throws Exception {
         mappingConfig.setRequestSuffix("");
-        new GraphqlCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

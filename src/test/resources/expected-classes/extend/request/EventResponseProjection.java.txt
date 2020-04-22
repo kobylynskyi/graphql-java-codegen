@@ -18,6 +18,11 @@ public class EventResponseProjection implements GraphQLResponseProjection {
         return this;
     }
 
+    public EventResponseProjection assets(AssetResponseProjection subProjection) {
+        fields.put("assets", subProjection);
+        return this;
+    }
+
     public EventResponseProjection id() {
         fields.put("id", null);
         return this;
@@ -25,11 +30,6 @@ public class EventResponseProjection implements GraphQLResponseProjection {
 
     public EventResponseProjection createdBy() {
         fields.put("createdBy", null);
-        return this;
-    }
-
-    public EventResponseProjection assets(AssetResponseProjection subProjection) {
-        fields.put("assets", subProjection);
         return this;
     }
 
