@@ -5,15 +5,13 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import groovy.lang.Closure;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.internal.TaskOutputsInternal;
 import org.gradle.api.plugins.JavaPluginConvention;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -360,4 +358,22 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
         this.jsonConfigurationFile = jsonConfigurationFile;
     }
 
+    /**
+     * Gradle cannot identify whether incoming graphql schema files were changed if using SchemaFinder.
+     * So setting <code>outputs.upToDateWhen</code> to <b>false</b> in order to <b>always</b> regenerate java classes.
+     *
+     * @return parent outputs object with overridden <code>upToDateWhen</code> property to <b>false</b>
+     */
+    @Internal
+    @Override
+    public TaskOutputsInternal getOutputs() {
+        TaskOutputsInternal outputs = super.getOutputs();
+        outputs.upToDateWhen(new Closure(this) {
+            @Override
+            public Object call(Object[] args) {
+                return false;
+            }
+        });
+        return outputs;
+    }
 }
