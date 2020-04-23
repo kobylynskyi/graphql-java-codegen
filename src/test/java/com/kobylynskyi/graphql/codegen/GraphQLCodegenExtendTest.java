@@ -119,4 +119,24 @@ class GraphQLCodegenExtendTest {
                 assetResponseProjectionFile);
     }
 
+    @Test
+    void generateServerSideClasses_EmptyTypes() throws Exception {
+        schemaFinder.setIncludePattern("empty-types-with-extend\\.graphqls");
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
+        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
+                "EventsQuery.java", "AssetsQuery.java",
+                "CreateEventMutation.java", "CreateAssetMutation.java",
+                "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
+                "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/extend/%s.txt", file.getName())),
+                    file);
+        }
+    }
+
 }
