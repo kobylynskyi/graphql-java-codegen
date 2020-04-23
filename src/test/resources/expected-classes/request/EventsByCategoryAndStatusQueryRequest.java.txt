@@ -40,4 +40,32 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     public String toString() {
         return Objects.toString(input);
     }
+
+    public static class Builder {
+
+        private String categoryId;
+        private EventStatus status;
+
+        public Builder() {
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            this.status = status;
+            return this;
+        }
+
+
+        public EventsByCategoryAndStatusQueryRequest build() {
+            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest();
+            obj.setCategoryId(categoryId);
+            obj.setStatus(status);
+            return obj;
+        }
+
+    }
 }

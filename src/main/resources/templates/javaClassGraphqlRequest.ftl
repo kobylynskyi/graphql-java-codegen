@@ -63,4 +63,33 @@ public class ${className} implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 </#if>
+
+<#if builder>
+    public static class Builder {
+
+<#list fields as field>
+        private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
+</#list>
+
+        public Builder() {
+        }
+
+<#list fields as field>
+        public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
+            this.${field.name} = ${field.name};
+            return this;
+        }
+
+</#list>
+
+        public ${className} build() {
+            ${className} obj = new ${className}();
+<#list fields as field>
+            obj.set${field.name?cap_first}(${field.name});
+</#list>
+            return obj;
+        }
+
+    }
+</#if>
 }

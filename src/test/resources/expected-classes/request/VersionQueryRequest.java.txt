@@ -32,4 +32,18 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
     public String toString() {
         return Objects.toString(input);
     }
+
+    public static class Builder {
+
+
+        public Builder() {
+        }
+
+
+        public VersionQueryRequest build() {
+            VersionQueryRequest obj = new VersionQueryRequest();
+            return obj;
+        }
+
+    }
 }
