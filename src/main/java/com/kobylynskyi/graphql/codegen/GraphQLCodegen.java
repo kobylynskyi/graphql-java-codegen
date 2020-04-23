@@ -71,6 +71,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateApis() == null) {
             mappingConfig.setGenerateApis(DefaultMappingConfigValues.DEFAULT_GENERATE_APIS);
         }
+        if (mappingConfig.getGenerateAsyncApi() == null) {
+            mappingConfig.setGenerateAsyncApi(DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS);
+        }
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }

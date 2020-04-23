@@ -75,14 +75,15 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 | `modelNameSuffix`                               | String             | Empty                                     | Sets the suffix for GraphQL model classes (type, input, interface, enum, union). |
 | `modelValidationAnnotation`                     | String             | @javax.validation.<br>constraints.NotNull | Annotation for mandatory (NonNull) fields. Can be null/empty. |
 | `customTypesMapping`                            | Map(String,String) | Empty                                     | Can be used to supply custom mappings for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
-| `customAnnotationsMapping`                      | Map(String,String) | Empty                                     | Can be used to supply custom annotations (serializers) for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
-| `fieldsWithResolvers`                           | Set(String)        | Empty                                     | Fields that require Resolvers should be defined here in format: `TypeName.fieldName`. |
+| `customAnnotationsMapping`                      | Map(String,String) | Empty                                     | Can be used to supply custom annotations (serializers) for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaAnnotation) <br/> * Map of (GraphqlType) to (JavaAnnotation) |
+| `fieldsWithResolvers`                           | Set(String)        | Empty                                     | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. |
+| `fieldsWithoutResolvers`                        | Set(String)        | Empty                                     | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. |
 | `generateParameterizedFieldsResolvers`          | Boolean            | True                                      | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
+| `generateExtensionFieldsResolvers`              | Boolean            | False                                     | Specifies whether all fields in extensions (<code>extend type</code> and <code>extend interface</code>) should be present in Resolver interface instead of the type class itself. |
 | `subscriptionReturnType`                        | String             | Empty                                     | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
 | `generateRequests`                              | Boolean            | False                                     | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields). |
 | `requestSuffix`                                 | String             | Request                                   | Sets the suffix for `Request` classes. |
 | `responseProjectionSuffix`                      | String             | ResponseProjection                        | Sets the suffix for `ResponseProjection` classes. |
-
 
 
 When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `<graphqlSchemas></graphqlSchemas>` block.
