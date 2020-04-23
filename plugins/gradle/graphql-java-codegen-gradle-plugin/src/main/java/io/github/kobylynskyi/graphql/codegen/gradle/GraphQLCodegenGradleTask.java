@@ -1,6 +1,8 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
@@ -28,7 +30,7 @@ import java.util.*;
  *
  * @author kobylynskyi
  */
-public class GraphQLCodegenGradleTask extends DefaultTask {
+public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCodegenConfiguration {
 
     private List<String> graphqlSchemaPaths;
     private final SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
@@ -41,15 +43,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String subscriptionReturnType;
-    private Boolean generateBuilder = true;
-    private Boolean generateApis = true;
+    private Boolean generateBuilder = DefaultMappingConfigValues.DEFAULT_BUILDER;
+    private Boolean generateApis = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS;
     private String modelValidationAnnotation;
-    private Boolean generateEqualsAndHashCode = false;
-    private Boolean generateToString = false;
-    private Boolean generateAsyncApi = false;
-    private Boolean generateParameterizedFieldsResolvers = true;
-    private Boolean generateDataFetchingEnvironmentArgumentInApis = false;
+    private Boolean generateEqualsAndHashCode = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE;
+    private Boolean generateToString = DefaultMappingConfigValues.DEFAULT_TO_STRING;
+    private Boolean generateAsyncApi = DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS;
+    private Boolean generateParameterizedFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
+    private Boolean generateExtensionFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
+    private Boolean generateDataFetchingEnvironmentArgumentInApis = DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Set<String> fieldsWithResolvers = new HashSet<>();
+    private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Boolean generateRequests;
     private String requestSuffix;
     private String responseProjectionSuffix;
@@ -78,8 +82,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
+        mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
+        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers);
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
@@ -163,6 +169,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return customTypesMapping;
     }
@@ -173,6 +180,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getPackageName() {
         return packageName;
     }
@@ -183,6 +191,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getModelNamePrefix() {
         return modelNamePrefix;
     }
@@ -193,6 +202,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getModelNameSuffix() {
         return modelNameSuffix;
     }
@@ -203,6 +213,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getApiPackageName() {
         return apiPackageName;
     }
@@ -213,6 +224,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getModelPackageName() {
         return modelPackageName;
     }
@@ -223,6 +235,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateBuilder() {
         return generateBuilder;
     }
@@ -233,6 +246,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateApis() {
         return generateApis;
     }
@@ -243,6 +257,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getModelValidationAnnotation() {
         return modelValidationAnnotation;
     }
@@ -253,6 +268,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Map<String, String> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
@@ -263,6 +279,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateEqualsAndHashCode() {
         return generateEqualsAndHashCode;
     }
@@ -273,6 +290,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateToString() {
         return generateToString;
     }
@@ -283,6 +301,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getSubscriptionReturnType() {
         return subscriptionReturnType;
     }
@@ -293,6 +312,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateAsyncApi() {
         return generateAsyncApi;
     }
@@ -303,6 +323,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return generateParameterizedFieldsResolvers;
     }
@@ -313,6 +334,18 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
+    public Boolean getGenerateExtensionFieldsResolvers() {
+        return generateExtensionFieldsResolvers;
+    }
+
+    public void setGenerateExtensionFieldsResolvers(Boolean generateExtensionFieldsResolvers) {
+        this.generateExtensionFieldsResolvers = generateExtensionFieldsResolvers;
+    }
+
+    @Input
+    @Optional
+    @Override
     public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
         return generateDataFetchingEnvironmentArgumentInApis;
     }
@@ -323,6 +356,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return fieldsWithResolvers;
     }
@@ -333,6 +367,18 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
+    public Set<String> getFieldsWithoutResolvers() {
+        return fieldsWithoutResolvers;
+    }
+
+    public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
+        this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Input
+    @Optional
+    @Override
     public Boolean getGenerateRequests() {
         return generateRequests;
     }
@@ -343,6 +389,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getRequestSuffix() {
         return requestSuffix;
     }
@@ -353,6 +400,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
 
     @Input
     @Optional
+    @Override
     public String getResponseProjectionSuffix() {
         return responseProjectionSuffix;
     }

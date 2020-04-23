@@ -1,6 +1,8 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
@@ -20,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GraphQLCodegenMojo extends AbstractMojo {
+public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration  {
 
     @Parameter
     private String[] graphqlSchemaPaths;
@@ -40,16 +42,16 @@ public class GraphQLCodegenMojo extends AbstractMojo {
     @Parameter
     private String packageName;
 
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_BUILDER_STRING)
     private boolean generateBuilder;
 
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS_STRING)
     private boolean generateApis;
 
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE_STRING)
     private boolean generateEqualsAndHashCode;
 
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
     @Parameter
@@ -67,31 +69,37 @@ public class GraphQLCodegenMojo extends AbstractMojo {
     @Parameter
     private String subscriptionReturnType;
 
-    @Parameter(defaultValue = "false")
-    private boolean generateAsyncApi;
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS_STRING)
+    private Boolean generateAsyncApi;
 
-    @Parameter(defaultValue = "javax.validation.constraints.NotNull")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION)
     private String modelValidationAnnotation;
 
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING)
     private boolean generateParameterizedFieldsResolvers;
 
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING)
+    private boolean generateExtensionFieldsResolvers;
+
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING)
     private boolean generateDataFetchingEnvironmentArgumentInApis;
 
     @Parameter
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
-    @Parameter(defaultValue = "false")
+    @Parameter
+    private Set<String> fieldsWithoutResolvers = new HashSet<>();
+
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS_STRING)
     private boolean generateRequests;
 
-    @Parameter(defaultValue = "Request")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX)
     private String requestSuffix;
 
-    @Parameter(defaultValue = "ResponseProjection")
+    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
     private String responseProjectionSuffix;
 
-    @Parameter(name = "jsonConfigurationFile", required = false)
+    @Parameter
     private String jsonConfigurationFile;
 
     /**
@@ -121,7 +129,9 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
+        mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
@@ -198,6 +208,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.outputDir = outputDir;
     }
 
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return customTypesMapping;
     }
@@ -206,6 +217,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.customTypesMapping = customTypesMapping;
     }
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
@@ -214,6 +226,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.packageName = packageName;
     }
 
+    @Override
     public String getApiPackageName() {
         return apiPackageName;
     }
@@ -222,6 +235,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.apiPackageName = apiPackageName;
     }
 
+    @Override
     public String getModelPackageName() {
         return modelPackageName;
     }
@@ -230,6 +244,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.modelPackageName = modelPackageName;
     }
 
+    @Override
     public String getModelNamePrefix() {
         return modelNamePrefix;
     }
@@ -238,6 +253,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.modelNamePrefix = modelNamePrefix;
     }
 
+    @Override
     public String getModelNameSuffix() {
         return modelNameSuffix;
     }
@@ -246,6 +262,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.modelNameSuffix = modelNameSuffix;
     }
 
+    @Override
     public Map<String, String> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
@@ -254,6 +271,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
+    @Override
     public String getModelValidationAnnotation() {
         return modelValidationAnnotation;
     }
@@ -262,7 +280,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.modelValidationAnnotation = modelValidationAnnotation;
     }
 
-    public boolean isGenerateBuilder() {
+    @Override
+    public Boolean getGenerateBuilder() {
         return generateBuilder;
     }
 
@@ -270,7 +289,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateBuilder = generateBuilder;
     }
 
-    public boolean isGenerateApis() {
+    @Override
+    public Boolean getGenerateApis() {
         return generateApis;
     }
 
@@ -278,7 +298,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateApis = generateApis;
     }
 
-    public boolean isGenerateEqualsAndHashCode() {
+    @Override
+    public Boolean getGenerateEqualsAndHashCode() {
         return generateEqualsAndHashCode;
     }
 
@@ -286,7 +307,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateEqualsAndHashCode = generateEqualsAndHashCode;
     }
 
-    public boolean isGenerateToString() {
+    @Override
+    public Boolean getGenerateToString() {
         return generateToString;
     }
 
@@ -294,7 +316,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateToString = generateToString;
     }
 
-    public boolean isGenerateAsyncApi() {
+    @Override
+    public Boolean getGenerateAsyncApi() {
         return generateAsyncApi;
     }
 
@@ -302,23 +325,26 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateAsyncApi = generateAsyncApi;
     }
 
-    public void setJsonConfigurationFile(String jsonConfigurationFile) {
-        this.jsonConfigurationFile = jsonConfigurationFile;
-    }
-
-    public String getJsonConfigurationFile() {
-        return jsonConfigurationFile;
+    @Override
+    public String getSubscriptionReturnType() {
+        return subscriptionReturnType;
     }
 
     public void setSubscriptionReturnType(String subscriptionReturnType) {
         this.subscriptionReturnType = subscriptionReturnType;
     }
 
-    public String getSubscriptionReturnType() {
-        return subscriptionReturnType;
+    @Override
+    public Boolean getGenerateExtensionFieldsResolvers() {
+        return generateExtensionFieldsResolvers;
     }
 
-    public boolean isGenerateParameterizedFieldsResolvers() {
+    public void setGenerateExtensionFieldsResolvers(boolean generateExtensionFieldsResolvers) {
+        this.generateExtensionFieldsResolvers = generateExtensionFieldsResolvers;
+    }
+
+    @Override
+    public Boolean getGenerateParameterizedFieldsResolvers() {
         return generateParameterizedFieldsResolvers;
     }
 
@@ -326,7 +352,8 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
     }
 
-    public boolean isGenerateDataFetchingEnvironmentArgumentInApis() {
+    @Override
+    public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
         return generateDataFetchingEnvironmentArgumentInApis;
     }
 
@@ -334,6 +361,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
     }
 
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return fieldsWithResolvers;
     }
@@ -342,7 +370,17 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.fieldsWithResolvers = fieldsWithResolvers;
     }
 
-    public boolean isGenerateRequests() {
+    @Override
+    public Set<String> getFieldsWithoutResolvers() {
+        return fieldsWithoutResolvers;
+    }
+
+    public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
+        this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Override
+    public Boolean getGenerateRequests() {
         return generateRequests;
     }
 
@@ -350,6 +388,7 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.generateRequests = generateRequests;
     }
 
+    @Override
     public String getRequestSuffix() {
         return requestSuffix;
     }
@@ -358,11 +397,20 @@ public class GraphQLCodegenMojo extends AbstractMojo {
         this.requestSuffix = requestSuffix;
     }
 
+    @Override
     public String getResponseProjectionSuffix() {
         return responseProjectionSuffix;
     }
 
     public void setResponseProjectionSuffix(String responseProjectionSuffix) {
         this.responseProjectionSuffix = responseProjectionSuffix;
+    }
+
+    public String getJsonConfigurationFile() {
+        return jsonConfigurationFile;
+    }
+
+    public void setJsonConfigurationFile(String jsonConfigurationFile) {
+        this.jsonConfigurationFile = jsonConfigurationFile;
     }
 }

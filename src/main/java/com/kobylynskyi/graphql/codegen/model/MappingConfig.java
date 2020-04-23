@@ -14,21 +14,10 @@ import java.util.Set;
  * @author valinha
  */
 @Data
-public class MappingConfig implements Combinable<MappingConfig> {
+public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<MappingConfig> {
 
-    /**
-     * Scalars mapping can be defined here.
-     * e.g.: DateTime -> String
-     * e.g.: Price.amount -> java.math.BigDecimal
-     */
     private Map<String, String> customTypesMapping = new HashMap<>();
-
-    /**
-     * Custom annotations for fields can be defined here.
-     * e.g.: EpochMillis -> com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
-     */
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
-
     private Boolean generateApis;
     private String packageName;
     private String apiPackageName;
@@ -44,21 +33,7 @@ public class MappingConfig implements Combinable<MappingConfig> {
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
-
-    /**
-     * Fields that require Resolvers should be defined here in format: TypeName.fieldName
-     * E.g.: "Person.friends"
-     * If just type is specified, then all fields of this type will have resolvers
-     */
     private Set<String> fieldsWithResolvers = new HashSet<>();
-
-    /**
-     * Fields that DO NOT require Resolvers should be defined here in format: TypeName.fieldName
-     * E.g.: "Person.friends"
-     * If just type is specified, then all fields of this type will NOT have resolvers
-     *
-     * Can be used in conjunction with "generateExtensionFieldsResolvers"
-     */
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
     // client-side codegen configs:
