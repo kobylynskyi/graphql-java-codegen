@@ -9,6 +9,8 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
@@ -53,6 +55,11 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
     private String responseProjectionSuffix;
     private String jsonConfigurationFile;
 
+    public GraphQLCodegenGradleTask() {
+        setGroup("codegen");
+        setDescription("Generates Java POJOs and interfaces based on GraphQL schemas");
+    }
+
     @TaskAction
     public void generate() throws Exception {
         MappingConfig mappingConfig = new MappingConfig();
@@ -77,10 +84,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
 
-        new GraphQLCodegen(getSchemas(), outputDir, mappingConfig, buildJsonSupplier()).generate();
+        new GraphQLCodegen(getActualSchemaPaths(), outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
 
-    private List<String> getSchemas() throws IOException {
+    // This is only public so that it can be part of the inputs.
+    // Changes to schema contents need to invalidate this task, and require re-run.
+    // Using the SchemaFinder, we need to calculate the resulting list of paths as @InputFiles for it to work.
+    @InputFiles
+    public List<String> getActualSchemaPaths() throws IOException {
         if (graphqlSchemaPaths != null) {
             return graphqlSchemaPaths;
         }
@@ -121,7 +132,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
         return null;
     }
 
-    @Input
+    @InputFiles
     @Optional
     public List<String> getGraphqlSchemaPaths() {
         return graphqlSchemaPaths;
@@ -350,7 +361,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask {
         this.responseProjectionSuffix = responseProjectionSuffix;
     }
 
-    @Input
+    @InputFile
     @Optional
     public String getJsonConfigurationFile() {
         return jsonConfigurationFile;

@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Optional;
 
@@ -20,7 +19,9 @@ public class SchemaFinderConfig {
 
     private Set<String> excludedFiles = Collections.emptySet();
 
-    @InputFile
+    // This should not be replaced by @InputDirectory, because some files in this directory may not be schemas.
+    // We only know the actual list of schema files to check after running the SchemaFinder, so @InputFiles is over there.
+    @Input
     @Optional
     public String getRootDir() {
         return rootDir;
