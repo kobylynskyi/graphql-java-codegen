@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  */
 public class SchemaFinder {
 
-    public static final String DEFAULT_INCLUDE_PATTERN = ".*\\.graphqls";
+    public static final String DEFAULT_INCLUDE_PATTERN = ".*\\.graphqls?";
 
     public static final boolean DEFAULT_RECURSIVE = true;
 
