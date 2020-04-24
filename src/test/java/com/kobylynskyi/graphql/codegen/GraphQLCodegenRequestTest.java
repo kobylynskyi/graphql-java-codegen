@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -104,6 +105,46 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertNotNull(getGeneratedFile(files, "EventsByCategoryAndStatusQuery.java"));
+    }
+
+    @Test
+    void generate_noApiImportForModelClasses() throws Exception {
+        mappingConfig.setApiPackageName("com.github.graphql.api");
+        mappingConfig.setModelPackageName("com.github.graphql");
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertNotNull(getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+    }
+
+    @Test
+    void generate_apiImportForModelClassesIfResolverIsPresent() throws Exception {
+        mappingConfig.setApiPackageName("com.github.graphql.api");
+        mappingConfig.setModelPackageName("com.github.graphql");
+        mappingConfig.setFieldsWithResolvers(singleton("Event"));
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
+                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+    }
+
+    @Test
+    void generate_apiImportForModelClassesIfResolversExtensions() throws Exception {
+        mappingConfig.setApiPackageName("com.github.graphql.api");
+        mappingConfig.setModelPackageName("com.github.graphql");
+        mappingConfig.setGenerateExtensionFieldsResolvers(true);
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
+                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
     private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
