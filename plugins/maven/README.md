@@ -53,6 +53,7 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 </build>
 ```
 
+You can run the plugin manually with `mvn generate-sources`. It will be run automatically as part of the Maven lifecycle when compiling your code
 
 ### Plugin Options
 
