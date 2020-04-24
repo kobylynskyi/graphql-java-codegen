@@ -4,6 +4,9 @@ import java.util.*;
 
 public interface VersionQuery {
 
+    /**
+     * Version of the application.
+     */
     @javax.validation.constraints.NotNull
     String version() throws Exception;
 

@@ -19,10 +19,11 @@ import static java.util.Collections.emptyList;
 @AllArgsConstructor
 public class ParameterDefinition {
 
-    public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition("DataFetchingEnvironment", "env", null, emptyList());
+    public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition("DataFetchingEnvironment", "env", null, emptyList(), emptyList());
 
     private String type;
     private String name;
     private String defaultValue;
     private List<String> annotations = new ArrayList<>();
+    private List<String> javaDoc = new ArrayList<>();
 }

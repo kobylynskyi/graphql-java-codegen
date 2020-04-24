@@ -9,15 +9,15 @@ import java.util.List;
 
 public class ExtendedInterfaceTypeDefinition extends ExtendedDefinition<InterfaceTypeDefinition, InterfaceTypeExtensionDefinition> {
 
-    public List<FieldDefinitionFromExtension> getFieldDefinitions() {
-        List<FieldDefinitionFromExtension> definitions = new ArrayList<>();
+    public List<ExtendedFieldDefinition> getFieldDefinitions() {
+        List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         definition.getFieldDefinitions().stream()
-                .map(f -> new FieldDefinitionFromExtension(f, false))
+                .map(f -> new ExtendedFieldDefinition(f, false))
                 .forEach(definitions::add);
         extensions.stream()
                 .map(InterfaceTypeExtensionDefinition::getFieldDefinitions)
                 .flatMap(Collection::stream)
-                .map(f -> new FieldDefinitionFromExtension(f, true))
+                .map(f -> new ExtendedFieldDefinition(f, true))
                 .forEach(definitions::add);
         return definitions;
     }

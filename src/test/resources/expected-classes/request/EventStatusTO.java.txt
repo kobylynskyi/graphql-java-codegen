@@ -1,9 +1,19 @@
 package com.github.graphql;
 
+/**
+ * Possible statuses of the event
+ */
 public enum EventStatusTO {
 
+    /**
+     * OPEN status
+     * Means just created
+     */
     OPEN,
     IN_PROGRESS,
+    /**
+     * Logging completed
+     */
     LOGGED
 
 }

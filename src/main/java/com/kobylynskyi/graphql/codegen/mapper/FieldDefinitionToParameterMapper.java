@@ -3,7 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.FieldDefinitionFromExtension;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 
@@ -29,7 +29,7 @@ public class FieldDefinitionToParameterMapper {
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ParameterDefinition> mapFields(MappingConfig mappingConfig,
-                                                      List<FieldDefinitionFromExtension> fieldDefinitions,
+                                                      List<ExtendedFieldDefinition> fieldDefinitions,
                                                       String parentTypeName) {
         return fieldDefinitions.stream()
                 .filter(fieldDef -> !generateResolversForField(mappingConfig, fieldDef, parentTypeName))
@@ -47,7 +47,7 @@ public class FieldDefinitionToParameterMapper {
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ProjectionParameterDefinition> mapProjectionFields(MappingConfig mappingConfig,
-                                                                          List<FieldDefinitionFromExtension> fieldDefinitions,
+                                                                          List<ExtendedFieldDefinition> fieldDefinitions,
                                                                           String parentTypeName, Set<String> typeNames) {
         return fieldDefinitions.stream()
                 .map(fieldDef -> mapProjectionField(mappingConfig, fieldDef, parentTypeName, typeNames))
@@ -62,11 +62,13 @@ public class FieldDefinitionToParameterMapper {
      * @param parentTypeName Name of the parent type
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ParameterDefinition mapField(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName) {
+    private static ParameterDefinition mapField(MappingConfig mappingConfig, ExtendedFieldDefinition fieldDef,
+                                                String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
         parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
+        parameter.setJavaDoc(fieldDef.getJavaDoc());
         return parameter;
     }
 
@@ -98,7 +100,7 @@ public class FieldDefinitionToParameterMapper {
      * @return <code>true</code> if FieldResolver will be generated for the field. <code>false</code> otherwise
      */
     public static boolean generateResolversForField(MappingConfig mappingConfig,
-                                                    FieldDefinitionFromExtension fieldDef,
+                                                    ExtendedFieldDefinition fieldDef,
                                                     String parentTypeName) {
         boolean noResolverForWholeType = mappingConfig.getFieldsWithoutResolvers().contains(parentTypeName);
         if (noResolverForWholeType) {

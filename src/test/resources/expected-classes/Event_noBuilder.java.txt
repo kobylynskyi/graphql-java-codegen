@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
 
+/**
+ * An event that describes a thing that happens
+ */
 public class Event {
 
     private String id;

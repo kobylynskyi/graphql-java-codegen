@@ -4,6 +4,7 @@ schema {
     mutation: Mutation
 }
 
+# Queries related to assets
 extend type Query {
     assets: [Asset!]
 }
@@ -22,6 +23,7 @@ input AssetInput {
 }
 
 extend type Event {
+    # Optional list of assets
     assets: [Asset!]
 }
 

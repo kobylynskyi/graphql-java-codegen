@@ -208,7 +208,11 @@ class GraphQLCodegenTest {
                 .orElseThrow(FileNotFoundException::new);
 
         assertThat(Utils.getFileContent(eventFile.getPath()), StringStartsWith.startsWith(
-                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() + "public class Event {"));
+                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() +
+                        "/**" + System.lineSeparator() +
+                        " * An event that describes a thing that happens" + System.lineSeparator() +
+                        " */" + System.lineSeparator() +
+                        "public class Event {"));
     }
 
     @Test

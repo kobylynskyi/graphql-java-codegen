@@ -4,6 +4,7 @@ schema {
     mutation: Mutation
 }
 
+# Queries related to events
 type Query {
     events: [Event!]
 }

@@ -29,6 +29,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(NAME, definition.getName());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingConfig, definition.getValueDefinitions(), definition.getName()));
         dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());

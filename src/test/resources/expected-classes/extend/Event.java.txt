@@ -37,9 +37,15 @@ public class Event implements PinnableItem, Node{
         this.createdDateTime = createdDateTime;
     }
 
+    /**
+     * Optional list of assets
+     */
     public Collection<Asset> getAssets() {
         return assets;
     }
+    /**
+     * Optional list of assets
+     */
     public void setAssets(Collection<Asset> assets) {
         this.assets = assets;
     }
@@ -81,6 +87,9 @@ public class Event implements PinnableItem, Node{
             return this;
         }
 
+        /**
+         * Optional list of assets
+         */
         public Builder setAssets(Collection<Asset> assets) {
             this.assets = assets;
             return this;

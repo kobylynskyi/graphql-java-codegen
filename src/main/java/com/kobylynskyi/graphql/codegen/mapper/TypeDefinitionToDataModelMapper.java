@@ -30,7 +30,8 @@ public class TypeDefinitionToDataModelMapper {
      * @param document      GraphQL Document
      * @return Freemarker data model of the GraphQL type
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedObjectTypeDefinition definition,
+    public static Map<String, Object> map(MappingConfig mappingConfig,
+                                          ExtendedObjectTypeDefinition definition,
                                           ExtendedDocument document) {
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
 
@@ -38,6 +39,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(IMPLEMENTS, getInterfaces(mappingConfig, definition, document));
         dataModel.put(FIELDS, getFields(mappingConfig, definition, document));
         dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
@@ -65,6 +67,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImportsForRequests(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, Utils.capitalize(typeDefinition.getName()) + mappingConfig.getResponseProjectionSuffix());
+        dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + typeDefinition.getName()));
         dataModel.put(FIELDS, getProjectionFields(mappingConfig, typeDefinition, document, typeNames));
         dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());

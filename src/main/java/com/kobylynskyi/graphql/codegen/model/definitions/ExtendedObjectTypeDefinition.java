@@ -8,15 +8,15 @@ import java.util.List;
 
 public class ExtendedObjectTypeDefinition extends ExtendedDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
 
-    public List<FieldDefinitionFromExtension> getFieldDefinitions() {
-        List<FieldDefinitionFromExtension> definitions = new ArrayList<>();
+    public List<ExtendedFieldDefinition> getFieldDefinitions() {
+        List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         definition.getFieldDefinitions().stream()
-                .map(f -> new FieldDefinitionFromExtension(f, false))
+                .map(f -> new ExtendedFieldDefinition(f, false))
                 .forEach(definitions::add);
         extensions.stream()
                 .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
                 .flatMap(Collection::stream)
-                .map(f -> new FieldDefinitionFromExtension(f, true))
+                .map(f -> new ExtendedFieldDefinition(f, true))
                 .forEach(definitions::add);
         return definitions;
     }

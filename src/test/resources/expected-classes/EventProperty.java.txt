@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
 
+/**
+ * An event property have all possible types
+ */
 public class EventProperty {
 
     private Double floatVal;
@@ -23,9 +26,17 @@ public class EventProperty {
         this.parent = parent;
     }
 
+    /**
+     * Float property
+     * with multiline comment
+     */
     public Double getFloatVal() {
         return floatVal;
     }
+    /**
+     * Float property
+     * with multiline comment
+     */
     public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
     }
@@ -44,23 +55,41 @@ public class EventProperty {
         this.intVal = intVal;
     }
 
+    /**
+     * String comment
+     */
     public String getStringVal() {
         return stringVal;
     }
+    /**
+     * String comment
+     */
     public void setStringVal(String stringVal) {
         this.stringVal = stringVal;
     }
 
+    /**
+     * Properties
+     */
     public Collection<EventProperty> getChild() {
         return child;
     }
+    /**
+     * Properties
+     */
     public void setChild(Collection<EventProperty> child) {
         this.child = child;
     }
 
+    /**
+     * Parent event of the property
+     */
     public Event getParent() {
         return parent;
     }
+    /**
+     * Parent event of the property
+     */
     public void setParent(Event parent) {
         this.parent = parent;
     }
@@ -79,6 +108,10 @@ public class EventProperty {
         public Builder() {
         }
 
+        /**
+         * Float property
+         * with multiline comment
+         */
         public Builder setFloatVal(Double floatVal) {
             this.floatVal = floatVal;
             return this;
@@ -94,16 +127,25 @@ public class EventProperty {
             return this;
         }
 
+        /**
+         * String comment
+         */
         public Builder setStringVal(String stringVal) {
             this.stringVal = stringVal;
             return this;
         }
 
+        /**
+         * Properties
+         */
         public Builder setChild(Collection<EventProperty> child) {
             this.child = child;
             return this;
         }
 
+        /**
+         * Parent event of the property
+         */
         public Builder setParent(Event parent) {
             this.parent = parent;
             return this;

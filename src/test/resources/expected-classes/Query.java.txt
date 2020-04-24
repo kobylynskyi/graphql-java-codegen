@@ -4,15 +4,27 @@ import java.util.*;
 
 public interface Query {
 
+    /**
+     * Version of the application.
+     */
     @javax.validation.constraints.NotNull
     String version() throws Exception;
 
+    /**
+     * List of events of a specified category.
+     */
     @javax.validation.constraints.NotNull
     Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
 
+    /**
+     * Single event by ID.
+     */
     @javax.validation.constraints.NotNull
     Event eventById(String id) throws Exception;
 
+    /**
+     * Events by IDs.
+     */
     @javax.validation.constraints.NotNull
     Collection<Event> eventsByIds(Collection<String> ids) throws Exception;
 

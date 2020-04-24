@@ -49,11 +49,21 @@ type Event {
 
 # An event property have all possible types
 type EventProperty {
+    # Float property
+    # with multiline comment
     floatVal: Float
+
     booleanVal: Boolean
+
+    #
+    #
     intVal: Int
+
+    # String comment
     stringVal: String
+    # Properties
     child: [EventProperty]
+    # Parent event of the property
     parent: Event
 }
 
@@ -64,7 +74,10 @@ scalar DateTime
 
 # Possible statuses of the event
 enum EventStatus {
+    # OPEN status
+    # Means just created
     OPEN
     IN_PROGRESS
+    # Logging completed
     LOGGED
 }
