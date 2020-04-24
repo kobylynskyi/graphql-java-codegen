@@ -111,7 +111,8 @@ class MapperUtils {
             imports.add(modelPackageName);
         }
         String apiPackageName = mappingConfig.getApiPackageName();
-        if (!Utils.isBlank(apiPackageName) && !apiPackageName.equals(packageName)) {
+        if (!Utils.isBlank(apiPackageName) && !apiPackageName.equals(packageName) &&
+                apisOrResolversAreGenerated(mappingConfig)) {
             imports.add(apiPackageName);
         }
         String genericPackageName = mappingConfig.getPackageName();
@@ -120,6 +121,11 @@ class MapperUtils {
         }
         imports.add("java.util");
         return imports;
+    }
+
+    private static boolean apisOrResolversAreGenerated(MappingConfig mappingConfig) {
+        return mappingConfig.getGenerateApis() || !mappingConfig.getFieldsWithResolvers().isEmpty() ||
+                mappingConfig.getGenerateExtensionFieldsResolvers();
     }
 
     /**
