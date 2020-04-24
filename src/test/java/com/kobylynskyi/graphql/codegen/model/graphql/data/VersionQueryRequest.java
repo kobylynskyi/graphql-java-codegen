@@ -1,10 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class VersionQueryRequest implements GraphQLOperationRequest {
 
@@ -31,4 +28,22 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
         return input;
     }
 
+    @Override
+    public String toString() {
+        return Objects.toString(input);
+    }
+
+    public static class Builder {
+
+
+        public Builder() {
+        }
+
+
+        public VersionQueryRequest build() {
+            VersionQueryRequest obj = new VersionQueryRequest();
+            return obj;
+        }
+
+    }
 }

@@ -41,4 +41,25 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     public String toString() {
         return Objects.toString(input);
     }
+
+    public static class Builder {
+
+        private Collection<String> ids;
+
+        public Builder() {
+        }
+
+        public Builder setIds(Collection<String> ids) {
+            this.ids = ids;
+            return this;
+        }
+
+
+        public EventsByIdsQueryRequest build() {
+            EventsByIdsQueryRequest obj = new EventsByIdsQueryRequest();
+            obj.setIds(ids);
+            return obj;
+        }
+
+    }
 }

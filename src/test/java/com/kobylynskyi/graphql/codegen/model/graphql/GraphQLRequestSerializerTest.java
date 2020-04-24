@@ -29,9 +29,10 @@ class GraphQLRequestSerializerTest {
 
     @Test
     void serialize_withResponseProjection() {
-        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest();
-        request.setCategoryId("categoryIdValue1");
-        request.setStatus(Status.OPEN);
+        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .setCategoryId("categoryIdValue1")
+                .setStatus(Status.OPEN)
+                .build();
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
                         .id()
@@ -77,8 +78,9 @@ class GraphQLRequestSerializerTest {
 
     @Test
     void serialize_collectionRequest() {
-        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest();
-        request.setIds(Arrays.asList("\"", "\\", "\b", "\f", "\n", "\r", "\t", "\u1234"));
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
+                .setIds(Arrays.asList("\"", "\\", "\b", "\f", "\n", "\r", "\t", "\u1234"))
+                .build();
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
                         .id()

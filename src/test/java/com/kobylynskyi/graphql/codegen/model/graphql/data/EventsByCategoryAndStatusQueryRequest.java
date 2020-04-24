@@ -1,10 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
 public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
 
@@ -39,4 +36,36 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
         return input;
     }
 
+    @Override
+    public String toString() {
+        return Objects.toString(input);
+    }
+
+    public static class Builder {
+
+        private String categoryId;
+        private Status status;
+
+        public Builder() {
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+
+        public EventsByCategoryAndStatusQueryRequest build() {
+            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest();
+            obj.setCategoryId(categoryId);
+            obj.setStatus(status);
+            return obj;
+        }
+
+    }
 }

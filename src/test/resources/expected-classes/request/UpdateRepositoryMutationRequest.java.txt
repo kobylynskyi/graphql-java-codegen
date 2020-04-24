@@ -36,4 +36,25 @@ public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest 
     public String toString() {
         return Objects.toString(input);
     }
+
+    public static class Builder {
+
+        private UpdateRepositoryInput input;
+
+        public Builder() {
+        }
+
+        public Builder setInput(UpdateRepositoryInput input) {
+            this.input = input;
+            return this;
+        }
+
+
+        public UpdateRepositoryMutationRequest build() {
+            UpdateRepositoryMutationRequest obj = new UpdateRepositoryMutationRequest();
+            obj.setInput(input);
+            return obj;
+        }
+
+    }
 }
