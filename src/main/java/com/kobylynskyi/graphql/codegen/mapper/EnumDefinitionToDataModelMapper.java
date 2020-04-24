@@ -1,12 +1,11 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
-import graphql.language.EnumValueDefinition;
+import graphql.language.Comment;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
@@ -32,6 +31,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, map(definition.getValueDefinitions()));
         return dataModel;
     }
@@ -42,10 +42,23 @@ public class EnumDefinitionToDataModelMapper {
      * @param enumValueDefinitions list of GraphQL EnumValueDefinition types
      * @return list of strings
      */
-    private static List<String> map(List<EnumValueDefinition> enumValueDefinitions) {
+    private static List<EnumValueDefinition> map(List<graphql.language.EnumValueDefinition> enumValueDefinitions) {
         return enumValueDefinitions.stream()
-                .map(EnumValueDefinition::getName)
-                .map(MapperUtils::capitalizeIfRestricted)
+                .map(f -> new EnumValueDefinition(
+                        MapperUtils.capitalizeIfRestricted(f.getName()),
+                        getJavaDoc(f.getComments())))
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> getJavaDoc(List<Comment> comments) {
+        if (comments == null) {
+            return Collections.emptyList();
+        }
+        return comments.stream()
+                .map(Comment::getContent)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
     }
 

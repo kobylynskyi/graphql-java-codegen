@@ -1,9 +1,19 @@
 package com.kobylynskyi.graphql.test1;
 
+/**
+ * Possible statuses of the event
+ */
 public enum EventStatus {
 
+    /**
+     * OPEN status
+     * Means just created
+     */
     OPEN,
     IN_PROGRESS,
+    /**
+     * Logging completed
+     */
     LOGGED
 
 }

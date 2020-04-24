@@ -6,6 +6,13 @@ package ${package};
 import ${import}.*;
 </#list>
 
+<#if javaDoc?has_content>
+/**
+<#list javaDoc as javaDocLine>
+ * ${javaDocLine}
+</#list>
+ */
+</#if>
 public class ${className} implements GraphQLResponseProjection {
 
     private Map<String, Object> fields = new LinkedHashMap<>();
@@ -14,6 +21,13 @@ public class ${className} implements GraphQLResponseProjection {
     }
 
 <#list fields as field>
+<#if field.javaDoc?has_content>
+    /**
+<#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
+     */
+</#if>
     public ${className} ${field.name}(<#if field.type?has_content>${field.type} subProjection</#if>) {
         fields.put("${field.name}", <#if field.type?has_content>subProjection<#else>null</#if>);
         return this;

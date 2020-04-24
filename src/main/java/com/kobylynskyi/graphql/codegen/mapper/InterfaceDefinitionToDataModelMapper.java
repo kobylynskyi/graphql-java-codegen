@@ -2,8 +2,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.FieldDefinitionFromExtension;
-import graphql.language.FieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +26,13 @@ public class InterfaceDefinitionToDataModelMapper {
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedInterfaceTypeDefinition definition) {
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        List<FieldDefinitionFromExtension> fieldDefinitions = definition.getFieldDefinitions();
+        List<ExtendedFieldDefinition> fieldDefinitions = definition.getFieldDefinitions();
 
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(mappingConfig, fieldDefinitions, definition.getName()));
         return dataModel;
     }

@@ -2,13 +2,29 @@ package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
 
+/**
+ * An event property have all possible types
+ */
 public class EventPropertyTO {
 
+    /**
+     * Float property
+     * with multiline comment
+     */
     private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;
+    /**
+     * String comment
+     */
     private String stringVal;
+    /**
+     * Properties
+     */
     private Collection<EventPropertyTO> child;
+    /**
+     * Parent event of the property
+     */
     private EventTO parent;
 
     public EventPropertyTO() {
@@ -23,9 +39,15 @@ public class EventPropertyTO {
         this.parent = parent;
     }
 
+    /**
+     * {@link EventPropertyTO#floatVal}
+     */
     public Double getFloatVal() {
         return floatVal;
     }
+    /**
+     * {@link EventPropertyTO#floatVal}
+     */
     public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
     }
@@ -44,23 +66,41 @@ public class EventPropertyTO {
         this.intVal = intVal;
     }
 
+    /**
+     * {@link EventPropertyTO#stringVal}
+     */
     public String getStringVal() {
         return stringVal;
     }
+    /**
+     * {@link EventPropertyTO#stringVal}
+     */
     public void setStringVal(String stringVal) {
         this.stringVal = stringVal;
     }
 
+    /**
+     * {@link EventPropertyTO#child}
+     */
     public Collection<EventPropertyTO> getChild() {
         return child;
     }
+    /**
+     * {@link EventPropertyTO#child}
+     */
     public void setChild(Collection<EventPropertyTO> child) {
         this.child = child;
     }
 
+    /**
+     * {@link EventPropertyTO#parent}
+     */
     public EventTO getParent() {
         return parent;
     }
+    /**
+     * {@link EventPropertyTO#parent}
+     */
     public void setParent(EventTO parent) {
         this.parent = parent;
     }
@@ -102,6 +142,9 @@ public class EventPropertyTO {
         public Builder() {
         }
 
+        /**
+         * {@link EventPropertyTO#floatVal}
+         */
         public Builder setFloatVal(Double floatVal) {
             this.floatVal = floatVal;
             return this;
@@ -117,16 +160,25 @@ public class EventPropertyTO {
             return this;
         }
 
+        /**
+         * {@link EventPropertyTO#stringVal}
+         */
         public Builder setStringVal(String stringVal) {
             this.stringVal = stringVal;
             return this;
         }
 
+        /**
+         * {@link EventPropertyTO#child}
+         */
         public Builder setChild(Collection<EventPropertyTO> child) {
             this.child = child;
             return this;
         }
 
+        /**
+         * {@link EventPropertyTO#parent}
+         */
         public Builder setParent(EventTO parent) {
             this.parent = parent;
             return this;

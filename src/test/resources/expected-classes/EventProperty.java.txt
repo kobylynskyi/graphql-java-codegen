@@ -2,13 +2,29 @@ package com.kobylynskyi.graphql.test1;
 
 import java.util.*;
 
+/**
+ * An event property have all possible types
+ */
 public class EventProperty {
 
+    /**
+     * Float property
+     * with multiline comment
+     */
     private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;
+    /**
+     * String comment
+     */
     private String stringVal;
+    /**
+     * Properties
+     */
     private Collection<EventProperty> child;
+    /**
+     * Parent event of the property
+     */
     private Event parent;
 
     public EventProperty() {
@@ -23,9 +39,15 @@ public class EventProperty {
         this.parent = parent;
     }
 
+    /**
+     * {@link EventProperty#floatVal}
+     */
     public Double getFloatVal() {
         return floatVal;
     }
+    /**
+     * {@link EventProperty#floatVal}
+     */
     public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
     }
@@ -44,23 +66,41 @@ public class EventProperty {
         this.intVal = intVal;
     }
 
+    /**
+     * {@link EventProperty#stringVal}
+     */
     public String getStringVal() {
         return stringVal;
     }
+    /**
+     * {@link EventProperty#stringVal}
+     */
     public void setStringVal(String stringVal) {
         this.stringVal = stringVal;
     }
 
+    /**
+     * {@link EventProperty#child}
+     */
     public Collection<EventProperty> getChild() {
         return child;
     }
+    /**
+     * {@link EventProperty#child}
+     */
     public void setChild(Collection<EventProperty> child) {
         this.child = child;
     }
 
+    /**
+     * {@link EventProperty#parent}
+     */
     public Event getParent() {
         return parent;
     }
+    /**
+     * {@link EventProperty#parent}
+     */
     public void setParent(Event parent) {
         this.parent = parent;
     }
@@ -79,6 +119,9 @@ public class EventProperty {
         public Builder() {
         }
 
+        /**
+         * {@link EventProperty#floatVal}
+         */
         public Builder setFloatVal(Double floatVal) {
             this.floatVal = floatVal;
             return this;
@@ -94,16 +137,25 @@ public class EventProperty {
             return this;
         }
 
+        /**
+         * {@link EventProperty#stringVal}
+         */
         public Builder setStringVal(String stringVal) {
             this.stringVal = stringVal;
             return this;
         }
 
+        /**
+         * {@link EventProperty#child}
+         */
         public Builder setChild(Collection<EventProperty> child) {
             this.child = child;
             return this;
         }
 
+        /**
+         * {@link EventProperty#parent}
+         */
         public Builder setParent(Event parent) {
             this.parent = parent;
             return this;

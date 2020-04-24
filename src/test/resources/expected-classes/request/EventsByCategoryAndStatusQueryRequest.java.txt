@@ -3,6 +3,9 @@ package com.github.graphql;
 import java.util.*;
 import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
+/**
+ * List of events of a specified category.
+ */
 public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;

@@ -73,6 +73,7 @@ input AssetInput {
 }
 
 extend type Event {
+    # Optional list of assets
     assets: [Asset!]
 }
 

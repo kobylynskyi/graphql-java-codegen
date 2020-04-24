@@ -4,6 +4,9 @@ import java.util.*;
 
 public interface Mutation {
 
+    /**
+     * Create a new event.
+     */
     @javax.validation.constraints.NotNull
     Event createEvent(String categoryId, String createdBy) throws Exception;
 

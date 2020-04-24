@@ -6,9 +6,23 @@ package ${package};
 import ${import}.*;
 </#list>
 
+<#if javaDoc?has_content>
+/**
+<#list javaDoc as javaDocLine>
+ * ${javaDocLine}
+</#list>
+ */
+</#if>
 public interface ${className} {
 
 <#list operations as operation>
+<#if operation.javaDoc?has_content>
+    /**
+<#list operation.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
+     */
+</#if>
 <#list operation.annotations as annotation>
     @${annotation}
 </#list>

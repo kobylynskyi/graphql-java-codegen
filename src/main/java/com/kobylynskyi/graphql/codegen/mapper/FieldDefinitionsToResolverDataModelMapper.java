@@ -4,7 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.FieldDefinitionFromExtension;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 import graphql.language.TypeName;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 /**
  * Map field definitions to a Freemarker data model representing a resolver for these fields.
@@ -29,11 +30,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @return Freemarker data model of the GraphQL parametrized field
      */
     public static Map<String, Object> mapToTypeResolver(MappingConfig mappingConfig,
-                                                        List<FieldDefinitionFromExtension> fieldDefs,
+                                                        List<ExtendedFieldDefinition> fieldDefs,
                                                         String parentTypeName) {
         // Example: PersonResolver
         String className = parentTypeName + "Resolver";
-        return mapToResolverModel(mappingConfig, parentTypeName, className, fieldDefs);
+        return mapToResolverModel(mappingConfig, parentTypeName, className, fieldDefs,
+                singletonList("Resolver for " + parentTypeName));
     }
 
     /**
@@ -45,12 +47,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @return Freemarker data model of the GraphQL field
      */
     public static Map<String, Object> mapRootTypeField(MappingConfig mappingConfig,
-                                                       FieldDefinitionFromExtension fieldDefinition,
+                                                       ExtendedFieldDefinition fieldDefinition,
                                                        String rootTypeName) {
         // Examples: VersionQuery, CreateEventMutation (rootTypeName is "Query" or the likes)
         String className = Utils.capitalize(fieldDefinition.getName()) + rootTypeName;
-        List<FieldDefinitionFromExtension> fieldDefs = Collections.singletonList(fieldDefinition);
-        return mapToResolverModel(mappingConfig, rootTypeName, className, fieldDefs);
+        List<ExtendedFieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
+        return mapToResolverModel(mappingConfig, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc());
     }
 
     /**
@@ -65,12 +67,14 @@ public class FieldDefinitionsToResolverDataModelMapper {
         String parentTypeName = definition.getName();
         String className = Utils.capitalize(parentTypeName);
         // For root types like "Query", we create resolvers for all fields
-        return mapToResolverModel(mappingConfig, parentTypeName, className, definition.getFieldDefinitions());
+        return mapToResolverModel(mappingConfig, parentTypeName, className,
+                definition.getFieldDefinitions(), definition.getJavaDoc());
     }
 
     private static Map<String, Object> mapToResolverModel(MappingConfig mappingConfig, String parentTypeName,
                                                           String className,
-                                                          List<FieldDefinitionFromExtension> fieldDefinitions) {
+                                                          List<ExtendedFieldDefinition> fieldDefinitions,
+                                                          List<String> javaDoc) {
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
         Set<String> imports = MapperUtils.getImportsForFieldResolvers(mappingConfig, packageName, parentTypeName);
         List<OperationDefinition> operations = mapToOperations(mappingConfig, fieldDefinitions, parentTypeName);
@@ -93,7 +97,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @return Freemarker-understandable format of operations
      */
     private static List<OperationDefinition> mapToOperations(MappingConfig mappingConfig,
-                                                             List<FieldDefinitionFromExtension> fieldDefinitions,
+                                                             List<ExtendedFieldDefinition> fieldDefinitions,
                                                              String parentTypeName) {
         return fieldDefinitions.stream()
                 .map(fieldDef -> map(mappingConfig, fieldDef, parentTypeName))
@@ -108,7 +112,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operation
      */
-    private static OperationDefinition map(MappingConfig mappingConfig, FieldDefinition resolvedField,
+    private static OperationDefinition map(MappingConfig mappingConfig, ExtendedFieldDefinition resolvedField,
                                            String parentTypeName) {
         String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
                 mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName);
@@ -118,6 +122,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(
                 mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName));
         operation.setParameters(getOperationParameters(mappingConfig, resolvedField, parentTypeName));
+        operation.setJavaDoc(resolvedField.getJavaDoc());
         return operation;
     }
 
@@ -130,7 +135,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, new TypeName(parentTypeName));
             String parentObjectParamName = MapperUtils.capitalizeIfRestricted(Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, null, emptyList()));
+            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, null, emptyList(), emptyList()));
         }
 
         // 2. Next parameters are input values

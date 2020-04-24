@@ -17,5 +17,6 @@ public class OperationDefinition {
     private String type;
     private List<String> annotations = new ArrayList<>();
     private List<ParameterDefinition> parameters = new ArrayList<>();
+    private List<String> javaDoc = new ArrayList<>();
 
 }

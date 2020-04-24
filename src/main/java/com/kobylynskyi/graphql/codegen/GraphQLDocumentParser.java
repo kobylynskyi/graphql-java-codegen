@@ -85,7 +85,7 @@ class GraphQLDocumentParser {
     }
 
     @SuppressWarnings("unchecked")
-    private static <D extends ExtendedDefinition<B, E>, B extends NamedNode<B>, E extends NamedNode<B>> void populateDefinition(Map<String, D> definitionsMap,
+    private static <D extends ExtendedDefinition<B, E>, B extends NamedNode<B>, E extends B> void populateDefinition(Map<String, D> definitionsMap,
                                                                                                                                 Definition<?> definition,
                                                                                                                                 String definitionName,
                                                                                                                                 Class<B> baseDefinitionClass,

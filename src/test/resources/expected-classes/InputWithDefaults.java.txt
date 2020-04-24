@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.testdefaults;
 
 import java.util.*;
 
+/**
+ * This input has all possible types
+ */
 public class InputWithDefaults {
 
     private Double floatVal = 1.23;

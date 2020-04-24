@@ -4,6 +4,9 @@ import java.util.*;
 
 public interface EventsCreatedSubscription {
 
+    /**
+     * Subscribe to events
+     */
     @javax.validation.constraints.NotNull
     Collection<Event> eventsCreated() throws Exception;
 

@@ -1,6 +1,9 @@
 import java.util.*;
 import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
+/**
+ * Response projection for Asset
+ */
 public class AssetResponseProjection implements GraphQLResponseProjection {
 
     private Map<String, Object> fields = new LinkedHashMap<>();

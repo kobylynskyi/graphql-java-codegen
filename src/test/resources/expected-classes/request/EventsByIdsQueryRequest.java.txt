@@ -3,6 +3,9 @@ package com.github.graphql;
 import java.util.*;
 import com.kobylynskyi.graphql.codegen.model.graphql.*;
 
+/**
+ * Events by IDs.
+ */
 public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;

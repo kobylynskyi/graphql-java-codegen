@@ -128,7 +128,7 @@ public class GraphQLCodegen {
 
     private void generateOperation(ExtendedObjectTypeDefinition definition) {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
-            for (FieldDefinitionFromExtension operationDef : definition.getFieldDefinitions()) {
+            for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
                 Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
                 GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
             }
@@ -139,7 +139,7 @@ public class GraphQLCodegen {
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             // generate request objects for graphql operations
-            for (FieldDefinition operationDef : definition.getFieldDefinitions()) {
+            for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
                 Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName());
                 GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir);
             }
@@ -156,8 +156,8 @@ public class GraphQLCodegen {
         }
     }
 
-    private void generateFieldResolvers(List<FieldDefinitionFromExtension> fieldDefinitions, String definitionName) {
-        List<FieldDefinitionFromExtension> fieldDefsWithResolvers = fieldDefinitions.stream()
+    private void generateFieldResolvers(List<ExtendedFieldDefinition> fieldDefinitions, String definitionName) {
+        List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
                 .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definitionName))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {

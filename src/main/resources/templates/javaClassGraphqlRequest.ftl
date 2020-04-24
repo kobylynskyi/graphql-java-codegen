@@ -6,6 +6,13 @@ package ${package};
 import ${import}.*;
 </#list>
 
+<#if javaDoc?has_content>
+/**
+<#list javaDoc as javaDocLine>
+ * ${javaDocLine}
+</#list>
+ */
+</#if>
 public class ${className} implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};
@@ -17,6 +24,13 @@ public class ${className} implements GraphQLOperationRequest {
     }
 
 <#list fields as field>
+<#if field.javaDoc?has_content>
+    /**
+<#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
+     */
+</#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.input.put("${field.name}", ${field.name});
     }
@@ -75,6 +89,11 @@ public class ${className} implements GraphQLOperationRequest {
         }
 
 <#list fields as field>
+<#if field.javaDoc?has_content>
+        /**
+         * {@link ${className}#${field.name}}
+         */
+</#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};
             return this;

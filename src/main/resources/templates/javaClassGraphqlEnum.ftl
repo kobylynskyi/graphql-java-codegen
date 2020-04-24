@@ -2,10 +2,24 @@
 package ${package};
 
 </#if>
+<#if javaDoc?has_content>
+/**
+<#list javaDoc as javaDocLine>
+ * ${javaDocLine}
+</#list>
+ */
+</#if>
 public enum ${className} {
 
 <#list fields as field>
-    ${field}<#if field_has_next>,</#if>
+<#if field.javaDoc?has_content>
+    /**
+<#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
+     */
+</#if>
+    ${field.value}<#if field_has_next>,</#if>
 </#list>
 
 }

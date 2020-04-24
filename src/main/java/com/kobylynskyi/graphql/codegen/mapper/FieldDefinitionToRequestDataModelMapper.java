@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 
@@ -24,13 +25,15 @@ public class FieldDefinitionToRequestDataModelMapper {
      * @param objectTypeName Object type (e.g.: "Query", "Mutation" or "Subscription")
      * @return Freemarker data model of the GraphQL request
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, FieldDefinition operationDef,
+    public static Map<String, Object> map(MappingConfig mappingConfig,
+                                          ExtendedFieldDefinition operationDef,
                                           String objectTypeName) {
         Map<String, Object> dataModel = new HashMap<>();
         String packageName = MapperUtils.getModelPackageName(mappingConfig);
         dataModel.put(PACKAGE, packageName);
         dataModel.put(IMPORTS, MapperUtils.getImportsForRequests(mappingConfig, packageName));
         dataModel.put(CLASS_NAME, getClassName(operationDef.getName(), objectTypeName, mappingConfig.getRequestSuffix()));
+        dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(OPERATION_TYPE, objectTypeName.toUpperCase());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingConfig, operationDef.getInputValueDefinitions(), operationDef.getName()));
