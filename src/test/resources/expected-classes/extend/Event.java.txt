@@ -6,9 +6,6 @@ public class Event implements PinnableItem, Node{
     private Status status;
     @javax.validation.constraints.NotNull
     private String createdDateTime;
-    /**
-     * Optional list of assets
-     */
     @javax.validation.constraints.NotNull
     private Collection<Asset> assets;
     @javax.validation.constraints.NotNull
@@ -41,13 +38,13 @@ public class Event implements PinnableItem, Node{
     }
 
     /**
-     * {@link Event#assets}
+     * Optional list of assets
      */
     public Collection<Asset> getAssets() {
         return assets;
     }
     /**
-     * {@link Event#assets}
+     * Optional list of assets
      */
     public void setAssets(Collection<Asset> assets) {
         this.assets = assets;
@@ -91,7 +88,7 @@ public class Event implements PinnableItem, Node{
         }
 
         /**
-         * {@link Event#assets}
+         * Optional list of assets
          */
         public Builder setAssets(Collection<Asset> assets) {
             this.assets = assets;

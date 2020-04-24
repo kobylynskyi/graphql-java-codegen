@@ -7,24 +7,11 @@ import java.util.*;
  */
 public class EventProperty {
 
-    /**
-     * Float property
-     * with multiline comment
-     */
     private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;
-    /**
-     * String comment
-     */
     private String stringVal;
-    /**
-     * Properties
-     */
     private Collection<EventProperty> child;
-    /**
-     * Parent event of the property
-     */
     private Event parent;
 
     public EventProperty() {
@@ -40,13 +27,15 @@ public class EventProperty {
     }
 
     /**
-     * {@link EventProperty#floatVal}
+     * Float property
+     * with multiline comment
      */
     public Double getFloatVal() {
         return floatVal;
     }
     /**
-     * {@link EventProperty#floatVal}
+     * Float property
+     * with multiline comment
      */
     public void setFloatVal(Double floatVal) {
         this.floatVal = floatVal;
@@ -67,39 +56,39 @@ public class EventProperty {
     }
 
     /**
-     * {@link EventProperty#stringVal}
+     * String comment
      */
     public String getStringVal() {
         return stringVal;
     }
     /**
-     * {@link EventProperty#stringVal}
+     * String comment
      */
     public void setStringVal(String stringVal) {
         this.stringVal = stringVal;
     }
 
     /**
-     * {@link EventProperty#child}
+     * Properties
      */
     public Collection<EventProperty> getChild() {
         return child;
     }
     /**
-     * {@link EventProperty#child}
+     * Properties
      */
     public void setChild(Collection<EventProperty> child) {
         this.child = child;
     }
 
     /**
-     * {@link EventProperty#parent}
+     * Parent event of the property
      */
     public Event getParent() {
         return parent;
     }
     /**
-     * {@link EventProperty#parent}
+     * Parent event of the property
      */
     public void setParent(Event parent) {
         this.parent = parent;
@@ -120,7 +109,8 @@ public class EventProperty {
         }
 
         /**
-         * {@link EventProperty#floatVal}
+         * Float property
+         * with multiline comment
          */
         public Builder setFloatVal(Double floatVal) {
             this.floatVal = floatVal;
@@ -138,7 +128,7 @@ public class EventProperty {
         }
 
         /**
-         * {@link EventProperty#stringVal}
+         * String comment
          */
         public Builder setStringVal(String stringVal) {
             this.stringVal = stringVal;
@@ -146,7 +136,7 @@ public class EventProperty {
         }
 
         /**
-         * {@link EventProperty#child}
+         * Properties
          */
         public Builder setChild(Collection<EventProperty> child) {
             this.child = child;
@@ -154,7 +144,7 @@ public class EventProperty {
         }
 
         /**
-         * {@link EventProperty#parent}
+         * Parent event of the property
          */
         public Builder setParent(Event parent) {
             this.parent = parent;

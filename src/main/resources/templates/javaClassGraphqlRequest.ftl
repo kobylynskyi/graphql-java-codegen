@@ -91,7 +91,9 @@ public class ${className} implements GraphQLOperationRequest {
 <#list fields as field>
 <#if field.javaDoc?has_content>
         /**
-         * {@link ${className}#${field.name}}
+<#list field.javaDoc as javaDocLine>
+         * ${javaDocLine}
+</#list>
          */
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {

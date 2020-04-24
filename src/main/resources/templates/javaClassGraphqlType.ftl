@@ -16,13 +16,6 @@ import ${import}.*;
 public class ${className} <#if implements?has_content>implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
 <#list fields as field>
-<#if field.javaDoc?has_content>
-    /**
-<#list field.javaDoc as javaDocLine>
-     * ${javaDocLine}
-</#list>
-     */
-</#if>
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
@@ -43,7 +36,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
-     * {@link ${className}#${field.name}}
+<#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
      */
 </#if>
     public ${field.type} get${field.name?cap_first}() {
@@ -51,7 +46,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
     }
 <#if field.javaDoc?has_content>
     /**
-     * {@link ${className}#${field.name}}
+<#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+</#list>
      */
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
@@ -119,7 +116,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#list fields as field>
 <#if field.javaDoc?has_content>
         /**
-         * {@link ${className}#${field.name}}
+<#list field.javaDoc as javaDocLine>
+         * ${javaDocLine}
+</#list>
          */
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
