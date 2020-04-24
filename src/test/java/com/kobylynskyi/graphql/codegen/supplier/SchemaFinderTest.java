@@ -51,8 +51,17 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_matchesDefaultRegex() throws IOException {
+    public void singleFile_matchesDefaultRegex_graphqls() throws IOException {
         Path singleFile = Files.createFile(root.resolve("single.graphqls"));
+
+        SchemaFinder finder = new SchemaFinder(root);
+        List<String> expected = Collections.singletonList(singleFile.toString());
+        assertEquals(expected, finder.findSchemas());
+    }
+
+    @Test
+    public void singleFile_matchesDefaultRegex_grahql() throws IOException {
+        Path singleFile = Files.createFile(root.resolve("single.graphql"));
 
         SchemaFinder finder = new SchemaFinder(root);
         List<String> expected = Collections.singletonList(singleFile.toString());
