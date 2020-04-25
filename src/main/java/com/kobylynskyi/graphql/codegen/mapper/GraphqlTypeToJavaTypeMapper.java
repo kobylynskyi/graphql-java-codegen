@@ -122,7 +122,7 @@ class GraphqlTypeToJavaTypeMapper {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String modelValidationAnnotation = mappingConfig.getModelValidationAnnotation();
-            if (!Utils.isBlank(modelValidationAnnotation)) {
+            if (Utils.isNotBlank(modelValidationAnnotation)) {
                 annotations.add(modelValidationAnnotation);
             }
         }
@@ -185,7 +185,7 @@ class GraphqlTypeToJavaTypeMapper {
      */
     private static String wrapIntoSubscriptionIfRequired(MappingConfig mappingConfig, String javaTypeName, String parentTypeName) {
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())
-                && !Utils.isBlank(mappingConfig.getSubscriptionReturnType())) {
+                && Utils.isNotBlank(mappingConfig.getSubscriptionReturnType())) {
             return String.format("%s<%s>", mappingConfig.getSubscriptionReturnType(), javaTypeName);
         }
         return javaTypeName;

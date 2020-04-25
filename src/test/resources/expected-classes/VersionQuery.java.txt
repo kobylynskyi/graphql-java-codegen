@@ -1,6 +1,9 @@
 package com.kobylynskyi.graphql.test1;
 
 
+/**
+ * Version of the application.
+ */
 public interface VersionQuery {
 
     /**

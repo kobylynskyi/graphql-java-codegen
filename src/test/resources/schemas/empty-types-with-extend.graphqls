@@ -23,6 +23,7 @@ union PinnableItem
 
 
 
+# Queries related to events
 extend type Query {
     events: [Event!]
 }
@@ -55,6 +56,7 @@ scalar DateTime
 
 
 
+# Queries related to assets
 extend type Query {
     assets: [Asset!]
 }

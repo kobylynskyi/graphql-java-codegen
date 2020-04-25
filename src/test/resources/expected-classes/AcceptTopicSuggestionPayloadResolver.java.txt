@@ -1,6 +1,9 @@
 package com.github.graphql;
 
 
+/**
+ * Resolver for AcceptTopicSuggestionPayload
+ */
 public interface AcceptTopicSuggestionPayloadResolver {
 
     GithubTopicTO topic(GithubAcceptTopicSuggestionPayloadTO githubAcceptTopicSuggestionPayloadTO, graphql.schema.DataFetchingEnvironment env) throws Exception;

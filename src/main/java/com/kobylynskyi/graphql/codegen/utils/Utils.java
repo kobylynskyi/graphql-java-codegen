@@ -58,22 +58,22 @@ public final class Utils {
     }
 
     /**
-     * Basically copy of org.apache.commons.lang3.StringUtils.isBlank(CharSequence cs)
+     * Inverted copy of org.apache.commons.lang3.StringUtils.isBlank(CharSequence cs)
      *
      * @param cs the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is null, empty or whitespace only
+     * @return {@code false} if the CharSequence is null, empty or whitespace only
      */
-    public static boolean isBlank(CharSequence cs) {
+    public static boolean isNotBlank(CharSequence cs) {
         int strLen;
         if (cs == null || (strLen = cs.length()) == 0) {
-            return true;
+            return false;
         }
         for (int i = 0; i < strLen; i++) {
             if (!Character.isWhitespace(cs.charAt(i))) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

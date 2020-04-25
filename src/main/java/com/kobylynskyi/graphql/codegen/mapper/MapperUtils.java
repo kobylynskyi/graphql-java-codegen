@@ -2,12 +2,15 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 class MapperUtils {
 
@@ -55,11 +58,11 @@ class MapperUtils {
      */
     static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, String definitionName) {
         StringBuilder classNameBuilder = new StringBuilder();
-        if (!Utils.isBlank(mappingConfig.getModelNamePrefix())) {
+        if (Utils.isNotBlank(mappingConfig.getModelNamePrefix())) {
             classNameBuilder.append(mappingConfig.getModelNamePrefix());
         }
         classNameBuilder.append(Utils.capitalize(definitionName));
-        if (!Utils.isBlank(mappingConfig.getModelNameSuffix())) {
+        if (Utils.isNotBlank(mappingConfig.getModelNameSuffix())) {
             classNameBuilder.append(mappingConfig.getModelNameSuffix());
         }
         return classNameBuilder.toString();
@@ -72,7 +75,7 @@ class MapperUtils {
      * @return api package name if present. Generic package name otherwise
      */
     static String getApiPackageName(MappingConfig mappingConfig) {
-        if (!Utils.isBlank(mappingConfig.getApiPackageName())) {
+        if (Utils.isNotBlank(mappingConfig.getApiPackageName())) {
             return mappingConfig.getApiPackageName();
         } else {
             return mappingConfig.getPackageName();
@@ -86,7 +89,7 @@ class MapperUtils {
      * @return model package name if present. Generic package name otherwise
      */
     static String getModelPackageName(MappingConfig mappingConfig) {
-        if (!Utils.isBlank(mappingConfig.getModelPackageName())) {
+        if (Utils.isNotBlank(mappingConfig.getModelPackageName())) {
             return mappingConfig.getModelPackageName();
         } else {
             return mappingConfig.getPackageName();
@@ -105,11 +108,11 @@ class MapperUtils {
     static Set<String> getImports(MappingConfig mappingConfig, String packageName) {
         Set<String> imports = new HashSet<>();
         String modelPackageName = mappingConfig.getModelPackageName();
-        if (!Utils.isBlank(modelPackageName) && !modelPackageName.equals(packageName)) {
+        if (Utils.isNotBlank(modelPackageName) && !modelPackageName.equals(packageName)) {
             imports.add(modelPackageName);
         }
         String genericPackageName = mappingConfig.getPackageName();
-        if (!Utils.isBlank(genericPackageName) && !genericPackageName.equals(packageName)) {
+        if (Utils.isNotBlank(genericPackageName) && !genericPackageName.equals(packageName)) {
             imports.add(genericPackageName);
         }
         // not adding apiPackageName because it should not be imported in any other generated classes
@@ -127,5 +130,27 @@ class MapperUtils {
         boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi();
 
         return isAsyncApi && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
+    }
+
+    /**
+     * Builds a className suffix based on the input values.
+     * Examples:
+     * 1. fieldDefinition has some input values:
+     * "ids" => "ByIds"
+     * "category", "status" => "ByCategoryAndStatus"
+     *
+     * @param fieldDefinition field definition that has some InputValueDefinitions
+     * @return className suffix based on the input values
+     */
+    static String getClassNameSuffixWithInputValues(ExtendedFieldDefinition fieldDefinition) {
+        StringJoiner inputValueNamesJoiner = new StringJoiner("And");
+        fieldDefinition.getInputValueDefinitions().stream()
+                .map(InputValueDefinition::getName).map(Utils::capitalize)
+                .forEach(inputValueNamesJoiner::add);
+        String inputValueNames = inputValueNamesJoiner.toString();
+        if (inputValueNames.isEmpty()) {
+            return inputValueNames;
+        }
+        return "By" + inputValueNames;
     }
 }

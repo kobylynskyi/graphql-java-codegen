@@ -3,9 +3,10 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.FieldDefinition;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
@@ -23,15 +24,17 @@ public class FieldDefinitionToRequestDataModelMapper {
      * @param mappingConfig  Global mapping configuration
      * @param operationDef   GraphQL operation definition
      * @param objectTypeName Object type (e.g.: "Query", "Mutation" or "Subscription")
+     * @param fieldNames     Names of all fields inside the rootType. Used to detect duplicate
      * @return Freemarker data model of the GraphQL request
      */
     public static Map<String, Object> map(MappingConfig mappingConfig,
                                           ExtendedFieldDefinition operationDef,
-                                          String objectTypeName) {
+                                          String objectTypeName,
+                                          List<String> fieldNames) {
         Map<String, Object> dataModel = new HashMap<>();
         // Request classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
-        dataModel.put(CLASS_NAME, getClassName(operationDef.getName(), objectTypeName, mappingConfig.getRequestSuffix()));
+        dataModel.put(CLASS_NAME, getClassName(operationDef, fieldNames, objectTypeName, mappingConfig.getRequestSuffix()));
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(OPERATION_TYPE, objectTypeName.toUpperCase());
@@ -45,14 +48,23 @@ public class FieldDefinitionToRequestDataModelMapper {
 
     /**
      * Examples:
+     * - EventsByIdsQueryRequest
      * - EventsByCategoryQueryRequest
      * - CreateEventMutationRequest
      */
-    private static String getClassName(String operationDefName, String objectType, String requestSuffix) {
-        if (Utils.isBlank(requestSuffix)) {
-            return Utils.capitalize(operationDefName) + objectType;
-        } else {
-            return Utils.capitalize(operationDefName) + objectType + requestSuffix;
+    private static String getClassName(ExtendedFieldDefinition operationDef,
+                                       List<String> fieldNames,
+                                       String objectType,
+                                       String requestSuffix) {
+        StringBuilder classNameBuilder = new StringBuilder();
+        classNameBuilder.append(Utils.capitalize(operationDef.getName()));
+        if (Collections.frequency(fieldNames, operationDef.getName()) > 1) {
+            classNameBuilder.append(MapperUtils.getClassNameSuffixWithInputValues(operationDef));
         }
+        classNameBuilder.append(objectType);
+        if (Utils.isNotBlank(requestSuffix)) {
+            classNameBuilder.append(requestSuffix);
+        }
+        return classNameBuilder.toString();
     }
 }

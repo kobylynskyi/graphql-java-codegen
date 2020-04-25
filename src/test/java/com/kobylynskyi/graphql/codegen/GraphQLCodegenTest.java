@@ -424,6 +424,23 @@ class GraphQLCodegenTest {
         }
     }
 
+    @Test
+    void generate_QueriesWithSameName() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/ProductsByCategoryIdAndStatusQuery.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("ProductsByCategoryIdAndStatusQuery.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/ProductsByIdsQuery.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("ProductsByIdsQuery.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
+    }
+
     private void assertFileContainsElements(File[] files, String fileName, String... elements)
             throws IOException {
         File file = getFile(files, fileName);

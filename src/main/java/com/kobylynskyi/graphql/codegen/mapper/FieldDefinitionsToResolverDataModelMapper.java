@@ -3,9 +3,10 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
 import graphql.language.TypeName;
 
 import java.util.*;
@@ -43,13 +44,20 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param mappingConfig   Global mapping configuration
      * @param fieldDefinition GraphQL field definition
      * @param rootTypeName    Object type (e.g.: "Query", "Mutation" or "Subscription")
+     * @param fieldNames      Names of all fields inside the rootType. Used to detect duplicate
      * @return Freemarker data model of the GraphQL field
      */
     public static Map<String, Object> mapRootTypeField(MappingConfig mappingConfig,
                                                        ExtendedFieldDefinition fieldDefinition,
-                                                       String rootTypeName) {
-        // Examples: VersionQuery, CreateEventMutation (rootTypeName is "Query" or the likes)
-        String className = Utils.capitalize(fieldDefinition.getName()) + rootTypeName;
+                                                       String rootTypeName,
+                                                       List<String> fieldNames) {
+        String fieldDefinitionName = fieldDefinition.getName();
+        if (Collections.frequency(fieldNames, fieldDefinitionName) > 1) {
+            // Examples: EventsByIdsQuery, EventsByCategoryAndStatusQuery
+            fieldDefinitionName += MapperUtils.getClassNameSuffixWithInputValues(fieldDefinition);
+        }
+        // Examples: CreateEventMutation, EventsQuery, EventsByIdsQuery (rootTypeName is "Query" or the likes)
+        String className = Utils.capitalize(fieldDefinitionName) + rootTypeName;
         List<ExtendedFieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
         return mapToResolverModel(mappingConfig, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc());
     }
@@ -83,6 +91,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         dataModel.put(IMPORTS, imports);
         dataModel.put(CLASS_NAME, className);
         dataModel.put(OPERATIONS, operations);
+        dataModel.put(JAVA_DOC, javaDoc);
         return dataModel;
     }
 
