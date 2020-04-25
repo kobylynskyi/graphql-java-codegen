@@ -1,7 +1,6 @@
 plugins {
     id "java"
     id "idea"
-    id "maven"
     id "jacoco"
     id "java-library"
     id "signing"
@@ -26,7 +25,7 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.1"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.1"
-    testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+    testImplementation 'org.hamcrest:java-hamcrest:2.0.0.0'
 }
 
 test.useJUnitPlatform()
@@ -46,30 +45,26 @@ task codeCoverageReport(type: JacocoReport) {
 
 codeCoverageReport.dependsOn test
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier = "sources"
-}
 
-task javadocJar(type: Jar) {
-    from javadoc
-    archiveClassifier = "javadoc"
-}
 
-artifacts {
-    archives jar
-    archives sourcesJar
-    archives javadocJar
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "my-library"
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
             artifactId "graphql-java-codegen"
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
 
             pom {
                 name = "GraphQL Java CodeGen"
