@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.graphql.codegen
 
-import com.kobylynskyi.graphql.codegen.GraphqlCodegen // renamed to GraphQLCodegen in master
+import com.kobylynskyi.graphql.codegen.GraphQLCodegen
 import com.kobylynskyi.graphql.codegen.model.MappingConfig
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder
@@ -25,7 +25,6 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
     lazy val baseGraphQLSettings: Seq[Def.Setting[_]] = Seq(
       graphql := {
         Codegen(
-          sources.value,
           (sourceManaged in graphql).value,
           (graphqlSchemaPaths in graphql).value,
           sourceDirectory.value / "resources",
@@ -59,7 +58,6 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
 
 object Codegen {
   def apply(
-      sources: Seq[File],
       outputDir: File,
       graphqlSchemaPaths: Seq[String],
       schemasRootDir: File,
@@ -75,10 +73,9 @@ object Codegen {
     mappingConfig.setModelPackageName(graphqlModelPackageName);
 
     val mappingConfigSupplier = null;
-    new GraphqlCodegen(getSchemas(graphqlSchemaPaths, schemasRootDir), outputDir, mappingConfig, mappingConfigSupplier).generate();
+    val generatedSources = new GraphQLCodegen(getSchemas(graphqlSchemaPaths, schemasRootDir), outputDir, mappingConfig, mappingConfigSupplier).generate();
 
-    // TODO: return generated sources
-    sources
+    JavaConverters.collectionAsScalaIterableConverter(generatedSources).asScala.toSeq
   }
 
   private def getSchemas(graphqlSchemaPaths: Seq[String], schemasRootDir: File): java.util.List[String] = {
