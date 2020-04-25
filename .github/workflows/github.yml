@@ -85,4 +85,3 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-          yml: .codecov.yml
