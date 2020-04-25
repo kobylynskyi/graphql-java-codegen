@@ -49,3 +49,12 @@ Please follow the steps below in order to make the changes:
    ```
 
 7. Make sure that `example` projects are compiling and running.
+
+### For the sbt plugin
+
+1. Publish the core library locally with `./gradlew publishIvyPublicationToIvyRepository`
+2. Publish the sbt plugin locally
+   ```shell script
+   cd plugins/sbt
+   sbt publishLocal
+   ```
