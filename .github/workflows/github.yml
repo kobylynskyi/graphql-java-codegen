@@ -20,11 +20,15 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.gradle
+          key: gradle
+          restore-keys: gradle
 
       - name: Maven Cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
+          key: m2
+          restore-keys: m2
 
 
       - name: Build library
@@ -68,11 +72,15 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.gradle
+          key: gradle
+          restore-keys: gradle
 
       - name: Maven Cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
+          key: m2
+          restore-keys: m2
 
       - name: Generate code coverage report
         run: ./gradlew codeCoverageReport
