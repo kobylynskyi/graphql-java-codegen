@@ -21,33 +21,31 @@ jobs:
         with:
           path: ~/.gradle
           key: gradle
-          restore-keys: gradle
 
       - name: Maven Cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: m2
-          restore-keys: m2
 
 
       - name: Build library
         run: ./gradlew build publishToMavenLocal
 
-
       - name: Build gradle plugin
         run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal
+
+      - name: Build maven plugin
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn install
+
+
 
       - name: Build gradle example-server
         run: ./gradlew -p plugins/gradle/example-server test
 
       - name: Build gradle example-client
         run: ./gradlew -p plugins/gradle/example-client test
-
-
-      - name: Build maven plugin
-        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
-        run: mvn install
 
       - name: Build maven example-server
         working-directory: plugins/maven/example-server
@@ -73,14 +71,12 @@ jobs:
         with:
           path: ~/.gradle
           key: gradle
-          restore-keys: gradle
 
       - name: Maven Cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: m2
-          restore-keys: m2
 
       - name: Generate code coverage report
         run: ./gradlew codeCoverageReport

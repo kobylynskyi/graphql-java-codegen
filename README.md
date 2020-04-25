@@ -1,6 +1,6 @@
 # GraphQL Codegen #
 
-[![CircleCI](https://img.shields.io/circleci/build/github/kobylynskyi/graphql-java-codegen)](https://circleci.com/gh/kobylynskyi/graphql-java-codegen/tree/master)
+![Build](https://github.com/kobylynskyi/graphql-java-codegen/workflows/Build/badge.svg)
 [![Codecov](https://img.shields.io/codecov/c/github/kobylynskyi/graphql-java-codegen)](https://codecov.io/gh/kobylynskyi/graphql-java-codegen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

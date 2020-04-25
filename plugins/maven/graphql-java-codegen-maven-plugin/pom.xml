@@ -51,8 +51,8 @@
     </distributionManagement>
 
     <ciManagement>
-        <system>CircleCI</system>
-        <url>https://app.circleci.com/pipelines/github/kobylynskyi/graphql-java-codegen</url>
+        <system>GitHub Actions</system>
+        <url>https://github.com/kobylynskyi/graphql-java-codegen/actions</url>
     </ciManagement>
 
     <properties>
