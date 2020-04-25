@@ -31,6 +31,9 @@ public class ${className} implements GraphQLOperationRequest {
 </#list>
      */
 </#if>
+<#if field.deprecated>
+    @Deprecated
+</#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.input.put("${field.name}", ${field.name});
     }
@@ -95,6 +98,9 @@ public class ${className} implements GraphQLOperationRequest {
          * ${javaDocLine}
 </#list>
          */
+</#if>
+<#if field.deprecated>
+        @Deprecated
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};

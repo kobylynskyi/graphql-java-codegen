@@ -16,6 +16,9 @@ import ${import}.*;
 public class ${className} <#if implements?has_content>implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
 <#list fields as field>
+<#if field.deprecated>
+    @Deprecated
+</#if>
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
@@ -41,6 +44,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 </#list>
      */
 </#if>
+<#if field.deprecated>
+    @Deprecated
+</#if>
     public ${field.type} get${field.name?cap_first}() {
         return ${field.name};
     }
@@ -50,6 +56,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
      * ${javaDocLine}
 </#list>
      */
+</#if>
+<#if field.deprecated>
+    @Deprecated
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
@@ -120,6 +129,9 @@ public class ${className} <#if implements?has_content>implements <#list implemen
          * ${javaDocLine}
 </#list>
          */
+</#if>
+<#if field.deprecated>
+        @Deprecated
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};

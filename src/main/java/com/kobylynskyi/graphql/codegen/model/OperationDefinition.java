@@ -18,5 +18,6 @@ public class OperationDefinition {
     private List<String> annotations = new ArrayList<>();
     private List<ParameterDefinition> parameters = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
+    private boolean deprecated;
 
 }

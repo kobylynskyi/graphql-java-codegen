@@ -5,7 +5,6 @@ import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.FieldDefinition;
 
 import java.util.List;
 import java.util.Set;
@@ -42,15 +41,14 @@ public class FieldDefinitionToParameterMapper {
      *
      * @param mappingConfig    Global mapping configuration
      * @param fieldDefinitions List of GraphQL field definitions
-     * @param parentTypeName   Name of the parent GraphQL type
      * @param typeNames        Names of all GraphQL types
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ProjectionParameterDefinition> mapProjectionFields(MappingConfig mappingConfig,
                                                                           List<ExtendedFieldDefinition> fieldDefinitions,
-                                                                          String parentTypeName, Set<String> typeNames) {
+                                                                          Set<String> typeNames) {
         return fieldDefinitions.stream()
-                .map(fieldDef -> mapProjectionField(mappingConfig, fieldDef, parentTypeName, typeNames))
+                .map(fieldDef -> mapProjectionField(mappingConfig, fieldDef, typeNames))
                 .collect(toList());
     }
 
@@ -69,6 +67,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setType(getJavaType(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName));
         parameter.setAnnotations(getAnnotations(mappingConfig, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
+        parameter.setDeprecated(fieldDef.isDeprecated());
         return parameter;
     }
 
@@ -77,17 +76,19 @@ public class FieldDefinitionToParameterMapper {
      *
      * @param mappingConfig  Global mapping configuration
      * @param fieldDef       GraphQL field definition
-     * @param parentTypeName Name of the parent type
      * @param typeNames      Names of all GraphQL types
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ProjectionParameterDefinition mapProjectionField(MappingConfig mappingConfig, FieldDefinition fieldDef, String parentTypeName, Set<String> typeNames) {
+    private static ProjectionParameterDefinition mapProjectionField(MappingConfig mappingConfig,
+                                                                    ExtendedFieldDefinition fieldDef,
+                                                                    Set<String> typeNames) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         String nestedType = getNestedTypeName(fieldDef.getType());
         if (typeNames.contains(nestedType)) {
             parameter.setType(nestedType + mappingConfig.getResponseProjectionSuffix());
         }
+        parameter.setDeprecated(fieldDef.isDeprecated());
         return parameter;
     }
 

@@ -2,6 +2,7 @@ import java.util.*;
 
 public interface Node {
 
+    @javax.validation.constraints.NotNull
     String getId();
 
 }

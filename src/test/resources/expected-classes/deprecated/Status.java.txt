@@ -1,0 +1,9 @@
+package com.kobylynskyi.graphql.test1;
+
+public enum Status {
+
+    @Deprecated
+    CREATED,
+    IN_PROGRESS
+
+}

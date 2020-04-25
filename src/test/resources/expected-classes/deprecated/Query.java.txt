@@ -1,0 +1,11 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public interface Query {
+
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    Collection<Event> events() throws Exception;
+
+}

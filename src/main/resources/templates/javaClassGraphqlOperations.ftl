@@ -23,6 +23,9 @@ public interface ${className} {
 </#list>
      */
 </#if>
+<#if operation.deprecated>
+    @Deprecated
+</#if>
 <#list operation.annotations as annotation>
     @${annotation}
 </#list>

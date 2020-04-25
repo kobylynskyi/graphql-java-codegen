@@ -1,0 +1,88 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class Event implements PinnableItem, Node{
+
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    private Status status;
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    private String createdDateTime;
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    private String id;
+
+    public Event() {
+    }
+
+    public Event(Status status, String createdDateTime, String id) {
+        this.status = status;
+        this.createdDateTime = createdDateTime;
+        this.id = id;
+    }
+
+    @Deprecated
+    public Status getStatus() {
+        return status;
+    }
+    @Deprecated
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Deprecated
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+    @Deprecated
+    public void setCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    @Deprecated
+    public String getId() {
+        return id;
+    }
+    @Deprecated
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+    public static class Builder {
+
+        private Status status;
+        private String createdDateTime;
+        private String id;
+
+        public Builder() {
+        }
+
+        @Deprecated
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        @Deprecated
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        @Deprecated
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(status, createdDateTime, id);
+        }
+
+    }
+}

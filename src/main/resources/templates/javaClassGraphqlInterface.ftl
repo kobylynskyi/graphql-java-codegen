@@ -23,6 +23,12 @@ public interface ${className} <#if implements?has_content>implements <#list impl
 </#list>
      */
 </#if>
+<#if field.deprecated>
+    @Deprecated
+</#if>
+<#list field.annotations as annotation>
+    @${annotation}
+</#list>
     ${field.type} get${field.name?cap_first}();
 
 </#list>

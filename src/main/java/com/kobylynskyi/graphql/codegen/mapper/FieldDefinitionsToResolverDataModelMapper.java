@@ -6,7 +6,6 @@ import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.FieldDefinition;
 import graphql.language.TypeName;
 
 import java.util.*;
@@ -119,15 +118,16 @@ public class FieldDefinitionsToResolverDataModelMapper {
         OperationDefinition operation = new OperationDefinition();
         operation.setName(resolvedField.getName());
         operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingConfig, javaType, parentTypeName));
-        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(
-                mappingConfig, resolvedField.getType(), resolvedField.getName(), parentTypeName));
+        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingConfig,
+                resolvedField.getType(), resolvedField.getName(), parentTypeName, false));
         operation.setParameters(getOperationParameters(mappingConfig, resolvedField, parentTypeName));
         operation.setJavaDoc(resolvedField.getJavaDoc());
+        operation.setDeprecated(resolvedField.isDeprecated());
         return operation;
     }
 
     private static List<ParameterDefinition> getOperationParameters(MappingConfig mappingConfig,
-                                                                    FieldDefinition resolvedField,
+                                                                    ExtendedFieldDefinition resolvedField,
                                                                     String parentTypeName) {
         List<ParameterDefinition> parameters = new ArrayList<>();
 
@@ -135,7 +135,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingConfig, new TypeName(parentTypeName));
             String parentObjectParamName = MapperUtils.capitalizeIfRestricted(Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, null, emptyList(), emptyList()));
+            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated()));
         }
 
         // 2. Next parameters are input values
