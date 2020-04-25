@@ -1,0 +1,37 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+
+type Query {
+    events: [Event!] @deprecated
+}
+
+
+type Mutation {
+    createEvent(input: EventInput! @Deprecated): Event! @deprecated
+}
+
+type Event implements Node {
+    status: Status! @deprecated
+    createdDateTime: DateTime! @deprecated
+}
+
+input EventInput {
+    status: Status! @deprecated
+}
+
+enum Status {
+    CREATED  @Deprecated
+    IN_PROGRESS
+}
+
+interface Node {
+    id: ID! @deprecated
+}
+
+union PinnableItem = Event
+
+scalar DateTime

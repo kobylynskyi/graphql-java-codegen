@@ -1,10 +1,11 @@
+package com.kobylynskyi.graphql.test1;
+
 import java.util.*;
 
 public interface Node {
 
+    @Deprecated
     @javax.validation.constraints.NotNull
     String getId();
-
-    String getCreatedBy();
 
 }

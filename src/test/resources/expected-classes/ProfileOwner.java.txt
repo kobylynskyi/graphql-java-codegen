@@ -4,26 +4,34 @@ import java.util.*;
 
 public interface ProfileOwner {
 
+    @javax.validation.constraints.NotNull
     Boolean getAnyPinnableItems();
 
     String getEmail();
 
+    @javax.validation.constraints.NotNull
     String getId();
 
+    @javax.validation.constraints.NotNull
     ProfileItemShowcase getItemShowcase();
 
     String getLocation();
 
+    @javax.validation.constraints.NotNull
     String getLogin();
 
     String getName();
 
+    @javax.validation.constraints.NotNull
     PinnableItemConnection getPinnableItems();
 
+    @javax.validation.constraints.NotNull
     PinnableItemConnection getPinnedItems();
 
+    @javax.validation.constraints.NotNull
     Integer getPinnedItemsRemaining();
 
+    @javax.validation.constraints.NotNull
     Boolean getViewerCanChangePinnedItems();
 
     String getWebsiteUrl();

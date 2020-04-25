@@ -409,6 +409,23 @@ class GraphQLCodegenTest {
 
     }
 
+    @Test
+    void generate_deprecated() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/deprecated.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(Arrays.asList("CreateEventMutation.java", "Event.java", "EventInput.java", "EventsQuery.java",
+                "Mutation.java", "Node.java", "PinnableItem.java", "Query.java", "Status.java"), generatedFileNames);
+
+        for (File file : files) {
+            TestUtils.assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/deprecated/%s.txt", file.getName())),
+                    file);
+        }
+    }
+
     private void assertFileContainsElements(File[] files, String fileName, String... elements)
             throws IOException {
         File file = getFile(files, fileName);

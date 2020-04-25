@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
 import graphql.language.Comment;
+import graphql.language.Directive;
 import graphql.language.FieldDefinition;
 import lombok.Getter;
 
@@ -20,6 +21,12 @@ public class ExtendedFieldDefinition extends FieldDefinition {
                 f.getDescription(), f.getSourceLocation(), f.getComments(), f.getIgnoredChars(),
                 f.getAdditionalData());
         this.fromExtension = fromExtension;
+    }
+
+    public boolean isDeprecated() {
+        return getDirectives().stream()
+                .map(Directive::getName)
+                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
     public List<String> getJavaDoc() {

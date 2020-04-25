@@ -28,6 +28,9 @@ public class ${className} implements GraphQLResponseProjection {
 </#list>
      */
 </#if>
+<#if field.deprecated>
+    @Deprecated
+</#if>
     public ${className} ${field.name}(<#if field.type?has_content>${field.type} subProjection</#if>) {
         fields.put("${field.name}", <#if field.type?has_content>subProjection<#else>null</#if>);
         return this;

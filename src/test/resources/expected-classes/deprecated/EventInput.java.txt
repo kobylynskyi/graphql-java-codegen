@@ -1,0 +1,48 @@
+package com.kobylynskyi.graphql.test1;
+
+import java.util.*;
+
+public class EventInput {
+
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    private Status status;
+
+    public EventInput() {
+    }
+
+    public EventInput(Status status) {
+        this.status = status;
+    }
+
+    @Deprecated
+    public Status getStatus() {
+        return status;
+    }
+    @Deprecated
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+
+
+    public static class Builder {
+
+        private Status status;
+
+        public Builder() {
+        }
+
+        @Deprecated
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+
+        public EventInput build() {
+            return new EventInput(status);
+        }
+
+    }
+}

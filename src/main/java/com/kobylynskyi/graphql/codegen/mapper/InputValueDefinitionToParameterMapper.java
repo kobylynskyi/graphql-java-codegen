@@ -2,6 +2,8 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
 import graphql.language.InputValueDefinition;
 
 import java.util.List;
@@ -44,8 +46,15 @@ public class InputValueDefinitionToParameterMapper {
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
         parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
         parameter.setDefaultValue(DefaultValueMapper.map(inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName));
+        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));
+        parameter.setDeprecated(isDeprecated(inputValueDefinition));
         return parameter;
+    }
+
+    private static boolean isDeprecated(DirectivesContainer<?> node) {
+        return node.getDirectives().stream()
+                .map(Directive::getName)
+                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
 }

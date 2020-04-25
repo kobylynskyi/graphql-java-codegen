@@ -116,11 +116,10 @@ public class TypeDefinitionToDataModelMapper {
                                                                           Set<String> typeNames) {
         // this includes parameters from base definition and extensions
         List<ProjectionParameterDefinition> typeParameters = FieldDefinitionToParameterMapper.mapProjectionFields(
-                mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName(), typeNames);
+                mappingConfig, typeDefinition.getFieldDefinitions(), typeNames);
         List<ProjectionParameterDefinition> typeParametersFromInterfaces = getInterfacesOfType(typeDefinition, document)
                 .stream()
-                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(
-                        mappingConfig, i.getFieldDefinitions(), i.getName(), typeNames))
+                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig, i.getFieldDefinitions(), typeNames))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 

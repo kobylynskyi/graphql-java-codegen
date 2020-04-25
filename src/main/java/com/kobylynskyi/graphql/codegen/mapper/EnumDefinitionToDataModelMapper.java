@@ -4,6 +4,8 @@ import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import graphql.language.Comment;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,8 +48,15 @@ public class EnumDefinitionToDataModelMapper {
         return enumValueDefinitions.stream()
                 .map(f -> new EnumValueDefinition(
                         MapperUtils.capitalizeIfRestricted(f.getName()),
-                        getJavaDoc(f.getComments())))
+                        getJavaDoc(f.getComments()),
+                        isDeprecated(f)))
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isDeprecated(DirectivesContainer<?> directivesContainer) {
+        return directivesContainer.getDirectives().stream()
+                .map(Directive::getName)
+                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
     private static List<String> getJavaDoc(List<Comment> comments) {

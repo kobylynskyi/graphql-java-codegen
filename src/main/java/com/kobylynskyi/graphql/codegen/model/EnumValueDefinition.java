@@ -19,4 +19,6 @@ public class EnumValueDefinition {
 
     private String value;
     private List<String> javaDoc = new ArrayList<>();
+    private boolean deprecated;
+
 }

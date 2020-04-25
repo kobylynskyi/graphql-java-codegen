@@ -9,6 +9,7 @@ import graphql.language.Type;
 import graphql.language.TypeName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -99,16 +100,13 @@ class GraphqlTypeToJavaTypeMapper {
      * Get annotations for a given GraphQL type
      *
      * @param mappingConfig  Global mapping configuration
-     * @param graphlType     GraphQL type
+     * @param type           GraphQL type
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
+     * @param mandatory      Type is mandatory
      * @return list of Java annotations for a given GraphQL type
      */
-    static List<String> getAnnotations(MappingConfig mappingConfig, Type graphlType, String name, String parentTypeName) {
-        return getAnnotations(mappingConfig, graphlType, name, parentTypeName, false);
-    }
-
-    static List<String> getAnnotations(MappingConfig mappingConfig, Type type, String name, String parentTypeName,
+    static List<String> getAnnotations(MappingConfig mappingConfig, Type<?> type, String name, String parentTypeName,
                                        boolean mandatory) {
         if (type instanceof TypeName) {
             return getAnnotations(mappingConfig, ((TypeName) type).getName(), name, parentTypeName, mandatory);
@@ -117,7 +115,7 @@ class GraphqlTypeToJavaTypeMapper {
         } else if (type instanceof NonNullType) {
             return getAnnotations(mappingConfig, ((NonNullType) type).getType(), name, parentTypeName, true);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private static List<String> getAnnotations(MappingConfig mappingConfig, String graphlType, String name, String parentTypeName, boolean mandatory) {

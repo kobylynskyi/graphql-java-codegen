@@ -19,6 +19,9 @@ public enum ${className} {
 </#list>
      */
 </#if>
+<#if field.deprecated>
+    @Deprecated
+</#if>
     ${field.value}<#if field_has_next>,</#if>
 </#list>
 
