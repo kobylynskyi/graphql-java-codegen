@@ -1,0 +1,11 @@
+server:
+  port: 8082
+
+external:
+  service:
+    product:
+      url: http://localhost:8081/graphql
+
+graphql:
+  tools:
+    schemaLocationPattern: '**/schema.graphqls'

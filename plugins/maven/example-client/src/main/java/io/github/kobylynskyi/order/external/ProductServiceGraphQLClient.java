@@ -51,7 +51,6 @@ public class ProductServiceGraphQLClient {
                 httpEntity(request),
                 new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {})
                 .getBody();
-        assert result != null;
         if (result.hasErrors()) {
             throw new UnableToRetrieveProductException(productId, result.getErrors().get(0).getMessage());
         }
@@ -72,7 +71,6 @@ public class ProductServiceGraphQLClient {
                 httpEntity(request),
                 new ParameterizedTypeReference<GraphQLResult<Map<String, List<ProductTO>>>>() {})
                 .getBody();
-        assert result != null;
         if (result.hasErrors()) {
             throw new UnableToRetrieveProductsException(productIds, result.getErrors().get(0).getMessage());
         }
@@ -99,7 +97,6 @@ public class ProductServiceGraphQLClient {
                 httpEntity(request),
                 new ParameterizedTypeReference<GraphQLResult<Map<String, ProductTO>>>() {})
                 .getBody();
-        assert result != null;
         if (result.hasErrors()) {
             throw new UnableToCreateProductException(result.getErrors().get(0).getMessage());
         }
@@ -109,8 +106,8 @@ public class ProductServiceGraphQLClient {
 
     private static HttpEntity<String> httpEntity(Object request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(request.toString(), headers);
     }
 }

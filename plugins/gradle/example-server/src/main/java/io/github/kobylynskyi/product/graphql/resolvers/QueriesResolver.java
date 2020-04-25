@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.product.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import io.github.kobylynskyi.product.graphql.api.Query;
 import io.github.kobylynskyi.product.graphql.mappers.ProductMapper;
 import io.github.kobylynskyi.product.graphql.model.ProductTO;
