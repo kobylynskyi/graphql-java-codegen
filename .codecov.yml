@@ -1,0 +1,13 @@
+coverage:
+  precision: 1
+  round: up
+  range: "75...100"
+  notify:
+    require_ci_to_pass: yes
+  status:
+    project: yes
+    patch: yes
+    changes: yes
+comment:
+  layout: "header, changes"
+  behavior: default
