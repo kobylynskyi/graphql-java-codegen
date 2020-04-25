@@ -3,7 +3,7 @@ sbtPlugin := true
 name := "sbt-graphql-java-codegen"
 organization := "io.github.kobylynskyi"
 
-libraryDependencies += "io.github.kobylynskyi" % "graphql-java-codegen" % "1.6.0"
+libraryDependencies += "io.github.kobylynskyi" % "graphql-java-codegen" % "1.6.1-SNAPSHOT"
 
 enablePlugins(SbtPlugin)
 scriptedLaunchOpts := { scriptedLaunchOpts.value ++
