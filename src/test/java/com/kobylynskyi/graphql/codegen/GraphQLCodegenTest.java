@@ -45,6 +45,15 @@ class GraphQLCodegenTest {
     }
 
     @Test
+    void generate_CheckFileReferences() throws Exception {
+        List<File> generatedFiles = generator.generate();
+        List<File> filesInTheFolder = Arrays.asList(Objects.requireNonNull(outputJavaClassesDir.listFiles()));
+        assertEquals(generatedFiles.size(), filesInTheFolder.size());
+        assertTrue(generatedFiles.containsAll(filesInTheFolder));
+        assertTrue(filesInTheFolder.containsAll(generatedFiles));
+    }
+
+    @Test
     void generate_CheckFiles() throws Exception {
         generator.generate();
 

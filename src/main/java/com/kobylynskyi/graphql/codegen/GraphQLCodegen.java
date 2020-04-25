@@ -10,10 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -89,91 +86,117 @@ public class GraphQLCodegen {
         }
     }
 
-
-    public void generate() throws Exception {
+    public List<File> generate() throws Exception {
         GraphQLCodegenFileCreator.prepareOutputDir(outputDir);
         long startTime = System.currentTimeMillis();
+        List<File> generatedFiles = Collections.emptyList();
         if (!schemas.isEmpty()) {
             ExtendedDocument document = GraphQLDocumentParser.getDocument(schemas);
             initCustomTypeMappings(document.getScalarDefinitions());
-            processDefinitions(document);
+            generatedFiles = processDefinitions(document);
         }
         long elapsed = System.currentTimeMillis() - startTime;
         System.out.println(String.format("Finished processing %d schema(s) in %d ms", schemas.size(), elapsed));
+        return generatedFiles;
     }
 
-    private void processDefinitions(ExtendedDocument document) {
+    private List<File> processDefinitions(ExtendedDocument document) {
+        List<File> generatedFiles = new ArrayList<>();
         Set<String> typeNames = document.getTypeNames();
-        document.getTypeDefinitions().forEach(definition -> generateType(definition, document, typeNames));
-        document.getTypeDefinitions().forEach(definition -> generateFieldResolvers(definition.getFieldDefinitions(), definition.getName()));
-        document.getOperationDefinitions().forEach(this::generateOperation);
-        document.getInputDefinitions().forEach(this::generateInput);
-        document.getEnumDefinitions().forEach(this::generateEnum);
-        document.getUnionDefinitions().forEach(this::generateUnion);
-        document.getInterfaceDefinitions().forEach(this::generateInterface);
-        document.getInterfaceDefinitions().forEach(definition -> generateFieldResolvers(definition.getFieldDefinitions(), definition.getName()));
-
-        System.out.println(String.format("Generated definition classes in folder %s", outputDir.getAbsolutePath()));
+        for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
+            generatedFiles.addAll(generateType(extendedObjectTypeDefinition, document, typeNames));
+        }
+        for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
+            generateFieldResolver(extendedObjectTypeDefinition.getFieldDefinitions(), extendedObjectTypeDefinition.getName())
+                    .ifPresent(generatedFiles::add);
+        }
+        for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getOperationDefinitions()) {
+            generatedFiles.addAll(generateOperation(extendedObjectTypeDefinition));
+        }
+        for (ExtendedInputObjectTypeDefinition extendedInputObjectTypeDefinition : document.getInputDefinitions()) {
+            generatedFiles.add(generateInput(extendedInputObjectTypeDefinition));
+        }
+        for (ExtendedEnumTypeDefinition extendedEnumTypeDefinition : document.getEnumDefinitions()) {
+            generatedFiles.add(generateEnum(extendedEnumTypeDefinition));
+        }
+        for (ExtendedUnionTypeDefinition extendedUnionTypeDefinition : document.getUnionDefinitions()) {
+            generatedFiles.add(generateUnion(extendedUnionTypeDefinition));
+        }
+        for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : document.getInterfaceDefinitions()) {
+            generatedFiles.add(generateInterface(extendedInterfaceTypeDefinition));
+        }
+        for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
+            generateFieldResolver(definition.getFieldDefinitions(), definition.getName())
+                    .ifPresent(generatedFiles::add);
+        }
+        System.out.println(String.format("Generated %d definition classes in folder %s",
+                generatedFiles.size(), outputDir.getAbsolutePath()));
+        return generatedFiles;
     }
 
-    private void generateUnion(ExtendedUnionTypeDefinition definition) {
+    private File generateUnion(ExtendedUnionTypeDefinition definition) {
         Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir);
     }
 
-    private void generateInterface(ExtendedInterfaceTypeDefinition definition) {
+    private File generateInterface(ExtendedInterfaceTypeDefinition definition) {
         Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
     }
 
-    private void generateOperation(ExtendedObjectTypeDefinition definition) {
+    private List<File> generateOperation(ExtendedObjectTypeDefinition definition) {
+        List<File> generatedFiles = new ArrayList<>();
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
             for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
                 Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
-                GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
+                generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
             }
             // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
             Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingConfig, definition);
-            GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
         }
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             // generate request objects for graphql operations
             for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
                 Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName());
-                GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir);
+                generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir));
             }
         }
+        return generatedFiles;
     }
 
-    private void generateType(ExtendedObjectTypeDefinition definition, ExtendedDocument document, Set<String> typeNames) {
+    private List<File> generateType(ExtendedObjectTypeDefinition definition, ExtendedDocument document, Set<String> typeNames) {
+        List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingConfig, definition, document);
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             Map<String, Object> responseProjDataModel = TypeDefinitionToDataModelMapper.mapResponseProjection(mappingConfig, definition, document, typeNames);
-            GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
         }
+        return generatedFiles;
     }
 
-    private void generateFieldResolvers(List<ExtendedFieldDefinition> fieldDefinitions, String definitionName) {
+    private Optional<File> generateFieldResolver(List<ExtendedFieldDefinition> fieldDefinitions, String definitionName) {
         List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
                 .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingConfig, fieldDef, definitionName))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {
             Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingConfig, fieldDefsWithResolvers, definitionName);
-            GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
+            return Optional.of(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
         }
+        return Optional.empty();
     }
 
-    private void generateInput(ExtendedInputObjectTypeDefinition definition) {
+    private File generateInput(ExtendedInputObjectTypeDefinition definition) {
         Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir);
     }
 
-    private void generateEnum(ExtendedEnumTypeDefinition definition) {
+    private File generateEnum(ExtendedEnumTypeDefinition definition) {
         Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingConfig, definition);
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, outputDir);
     }
 
     private void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
