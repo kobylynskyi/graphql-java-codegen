@@ -1,16 +1,14 @@
-import java.util.*;
-
 public class EventInput {
 
     @javax.validation.constraints.NotNull
     private Status status;
     @javax.validation.constraints.NotNull
-    private Collection<AssetInput> assets;
+    private java.util.Collection<AssetInput> assets;
 
     public EventInput() {
     }
 
-    public EventInput(Status status, Collection<AssetInput> assets) {
+    public EventInput(Status status, java.util.Collection<AssetInput> assets) {
         this.status = status;
         this.assets = assets;
     }
@@ -22,10 +20,10 @@ public class EventInput {
         this.status = status;
     }
 
-    public Collection<AssetInput> getAssets() {
+    public java.util.Collection<AssetInput> getAssets() {
         return assets;
     }
-    public void setAssets(Collection<AssetInput> assets) {
+    public void setAssets(java.util.Collection<AssetInput> assets) {
         this.assets = assets;
     }
 
@@ -34,7 +32,7 @@ public class EventInput {
     public static class Builder {
 
         private Status status;
-        private Collection<AssetInput> assets;
+        private java.util.Collection<AssetInput> assets;
 
         public Builder() {
         }
@@ -44,7 +42,7 @@ public class EventInput {
             return this;
         }
 
-        public Builder setAssets(Collection<AssetInput> assets) {
+        public Builder setAssets(java.util.Collection<AssetInput> assets) {
             this.assets = assets;
             return this;
         }

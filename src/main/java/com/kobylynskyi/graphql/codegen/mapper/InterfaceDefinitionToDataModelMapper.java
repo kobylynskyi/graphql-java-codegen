@@ -25,15 +25,13 @@ public class InterfaceDefinitionToDataModelMapper {
      * @return Freemarker data model of the GraphQL interface
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedInterfaceTypeDefinition definition) {
-        String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        List<ExtendedFieldDefinition> fieldDefinitions = definition.getFieldDefinitions();
-
         Map<String, Object> dataModel = new HashMap<>();
-        dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
+        // type/enum/input/interface/union classes do not require any imports
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
-        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(mappingConfig, fieldDefinitions, definition.getName()));
+        dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(
+                mappingConfig, definition.getFieldDefinitions(), definition.getName()));
         return dataModel;
     }
 

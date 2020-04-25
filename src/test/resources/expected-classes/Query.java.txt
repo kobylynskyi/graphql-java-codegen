@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
 
 public interface Query {
 
@@ -14,7 +13,7 @@ public interface Query {
      * List of events of a specified category.
      */
     @javax.validation.constraints.NotNull
-    Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
+    java.util.Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
 
     /**
      * Single event by ID.
@@ -26,6 +25,6 @@ public interface Query {
      * Events by IDs.
      */
     @javax.validation.constraints.NotNull
-    Collection<Event> eventsByIds(Collection<String> ids) throws Exception;
+    java.util.Collection<Event> eventsByIds(java.util.Collection<String> ids) throws Exception;
 
 }

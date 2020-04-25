@@ -1,8 +1,6 @@
-import java.util.*;
-
 public interface EventsQuery {
 
     @javax.validation.constraints.NotNull
-    Collection<Event> events() throws Exception;
+    java.util.Collection<Event> events() throws Exception;
 
 }

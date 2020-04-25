@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Asset implements PinnableItem, Node{
 
     @javax.validation.constraints.NotNull

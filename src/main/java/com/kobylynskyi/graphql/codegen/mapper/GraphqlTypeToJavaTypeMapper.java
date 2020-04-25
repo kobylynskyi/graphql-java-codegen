@@ -142,7 +142,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return String wrapped into Collection<>
      */
     private static String wrapIntoJavaCollection(String type) {
-        return String.format("Collection<%s>", type);
+        return String.format("java.util.Collection<%s>", type);
     }
 
     /**
@@ -152,7 +152,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return String wrapped into CompletableFuture<>
      */
     private static String wrapIntoJavaCompletableFuture(String type) {
-        return String.format("CompletableFuture<%s>", type);
+        return String.format("java.util.concurrent.CompletableFuture<%s>", type);
     }
 
     /**

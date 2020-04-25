@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.multifiles;
 
-import java.util.*;
 
 public class UnionMember1 implements MyUnion{
 

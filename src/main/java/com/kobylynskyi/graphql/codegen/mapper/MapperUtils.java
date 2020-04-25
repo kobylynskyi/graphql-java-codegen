@@ -96,9 +96,7 @@ class MapperUtils {
     /**
      * Returns imports required for a generated class:
      * - model package name
-     * - api package name
      * - generic package name
-     * - java.util
      *
      * @param mappingConfig Global mapping configuration
      * @param packageName   Package name of the generated class which will be ignored
@@ -110,52 +108,11 @@ class MapperUtils {
         if (!Utils.isBlank(modelPackageName) && !modelPackageName.equals(packageName)) {
             imports.add(modelPackageName);
         }
-        String apiPackageName = mappingConfig.getApiPackageName();
-        if (!Utils.isBlank(apiPackageName) && !apiPackageName.equals(packageName) &&
-                apisOrResolversAreGenerated(mappingConfig)) {
-            imports.add(apiPackageName);
-        }
         String genericPackageName = mappingConfig.getPackageName();
         if (!Utils.isBlank(genericPackageName) && !genericPackageName.equals(packageName)) {
             imports.add(genericPackageName);
         }
-        imports.add("java.util");
-        return imports;
-    }
-
-    private static boolean apisOrResolversAreGenerated(MappingConfig mappingConfig) {
-        return mappingConfig.getGenerateApis() || !mappingConfig.getFieldsWithResolvers().isEmpty() ||
-                mappingConfig.getGenerateExtensionFieldsResolvers();
-    }
-
-    /**
-     * Returns imports required for the fields resolvers class
-     *
-     * @param mappingConfig Global mapping configuration
-     * @param packageName   Package name of the generated class which will be ignored
-     * @return all imports required for a generated class
-     */
-    static Set<String> getImportsForFieldResolvers(MappingConfig mappingConfig, String packageName, String objectTypeName) {
-        Set<String> imports = getImports(mappingConfig, packageName);
-        if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis()) {
-            imports.add("graphql.schema");
-        }
-        if (shouldUseAsyncMethods(mappingConfig, objectTypeName)) {
-            imports.add("java.util.concurrent");
-        }
-        return imports;
-    }
-
-    /**
-     * Returns imports required for the request class.
-     *
-     * @param mappingConfig Global mapping configuration
-     * @param packageName   Package name of the generated class which will be ignored
-     * @return all imports required for a generated request class
-     */
-    static Set<String> getImportsForRequests(MappingConfig mappingConfig, String packageName) {
-        Set<String> imports = getImports(mappingConfig, packageName);
-        imports.add(GraphQLOperation.class.getPackage().getName());
+        // not adding apiPackageName because it should not be imported in any other generated classes
         return imports;
     }
 

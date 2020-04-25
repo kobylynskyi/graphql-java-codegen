@@ -29,9 +29,8 @@ public class FieldDefinitionToRequestDataModelMapper {
                                           ExtendedFieldDefinition operationDef,
                                           String objectTypeName) {
         Map<String, Object> dataModel = new HashMap<>();
-        String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImportsForRequests(mappingConfig, packageName));
+        // Request classes are sharing the package with the model classes, so no imports are needed
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
         dataModel.put(CLASS_NAME, getClassName(operationDef.getName(), objectTypeName, mappingConfig.getRequestSuffix()));
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());

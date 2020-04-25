@@ -2,9 +2,20 @@
 package ${package};
 
 </#if>
+<#if imports??>
 <#list imports as import>
 import ${import}.*;
 </#list>
+</#if>
+<#if toStringEscapeJson>
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+</#if>
+<#if equalsAndHashCode>
+import java.util.Objects;
+</#if>
+<#if toString>
+import java.util.StringJoiner;
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -98,7 +109,7 @@ public class ${className} <#if implements?has_content>implements <#list implemen
         if (${field.name} != null) {
 <#if field.type == "String">
 <#if toStringEscapeJson>
-            joiner.add("${field.name}: \"" + com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer.escapeJsonString(${field.name}) + "\"");
+            joiner.add("${field.name}: \"" + GraphQLRequestSerializer.escapeJsonString(${field.name}) + "\"");
 <#else>
             joiner.add("${field.name}: \"" + ${field.name} + "\"");
 </#if>

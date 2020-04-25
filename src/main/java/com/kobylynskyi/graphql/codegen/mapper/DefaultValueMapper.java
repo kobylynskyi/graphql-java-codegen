@@ -77,11 +77,11 @@ public class DefaultValueMapper {
         }
         List<Value> values = defaultValue.getValues();
         if (values.isEmpty()) {
-            return "Collections.emptyList()";
+            return "java.util.Collections.emptyList()";
         }
         Type<?> elementType = ((ListType) graphQLType).getType();
         return values.stream()
                 .map(v -> map(v, elementType))
-                .collect(Collectors.joining(", ", "Arrays.asList(", ")"));
+                .collect(Collectors.joining(", ", "java.util.Arrays.asList(", ")"));
     }
 }

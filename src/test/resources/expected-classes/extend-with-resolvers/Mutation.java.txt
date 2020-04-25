@@ -1,5 +1,3 @@
-import java.util.*;
-
 public interface Mutation {
 
     @javax.validation.constraints.NotNull

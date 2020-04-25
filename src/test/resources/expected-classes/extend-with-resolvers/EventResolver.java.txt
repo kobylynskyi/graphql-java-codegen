@@ -1,11 +1,9 @@
-import java.util.*;
-
 public interface EventResolver {
 
     /**
      * Optional list of assets
      */
     @javax.validation.constraints.NotNull
-    Collection<Asset> assets(Event event) throws Exception;
+    java.util.Collection<Asset> assets(Event event) throws Exception;
 
 }

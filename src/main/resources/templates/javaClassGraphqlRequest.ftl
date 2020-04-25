@@ -2,9 +2,13 @@
 package ${package};
 
 </#if>
-<#list imports as import>
-import ${import}.*;
-</#list>
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
+<#if toString || equalsAndHashCode>
+import java.util.Objects;
+</#if>
 
 <#if javaDoc?has_content>
 /**

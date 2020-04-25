@@ -75,7 +75,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
                                                           List<ExtendedFieldDefinition> fieldDefinitions,
                                                           List<String> javaDoc) {
         String packageName = MapperUtils.getApiPackageName(mappingConfig);
-        Set<String> imports = MapperUtils.getImportsForFieldResolvers(mappingConfig, packageName, parentTypeName);
+        Set<String> imports = MapperUtils.getImports(mappingConfig, packageName);
         List<OperationDefinition> operations = mapToOperations(mappingConfig, fieldDefinitions, parentTypeName);
 
         Map<String, Object> dataModel = new HashMap<>();

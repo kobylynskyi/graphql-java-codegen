@@ -24,9 +24,8 @@ public class UnionDefinitionToDataModelMapper {
      */
     public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedUnionTypeDefinition definition) {
         Map<String, Object> dataModel = new HashMap<>();
-        String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
+        // type/enum/input/interface/union classes do not require any imports
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         return dataModel;

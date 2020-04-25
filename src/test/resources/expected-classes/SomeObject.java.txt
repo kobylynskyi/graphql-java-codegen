@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.testdefaults;
 
-import java.util.*;
 
 public class SomeObject {
 

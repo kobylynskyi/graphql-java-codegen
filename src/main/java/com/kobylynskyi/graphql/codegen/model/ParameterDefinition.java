@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import graphql.schema.DataFetchingEnvironment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import static java.util.Collections.emptyList;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-            "DataFetchingEnvironment", "env", null, emptyList(), emptyList(), false);
+            DataFetchingEnvironment.class.getName(), "env", null, emptyList(), emptyList(), false);
 
     private String type;
     private String name;

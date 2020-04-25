@@ -2,9 +2,11 @@
 package ${package};
 
 </#if>
+<#if imports??>
 <#list imports as import>
 import ${import}.*;
 </#list>
+</#if>
 
 <#if javaDoc?has_content>
 /**
