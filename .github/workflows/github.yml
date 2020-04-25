@@ -1,0 +1,66 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk-version: [1.8, 11, 13]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK ${{ matrix.jdk-version }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.jdk-version }}
+
+      - name: Gradle Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-gradle
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Maven Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2
+          restore-keys: ${{ runner.os }}-m2
+
+
+      - name: Build library
+        run: ./gradlew build publishToMavenLocal
+
+      - name: Generate code coverage report
+        run: ./gradlew codeCoverageReport
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: false
+
+
+      - name: Build gradle plugin
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal
+
+      - name: Build gradle example-server
+        run: ./gradlew -p plugins/gradle/example-server test
+
+      - name: Build gradle example-client
+        run: ./gradlew -p plugins/gradle/example-client test
+
+
+      - name: Build maven plugin
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn install
+
+      - name: Build maven example-server
+        working-directory: plugins/maven/example-server
+        run: mvn package
+
+      - name: Build maven example-client
+        working-directory: plugins/maven/example-client
+        run: mvn package
