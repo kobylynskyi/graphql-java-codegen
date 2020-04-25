@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Build and run unit tests
-          command: gradle build publishToMavenLocal
+          command: ./gradlew build publishToMavenLocal
       - save_cache:
           paths:
             - ~/.gradle
@@ -21,7 +21,7 @@ jobs:
           key: deps-{{ .Revision }}
       - run:
           name: Generate Code Coverage Report
-          command: gradle codeCoverageReport
+          command: ./gradlew codeCoverageReport
       - run:
           name: Publish Code Coverage Report
           command: bash <(curl -s https://codecov.io/bash)
@@ -38,12 +38,6 @@ jobs:
       - restore_cache:
           keys:
             - deps-{{ .Revision }}
-      - run:
-          name: Load all dependencies
-          command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn dependency:go-offline
-      - run:
-          name: Build library
-          command: cd ~/repo && gradle publishToMavenLocal -x test
       - run:
           name: Build plugin and run unit tests
           command: cd ~/repo/plugins/maven/graphql-java-codegen-maven-plugin && mvn install
@@ -68,20 +62,14 @@ jobs:
           keys:
             - deps-{{ .Revision }}
       - run:
-          name: Load all dependencies
-          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle dependencies
-      - run:
-          name: Build library
-          command: cd ~/repo && gradle publishToMavenLocal -x test
-      - run:
           name: Build plugin and run unit tests
-          command: cd ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin && gradle build publishToMavenLocal
+          command: ./gradlew -p ~/repo/plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal
       - run:
           name: Build example-server plugin project
-          command: cd ~/repo/plugins/gradle/example-server && gradle test
+          command: ./gradlew -p ~/repo/plugins/gradle/example-server test
       - run:
           name: Build example-client plugin project
-          command: cd ~/repo/plugins/gradle/example-client && gradle test
+          command: ./gradlew -p ~/repo/plugins/gradle/example-client test
 workflows:
   build-library-and-plugins:
     jobs:
