@@ -127,6 +127,7 @@ publishing {
         }
         ivy {
             url "${System.properties['user.home']}/.ivy2/local"
+            // use this layout pattern to work around https://github.com/gradle/gradle/issues/12911
             patternLayout {
                 artifact '[organisation]/[module]/[revision]/[ext]s/[artifact](-[classifier])(.[ext])'
                 ivy '[organisation]/[module]/[revision]/[artifact]/[artifact](-[classifier])(.[ext])'
