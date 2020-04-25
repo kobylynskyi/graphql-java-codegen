@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.product.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import io.github.kobylynskyi.product.graphql.api.Mutation;
 import io.github.kobylynskyi.product.graphql.model.ProductInputTO;
 import io.github.kobylynskyi.product.graphql.model.ProductTO;

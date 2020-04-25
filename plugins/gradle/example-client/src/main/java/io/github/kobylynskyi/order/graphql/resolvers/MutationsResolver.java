@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.order.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import io.github.kobylynskyi.order.graphql.api.Mutation;
 import io.github.kobylynskyi.order.graphql.mappers.OrderMapper;
 import io.github.kobylynskyi.order.graphql.model.OrderTO;
