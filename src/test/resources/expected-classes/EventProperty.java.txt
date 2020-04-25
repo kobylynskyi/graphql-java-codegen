@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
 
 /**
  * An event property have all possible types
@@ -11,13 +10,13 @@ public class EventProperty {
     private Boolean booleanVal;
     private Integer intVal;
     private String stringVal;
-    private Collection<EventProperty> child;
+    private java.util.Collection<EventProperty> child;
     private Event parent;
 
     public EventProperty() {
     }
 
-    public EventProperty(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventProperty> child, Event parent) {
+    public EventProperty(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.Collection<EventProperty> child, Event parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -71,13 +70,13 @@ public class EventProperty {
     /**
      * Properties
      */
-    public Collection<EventProperty> getChild() {
+    public java.util.Collection<EventProperty> getChild() {
         return child;
     }
     /**
      * Properties
      */
-    public void setChild(Collection<EventProperty> child) {
+    public void setChild(java.util.Collection<EventProperty> child) {
         this.child = child;
     }
 
@@ -102,7 +101,7 @@ public class EventProperty {
         private Boolean booleanVal;
         private Integer intVal;
         private String stringVal;
-        private Collection<EventProperty> child;
+        private java.util.Collection<EventProperty> child;
         private Event parent;
 
         public Builder() {
@@ -138,7 +137,7 @@ public class EventProperty {
         /**
          * Properties
          */
-        public Builder setChild(Collection<EventProperty> child) {
+        public Builder setChild(java.util.Collection<EventProperty> child) {
             this.child = child;
             return this;
         }

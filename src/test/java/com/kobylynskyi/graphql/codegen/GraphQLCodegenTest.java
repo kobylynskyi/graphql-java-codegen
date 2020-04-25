@@ -204,7 +204,7 @@ class GraphQLCodegenTest {
                 .filter(file -> file.getName().equalsIgnoreCase("EventsCreatedSubscription.java")).findFirst()
                 .orElseThrow(FileNotFoundException::new);
         assertThat(Utils.getFileContent(eventFile.getPath()), StringContains.containsString(
-                "org.reactivestreams.Publisher<Collection<Event>> eventsCreated() throws Exception;"));
+                "org.reactivestreams.Publisher<java.util.Collection<Event>> eventsCreated() throws Exception;"));
     }
 
     @Test
@@ -217,7 +217,7 @@ class GraphQLCodegenTest {
                 .orElseThrow(FileNotFoundException::new);
 
         assertThat(Utils.getFileContent(eventFile.getPath()), StringStartsWith.startsWith(
-                "import java.util.*;" + System.lineSeparator() + System.lineSeparator() +
+                System.lineSeparator() +
                         "/**" + System.lineSeparator() +
                         " * An event that describes a thing that happens" + System.lineSeparator() +
                         " */" + System.lineSeparator() +
@@ -384,16 +384,14 @@ class GraphQLCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        String importJavaUtilConcurrent = "import java.util.concurrent";
+        assertFileContainsElements(files, "VersionQuery.java",
+                "java.util.concurrent.CompletableFuture<String> version()");
 
-        assertFileContainsElements(files, "VersionQuery.java", importJavaUtilConcurrent,
-                "CompletableFuture<String> version()");
+        assertFileContainsElements(files, "EventsByCategoryAndStatusQuery.java",
+                "java.util.concurrent.CompletableFuture<java.util.Collection<Event>> eventsByCategoryAndStatus(");
 
-        assertFileContainsElements(files, "EventsByCategoryAndStatusQuery.java", importJavaUtilConcurrent,
-                "CompletableFuture<Collection<Event>> eventsByCategoryAndStatus(");
-
-        assertFileContainsElements(files, "EventByIdQuery.java", importJavaUtilConcurrent,
-                "CompletableFuture<Event> eventById(");
+        assertFileContainsElements(files, "EventByIdQuery.java",
+                "java.util.concurrent.CompletableFuture<Event> eventById(");
 
     }
 
@@ -405,7 +403,7 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertFileContainsElements(files, "CreateEventMutation.java",
-                "import java.util.concurrent", "CompletableFuture<Event> createEvent(");
+                "java.util.concurrent.CompletableFuture<Event> createEvent(");
 
     }
 

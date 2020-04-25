@@ -1,6 +1,5 @@
 package com.github.graphql;
 
-import java.util.*;
 
 public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO{
 

@@ -33,11 +33,9 @@ public class TypeDefinitionToDataModelMapper {
     public static Map<String, Object> map(MappingConfig mappingConfig,
                                           ExtendedObjectTypeDefinition definition,
                                           ExtendedDocument document) {
-        String packageName = MapperUtils.getModelPackageName(mappingConfig);
-
         Map<String, Object> dataModel = new HashMap<>();
-        dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImports(mappingConfig, packageName));
+        // type/enum/input/interface/union classes do not require any imports
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(IMPLEMENTS, getInterfaces(mappingConfig, definition, document));
@@ -63,9 +61,8 @@ public class TypeDefinitionToDataModelMapper {
                                                             ExtendedDocument document,
                                                             Set<String> typeNames) {
         Map<String, Object> dataModel = new HashMap<>();
-        String packageName = MapperUtils.getModelPackageName(mappingConfig);
-        dataModel.put(PACKAGE, packageName);
-        dataModel.put(IMPORTS, MapperUtils.getImportsForRequests(mappingConfig, packageName));
+        // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
         dataModel.put(CLASS_NAME, Utils.capitalize(typeDefinition.getName()) + mappingConfig.getResponseProjectionSuffix());
         dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + typeDefinition.getName()));
         dataModel.put(FIELDS, getProjectionFields(mappingConfig, typeDefinition, document, typeNames));

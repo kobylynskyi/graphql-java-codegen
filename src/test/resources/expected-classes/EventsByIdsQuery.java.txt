@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
 
 public interface EventsByIdsQuery {
 
@@ -8,6 +7,6 @@ public interface EventsByIdsQuery {
      * Events by IDs.
      */
     @javax.validation.constraints.NotNull
-    Collection<Event> eventsByIds(Collection<String> ids) throws Exception;
+    java.util.Collection<Event> eventsByIds(java.util.Collection<String> ids) throws Exception;
 
 }

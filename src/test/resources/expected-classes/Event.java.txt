@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
 
 /**
  * An event that describes a thing that happens
@@ -9,7 +8,7 @@ public class Event {
 
     private String id;
     private String categoryId;
-    private Collection<EventProperty> properties;
+    private java.util.Collection<EventProperty> properties;
     private EventStatus status;
     private String createdBy;
     private String createdDateTime;
@@ -19,7 +18,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String id, String categoryId, Collection<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
+    public Event(String id, String categoryId, java.util.Collection<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
         this.id = id;
         this.categoryId = categoryId;
         this.properties = properties;
@@ -44,10 +43,10 @@ public class Event {
         this.categoryId = categoryId;
     }
 
-    public Collection<EventProperty> getProperties() {
+    public java.util.Collection<EventProperty> getProperties() {
         return properties;
     }
-    public void setProperties(Collection<EventProperty> properties) {
+    public void setProperties(java.util.Collection<EventProperty> properties) {
         this.properties = properties;
     }
 
@@ -92,7 +91,7 @@ public class Event {
 
         private String id;
         private String categoryId;
-        private Collection<EventProperty> properties;
+        private java.util.Collection<EventProperty> properties;
         private EventStatus status;
         private String createdBy;
         private String createdDateTime;
@@ -112,7 +111,7 @@ public class Event {
             return this;
         }
 
-        public Builder setProperties(Collection<EventProperty> properties) {
+        public Builder setProperties(java.util.Collection<EventProperty> properties) {
             this.properties = properties;
             return this;
         }

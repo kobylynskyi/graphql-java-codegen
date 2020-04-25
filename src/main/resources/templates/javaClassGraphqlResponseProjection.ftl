@@ -2,9 +2,11 @@
 package ${package};
 
 </#if>
-<#list imports as import>
-import ${import}.*;
-</#list>
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 <#if javaDoc?has_content>
 /**

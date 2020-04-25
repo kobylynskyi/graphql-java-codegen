@@ -1,7 +1,10 @@
 package com.github.graphql;
 
-import java.util.*;
-import com.kobylynskyi.graphql.codegen.model.graphql.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Events by IDs.
@@ -16,7 +19,7 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     public EventsByIdsQueryRequest() {
     }
 
-    public void setIds(Collection<String> ids) {
+    public void setIds(java.util.Collection<String> ids) {
         this.input.put("ids", ids);
     }
 
@@ -42,12 +45,12 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
     public static class Builder {
 
-        private Collection<String> ids;
+        private java.util.Collection<String> ids;
 
         public Builder() {
         }
 
-        public Builder setIds(Collection<String> ids) {
+        public Builder setIds(java.util.Collection<String> ids) {
             this.ids = ids;
             return this;
         }

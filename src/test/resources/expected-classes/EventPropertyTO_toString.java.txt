@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
+import java.util.StringJoiner;
 
 /**
  * An event property have all possible types
@@ -11,13 +11,13 @@ public class EventPropertyTO {
     private Boolean booleanVal;
     private Integer intVal;
     private String stringVal;
-    private Collection<EventPropertyTO> child;
+    private java.util.Collection<EventPropertyTO> child;
     private EventTO parent;
 
     public EventPropertyTO() {
     }
 
-    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, Collection<EventPropertyTO> child, EventTO parent) {
+    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.Collection<EventPropertyTO> child, EventTO parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -71,13 +71,13 @@ public class EventPropertyTO {
     /**
      * Properties
      */
-    public Collection<EventPropertyTO> getChild() {
+    public java.util.Collection<EventPropertyTO> getChild() {
         return child;
     }
     /**
      * Properties
      */
-    public void setChild(Collection<EventPropertyTO> child) {
+    public void setChild(java.util.Collection<EventPropertyTO> child) {
         this.child = child;
     }
 
@@ -125,7 +125,7 @@ public class EventPropertyTO {
         private Boolean booleanVal;
         private Integer intVal;
         private String stringVal;
-        private Collection<EventPropertyTO> child;
+        private java.util.Collection<EventPropertyTO> child;
         private EventTO parent;
 
         public Builder() {
@@ -161,7 +161,7 @@ public class EventPropertyTO {
         /**
          * Properties
          */
-        public Builder setChild(Collection<EventPropertyTO> child) {
+        public Builder setChild(java.util.Collection<EventPropertyTO> child) {
             this.child = child;
             return this;
         }

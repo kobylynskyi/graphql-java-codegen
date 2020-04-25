@@ -1,8 +1,6 @@
-import java.util.*;
-
 public interface AssetsQuery {
 
     @javax.validation.constraints.NotNull
-    Collection<Asset> assets() throws Exception;
+    java.util.Collection<Asset> assets() throws Exception;
 
 }

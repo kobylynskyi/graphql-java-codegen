@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Event implements PinnableItem, Node{
 
     @javax.validation.constraints.NotNull
@@ -7,7 +5,7 @@ public class Event implements PinnableItem, Node{
     @javax.validation.constraints.NotNull
     private String createdDateTime;
     @javax.validation.constraints.NotNull
-    private Collection<Asset> assets;
+    private java.util.Collection<Asset> assets;
     @javax.validation.constraints.NotNull
     private String id;
     private String createdBy;
@@ -15,7 +13,7 @@ public class Event implements PinnableItem, Node{
     public Event() {
     }
 
-    public Event(Status status, String createdDateTime, Collection<Asset> assets, String id, String createdBy) {
+    public Event(Status status, String createdDateTime, java.util.Collection<Asset> assets, String id, String createdBy) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.assets = assets;
@@ -40,13 +38,13 @@ public class Event implements PinnableItem, Node{
     /**
      * Optional list of assets
      */
-    public Collection<Asset> getAssets() {
+    public java.util.Collection<Asset> getAssets() {
         return assets;
     }
     /**
      * Optional list of assets
      */
-    public void setAssets(Collection<Asset> assets) {
+    public void setAssets(java.util.Collection<Asset> assets) {
         this.assets = assets;
     }
 
@@ -70,7 +68,7 @@ public class Event implements PinnableItem, Node{
 
         private Status status;
         private String createdDateTime;
-        private Collection<Asset> assets;
+        private java.util.Collection<Asset> assets;
         private String id;
         private String createdBy;
 
@@ -90,7 +88,7 @@ public class Event implements PinnableItem, Node{
         /**
          * Optional list of assets
          */
-        public Builder setAssets(Collection<Asset> assets) {
+        public Builder setAssets(java.util.Collection<Asset> assets) {
             this.assets = assets;
             return this;
         }

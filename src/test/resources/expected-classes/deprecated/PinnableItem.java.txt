@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.test1;
 
-import java.util.*;
 
 public interface PinnableItem {
 
