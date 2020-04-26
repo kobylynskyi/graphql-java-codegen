@@ -4,9 +4,7 @@ name := "sbt-graphql-java-codegen"
 organization := "io.github.kobylynskyi"
 description := "Plugin for generating Java code based on GraphQL schema"
 
-version := "1.6.1-SNAPSHOT"
-
-libraryDependencies += "io.github.kobylynskyi" % "graphql-java-codegen" % "1.6.1-SNAPSHOT"
+libraryDependencies += "io.github.kobylynskyi" % "graphql-java-codegen" % version.value
 
 enablePlugins(SbtPlugin)
 scriptedLaunchOpts := { scriptedLaunchOpts.value ++
@@ -15,3 +13,5 @@ scriptedLaunchOpts := { scriptedLaunchOpts.value ++
 scriptedBufferLog := false
 
 licenses := Seq("MIT License" -> url("https://github.com/kobylynskyi/graphql-java-codegen/blob/master/LICENSE.md"))
+bintrayOrganization := None
+bintrayRepository := "sbt-plugins"
