@@ -1,0 +1,37 @@
+#
+# Schemas must have at least a query root type
+#
+schema {
+    query: Query
+}
+
+# This is the type that will be the root of our query, and the
+# entry point into our schema.
+type Query {
+    getPosts: [Post]
+
+    getUser(
+        id : ID!
+    ): User
+
+    getPost(
+        id: ID!
+    ): Post
+}
+
+type Post {
+    id: ID!
+    title: String!
+    # Content if provided by author
+    content: String
+    # The URL if this is external content
+    url: String
+    author: User
+}
+
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    posts: [Post]
+}
