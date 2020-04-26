@@ -1,3 +1,3 @@
 # check if the file gets created
 > compile
-$ exists target/scala-2.13/src_managed_graphql/io/kobylynski/graphql/test/model/User.java
+$ exists target/scala-2.13/src_managed_graphql/io/github/kobylynskyi/graphql/test/model/User.java

@@ -34,54 +34,37 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
     val graphqlRequestSuffix = settingKey[Option[String]]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
     val graphqlResponseProjectionSuffix = settingKey[Option[String]]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
 
-    // default values for the tasks and settings
     lazy val baseGraphQLSettings: Seq[Def.Setting[_]] = Seq(
       graphql := {
         Codegen(
           (sourceManaged in graphql).value,
-          (graphqlSchemaPaths in graphql).value,
+          graphqlSchemaPaths.value,
           sourceDirectory.value / "resources",
-          (graphqlModelNamePrefix in graphql).value,
-          (graphqlModelNameSuffix in graphql).value,
-          (graphqlApiPackageName in graphql).value,
-          (graphqlModelPackageName in graphql).value,
-          (graphqlGenerateBuilder in graphql).value,
-          (graphqlGenerateApis in graphql).value,
-          (graphqlModelValidationAnnotation in graphql).value,
-          (graphqlGenerateEqualsAndHashCode in graphql).value,
-          (graphqlGenerateToString in graphql).value,
-          (graphqlGenerateAsyncApi in graphql).value,
-          (graphqlGenerateParameterizedFieldsResolvers in graphql).value,
-          (graphqlGenerateExtensionFieldsResolvers in graphql).value,
-          (graphqlGenerateDataFetchingEnvArgInApis in graphql).value,
-          (graphqlGenerateRequests in graphql).value,
-          (graphqlRequestSuffix in graphql).value,
-          (graphqlResponseProjectionSuffix in graphql).value
+          graphqlModelNamePrefix.value,
+          graphqlModelNameSuffix.value,
+          graphqlApiPackageName.value,
+          graphqlModelPackageName.value,
+          graphqlGenerateBuilder.value,
+          graphqlGenerateApis.value,
+          graphqlModelValidationAnnotation.value,
+          graphqlGenerateEqualsAndHashCode.value,
+          graphqlGenerateToString.value,
+          graphqlGenerateAsyncApi.value,
+          graphqlGenerateParameterizedFieldsResolvers.value,
+          graphqlGenerateExtensionFieldsResolvers.value,
+          graphqlGenerateDataFetchingEnvArgInApis.value,
+          graphqlGenerateRequests.value,
+          graphqlRequestSuffix.value,
+          graphqlResponseProjectionSuffix.value
         )
       },
-      graphqlSchemaPaths in graphql := Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath),
-      graphqlModelNamePrefix in graphql := None,
-      graphqlModelNameSuffix in graphql := None,
-      graphqlApiPackageName in graphql := None,
-      graphqlModelPackageName in graphql := None,
-      graphqlGenerateBuilder in graphql := DefaultMappingConfigValues.DEFAULT_BUILDER,
-      graphqlGenerateApis in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_APIS,
-      graphqlModelValidationAnnotation in graphql := Some(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION),
-      graphqlGenerateEqualsAndHashCode in graphql := DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE,
-      graphqlGenerateToString in graphql := DefaultMappingConfigValues.DEFAULT_TO_STRING,
-      graphqlGenerateAsyncApi in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS,
-      graphqlGenerateParameterizedFieldsResolvers in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
-      graphqlGenerateExtensionFieldsResolvers in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
-      graphqlGenerateDataFetchingEnvArgInApis in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV,
-      graphqlGenerateRequests in graphql := DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS,
-      graphqlRequestSuffix in graphql := Some(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX),
-      graphqlResponseProjectionSuffix in graphql := Some(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX),
+      graphqlSchemaPaths := Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath),
 
       // This follows the output directory structure recommended by sbt team
       // https://github.com/sbt/sbt/issues/1664#issuecomment-213057686
       sourceManaged in graphql := crossTarget.value / "src_managed_graphql",
-      managedSourceDirectories in Compile += (sourceManaged in graphql).value,
-      Compile / sourceGenerators += graphql.taskValue
+      managedSourceDirectories += (sourceManaged in graphql).value,
+      sourceGenerators += graphql.taskValue
     )
   }
 
@@ -90,6 +73,25 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
 
   // This plugin is automatically enabled for projects which are JvmPlugin.
   override def trigger = allRequirements
+
+  override val globalSettings = Seq(
+    graphqlModelNamePrefix := None,
+    graphqlModelNameSuffix := None,
+    graphqlApiPackageName := None,
+    graphqlModelPackageName := None,
+    graphqlGenerateBuilder := DefaultMappingConfigValues.DEFAULT_BUILDER,
+    graphqlGenerateApis := DefaultMappingConfigValues.DEFAULT_GENERATE_APIS,
+    graphqlModelValidationAnnotation := Some(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION),
+    graphqlGenerateEqualsAndHashCode := DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE,
+    graphqlGenerateToString := DefaultMappingConfigValues.DEFAULT_TO_STRING,
+    graphqlGenerateAsyncApi := DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS,
+    graphqlGenerateParameterizedFieldsResolvers := DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
+    graphqlGenerateExtensionFieldsResolvers := DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
+    graphqlGenerateDataFetchingEnvArgInApis := DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV,
+    graphqlGenerateRequests := DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS,
+    graphqlRequestSuffix := Some(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX),
+    graphqlResponseProjectionSuffix := Some(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
+  )
 
   // a group of settings that are automatically added to projects.
   override val projectSettings =
