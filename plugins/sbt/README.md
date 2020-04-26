@@ -30,8 +30,21 @@ addSbtPlugin("io.github.kobylynskyi" % "sbt-graphql-java-codegen" % "1.6.0-NOT-Y
 | `graphqlSchemaPaths`                            | List(String)       | (falls back to `graphqlSchemas`)              | GraphQL schema locations. You can supply multiple paths to GraphQL schemas. To include many schemas from a folder hierarchy, use the `graphqlSchemas` block instead. |
 | `graphqlApiPackageName`                         | String             | Empty                                         | Java package for generated api classes (Query, Mutation, Subscription). |
 | `graphqlModelPackageName`                       | String             | Empty                                         | Java package for generated model classes (type, input, interface, enum, union). |
+| `graphqlGenerateBuilder`                        | Boolean            | True                                          | Specifies whether generated model classes should have builder. |
+| `graphqlGenerateApis`                           | Boolean            | True                                          | Specifies whether api classes should be generated as well as model classes. |
+| `graphqlGenerateAsyncApi`                       | Boolean            | False                                         | If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType` |
+| `graphqlGenerateDataFetchingEnvArgInApis`       | Boolean            | False                                         | If true, then `graphql.schema.DataFetchingEnvironment env` will be added as a last argument to all methods of root type resolvers and field resolvers. |
+| `graphqlGenerateEqualsAndHashCode`              | Boolean            | False                                         | Specifies whether generated model classes should have equals and hashCode methods defined. |
+| `graphqlGenerateToString`                       | Boolean            | False                                         | Specifies whether generated model classes should have toString method defined. |
 | `graphqlModelNamePrefix`                        | String             | Empty                                         | Sets the prefix for GraphQL model classes (type, input, interface, enum, union). |
 | `graphqlModelNameSuffix`                        | String             | Empty                                         | Sets the suffix for GraphQL model classes (type, input, interface, enum, union). |
+| `graphqlModelValidationAnnotation`              | String             | @javax.validation.<br>constraints.NotNull     | Annotation for mandatory (NonNull) fields. Can be null/empty. |
+| `graphqlGenerateParameterizedFieldsResolvers`   | Boolean            | True                                          | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
+| `graphqlGenerateExtensionFieldsResolvers`       | Boolean            | False                                         | Specifies whether all fields in extensions (<code>extend type</code> and <code>extend interface</code>) should be present in Resolver interface instead of the type class itself. |
+| `graphqlGenerateRequests`                       | Boolean            | False                                         | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields). |
+| `graphqlRequestSuffix`                          | String             | Request                                       | Sets the suffix for `Request` classes. |
+| `graphqlResponseProjectionSuffix`               | String             | ResponseProjection                            | Sets the suffix for `ResponseProjection` classes. |
+
 
 ### Different configurations for graphql schemas
 
