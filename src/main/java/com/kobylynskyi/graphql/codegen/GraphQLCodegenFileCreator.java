@@ -42,7 +42,7 @@ class GraphQLCodegenFileCreator {
     private static File getFileTargetDirectory(Map<String, Object> dataModel, File outputDir) {
         File targetDir;
         Object packageName = dataModel.get(DataModelFields.PACKAGE);
-        if (packageName != null && !Utils.isBlank(packageName.toString())) {
+        if (packageName != null && Utils.isNotBlank(packageName.toString())) {
             targetDir = new File(outputDir, packageName.toString().replace(".", File.separator));
         } else {
             targetDir = outputDir;

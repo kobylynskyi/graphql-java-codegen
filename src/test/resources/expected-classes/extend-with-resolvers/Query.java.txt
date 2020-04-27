@@ -1,3 +1,7 @@
+/**
+ * Queries related to events
+ * Queries related to assets
+ */
 public interface Query {
 
     @javax.validation.constraints.NotNull

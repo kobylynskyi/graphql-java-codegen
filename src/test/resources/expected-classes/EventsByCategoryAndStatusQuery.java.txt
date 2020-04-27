@@ -1,6 +1,9 @@
 package com.kobylynskyi.graphql.test1;
 
 
+/**
+ * List of events of a specified category.
+ */
 public interface EventsByCategoryAndStatusQuery {
 
     /**

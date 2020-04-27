@@ -1,3 +1,6 @@
+/**
+ * Resolver for Node
+ */
 public interface NodeResolver {
 
     String createdBy(Node node) throws Exception;

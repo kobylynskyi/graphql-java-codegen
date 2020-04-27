@@ -147,6 +147,20 @@ class GraphQLCodegenRequestTest {
                 getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
+    @Test
+    void generate_QueriesWithSameName() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByCategoryIdAndStatusQueryRequest.java.txt"),
+                getGeneratedFile(files, "ProductsByCategoryIdAndStatusQueryRequest.java"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByIdsQueryRequest.java.txt"),
+                getGeneratedFile(files, "ProductsByIdsQueryRequest.java"));
+    }
+
     private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
         return Arrays.stream(files)
                 .filter(f -> f.getName().equalsIgnoreCase(fileName))

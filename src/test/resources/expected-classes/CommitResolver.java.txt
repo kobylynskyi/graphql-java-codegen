@@ -1,6 +1,9 @@
 package com.github.graphql;
 
 
+/**
+ * Resolver for Commit
+ */
 public interface CommitResolver {
 
     PullRequestConnection associatedPullRequests(Commit commit, String after, String before, Integer first, Integer last, PullRequestOrder orderBy, graphql.schema.DataFetchingEnvironment env) throws Exception;

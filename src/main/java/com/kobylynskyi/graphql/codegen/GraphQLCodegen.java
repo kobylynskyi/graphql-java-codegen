@@ -146,9 +146,10 @@ public class GraphQLCodegen {
 
     private List<File> generateOperation(ExtendedObjectTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
+        List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
         if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
             for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName());
+                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingConfig, operationDef, definition.getName(), fieldNames);
                 generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
             }
             // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
@@ -159,7 +160,7 @@ public class GraphQLCodegen {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             // generate request objects for graphql operations
             for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName());
+                Map<String, Object> requestDataModel = FieldDefinitionToRequestDataModelMapper.map(mappingConfig, operationDef, definition.getName(), fieldNames);
                 generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir));
             }
         }
