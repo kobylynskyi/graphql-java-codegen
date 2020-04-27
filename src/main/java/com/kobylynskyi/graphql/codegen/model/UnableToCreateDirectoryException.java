@@ -7,8 +7,8 @@ package com.kobylynskyi.graphql.codegen.model;
  */
 public class UnableToCreateDirectoryException extends RuntimeException {
 
-    public UnableToCreateDirectoryException(String directoryPath) {
-        super("Unable to create directory by path: " + directoryPath);
+    public UnableToCreateDirectoryException(String directoryPath, Exception e) {
+        super("Unable to create directory by path: " + directoryPath, e);
     }
 
 }

@@ -128,9 +128,10 @@ public final class Utils {
         if (dir.exists()) {
             return;
         }
-        boolean outputDirCreated = dir.mkdirs();
-        if (!outputDirCreated) {
-            throw new UnableToCreateDirectoryException(dir.getName());
+        try {
+            Files.createDirectories(dir.toPath());
+        } catch (IOException e) {
+            throw new UnableToCreateDirectoryException(dir.getName(), e);
         }
     }
 
