@@ -39,7 +39,7 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
         Codegen(
           (sourceManaged in graphql).value,
           graphqlSchemaPaths.value,
-          sourceDirectory.value / "resources",
+          Some(sourceDirectory.value / "resources"),
           graphqlModelNamePrefix.value,
           graphqlModelNameSuffix.value,
           graphqlApiPackageName.value,
@@ -105,7 +105,7 @@ object Codegen {
   def apply(
       outputDir: File,
       graphqlSchemaPaths: Seq[String],
-      schemasRootDir: File,
+      schemasRootDir: Option[File],
       graphqlModelNamePrefix: Option[String],
       graphqlModelNameSuffix: Option[String],
       graphqlApiPackageName: Option[String],
@@ -147,11 +147,11 @@ object Codegen {
     JavaConverters.collectionAsScalaIterableConverter(generatedSources).asScala.toSeq
   }
 
-  private def getSchemas(graphqlSchemaPaths: Seq[String], schemasRootDir: File): java.util.List[String] = {
+  private def getSchemas(graphqlSchemaPaths: Seq[String], schemasRootDir: Option[File]): java.util.List[String] = {
     if (!graphqlSchemaPaths.isEmpty) {
       return JavaConverters.seqAsJavaList(graphqlSchemaPaths);
     }
-    val finder = new SchemaFinder(schemasRootDir.toPath);
+    val finder = new SchemaFinder(schemasRootDir.get.toPath);
     return finder.findSchemas();
   }
 }
