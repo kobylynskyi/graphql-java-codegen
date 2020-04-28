@@ -441,6 +441,19 @@ class GraphQLCodegenTest {
                                 .findFirst().orElseThrow(FileNotFoundException::new)));
     }
 
+    @Test
+    void generate_InterfaceAndTyoehavingDuplicateFields() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/type-interface-duplicate-fields.graphqls"),
+                outputBuildDir, mappingConfig).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertEquals(Utils.getFileContent("src/test/resources/expected-classes/Person.java.txt"),
+                Utils.getFileContent(
+                        Arrays.stream(files).filter(f -> f.getName().equals("Person.java")).map(File::getPath)
+                                .findFirst().orElseThrow(FileNotFoundException::new)));
+    }
+
     private void assertFileContainsElements(File[] files, String fileName, String... elements)
             throws IOException {
         File file = getFile(files, fileName);
