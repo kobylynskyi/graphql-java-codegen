@@ -20,7 +20,7 @@ The GraphQL Java codegen library used by this plugin is able to generate the fol
 ### Plugin Setup and Configuration
 
 ```
-addSbtPlugin("io.github.kobylynskyi" % "sbt-graphql-java-codegen" % "1.7.0-NOT-YET-RELEASED")
+addSbtPlugin("io.github.kobylynskyi" % "sbt-graphql-java-codegen" % "1.7.1-NOT-YET-RELEASED")
 ```
 
 ### Plugin Options
