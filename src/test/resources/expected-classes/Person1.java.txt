@@ -1,0 +1,79 @@
+package com.kobylynskyi.graphql.test1;
+
+
+public class Person implements NamedEntity{
+
+    @Deprecated
+    private String name;
+    private Integer age;
+
+    public Person() {
+    }
+
+    public Person(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    /**
+     * an awesome name!
+     */
+    @Deprecated
+    public String getName() {
+        return name;
+    }
+    /**
+     * an awesome name!
+     */
+    @Deprecated
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * age in years
+     */
+    public Integer getAge() {
+        return age;
+    }
+    /**
+     * age in years
+     */
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+
+
+    public static class Builder {
+
+        private String name;
+        private Integer age;
+
+        public Builder() {
+        }
+
+        /**
+         * an awesome name!
+         */
+        @Deprecated
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * age in years
+         */
+        public Builder setAge(Integer age) {
+            this.age = age;
+            return this;
+        }
+
+
+        public Person build() {
+            return new Person(name, age);
+        }
+
+    }
+}

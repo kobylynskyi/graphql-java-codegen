@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ class GraphQLCodegenFieldsResolversTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 

@@ -7,12 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +32,7 @@ class GraphQLCodegenRequestTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 
@@ -46,15 +44,15 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventResponseProjection.java.txt"),
-                getGeneratedFile(files, "EventResponseProjection.java"));
+                getFileByName(files, "EventResponseProjection.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyResponseProjection.java.txt"),
-                getGeneratedFile(files, "EventPropertyResponseProjection.java"));
+                getFileByName(files, "EventPropertyResponseProjection.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest.java.txt"),
-                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+                getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/VersionQueryRequest.java.txt"),
-                getGeneratedFile(files, "VersionQueryRequest.java"));
+                getFileByName(files, "VersionQueryRequest.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByIdsQueryRequest.java.txt"),
-                getGeneratedFile(files, "EventsByIdsQueryRequest.java"));
+                getFileByName(files, "EventsByIdsQueryRequest.java"));
     }
 
     @Test
@@ -66,9 +64,9 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventStatusTO.java.txt"),
-                getGeneratedFile(files, "EventStatusTO.java"));
+                getFileByName(files, "EventStatusTO.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withModelSuffix.java.txt"),
-                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+                getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
     @Test
@@ -79,10 +77,10 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/CodeOfConductResponseProjection.java.txt"),
-                getGeneratedFile(files, "CodeOfConductResponseProjection.java"));
+                getFileByName(files, "CodeOfConductResponseProjection.java"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/UpdateRepositoryMutationRequest.java.txt"),
-                getGeneratedFile(files, "UpdateRepositoryMutationRequest.java"));
+                getFileByName(files, "UpdateRepositoryMutationRequest.java"));
     }
 
     @Test
@@ -93,7 +91,7 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/AcceptTopicSuggestionInput.java.txt"),
-                getGeneratedFile(files, "AcceptTopicSuggestionInput.java"));
+                getFileByName(files, "AcceptTopicSuggestionInput.java"));
     }
 
     @Test
@@ -104,7 +102,7 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertNotNull(getGeneratedFile(files, "EventsByCategoryAndStatusQuery.java"));
+        assertNotNull(getFileByName(files, "EventsByCategoryAndStatusQuery.java"));
     }
 
     @Test
@@ -116,7 +114,7 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertNotNull(getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+        assertNotNull(getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
     @Test
@@ -130,7 +128,7 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
-                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+                getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
     @Test
@@ -144,7 +142,7 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
-                getGeneratedFile(files, "EventsByCategoryAndStatusQueryRequest.java"));
+                getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
     @Test
@@ -155,16 +153,10 @@ class GraphQLCodegenRequestTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByCategoryIdAndStatusQueryRequest.java.txt"),
-                getGeneratedFile(files, "ProductsByCategoryIdAndStatusQueryRequest.java"));
+                getFileByName(files, "ProductsByCategoryIdAndStatusQueryRequest.java"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByIdsQueryRequest.java.txt"),
-                getGeneratedFile(files, "ProductsByIdsQueryRequest.java"));
+                getFileByName(files, "ProductsByIdsQueryRequest.java"));
     }
 
-    private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
-        return Arrays.stream(files)
-                .filter(f -> f.getName().equalsIgnoreCase(fileName))
-                .findFirst()
-                .orElseThrow(FileNotFoundException::new);
-    }
 }

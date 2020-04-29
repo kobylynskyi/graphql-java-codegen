@@ -1,10 +1,10 @@
 interface NamedEntity {
-  # an awesome name!
-  name: String @deprecated
+  name: String @shouldnotbehere
 }
 
 type Person implements NamedEntity {
-  name: String
+  # an awesome name!
+  name: String @deprecated
 
   # age in years
   age: Int

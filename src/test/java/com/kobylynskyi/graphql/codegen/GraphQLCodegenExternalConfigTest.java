@@ -16,11 +16,9 @@ class GraphQLCodegenExternalConfigTest {
 
     /**
      * Check mapping config from json file.
-     *
-     * @throws Exception the exception
      */
     @Test
-    void check_mappingConfigFromJsonFile() throws Exception {
+    void check_mappingConfigFromJsonFile() {
         MappingConfig externalMappingConfig = new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
 
         assertEquals(externalMappingConfig.getPackageName(), "com.kobylynskyi.graphql.testconfigjson");
@@ -32,11 +30,9 @@ class GraphQLCodegenExternalConfigTest {
 
     /**
      * Check combine mapping config with external.
-     *
-     * @throws Exception the exception
      */
     @Test
-    void check_combineMappingConfigWithExternal() throws Exception {
+    void check_combineMappingConfigWithExternal() {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
 

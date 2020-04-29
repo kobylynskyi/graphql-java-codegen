@@ -1,19 +1,18 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,8 +20,8 @@ class GraphQLCodegenDefaultsTest {
 
     private GraphQLCodegen generator;
 
-    private File outputBuildDir = new File("build/generated");
-    private File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/testdefaults");
+    private final File outputBuildDir = new File("build/generated");
+    private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/testdefaults");
 
     @BeforeEach
     void init() {
@@ -33,7 +32,7 @@ class GraphQLCodegenDefaultsTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 
@@ -46,8 +45,8 @@ class GraphQLCodegenDefaultsTest {
         assertEquals(Arrays.asList("InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
 
         for (File file : files) {
-            File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
-            TestUtils.assertSameTrimmedContent(expected, file);
+            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName())),
+                    file);
         }
     }
 }
