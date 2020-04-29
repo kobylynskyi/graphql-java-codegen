@@ -40,7 +40,7 @@ dependencies {
  * Generate requests and model from external service
  */
 compileJava.dependsOn "graphqlCodegenProductService"
-sourceSets.main.java.srcDirs "$buildDir/generated-client"
+sourceSets.main.java.srcDir "$buildDir/generated-client"
 task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
     graphqlSchemaPaths = ["$projectDir/src/main/resources/external/schema-product-service.graphqls".toString()]
     outputDir = new File("$buildDir/generated-client")
@@ -57,7 +57,7 @@ task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
  * Generate apis and model
  */
 compileJava.dependsOn "graphqlCodegenOrderService"
-sourceSets.main.java.srcDirs "$buildDir/generated-server"
+sourceSets.main.java.srcDir "$buildDir/generated-server"
 task graphqlCodegenOrderService(type: GraphQLCodegenGradleTask) {
     graphqlSchemaPaths = ["$projectDir/src/main/resources/schema.graphqls".toString()]
     outputDir = new File("$buildDir/generated-server")
