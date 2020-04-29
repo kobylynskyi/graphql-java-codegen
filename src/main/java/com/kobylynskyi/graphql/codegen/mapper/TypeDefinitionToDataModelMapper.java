@@ -93,14 +93,7 @@ public class TypeDefinitionToDataModelMapper {
         getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig, i.getFieldDefinitions(), i.getName()))
                 .flatMap(Collection::stream)
-                .forEach(paramDef -> {
-                    if (allParameters.containsKey(paramDef.getName())) {
-                        ParameterDefinition existingParamDef = allParameters.get(paramDef.getName());
-                        allParameters.put(paramDef.getName(), merge(existingParamDef, paramDef));
-                    } else {
-                        allParameters.put(paramDef.getName(), paramDef);
-                    }
-                });
+                .forEach(paramDef -> allParameters.merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
         return allParameters.values();
     }
 
