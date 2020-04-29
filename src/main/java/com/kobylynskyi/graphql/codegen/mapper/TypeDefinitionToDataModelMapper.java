@@ -93,8 +93,33 @@ public class TypeDefinitionToDataModelMapper {
         getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig, i.getFieldDefinitions(), i.getName()))
                 .flatMap(Collection::stream)
-                .forEach(p -> allParameters.put(p.getName(), p));
+                .forEach(paramDef -> {
+                    if (allParameters.containsKey(paramDef.getName())) {
+                        ParameterDefinition existingParamDef = allParameters.get(paramDef.getName());
+                        allParameters.put(paramDef.getName(), merge(existingParamDef, paramDef));
+                    } else {
+                        allParameters.put(paramDef.getName(), paramDef);
+                    }
+                });
         return allParameters.values();
+    }
+
+    /**
+     * Merge parameter definition data from the type and interface
+     * Annotations from the type have higher precedence
+     *
+     * @param typeDef      Definition of the same parameter from the type
+     * @param interfaceDef Definition of the same parameter from the interface
+     * @return merged parameter definition
+     */
+    private static ParameterDefinition merge(ParameterDefinition typeDef, ParameterDefinition interfaceDef) {
+        if (Utils.isEmpty(typeDef.getAnnotations())) {
+            typeDef.setAnnotations(interfaceDef.getAnnotations());
+        }
+        if (Utils.isEmpty(typeDef.getJavaDoc())) {
+            typeDef.setJavaDoc(interfaceDef.getJavaDoc());
+        }
+        return typeDef;
     }
 
     /**
@@ -120,7 +145,8 @@ public class TypeDefinitionToDataModelMapper {
         getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig, i.getFieldDefinitions(), typeNames))
                 .flatMap(Collection::stream)
-                .forEach(p -> allParameters.put(p.getName(), p));
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
         return allParameters.values();
     }
 
