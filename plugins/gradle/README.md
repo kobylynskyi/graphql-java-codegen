@@ -95,7 +95,7 @@ graphqlCodegen {
     graphqlSchemaPaths = [
         "$projectDir/src/main/resources/schema.graphqls".toString()
     ]
-    outputDir = "$buildDir/generated/graphql"
+    outputDir = new File("$buildDir/generated/graphql")
     packageName = "com.example.graphql.model"
     customTypesMapping = [
         DateTime: "org.joda.time.DateTime",
@@ -119,7 +119,7 @@ sourceSets.main.java.srcDir "$buildDir/generated"
 ```groovy
 tasks.named<GraphqlCodegenGradleTask>("graphqlCodegen") {
     graphqlSchemaPaths = listOf("$projectDir/src/main/resources/graphql/schema.graphqls".toString())
-    outputDir = File("$buildDir/generated/graphql")
+    outputDir = new File("$buildDir/generated/graphql")
     packageName = "com.example.graphql.model"
     customTypesMapping = mutableMapOf(Pair("EpochMillis", "java.time.LocalDateTime"))
     customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class"))
