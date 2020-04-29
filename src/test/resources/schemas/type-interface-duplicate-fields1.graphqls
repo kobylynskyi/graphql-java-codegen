@@ -1,0 +1,11 @@
+interface NamedEntity {
+  name: String @shouldnotbehere
+}
+
+type Person implements NamedEntity {
+  # an awesome name!
+  name: String @deprecated
+
+  # age in years
+  age: Int
+}

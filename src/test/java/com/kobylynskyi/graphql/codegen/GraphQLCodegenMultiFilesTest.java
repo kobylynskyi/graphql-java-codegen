@@ -1,27 +1,26 @@
 package com.kobylynskyi.graphql.codegen;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenMultiFilesTest {
 
-    private GraphQLCodegen generator;
+    private final File outputBuildDir = new File("build/generated");
+    private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/multifiles");
 
-    private File outputBuildDir = new File("build/generated");
-    private File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/multifiles");
+    private GraphQLCodegen generator;
 
     @BeforeEach
     void init() {
@@ -35,7 +34,7 @@ class GraphQLCodegenMultiFilesTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 
@@ -48,8 +47,9 @@ class GraphQLCodegenMultiFilesTest {
         assertEquals(Arrays.asList("MyUnion.java", "UnionMember1.java", "UnionMember2.java"), generatedFileNames);
 
         for (File file : files) {
-            File expected = new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName()));
-            TestUtils.assertSameTrimmedContent(expected, file);
+            assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName())),
+                    file);
         }
     }
 }

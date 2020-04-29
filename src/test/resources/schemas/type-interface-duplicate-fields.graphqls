@@ -1,0 +1,11 @@
+interface NamedEntity {
+  # an awesome name!
+  name: String @deprecated
+}
+
+type Person implements NamedEntity {
+  name: String
+
+  # age in years
+  age: Int
+}

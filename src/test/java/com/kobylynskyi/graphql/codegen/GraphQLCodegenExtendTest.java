@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +33,7 @@ class GraphQLCodegenExtendTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 
@@ -104,19 +106,13 @@ class GraphQLCodegenExtendTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        File eventResponseProjectionFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("EventResponseProjection.java")).findFirst()
-                .orElseThrow(FileNotFoundException::new);
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/extend/request/EventResponseProjection.java.txt"),
-                eventResponseProjectionFile);
+                getFileByName(files, "EventResponseProjection.java"));
 
-        File assetResponseProjectionFile = Arrays.stream(files)
-                .filter(file -> file.getName().equalsIgnoreCase("AssetResponseProjection.java")).findFirst()
-                .orElseThrow(FileNotFoundException::new);
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/extend/request/AssetResponseProjection.java.txt"),
-                assetResponseProjectionFile);
+                getFileByName(files, "AssetResponseProjection.java"));
     }
 
     @Test

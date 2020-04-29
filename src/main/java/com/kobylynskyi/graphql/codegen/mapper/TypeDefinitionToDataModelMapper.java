@@ -80,22 +80,39 @@ public class TypeDefinitionToDataModelMapper {
      * @param document       Parent GraphQL document
      * @return Freemarker data model of the GraphQL type
      */
-    private static Set<ParameterDefinition> getFields(MappingConfig mappingConfig,
-                                                      ExtendedObjectTypeDefinition typeDefinition,
-                                                      ExtendedDocument document) {
-        // this includes parameters from base definition and extensions
-        List<ParameterDefinition> typeParameters = FieldDefinitionToParameterMapper.mapFields(mappingConfig,
-                typeDefinition.getFieldDefinitions(), typeDefinition.getName());
-        List<ParameterDefinition> typeParametersFromInterfaces = getInterfacesOfType(typeDefinition, document)
-                .stream()
+    private static Collection<ParameterDefinition> getFields(MappingConfig mappingConfig,
+                                                             ExtendedObjectTypeDefinition typeDefinition,
+                                                             ExtendedDocument document) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ParameterDefinition> allParameters = new LinkedHashMap<>();
+
+        // includes parameters from the base definition and extensions
+        FieldDefinitionToParameterMapper.mapFields(mappingConfig, typeDefinition.getFieldDefinitions(), typeDefinition.getName())
+                .forEach(p -> allParameters.put(p.getName(), p));
+        // includes parameters from the interface
+        getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingConfig, i.getFieldDefinitions(), i.getName()))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .forEach(paramDef -> allParameters.merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
+        return allParameters.values();
+    }
 
-        Set<ParameterDefinition> allParameters = new LinkedHashSet<>();
-        allParameters.addAll(typeParameters);
-        allParameters.addAll(typeParametersFromInterfaces);
-        return allParameters;
+    /**
+     * Merge parameter definition data from the type and interface
+     * Annotations from the type have higher precedence
+     *
+     * @param typeDef      Definition of the same parameter from the type
+     * @param interfaceDef Definition of the same parameter from the interface
+     * @return merged parameter definition
+     */
+    private static ParameterDefinition merge(ParameterDefinition typeDef, ParameterDefinition interfaceDef) {
+        if (Utils.isEmpty(typeDef.getAnnotations())) {
+            typeDef.setAnnotations(interfaceDef.getAnnotations());
+        }
+        if (Utils.isEmpty(typeDef.getJavaDoc())) {
+            typeDef.setJavaDoc(interfaceDef.getJavaDoc());
+        }
+        return typeDef;
     }
 
     /**
@@ -107,23 +124,23 @@ public class TypeDefinitionToDataModelMapper {
      * @param typeNames      Names of all GraphQL types
      * @return Freemarker data model of the GraphQL type
      */
-    private static Set<ProjectionParameterDefinition> getProjectionFields(MappingConfig mappingConfig,
-                                                                          ExtendedObjectTypeDefinition typeDefinition,
-                                                                          ExtendedDocument document,
-                                                                          Set<String> typeNames) {
-        // this includes parameters from base definition and extensions
-        List<ProjectionParameterDefinition> typeParameters = FieldDefinitionToParameterMapper.mapProjectionFields(
-                mappingConfig, typeDefinition.getFieldDefinitions(), typeNames);
-        List<ProjectionParameterDefinition> typeParametersFromInterfaces = getInterfacesOfType(typeDefinition, document)
-                .stream()
+    private static Collection<ProjectionParameterDefinition> getProjectionFields(MappingConfig mappingConfig,
+                                                                                 ExtendedObjectTypeDefinition typeDefinition,
+                                                                                 ExtendedDocument document,
+                                                                                 Set<String> typeNames) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
+
+        // includes parameters from the base definition and extensions
+        FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig, typeDefinition.getFieldDefinitions(), typeNames)
+                .forEach(p -> allParameters.put(p.getName(), p));
+        // includes parameters from the interface
+        getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingConfig, i.getFieldDefinitions(), typeNames))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-
-        Set<ProjectionParameterDefinition> allParameters = new LinkedHashSet<>();
-        allParameters.addAll(typeParameters);
-        allParameters.addAll(typeParametersFromInterfaces);
-        return allParameters;
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+        return allParameters.values();
     }
 
     /**

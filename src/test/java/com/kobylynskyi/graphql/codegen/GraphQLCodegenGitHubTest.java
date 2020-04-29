@@ -8,13 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class GraphQLCodegenGitHubTest {
@@ -34,7 +33,7 @@ class GraphQLCodegenGitHubTest {
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 
@@ -43,11 +42,12 @@ class GraphQLCodegenGitHubTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        File commitFile = getGeneratedFile(files, "Commit.java");
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit.java.txt"), commitFile);
 
-        File profileOwner = getGeneratedFile(files, "ProfileOwner.java");
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProfileOwner.java.txt"), profileOwner);
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit.java.txt"),
+                getFileByName(files, "Commit.java"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProfileOwner.java.txt"),
+                getFileByName(files, "ProfileOwner.java"));
     }
 
     @Test
@@ -60,25 +60,25 @@ class GraphQLCodegenGitHubTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         // verify proper class name for GraphQL interface
-        assertThat(getGeneratedFileContent(files, "GithubActorTO.java"),
+        assertThat(getFileContent(files, "GithubActorTO.java"),
                 StringContains.containsString("public interface GithubActorTO "));
 
         // verify proper class name for GraphQL enum
-        assertThat(getGeneratedFileContent(files, "GithubIssueStateTO.java"),
+        assertThat(getFileContent(files, "GithubIssueStateTO.java"),
                 StringContains.containsString("public enum GithubIssueStateTO "));
 
         // verify proper class name for GraphQL union
-        assertThat(getGeneratedFileContent(files, "GithubAssigneeTO.java"),
+        assertThat(getFileContent(files, "GithubAssigneeTO.java"),
                 StringContains.containsString("public interface GithubAssigneeTO "));
 
         // verify proper class name for GraphQL input
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt"),
-                getGeneratedFile(files, "GithubAcceptTopicSuggestionInputTO.java"));
+                getFileByName(files, "GithubAcceptTopicSuggestionInputTO.java"));
 
         // verify proper class name for GraphQL type and references to interfaces/types/unions for GraphQL type
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubCommitTO.java.txt"),
-                getGeneratedFile(files, "GithubCommitTO.java"));
+                getFileByName(files, "GithubCommitTO.java"));
     }
 
     @Test
@@ -86,20 +86,13 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelValidationAnnotation(null);
 
         generator.generate();
-        File commitFile = getGeneratedFile(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
+        File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
                 commitFile);
     }
 
-    private static String getGeneratedFileContent(File[] files, String fileName) throws IOException {
-        File file = getGeneratedFile(files, fileName);
-        return Utils.getFileContent(file.getPath());
+    private static String getFileContent(File[] files, String fileName) throws IOException {
+        return Utils.getFileContent(getFileByName(files, fileName).getPath());
     }
 
-    private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
-        return Arrays.stream(files)
-                     .filter(f -> f.getName().equalsIgnoreCase(fileName))
-                     .findFirst()
-                     .orElseThrow(FileNotFoundException::new);
-    }
 }
