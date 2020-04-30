@@ -45,7 +45,7 @@ public class InputValueDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
         parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
-        parameter.setDefaultValue(DefaultValueMapper.map(inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setDefaultValue(DefaultValueMapper.map(mappingConfig, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
         parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
         return parameter;

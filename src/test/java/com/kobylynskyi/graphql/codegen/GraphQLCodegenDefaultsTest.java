@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GraphQLCodegenDefaultsTest {
 
     private GraphQLCodegen generator;
+    private final MappingConfig mappingConfig = new MappingConfig();
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/testdefaults");
 
     @BeforeEach
     void init() {
-        MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.testdefaults");
         generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/defaults.graphqls"),
                 outputBuildDir, mappingConfig);
@@ -45,7 +45,25 @@ class GraphQLCodegenDefaultsTest {
         assertEquals(Arrays.asList("InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
 
         for (File file : files) {
-            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName())),
+            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
+                    file.getName())),
+                    file);
+        }
+    }
+
+    @Test
+    void generate_CheckFiles_WithPrefixSuffix() throws Exception {
+        mappingConfig.setModelNameSuffix("TO");
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(Arrays.asList("InputWithDefaultsTO.java", "MyEnumTO.java", "SomeObjectTO.java"), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
+                    file.getName())),
                     file);
         }
     }
