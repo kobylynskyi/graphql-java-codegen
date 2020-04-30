@@ -48,7 +48,7 @@ apply plugin: "io.github.kobylynskyi.graphql.codegen"
 | :---------------------------------------------: | :----------------: | :-------------------------------------------: | ----------- |
 | `graphqlSchemaPaths`                            | List(String)       | (falls back to `graphqlSchemas`)              | GraphQL schema locations. You can supply multiple paths to GraphQL schemas. To include many schemas from a folder hierarchy, use the `graphqlSchemas` block instead. |
 | `graphqlSchemas`                                | *See table below*  | All `.graphqls`/`.graphql` files in resources | Block to define the input GraphQL schemas, when exact paths are too cumbersome. See table below for a list of options. |
-| `outputDir`                                     | String             | None                                          | The output target directory into which code will be generated. |
+| `outputDir`                                     | File               | None                                          | The output target directory into which code will be generated. |
 | `jsonConfigurationFile`                         | String             | Empty                                         | Path to an external mapping configuration. |
 | `packageName`                                   | String             | Empty                                         | Java package for generated classes. |
 | `apiPackageName`                                | String             | Empty                                         | Java package for generated api classes (Query, Mutation, Subscription). |
