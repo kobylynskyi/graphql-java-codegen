@@ -1,0 +1,43 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+
+public class SomeObjectTO {
+
+    @javax.validation.constraints.NotNull
+    private String name;
+
+    public SomeObjectTO() {
+    }
+
+    public SomeObjectTO(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public static class Builder {
+
+        private String name;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+
+        public SomeObjectTO build() {
+            return new SomeObjectTO(name);
+        }
+
+    }
+}
