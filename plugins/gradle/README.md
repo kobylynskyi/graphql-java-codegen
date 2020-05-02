@@ -52,7 +52,7 @@ apply plugin: "io.github.kobylynskyi.graphql.codegen"
 | `jsonConfigurationFile`                         | String             | Empty                                         | Path to an external mapping configuration. |
 | `packageName`                                   | String             | Empty                                         | Java package for generated classes. |
 | `apiPackageName`                                | String             | Empty                                         | Java package for generated api classes (Query, Mutation, Subscription). |
-| `modelPackageName                               | String             | Empty                                         | Java package for generated model classes (type, input, interface, enum, union). |
+| `modelPackageName`                              | String             | Empty                                         | Java package for generated model classes (type, input, interface, enum, union). |
 | `generateBuilder`                               | Boolean            | True                                          | Specifies whether generated model classes should have builder. |
 | `generateApis`                                  | Boolean            | True                                          | Specifies whether api classes should be generated as well as model classes. |
 | `generateAsyncApi`                              | Boolean            | False                                         | If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType` |
