@@ -55,7 +55,10 @@ public class GraphQLRequestSerializer {
         }
     }
 
-    private static String getEntry(Object input) {
+    public static String getEntry(Object input) {
+        if (input == null) {
+            return null;
+        }
         if (input instanceof Collection) {
             Collection<?> inputCollection = (Collection) input;
             return inputCollection.stream()
@@ -65,7 +68,7 @@ public class GraphQLRequestSerializer {
         if (input instanceof Enum<?>) {
             return input.toString();
         } else if (input instanceof String) {
-            return "\"" + escapeJsonString(input.toString()) + "\"";
+            return escapeJsonString(input.toString());
         } else {
             return input.toString();
         }
@@ -79,7 +82,8 @@ public class GraphQLRequestSerializer {
      */
     public static String escapeJsonString(String stringValue) {
         int len = stringValue.length();
-        StringBuilder sb = new StringBuilder(len);
+        StringBuilder sb = new StringBuilder(len + 2);
+        sb.append("\"");
         for (int i = 0; i < len; i++) {
             char ch = stringValue.charAt(i);
             switch (ch) {
@@ -108,6 +112,7 @@ public class GraphQLRequestSerializer {
                     sb.append(ch);
             }
         }
+        sb.append("\"");
         return sb.toString();
     }
 

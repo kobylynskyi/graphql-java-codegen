@@ -72,7 +72,27 @@ class GraphQLRequestSerializerTest {
         assertEquals(expected("mutation { updateIssue(input: { " +
                 "floatVal: 1.23, booleanVal: false, intVal: 42, " +
                 "stringVal: \\\"default \\\\\\\" \\\\\\\\ \\\\b \\\\f \\\\n \\\\r \\\\t ሴ \\\", " +
-                "enumVal: OPEN, intList: [1, 2, 3], intListEmptyDefault: [] }){ " +
+                "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ ] }){ " +
+                "clientMutationId issue { activeLockReason } } }"), serializedQuery);
+    }
+
+    @Test
+    void serialize_complexRequest() {
+        UpdateIssueMutationRequest updateIssueMutationRequest = new UpdateIssueMutationRequest();
+        UpdateIssueInput input = new UpdateIssueInput();
+        input.setStringListEmptyDefault(Arrays.asList("", "1", null, "\""));
+        updateIssueMutationRequest.setInput(input);
+        GraphQLRequest graphQLRequest = new GraphQLRequest(updateIssueMutationRequest,
+                new UpdateIssuePayloadResponseProjection()
+                        .clientMutationId()
+                        .issue(new IssueResponseProjection()
+                                .activeLockReason())
+        );
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
+        assertEquals(expected("mutation { updateIssue(input: { " +
+                "floatVal: 1.23, booleanVal: false, intVal: 42, " +
+                "stringVal: \\\"default \\\\\\\" \\\\\\\\ \\\\b \\\\f \\\\n \\\\r \\\\t ሴ \\\", " +
+                "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ \\\"\\\", \\\"1\\\", null, \\\"\\\\\\\"\\\" ] }){ " +
                 "clientMutationId issue { activeLockReason } } }"), serializedQuery);
     }
 

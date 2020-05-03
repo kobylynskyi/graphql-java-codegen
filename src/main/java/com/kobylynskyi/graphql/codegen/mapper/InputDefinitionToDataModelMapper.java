@@ -33,7 +33,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
         dataModel.put(TO_STRING, mappingConfig.getGenerateToString());
-        dataModel.put(TO_STRING_ESCAPE_JSON, mappingConfig.getGenerateRequests());
+        dataModel.put(TO_STRING_FOR_REQUEST, mappingConfig.getGenerateRequests());
         return dataModel;
     }
 

@@ -7,7 +7,7 @@ package ${package};
 import ${import}.*;
 </#list>
 </#if>
-<#if toStringEscapeJson>
+<#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
 </#if>
 <#if equalsAndHashCode>
@@ -107,14 +107,14 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 <#if fields?has_content>
 <#list fields as field>
         if (${field.name} != null) {
-<#if field.type == "String">
-<#if toStringEscapeJson>
-            joiner.add("${field.name}: \"" + GraphQLRequestSerializer.escapeJsonString(${field.name}) + "\"");
+<#if toStringForRequest>
+            joiner.add("${field.name}: " + GraphQLRequestSerializer.getEntry(${field.name}));
 <#else>
+<#if field.type == "String">
             joiner.add("${field.name}: \"" + ${field.name} + "\"");
-</#if>
 <#else>
             joiner.add("${field.name}: " + ${field.name});
+</#if>
 </#if>
         }
 </#list>
