@@ -17,8 +17,8 @@ public final class DataModelFields {
     public static final String BUILDER = "builder";
     public static final String EQUALS_AND_HASH_CODE = "equalsAndHashCode";
     public static final String TO_STRING = "toString";
+    public static final String TO_STRING_FOR_REQUEST = "toStringForRequest";
     public static final String JAVA_DOC = "javaDoc";
-    public static final String TO_STRING_ESCAPE_JSON = "toStringEscapeJson";
     public static final String OPERATION_TYPE = "operationType";
     public static final String OPERATION_NAME = "operationName";
 
