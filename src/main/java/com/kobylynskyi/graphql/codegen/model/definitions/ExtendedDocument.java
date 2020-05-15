@@ -28,4 +28,10 @@ public class ExtendedDocument {
                 .collect(Collectors.toSet());
     }
 
+    public Set<String> getInterfaceNames() {
+        return interfaceDefinitions.stream()
+                .map(ExtendedDefinition::getName)
+                .collect(Collectors.toSet());
+    }
+
 }

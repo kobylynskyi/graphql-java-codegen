@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import graphql.language.*;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class DefaultValueMapper {
 
-    public static String map(MappingConfig mappingConfig, Value<?> defaultValue, Type<?> graphQLType) {
+    public static String map(MappingContext mappingContext, Value<?> defaultValue, Type<?> graphQLType) {
         if (defaultValue instanceof NullValue) {
             return mapNullValue();
         }
@@ -25,13 +25,13 @@ public class DefaultValueMapper {
             return mapString((StringValue) defaultValue);
         }
         if (defaultValue instanceof EnumValue) {
-            return mapEnum(mappingConfig, graphQLType, (EnumValue) defaultValue);
+            return mapEnum(mappingContext, graphQLType, (EnumValue) defaultValue);
         }
         if (defaultValue instanceof ObjectValue) {
             return mapObject((ObjectValue) defaultValue);
         }
         if (defaultValue instanceof ArrayValue) {
-            return mapArray(mappingConfig, (ArrayValue) defaultValue, graphQLType);
+            return mapArray(mappingContext, (ArrayValue) defaultValue, graphQLType);
         }
         // no default value, or not a known type
         return null;
@@ -57,14 +57,14 @@ public class DefaultValueMapper {
         return "\"" + defaultValue.getValue() + "\"";
     }
 
-    private static String mapEnum(MappingConfig mappingConfig, Type<?> graphQLType, EnumValue defaultValue) {
+    private static String mapEnum(MappingContext mappingContext, Type<?> graphQLType, EnumValue defaultValue) {
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
-            typeName = MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, typeName);
+            typeName = MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName);
             return typeName + "." + defaultValue.getName();
         }
         if (graphQLType instanceof NonNullType) {
-            return mapEnum(mappingConfig, ((NonNullType) graphQLType).getType(), defaultValue);
+            return mapEnum(mappingContext, ((NonNullType) graphQLType).getType(), defaultValue);
         }
         throw new IllegalArgumentException("Unexpected Enum default value for list type");
     }
@@ -74,7 +74,7 @@ public class DefaultValueMapper {
         return null;
     }
 
-    private static String mapArray(MappingConfig mappingConfig, ArrayValue defaultValue, Type<?> graphQLType) {
+    private static String mapArray(MappingContext mappingContext, ArrayValue defaultValue, Type<?> graphQLType) {
         if (!(graphQLType instanceof ListType)) {
             throw new IllegalArgumentException("Unexpected array default value for non-list type");
         }
@@ -84,7 +84,7 @@ public class DefaultValueMapper {
         }
         Type<?> elementType = ((ListType) graphQLType).getType();
         return values.stream()
-                .map(v -> map(mappingConfig, v, elementType))
+                .map(v -> map(mappingContext, v, elementType))
                 .collect(Collectors.joining(", ", "java.util.Arrays.asList(", ")"));
     }
 }

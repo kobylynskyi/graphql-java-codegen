@@ -1,0 +1,58 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+public class Foo1 implements Foo{
+
+    @javax.validation.constraints.NotNull
+    private String id;
+    private java.util.Collection<Bar1> bars;
+
+    public Foo1() {
+    }
+
+    public Foo1(String id, java.util.Collection<Bar1> bars) {
+        this.id = id;
+        this.bars = bars;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public java.util.Collection<Bar1> getBars() {
+        return bars;
+    }
+    public void setBars(java.util.Collection<Bar1> bars) {
+        this.bars = bars;
+    }
+
+
+
+    public static class Builder {
+
+        private String id;
+        private java.util.Collection<Bar1> bars;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setBars(java.util.Collection<Bar1> bars) {
+            this.bars = bars;
+            return this;
+        }
+
+
+        public Foo1 build() {
+            return new Foo1(id, bars);
+        }
+
+    }
+}

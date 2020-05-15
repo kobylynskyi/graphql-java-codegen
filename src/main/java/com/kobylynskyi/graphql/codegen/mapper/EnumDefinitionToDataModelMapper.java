@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import graphql.language.Comment;
 import graphql.language.Directive;
@@ -22,15 +22,15 @@ public class EnumDefinitionToDataModelMapper {
     /**
      * Map field definition to a Freemarker data model
      *
-     * @param mappingConfig Global mapping configuration
-     * @param definition    Definition of enum type including base definition and its extensions
+     * @param mappingContext Global mapping context
+     * @param definition     Definition of enum type including base definition and its extensions
      * @return Freemarker data model of the GraphQL enum
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig, ExtendedEnumTypeDefinition definition) {
+    public static Map<String, Object> map(MappingContext mappingContext, ExtendedEnumTypeDefinition definition) {
         Map<String, Object> dataModel = new HashMap<>();
         // type/enum/input/interface/union classes do not require any imports
-        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
-        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingConfig, definition));
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
+        dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, map(definition.getValueDefinitions()));
         return dataModel;

@@ -1,0 +1,11 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+public interface Foo {
+
+    @javax.validation.constraints.NotNull
+    String getId();
+
+    java.util.Collection<Bar> getBars();
+
+}

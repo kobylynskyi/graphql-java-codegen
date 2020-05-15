@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -40,30 +40,30 @@ class MapperUtils {
     /**
      * Generates a class name including prefix and suffix (if any)
      *
-     * @param mappingConfig      Global mapping configuration
+     * @param mappingContext     Global mapping context
      * @param extendedDefinition GraphQL extended definition
      * @return Class name of GraphQL node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig,
+    static String getClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                   ExtendedDefinition<?, ?> extendedDefinition) {
-        return getClassNameWithPrefixAndSuffix(mappingConfig, extendedDefinition.getName());
+        return getClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
     /**
      * Generates a class name including prefix and suffix (if any)
      *
-     * @param mappingConfig  Global mapping configuration
+     * @param mappingContext Global mapping context
      * @param definitionName GraphQL node name
      * @return Class name of GraphQL node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingConfig mappingConfig, String definitionName) {
+    static String getClassNameWithPrefixAndSuffix(MappingContext mappingContext, String definitionName) {
         StringBuilder classNameBuilder = new StringBuilder();
-        if (Utils.isNotBlank(mappingConfig.getModelNamePrefix())) {
-            classNameBuilder.append(mappingConfig.getModelNamePrefix());
+        if (Utils.isNotBlank(mappingContext.getModelNamePrefix())) {
+            classNameBuilder.append(mappingContext.getModelNamePrefix());
         }
         classNameBuilder.append(Utils.capitalize(definitionName));
-        if (Utils.isNotBlank(mappingConfig.getModelNameSuffix())) {
-            classNameBuilder.append(mappingConfig.getModelNameSuffix());
+        if (Utils.isNotBlank(mappingContext.getModelNameSuffix())) {
+            classNameBuilder.append(mappingContext.getModelNameSuffix());
         }
         return classNameBuilder.toString();
     }
@@ -71,28 +71,28 @@ class MapperUtils {
     /**
      * Get java package name for api class.
      *
-     * @param mappingConfig Global mapping configuration
+     * @param mappingContext Global mapping context
      * @return api package name if present. Generic package name otherwise
      */
-    static String getApiPackageName(MappingConfig mappingConfig) {
-        if (Utils.isNotBlank(mappingConfig.getApiPackageName())) {
-            return mappingConfig.getApiPackageName();
+    static String getApiPackageName(MappingContext mappingContext) {
+        if (Utils.isNotBlank(mappingContext.getApiPackageName())) {
+            return mappingContext.getApiPackageName();
         } else {
-            return mappingConfig.getPackageName();
+            return mappingContext.getPackageName();
         }
     }
 
     /**
      * Get java package name for model class.
      *
-     * @param mappingConfig Global mapping configuration
+     * @param mappingContext Global mapping context
      * @return model package name if present. Generic package name otherwise
      */
-    static String getModelPackageName(MappingConfig mappingConfig) {
-        if (Utils.isNotBlank(mappingConfig.getModelPackageName())) {
-            return mappingConfig.getModelPackageName();
+    static String getModelPackageName(MappingContext mappingContext) {
+        if (Utils.isNotBlank(mappingContext.getModelPackageName())) {
+            return mappingContext.getModelPackageName();
         } else {
-            return mappingConfig.getPackageName();
+            return mappingContext.getPackageName();
         }
     }
 
@@ -101,17 +101,17 @@ class MapperUtils {
      * - model package name
      * - generic package name
      *
-     * @param mappingConfig Global mapping configuration
-     * @param packageName   Package name of the generated class which will be ignored
+     * @param mappingContext Global mapping context
+     * @param packageName    Package name of the generated class which will be ignored
      * @return all imports required for a generated class
      */
-    static Set<String> getImports(MappingConfig mappingConfig, String packageName) {
+    static Set<String> getImports(MappingContext mappingContext, String packageName) {
         Set<String> imports = new HashSet<>();
-        String modelPackageName = mappingConfig.getModelPackageName();
+        String modelPackageName = mappingContext.getModelPackageName();
         if (Utils.isNotBlank(modelPackageName) && !modelPackageName.equals(packageName)) {
             imports.add(modelPackageName);
         }
-        String genericPackageName = mappingConfig.getPackageName();
+        String genericPackageName = mappingContext.getPackageName();
         if (Utils.isNotBlank(genericPackageName) && !genericPackageName.equals(packageName)) {
             imports.add(genericPackageName);
         }
@@ -122,12 +122,12 @@ class MapperUtils {
     /**
      * Determines if the methods of the given type should use async return types.
      *
-     * @param mappingConfig Global mapping configuration
-     * @param typeName      Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
+     * @param mappingContext Global mapping context
+     * @param typeName       Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
      * @return true if the methods of the given type should be generated with async return types, false otherwise
      */
-    static boolean shouldUseAsyncMethods(MappingConfig mappingConfig, String typeName) {
-        boolean isAsyncApi = mappingConfig.getGenerateAsyncApi() != null && mappingConfig.getGenerateAsyncApi();
+    static boolean shouldUseAsyncMethods(MappingContext mappingContext, String typeName) {
+        boolean isAsyncApi = mappingContext.getGenerateAsyncApi() != null && mappingContext.getGenerateAsyncApi();
 
         return isAsyncApi && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
     }
