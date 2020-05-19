@@ -1,0 +1,9 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+public interface Bar {
+
+    @javax.validation.constraints.NotNull
+    String getId();
+
+}

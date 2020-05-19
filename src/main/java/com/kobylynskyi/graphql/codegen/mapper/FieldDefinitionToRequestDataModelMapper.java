@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
@@ -21,28 +21,28 @@ public class FieldDefinitionToRequestDataModelMapper {
     /**
      * Map field definition to a Request Freemarker data model.
      *
-     * @param mappingConfig  Global mapping configuration
+     * @param mappingContext Global mapping context
      * @param operationDef   GraphQL operation definition
      * @param objectTypeName Object type (e.g.: "Query", "Mutation" or "Subscription")
      * @param fieldNames     Names of all fields inside the rootType. Used to detect duplicate
      * @return Freemarker data model of the GraphQL request
      */
-    public static Map<String, Object> map(MappingConfig mappingConfig,
+    public static Map<String, Object> map(MappingContext mappingContext,
                                           ExtendedFieldDefinition operationDef,
                                           String objectTypeName,
                                           List<String> fieldNames) {
         Map<String, Object> dataModel = new HashMap<>();
         // Request classes are sharing the package with the model classes, so no imports are needed
-        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingConfig));
-        dataModel.put(CLASS_NAME, getClassName(operationDef, fieldNames, objectTypeName, mappingConfig.getRequestSuffix()));
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
+        dataModel.put(CLASS_NAME, getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getRequestSuffix()));
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(OPERATION_TYPE, objectTypeName.toUpperCase());
-        dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingConfig, operationDef.getInputValueDefinitions(), operationDef.getName()));
-        dataModel.put(BUILDER, mappingConfig.getGenerateBuilder());
-        dataModel.put(EQUALS_AND_HASH_CODE, mappingConfig.getGenerateEqualsAndHashCode());
-        dataModel.put(TO_STRING, mappingConfig.getGenerateToString());
-        dataModel.put(TO_STRING_FOR_REQUEST, mappingConfig.getGenerateRequests());
+        dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingContext, operationDef.getInputValueDefinitions(), operationDef.getName()));
+        dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
+        dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        dataModel.put(TO_STRING, mappingContext.getGenerateToString());
+        dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateRequests());
         return dataModel;
     }
 

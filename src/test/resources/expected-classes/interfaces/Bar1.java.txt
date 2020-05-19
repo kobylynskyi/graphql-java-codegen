@@ -1,0 +1,43 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+public class Bar1 implements Bar{
+
+    @javax.validation.constraints.NotNull
+    private String id;
+
+    public Bar1() {
+    }
+
+    public Bar1(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+    public static class Builder {
+
+        private String id;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Bar1 build() {
+            return new Bar1(id);
+        }
+
+    }
+}

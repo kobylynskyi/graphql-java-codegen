@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
@@ -22,31 +22,31 @@ public class InputValueDefinitionToParameterMapper {
     /**
      * Map input value definition to a Freemarker-understandable data model type
      *
-     * @param mappingConfig    Global mapping configuration
+     * @param mappingContext   Global mapping context
      * @param valueDefinitions List of GraphQL value definitions
      * @param parentTypeName   Name of the parent GraphQL type
      * @return Freemarker data model of the GraphQL input value definition
      */
-    public static List<ParameterDefinition> map(MappingConfig mappingConfig, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
+    public static List<ParameterDefinition> map(MappingContext mappingContext, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
         return valueDefinitions.stream()
-                .map(inputValueDef -> map(mappingConfig, inputValueDef, parentTypeName))
+                .map(inputValueDef -> map(mappingContext, inputValueDef, parentTypeName))
                 .collect(toList());
     }
 
     /**
      * Map GraphQL's InputValueDefinition to a Freemarker-understandable format of operation
      *
-     * @param mappingConfig        Global mapping configuration
+     * @param mappingContext       Global mapping context
      * @param inputValueDefinition GraphQL input value definition
      * @param parentTypeName       Name of the parent type
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ParameterDefinition map(MappingConfig mappingConfig, InputValueDefinition inputValueDefinition, String parentTypeName) {
+    private static ParameterDefinition map(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
-        parameter.setType(getJavaType(mappingConfig, inputValueDefinition.getType()));
-        parameter.setDefaultValue(DefaultValueMapper.map(mappingConfig, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(getAnnotations(mappingConfig, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));
+        parameter.setType(getJavaType(mappingContext, inputValueDefinition.getType()));
+        parameter.setDefaultValue(DefaultValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setAnnotations(getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
         return parameter;
     }
