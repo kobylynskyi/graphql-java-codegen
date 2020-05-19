@@ -21,6 +21,10 @@ public class UnionMember1 implements MyUnion{
 
 
 
+    public static UnionMember1.Builder builder() {
+        return new UnionMember1.Builder();
+    }
+
     public static class Builder {
 
         private Integer someField;

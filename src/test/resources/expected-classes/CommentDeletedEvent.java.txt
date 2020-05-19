@@ -22,6 +22,10 @@ public class CommentDeletedEvent implements IssueTimelineItems, PullRequestTimel
 
 
 
+    public static CommentDeletedEvent.Builder builder() {
+        return new CommentDeletedEvent.Builder();
+    }
+
     public static class Builder {
 
         private String id;

@@ -57,6 +57,10 @@ public class AcceptTopicSuggestionInput {
         return joiner.toString();
     }
 
+    public static AcceptTopicSuggestionInput.Builder builder() {
+        return new AcceptTopicSuggestionInput.Builder();
+    }
+
     public static class Builder {
 
         private String clientMutationId;

@@ -51,6 +51,10 @@ public class Event implements PinnableItem, Node{
 
 
 
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
     public static class Builder {
 
         private Status status;

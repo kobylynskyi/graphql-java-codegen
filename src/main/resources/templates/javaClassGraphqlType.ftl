@@ -124,6 +124,10 @@ public class ${className} <#if implements?has_content>implements <#list implemen
 </#if>
 
 <#if builder>
+    public static ${className}.Builder builder() {
+        return new ${className}.Builder();
+    }
+
     public static class Builder {
 
 <#list fields as field>

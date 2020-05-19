@@ -19,6 +19,10 @@ public class AssetInput {
 
 
 
+    public static AssetInput.Builder builder() {
+        return new AssetInput.Builder();
+    }
+
     public static class Builder {
 
         private String name;

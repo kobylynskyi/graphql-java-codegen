@@ -119,6 +119,10 @@ public class EventPropertyTO {
         return joiner.toString();
     }
 
+    public static EventPropertyTO.Builder builder() {
+        return new EventPropertyTO.Builder();
+    }
+
     public static class Builder {
 
         private Double floatVal;

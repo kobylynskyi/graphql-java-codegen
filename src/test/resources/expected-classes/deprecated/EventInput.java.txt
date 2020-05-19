@@ -25,6 +25,10 @@ public class EventInput {
 
 
 
+    public static EventInput.Builder builder() {
+        return new EventInput.Builder();
+    }
+
     public static class Builder {
 
         private Status status;

@@ -87,6 +87,10 @@ public class Event {
 
 
 
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
     public static class Builder {
 
         private String id;

@@ -41,6 +41,10 @@ public class GithubAcceptTopicSuggestionInputTO {
 
 
 
+    public static GithubAcceptTopicSuggestionInputTO.Builder builder() {
+        return new GithubAcceptTopicSuggestionInputTO.Builder();
+    }
+
     public static class Builder {
 
         private String clientMutationId;
