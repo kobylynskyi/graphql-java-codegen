@@ -384,6 +384,10 @@ public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO
 
 
 
+    public static GithubCommitTO.Builder builder() {
+        return new GithubCommitTO.Builder();
+    }
+
     public static class Builder {
 
         private String abbreviatedOid;

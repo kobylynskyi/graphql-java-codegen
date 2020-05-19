@@ -95,6 +95,10 @@ public class EventProperty {
 
 
 
+    public static EventProperty.Builder builder() {
+        return new EventProperty.Builder();
+    }
+
     public static class Builder {
 
         private Double floatVal;

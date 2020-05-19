@@ -39,6 +39,10 @@ public class Asset implements PinnableItem, Node{
 
 
 
+    public static Asset.Builder builder() {
+        return new Asset.Builder();
+    }
+
     public static class Builder {
 
         private String name;

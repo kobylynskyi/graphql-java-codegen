@@ -42,6 +42,10 @@ public class Person implements NamedEntity{
 
 
 
+    public static Person.Builder builder() {
+        return new Person.Builder();
+    }
+
     public static class Builder {
 
         private String name;

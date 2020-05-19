@@ -21,6 +21,10 @@ public class GithubAcceptTopicSuggestionPayloadTO {
 
 
 
+    public static GithubAcceptTopicSuggestionPayloadTO.Builder builder() {
+        return new GithubAcceptTopicSuggestionPayloadTO.Builder();
+    }
+
     public static class Builder {
 
         private String clientMutationId;

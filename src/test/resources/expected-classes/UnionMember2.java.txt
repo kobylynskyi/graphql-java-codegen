@@ -21,6 +21,10 @@ public class UnionMember2 implements MyUnion{
 
 
 
+    public static UnionMember2.Builder builder() {
+        return new UnionMember2.Builder();
+    }
+
     public static class Builder {
 
         private String someField;

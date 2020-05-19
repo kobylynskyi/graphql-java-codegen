@@ -115,6 +115,10 @@ public class InputWithDefaults {
 
 
 
+    public static InputWithDefaults.Builder builder() {
+        return new InputWithDefaults.Builder();
+    }
+
     public static class Builder {
 
         private Double floatVal = 1.23;

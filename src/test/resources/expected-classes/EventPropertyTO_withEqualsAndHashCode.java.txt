@@ -117,6 +117,10 @@ public class EventPropertyTO {
     }
 
 
+    public static EventPropertyTO.Builder builder() {
+        return new EventPropertyTO.Builder();
+    }
+
     public static class Builder {
 
         private Double floatVal;

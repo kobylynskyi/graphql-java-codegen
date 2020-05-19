@@ -326,6 +326,10 @@ public class Commit implements Closer, IssueTimelineItem, PullRequestTimelineIte
 
 
 
+    public static Commit.Builder builder() {
+        return new Commit.Builder();
+    }
+
     public static class Builder {
 
         private String abbreviatedOid;
