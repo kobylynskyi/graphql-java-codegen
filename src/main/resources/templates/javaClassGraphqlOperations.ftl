@@ -13,7 +13,7 @@ import ${import}.*;
 </#list>
  */
 </#if>
-public interface ${className} {
+public interface ${className}<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 
 <#list operations as operation>
 <#if operation.javaDoc?has_content>

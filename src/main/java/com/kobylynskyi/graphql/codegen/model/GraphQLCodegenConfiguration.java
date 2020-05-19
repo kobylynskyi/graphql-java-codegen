@@ -191,4 +191,12 @@ public interface GraphQLCodegenConfiguration {
      * @return The suffix for `ResponseProjection` classes.
      */
     String getResponseProjectionSuffix();
+
+    /**
+     * Interfaces that will be put as "extend" to all generated api interfaces.
+     *
+     * @return ParentInterfacesConfig containing interfaces for all api interfaces
+     */
+    ParentInterfacesConfig getParentInterfaces();
+
 }

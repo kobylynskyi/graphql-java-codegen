@@ -1,7 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
@@ -43,15 +43,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String subscriptionReturnType;
-    private Boolean generateBuilder = DefaultMappingConfigValues.DEFAULT_BUILDER;
-    private Boolean generateApis = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS;
+    private Boolean generateBuilder = MappingConfigConstants.DEFAULT_BUILDER;
+    private Boolean generateApis = MappingConfigConstants.DEFAULT_GENERATE_APIS;
     private String modelValidationAnnotation;
-    private Boolean generateEqualsAndHashCode = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE;
-    private Boolean generateToString = DefaultMappingConfigValues.DEFAULT_TO_STRING;
-    private Boolean generateAsyncApi = DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS;
-    private Boolean generateParameterizedFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
-    private Boolean generateExtensionFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
-    private Boolean generateDataFetchingEnvironmentArgumentInApis = DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV;
+    private Boolean generateEqualsAndHashCode = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE;
+    private Boolean generateToString = MappingConfigConstants.DEFAULT_TO_STRING;
+    private Boolean generateAsyncApi = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS;
+    private Boolean generateParameterizedFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
+    private Boolean generateExtensionFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
+    private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Boolean generateRequests;

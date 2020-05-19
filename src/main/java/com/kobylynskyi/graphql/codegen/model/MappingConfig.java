@@ -35,6 +35,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
     // client-side codegen configs:
     private Boolean generateRequests;
@@ -80,6 +81,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
             this.fieldsWithoutResolvers.addAll(source.fieldsWithoutResolvers);
         } else if (this.fieldsWithoutResolvers == null) {
             this.fieldsWithoutResolvers = source.fieldsWithoutResolvers;
+        }
+        if (this.parentInterfaces != null) {
+            this.parentInterfaces.combine(source.parentInterfaces);
+        } else {
+            this.parentInterfaces = source.parentInterfaces;
         }
         this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
         this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;

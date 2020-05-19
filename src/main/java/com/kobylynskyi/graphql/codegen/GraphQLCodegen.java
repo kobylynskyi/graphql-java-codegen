@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.mapper.*;
-import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.*;
@@ -47,40 +47,40 @@ public class GraphQLCodegen {
 
     private void initDefaultValues(MappingConfig mappingConfig) {
         if (mappingConfig.getModelValidationAnnotation() == null) {
-            mappingConfig.setModelValidationAnnotation(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION);
+            mappingConfig.setModelValidationAnnotation(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION);
         }
         if (mappingConfig.getGenerateBuilder() == null) {
-            mappingConfig.setGenerateBuilder(DefaultMappingConfigValues.DEFAULT_BUILDER);
+            mappingConfig.setGenerateBuilder(MappingConfigConstants.DEFAULT_BUILDER);
         }
         if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
-            mappingConfig.setGenerateEqualsAndHashCode(DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE);
+            mappingConfig.setGenerateEqualsAndHashCode(MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE);
         }
         if (mappingConfig.getGenerateRequests() == null) {
-            mappingConfig.setGenerateRequests(DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS);
+            mappingConfig.setGenerateRequests(MappingConfigConstants.DEFAULT_GENERATE_REQUESTS);
         }
         if (mappingConfig.getRequestSuffix() == null) {
-            mappingConfig.setRequestSuffix(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX);
+            mappingConfig.setRequestSuffix(MappingConfigConstants.DEFAULT_REQUEST_SUFFIX);
         }
         if (mappingConfig.getResponseProjectionSuffix() == null) {
-            mappingConfig.setResponseProjectionSuffix(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
+            mappingConfig.setResponseProjectionSuffix(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
         }
         if (mappingConfig.getGenerateToString() == null) {
-            mappingConfig.setGenerateToString(DefaultMappingConfigValues.DEFAULT_TO_STRING);
+            mappingConfig.setGenerateToString(MappingConfigConstants.DEFAULT_TO_STRING);
         }
         if (mappingConfig.getGenerateApis() == null) {
-            mappingConfig.setGenerateApis(DefaultMappingConfigValues.DEFAULT_GENERATE_APIS);
+            mappingConfig.setGenerateApis(MappingConfigConstants.DEFAULT_GENERATE_APIS);
         }
         if (mappingConfig.getGenerateAsyncApi() == null) {
-            mappingConfig.setGenerateAsyncApi(DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS);
+            mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
         }
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
-            mappingConfig.setGenerateParameterizedFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
+            mappingConfig.setGenerateParameterizedFieldsResolvers(MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
         if (mappingConfig.getGenerateExtensionFieldsResolvers() == null) {
-            mappingConfig.setGenerateExtensionFieldsResolvers(DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS);
+            mappingConfig.setGenerateExtensionFieldsResolvers(MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS);
         }
         if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis() == null) {
-            mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV);
+            mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV);
         }
         if (mappingConfig.getGenerateRequests()) {
             // required for request serialization
