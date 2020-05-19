@@ -31,6 +31,10 @@ public class Foo1 implements Foo{
 
 
 
+    public static Foo1.Builder builder() {
+        return new Foo1.Builder();
+    }
+
     public static class Builder {
 
         private String id;

@@ -22,6 +22,10 @@ public class Bar1 implements Bar{
 
 
 
+    public static Bar1.Builder builder() {
+        return new Bar1.Builder();
+    }
+
     public static class Builder {
 
         private String id;
