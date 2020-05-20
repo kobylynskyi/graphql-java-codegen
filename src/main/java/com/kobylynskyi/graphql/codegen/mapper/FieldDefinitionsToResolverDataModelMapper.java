@@ -3,7 +3,6 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.ParentInterfacesConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -165,26 +164,26 @@ public class FieldDefinitionsToResolverDataModelMapper {
     }
 
     public static String getParentInterface(MappingContext mappingContext, String typeName) {
-        ParentInterfacesConfig parentInterfaces = mappingContext.getParentInterfaces();
         // 1. check if provided type name is GraphQL root type
         try {
             switch (GraphQLOperation.valueOf(typeName.toUpperCase())) {
                 case QUERY:
-                    return parentInterfaces.getQueryResolver();
+                    return mappingContext.getQueryResolverParentInterface();
                 case MUTATION:
-                    return parentInterfaces.getMutationResolver();
+                    return mappingContext.getMutationResolverParentInterface();
                 case SUBSCRIPTION:
-                    return parentInterfaces.getSubscriptionResolver();
+                    return mappingContext.getSubscriptionResolverParentInterface();
             }
         } catch (Exception ignored) {
         }
 
         // 2. if provided type name is GraphQL root type then assume that it is GraphQL type
-        if (parentInterfaces.getResolver() == null) {
+        if (mappingContext.getResolverParentInterface() == null) {
             return null;
         }
-        String typeNameWithPrefixAndSuffix = MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName);
-        return parentInterfaces.getResolver().replace(PARENT_INTERFACE_TYPE_PLACEHOLDER, typeNameWithPrefixAndSuffix);
+        return mappingContext.getResolverParentInterface()
+                .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
+                        MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName));
     }
 
 }

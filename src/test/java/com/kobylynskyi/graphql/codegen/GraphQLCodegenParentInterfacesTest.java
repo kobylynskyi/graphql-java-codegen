@@ -37,10 +37,10 @@ class GraphQLCodegenParentInterfacesTest {
     void generate_CheckFiles() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
         mappingConfig.setFieldsWithResolvers(Collections.singleton("Event"));
-        mappingConfig.getParentInterfaces().setQueryResolver("graphql.kickstart.tools.GraphQLQueryResolver");
-        mappingConfig.getParentInterfaces().setMutationResolver("graphql.kickstart.tools.GraphQLMutationResolver");
-        mappingConfig.getParentInterfaces().setSubscriptionResolver("graphql.kickstart.tools.GraphQLSubscriptionResolver");
-        mappingConfig.getParentInterfaces().setResolver("graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>");
+        mappingConfig.setQueryResolverParentInterface("graphql.kickstart.tools.GraphQLQueryResolver");
+        mappingConfig.setMutationResolverParentInterface("graphql.kickstart.tools.GraphQLMutationResolver");
+        mappingConfig.setSubscriptionResolverParentInterface("graphql.kickstart.tools.GraphQLSubscriptionResolver");
+        mappingConfig.setResolverParentInterface("graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>");
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

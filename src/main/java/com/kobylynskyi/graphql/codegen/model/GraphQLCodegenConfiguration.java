@@ -193,10 +193,31 @@ public interface GraphQLCodegenConfiguration {
     String getResponseProjectionSuffix();
 
     /**
-     * Interfaces that will be put as "extend" to all generated api interfaces.
+     * Interface that will be added as "extend" to all generated api Query interfaces.
      *
-     * @return ParentInterfacesConfig containing interfaces for all api interfaces
+     * @return Parent interface of all GraphQL Query types.
      */
-    ParentInterfacesConfig getParentInterfaces();
+    String getQueryResolverParentInterface();
+
+    /**
+     * Interface that will be added as "extend" to all generated api Mutation interfaces.
+     *
+     * @return Parent interface of all GraphQL Mutation types.
+     */
+    String getMutationResolverParentInterface();
+
+    /**
+     * Interface that will be added as "extend" to all generated api Subscription interfaces.
+     *
+     * @return Parent interface of all GraphQL Subscription types.
+     */
+    String getSubscriptionResolverParentInterface();
+
+    /**
+     * Interface that will be added as "extend" to all generated TypeResolver interfaces.
+     *
+     * @return Parent interface of all Resolvers of GraphQL types.
+     */
+    String getResolverParentInterface();
 
 }

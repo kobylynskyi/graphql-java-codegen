@@ -125,7 +125,23 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public ParentInterfacesConfig getParentInterfaces() {
-        return config.getParentInterfaces();
+    public String getQueryResolverParentInterface() {
+        return config.getQueryResolverParentInterface();
     }
+
+    @Override
+    public String getMutationResolverParentInterface() {
+        return config.getMutationResolverParentInterface();
+    }
+
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return config.getSubscriptionResolverParentInterface();
+    }
+
+    @Override
+    public String getResolverParentInterface() {
+        return config.getResolverParentInterface();
+    }
+
 }
