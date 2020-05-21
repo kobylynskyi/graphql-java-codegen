@@ -1,9 +1,9 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration  {
+public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration {
 
     @Parameter
     private String[] graphqlSchemaPaths;
@@ -102,6 +102,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String jsonConfigurationFile;
 
+    @Parameter
+    private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
+
     /**
      * The project being built.
      */
@@ -135,6 +138,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
+        mappingConfig.setResolverParentInterface(getResolverParentInterface());
+        mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
+        mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
+        mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -400,6 +407,34 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public String getResponseProjectionSuffix() {
         return responseProjectionSuffix;
+    }
+
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
+    }
+
+    public void setParentInterfaces(ParentInterfacesConfig parentInterfaces) {
+        this.parentInterfaces = parentInterfaces;
+    }
+
+    @Override
+    public String getQueryResolverParentInterface() {
+        return parentInterfaces.getQueryResolver();
+    }
+
+    @Override
+    public String getMutationResolverParentInterface() {
+        return parentInterfaces.getMutationResolver();
+    }
+
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return parentInterfaces.getSubscriptionResolver();
+    }
+
+    @Override
+    public String getResolverParentInterface() {
+        return parentInterfaces.getResolver();
     }
 
     public void setResponseProjectionSuffix(String responseProjectionSuffix) {

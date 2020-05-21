@@ -1,6 +1,5 @@
 package io.github.kobylynskyi.product.graphql.resolvers;
 
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import io.github.kobylynskyi.product.graphql.api.Query;
 import io.github.kobylynskyi.product.graphql.mappers.ProductMapper;
 import io.github.kobylynskyi.product.graphql.model.ProductTO;
@@ -13,7 +12,7 @@ import java.util.Collection;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class QueriesResolver implements Query, GraphQLQueryResolver {
+public class QueriesResolver implements Query {
 
     @Autowired
     private ProductService service;
