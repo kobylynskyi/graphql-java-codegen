@@ -1,0 +1,12 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+public interface Mutation extends graphql.kickstart.tools.GraphQLMutationResolver {
+
+    /**
+     * Create a new event.
+     */
+    @javax.validation.constraints.NotNull
+    EventTO createEvent(String categoryId, String createdBy) throws Exception;
+
+}

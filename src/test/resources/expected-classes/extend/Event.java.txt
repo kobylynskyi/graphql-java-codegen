@@ -1,4 +1,4 @@
-public class Event implements PinnableItem, Node{
+public class Event implements PinnableItem, Node {
 
     @javax.validation.constraints.NotNull
     private Status status;

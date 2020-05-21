@@ -1,7 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen
-import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder
@@ -79,18 +79,18 @@ object GraphQLCodegenSbtPlugin extends AutoPlugin {
     graphqlModelNameSuffix := None,
     graphqlApiPackageName := None,
     graphqlModelPackageName := None,
-    graphqlGenerateBuilder := DefaultMappingConfigValues.DEFAULT_BUILDER,
-    graphqlGenerateApis := DefaultMappingConfigValues.DEFAULT_GENERATE_APIS,
-    graphqlModelValidationAnnotation := Some(DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION),
-    graphqlGenerateEqualsAndHashCode := DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE,
-    graphqlGenerateToString := DefaultMappingConfigValues.DEFAULT_TO_STRING,
-    graphqlGenerateAsyncApi := DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS,
-    graphqlGenerateParameterizedFieldsResolvers := DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
-    graphqlGenerateExtensionFieldsResolvers := DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
-    graphqlGenerateDataFetchingEnvArgInApis := DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV,
-    graphqlGenerateRequests := DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS,
-    graphqlRequestSuffix := Some(DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX),
-    graphqlResponseProjectionSuffix := Some(DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
+    graphqlGenerateBuilder := MappingConfigConstants.DEFAULT_BUILDER,
+    graphqlGenerateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS,
+    graphqlModelValidationAnnotation := Some(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION),
+    graphqlGenerateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
+    graphqlGenerateToString := MappingConfigConstants.DEFAULT_TO_STRING,
+    graphqlGenerateAsyncApi := MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS,
+    graphqlGenerateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
+    graphqlGenerateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
+    graphqlGenerateDataFetchingEnvArgInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV,
+    graphqlGenerateRequests := MappingConfigConstants.DEFAULT_GENERATE_REQUESTS,
+    graphqlRequestSuffix := Some(MappingConfigConstants.DEFAULT_REQUEST_SUFFIX),
+    graphqlResponseProjectionSuffix := Some(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
   )
 
   // a group of settings that are automatically added to projects.

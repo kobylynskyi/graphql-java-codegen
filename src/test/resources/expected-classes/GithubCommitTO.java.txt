@@ -1,7 +1,7 @@
 package com.github.graphql;
 
 
-public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO{
+public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO {
 
     @javax.validation.constraints.NotNull
     private String abbreviatedOid;

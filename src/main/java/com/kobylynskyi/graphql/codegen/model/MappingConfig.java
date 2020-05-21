@@ -35,6 +35,10 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private String queryResolverParentInterface;
+    private String mutationResolverParentInterface;
+    private String subscriptionResolverParentInterface;
+    private String resolverParentInterface;
 
     // client-side codegen configs:
     private Boolean generateRequests;
@@ -81,6 +85,10 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         } else if (this.fieldsWithoutResolvers == null) {
             this.fieldsWithoutResolvers = source.fieldsWithoutResolvers;
         }
+        this.queryResolverParentInterface = source.queryResolverParentInterface != null ? source.queryResolverParentInterface : this.queryResolverParentInterface;
+        this.mutationResolverParentInterface = source.mutationResolverParentInterface != null ? source.mutationResolverParentInterface : this.mutationResolverParentInterface;
+        this.subscriptionResolverParentInterface = source.subscriptionResolverParentInterface != null ? source.subscriptionResolverParentInterface : this.subscriptionResolverParentInterface;
+        this.resolverParentInterface = source.resolverParentInterface != null ? source.resolverParentInterface : this.resolverParentInterface;
         this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
         this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
         this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;

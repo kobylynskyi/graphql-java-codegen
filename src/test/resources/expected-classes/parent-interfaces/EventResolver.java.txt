@@ -1,0 +1,25 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+/**
+ * Resolver for Event
+ */
+public interface EventResolver extends graphql.kickstart.tools.GraphQLResolver<EventTO> {
+
+    String id(EventTO eventTO) throws Exception;
+
+    String categoryId(EventTO eventTO) throws Exception;
+
+    java.util.Collection<EventPropertyTO> properties(EventTO eventTO) throws Exception;
+
+    EventStatusTO status(EventTO eventTO) throws Exception;
+
+    String createdBy(EventTO eventTO) throws Exception;
+
+    String createdDateTime(EventTO eventTO) throws Exception;
+
+    Boolean active(EventTO eventTO) throws Exception;
+
+    Integer rating(EventTO eventTO) throws Exception;
+
+}

@@ -1,23 +1,17 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginConvention;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputFile;
-import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,20 +37,21 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String subscriptionReturnType;
-    private Boolean generateBuilder = DefaultMappingConfigValues.DEFAULT_BUILDER;
-    private Boolean generateApis = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS;
+    private Boolean generateBuilder = MappingConfigConstants.DEFAULT_BUILDER;
+    private Boolean generateApis = MappingConfigConstants.DEFAULT_GENERATE_APIS;
     private String modelValidationAnnotation;
-    private Boolean generateEqualsAndHashCode = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE;
-    private Boolean generateToString = DefaultMappingConfigValues.DEFAULT_TO_STRING;
-    private Boolean generateAsyncApi = DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS;
-    private Boolean generateParameterizedFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
-    private Boolean generateExtensionFieldsResolvers = DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
-    private Boolean generateDataFetchingEnvironmentArgumentInApis = DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV;
+    private Boolean generateEqualsAndHashCode = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE;
+    private Boolean generateToString = MappingConfigConstants.DEFAULT_TO_STRING;
+    private Boolean generateAsyncApi = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS;
+    private Boolean generateParameterizedFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
+    private Boolean generateExtensionFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
+    private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Boolean generateRequests;
     private String requestSuffix;
     private String responseProjectionSuffix;
+    private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
 
     public GraphQLCodegenGradleTask() {
@@ -89,6 +84,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
+        mappingConfig.setResolverParentInterface(getResolverParentInterface());
+        mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
+        mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
+        mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
         new GraphQLCodegen(getActualSchemaPaths(), outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -120,15 +119,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private java.util.Optional<Path> findDefaultResourcesDir() {
         return getProject().getConvention()
-                    .getPlugin(JavaPluginConvention.class)
-                    .getSourceSets()
-                    .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                    .getResources()
-                    .getSourceDirectories()
-                    .getFiles()
-                    .stream()
-                    .findFirst()
-                    .map(File::toPath);
+                .getPlugin(JavaPluginConvention.class)
+                .getSourceSets()
+                .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                .getResources()
+                .getSourceDirectories()
+                .getFiles()
+                .stream()
+                .findFirst()
+                .map(File::toPath);
     }
 
     private MappingConfigSupplier buildJsonSupplier() {
@@ -407,6 +406,40 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setResponseProjectionSuffix(String responseProjectionSuffix) {
         this.responseProjectionSuffix = responseProjectionSuffix;
+    }
+
+    @Nested
+    @Optional
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
+    }
+
+    public void parentInterfaces(Action<? super ParentInterfacesConfig> action) {
+        action.execute(parentInterfaces);
+    }
+
+    @Internal
+    @Override
+    public String getQueryResolverParentInterface() {
+        return parentInterfaces.getQueryResolver();
+    }
+
+    @Internal
+    @Override
+    public String getMutationResolverParentInterface() {
+        return parentInterfaces.getMutationResolver();
+    }
+
+    @Internal
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return parentInterfaces.getSubscriptionResolver();
+    }
+
+    @Internal
+    @Override
+    public String getResolverParentInterface() {
+        return parentInterfaces.getResolver();
     }
 
     @InputFile

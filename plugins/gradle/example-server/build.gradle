@@ -37,6 +37,12 @@ graphqlCodegen {
     customTypesMapping = [
             DateTime: "java.util.Date"
     ]
+    parentInterfaces {
+        queryResolver = "graphql.kickstart.tools.GraphQLQueryResolver"
+        mutationResolver = "graphql.kickstart.tools.GraphQLMutationResolver"
+        subscriptionResolver = "graphql.kickstart.tools.GraphQLSubscriptionResolver"
+        resolver = "graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>"
+    }
     modelNameSuffix = "TO"
     generateApis = true
 }

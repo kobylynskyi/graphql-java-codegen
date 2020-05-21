@@ -123,4 +123,25 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     public String getResponseProjectionSuffix() {
         return config.getResponseProjectionSuffix();
     }
+
+    @Override
+    public String getQueryResolverParentInterface() {
+        return config.getQueryResolverParentInterface();
+    }
+
+    @Override
+    public String getMutationResolverParentInterface() {
+        return config.getMutationResolverParentInterface();
+    }
+
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return config.getSubscriptionResolverParentInterface();
+    }
+
+    @Override
+    public String getResolverParentInterface() {
+        return config.getResolverParentInterface();
+    }
+
 }

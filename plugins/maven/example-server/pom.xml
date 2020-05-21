@@ -32,6 +32,12 @@
                                 <DateTime>java.util.Date</DateTime>
                             </customTypesMapping>
                             <modelNameSuffix>TO</modelNameSuffix>
+                            <parentInterfaces>
+                                <queryResolver>graphql.kickstart.tools.GraphQLQueryResolver</queryResolver>
+                                <mutationResolver>graphql.kickstart.tools.GraphQLMutationResolver</mutationResolver>
+                                <subscriptionResolver>graphql.kickstart.tools.GraphQLSubscriptionResolver</subscriptionResolver>
+                                <resolver><![CDATA[graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>]]></resolver>
+                            </parentInterfaces>
                         </configuration>
                     </execution>
                 </executions>

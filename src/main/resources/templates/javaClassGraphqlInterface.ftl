@@ -15,7 +15,7 @@ import ${import}.*;
 </#list>
  */
 </#if>
-public interface ${className} <#if implements?has_content>implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
+public interface ${className} <#if implements?has_content>extends <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
 <#list fields as field>
 <#if field.javaDoc?has_content>

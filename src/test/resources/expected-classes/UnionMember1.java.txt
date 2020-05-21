@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.multifiles;
 
 
-public class UnionMember1 implements MyUnion{
+public class UnionMember1 implements MyUnion {
 
     private Integer someField;
 

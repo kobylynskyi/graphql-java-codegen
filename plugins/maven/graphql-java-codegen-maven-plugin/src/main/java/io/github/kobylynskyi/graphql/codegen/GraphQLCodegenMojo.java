@@ -1,9 +1,9 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.DefaultMappingConfigValues;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration  {
+public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration {
 
     @Parameter
     private String[] graphqlSchemaPaths;
@@ -42,16 +42,16 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String packageName;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_BUILDER_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_BUILDER_STRING)
     private boolean generateBuilder;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_APIS_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_APIS_STRING)
     private boolean generateApis;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_EQUALS_AND_HASHCODE_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE_STRING)
     private boolean generateEqualsAndHashCode;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_TO_STRING_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
     @Parameter
@@ -69,19 +69,19 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String subscriptionReturnType;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_ASYNC_APIS_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING)
     private Boolean generateAsyncApi;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_VALIDATION_ANNOTATION)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION)
     private String modelValidationAnnotation;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING)
     private boolean generateParameterizedFieldsResolvers;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING)
     private boolean generateExtensionFieldsResolvers;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING)
     private boolean generateDataFetchingEnvironmentArgumentInApis;
 
     @Parameter
@@ -90,17 +90,20 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_GENERATE_REQUESTS_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_REQUESTS_STRING)
     private boolean generateRequests;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_REQUEST_SUFFIX)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_REQUEST_SUFFIX)
     private String requestSuffix;
 
-    @Parameter(defaultValue = DefaultMappingConfigValues.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
     private String responseProjectionSuffix;
 
     @Parameter
     private String jsonConfigurationFile;
+
+    @Parameter
+    private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
     /**
      * The project being built.
@@ -135,6 +138,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
+        mappingConfig.setResolverParentInterface(getResolverParentInterface());
+        mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
+        mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
+        mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -400,6 +407,34 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public String getResponseProjectionSuffix() {
         return responseProjectionSuffix;
+    }
+
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
+    }
+
+    public void setParentInterfaces(ParentInterfacesConfig parentInterfaces) {
+        this.parentInterfaces = parentInterfaces;
+    }
+
+    @Override
+    public String getQueryResolverParentInterface() {
+        return parentInterfaces.getQueryResolver();
+    }
+
+    @Override
+    public String getMutationResolverParentInterface() {
+        return parentInterfaces.getMutationResolver();
+    }
+
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return parentInterfaces.getSubscriptionResolver();
+    }
+
+    @Override
+    public String getResolverParentInterface() {
+        return parentInterfaces.getResolver();
     }
 
     public void setResponseProjectionSuffix(String responseProjectionSuffix) {

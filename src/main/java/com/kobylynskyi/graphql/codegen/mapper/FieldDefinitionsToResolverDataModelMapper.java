@@ -5,6 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.TypeName;
 
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.MappingConfigConstants.PARENT_INTERFACE_TYPE_PLACEHOLDER;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -34,7 +36,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
         // Example: PersonResolver
         String className = parentTypeName + "Resolver";
         return mapToResolverModel(mappingContext, parentTypeName, className, fieldDefs,
-                singletonList("Resolver for " + parentTypeName));
+                singletonList("Resolver for " + parentTypeName),
+                getParentInterface(mappingContext, parentTypeName));
     }
 
     /**
@@ -58,7 +61,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
         // Examples: CreateEventMutation, EventsQuery, EventsByIdsQuery (rootTypeName is "Query" or the likes)
         String className = Utils.capitalize(fieldDefinitionName) + rootTypeName;
         List<ExtendedFieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
-        return mapToResolverModel(mappingContext, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc());
+        return mapToResolverModel(mappingContext, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc(),
+                getParentInterface(mappingContext, rootTypeName));
     }
 
     /**
@@ -74,13 +78,15 @@ public class FieldDefinitionsToResolverDataModelMapper {
         String className = Utils.capitalize(parentTypeName);
         // For root types like "Query", we create resolvers for all fields
         return mapToResolverModel(mappingContext, parentTypeName, className,
-                definition.getFieldDefinitions(), definition.getJavaDoc());
+                definition.getFieldDefinitions(), definition.getJavaDoc(),
+                getParentInterface(mappingContext, parentTypeName));
     }
 
     private static Map<String, Object> mapToResolverModel(MappingContext mappingContext, String parentTypeName,
                                                           String className,
                                                           List<ExtendedFieldDefinition> fieldDefinitions,
-                                                          List<String> javaDoc) {
+                                                          List<String> javaDoc,
+                                                          String parentInterface) {
         String packageName = MapperUtils.getApiPackageName(mappingContext);
         Set<String> imports = MapperUtils.getImports(mappingContext, packageName);
         List<OperationDefinition> operations = mapToOperations(mappingContext, fieldDefinitions, parentTypeName);
@@ -91,6 +97,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         dataModel.put(CLASS_NAME, className);
         dataModel.put(OPERATIONS, operations);
         dataModel.put(JAVA_DOC, javaDoc);
+        dataModel.put(IMPLEMENTS, parentInterface != null ? singletonList(parentInterface) : null);
         return dataModel;
     }
 
@@ -155,4 +162,28 @@ public class FieldDefinitionsToResolverDataModelMapper {
         }
         return parameters;
     }
+
+    public static String getParentInterface(MappingContext mappingContext, String typeName) {
+        // 1. check if provided type name is GraphQL root type
+        try {
+            switch (GraphQLOperation.valueOf(typeName.toUpperCase())) {
+                case QUERY:
+                    return mappingContext.getQueryResolverParentInterface();
+                case MUTATION:
+                    return mappingContext.getMutationResolverParentInterface();
+                case SUBSCRIPTION:
+                    return mappingContext.getSubscriptionResolverParentInterface();
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 2. if provided type name is GraphQL root type then assume that it is GraphQL type
+        if (mappingContext.getResolverParentInterface() == null) {
+            return null;
+        }
+        return mappingContext.getResolverParentInterface()
+                .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
+                        MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName));
+    }
+
 }
