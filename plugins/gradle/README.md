@@ -4,7 +4,17 @@
 [![Gradle Plugins](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/io/github/kobylynskyi/graphql-java-codegen-gradle-plugin/maven-metadata.xml.svg?label=gradle)](https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This document describes the gradle plugin for graphql-java-codegen.
+* [Description](#description)
+* [Plugin Setup](#plugin-setup)
+* [Plugin Options](#plugin-options)
+* [Sample Plugin Configuration](#sample-plugin-configuration)
+  * [External mapping configuration](#external-mapping-configuration)
+* [Examples](#examples)
+  * [GraphQL **server** code generation](#graphql-server-code-generation)
+  * [GraphQL **client** code generation](#graphql-client-code-generation)
+* [Different configurations for graphql schemas](#different-configurations-for-graphql-schemas)
+* [Convert generated Java classes to Kotlin classes](#convert-generated-java-classes-to-kotlin-classes)
+
 
 ### Description
 
@@ -175,10 +185,15 @@ Sample content of the file:
 
 ### Examples
 
-* GraphQL **server** code generation: [example-server](example-server)
+#### GraphQL **server** code generation
+
+[example-server](example-server):
   * [Plugin configuration in build.gradle](example-server/build.gradle)
   * [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
-* GraphQL **client** code generation: [example-client](example-client)
+
+#### GraphQL **client** code generation 
+
+[example-client](example-client):
   * [Plugin configuration in build.gradle](example-client/build.gradle)
   * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
   * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)

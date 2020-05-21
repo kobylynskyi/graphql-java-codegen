@@ -4,7 +4,15 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.kobylynskyi/graphql-codegen-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.kobylynskyi/graphql-codegen-maven-plugin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This document describes the maven plugin for graphql-java-codegen.
+* [Description](#description)
+* [Plugin Setup and Configuration](#plugin-setup-and-configuration)
+* [Plugin Options](#plugin-options)
+  * [External mapping configuration](#external-mapping-configuration)
+* [Examples](#examples)
+  * [GraphQL **server** code generation](#graphql-server-code-generation)
+  * [GraphQL **client** code generation](#graphql-client-code-generation)
+* [Different configurations for graphql schemas](#different-configurations-for-graphql-schemas)
+
 
 ### Description
 
@@ -54,6 +62,7 @@ This Maven plugin is able to generate the following classes based on your GraphQ
 ```
 
 You can run the plugin manually with `mvn generate-sources`. It will be run automatically as part of the Maven lifecycle when compiling your code
+
 
 ### Plugin Options
 
@@ -136,10 +145,15 @@ Sample content of the file:
 
 ### Examples
 
-* GraphQL **server** code generation: [example-server](example-server)
+#### GraphQL **server** code generation
+
+[example-server](example-server):
   * [Plugin configuration in pom.xml](example-server/pom.xml)
   * [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
-* GraphQL **client** code generation: [example-client](example-client)
+
+#### GraphQL **client** code generation
+
+[example-client](example-client):
   * [Plugin configuration in pom.xml](example-client/pom.xml)
   * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
   * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
