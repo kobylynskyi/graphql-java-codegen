@@ -3,6 +3,8 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import graphql.language.Comment;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
@@ -31,9 +33,20 @@ public class EnumDefinitionToDataModelMapper {
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, definition));
+        dataModel.put(IMPLEMENTS, getUnionInterfaces(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, map(definition.getValueDefinitions()));
         return dataModel;
+    }
+
+    private static Set<String> getUnionInterfaces(MappingContext mappingContext,
+                                                  ExtendedEnumTypeDefinition definition) {
+        return mappingContext.getDocument().getUnionDefinitions()
+                .stream()
+                .filter(union -> union.isDefinitionPartOfUnion(definition))
+                .map(ExtendedUnionTypeDefinition::getName)
+                .map(unionName -> MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, unionName))
+                .collect(Collectors.toSet());
     }
 
     /**

@@ -1,0 +1,9 @@
+enum EnumMember1 {
+    VALUE
+}
+
+enum EnumMember2 {
+    OTHER_VALUE
+}
+
+union EnumUnion = EnumMember1 | EnumMember2

@@ -1,0 +1,6 @@
+package com.kobylynskyi.graphql.enumunion;
+
+
+public interface EnumUnion {
+
+}
