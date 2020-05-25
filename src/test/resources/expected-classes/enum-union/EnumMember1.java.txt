@@ -1,0 +1,7 @@
+package com.kobylynskyi.graphql.enumunion;
+
+public enum EnumMember1 implements EnumUnion {
+
+    VALUE
+
+}

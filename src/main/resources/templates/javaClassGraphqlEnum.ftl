@@ -9,7 +9,7 @@ package ${package};
 </#list>
  */
 </#if>
-public enum ${className} {
+public enum ${className}<#if implements?has_content> implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 
 <#list fields as field>
 <#if field.javaDoc?has_content>
