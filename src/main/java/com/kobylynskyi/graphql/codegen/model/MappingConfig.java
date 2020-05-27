@@ -44,6 +44,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateRequests;
     private String requestSuffix;
     private String responseProjectionSuffix;
+    private String parametrizedInputSuffix;
 
     @Override
     public void combine(MappingConfig source) {

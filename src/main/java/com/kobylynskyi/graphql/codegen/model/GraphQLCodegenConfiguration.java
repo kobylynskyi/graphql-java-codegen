@@ -193,6 +193,13 @@ public interface GraphQLCodegenConfiguration {
     String getResponseProjectionSuffix();
 
     /**
+     * The suffix for `ParametrizedInput` classes.
+     *
+     * @return The suffix for `ParametrizedInput` classes.
+     */
+    String getParametrizedInputSuffix();
+
+    /**
      * Interface that will be added as "extend" to all generated api Query interfaces.
      *
      * @return Parent interface of all GraphQL Query types.

@@ -3,10 +3,9 @@ package ${package};
 
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+<#if equalsAndHashCode>
 import java.util.Objects;
-import java.util.StringJoiner;
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -15,9 +14,7 @@ import java.util.StringJoiner;
 </#list>
  */
 </#if>
-public class ${className} implements GraphQLResponseProjection {
-
-    private Map<String, Object> fields = new LinkedHashMap<>();
+public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {
     }
@@ -38,6 +35,13 @@ public class ${className} implements GraphQLResponseProjection {
         return this;
     }
 
+<#if field.parametrizedInputClassName?has_content>
+    public ${className} ${field.name}(${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
+        parametrizedInputs.put("${field.name}", input);
+        return ${field.name}(<#if field.type?has_content>subProjection</#if>);
+    }
+
+</#if>
 </#list>
 <#if equalsAndHashCode>
     @Override
@@ -49,27 +53,13 @@ public class ${className} implements GraphQLResponseProjection {
             return false;
         }
         final ${className} that = (${className}) obj;
-        return Objects.equals(fields, that.fields);
+        return Objects.equals(fields, that.fields) && Objects.equals(parametrizedInputs, that.parametrizedInputs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fields);
+        return Objects.hash(fields, parametrizedInputs);
     }
 </#if>
 
-    @Override
-    public String toString() {
-        if (fields.isEmpty()) {
-            return "";
-        }
-        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
-        for (Map.Entry<String, Object> property : fields.entrySet()) {
-            joiner.add(property.getKey());
-            if (property.getValue() != null) {
-                joiner.add(" ").add(property.getValue().toString());
-            }
-        }
-        return joiner.toString();
-    }
 }

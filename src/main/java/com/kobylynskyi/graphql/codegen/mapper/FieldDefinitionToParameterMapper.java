@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
@@ -43,9 +44,10 @@ public class FieldDefinitionToParameterMapper {
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ProjectionParameterDefinition> mapProjectionFields(MappingContext mappingContext,
-                                                                          List<ExtendedFieldDefinition> fieldDefinitions) {
+                                                                          List<ExtendedFieldDefinition> fieldDefinitions,
+                                                                          ExtendedDefinition<?, ?> parentTypeDefinition) {
         return fieldDefinitions.stream()
-                .map(fieldDef -> mapProjectionField(mappingContext, fieldDef))
+                .map(fieldDef -> mapProjectionField(mappingContext, fieldDef, parentTypeDefinition))
                 .collect(toList());
     }
 
@@ -73,15 +75,21 @@ public class FieldDefinitionToParameterMapper {
      *
      * @param mappingContext Global mapping context
      * @param fieldDef       GraphQL field definition
+     * @param parentTypeDef  GraphQL definition which is a parent to provided field definition
      * @return Freemarker-understandable format of parameter (field)
      */
     private static ProjectionParameterDefinition mapProjectionField(MappingContext mappingContext,
-                                                                    ExtendedFieldDefinition fieldDef) {
+                                                                    ExtendedFieldDefinition fieldDef,
+                                                                    ExtendedDefinition<?, ?> parentTypeDef) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         String nestedType = getNestedTypeName(fieldDef.getType());
         if (mappingContext.getTypeNames().contains(nestedType)) {
             parameter.setType(nestedType + mappingContext.getResponseProjectionSuffix());
+        }
+        if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {
+            parameter.setParametrizedInputClassName(
+                    MapperUtils.getParametrizedInputClassName(mappingContext, fieldDef, parentTypeDef));
         }
         parameter.setDeprecated(fieldDef.isDeprecated());
         return parameter;

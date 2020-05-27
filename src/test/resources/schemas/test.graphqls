@@ -62,9 +62,9 @@ type EventProperty {
     # String comment
     stringVal: String
     # Properties
-    child: [EventProperty]
+    child(first: Int, last: Int): [EventProperty]
     # Parent event of the property
-    parent: Event
+    parent(withStatus: EventStatus): Event
 }
 
 # Custom DateTime scalar

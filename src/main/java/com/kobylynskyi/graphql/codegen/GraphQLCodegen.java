@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.*;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 import graphql.language.ScalarTypeExtensionDefinition;
 import lombok.Getter;
@@ -63,6 +64,9 @@ public class GraphQLCodegen {
         }
         if (mappingConfig.getResponseProjectionSuffix() == null) {
             mappingConfig.setResponseProjectionSuffix(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
+        }
+        if (mappingConfig.getParametrizedInputSuffix() == null) {
+            mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFIX);
         }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(MappingConfigConstants.DEFAULT_TO_STRING);
@@ -179,6 +183,13 @@ public class GraphQLCodegen {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateRequests())) {
             Map<String, Object> responseProjDataModel = TypeDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
+
+            for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
+                if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
+                    Map<String, Object> fieldProjDataModel = TypeDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.parametrizedInputTemplate, fieldProjDataModel, outputDir));
+                }
+            }
         }
         return generatedFiles;
     }

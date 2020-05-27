@@ -3,10 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.*;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.TypeName;
 
@@ -69,6 +66,31 @@ public class TypeDefinitionToDataModelMapper {
     }
 
     /**
+     * Map field definition to a Freemarker data model of Parametrized Input.
+     *
+     * @param mappingContext       Global mapping context
+     * @param fieldDefinition      GraphQL field definition
+     * @param parentTypeDefinition GraphQL parent type definition
+     * @return Freemarker data model of the GraphQL Parametrized Input
+     */
+    public static Map<String, Object> mapParametrizedInput(MappingContext mappingContext,
+                                                           ExtendedFieldDefinition fieldDefinition,
+                                                           ExtendedObjectTypeDefinition parentTypeDefinition) {
+        Map<String, Object> dataModel = new HashMap<>();
+        // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
+        dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
+        dataModel.put(CLASS_NAME, MapperUtils.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition));
+        dataModel.put(JAVA_DOC, Collections.singletonList(String.format("Parametrized input for field %s in type %s",
+                fieldDefinition.getName(), parentTypeDefinition.getName())));
+        dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(
+                mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName()));
+        dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
+        dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
+        return dataModel;
+    }
+
+    /**
      * Get merged attributes from the type and attributes from the interface.
      *
      * @param mappingContext Global mapping context
@@ -124,11 +146,11 @@ public class TypeDefinitionToDataModelMapper {
         Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
 
         // includes parameters from the base definition and extensions
-        FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions())
+        FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
                 .forEach(p -> allParameters.put(p.getName(), p));
         // includes parameters from the interface
         getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
-                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions()))
+                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
                 .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
                 .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));

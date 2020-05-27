@@ -59,6 +59,42 @@ class GraphQLRequestSerializerTest {
     }
 
     @Test
+    void serialize_withResponseProjectionAndParametrizedInput() {
+        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .setCategoryId("categoryIdValue1")
+                .setStatus(Status.OPEN)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+                        .active()
+                        .properties(new EventPropertyResponseProjection()
+                                .floatVal()
+                                .child(new EventPropertyChildParametrizedInput()
+                                                .last(-10)
+                                                .first(+10),
+                                        new EventPropertyResponseProjection()
+                                                .intVal()
+                                                .parent(new EventPropertyParentParametrizedInput()
+                                                                .withStatus(Status.OPEN),
+                                                        new EventResponseProjection()
+                                                                .id()))
+                                .booleanVal())
+                        .status()
+        );
+        String serializedQuery = graphQLRequest.toString().replaceAll(" +", " ").trim();
+        assertEquals(expected("query { " +
+                "eventsByCategoryAndStatus(categoryId: \\\"categoryIdValue1\\\", status: OPEN){ " +
+                "id " +
+                "active " +
+                "properties { " +
+                "floatVal child (first: 10, last: -10) { intVal parent (withStatus: OPEN) { id } } booleanVal } " +
+                "status " +
+                "} " +
+                "}"), serializedQuery);
+    }
+
+    @Test
     void serialize_complexRequestWithDefaultData() {
         UpdateIssueMutationRequest requestWithDefaultData = new UpdateIssueMutationRequest();
         requestWithDefaultData.setInput(new UpdateIssueInput());
