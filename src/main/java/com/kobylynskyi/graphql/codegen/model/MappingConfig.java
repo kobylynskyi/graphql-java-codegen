@@ -93,6 +93,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
         this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
         this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;
+        this.parametrizedInputSuffix = source.parametrizedInputSuffix != null ? source.parametrizedInputSuffix : this.parametrizedInputSuffix;
     }
 
     /**

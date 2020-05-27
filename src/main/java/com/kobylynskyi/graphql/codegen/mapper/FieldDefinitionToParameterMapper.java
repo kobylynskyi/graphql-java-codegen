@@ -39,8 +39,9 @@ public class FieldDefinitionToParameterMapper {
     /**
      * Map field definition to a Freemarker-understandable data model type
      *
-     * @param mappingContext   Global mapping context
-     * @param fieldDefinitions List of GraphQL field definitions
+     * @param mappingContext       Global mapping context
+     * @param fieldDefinitions     List of GraphQL field definitions
+     * @param parentTypeDefinition Parent GraphQL type definition
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ProjectionParameterDefinition> mapProjectionFields(MappingContext mappingContext,
