@@ -51,6 +51,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateRequests;
     private String requestSuffix;
     private String responseProjectionSuffix;
+    private String parametrizedInputSuffix;
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
 
@@ -84,6 +85,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
+        mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
@@ -406,6 +408,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setResponseProjectionSuffix(String responseProjectionSuffix) {
         this.responseProjectionSuffix = responseProjectionSuffix;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getParametrizedInputSuffix() {
+        return parametrizedInputSuffix;
+    }
+
+    public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
+        this.parametrizedInputSuffix = parametrizedInputSuffix;
     }
 
     @Nested

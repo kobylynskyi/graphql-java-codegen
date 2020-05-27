@@ -1,6 +1,7 @@
 package com.github.graphql;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class AcceptTopicSuggestionInput {
@@ -41,6 +42,24 @@ public class AcceptTopicSuggestionInput {
         this.repositoryId = repositoryId;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final AcceptTopicSuggestionInput that = (AcceptTopicSuggestionInput) obj;
+        return Objects.equals(clientMutationId, that.clientMutationId)
+            && Objects.equals(name, that.name)
+            && Objects.equals(repositoryId, that.repositoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clientMutationId, name, repositoryId);
+    }
 
     @Override
     public String toString() {

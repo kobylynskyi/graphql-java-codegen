@@ -2,11 +2,13 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
-import java.util.*;
+import java.util.Map;
+import java.util.StringJoiner;
 
-public class EventResponseProjection implements GraphQLResponseProjection {
-
-    private Map<String, Object> fields = new LinkedHashMap<>();
+/**
+ * Response projection for Event
+ */
+public class EventResponseProjection extends GraphQLResponseProjection {
 
     public EventResponseProjection() {
     }
@@ -51,19 +53,4 @@ public class EventResponseProjection implements GraphQLResponseProjection {
         return this;
     }
 
-
-    @Override
-    public String toString() {
-        if (fields.isEmpty()) {
-            return "";
-        }
-        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
-        for (Map.Entry<String, Object> property : fields.entrySet()) {
-            joiner.add(property.getKey());
-            if (property.getValue() != null) {
-                joiner.add(" ").add(property.getValue().toString());
-            }
-        }
-        return joiner.toString();
-    }
 }

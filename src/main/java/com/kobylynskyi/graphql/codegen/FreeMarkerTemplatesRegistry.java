@@ -15,6 +15,7 @@ class FreeMarkerTemplatesRegistry {
     static Template requestTemplate;
     static Template interfaceTemplate;
     static Template operationsTemplate;
+    static Template parametrizedInputTemplate;
     static Template responseProjectionTemplate;
 
     static {
@@ -32,6 +33,7 @@ class FreeMarkerTemplatesRegistry {
             requestTemplate = configuration.getTemplate("templates/javaClassGraphqlRequest.ftl");
             interfaceTemplate = configuration.getTemplate("templates/javaClassGraphqlInterface.ftl");
             operationsTemplate = configuration.getTemplate("templates/javaClassGraphqlOperations.ftl");
+            parametrizedInputTemplate = configuration.getTemplate("templates/javaClassGraphqlParametrizedInput.ftl");
             responseProjectionTemplate = configuration.getTemplate("templates/javaClassGraphqlResponseProjection.ftl");
         } catch (IOException e) {
             throw new UnableToLoadFreeMarkerTemplateException(e);

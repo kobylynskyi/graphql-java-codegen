@@ -17,5 +17,6 @@ public class ProjectionParameterDefinition {
     private String type;
     private String name;
     private boolean deprecated;
+    private String parametrizedInputClassName;
 
 }

@@ -27,6 +27,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setResponseProjectionSuffix("ResponseProjection");
         mappingConfig.setRequestSuffix("Request");
         mappingConfig.setGenerateRequests(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateToString(false); // should be overridden to true
         mappingConfig.setGenerateApis(false);
     }
@@ -47,6 +48,10 @@ class GraphQLCodegenRequestTest {
                 getFileByName(files, "EventResponseProjection.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyResponseProjection.java.txt"),
                 getFileByName(files, "EventPropertyResponseProjection.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyParentParametrizedInput.java.txt"),
+                getFileByName(files, "EventPropertyParentParametrizedInput.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyChildParametrizedInput.java.txt"),
+                getFileByName(files, "EventPropertyChildParametrizedInput.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/VersionQueryRequest.java.txt"),
@@ -67,6 +72,8 @@ class GraphQLCodegenRequestTest {
                 getFileByName(files, "EventStatusTO.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withModelSuffix.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyParentParametrizedInput_withModelSuffix.java.txt"),
+                getFileByName(files, "EventPropertyParentParametrizedInput.java"));
     }
 
     @Test

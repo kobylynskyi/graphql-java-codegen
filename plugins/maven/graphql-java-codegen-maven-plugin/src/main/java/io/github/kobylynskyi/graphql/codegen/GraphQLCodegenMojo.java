@@ -99,6 +99,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
     private String responseProjectionSuffix;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFIX)
+    private String parametrizedInputSuffix;
+
     @Parameter
     private String jsonConfigurationFile;
 
@@ -138,6 +141,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateRequests(generateRequests);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
+        mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
@@ -409,6 +413,19 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return responseProjectionSuffix;
     }
 
+    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
+        this.responseProjectionSuffix = responseProjectionSuffix;
+    }
+
+    @Override
+    public String getParametrizedInputSuffix() {
+        return parametrizedInputSuffix;
+    }
+
+    public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
+        this.parametrizedInputSuffix = parametrizedInputSuffix;
+    }
+
     public ParentInterfacesConfig getParentInterfaces() {
         return parentInterfaces;
     }
@@ -435,10 +452,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public String getResolverParentInterface() {
         return parentInterfaces.getResolver();
-    }
-
-    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
-        this.responseProjectionSuffix = responseProjectionSuffix;
     }
 
     public String getJsonConfigurationFile() {

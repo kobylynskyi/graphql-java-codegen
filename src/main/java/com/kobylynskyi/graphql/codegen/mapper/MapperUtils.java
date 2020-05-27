@@ -69,6 +69,22 @@ class MapperUtils {
     }
 
     /**
+     * Generates a class name for ParametrizedInput
+     *
+     * @param mappingContext       Global mapping context
+     * @param fieldDefinition      GraphQL field definition for a field that has parametrized input
+     * @param parentTypeDefinition GraphQL definition which is a parent for fieldDefinition
+     * @return Class name of parametrized input
+     */
+    static String getParametrizedInputClassName(MappingContext mappingContext,
+                                                ExtendedFieldDefinition fieldDefinition,
+                                                ExtendedDefinition<?, ?> parentTypeDefinition) {
+        return Utils.capitalize(parentTypeDefinition.getName()) +
+                Utils.capitalize(fieldDefinition.getName()) +
+                mappingContext.getParametrizedInputSuffix();
+    }
+
+    /**
      * Get java package name for api class.
      *
      * @param mappingContext Global mapping context

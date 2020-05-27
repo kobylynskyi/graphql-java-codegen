@@ -35,12 +35,13 @@ class GraphQLCodegenTest {
     void init() {
         mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
+        mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig);
     }
 
     @AfterEach
-    void cleanup() throws IOException {
+    void cleanup() {
         Utils.deleteDir(new File("build/generated"));
     }
 

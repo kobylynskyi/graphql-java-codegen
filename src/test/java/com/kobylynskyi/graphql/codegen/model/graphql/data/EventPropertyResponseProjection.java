@@ -6,9 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
-public class EventPropertyResponseProjection implements GraphQLResponseProjection {
-
-    private Map<String, Object> fields = new LinkedHashMap<>();
+/**
+ * Response projection for EventProperty
+ */
+public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public EventPropertyResponseProjection() {
     }
@@ -38,24 +39,19 @@ public class EventPropertyResponseProjection implements GraphQLResponseProjectio
         return this;
     }
 
+    public EventPropertyResponseProjection child(EventPropertyChildParametrizedInput input, EventPropertyResponseProjection subProjection) {
+        parametrizedInputs.put("child", input);
+        return child(subProjection);
+    }
+
     public EventPropertyResponseProjection parent(EventResponseProjection subProjection) {
         fields.put("parent", subProjection);
         return this;
     }
 
-
-    @Override
-    public String toString() {
-        if (fields.isEmpty()) {
-            return "";
-        }
-        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
-        for (Map.Entry<String, Object> property : fields.entrySet()) {
-            joiner.add(property.getKey());
-            if (property.getValue() != null) {
-                joiner.add(" ").add(property.getValue().toString());
-            }
-        }
-        return joiner.toString();
+    public EventPropertyResponseProjection parent(EventPropertyParentParametrizedInput input, EventResponseProjection subProjection) {
+        parametrizedInputs.put("parent", input);
+        return parent(subProjection);
     }
+
 }

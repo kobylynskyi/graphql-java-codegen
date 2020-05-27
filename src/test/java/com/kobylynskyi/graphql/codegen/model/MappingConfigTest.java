@@ -80,6 +80,7 @@ class MappingConfigTest {
         assertEquals("6", mappingConfig.getRequestSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
         assertFalse(mappingConfig.getGenerateRequests());
+        assertEquals("9", mappingConfig.getParametrizedInputSuffix());
     }
 
     @Test
@@ -110,6 +111,7 @@ class MappingConfigTest {
         assertEquals("66", mappingConfig.getRequestSuffix());
         assertEquals("77", mappingConfig.getResponseProjectionSuffix());
         assertTrue(mappingConfig.getGenerateRequests());
+        assertEquals("99", mappingConfig.getParametrizedInputSuffix());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -140,6 +142,7 @@ class MappingConfigTest {
         config.setRequestSuffix("6");
         config.setResponseProjectionSuffix("7");
         config.setGenerateRequests(false);
+        config.setParametrizedInputSuffix("9");
         return config;
     }
 
@@ -166,6 +169,7 @@ class MappingConfigTest {
         config.setRequestSuffix("66");
         config.setResponseProjectionSuffix("77");
         config.setGenerateRequests(true);
+        config.setParametrizedInputSuffix("99");
         return config;
     }
 

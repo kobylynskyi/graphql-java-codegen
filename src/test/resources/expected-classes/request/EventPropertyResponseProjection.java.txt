@@ -1,17 +1,12 @@
 package com.github.graphql;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 /**
  * Response projection for EventProperty
  */
-public class EventPropertyResponseProjection implements GraphQLResponseProjection {
-
-    private Map<String, Object> fields = new LinkedHashMap<>();
+public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public EventPropertyResponseProjection() {
     }
@@ -41,24 +36,36 @@ public class EventPropertyResponseProjection implements GraphQLResponseProjectio
         return this;
     }
 
+    public EventPropertyResponseProjection child(EventPropertyChildParametrizedInput input, EventPropertyResponseProjection subProjection) {
+        parametrizedInputs.put("child", input);
+        return child(subProjection);
+    }
+
     public EventPropertyResponseProjection parent(EventResponseProjection subProjection) {
         fields.put("parent", subProjection);
         return this;
     }
 
+    public EventPropertyResponseProjection parent(EventPropertyParentParametrizedInput input, EventResponseProjection subProjection) {
+        parametrizedInputs.put("parent", input);
+        return parent(subProjection);
+    }
 
     @Override
-    public String toString() {
-        if (fields.isEmpty()) {
-            return "";
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        StringJoiner joiner = new StringJoiner(" ", "{ ", " }");
-        for (Map.Entry<String, Object> property : fields.entrySet()) {
-            joiner.add(property.getKey());
-            if (property.getValue() != null) {
-                joiner.add(" ").add(property.getValue().toString());
-            }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
         }
-        return joiner.toString();
+        final EventPropertyResponseProjection that = (EventPropertyResponseProjection) obj;
+        return Objects.equals(fields, that.fields) && Objects.equals(parametrizedInputs, that.parametrizedInputs);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields, parametrizedInputs);
+    }
+
 }

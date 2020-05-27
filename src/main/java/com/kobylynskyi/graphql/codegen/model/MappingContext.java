@@ -125,6 +125,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public String getParametrizedInputSuffix() {
+        return config.getParametrizedInputSuffix();
+    }
+
+    @Override
     public String getQueryResolverParentInterface() {
         return config.getQueryResolverParentInterface();
     }
