@@ -41,7 +41,7 @@ Please follow the steps below in order to make the changes:
 
    ```shell script
    # Install Gradle plugin
-   ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin clean build
+   ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin clean build publishToMavenLocal
    
    # Install Maven plugin
    cd plugins/maven/graphql-java-codegen-maven-plugin
