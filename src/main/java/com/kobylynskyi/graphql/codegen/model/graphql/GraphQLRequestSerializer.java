@@ -13,7 +13,37 @@ public class GraphQLRequestSerializer {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /**
+     * Serializes GraphQL request to be used as HTTP JSON body
+     * according to https://graphql.org/learn/serving-over-http specifications
+     * 
+     * @param graphQLRequest the GraphQL request to serialize
+     * @return the serialized request
+     */
+    public static String toHttpJsonBody(GraphQLRequest graphQLRequest) {
+        return buildQuery(graphQLRequest, true);
+    }
+
+    /**
+     * Serializes GraphQL request as raw query string
+     * 
+     * @param graphQLRequest the GraphQL request to serialize
+     * @return the serialized request
+     */
+    public static String toQueryString(GraphQLRequest graphQLRequest) {
+        return buildQuery(graphQLRequest, false);
+    }
+
+    /**
+     * @deprecated Not intended for use and will be move to private method in the next version.
+     * Please use one of: {@link #toHttpJsonBody} or {@link #toQueryString}
+     */
+    @Deprecated
     public static String serialize(GraphQLRequest graphQLRequest) {
+        return toHttpJsonBody(graphQLRequest);
+    }
+
+    private static String buildQuery(GraphQLRequest graphQLRequest, boolean jsonQuery) {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
         }
@@ -30,7 +60,7 @@ public class GraphQLRequestSerializer {
                 if (inputEntry.getValue() != null) {
                     builder.append(inputEntry.getKey());
                     builder.append(": ");
-                    builder.append(getEntry(inputEntry.getValue()));
+                    builder.append(getEntry(inputEntry.getValue(), jsonQuery));
                 }
                 if (inputEntryIterator.hasNext()) {
                     builder.append(", ");
@@ -42,7 +72,8 @@ public class GraphQLRequestSerializer {
             builder.append(graphQLRequest.getResponseProjection().toString());
         }
         builder.append(" }");
-        return buildJsonQuery(builder.toString());
+        String query = builder.toString();
+        return jsonQuery ? buildJsonQuery(query) : query;
     }
 
     private static String buildJsonQuery(String queryString) {
@@ -56,13 +87,17 @@ public class GraphQLRequestSerializer {
     }
 
     public static String getEntry(Object input) {
+        return getEntry(input, true);
+    }
+
+    private static String getEntry(Object input, boolean jsonQuery) {
         if (input == null) {
             return null;
         }
         if (input instanceof Collection) {
             Collection<?> inputCollection = (Collection) input;
             return inputCollection.stream()
-                    .map(GraphQLRequestSerializer::getEntry)
+                    .map(i -> GraphQLRequestSerializer.getEntry(i, jsonQuery))
                     .collect(Collectors.joining(", ", "[ ", " ]"));
         }
         if (input instanceof Enum<?>) {
