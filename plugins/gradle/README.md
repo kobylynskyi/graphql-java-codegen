@@ -82,6 +82,7 @@ apply plugin: "io.github.kobylynskyi.graphql.codegen"
 | `generateRequests`                              | Boolean                                            | False                                         | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields). |
 | `requestSuffix`                                 | String                                             | Request                                       | Sets the suffix for `Request` classes. |
 | `responseProjectionSuffix`                      | String                                             | ResponseProjection                            | Sets the suffix for `ResponseProjection` classes. |
+| `parametrizedInputSuffix`                       | String                                             | ParametrizedInput                             | Sets the suffix for `ParametrizedInput` classes. |
 | `parentInterfaces`                              | *See [parentInterfaces](#option-parentinterfaces)* | Empty                                         | Block to define parent interfaces for generated interfaces (query / mutation / subscription / type resolver) |
 
 

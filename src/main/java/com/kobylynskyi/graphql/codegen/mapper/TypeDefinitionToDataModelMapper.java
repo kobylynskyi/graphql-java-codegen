@@ -3,7 +3,11 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.*;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.TypeName;
 
@@ -77,7 +81,7 @@ public class TypeDefinitionToDataModelMapper {
                                                            ExtendedFieldDefinition fieldDefinition,
                                                            ExtendedObjectTypeDefinition parentTypeDefinition) {
         Map<String, Object> dataModel = new HashMap<>();
-        // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
+        // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition));
         dataModel.put(JAVA_DOC, Collections.singletonList(String.format("Parametrized input for field %s in type %s",
