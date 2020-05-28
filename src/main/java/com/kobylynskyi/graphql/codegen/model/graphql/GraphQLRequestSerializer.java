@@ -16,7 +16,7 @@ public class GraphQLRequestSerializer {
     /**
      * Serializes GraphQL request to be used as HTTP JSON body
      * according to https://graphql.org/learn/serving-over-http specifications
-     * 
+     *
      * @param graphQLRequest the GraphQL request to serialize
      * @return the serialized request
      */
@@ -26,7 +26,7 @@ public class GraphQLRequestSerializer {
 
     /**
      * Serializes GraphQL request as raw query string
-     * 
+     *
      * @param graphQLRequest the GraphQL request to serialize
      * @return the serialized request
      */
@@ -35,6 +35,8 @@ public class GraphQLRequestSerializer {
     }
 
     /**
+     * @param graphQLRequest the GraphQL request to serialize
+     * @return the serialized request
      * @deprecated Not intended for use and will be move to private method in the next version.
      * Please use one of: {@link #toHttpJsonBody} or {@link #toQueryString}
      */
