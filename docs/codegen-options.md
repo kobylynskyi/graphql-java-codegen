@@ -23,7 +23,7 @@
 | `fieldsWithResolvers`                           | Set(String)                                        | Empty                                         | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. |
 | `fieldsWithoutResolvers`                        | Set(String)                                        | Empty                                         | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. |
 | `generateParameterizedFieldsResolvers`          | Boolean                                            | True                                          | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
-| `generateExtensionFieldsResolvers`              | Boolean                                            | False                                         | Specifies whether all fields in extensions (<code>extend type</code> and <code>extend interface</code>) should be present in Resolver interface instead of the type class itself. |
+| `generateExtensionFieldsResolvers`              | Boolean                                            | False                                         | Specifies whether all fields in extensions (`extend type` and `extend interface`) should be present in Resolver interface instead of the type class itself. |
 | `subscriptionReturnType`                        | String                                             | Empty                                         | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
 | `generateRequests`                              | Boolean                                            | False                                         | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields). |
 | `requestSuffix`                                 | String                                             | Request                                       | Sets the suffix for `Request` classes. |
@@ -34,7 +34,7 @@
 
 ### Option `graphqlSchemas`
 
-When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `<graphqlSchemas></graphqlSchemas>` block.
+When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `graphqlSchemas` block.
 The parameters inside that block are the following:
 
 | Key inside `graphqlSchemas` | Data Type    | Default value      | Description |
