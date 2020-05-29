@@ -88,10 +88,10 @@ You can also refer to build.gradle files in example projects: [example-client/bu
 
 #### build.gradle.kts:
 
-```groovy
-tasks.named<GraphqlCodegenGradleTask>("graphqlCodegen") {
-    graphqlSchemaPaths = listOf("$projectDir/src/main/resources/graphql/schema.graphqls".toString())
-    outputDir = new File("$buildDir/generated")
+```kotlin
+tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
+    graphqlSchemaPaths = listOf("$projectDir/src/main/resources/graphql/schema.graphqls")
+    outputDir = File("$buildDir/generated")
     packageName = "com.example.graphql.model"
     customTypesMapping = mutableMapOf(Pair("EpochMillis", "java.time.LocalDateTime"))
     customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class"))
