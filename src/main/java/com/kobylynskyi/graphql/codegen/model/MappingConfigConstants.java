@@ -21,9 +21,10 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_GENERATE_DATA_FETCHING_ENV = false;
     public static final String DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING = "false";
 
-    public static final boolean DEFAULT_GENERATE_REQUESTS = false;
-    public static final String DEFAULT_GENERATE_REQUESTS_STRING = "false";
+    public static final boolean DEFAULT_GENERATE_CLIENT = false;
+    public static final String DEFAULT_GENERATE_CLIENT_STRING = "false";
     public static final String DEFAULT_REQUEST_SUFFIX = "Request";
+    public static final String DEFAULT_RESPONSE_SUFFIX = "Response";
     public static final String DEFAULT_RESPONSE_PROJECTION_SUFFIX = "ResponseProjection";
     public static final String DEFAULT_PARAMETRIZED_INPUT_SUFIX = "ParametrizedInput";
 }

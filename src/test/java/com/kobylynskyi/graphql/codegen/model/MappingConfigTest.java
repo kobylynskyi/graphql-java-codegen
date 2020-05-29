@@ -50,8 +50,9 @@ class MappingConfigTest {
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
+        assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
-        assertFalse(mappingConfig.getGenerateRequests());
+        assertFalse(mappingConfig.getGenerateClient());
     }
 
     @Test
@@ -78,8 +79,9 @@ class MappingConfigTest {
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
+        assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
-        assertFalse(mappingConfig.getGenerateRequests());
+        assertFalse(mappingConfig.getGenerateClient());
         assertEquals("9", mappingConfig.getParametrizedInputSuffix());
     }
 
@@ -109,8 +111,9 @@ class MappingConfigTest {
         assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
         assertEquals(new HashSet<>(Arrays.asList("8", "88")), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("66", mappingConfig.getRequestSuffix());
+        assertEquals("1010", mappingConfig.getResponseSuffix());
         assertEquals("77", mappingConfig.getResponseProjectionSuffix());
-        assertTrue(mappingConfig.getGenerateRequests());
+        assertTrue(mappingConfig.getGenerateClient());
         assertEquals("99", mappingConfig.getParametrizedInputSuffix());
     }
 
@@ -140,8 +143,9 @@ class MappingConfigTest {
         config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
         config.setFieldsWithoutResolvers(new HashSet<>(singleton("8")));
         config.setRequestSuffix("6");
+        config.setResponseSuffix("10");
         config.setResponseProjectionSuffix("7");
-        config.setGenerateRequests(false);
+        config.setGenerateClient(false);
         config.setParametrizedInputSuffix("9");
         return config;
     }
@@ -167,8 +171,9 @@ class MappingConfigTest {
         config.setFieldsWithResolvers(singleton("55"));
         config.setFieldsWithoutResolvers(singleton("88"));
         config.setRequestSuffix("66");
+        config.setResponseSuffix("1010");
         config.setResponseProjectionSuffix("77");
-        config.setGenerateRequests(true);
+        config.setGenerateClient(true);
         config.setParametrizedInputSuffix("99");
         return config;
     }

@@ -26,7 +26,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setPackageName("com.github.graphql");
         mappingConfig.setResponseProjectionSuffix("ResponseProjection");
         mappingConfig.setRequestSuffix("Request");
-        mappingConfig.setGenerateRequests(true);
+        mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateToString(false); // should be overridden to true
         mappingConfig.setGenerateApis(false);

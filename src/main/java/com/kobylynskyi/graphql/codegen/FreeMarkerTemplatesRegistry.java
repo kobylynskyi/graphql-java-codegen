@@ -13,6 +13,7 @@ class FreeMarkerTemplatesRegistry {
     static Template enumTemplate;
     static Template unionTemplate;
     static Template requestTemplate;
+    static Template responseTemplate;
     static Template interfaceTemplate;
     static Template operationsTemplate;
     static Template parametrizedInputTemplate;
@@ -31,6 +32,7 @@ class FreeMarkerTemplatesRegistry {
             enumTemplate = configuration.getTemplate("templates/javaClassGraphqlEnum.ftl");
             unionTemplate = configuration.getTemplate("templates/javaClassGraphqlUnion.ftl");
             requestTemplate = configuration.getTemplate("templates/javaClassGraphqlRequest.ftl");
+            responseTemplate = configuration.getTemplate("templates/javaClassGraphqlResponse.ftl");
             interfaceTemplate = configuration.getTemplate("templates/javaClassGraphqlInterface.ftl");
             operationsTemplate = configuration.getTemplate("templates/javaClassGraphqlOperations.ftl");
             parametrizedInputTemplate = configuration.getTemplate("templates/javaClassGraphqlParametrizedInput.ftl");
