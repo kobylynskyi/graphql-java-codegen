@@ -27,11 +27,13 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
 
     private Set<String> getMemberTypeNames() {
         Set<String> memberTypeNames = new HashSet<>();
-        getDefinition().getMemberTypes().stream()
-                .map(NamedNode.class::cast)
-                .map(NamedNode::getName)
-                .forEach(memberTypeNames::add);
-        getExtensions().stream()
+        if (definition != null) {
+            definition.getMemberTypes().stream()
+                    .map(NamedNode.class::cast)
+                    .map(NamedNode::getName)
+                    .forEach(memberTypeNames::add);
+        }
+        extensions.stream()
                 .map(UnionTypeDefinition::getMemberTypes)
                 .flatMap(Collection::stream)
                 .map(NamedNode.class::cast)

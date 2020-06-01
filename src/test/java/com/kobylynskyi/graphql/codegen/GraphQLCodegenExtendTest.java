@@ -57,6 +57,17 @@ class GraphQLCodegenExtendTest {
     }
 
     @Test
+    void generate_onlyExtend() throws Exception {
+        schemaFinder.setIncludePattern("only-extend-queries.*\\.graphqls");
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+
+        assertEquals(new HashSet<>(asList("Subscription.java", "UserQuery.java", "User.java",
+                "UsersCreatedSubscription.java", "CreateUserMutation.java", "Mutation.java", "Query.java",
+                "UserInput.java")), Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                .map(File::getName).collect(toSet()));
+    }
+
+    @Test
     void generateServerSideClasses_ExtensionFieldsResolvers() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();

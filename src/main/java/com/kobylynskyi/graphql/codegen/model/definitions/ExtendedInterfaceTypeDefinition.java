@@ -11,9 +11,11 @@ public class ExtendedInterfaceTypeDefinition extends ExtendedDefinition<Interfac
 
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
-        definition.getFieldDefinitions().stream()
-                .map(f -> new ExtendedFieldDefinition(f, false))
-                .forEach(definitions::add);
+        if (definition != null) {
+            definition.getFieldDefinitions().stream()
+                    .map(f -> new ExtendedFieldDefinition(f, false))
+                    .forEach(definitions::add);
+        }
         extensions.stream()
                 .map(InterfaceTypeExtensionDefinition::getFieldDefinitions)
                 .flatMap(Collection::stream)
