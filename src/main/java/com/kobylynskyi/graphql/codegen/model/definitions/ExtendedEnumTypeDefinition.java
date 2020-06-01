@@ -4,6 +4,7 @@ import graphql.language.EnumTypeDefinition;
 import graphql.language.EnumTypeExtensionDefinition;
 import graphql.language.EnumValueDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExtendedEnumTypeDefinition extends ExtendedDefinition<EnumTypeDefinition, EnumTypeExtensionDefinition> {
@@ -14,7 +15,10 @@ public class ExtendedEnumTypeDefinition extends ExtendedDefinition<EnumTypeDefin
      * @return list of all enum value definitions
      */
     public List<EnumValueDefinition> getValueDefinitions() {
-        List<EnumValueDefinition> definitions = definition.getEnumValueDefinitions();
+        List<EnumValueDefinition> definitions = new ArrayList<>();
+        if (definition != null) {
+            definitions.addAll(definition.getEnumValueDefinitions());
+        }
         extensions.stream()
                 .map(EnumTypeExtensionDefinition::getEnumValueDefinitions)
                 .forEach(definitions::addAll);

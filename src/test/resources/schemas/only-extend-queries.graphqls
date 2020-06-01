@@ -1,0 +1,20 @@
+extend type Query {
+    user(userId: ID!): User
+}
+
+extend type Mutation {
+    createUser(input: UserInput!): User
+}
+
+extend type Subscription {
+    usersCreated: [User]
+}
+
+type User {
+    id: ID!
+    name: String!
+}
+
+input UserInput {
+    name: String!
+}

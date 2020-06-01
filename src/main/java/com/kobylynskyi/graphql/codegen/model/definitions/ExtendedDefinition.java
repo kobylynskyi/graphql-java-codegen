@@ -1,12 +1,15 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import graphql.language.*;
+import graphql.language.Comment;
+import graphql.language.NamedNode;
+import graphql.language.Node;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Base class for all GraphQL definition types that contains base definition and its extensions
@@ -18,17 +21,23 @@ import java.util.function.Function;
 @Setter
 public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
 
-    @NonNull
+    /**
+     * Nullable because some schemas can have just "extends"
+     */
     protected T definition;
     protected List<E> extensions = new ArrayList<>();
 
     public String getName() {
-        return definition.getName();
+        if (definition != null) {
+            return definition.getName();
+        } else {
+            return extensions.stream().map(NamedNode::getName).findFirst().orElse(null);
+        }
     }
 
     public List<String> getJavaDoc() {
         List<String> comments = new ArrayList<>();
-        if (definition.getComments() != null) {
+        if (definition != null && definition.getComments() != null) {
             definition.getComments().stream()
                     .map(Comment::getContent)
                     .filter(Objects::nonNull)

@@ -217,7 +217,9 @@ public class GraphQLCodegen {
 
     private void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         for (ExtendedScalarTypeDefinition definition : scalarTypeDefinitions) {
-            mappingConfig.putCustomTypeMappingIfAbsent(definition.getDefinition().getName(), "String");
+            if (definition.getDefinition() != null) {
+                mappingConfig.putCustomTypeMappingIfAbsent(definition.getDefinition().getName(), "String");
+            }
             for (ScalarTypeExtensionDefinition extension : definition.getExtensions()) {
                 mappingConfig.putCustomTypeMappingIfAbsent(extension.getName(), "String");
             }

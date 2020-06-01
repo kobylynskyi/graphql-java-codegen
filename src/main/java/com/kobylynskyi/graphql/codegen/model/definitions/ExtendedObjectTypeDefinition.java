@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import graphql.language.*;
+import graphql.language.ObjectTypeDefinition;
+import graphql.language.ObjectTypeExtensionDefinition;
+import graphql.language.Type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,9 +12,11 @@ public class ExtendedObjectTypeDefinition extends ExtendedDefinition<ObjectTypeD
 
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
-        definition.getFieldDefinitions().stream()
-                .map(f -> new ExtendedFieldDefinition(f, false))
-                .forEach(definitions::add);
+        if (definition != null) {
+            definition.getFieldDefinitions().stream()
+                    .map(f -> new ExtendedFieldDefinition(f, false))
+                    .forEach(definitions::add);
+        }
         extensions.stream()
                 .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
                 .flatMap(Collection::stream)
@@ -23,7 +27,10 @@ public class ExtendedObjectTypeDefinition extends ExtendedDefinition<ObjectTypeD
 
     @SuppressWarnings("rawtypes")
     public List<Type> getImplements() {
-        List<Type> definitionImplements = definition.getImplements();
+        List<Type> definitionImplements = new ArrayList<>();
+        if (definition != null) {
+            definitionImplements.addAll(definition.getImplements());
+        }
         extensions.stream()
                 .map(ObjectTypeDefinition::getImplements)
                 .forEach(definitionImplements::addAll);
