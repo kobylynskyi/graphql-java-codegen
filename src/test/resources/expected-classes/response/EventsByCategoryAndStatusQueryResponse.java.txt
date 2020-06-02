@@ -1,0 +1,24 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
+import java.util.Map;
+
+/**
+ * List of events of a specified category.
+ */
+public class EventsByCategoryAndStatusQueryResponse extends GraphQLResult<Map<String, java.util.Collection<EventTO>>> {
+
+    private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
+
+    public EventsByCategoryAndStatusQueryResponse() {
+    }
+
+    /**
+     * List of events of a specified category.
+     */
+    public java.util.Collection<EventTO> eventsByCategoryAndStatus() {
+        Map<String, java.util.Collection<EventTO>> data = getData();
+        return data != null ? data.get(OPERATION_NAME) : null;
+    }
+
+}

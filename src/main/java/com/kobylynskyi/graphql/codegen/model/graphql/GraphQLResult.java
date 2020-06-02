@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import lombok.Data;
-
 import java.util.List;
 
 /**
@@ -9,7 +7,6 @@ import java.util.List;
  *
  * @param <T> type of response
  */
-@Data
 public class GraphQLResult<T> {
 
     private T data;
@@ -20,6 +17,22 @@ public class GraphQLResult<T> {
 
     public GraphQLResult(T data, List<GraphQLError> errors) {
         this.data = data;
+        this.errors = errors;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public List<GraphQLError> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<GraphQLError> errors) {
         this.errors = errors;
     }
 

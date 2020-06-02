@@ -48,8 +48,16 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+
+
+    /**
+     * @deprecated Not intended for use and will be removed in the next version.
+     * Please use: {@link #generateClient}
+     */
     private Boolean generateRequests;
+    private Boolean generateClient;
     private String requestSuffix;
+    private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
@@ -82,8 +90,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers);
-        mappingConfig.setGenerateRequests(generateRequests);
+        mappingConfig.setGenerateClient(Boolean.TRUE.equals(generateClient) || Boolean.TRUE.equals(generateRequests)); // FIXME after removing generateRequests
         mappingConfig.setRequestSuffix(requestSuffix);
+        mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
@@ -377,15 +386,34 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
     }
 
+    /**
+     * @deprecated Not intended for use and will be removed in the next version.
+     * Please use: {@link #generateClient}
+     */
     @Input
     @Optional
-    @Override
+    @Deprecated
     public Boolean getGenerateRequests() {
         return generateRequests;
     }
 
+    /**
+     * @deprecated Not intended for use and will be removed in the next version.
+     * Please use: {@link #generateClient}
+     */
     public void setGenerateRequests(Boolean generateRequests) {
         this.generateRequests = generateRequests;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getGenerateClient() {
+        return generateClient;
+    }
+
+    public void setGenerateClient(Boolean generateClient) {
+        this.generateClient = generateClient;
     }
 
     @Input
@@ -397,6 +425,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setRequestSuffix(String requestSuffix) {
         this.requestSuffix = requestSuffix;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getResponseSuffix() {
+        return responseSuffix;
+    }
+
+    public void setResponseSuffix(String responseSuffix) {
+        this.responseSuffix = responseSuffix;
     }
 
     @Input

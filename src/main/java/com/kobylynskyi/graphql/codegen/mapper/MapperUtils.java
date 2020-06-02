@@ -2,15 +2,22 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
+import graphql.language.TypeName;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 class MapperUtils {
 
@@ -143,9 +150,7 @@ class MapperUtils {
      * @return true if the methods of the given type should be generated with async return types, false otherwise
      */
     static boolean shouldUseAsyncMethods(MappingContext mappingContext, String typeName) {
-        boolean isAsyncApi = mappingContext.getGenerateAsyncApi() != null && mappingContext.getGenerateAsyncApi();
-
-        return isAsyncApi && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
+        return mappingContext.getGenerateAsyncApi() && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
     }
 
     /**
@@ -169,4 +174,29 @@ class MapperUtils {
         }
         return "By" + inputValueNames;
     }
+
+    /**
+     * Scan document and return all interfaces that given type implements.
+     *
+     * @param definition GraphQL type definition
+     * @param document   GraphQL document
+     * @return all interfaces that given type implements.
+     */
+    static List<ExtendedInterfaceTypeDefinition> getInterfacesOfType(ExtendedObjectTypeDefinition definition,
+                                                                     ExtendedDocument document) {
+        if (definition.getImplements().isEmpty()) {
+            return Collections.emptyList();
+        }
+        Set<String> typeImplements = definition.getImplements()
+                .stream()
+                .filter(type -> TypeName.class.isAssignableFrom(type.getClass()))
+                .map(TypeName.class::cast)
+                .map(TypeName::getName)
+                .collect(Collectors.toSet());
+        return document.getInterfaceDefinitions()
+                .stream()
+                .filter(def -> typeImplements.contains(def.getName()))
+                .collect(Collectors.toList());
+    }
+
 }

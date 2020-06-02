@@ -174,9 +174,9 @@ public interface GraphQLCodegenConfiguration {
      * Specifies whether client-side classes should be generated for each query, mutation and subscription.
      * This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields).
      *
-     * @return <b>true</b> if client-side classes should be generated (`Request` and `ResponseProjection`)
+     * @return <b>true</b> if client-side classes should be generated (`Request`, `Response` and `ResponseProjection`)
      */
-    Boolean getGenerateRequests();
+    Boolean getGenerateClient();
 
     /**
      * The suffix for `Request` classes.
@@ -184,6 +184,13 @@ public interface GraphQLCodegenConfiguration {
      * @return The suffix for `Request` classes.
      */
     String getRequestSuffix();
+
+    /**
+     * The suffix for `Response` classes.
+     *
+     * @return The suffix for `Response` classes.
+     */
+    String getResponseSuffix();
 
     /**
      * The suffix for `ResponseProjection` classes.

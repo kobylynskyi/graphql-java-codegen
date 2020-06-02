@@ -110,13 +110,18 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Boolean getGenerateRequests() {
-        return config.getGenerateRequests();
+    public Boolean getGenerateClient() {
+        return config.getGenerateClient();
     }
 
     @Override
     public String getRequestSuffix() {
         return config.getRequestSuffix();
+    }
+
+    @Override
+    public String getResponseSuffix() {
+        return config.getResponseSuffix();
     }
 
     @Override

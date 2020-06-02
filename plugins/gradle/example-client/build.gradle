@@ -49,7 +49,7 @@ task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
             DateTime: "java.util.Date"
     ]
     modelNameSuffix = "TO"
-    generateRequests = true
+    generateClient = true
     generateApis = false
 }
 

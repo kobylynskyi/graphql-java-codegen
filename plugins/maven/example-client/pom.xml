@@ -32,7 +32,7 @@
                                 <DateTime>java.util.Date</DateTime>
                             </customTypesMapping>
                             <modelNameSuffix>TO</modelNameSuffix>
-                            <generateRequests>true</generateRequests>
+                            <generateClient>true</generateClient>
                             <generateApis>false</generateApis>
                         </configuration>
                     </execution>

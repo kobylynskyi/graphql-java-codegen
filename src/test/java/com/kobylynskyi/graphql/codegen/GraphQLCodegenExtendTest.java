@@ -112,7 +112,7 @@ class GraphQLCodegenExtendTest {
     @Test
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
-        mappingConfig.setGenerateRequests(true);
+        mappingConfig.setGenerateClient(true);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

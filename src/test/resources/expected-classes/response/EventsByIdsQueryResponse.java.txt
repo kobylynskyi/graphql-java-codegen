@@ -1,0 +1,24 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
+import java.util.Map;
+
+/**
+ * Events by IDs.
+ */
+public class EventsByIdsQueryResponse extends GraphQLResult<Map<String, java.util.Collection<EventTO>>> {
+
+    private static final String OPERATION_NAME = "eventsByIds";
+
+    public EventsByIdsQueryResponse() {
+    }
+
+    /**
+     * Events by IDs.
+     */
+    public java.util.Collection<EventTO> eventsByIds() {
+        Map<String, java.util.Collection<EventTO>> data = getData();
+        return data != null ? data.get(OPERATION_NAME) : null;
+    }
+
+}

@@ -41,8 +41,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String resolverParentInterface;
 
     // client-side codegen configs:
-    private Boolean generateRequests;
+    private Boolean generateClient;
     private String requestSuffix;
+    private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
 
@@ -90,8 +91,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.mutationResolverParentInterface = source.mutationResolverParentInterface != null ? source.mutationResolverParentInterface : this.mutationResolverParentInterface;
         this.subscriptionResolverParentInterface = source.subscriptionResolverParentInterface != null ? source.subscriptionResolverParentInterface : this.subscriptionResolverParentInterface;
         this.resolverParentInterface = source.resolverParentInterface != null ? source.resolverParentInterface : this.resolverParentInterface;
-        this.generateRequests = source.generateRequests != null ? source.generateRequests : this.generateRequests;
+        this.generateClient = source.generateClient != null ? source.generateClient : this.generateClient;
         this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
+        this.responseSuffix = source.responseSuffix != null ? source.responseSuffix : this.responseSuffix;
         this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;
         this.parametrizedInputSuffix = source.parametrizedInputSuffix != null ? source.parametrizedInputSuffix : this.parametrizedInputSuffix;
     }
