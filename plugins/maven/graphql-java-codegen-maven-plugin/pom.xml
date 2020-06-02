@@ -36,7 +36,7 @@
         <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
         <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven</url>
-        <tag>v1.8.0</tag>
+        <tag>v1.8.1</tag>
     </scm>
 
     <distributionManagement>
@@ -70,7 +70,7 @@
         <version.maven-scm-provider-gitexe>1.11.2</version.maven-scm-provider-gitexe>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
 
-        <version.graphql-java-codegen>1.8.1-SNAPSHOT</version.graphql-java-codegen>
+        <version.graphql-java-codegen>1.8.1</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
