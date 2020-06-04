@@ -18,17 +18,17 @@ class GraphQLRequestSerializerTest {
         return Stream.of(
           Arguments.of(
                   "GraphQLRequestSerializer.serialize()",
-                  (Function<GraphQLRequest, String>) (request) -> GraphQLRequestSerializer.serialize(request),
-                  (Function<String, String>) (query) -> jsonQuery(query)
+                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::serialize,
+                  (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
             ),
           Arguments.of(
                   "GraphQLRequestSerializer.toHttpJsonBody(request)",
-                  (Function<GraphQLRequest, String>) (request) -> GraphQLRequestSerializer.toHttpJsonBody(request),
-                  (Function<String, String>) (query) -> jsonQuery(query)
+                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toHttpJsonBody,
+                  (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
             ),
           Arguments.of(
                   "GraphQLRequestSerializer.toQueryString(request)",
-                  (Function<GraphQLRequest, String>) (request) -> GraphQLRequestSerializer.toQueryString(request),
+                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toQueryString,
                   (Function<String, String>) (query) -> query
             )
         );
@@ -38,12 +38,12 @@ class GraphQLRequestSerializerTest {
         return Stream.concat(provideStaticSerializers(), Stream.of(
                 Arguments.of(
                         "request.toHttpJsonBody()",
-                        (Function<GraphQLRequest, String>) (request) -> request.toHttpJsonBody(),
-                        (Function<String, String>) (query) -> jsonQuery(query)
+                        (Function<GraphQLRequest, String>) GraphQLRequest::toHttpJsonBody,
+                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
                   ),
                 Arguments.of(
                         "request.toQueryString()",
-                        (Function<GraphQLRequest, String>) (request) -> request.toQueryString(),
+                        (Function<GraphQLRequest, String>) GraphQLRequest::toQueryString,
                         (Function<String, String>) (query) -> query
                   )
                 )
@@ -66,7 +66,7 @@ class GraphQLRequestSerializerTest {
     @MethodSource("provideAllSerializers")
     void serialize_noResponseProjection(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
         GraphQLRequest graphQLRequest = new GraphQLRequest(new VersionQueryRequest());
-        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();;
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "query { version }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }

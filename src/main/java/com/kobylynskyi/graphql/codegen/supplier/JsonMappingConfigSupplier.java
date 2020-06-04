@@ -15,7 +15,7 @@ public class JsonMappingConfigSupplier implements MappingConfigSupplier {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private String jsonConfigFile;
+    private final String jsonConfigFile;
 
     /**
      * Instantiates a new Json configuration file supplier.

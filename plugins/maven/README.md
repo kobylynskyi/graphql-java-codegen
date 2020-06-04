@@ -7,7 +7,6 @@
 * [Description](#description)
 * [Plugin Setup and Configuration](#plugin-setup-and-configuration)
 * [Plugin Options](#plugin-options)
-  * [External mapping configuration](#external-mapping-configuration)
 * [Examples](#examples)
   * [GraphQL **server** code generation](#graphql-server-code-generation)
   * [GraphQL **client** code generation](#graphql-client-code-generation)

@@ -9,15 +9,15 @@ import java.io.IOException;
 
 class FreeMarkerTemplatesRegistry {
 
-    static Template typeTemplate;
-    static Template enumTemplate;
-    static Template unionTemplate;
-    static Template requestTemplate;
-    static Template responseTemplate;
-    static Template interfaceTemplate;
-    static Template operationsTemplate;
-    static Template parametrizedInputTemplate;
-    static Template responseProjectionTemplate;
+    static final Template typeTemplate;
+    static final Template enumTemplate;
+    static final Template unionTemplate;
+    static final Template requestTemplate;
+    static final Template responseTemplate;
+    static final Template interfaceTemplate;
+    static final Template operationsTemplate;
+    static final Template parametrizedInputTemplate;
+    static final Template responseProjectionTemplate;
 
     static {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);

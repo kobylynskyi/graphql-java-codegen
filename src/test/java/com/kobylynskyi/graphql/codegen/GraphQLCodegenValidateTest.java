@@ -13,10 +13,9 @@ class GraphQLCodegenValidateTest {
 
     @Test
     void validate_Invalid() {
-        Assertions.assertThrows(SchemaValidationException.class, () -> {
-            new GraphQLCodegenValidate(singletonList("src/test/resources/schemas/invalid.graphqls"))
-                    .validate();
-        });
+        Assertions.assertThrows(SchemaValidationException.class, () ->
+                new GraphQLCodegenValidate(singletonList("src/test/resources/schemas/invalid.graphqls"))
+                        .validate());
     }
 
     @Test
@@ -27,12 +26,11 @@ class GraphQLCodegenValidateTest {
 
     @Test
     void validate_Mixed() {
-        Assertions.assertThrows(SchemaValidationException.class, () -> {
-            new GraphQLCodegenValidate(Arrays.asList(
-                    "src/test/resources/schemas/test.graphqls",
-                    "src/test/resources/schemas/invalid.graphqls"))
-                    .validate();
-        });
+        Assertions.assertThrows(SchemaValidationException.class, () ->
+                new GraphQLCodegenValidate(Arrays.asList(
+                        "src/test/resources/schemas/test.graphqls",
+                        "src/test/resources/schemas/invalid.graphqls"))
+                        .validate());
     }
 
 }

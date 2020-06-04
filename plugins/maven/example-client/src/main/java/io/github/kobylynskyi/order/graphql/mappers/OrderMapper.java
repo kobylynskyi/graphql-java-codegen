@@ -5,7 +5,6 @@ import io.github.kobylynskyi.order.graphql.model.OrderTO;
 import io.github.kobylynskyi.order.model.Item;
 import io.github.kobylynskyi.order.model.Order;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {

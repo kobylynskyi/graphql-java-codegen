@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @Builder
 public class ExtendedDocument {
 
-    private Collection<ExtendedObjectTypeDefinition> operationDefinitions;
-    private Collection<ExtendedObjectTypeDefinition> typeDefinitions;
-    private Collection<ExtendedInputObjectTypeDefinition> inputDefinitions;
-    private Collection<ExtendedEnumTypeDefinition> enumDefinitions;
-    private Collection<ExtendedScalarTypeDefinition> scalarDefinitions;
-    private Collection<ExtendedInterfaceTypeDefinition> interfaceDefinitions;
-    private Collection<ExtendedUnionTypeDefinition> unionDefinitions;
+    private final Collection<ExtendedObjectTypeDefinition> operationDefinitions;
+    private final Collection<ExtendedObjectTypeDefinition> typeDefinitions;
+    private final Collection<ExtendedInputObjectTypeDefinition> inputDefinitions;
+    private final Collection<ExtendedEnumTypeDefinition> enumDefinitions;
+    private final Collection<ExtendedScalarTypeDefinition> scalarDefinitions;
+    private final Collection<ExtendedInterfaceTypeDefinition> interfaceDefinitions;
+    private final Collection<ExtendedUnionTypeDefinition> unionDefinitions;
 
     public Set<String> getTypeNames() {
         return typeDefinitions.stream()

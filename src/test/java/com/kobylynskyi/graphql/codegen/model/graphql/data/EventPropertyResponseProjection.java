@@ -2,10 +2,6 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.StringJoiner;
-
 /**
  * Response projection for EventProperty
  */
