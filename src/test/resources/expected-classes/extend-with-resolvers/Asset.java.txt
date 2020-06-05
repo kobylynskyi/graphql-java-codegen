@@ -1,4 +1,6 @@
-public class Asset implements PinnableItem, Node {
+public class Asset implements java.io.Serializable, PinnableItem, Node {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private String name;

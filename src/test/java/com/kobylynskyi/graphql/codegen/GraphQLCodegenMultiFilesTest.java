@@ -24,7 +24,7 @@ class GraphQLCodegenMultiFilesTest {
 
     @BeforeEach
     void init() {
-        MappingConfig mappingConfig = new MappingConfig();
+        MappingConfig mappingConfig = TestUtils.initMappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.multifiles");
         List<String> schemas = Arrays.asList(
                 "src/test/resources/schemas/multi1.graphqls",

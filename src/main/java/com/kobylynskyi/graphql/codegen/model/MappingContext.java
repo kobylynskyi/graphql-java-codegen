@@ -164,4 +164,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.getResolverParentInterface();
     }
 
+
+
 }

@@ -1,7 +1,9 @@
 package com.kobylynskyi.graphql.testdefaults;
 
 
-public class SomeObject {
+public class SomeObject implements java.io.Serializable {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private String name;

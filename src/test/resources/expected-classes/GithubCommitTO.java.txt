@@ -1,7 +1,9 @@
 package com.github.graphql;
 
 
-public class GithubCommitTO implements GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO {
+public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private String abbreviatedOid;

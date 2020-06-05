@@ -1,4 +1,6 @@
-public class Event implements PinnableItem, Node {
+public class Event implements java.io.Serializable, PinnableItem, Node {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private Status status;

@@ -2,9 +2,11 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
@@ -28,6 +30,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(SERIAL_VERSION_UID, mappingContext.getConfig().getSerialVersionUIDGenerator().randomLong());
         dataModel.put(NAME, definition.getName());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingContext, definition.getValueDefinitions(), definition.getName()));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());

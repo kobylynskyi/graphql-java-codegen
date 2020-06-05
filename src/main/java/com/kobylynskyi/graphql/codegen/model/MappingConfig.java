@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.utils.SerialVersionUIDGenerator;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -48,6 +49,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+
+    // internal
+    private SerialVersionUIDGenerator serialVersionUIDGenerator;
 
     @Override
     public void combine(MappingConfig source) {

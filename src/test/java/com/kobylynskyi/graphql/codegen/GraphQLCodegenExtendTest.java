@@ -24,7 +24,7 @@ class GraphQLCodegenExtendTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated");
-    private final MappingConfig mappingConfig = new MappingConfig();
+    private final MappingConfig mappingConfig = TestUtils.initMappingConfig();
     private final SchemaFinder schemaFinder = new SchemaFinder(Paths.get("src/test/resources"));
 
     @BeforeEach

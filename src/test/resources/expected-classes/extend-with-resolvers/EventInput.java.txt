@@ -1,4 +1,6 @@
-public class EventInput {
+public class EventInput implements java.io.Serializable {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private Status status;

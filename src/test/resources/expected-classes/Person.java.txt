@@ -1,7 +1,9 @@
 package com.kobylynskyi.graphql.test1;
 
 
-public class Person implements NamedEntity {
+public class Person implements java.io.Serializable, NamedEntity {
+
+    private static final long serialVersionUID = 123456L;
 
     private String name;
     private Integer age;

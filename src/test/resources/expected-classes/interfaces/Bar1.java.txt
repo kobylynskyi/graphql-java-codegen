@@ -1,7 +1,9 @@
 package com.kobylynskyi.graphql.interfaces;
 
 
-public class Bar1 implements Bar {
+public class Bar1 implements java.io.Serializable, Bar {
+
+    private static final long serialVersionUID = 123456L;
 
     @javax.validation.constraints.NotNull
     private String id;

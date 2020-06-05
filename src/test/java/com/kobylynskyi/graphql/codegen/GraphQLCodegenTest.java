@@ -33,7 +33,7 @@ class GraphQLCodegenTest {
 
     @BeforeEach
     void init() {
-        mappingConfig = new MappingConfig();
+        mappingConfig = TestUtils.initMappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
@@ -193,7 +193,7 @@ class GraphQLCodegenTest {
                 "/**" + System.lineSeparator() +
                 " * An event that describes a thing that happens" + System.lineSeparator() +
                 " */" + System.lineSeparator() +
-                "public class Event {");
+                "public class Event implements java.io.Serializable {");
     }
 
     @Test

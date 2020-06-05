@@ -1,7 +1,9 @@
 package com.kobylynskyi.graphql.test1;
 
 
-public class EventInput {
+public class EventInput implements java.io.Serializable {
+
+    private static final long serialVersionUID = 123456L;
 
     @Deprecated
     @javax.validation.constraints.NotNull
