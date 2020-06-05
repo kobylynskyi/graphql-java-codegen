@@ -1,0 +1,10 @@
+package com.kobylynskyi.graphql.test1;
+
+
+public interface CreateEventMutationResolver {
+
+    @Deprecated
+    @javax.validation.constraints.NotNull
+    Event createEvent(EventInput input) throws Exception;
+
+}

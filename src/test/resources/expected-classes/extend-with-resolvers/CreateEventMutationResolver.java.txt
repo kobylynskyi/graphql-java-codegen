@@ -1,0 +1,6 @@
+public interface CreateEventMutationResolver {
+
+    @javax.validation.constraints.NotNull
+    Event createEvent(EventInput input) throws Exception;
+
+}

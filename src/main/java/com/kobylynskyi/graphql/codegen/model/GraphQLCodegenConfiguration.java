@@ -73,9 +73,23 @@ public interface GraphQLCodegenConfiguration {
     /**
      * Sets the suffix for GraphQL model classes (type, input, interface, enum, union).
      *
-     * @return The prefix for GraphQL model classes.
+     * @return The suffix for GraphQL model classes.
      */
     String getModelNameSuffix();
+
+    /**
+     * Sets the prefix for GraphQL api classes (query, mutation, subscription).
+     *
+     * @return The prefix for GraphQL api classes.
+     */
+    String getApiNamePrefix();
+
+    /**
+     * Sets the suffix for GraphQL api classes (query, mutation, subscription).
+     *
+     * @return The suffix for GraphQL api classes.
+     */
+    String getApiNameSuffix();
 
     /**
      * Annotation for mandatory (NonNull) fields. Can be null/empty.

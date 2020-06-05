@@ -1,6 +1,8 @@
 package io.github.kobylynskyi.product.graphql.resolvers;
 
-import io.github.kobylynskyi.product.graphql.api.Query;
+import io.github.kobylynskyi.product.graphql.api.ProductByIdQueryResolver;
+import io.github.kobylynskyi.product.graphql.api.ProductsByIdsQueryResolver;
+import io.github.kobylynskyi.product.graphql.api.ProductsQueryResolver;
 import io.github.kobylynskyi.product.graphql.mappers.ProductMapper;
 import io.github.kobylynskyi.product.graphql.model.ProductTO;
 import io.github.kobylynskyi.product.service.ProductService;
@@ -12,7 +14,7 @@ import java.util.Collection;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class QueriesResolver implements Query {
+public class QueriesResolver implements ProductsQueryResolver, ProductsByIdsQueryResolver, ProductByIdQueryResolver {
 
     @Autowired
     private ProductService service;

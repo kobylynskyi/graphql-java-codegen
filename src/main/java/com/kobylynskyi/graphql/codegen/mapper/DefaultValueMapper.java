@@ -60,7 +60,7 @@ public class DefaultValueMapper {
     private static String mapEnum(MappingContext mappingContext, Type<?> graphQLType, EnumValue defaultValue) {
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
-            typeName = MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName);
+            typeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);
             return typeName + "." + defaultValue.getName();
         }
         if (graphQLType instanceof NonNullType) {

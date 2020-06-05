@@ -1,0 +1,6 @@
+public interface CreateAssetMutationResolver {
+
+    @javax.validation.constraints.NotNull
+    Asset createAsset(AssetInput input) throws Exception;
+
+}

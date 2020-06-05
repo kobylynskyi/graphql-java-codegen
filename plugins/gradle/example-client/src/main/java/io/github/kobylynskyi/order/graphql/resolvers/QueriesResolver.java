@@ -1,7 +1,8 @@
 package io.github.kobylynskyi.order.graphql.resolvers;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
-import io.github.kobylynskyi.order.graphql.api.Query;
+import io.github.kobylynskyi.order.graphql.api.OrderByIdQueryResolver;
+import io.github.kobylynskyi.order.graphql.api.OrdersQueryResolver;
 import io.github.kobylynskyi.order.graphql.mappers.OrderMapper;
 import io.github.kobylynskyi.order.graphql.model.OrderTO;
 import io.github.kobylynskyi.order.model.OrderNotFoundException;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class QueriesResolver implements Query, GraphQLQueryResolver {
+public class QueriesResolver implements OrdersQueryResolver, OrderByIdQueryResolver, GraphQLQueryResolver {
 
     @Autowired
     private OrderService service;
