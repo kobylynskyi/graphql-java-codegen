@@ -33,6 +33,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
+    private String apiNamePrefix;
+    private String apiNameSuffix;
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
@@ -73,6 +75,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(customTypesMapping);
+        mappingConfig.setApiNameSuffix(apiNameSuffix);
+        mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
@@ -230,6 +234,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setApiPackageName(String apiPackageName) {
         this.apiPackageName = apiPackageName;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getApiNamePrefix() {
+        return apiNamePrefix;
+    }
+
+    public void setApiNamePrefix(String apiNamePrefix) {
+        this.apiNamePrefix = apiNamePrefix;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getApiNameSuffix() {
+        return apiNameSuffix;
+    }
+
+    public void setApiNameSuffix(String apiNameSuffix) {
+        this.apiNameSuffix = apiNameSuffix;
     }
 
     @Input

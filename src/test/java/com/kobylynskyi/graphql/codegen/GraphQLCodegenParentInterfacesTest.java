@@ -46,23 +46,23 @@ class GraphQLCodegenParentInterfacesTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/Query.java.txt"),
-                getFileByName(files, "Query.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/QueryResolver.java.txt"),
+                getFileByName(files, "QueryResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/Mutation.java.txt"),
-                getFileByName(files, "Mutation.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/MutationResolver.java.txt"),
+                getFileByName(files, "MutationResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/Subscription.java.txt"),
-                getFileByName(files, "Subscription.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/SubscriptionResolver.java.txt"),
+                getFileByName(files, "SubscriptionResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/VersionQuery.java.txt"),
-                getFileByName(files, "VersionQuery.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/VersionQueryResolver.java.txt"),
+                getFileByName(files, "VersionQueryResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/CreateEventMutation.java.txt"),
-                getFileByName(files, "CreateEventMutation.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/CreateEventMutationResolver.java.txt"),
+                getFileByName(files, "CreateEventMutationResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/EventsCreatedSubscription.java.txt"),
-                getFileByName(files, "EventsCreatedSubscription.java"));
+                new File("src/test/resources/expected-classes/parent-interfaces/EventsCreatedSubscriptionResolver.java.txt"),
+                getFileByName(files, "EventsCreatedSubscriptionResolver.java"));
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/parent-interfaces/EventResolver.java.txt"),
                 getFileByName(files, "EventResolver.java"));

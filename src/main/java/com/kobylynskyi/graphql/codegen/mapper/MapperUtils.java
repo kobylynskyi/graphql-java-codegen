@@ -45,25 +45,25 @@ class MapperUtils {
     }
 
     /**
-     * Generates a class name including prefix and suffix (if any)
+     * Generates a model class name including prefix and suffix (if any)
      *
      * @param mappingContext     Global mapping context
      * @param extendedDefinition GraphQL extended definition
-     * @return Class name of GraphQL node
+     * @return Class name of GraphQL model node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingContext mappingContext,
-                                                  ExtendedDefinition<?, ?> extendedDefinition) {
-        return getClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
+    static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
+                                                       ExtendedDefinition<?, ?> extendedDefinition) {
+        return getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
     /**
-     * Generates a class name including prefix and suffix (if any)
+     * Generates a model class name including prefix and suffix (if any)
      *
      * @param mappingContext Global mapping context
      * @param definitionName GraphQL node name
-     * @return Class name of GraphQL node
+     * @return Class name of GraphQL model node
      */
-    static String getClassNameWithPrefixAndSuffix(MappingContext mappingContext, String definitionName) {
+    static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext, String definitionName) {
         StringBuilder classNameBuilder = new StringBuilder();
         if (Utils.isNotBlank(mappingContext.getModelNamePrefix())) {
             classNameBuilder.append(mappingContext.getModelNamePrefix());
@@ -71,6 +71,59 @@ class MapperUtils {
         classNameBuilder.append(Utils.capitalize(definitionName));
         if (Utils.isNotBlank(mappingContext.getModelNameSuffix())) {
             classNameBuilder.append(mappingContext.getModelNameSuffix());
+        }
+        return classNameBuilder.toString();
+    }
+
+    /**
+     * Generates an api class name including prefix and suffix (if any)
+     * Examples: CreateEventMutationResolver, EventsQueryResolver, EventsByIdsQueryResolver (rootTypeName is "Query" or the likes)
+     *
+     * @param mappingContext  Global mapping context
+     * @param fieldDefinition GraphQL field definition
+     * @param rootTypeName    Object type (e.g.: "Query", "Mutation" or "Subscription")
+     * @param fieldNames      Names of all fields inside the rootType. Used to detect duplicate
+     * @return Class name of GraphQL api node
+     */
+    static String getApiClassNameWithPrefixAndSuffix(MappingContext mappingContext,
+                                                     ExtendedFieldDefinition fieldDefinition,
+                                                     String rootTypeName,
+                                                     List<String> fieldNames) {
+        StringBuilder classNameBuilder = new StringBuilder();
+        if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
+            classNameBuilder.append(mappingContext.getApiNamePrefix());
+        }
+        classNameBuilder.append(Utils.capitalize(fieldDefinition.getName()));
+        if (Collections.frequency(fieldNames, fieldDefinition.getName()) > 1) {
+            // Examples: EventsByIdsQuery, EventsByCategoryAndStatusQuery
+            classNameBuilder.append(MapperUtils.getClassNameSuffixWithInputValues(fieldDefinition));
+        }
+        if (Utils.isNotBlank(rootTypeName)) {
+            classNameBuilder.append(rootTypeName);
+        }
+        if (Utils.isNotBlank(mappingContext.getApiNameSuffix())) {
+            classNameBuilder.append(mappingContext.getApiNameSuffix());
+        }
+        return classNameBuilder.toString();
+    }
+
+    /**
+     * Generates an api class name including prefix and suffix (if any)
+     * Examples: MutationResolver, QueryResolver, etc
+     *
+     * @param mappingContext Global mapping context
+     * @param definition     GraphQL object definition of a root type like Query
+     * @return Class name of GraphQL api node
+     */
+    static String getApiClassNameWithPrefixAndSuffix(MappingContext mappingContext,
+                                                     ExtendedObjectTypeDefinition definition) {
+        StringBuilder classNameBuilder = new StringBuilder();
+        if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
+            classNameBuilder.append(mappingContext.getApiNamePrefix());
+        }
+        classNameBuilder.append(Utils.capitalize(definition.getName()));
+        if (Utils.isNotBlank(mappingContext.getApiNameSuffix())) {
+            classNameBuilder.append(mappingContext.getApiNameSuffix());
         }
         return classNameBuilder.toString();
     }

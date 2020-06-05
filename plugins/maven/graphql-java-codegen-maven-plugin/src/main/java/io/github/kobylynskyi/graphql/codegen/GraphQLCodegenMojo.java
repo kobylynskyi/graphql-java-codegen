@@ -64,6 +64,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private String apiPackageName;
 
     @Parameter
+    private String apiNamePrefix;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_NAME_SUFFIX)
+    private String apiNameSuffix;
+
+    @Parameter
     private String modelPackageName;
 
     @Parameter
@@ -138,6 +144,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setApiNameSuffix(apiNameSuffix);
+        mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
@@ -262,6 +270,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setApiPackageName(String apiPackageName) {
         this.apiPackageName = apiPackageName;
+    }
+
+    @Override
+    public String getApiNamePrefix() {
+        return apiNamePrefix;
+    }
+
+    public void setApiNamePrefix(String apiNamePrefix) {
+        this.apiNamePrefix = apiNamePrefix;
+    }
+
+    @Override
+    public String getApiNameSuffix() {
+        return apiNameSuffix;
+    }
+
+    public void setApiNameSuffix(String apiNameSuffix) {
+        this.apiNameSuffix = apiNameSuffix;
     }
 
     @Override

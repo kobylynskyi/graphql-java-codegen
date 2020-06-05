@@ -96,6 +96,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateApis() == null) {
             mappingConfig.setGenerateApis(MappingConfigConstants.DEFAULT_GENERATE_APIS);
         }
+        if (mappingConfig.getApiNameSuffix() == null) {
+            mappingConfig.setApiNameSuffix(MappingConfigConstants.DEFAULT_API_NAME_SUFFIX);
+        }
         if (mappingConfig.getGenerateAsyncApi() == null) {
             mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
         }

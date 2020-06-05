@@ -1,0 +1,8 @@
+package com.kobylynskyi.graphql.test1;
+
+
+public interface ProductsByCategoryIdAndStatusQueryResolver {
+
+    java.util.Collection<Product> products(String categoryId, String status) throws Exception;
+
+}

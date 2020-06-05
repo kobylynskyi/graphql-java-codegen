@@ -100,7 +100,7 @@ class GraphqlTypeToJavaTypeMapper {
         } else if (customTypesMapping.containsKey(graphQLType)) {
             javaTypeName = customTypesMapping.get(graphQLType);
         } else {
-            javaTypeName = MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
+            javaTypeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
         return new NamedDefinition(javaTypeName, mappingContext.getInterfaceNames().contains(graphQLType));
     }

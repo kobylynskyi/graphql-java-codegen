@@ -43,9 +43,9 @@ class GraphQLCodegenExtendTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
-        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
-                "EventsQuery.java", "AssetsQuery.java",
-                "CreateEventMutation.java", "CreateAssetMutation.java",
+        assertEquals(new HashSet<>(asList("MutationResolver.java", "QueryResolver.java",
+                "EventsQueryResolver.java", "AssetsQueryResolver.java",
+                "CreateEventMutationResolver.java", "CreateAssetMutationResolver.java",
                 "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
                 "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
 
@@ -61,8 +61,8 @@ class GraphQLCodegenExtendTest {
         schemaFinder.setIncludePattern("only-extend-queries.*\\.graphqls");
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
 
-        assertEquals(new HashSet<>(asList("Subscription.java", "UserQuery.java", "User.java",
-                "UsersCreatedSubscription.java", "CreateUserMutation.java", "Mutation.java", "Query.java",
+        assertEquals(new HashSet<>(asList("SubscriptionResolver.java", "UserQueryResolver.java", "User.java",
+                "UsersCreatedSubscriptionResolver.java", "CreateUserMutationResolver.java", "MutationResolver.java", "QueryResolver.java",
                 "UserInput.java")), Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
                 .map(File::getName).collect(toSet()));
     }
@@ -74,10 +74,10 @@ class GraphQLCodegenExtendTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
-        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
-                "EventsQuery.java", "AssetsQuery.java",
+        assertEquals(new HashSet<>(asList("MutationResolver.java", "QueryResolver.java",
+                "EventsQueryResolver.java", "AssetsQueryResolver.java",
                 "EventResolver.java", "NodeResolver.java",
-                "CreateEventMutation.java", "CreateAssetMutation.java",
+                "CreateEventMutationResolver.java", "CreateAssetMutationResolver.java",
                 "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
                 "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
 
@@ -96,9 +96,9 @@ class GraphQLCodegenExtendTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
-        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
-                "EventsQuery.java", "AssetsQuery.java",
-                "CreateEventMutation.java", "CreateAssetMutation.java",
+        assertEquals(new HashSet<>(asList("MutationResolver.java", "QueryResolver.java",
+                "EventsQueryResolver.java", "AssetsQueryResolver.java",
+                "CreateEventMutationResolver.java", "CreateAssetMutationResolver.java",
                 "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
                 "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
 
@@ -133,9 +133,9 @@ class GraphQLCodegenExtendTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
-        assertEquals(new HashSet<>(asList("Mutation.java", "Query.java",
-                "EventsQuery.java", "AssetsQuery.java",
-                "CreateEventMutation.java", "CreateAssetMutation.java",
+        assertEquals(new HashSet<>(asList("MutationResolver.java", "QueryResolver.java",
+                "EventsQueryResolver.java", "AssetsQueryResolver.java",
+                "CreateEventMutationResolver.java", "CreateAssetMutationResolver.java",
                 "Event.java", "Asset.java", "EventInput.java", "AssetInput.java",
                 "Node.java", "Status.java", "PinnableItem.java")), generatedFileNames);
 
