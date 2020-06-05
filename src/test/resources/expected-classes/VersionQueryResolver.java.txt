@@ -1,0 +1,15 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * Version of the application.
+ */
+public interface VersionQueryResolver {
+
+    /**
+     * Version of the application.
+     */
+    @javax.validation.constraints.NotNull
+    String version() throws Exception;
+
+}

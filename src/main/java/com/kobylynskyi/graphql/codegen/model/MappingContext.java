@@ -55,6 +55,16 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public String getApiNamePrefix() {
+        return config.getApiNamePrefix();
+    }
+
+    @Override
+    public String getApiNameSuffix() {
+        return config.getApiNameSuffix();
+    }
+
+    @Override
     public String getModelValidationAnnotation() {
         return config.getModelValidationAnnotation();
     }

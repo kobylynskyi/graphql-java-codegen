@@ -1,0 +1,15 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+/**
+ * Version of the application.
+ */
+public interface VersionQueryResolver extends graphql.kickstart.tools.GraphQLQueryResolver {
+
+    /**
+     * Version of the application.
+     */
+    @javax.validation.constraints.NotNull
+    String version() throws Exception;
+
+}

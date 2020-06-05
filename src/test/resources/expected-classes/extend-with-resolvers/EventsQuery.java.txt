@@ -1,6 +1,0 @@
-public interface EventsQuery {
-
-    @javax.validation.constraints.NotNull
-    java.util.Collection<Event> events() throws Exception;
-
-}

@@ -1,0 +1,15 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+/**
+ * Subscribe to events
+ */
+public interface EventsCreatedSubscriptionResolver extends graphql.kickstart.tools.GraphQLSubscriptionResolver {
+
+    /**
+     * Subscribe to events
+     */
+    @javax.validation.constraints.NotNull
+    java.util.Collection<EventTO> eventsCreated() throws Exception;
+
+}

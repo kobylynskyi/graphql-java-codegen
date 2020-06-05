@@ -9,10 +9,20 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.TypeName;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPORTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.MappingConfigConstants.PARENT_INTERFACE_TYPE_PLACEHOLDER;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -53,13 +63,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
                                                        ExtendedFieldDefinition fieldDefinition,
                                                        String rootTypeName,
                                                        List<String> fieldNames) {
-        String fieldDefinitionName = fieldDefinition.getName();
-        if (Collections.frequency(fieldNames, fieldDefinitionName) > 1) {
-            // Examples: EventsByIdsQuery, EventsByCategoryAndStatusQuery
-            fieldDefinitionName += MapperUtils.getClassNameSuffixWithInputValues(fieldDefinition);
-        }
-        // Examples: CreateEventMutation, EventsQuery, EventsByIdsQuery (rootTypeName is "Query" or the likes)
-        String className = Utils.capitalize(fieldDefinitionName) + rootTypeName;
+        String className = MapperUtils.getApiClassNameWithPrefixAndSuffix(mappingContext, fieldDefinition, rootTypeName, fieldNames);
         List<ExtendedFieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
         return mapToResolverModel(mappingContext, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc(),
                 getParentInterface(mappingContext, rootTypeName));
@@ -74,12 +78,11 @@ public class FieldDefinitionsToResolverDataModelMapper {
      */
     public static Map<String, Object> mapRootTypeFields(MappingContext mappingContext,
                                                         ExtendedObjectTypeDefinition definition) {
-        String parentTypeName = definition.getName();
-        String className = Utils.capitalize(parentTypeName);
+        String className = MapperUtils.getApiClassNameWithPrefixAndSuffix(mappingContext, definition);
         // For root types like "Query", we create resolvers for all fields
-        return mapToResolverModel(mappingContext, parentTypeName, className,
+        return mapToResolverModel(mappingContext, definition.getName(), className,
                 definition.getFieldDefinitions(), definition.getJavaDoc(),
-                getParentInterface(mappingContext, parentTypeName));
+                getParentInterface(mappingContext, definition.getName()));
     }
 
     private static Map<String, Object> mapToResolverModel(MappingContext mappingContext, String parentTypeName,
@@ -183,7 +186,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         }
         return mappingContext.getResolverParentInterface()
                 .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
-                        MapperUtils.getClassNameWithPrefixAndSuffix(mappingContext, typeName));
+                        MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName));
     }
 
 }

@@ -24,6 +24,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
+    private String apiNamePrefix;
+    private String apiNameSuffix;
     private String modelValidationAnnotation;
     private String subscriptionReturnType;
     private Boolean generateBuilder;
@@ -68,6 +70,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.modelPackageName = source.modelPackageName != null ? source.modelPackageName : this.modelPackageName;
         this.modelNamePrefix = source.modelNamePrefix != null ? source.modelNamePrefix : this.modelNamePrefix;
         this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
+        this.apiNamePrefix = source.apiNamePrefix != null ? source.apiNamePrefix : this.apiNamePrefix;
+        this.apiNameSuffix = source.apiNameSuffix != null ? source.apiNameSuffix : this.apiNameSuffix;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
         this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;

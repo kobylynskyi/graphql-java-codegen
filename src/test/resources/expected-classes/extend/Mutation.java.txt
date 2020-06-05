@@ -1,9 +1,0 @@
-public interface Mutation {
-
-    @javax.validation.constraints.NotNull
-    Event createEvent(EventInput input) throws Exception;
-
-    @javax.validation.constraints.NotNull
-    Asset createAsset(AssetInput input) throws Exception;
-
-}

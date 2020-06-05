@@ -1,0 +1,12 @@
+package com.kobylynskyi.graphql.test1;
+
+
+public interface SubscriptionResolver {
+
+    /**
+     * Subscribe to events
+     */
+    @javax.validation.constraints.NotNull
+    java.util.Collection<Event> eventsCreated() throws Exception;
+
+}

@@ -1,0 +1,6 @@
+public interface AssetsQueryResolver {
+
+    @javax.validation.constraints.NotNull
+    java.util.Collection<Asset> assets() throws Exception;
+
+}
