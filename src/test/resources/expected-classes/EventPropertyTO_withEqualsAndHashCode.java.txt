@@ -7,8 +7,6 @@ import java.util.Objects;
  */
 public class EventPropertyTO implements java.io.Serializable {
 
-    private static final long serialVersionUID = 123456L;
-
     private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;

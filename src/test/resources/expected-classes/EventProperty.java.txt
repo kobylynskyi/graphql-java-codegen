@@ -6,8 +6,6 @@ package com.kobylynskyi.graphql.test1;
  */
 public class EventProperty implements java.io.Serializable {
 
-    private static final long serialVersionUID = 123456L;
-
     private Double floatVal;
     private Boolean booleanVal;
     private Integer intVal;

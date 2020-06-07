@@ -1,9 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.SerialVersionUIDGenerator;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,18 +22,6 @@ public class TestUtils {
         String expectedContent = Utils.getFileContent(expected.getPath()).trim();
         String actualContent = Utils.getFileContent(file.getPath()).trim();
         assertEquals(expectedContent, actualContent);
-    }
-
-    public static MappingConfig initMappingConfig() {
-        MappingConfig mappingConfig = new MappingConfig();
-        mappingConfig.setSerialVersionUIDGenerator(getSerialVersionUIDGenerator());
-        return mappingConfig;
-    }
-
-    public static SerialVersionUIDGenerator getSerialVersionUIDGenerator() {
-        SerialVersionUIDGenerator serialVersionUIDGenerator = Mockito.mock(SerialVersionUIDGenerator.class);
-        Mockito.when(serialVersionUIDGenerator.randomLong()).thenReturn(123456L);
-        return serialVersionUIDGenerator;
     }
 
 }

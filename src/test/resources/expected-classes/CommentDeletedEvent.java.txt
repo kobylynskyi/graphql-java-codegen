@@ -3,8 +3,6 @@ package com.github.graphql;
 
 public class CommentDeletedEvent implements java.io.Serializable, IssueTimelineItems, PullRequestTimelineItems, Node {
 
-    private static final long serialVersionUID = 123456L;
-
     @javax.validation.constraints.NotNull
     private String id;
 

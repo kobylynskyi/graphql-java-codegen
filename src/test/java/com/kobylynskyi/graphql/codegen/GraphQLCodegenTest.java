@@ -33,7 +33,7 @@ class GraphQLCodegenTest {
 
     @BeforeEach
     void init() {
-        mappingConfig = TestUtils.initMappingConfig();
+        mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),

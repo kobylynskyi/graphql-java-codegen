@@ -2,13 +2,19 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
 
 /**
  * Map input type definition to a Freemarker data model
@@ -30,7 +36,6 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
-        dataModel.put(SERIAL_VERSION_UID, mappingContext.getConfig().getSerialVersionUIDGenerator().randomLong());
         dataModel.put(NAME, definition.getName());
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingContext, definition.getValueDefinitions(), definition.getName()));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());

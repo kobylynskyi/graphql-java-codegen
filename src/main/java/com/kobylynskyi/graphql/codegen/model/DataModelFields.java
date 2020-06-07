@@ -19,7 +19,6 @@ public final class DataModelFields {
     public static final String TO_STRING = "toString";
     public static final String TO_STRING_FOR_REQUEST = "toStringForRequest";
     public static final String JAVA_DOC = "javaDoc";
-    public static final String SERIAL_VERSION_UID = "serialVersionUID";
     public static final String DEPRECATED = "deprecated";
     public static final String OPERATION_TYPE = "operationType";
     public static final String OPERATION_NAME = "operationName";

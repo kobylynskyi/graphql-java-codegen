@@ -26,8 +26,6 @@ import java.util.StringJoiner;
 </#if>
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
-    private static final long serialVersionUID = ${serialVersionUID?long?c}L;
-
 <#list fields as field>
 <#if field.deprecated>
     @Deprecated

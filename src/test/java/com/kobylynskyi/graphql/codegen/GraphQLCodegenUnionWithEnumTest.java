@@ -25,7 +25,7 @@ class GraphQLCodegenUnionWithEnumTest {
 
     @BeforeEach
     void init() {
-        MappingConfig mappingConfig = TestUtils.initMappingConfig();
+        MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.enumunion");
         List<String> schemas = Collections.singletonList(
                 "src/test/resources/schemas/union-with-enum.graphqls"

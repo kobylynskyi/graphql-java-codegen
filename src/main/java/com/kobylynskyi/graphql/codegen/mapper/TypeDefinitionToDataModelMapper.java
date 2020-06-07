@@ -23,7 +23,6 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SERIAL_VERSION_UID;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
 
@@ -50,7 +49,6 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
-        dataModel.put(SERIAL_VERSION_UID, mappingContext.getConfig().getSerialVersionUIDGenerator().randomLong());
         dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
         dataModel.put(FIELDS, getFields(mappingContext, definition, document));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());

@@ -33,10 +33,10 @@ class GraphQLCodegenExternalConfigTest {
      */
     @Test
     void check_combineMappingConfigWithExternal() {
-        MappingConfig mappingConfig = TestUtils.initMappingConfig();
+        MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
 
-        MappingConfig externalMappingConfig = TestUtils.initMappingConfig();
+        MappingConfig externalMappingConfig = new MappingConfig();
         externalMappingConfig.setPackageName("com.kobylynskyi.graphql.testconfig");
         mappingConfig.combine(externalMappingConfig);
         assertEquals(externalMappingConfig.getPackageName(), mappingConfig.getPackageName());

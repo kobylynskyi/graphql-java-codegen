@@ -17,7 +17,7 @@ class GraphQLCodegenResponseTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
-    private final MappingConfig mappingConfig = TestUtils.initMappingConfig();
+    private final MappingConfig mappingConfig = new MappingConfig();
 
     @BeforeEach
     void init() {
