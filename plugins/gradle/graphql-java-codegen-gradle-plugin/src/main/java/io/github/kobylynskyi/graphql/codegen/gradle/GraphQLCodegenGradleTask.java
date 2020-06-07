@@ -52,11 +52,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
 
-    /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    private Boolean generateRequests;
     private Boolean generateClient;
     private String requestSuffix;
     private String responseSuffix;
@@ -94,7 +89,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers);
-        mappingConfig.setGenerateClient(Boolean.TRUE.equals(generateClient) || Boolean.TRUE.equals(generateRequests)); // FIXME after removing generateRequests
+        mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
@@ -410,25 +405,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
-    }
-
-    /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    @Input
-    @Optional
-    @Deprecated
-    public Boolean getGenerateRequests() {
-        return generateRequests;
-    }
-
-    /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    public void setGenerateRequests(Boolean generateRequests) {
-        this.generateRequests = generateRequests;
     }
 
     @Input

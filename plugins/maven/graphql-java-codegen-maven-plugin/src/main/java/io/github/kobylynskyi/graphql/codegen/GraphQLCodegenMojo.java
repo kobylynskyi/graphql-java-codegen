@@ -102,14 +102,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
-    /**
-     * Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    @Deprecated
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING)
-    private boolean generateRequests;
-
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING)
     private boolean generateClient;
 
@@ -163,7 +155,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
-        mappingConfig.setGenerateClient(generateClient || generateRequests); // FIXME after removing generateRequests
+        mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
@@ -441,24 +433,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateClient(boolean generateClient) {
         this.generateClient = generateClient;
-    }
-
-    /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    @Deprecated
-    public Boolean getGenerateRequests() {
-        return generateRequests;
-    }
-
-    /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use: {@link #generateClient}
-     */
-    @Deprecated
-    public void setGenerateRequests(boolean generateRequests) {
-        this.generateRequests = generateRequests;
     }
 
     @Override

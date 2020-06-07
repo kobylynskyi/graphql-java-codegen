@@ -17,11 +17,6 @@ class GraphQLRequestSerializerTest {
     private static Stream<Arguments> provideStaticSerializers() {
         return Stream.of(
           Arguments.of(
-                  "GraphQLRequestSerializer.serialize()",
-                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::serialize,
-                  (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
-            ),
-          Arguments.of(
                   "GraphQLRequestSerializer.toHttpJsonBody(request)",
                   (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toHttpJsonBody,
                   (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery

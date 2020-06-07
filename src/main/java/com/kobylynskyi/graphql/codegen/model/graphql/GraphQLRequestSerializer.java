@@ -34,17 +34,6 @@ public class GraphQLRequestSerializer {
         return buildQuery(graphQLRequest, false);
     }
 
-    /**
-     * @param graphQLRequest the GraphQL request to serialize
-     * @return the serialized request
-     * @deprecated Not intended for use and will be move to private method in the next version.
-     * Please use one of: {@link #toHttpJsonBody} or {@link #toQueryString}
-     */
-    @Deprecated
-    public static String serialize(GraphQLRequest graphQLRequest) {
-        return toHttpJsonBody(graphQLRequest);
-    }
-
     private static String buildQuery(GraphQLRequest graphQLRequest, boolean jsonQuery) {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
