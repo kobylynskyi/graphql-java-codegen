@@ -26,19 +26,9 @@ public class GraphQLRequest {
     }
 
     /**
-     * @deprecated Not intended for use and will be removed in the next version.
-     * Please use one of: {@link #toHttpJsonBody} or {@link #toQueryString}
-     */
-    @Override
-    @Deprecated
-    public String toString() {
-        return toHttpJsonBody();
-    }
-
-    /**
      * Serializes GraphQL request to be used as HTTP JSON body
      * according to https://graphql.org/learn/serving-over-http specifications
-     * 
+     *
      * @return the serialized request
      */
     public String toHttpJsonBody() {
@@ -47,7 +37,7 @@ public class GraphQLRequest {
 
     /**
      * Serializes GraphQL request as raw query string
-     * 
+     *
      * @return the serialized request
      */
     public String toQueryString() {
