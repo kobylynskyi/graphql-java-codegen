@@ -193,7 +193,7 @@ class GraphQLCodegenTest {
                 "/**" + System.lineSeparator() +
                 " * An event that describes a thing that happens" + System.lineSeparator() +
                 " */" + System.lineSeparator() +
-                "public class Event {");
+                "public class Event implements java.io.Serializable {");
     }
 
     @Test

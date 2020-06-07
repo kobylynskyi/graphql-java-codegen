@@ -4,7 +4,7 @@ package com.kobylynskyi.graphql.testdefaults;
 /**
  * This input has all possible types
  */
-public class InputWithDefaultsTO {
+public class InputWithDefaultsTO implements java.io.Serializable {
 
     private Double floatVal = 1.23;
     private Boolean booleanVal = false;

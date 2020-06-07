@@ -1,4 +1,4 @@
-public class Asset implements PinnableItem, Node {
+public class Asset implements java.io.Serializable, PinnableItem, Node {
 
     @javax.validation.constraints.NotNull
     private String name;

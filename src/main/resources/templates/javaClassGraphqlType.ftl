@@ -24,7 +24,7 @@ import java.util.StringJoiner;
 </#list>
  */
 </#if>
-public class ${className}<#if implements?has_content> implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
+public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
 <#list fields as field>
 <#if field.deprecated>
