@@ -4,7 +4,7 @@ package com.kobylynskyi.graphql.test1;
 /**
  * An event property have all possible types
  */
-public class EventProperty {
+public class EventProperty implements java.io.Serializable {
 
     private Double floatVal;
     private Boolean booleanVal;

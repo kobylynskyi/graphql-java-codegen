@@ -4,7 +4,7 @@ package com.kobylynskyi.graphql.test1;
 /**
  * An event that describes a thing that happens
  */
-public class Event {
+public class Event implements java.io.Serializable {
 
     private String id;
     private String categoryId;

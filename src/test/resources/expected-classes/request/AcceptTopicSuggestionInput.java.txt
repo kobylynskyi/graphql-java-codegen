@@ -4,7 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class AcceptTopicSuggestionInput {
+public class AcceptTopicSuggestionInput implements java.io.Serializable {
 
     private String clientMutationId;
     @javax.validation.constraints.NotNull

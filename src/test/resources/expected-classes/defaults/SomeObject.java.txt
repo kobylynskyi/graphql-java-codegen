@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.testdefaults;
 
 
-public class SomeObject {
+public class SomeObject implements java.io.Serializable {
 
     @javax.validation.constraints.NotNull
     private String name;

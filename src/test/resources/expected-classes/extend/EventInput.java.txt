@@ -1,4 +1,4 @@
-public class EventInput {
+public class EventInput implements java.io.Serializable {
 
     @javax.validation.constraints.NotNull
     private Status status;

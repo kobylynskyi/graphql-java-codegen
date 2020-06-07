@@ -1,7 +1,7 @@
 package com.github.graphql;
 
 
-public class Commit implements Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
+public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
 
     @javax.validation.constraints.NotNull
     private String abbreviatedOid;

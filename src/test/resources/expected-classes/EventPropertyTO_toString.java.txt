@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 /**
  * An event property have all possible types
  */
-public class EventPropertyTO {
+public class EventPropertyTO implements java.io.Serializable {
 
     private Double floatVal;
     private Boolean booleanVal;

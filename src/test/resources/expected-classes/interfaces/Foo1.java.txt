@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.interfaces;
 
 
-public class Foo1 implements Foo {
+public class Foo1 implements java.io.Serializable, Foo {
 
     @javax.validation.constraints.NotNull
     private String id;

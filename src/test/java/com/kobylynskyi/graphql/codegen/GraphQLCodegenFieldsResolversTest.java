@@ -7,13 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonMap;
 
 class GraphQLCodegenFieldsResolversTest {
@@ -48,9 +47,9 @@ class GraphQLCodegenFieldsResolversTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noParametrizedFields.java.txt"),
-                getGeneratedFile(files, "Commit.java"));
+                getFileByName(files, "Commit.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommitResolver.java.txt"),
-                getGeneratedFile(files, "CommitResolver.java"));
+                getFileByName(files, "CommitResolver.java"));
     }
 
     @Test
@@ -65,9 +64,9 @@ class GraphQLCodegenFieldsResolversTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTO.java.txt"),
-                getGeneratedFile(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
+                getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/AcceptTopicSuggestionPayloadResolver.java.txt"),
-                getGeneratedFile(files, "AcceptTopicSuggestionPayloadResolver.java"));
+                getFileByName(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
 
     @Test
@@ -79,15 +78,9 @@ class GraphQLCodegenFieldsResolversTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEventResolver.java.txt"),
-                getGeneratedFile(files, "CommentDeletedEventResolver.java"));
+                getFileByName(files, "CommentDeletedEventResolver.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEvent.java.txt"),
-                getGeneratedFile(files, "CommentDeletedEvent.java"));
+                getFileByName(files, "CommentDeletedEvent.java"));
     }
 
-    private static File getGeneratedFile(File[] files, String fileName) throws FileNotFoundException {
-        return Arrays.stream(files)
-                .filter(f -> f.getName().equalsIgnoreCase(fileName))
-                .findFirst()
-                .orElseThrow(FileNotFoundException::new);
-    }
 }

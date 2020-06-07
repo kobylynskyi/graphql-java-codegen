@@ -23,4 +23,5 @@ public class TestUtils {
         String actualContent = Utils.getFileContent(file.getPath()).trim();
         assertEquals(expectedContent, actualContent);
     }
+
 }
