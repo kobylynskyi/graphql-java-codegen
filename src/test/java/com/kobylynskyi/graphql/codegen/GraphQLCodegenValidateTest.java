@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.SchemaValidationException;
+import com.kobylynskyi.graphql.codegen.model.exception.SchemaValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

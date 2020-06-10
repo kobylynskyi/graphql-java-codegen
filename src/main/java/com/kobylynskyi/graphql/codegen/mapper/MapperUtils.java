@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
@@ -9,14 +10,17 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefin
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
+import graphql.language.SourceLocation;
 import graphql.language.TypeName;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class MapperUtils {
@@ -90,9 +94,7 @@ class MapperUtils {
                                                      String rootTypeName,
                                                      List<String> fieldNames) {
         StringBuilder classNameBuilder = new StringBuilder();
-        if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
-            classNameBuilder.append(mappingContext.getApiNamePrefix());
-        }
+        classNameBuilder.append(getApiPrefix(mappingContext, fieldDefinition.getSourceLocation()));
         classNameBuilder.append(Utils.capitalize(fieldDefinition.getName()));
         if (Collections.frequency(fieldNames, fieldDefinition.getName()) > 1) {
             // Examples: EventsByIdsQuery, EventsByCategoryAndStatusQuery
@@ -118,14 +120,68 @@ class MapperUtils {
     static String getApiClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                      ExtendedObjectTypeDefinition definition) {
         StringBuilder classNameBuilder = new StringBuilder();
-        if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
-            classNameBuilder.append(mappingContext.getApiNamePrefix());
+        if (mappingContext.getApiRootInterfaceStrategy() == ApiRootInterfaceStrategy.SINGLE_INTERFACE) {
+            // we don't need to consider apiNamePrefixStrategy in case we are generating a single root interface
+            if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
+                classNameBuilder.append(mappingContext.getApiNamePrefix());
+            }
+        } else {
+            classNameBuilder.append(getApiPrefix(mappingContext, definition.getSourceLocation()));
         }
         classNameBuilder.append(Utils.capitalize(definition.getName()));
         if (Utils.isNotBlank(mappingContext.getApiNameSuffix())) {
             classNameBuilder.append(mappingContext.getApiNameSuffix());
         }
         return classNameBuilder.toString();
+    }
+
+    /**
+     * Get the prefix for api class name based on the defined strategy and GraphQL node source location.
+     *
+     * @param mappingContext Global mapping context
+     * @param sourceLocation GraphQL node SourceLocation
+     * @return prefix for the api class
+     */
+    private static String getApiPrefix(MappingContext mappingContext,
+                                       SourceLocation sourceLocation) {
+        switch (mappingContext.getApiNamePrefixStrategy()) {
+            case FILE_NAME_AS_PREFIX:
+                return getPrefixFromSourceLocation(sourceLocation, File::getName);
+            case FOLDER_NAME_AS_PREFIX:
+                return getPrefixFromSourceLocation(sourceLocation, getParentFileNameFunction());
+            case CONSTANT:
+            default:
+                if (Utils.isNotBlank(mappingContext.getApiNamePrefix())) {
+                    return mappingContext.getApiNamePrefix();
+                }
+        }
+        return "";
+    }
+
+    /**
+     * Get the prefix (used as a prefix for class names) from GraphQL source location (file) using the supplied
+     * function {@param fileStringFunction}.
+     * Examples:
+     * ("src/test/resources/order-service/schema.graphql", File::getParent) => "OrderService"
+     * ("src/test/resources/product-service/ProductApis.graphql", File::getName) => "ProductApis"
+     *
+     * @param sourceLocation     source location of GraphQL definition
+     * @param fileStringFunction function to fetch File's attribute (name, parent, etc)
+     * @return prefix of the file.
+     */
+    private static String getPrefixFromSourceLocation(SourceLocation sourceLocation,
+                                                      Function<File, String> fileStringFunction) {
+        if (sourceLocation == null || sourceLocation.getSourceName() == null) {
+            return "";
+        }
+        String fileName = fileStringFunction.apply(new File(sourceLocation.getSourceName()));
+        // remove prefix
+        fileName = fileName.replaceFirst("[.][^.]+$", "");
+        // capitalize
+        fileName = Utils.capitalizeString(fileName);
+        // leave only alphanumeric
+        fileName = fileName.replaceAll("[^A-Za-z0-9]", "");
+        return fileName;
     }
 
     /**
@@ -250,6 +306,10 @@ class MapperUtils {
                 .stream()
                 .filter(def -> typeImplements.contains(def.getName()))
                 .collect(Collectors.toList());
+    }
+
+    private static Function<File, String> getParentFileNameFunction() {
+        return file -> file != null && file.getParentFile() != null ? file.getParentFile().getName() : null;
     }
 
 }

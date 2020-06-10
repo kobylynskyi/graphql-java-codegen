@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.model.definitions;
 import graphql.language.Comment;
 import graphql.language.NamedNode;
 import graphql.language.Node;
+import graphql.language.SourceLocation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,14 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
             return definition.getName();
         } else {
             return extensions.stream().map(NamedNode::getName).findFirst().orElse(null);
+        }
+    }
+
+    public SourceLocation getSourceLocation() {
+        if (definition != null) {
+            return definition.getSourceLocation();
+        } else {
+            return extensions.stream().map(Node::getSourceLocation).findFirst().orElse(null);
         }
     }
 
