@@ -49,12 +49,3 @@ Please follow the steps below in order to make the changes:
    ```
 
 7. Make sure that `example` projects are compiling and running.
-
-### For the sbt plugin
-
-1. Publish the core library locally. See the instructions at the bottom of build.gradle discussing the necessary process due to Gradle bug
-2. Publish the sbt plugin locally
-   ```shell script
-   cd plugins/sbt
-   sbt publishLocal
-   ```
