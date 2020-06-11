@@ -30,6 +30,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
+        return config.getApiRootInterfaceStrategy();
+    }
+
+    @Override
     public String getPackageName() {
         return config.getPackageName();
     }
@@ -52,6 +57,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public String getModelNameSuffix() {
         return config.getModelNameSuffix();
+    }
+
+    @Override
+    public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
+        return config.getApiNamePrefixStrategy();
     }
 
     @Override

@@ -8,6 +8,8 @@ import com.kobylynskyi.graphql.codegen.mapper.InterfaceDefinitionToDataModelMapp
 import com.kobylynskyi.graphql.codegen.mapper.RequestResponseDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.TypeDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.UnionDefinitionToDataModelMapper;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -111,9 +113,20 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis() == null) {
             mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV);
         }
+        if (mappingConfig.getApiNamePrefixStrategy() == null) {
+            mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);
+        }
+        if (mappingConfig.getApiRootInterfaceStrategy() == null) {
+            mappingConfig.setApiRootInterfaceStrategy(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY);
+        }
         if (mappingConfig.getGenerateClient()) {
             // required for request serialization
             mappingConfig.setGenerateToString(true);
+        }
+        if (mappingConfig.getApiRootInterfaceStrategy() == ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA &&
+                mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
+            // that's because we will have a conflict in case there is "type Query" in multiple graphql schema files
+            throw new IllegalArgumentException("API prefix should not be CONSTANT for INTERFACE_PER_SCHEMA option");
         }
     }
 
@@ -144,7 +157,12 @@ public class GraphQLCodegen {
                     .ifPresent(generatedFiles::add);
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getOperationDefinitions()) {
-            generatedFiles.addAll(generateOperation(context, extendedObjectTypeDefinition));
+            if (mappingConfig.getGenerateApis()) {
+                generatedFiles.addAll(generateServerOperations(context, extendedObjectTypeDefinition));
+            }
+            if (mappingConfig.getGenerateClient()) {
+                generatedFiles.addAll(generateClient(context, extendedObjectTypeDefinition));
+            }
         }
         for (ExtendedInputObjectTypeDefinition extendedInputObjectTypeDefinition : document.getInputDefinitions()) {
             generatedFiles.add(generateInput(context, extendedInputObjectTypeDefinition));
@@ -177,30 +195,68 @@ public class GraphQLCodegen {
         return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
     }
 
-    private List<File> generateOperation(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
+    private List<File> generateServerOperations(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
-        List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
-        if (mappingConfig.getGenerateApis()) {
-            for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
-                generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
-            }
-            // We need to generate a root object to workaround https://github.com/facebook/relay/issues/112
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
+        // Generate a root interface with all operations inside
+        // Relates to https://github.com/facebook/relay/issues/112
+        switch (mappingContext.getApiRootInterfaceStrategy()) {
+            case INTERFACE_PER_SCHEMA:
+                for (ExtendedObjectTypeDefinition defInFile : definition.groupBySourceLocationFile().values()) {
+                    generatedFiles.add(generateRootApi(mappingContext, defInFile));
+                }
+                break;
+            case SINGLE_INTERFACE:
+            default:
+                generatedFiles.add(generateRootApi(mappingContext, definition));
+                break;
         }
 
-        if (mappingConfig.getGenerateClient()) {
-            // generate request objects for graphql operations
-            for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-                Map<String, Object> requestDataModel = RequestResponseDefinitionToDataModelMapper.mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
-                generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir));
-
-                Map<String, Object> responseDataModel = RequestResponseDefinitionToDataModelMapper.mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
-                generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseTemplate, responseDataModel, outputDir));
-            }
+        // Generate separate interfaces for all queries, mutations and subscriptions
+        List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
+        switch (mappingContext.getApiNamePrefixStrategy()) {
+            case FOLDER_NAME_AS_PREFIX:
+                for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFolder().values()) {
+                    generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
+                }
+                break;
+            case FILE_NAME_AS_PREFIX:
+                for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFile().values()) {
+                    generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
+                }
+                break;
+            case CONSTANT:
+            default:
+                generatedFiles.addAll(generateApis(mappingContext, definition, fieldNames));
+                break;
         }
         return generatedFiles;
+    }
+
+    private List<File> generateClient(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
+        List<File> generatedFiles = new ArrayList<>();
+        List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
+        for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
+            Map<String, Object> requestDataModel = RequestResponseDefinitionToDataModelMapper.mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.requestTemplate, requestDataModel, outputDir));
+
+            Map<String, Object> responseDataModel = RequestResponseDefinitionToDataModelMapper.mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseTemplate, responseDataModel, outputDir));
+        }
+        return generatedFiles;
+    }
+
+    private List<File> generateApis(MappingContext mappingContext, ExtendedObjectTypeDefinition definition, List<String> fieldNames) {
+        List<File> generatedFiles = new ArrayList<>();
+        for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
+        }
+        return generatedFiles;
+    }
+
+    private File generateRootApi(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
+        Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingContext, definition);
+        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir);
     }
 
     private List<File> generateType(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {

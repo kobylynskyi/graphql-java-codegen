@@ -1,6 +1,8 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
@@ -10,14 +12,25 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.*;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Gradle task for GraphQL code generation
@@ -29,10 +42,13 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private List<String> graphqlSchemaPaths;
     private final SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
     private File outputDir;
+
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
+    private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
+    private ApiRootInterfaceStrategy apiRootInterfaceStrategy = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY;
     private String apiNamePrefix;
     private String apiNameSuffix;
     private String modelPackageName;
@@ -72,6 +88,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setCustomTypesMapping(customTypesMapping);
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
+        mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
+        mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
@@ -229,6 +247,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setApiPackageName(String apiPackageName) {
         this.apiPackageName = apiPackageName;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
+        return apiRootInterfaceStrategy;
+    }
+
+    public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
+        this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
+        return apiNamePrefixStrategy;
+    }
+
+    public void setApiNamePrefixStrategy(ApiNamePrefixStrategy apiNamePrefixStrategy) {
+        this.apiNamePrefixStrategy = apiNamePrefixStrategy;
     }
 
     @Input

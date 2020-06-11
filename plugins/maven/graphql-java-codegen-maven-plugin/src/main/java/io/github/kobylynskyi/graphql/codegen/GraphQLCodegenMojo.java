@@ -1,6 +1,8 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
@@ -81,6 +83,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String subscriptionReturnType;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING)
+    private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY_STRING)
+    private ApiNamePrefixStrategy apiNamePrefixStrategy;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING)
     private Boolean generateAsyncApi;
 
@@ -138,6 +146,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
+        mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
+        mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
         mappingConfig.setApiPackageName(apiPackageName);
@@ -406,6 +416,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
+        return apiRootInterfaceStrategy;
+    }
+
+    public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
+        this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Override
+    public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
+        return apiNamePrefixStrategy;
+    }
+
+    public void setApiNamePrefixStrategy(ApiNamePrefixStrategy apiNamePrefixStrategy) {
+        this.apiNamePrefixStrategy = apiNamePrefixStrategy;
     }
 
     @Override
