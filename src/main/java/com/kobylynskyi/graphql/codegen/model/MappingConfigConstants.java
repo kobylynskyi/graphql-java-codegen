@@ -21,6 +21,10 @@ public class MappingConfigConstants {
     public static final String DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING = "false";
     public static final boolean DEFAULT_GENERATE_DATA_FETCHING_ENV = false;
     public static final String DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING = "false";
+    public static final ApiNamePrefixStrategy DEFAULT_API_NAME_PREFIX_STRATEGY = ApiNamePrefixStrategy.CONSTANT;
+    public static final String DEFAULT_API_NAME_PREFIX_STRATEGY_STRING = DEFAULT_API_NAME_PREFIX_STRATEGY.name();
+    public static final ApiRootInterfaceStrategy DEFAULT_API_ROOT_INTERFACE_STRATEGY = ApiRootInterfaceStrategy.SINGLE_INTERFACE;
+    public static final String DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING = DEFAULT_API_ROOT_INTERFACE_STRATEGY.name();
 
     public static final boolean DEFAULT_GENERATE_CLIENT = false;
     public static final String DEFAULT_GENERATE_CLIENT_STRING = "false";

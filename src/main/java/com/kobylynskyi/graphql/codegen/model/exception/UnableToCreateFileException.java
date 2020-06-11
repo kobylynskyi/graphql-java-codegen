@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen.model;
+package com.kobylynskyi.graphql.codegen.model.exception;
 
 /**
  * Exception that indicates error while creating a file

@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.SchemaValidationException;
+import com.kobylynskyi.graphql.codegen.model.exception.SchemaValidationException;
 import graphql.GraphQLException;
 import lombok.AllArgsConstructor;
 

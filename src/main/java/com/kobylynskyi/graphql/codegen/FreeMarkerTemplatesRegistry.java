@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.UnableToLoadFreeMarkerTemplateException;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToLoadFreeMarkerTemplateException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;

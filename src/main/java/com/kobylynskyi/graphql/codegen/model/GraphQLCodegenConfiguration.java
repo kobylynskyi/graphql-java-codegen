@@ -43,6 +43,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateApis();
 
     /**
+     * Specifies the strategy of generating root api interface.
+     *
+     * @return strategy of generating root api interface.
+     */
+    ApiRootInterfaceStrategy getApiRootInterfaceStrategy();
+
+    /**
      * Java package for generated classes.
      *
      * @return Java package for generated classes.
@@ -76,6 +83,13 @@ public interface GraphQLCodegenConfiguration {
      * @return The suffix for GraphQL model classes.
      */
     String getModelNameSuffix();
+
+    /**
+     * Sets prefix strategy for GraphQL api classes (query, mutation, subscription).
+     *
+     * @return Prefix strategy for GraphQL api classes.
+     */
+    ApiNamePrefixStrategy getApiNamePrefixStrategy();
 
     /**
      * Sets the prefix for GraphQL api classes (query, mutation, subscription).

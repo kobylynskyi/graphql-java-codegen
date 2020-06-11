@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
-import com.kobylynskyi.graphql.codegen.model.UnableToCreateDirectoryException;
-import com.kobylynskyi.graphql.codegen.model.UnableToDeleteDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 
 import java.io.File;
@@ -43,6 +43,20 @@ public final class Utils {
         char[] chars = aString.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
+    }
+
+    public static String capitalizeString(String aString) {
+        char[] chars = aString.toLowerCase().toCharArray();
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++) {
+            if (!found && Character.isLetter(chars[i])) {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            } else if (Character.isWhitespace(chars[i]) || chars[i] == '-' || chars[i] == '_' || chars[i] == '.') {
+                found = false;
+            }
+        }
+        return String.valueOf(chars);
     }
 
     /**

@@ -18,16 +18,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
-    private Boolean generateApis;
+
+    // package name configs:
     private String packageName;
     private String apiPackageName;
     private String modelPackageName;
+
+    // suffix/prefix/strategies
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String apiNamePrefix;
     private String apiNameSuffix;
+    private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
+    private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
     private String subscriptionReturnType;
+
+    // various toggles
+    private Boolean generateApis;
     private Boolean generateBuilder;
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
@@ -35,8 +43,12 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
+
+    // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+
+    // parent interfaces configs:
     private String queryResolverParentInterface;
     private String mutationResolverParentInterface;
     private String subscriptionResolverParentInterface;
@@ -72,6 +84,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
         this.apiNamePrefix = source.apiNamePrefix != null ? source.apiNamePrefix : this.apiNamePrefix;
         this.apiNameSuffix = source.apiNameSuffix != null ? source.apiNameSuffix : this.apiNameSuffix;
+        this.apiRootInterfaceStrategy = source.apiRootInterfaceStrategy != null ? source.apiRootInterfaceStrategy : this.apiRootInterfaceStrategy;
+        this.apiNamePrefixStrategy = source.apiNamePrefixStrategy != null ? source.apiNamePrefixStrategy : this.apiNamePrefixStrategy;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
         this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;
