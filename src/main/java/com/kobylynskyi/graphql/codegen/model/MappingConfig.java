@@ -39,6 +39,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateBuilder;
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
+    private Boolean generateImmutableModels;
     private Boolean generateAsyncApi;
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
@@ -90,6 +91,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;
         this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
+        this.generateImmutableModels = source.generateImmutableModels != null ? source.generateImmutableModels : this.generateImmutableModels;
         this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
         this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
         this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
