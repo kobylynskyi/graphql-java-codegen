@@ -59,6 +59,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE_STRING)
     private boolean generateEqualsAndHashCode;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING)
+    private boolean generateImmutableModels;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
@@ -157,6 +160,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
+        mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
@@ -362,6 +366,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateEqualsAndHashCode(boolean generateEqualsAndHashCode) {
         this.generateEqualsAndHashCode = generateEqualsAndHashCode;
+    }
+
+    @Override
+    public Boolean getGenerateImmutableModels() {
+        return generateImmutableModels;
+    }
+
+    public void setGenerateImmutableModels(boolean generateImmutableModels) {
+        this.generateImmutableModels = generateImmutableModels;
     }
 
     @Override

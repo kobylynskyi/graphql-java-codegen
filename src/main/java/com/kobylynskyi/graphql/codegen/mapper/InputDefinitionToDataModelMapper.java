@@ -32,6 +32,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(mappingContext, definition.getValueDefinitions(), definition.getName()));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());
         dataModel.put(TO_STRING, mappingContext.getGenerateToString());
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
         return dataModel;

@@ -95,6 +95,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateImmutableModels() {
+        return config.getGenerateImmutableModels();
+    }
+
+    @Override
     public Boolean getGenerateToString() {
         return config.getGenerateToString();
     }

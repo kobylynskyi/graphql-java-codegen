@@ -135,6 +135,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateEqualsAndHashCode();
 
     /**
+     * Specifies whether generated model classes should be immutable.
+     *
+     * @return <b>true</b> if generated model classes should be immutable.
+     */
+    Boolean getGenerateImmutableModels();
+
+    /**
      * Specifies whether generated model classes should have toString method defined.
      *
      * @return <b>true</b> if generated model classes should have toString method defined.

@@ -92,6 +92,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getParametrizedInputSuffix() == null) {
             mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFIX);
         }
+        if (mappingConfig.getGenerateImmutableModels() == null) {
+            mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
+        }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(MappingConfigConstants.DEFAULT_TO_STRING);
         }

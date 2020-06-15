@@ -13,6 +13,8 @@ public class MappingConfigConstants {
     public static final String DEFAULT_BUILDER_STRING = "true";
     public static final boolean DEFAULT_EQUALS_AND_HASHCODE = false;
     public static final String DEFAULT_EQUALS_AND_HASHCODE_STRING = "false";
+    public static final boolean DEFAULT_GENERATE_IMMUTABLE_MODELS = false;
+    public static final String DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING = "false";
     public static final boolean DEFAULT_TO_STRING = false;
     public static final String DEFAULT_TO_STRING_STRING = "false";
     public static final boolean DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS = true;

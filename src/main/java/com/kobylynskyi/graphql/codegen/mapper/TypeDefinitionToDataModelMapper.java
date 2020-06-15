@@ -20,6 +20,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
@@ -53,6 +54,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(FIELDS, getFields(mappingContext, definition, document));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());
         dataModel.put(TO_STRING, mappingContext.getGenerateToString());
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
         return dataModel;

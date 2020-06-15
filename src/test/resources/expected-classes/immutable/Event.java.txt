@@ -1,0 +1,130 @@
+package com.kobylynskyi.graphql.immutable;
+
+
+/**
+ * An event that describes a thing that happens
+ */
+public class Event implements java.io.Serializable {
+
+    private String id;
+    private String categoryId;
+    private java.util.Collection<EventProperty> properties;
+    private EventStatus status;
+    private String createdBy;
+    private String createdDateTime;
+    private Boolean active;
+    private Integer rating;
+
+    public Event() {
+    }
+
+    public Event(String id, String categoryId, java.util.Collection<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.properties = properties;
+        this.status = status;
+        this.createdBy = createdBy;
+        this.createdDateTime = createdDateTime;
+        this.active = active;
+        this.rating = rating;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public java.util.Collection<EventProperty> getProperties() {
+        return properties;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public String getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+
+
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String categoryId;
+        private java.util.Collection<EventProperty> properties;
+        private EventStatus status;
+        private String createdBy;
+        private String createdDateTime;
+        private Boolean active;
+        private Integer rating;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setProperties(java.util.Collection<EventProperty> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder setRating(Integer rating) {
+            this.rating = rating;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(id, categoryId, properties, status, createdBy, createdDateTime, active, rating);
+        }
+
+    }
+}

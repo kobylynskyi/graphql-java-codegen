@@ -38,6 +38,7 @@ class MappingConfigTest {
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
         assertTrue(mappingConfig.getGenerateEqualsAndHashCode());
+        assertFalse(mappingConfig.getGenerateImmutableModels());
         assertTrue(mappingConfig.getGenerateToString());
         assertEquals("ModelNamePrefix", mappingConfig.getModelNamePrefix());
         assertEquals("ModelNameSuffix", mappingConfig.getModelNameSuffix());
@@ -66,6 +67,7 @@ class MappingConfigTest {
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
         assertTrue(mappingConfig.getGenerateEqualsAndHashCode());
+        assertFalse(mappingConfig.getGenerateImmutableModels());
         assertTrue(mappingConfig.getGenerateToString());
         assertEquals("ModelNamePrefix", mappingConfig.getModelNamePrefix());
         assertEquals("ModelNameSuffix", mappingConfig.getModelNameSuffix());
@@ -98,6 +100,7 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateBuilder());
         assertFalse(mappingConfig.getGenerateApis());
         assertFalse(mappingConfig.getGenerateEqualsAndHashCode());
+        assertTrue(mappingConfig.getGenerateImmutableModels());
         assertFalse(mappingConfig.getGenerateToString());
         assertEquals("ModelNamePrefix2", mappingConfig.getModelNamePrefix());
         assertEquals("ModelNameSuffix2", mappingConfig.getModelNameSuffix());
@@ -130,6 +133,7 @@ class MappingConfigTest {
         config.setGenerateBuilder(true);
         config.setGenerateApis(true);
         config.setGenerateEqualsAndHashCode(true);
+        config.setGenerateImmutableModels(false);
         config.setGenerateToString(true);
         config.setModelNamePrefix("ModelNamePrefix");
         config.setModelNameSuffix("ModelNameSuffix");
@@ -157,6 +161,7 @@ class MappingConfigTest {
         config.setApiPackageName("ApiPackageName2");
         config.setGenerateBuilder(false);
         config.setGenerateApis(false);
+        config.setGenerateImmutableModels(true);
         config.setGenerateEqualsAndHashCode(false);
         config.setGenerateToString(false);
         config.setModelNamePrefix("ModelNamePrefix2");

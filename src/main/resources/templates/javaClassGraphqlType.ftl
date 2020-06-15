@@ -61,6 +61,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     public ${field.type} get${field.name?cap_first}() {
         return ${field.name};
     }
+<#if !immutableModels>
 <#if field.javaDoc?has_content>
     /**
 <#list field.javaDoc as javaDocLine>
@@ -74,6 +75,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
     }
+</#if>
 
 </#list>
 <#if equalsAndHashCode>
