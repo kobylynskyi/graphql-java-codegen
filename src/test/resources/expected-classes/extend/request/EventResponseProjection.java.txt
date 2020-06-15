@@ -1,3 +1,4 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
 /**
@@ -9,27 +10,47 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection status() {
-        fields.put("status", null);
+        return status(null);
+    }
+
+    public EventResponseProjection status(String alias) {
+        fields.add(new GraphQLResponseField("status").alias(alias));
         return this;
     }
 
     public EventResponseProjection createdDateTime() {
-        fields.put("createdDateTime", null);
+        return createdDateTime(null);
+    }
+
+    public EventResponseProjection createdDateTime(String alias) {
+        fields.add(new GraphQLResponseField("createdDateTime").alias(alias));
         return this;
     }
 
     public EventResponseProjection assets(AssetResponseProjection subProjection) {
-        fields.put("assets", subProjection);
+        return assets(null, subProjection);
+    }
+
+    public EventResponseProjection assets(String alias, AssetResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("assets").alias(alias).projection(subProjection));
         return this;
     }
 
     public EventResponseProjection id() {
-        fields.put("id", null);
+        return id(null);
+    }
+
+    public EventResponseProjection id(String alias) {
+        fields.add(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
     public EventResponseProjection createdBy() {
-        fields.put("createdBy", null);
+        return createdBy(null);
+    }
+
+    public EventResponseProjection createdBy(String alias) {
+        fields.add(new GraphQLResponseField("createdBy").alias(alias));
         return this;
     }
 

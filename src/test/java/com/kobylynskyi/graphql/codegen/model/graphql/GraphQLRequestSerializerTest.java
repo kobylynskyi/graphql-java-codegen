@@ -101,6 +101,39 @@ class GraphQLRequestSerializerTest {
     
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
+    void serialize_withResponseProjectionAndAlias(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .setCategoryId("categoryIdValue1")
+                .setStatus(Status.OPEN)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id("myId")
+                        .active("myActive")
+                        .properties("myProps", new EventPropertyResponseProjection()
+                                .floatVal("myFloatVal")
+                                .child("myChild", new EventPropertyResponseProjection()
+                                        .intVal("myIntVal")
+                                        .parent("myParent", new EventResponseProjection()
+                                                .id("myId")))
+                                .booleanVal("myBooleanVal"))
+                        .status("myStatus")
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { " +
+                "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
+                "myId : id " +
+                "myActive : active " +
+                "myProps : properties { " +
+                "myFloatVal : floatVal myChild : child { myIntVal : intVal myParent : parent { myId : id } } myBooleanVal : booleanVal } " +
+                "myStatus : status " +
+                "} " +
+                "}";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
     void serialize_withResponseProjectionAndParametrizedInput(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")
@@ -134,8 +167,44 @@ class GraphQLRequestSerializerTest {
                 "status " +
                 "} " +
                 "}";
-        System.out.println(expectedQueryDecorator.apply(expectedQueryStr));
-        System.out.println(serializedQuery);
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_withResponseProjectionAndParametrizedInputAndAlias(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .setCategoryId("categoryIdValue1")
+                .setStatus(Status.OPEN)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+                        .active()
+                        .properties(new EventPropertyResponseProjection()
+                                .floatVal()
+                                .child("myChild", new EventPropertyChildParametrizedInput()
+                                                .last(-10)
+                                                .first(+10),
+                                        new EventPropertyResponseProjection()
+                                                .intVal()
+                                                .parent("myParent", new EventPropertyParentParametrizedInput()
+                                                                .withStatus(Status.OPEN),
+                                                        new EventResponseProjection()
+                                                                .id()))
+                                .booleanVal())
+                        .status()
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { " +
+                "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
+                "id " +
+                "active " +
+                "properties { " +
+                "floatVal myChild : child (first: 10, last: -10) { intVal myParent : parent (withStatus: OPEN) { id } } booleanVal } " +
+                "status " +
+                "} " +
+                "}";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
