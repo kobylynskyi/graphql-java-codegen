@@ -1,5 +1,6 @@
 package com.github.graphql;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.Objects;
 
@@ -12,32 +13,56 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection body() {
-        fields.put("body", null);
+        return body(null);
+    }
+
+    public CodeOfConductResponseProjection body(String alias) {
+        fields.add(new GraphQLResponseField("body").alias(alias));
         return this;
     }
 
     public CodeOfConductResponseProjection id() {
-        fields.put("id", null);
+        return id(null);
+    }
+
+    public CodeOfConductResponseProjection id(String alias) {
+        fields.add(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
     public CodeOfConductResponseProjection key() {
-        fields.put("key", null);
+        return key(null);
+    }
+
+    public CodeOfConductResponseProjection key(String alias) {
+        fields.add(new GraphQLResponseField("key").alias(alias));
         return this;
     }
 
     public CodeOfConductResponseProjection name() {
-        fields.put("name", null);
+        return name(null);
+    }
+
+    public CodeOfConductResponseProjection name(String alias) {
+        fields.add(new GraphQLResponseField("name").alias(alias));
         return this;
     }
 
     public CodeOfConductResponseProjection resourcePath() {
-        fields.put("resourcePath", null);
+        return resourcePath(null);
+    }
+
+    public CodeOfConductResponseProjection resourcePath(String alias) {
+        fields.add(new GraphQLResponseField("resourcePath").alias(alias));
         return this;
     }
 
     public CodeOfConductResponseProjection url() {
-        fields.put("url", null);
+        return url(null);
+    }
+
+    public CodeOfConductResponseProjection url(String alias) {
+        fields.add(new GraphQLResponseField("url").alias(alias));
         return this;
     }
 
@@ -50,12 +75,12 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
             return false;
         }
         final CodeOfConductResponseProjection that = (CodeOfConductResponseProjection) obj;
-        return Objects.equals(fields, that.fields) && Objects.equals(parametrizedInputs, that.parametrizedInputs);
+        return Objects.equals(fields, that.fields);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fields, parametrizedInputs);
+        return Objects.hash(fields);
     }
 
 }
