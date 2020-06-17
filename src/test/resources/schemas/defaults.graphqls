@@ -11,7 +11,7 @@ input InputWithDefaults {
     objectWithNonNullDefault: SomeObject = { name: "Bob" }
     intList: [Int] = [1, 2, 3]
     intListEmptyDefault: [Int] = []
-    objectListEmptyDefault: [SomeObject] = []
+    objectListEmptyDefault: [SomeObject]! = []
 }
 
 input SomeObject {
