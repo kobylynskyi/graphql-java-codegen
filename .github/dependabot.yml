@@ -5,11 +5,37 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "gradle"
+    directory: "/"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "gradle"
+    directory: "/plugins/gradle/graphql-java-codegen-gradle-plugin"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gradle"
+    directory: "/plugins/gradle/example-server"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gradle"
+    directory: "/plugins/gradle/example-client"
+    schedule:
+      interval: "daily"
+
   - package-ecosystem: "maven"
-    directory: "/plugins/maven"
+    directory: "/plugins/maven/graphql-java-codegen-maven-plugin"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "maven"
+    directory: "/plugins/maven/example-server"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "maven"
+    directory: "/plugins/maven/example-client"
     schedule:
       interval: "daily"
