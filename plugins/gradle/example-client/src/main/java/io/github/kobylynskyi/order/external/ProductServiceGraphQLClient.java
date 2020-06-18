@@ -25,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,7 +60,7 @@ public class ProductServiceGraphQLClient {
         return productMapper.map(result.productById());
     }
 
-    public List<Product> getProducts(Collection<String> productIds) throws UnableToRetrieveProductsException {
+    public List<Product> getProducts(List<String> productIds) throws UnableToRetrieveProductsException {
         ProductsByIdsQueryRequest getProductRequest = new ProductsByIdsQueryRequest();
         getProductRequest.setIds(productIds);
         ProductResponseProjection responseProjection = new ProductResponseProjection()

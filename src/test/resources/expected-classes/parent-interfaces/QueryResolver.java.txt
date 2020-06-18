@@ -13,7 +13,7 @@ public interface QueryResolver extends graphql.kickstart.tools.GraphQLQueryResol
      * List of events of a specified category.
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<EventTO> eventsByCategoryAndStatus(String categoryId, EventStatusTO status) throws Exception;
+    java.util.List<EventTO> eventsByCategoryAndStatus(String categoryId, EventStatusTO status) throws Exception;
 
     /**
      * Single event by ID.
@@ -25,6 +25,6 @@ public interface QueryResolver extends graphql.kickstart.tools.GraphQLQueryResol
      * Events by IDs.
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<EventTO> eventsByIds(java.util.Collection<String> ids) throws Exception;
+    java.util.List<EventTO> eventsByIds(java.util.List<String> ids) throws Exception;
 
 }

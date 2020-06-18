@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Events by IDs.
  */
-public class EventsByIdsQueryResponse extends GraphQLResult<Map<String, java.util.Collection<EventTO>>> {
+public class EventsByIdsQueryResponse extends GraphQLResult<Map<String, java.util.List<EventTO>>> {
 
     private static final String OPERATION_NAME = "eventsByIds";
 
@@ -16,8 +16,8 @@ public class EventsByIdsQueryResponse extends GraphQLResult<Map<String, java.uti
     /**
      * Events by IDs.
      */
-    public java.util.Collection<EventTO> eventsByIds() {
-        Map<String, java.util.Collection<EventTO>> data = getData();
+    public java.util.List<EventTO> eventsByIds() {
+        Map<String, java.util.List<EventTO>> data = getData();
         return data != null ? data.get(OPERATION_NAME) : null;
     }
 

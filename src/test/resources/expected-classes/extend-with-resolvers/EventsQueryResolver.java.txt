@@ -1,6 +1,6 @@
 public interface EventsQueryResolver {
 
     @javax.validation.constraints.NotNull
-    java.util.Collection<Event> events() throws Exception;
+    java.util.List<Event> events() throws Exception;
 
 }

@@ -10,6 +10,6 @@ public interface EventsCreatedSubscriptionResolver extends graphql.kickstart.too
      * Subscribe to events
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<EventTO> eventsCreated() throws Exception;
+    java.util.List<EventTO> eventsCreated() throws Exception;
 
 }

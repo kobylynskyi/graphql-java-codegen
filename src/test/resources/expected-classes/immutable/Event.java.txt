@@ -8,7 +8,7 @@ public class Event implements java.io.Serializable {
 
     private String id;
     private String categoryId;
-    private java.util.Collection<EventProperty> properties;
+    private java.util.List<EventProperty> properties;
     private EventStatus status;
     private String createdBy;
     private String createdDateTime;
@@ -18,7 +18,7 @@ public class Event implements java.io.Serializable {
     public Event() {
     }
 
-    public Event(String id, String categoryId, java.util.Collection<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
+    public Event(String id, String categoryId, java.util.List<EventProperty> properties, EventStatus status, String createdBy, String createdDateTime, Boolean active, Integer rating) {
         this.id = id;
         this.categoryId = categoryId;
         this.properties = properties;
@@ -37,7 +37,7 @@ public class Event implements java.io.Serializable {
         return categoryId;
     }
 
-    public java.util.Collection<EventProperty> getProperties() {
+    public java.util.List<EventProperty> getProperties() {
         return properties;
     }
 
@@ -71,7 +71,7 @@ public class Event implements java.io.Serializable {
 
         private String id;
         private String categoryId;
-        private java.util.Collection<EventProperty> properties;
+        private java.util.List<EventProperty> properties;
         private EventStatus status;
         private String createdBy;
         private String createdDateTime;
@@ -91,7 +91,7 @@ public class Event implements java.io.Serializable {
             return this;
         }
 
-        public Builder setProperties(java.util.Collection<EventProperty> properties) {
+        public Builder setProperties(java.util.List<EventProperty> properties) {
             this.properties = properties;
             return this;
         }

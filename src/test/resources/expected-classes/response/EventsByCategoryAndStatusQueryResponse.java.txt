@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * List of events of a specified category.
  */
-public class EventsByCategoryAndStatusQueryResponse extends GraphQLResult<Map<String, java.util.Collection<EventTO>>> {
+public class EventsByCategoryAndStatusQueryResponse extends GraphQLResult<Map<String, java.util.List<EventTO>>> {
 
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
 
@@ -16,8 +16,8 @@ public class EventsByCategoryAndStatusQueryResponse extends GraphQLResult<Map<St
     /**
      * List of events of a specified category.
      */
-    public java.util.Collection<EventTO> eventsByCategoryAndStatus() {
-        Map<String, java.util.Collection<EventTO>> data = getData();
+    public java.util.List<EventTO> eventsByCategoryAndStatus() {
+        Map<String, java.util.List<EventTO>> data = getData();
         return data != null ? data.get(OPERATION_NAME) : null;
     }
 

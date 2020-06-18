@@ -7,6 +7,6 @@ public interface SubscriptionResolver {
      * Subscribe to events
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<Event> eventsCreated() throws Exception;
+    java.util.List<Event> eventsCreated() throws Exception;
 
 }

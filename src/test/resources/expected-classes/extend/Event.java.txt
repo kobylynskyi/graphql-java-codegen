@@ -5,7 +5,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     @javax.validation.constraints.NotNull
     private String createdDateTime;
     @javax.validation.constraints.NotNull
-    private java.util.Collection<Asset> assets;
+    private java.util.List<Asset> assets;
     @javax.validation.constraints.NotNull
     private String id;
     private String createdBy;
@@ -13,7 +13,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     public Event() {
     }
 
-    public Event(Status status, String createdDateTime, java.util.Collection<Asset> assets, String id, String createdBy) {
+    public Event(Status status, String createdDateTime, java.util.List<Asset> assets, String id, String createdBy) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.assets = assets;
@@ -38,13 +38,13 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     /**
      * Optional list of assets
      */
-    public java.util.Collection<Asset> getAssets() {
+    public java.util.List<Asset> getAssets() {
         return assets;
     }
     /**
      * Optional list of assets
      */
-    public void setAssets(java.util.Collection<Asset> assets) {
+    public void setAssets(java.util.List<Asset> assets) {
         this.assets = assets;
     }
 
@@ -72,7 +72,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
 
         private Status status;
         private String createdDateTime;
-        private java.util.Collection<Asset> assets;
+        private java.util.List<Asset> assets;
         private String id;
         private String createdBy;
 
@@ -92,7 +92,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         /**
          * Optional list of assets
          */
-        public Builder setAssets(java.util.Collection<Asset> assets) {
+        public Builder setAssets(java.util.List<Asset> assets) {
             this.assets = assets;
             return this;
         }

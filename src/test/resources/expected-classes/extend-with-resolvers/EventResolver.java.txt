@@ -7,6 +7,6 @@ public interface EventResolver {
      * Optional list of assets
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<Asset> assets(Event event) throws Exception;
+    java.util.List<Asset> assets(Event event) throws Exception;
 
 }

@@ -10,7 +10,7 @@ import io.github.kobylynskyi.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -23,7 +23,7 @@ public class QueriesResolver implements OrdersQueryResolver, OrderByIdQueryResol
     private OrderMapper mapper;
 
     @Override
-    public Collection<OrderTO> orders() {
+    public List<OrderTO> orders() {
         return service.getOrders().stream().map(mapper::map).collect(toList());
     }
 
