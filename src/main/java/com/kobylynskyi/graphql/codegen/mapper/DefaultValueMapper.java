@@ -31,7 +31,7 @@ public class DefaultValueMapper {
             return mapObject((ObjectValue) defaultValue);
         }
         if (defaultValue instanceof ArrayValue) {
-            return mapArray(mappingContext, (ArrayValue) defaultValue, graphQLType);
+            return mapArray(mappingContext, graphQLType, (ArrayValue) defaultValue);
         }
         // no default value, or not a known type
         return null;
@@ -74,17 +74,20 @@ public class DefaultValueMapper {
         return null;
     }
 
-    private static String mapArray(MappingContext mappingContext, ArrayValue defaultValue, Type<?> graphQLType) {
-        if (!(graphQLType instanceof ListType)) {
-            throw new IllegalArgumentException("Unexpected array default value for non-list type");
+    private static String mapArray(MappingContext mappingContext, Type<?> graphQLType, ArrayValue defaultValue) {
+        if (graphQLType instanceof NonNullType) {
+            return mapArray(mappingContext, ((NonNullType) graphQLType).getType(), defaultValue);
         }
-        List<Value> values = defaultValue.getValues();
-        if (values.isEmpty()) {
-            return "java.util.Collections.emptyList()";
+        if (graphQLType instanceof ListType) {
+            List<Value> values = defaultValue.getValues();
+            if (values.isEmpty()) {
+                return "java.util.Collections.emptyList()";
+            }
+            Type<?> elementType = ((ListType) graphQLType).getType();
+            return values.stream()
+                    .map(v -> map(mappingContext, v, elementType))
+                    .collect(Collectors.joining(", ", "java.util.Arrays.asList(", ")"));
         }
-        Type<?> elementType = ((ListType) graphQLType).getType();
-        return values.stream()
-                .map(v -> map(mappingContext, v, elementType))
-                .collect(Collectors.joining(", ", "java.util.Arrays.asList(", ")"));
+        throw new IllegalArgumentException("Unexpected array default value for non-list type");
     }
 }

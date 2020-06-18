@@ -17,6 +17,7 @@ public class InputWithDefaultsTO implements java.io.Serializable {
     private SomeObjectTO objectWithNonNullDefault;
     private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
     private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+    @javax.validation.constraints.NotNull
     private java.util.List<SomeObjectTO> objectListEmptyDefault = java.util.Collections.emptyList();
 
     public InputWithDefaultsTO() {
