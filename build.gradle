@@ -8,7 +8,7 @@ plugins {
     id "maven-publish"
 }
 
-version = "2.0.0-SNAPSHOT"
+version = "2.0.0"
 group = "io.github.kobylynskyi"
 
 repositories {
