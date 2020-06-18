@@ -15,14 +15,14 @@ public class InputWithDefaults implements java.io.Serializable {
     private MyEnum nonNullEnumVal = MyEnum.TWO;
     private SomeObject objectWithNullDefault = null;
     private SomeObject objectWithNonNullDefault;
-    private java.util.Collection<Integer> intList = java.util.Arrays.asList(1, 2, 3);
-    private java.util.Collection<Integer> intListEmptyDefault = java.util.Collections.emptyList();
-    private java.util.Collection<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+    private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+    private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+    private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
 
     public InputWithDefaults() {
     }
 
-    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, java.util.Collection<Integer> intList, java.util.Collection<Integer> intListEmptyDefault, java.util.Collection<SomeObject> objectListEmptyDefault) {
+    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, java.util.List<Integer> intList, java.util.List<Integer> intListEmptyDefault, java.util.List<SomeObject> objectListEmptyDefault) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -92,24 +92,24 @@ public class InputWithDefaults implements java.io.Serializable {
         this.objectWithNonNullDefault = objectWithNonNullDefault;
     }
 
-    public java.util.Collection<Integer> getIntList() {
+    public java.util.List<Integer> getIntList() {
         return intList;
     }
-    public void setIntList(java.util.Collection<Integer> intList) {
+    public void setIntList(java.util.List<Integer> intList) {
         this.intList = intList;
     }
 
-    public java.util.Collection<Integer> getIntListEmptyDefault() {
+    public java.util.List<Integer> getIntListEmptyDefault() {
         return intListEmptyDefault;
     }
-    public void setIntListEmptyDefault(java.util.Collection<Integer> intListEmptyDefault) {
+    public void setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
         this.intListEmptyDefault = intListEmptyDefault;
     }
 
-    public java.util.Collection<SomeObject> getObjectListEmptyDefault() {
+    public java.util.List<SomeObject> getObjectListEmptyDefault() {
         return objectListEmptyDefault;
     }
-    public void setObjectListEmptyDefault(java.util.Collection<SomeObject> objectListEmptyDefault) {
+    public void setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
         this.objectListEmptyDefault = objectListEmptyDefault;
     }
 
@@ -129,9 +129,9 @@ public class InputWithDefaults implements java.io.Serializable {
         private MyEnum nonNullEnumVal = MyEnum.TWO;
         private SomeObject objectWithNullDefault = null;
         private SomeObject objectWithNonNullDefault;
-        private java.util.Collection<Integer> intList = java.util.Arrays.asList(1, 2, 3);
-        private java.util.Collection<Integer> intListEmptyDefault = java.util.Collections.emptyList();
-        private java.util.Collection<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+        private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+        private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+        private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
 
         public Builder() {
         }
@@ -176,17 +176,17 @@ public class InputWithDefaults implements java.io.Serializable {
             return this;
         }
 
-        public Builder setIntList(java.util.Collection<Integer> intList) {
+        public Builder setIntList(java.util.List<Integer> intList) {
             this.intList = intList;
             return this;
         }
 
-        public Builder setIntListEmptyDefault(java.util.Collection<Integer> intListEmptyDefault) {
+        public Builder setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
             this.intListEmptyDefault = intListEmptyDefault;
             return this;
         }
 
-        public Builder setObjectListEmptyDefault(java.util.Collection<SomeObject> objectListEmptyDefault) {
+        public Builder setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
             this.objectListEmptyDefault = objectListEmptyDefault;
             return this;
         }

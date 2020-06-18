@@ -5,12 +5,12 @@ public class Foo1 implements java.io.Serializable, Foo {
 
     @javax.validation.constraints.NotNull
     private String id;
-    private java.util.Collection<Bar1> bars;
+    private java.util.List<Bar1> bars;
 
     public Foo1() {
     }
 
-    public Foo1(String id, java.util.Collection<Bar1> bars) {
+    public Foo1(String id, java.util.List<Bar1> bars) {
         this.id = id;
         this.bars = bars;
     }
@@ -22,10 +22,10 @@ public class Foo1 implements java.io.Serializable, Foo {
         this.id = id;
     }
 
-    public java.util.Collection<Bar1> getBars() {
+    public java.util.List<Bar1> getBars() {
         return bars;
     }
-    public void setBars(java.util.Collection<Bar1> bars) {
+    public void setBars(java.util.List<Bar1> bars) {
         this.bars = bars;
     }
 
@@ -38,7 +38,7 @@ public class Foo1 implements java.io.Serializable, Foo {
     public static class Builder {
 
         private String id;
-        private java.util.Collection<Bar1> bars;
+        private java.util.List<Bar1> bars;
 
         public Builder() {
         }
@@ -48,7 +48,7 @@ public class Foo1 implements java.io.Serializable, Foo {
             return this;
         }
 
-        public Builder setBars(java.util.Collection<Bar1> bars) {
+        public Builder setBars(java.util.List<Bar1> bars) {
             this.bars = bars;
             return this;
         }

@@ -51,9 +51,9 @@ class GraphqlTypeToJavaTypeMapper {
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName);
             if (mappedCollectionType.isInterface() && mappingContext.getInterfaceNames().contains(parentTypeName)) {
-                mappedCollectionType.setName(wrapSuperTypeIntoJavaCollection(mappedCollectionType.getName()));
+                mappedCollectionType.setName(wrapSuperTypeIntoJavaList(mappedCollectionType.getName()));
             } else {
-                mappedCollectionType.setName(wrapIntoJavaCollection(mappedCollectionType.getName()));
+                mappedCollectionType.setName(wrapIntoJavaList(mappedCollectionType.getName()));
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
@@ -145,24 +145,24 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     /**
-     * Wrap java type into collection. E.g.: "String" becomes "Collection<String"
+     * Wrap Java type into {@link java.util.List}. E.g.: {@code "String"} becomes {@code "List<String>"}
      *
-     * @param type Anything that will be wrapped into Collection<>
-     * @return String wrapped into Collection<>
+     * @param type The name of a type that will be wrapped into List<>
+     * @return String The name of the given type, wrapped into List<>
      */
-    private static String wrapIntoJavaCollection(String type) {
-        return String.format("java.util.Collection<%s>", type);
+    private static String wrapIntoJavaList(String type) {
+        return String.format("java.util.List<%s>", type);
     }
 
     /**
      * Return upper bounded wildcard for the given interface type:
-     * <code>Foo</code> becomes <code>Collection<? extends Foo></code>
+     * {@code "Foo"} becomes {@code "List<? extends Foo>"}.
      *
-     * @param type Anything that will be wrapped into Collection<? extends @type>
-     * @return String wrapped into Collection<? extends @type>
+     * @param type The name of a type whose upper bound wildcard will be wrapped into a list.
+     * @return String The name of the the wrapped type.
      */
-    private static String wrapSuperTypeIntoJavaCollection(String type) {
-        return String.format("java.util.Collection<? extends %s>", type);
+    private static String wrapSuperTypeIntoJavaList(String type) {
+        return String.format("java.util.List<? extends %s>", type);
     }
 
     /**

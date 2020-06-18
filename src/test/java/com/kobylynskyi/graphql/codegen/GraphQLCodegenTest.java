@@ -179,7 +179,7 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
-                "org.reactivestreams.Publisher<java.util.Collection<Event>> eventsCreated() throws Exception;");
+                "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
     }
 
     @Test
@@ -345,7 +345,7 @@ class GraphQLCodegenTest {
                 "java.util.concurrent.CompletableFuture<String> version()");
 
         assertFileContainsElements(files, "EventsByCategoryAndStatusQueryResolver.java",
-                "java.util.concurrent.CompletableFuture<java.util.Collection<Event>> eventsByCategoryAndStatus(");
+                "java.util.concurrent.CompletableFuture<java.util.List<Event>> eventsByCategoryAndStatus(");
 
         assertFileContainsElements(files, "EventByIdQueryResolver.java",
                 "java.util.concurrent.CompletableFuture<Event> eventById(");

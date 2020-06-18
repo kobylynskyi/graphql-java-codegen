@@ -11,13 +11,13 @@ public class EventPropertyTO implements java.io.Serializable {
     private Boolean booleanVal;
     private Integer intVal;
     private String stringVal;
-    private java.util.Collection<EventPropertyTO> child;
+    private java.util.List<EventPropertyTO> child;
     private EventTO parent;
 
     public EventPropertyTO() {
     }
 
-    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.Collection<EventPropertyTO> child, EventTO parent) {
+    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.List<EventPropertyTO> child, EventTO parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -71,13 +71,13 @@ public class EventPropertyTO implements java.io.Serializable {
     /**
      * Properties
      */
-    public java.util.Collection<EventPropertyTO> getChild() {
+    public java.util.List<EventPropertyTO> getChild() {
         return child;
     }
     /**
      * Properties
      */
-    public void setChild(java.util.Collection<EventPropertyTO> child) {
+    public void setChild(java.util.List<EventPropertyTO> child) {
         this.child = child;
     }
 
@@ -129,7 +129,7 @@ public class EventPropertyTO implements java.io.Serializable {
         private Boolean booleanVal;
         private Integer intVal;
         private String stringVal;
-        private java.util.Collection<EventPropertyTO> child;
+        private java.util.List<EventPropertyTO> child;
         private EventTO parent;
 
         public Builder() {
@@ -165,7 +165,7 @@ public class EventPropertyTO implements java.io.Serializable {
         /**
          * Properties
          */
-        public Builder setChild(java.util.Collection<EventPropertyTO> child) {
+        public Builder setChild(java.util.List<EventPropertyTO> child) {
             this.child = child;
             return this;
         }
