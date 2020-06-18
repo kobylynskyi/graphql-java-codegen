@@ -16,7 +16,7 @@ public class ProductsByIdsQueryRequest implements GraphQLOperationRequest {
     public ProductsByIdsQueryRequest() {
     }
 
-    public void setIds(java.util.Collection<String> ids) {
+    public void setIds(java.util.List<String> ids) {
         this.input.put("ids", ids);
     }
 
@@ -60,12 +60,12 @@ public class ProductsByIdsQueryRequest implements GraphQLOperationRequest {
 
     public static class Builder {
 
-        private java.util.Collection<String> ids;
+        private java.util.List<String> ids;
 
         public Builder() {
         }
 
-        public Builder setIds(java.util.Collection<String> ids) {
+        public Builder setIds(java.util.List<String> ids) {
             this.ids = ids;
             return this;
         }

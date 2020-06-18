@@ -3,6 +3,6 @@ package com.kobylynskyi.graphql.test1;
 
 public interface ProductsByIdsQueryResolver {
 
-    java.util.Collection<Product> products(java.util.Collection<String> ids) throws Exception;
+    java.util.List<Product> products(java.util.List<String> ids) throws Exception;
 
 }

@@ -3,12 +3,12 @@ public class EventInput implements java.io.Serializable {
     @javax.validation.constraints.NotNull
     private Status status;
     @javax.validation.constraints.NotNull
-    private java.util.Collection<AssetInput> assets;
+    private java.util.List<AssetInput> assets;
 
     public EventInput() {
     }
 
-    public EventInput(Status status, java.util.Collection<AssetInput> assets) {
+    public EventInput(Status status, java.util.List<AssetInput> assets) {
         this.status = status;
         this.assets = assets;
     }
@@ -20,10 +20,10 @@ public class EventInput implements java.io.Serializable {
         this.status = status;
     }
 
-    public java.util.Collection<AssetInput> getAssets() {
+    public java.util.List<AssetInput> getAssets() {
         return assets;
     }
-    public void setAssets(java.util.Collection<AssetInput> assets) {
+    public void setAssets(java.util.List<AssetInput> assets) {
         this.assets = assets;
     }
 
@@ -36,7 +36,7 @@ public class EventInput implements java.io.Serializable {
     public static class Builder {
 
         private Status status;
-        private java.util.Collection<AssetInput> assets;
+        private java.util.List<AssetInput> assets;
 
         public Builder() {
         }
@@ -46,7 +46,7 @@ public class EventInput implements java.io.Serializable {
             return this;
         }
 
-        public Builder setAssets(java.util.Collection<AssetInput> assets) {
+        public Builder setAssets(java.util.List<AssetInput> assets) {
             this.assets = assets;
             return this;
         }

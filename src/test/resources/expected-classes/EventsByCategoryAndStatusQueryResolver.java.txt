@@ -10,6 +10,6 @@ public interface EventsByCategoryAndStatusQueryResolver {
      * List of events of a specified category.
      */
     @javax.validation.constraints.NotNull
-    java.util.Collection<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
+    java.util.List<Event> eventsByCategoryAndStatus(String categoryId, EventStatus status) throws Exception;
 
 }

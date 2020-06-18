@@ -9,7 +9,7 @@ import io.github.kobylynskyi.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -22,7 +22,7 @@ public class QueriesResolver implements ProductsQueryResolver, ProductsByIdsQuer
     private ProductMapper mapper;
 
     @Override
-    public Collection<ProductTO> products() {
+    public List<ProductTO> products() {
         return service.findAll().stream().map(mapper::map).collect(toList());
     }
 
@@ -32,7 +32,7 @@ public class QueriesResolver implements ProductsQueryResolver, ProductsByIdsQuer
     }
 
     @Override
-    public Collection<ProductTO> productsByIds(Collection<String> ids) {
+    public List<ProductTO> productsByIds(List<String> ids) {
         return service.findByIds(ids).stream().map(mapper::map).collect(toList());
     }
 }
