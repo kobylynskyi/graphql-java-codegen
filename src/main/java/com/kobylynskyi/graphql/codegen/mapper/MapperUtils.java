@@ -80,6 +80,25 @@ class MapperUtils {
     }
 
     /**
+     * Generates a type resolver class name including prefix and suffix (if any)
+     *
+     * @param mappingContext Global mapping context
+     * @param typeName       GraphQL type name
+     * @return Class name of GraphQL type resolver
+     */
+    static String getTypeResolverClassNameWithPrefixAndSuffix(MappingContext mappingContext, String typeName) {
+        StringBuilder classNameBuilder = new StringBuilder();
+        if (Utils.isNotBlank(mappingContext.getTypeResolverPrefix())) {
+            classNameBuilder.append(mappingContext.getTypeResolverPrefix());
+        }
+        classNameBuilder.append(Utils.capitalize(typeName));
+        if (Utils.isNotBlank(mappingContext.getTypeResolverSuffix())) {
+            classNameBuilder.append(mappingContext.getTypeResolverSuffix());
+        }
+        return classNameBuilder.toString();
+    }
+
+    /**
      * Generates an api class name including prefix and suffix (if any)
      * Examples: CreateEventMutationResolver, EventsQueryResolver, EventsByIdsQueryResolver (rootTypeName is "Query" or the likes)
      *

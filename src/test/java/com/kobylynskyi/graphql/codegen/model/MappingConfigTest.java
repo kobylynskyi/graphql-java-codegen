@@ -54,6 +54,9 @@ class MappingConfigTest {
         assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
         assertFalse(mappingConfig.getGenerateClient());
+        assertFalse(mappingConfig.getGenerateModelsForRootTypes());
+        assertEquals("11", mappingConfig.getTypeResolverPrefix());
+        assertEquals("12", mappingConfig.getTypeResolverSuffix());
     }
 
     @Test
@@ -84,7 +87,10 @@ class MappingConfigTest {
         assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
         assertFalse(mappingConfig.getGenerateClient());
+        assertFalse(mappingConfig.getGenerateModelsForRootTypes());
         assertEquals("9", mappingConfig.getParametrizedInputSuffix());
+        assertEquals("11", mappingConfig.getTypeResolverPrefix());
+        assertEquals("12", mappingConfig.getTypeResolverSuffix());
     }
 
     @Test
@@ -117,7 +123,10 @@ class MappingConfigTest {
         assertEquals("1010", mappingConfig.getResponseSuffix());
         assertEquals("77", mappingConfig.getResponseProjectionSuffix());
         assertTrue(mappingConfig.getGenerateClient());
+        assertTrue(mappingConfig.getGenerateModelsForRootTypes());
         assertEquals("99", mappingConfig.getParametrizedInputSuffix());
+        assertEquals("1111", mappingConfig.getTypeResolverPrefix());
+        assertEquals("1212", mappingConfig.getTypeResolverSuffix());
     }
 
     private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
@@ -150,7 +159,10 @@ class MappingConfigTest {
         config.setResponseSuffix("10");
         config.setResponseProjectionSuffix("7");
         config.setGenerateClient(false);
+        config.setGenerateModelsForRootTypes(false);
         config.setParametrizedInputSuffix("9");
+        config.setTypeResolverPrefix("11");
+        config.setTypeResolverSuffix("12");
         return config;
     }
 
@@ -179,7 +191,10 @@ class MappingConfigTest {
         config.setResponseSuffix("1010");
         config.setResponseProjectionSuffix("77");
         config.setGenerateClient(true);
+        config.setGenerateModelsForRootTypes(true);
         config.setParametrizedInputSuffix("99");
+        config.setTypeResolverPrefix("1111");
+        config.setTypeResolverSuffix("1212");
         return config;
     }
 

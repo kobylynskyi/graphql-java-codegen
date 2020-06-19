@@ -2,6 +2,8 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.exception.SchemaValidationException;
 import graphql.GraphQLException;
+import graphql.parser.MultiSourceReader;
+import graphql.parser.Parser;
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
@@ -18,16 +20,16 @@ public class GraphQLCodegenValidate {
     private final List<String> schemas;
 
     public void validate() throws IOException {
-        for (String schema : schemas) {
-            try {
-                long startTime = System.currentTimeMillis();
-                GraphQLDocumentParser.getDocument(schema);
-                System.out.println(String.format("Validated schema '%s' in %d ms",
-                        schema, System.currentTimeMillis() - startTime));
-            } catch (GraphQLException e) {
-                throw new SchemaValidationException(e.getMessage());
-            }
+        try {
+            long startTime = System.currentTimeMillis();
+            MultiSourceReader reader = GraphQLDocumentParser.createMultiSourceReader(schemas);
+            new Parser().parseDocument(reader);
+            System.out.println(String.format("Validated schemas '%s' in %d ms",
+                    schemas, System.currentTimeMillis() - startTime));
+        } catch (GraphQLException e) {
+            throw new SchemaValidationException(e.getMessage());
         }
+
     }
 
 }

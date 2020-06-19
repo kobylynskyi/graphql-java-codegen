@@ -30,6 +30,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateModelsForRootTypes() {
+        return config.getGenerateModelsForRootTypes();
+    }
+
+    @Override
     public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
         return config.getApiRootInterfaceStrategy();
     }
@@ -112,6 +117,16 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return config.getGenerateParameterizedFieldsResolvers();
+    }
+
+    @Override
+    public String getTypeResolverPrefix() {
+        return config.getTypeResolverPrefix();
+    }
+
+    @Override
+    public String getTypeResolverSuffix() {
+        return config.getTypeResolverSuffix();
     }
 
     @Override

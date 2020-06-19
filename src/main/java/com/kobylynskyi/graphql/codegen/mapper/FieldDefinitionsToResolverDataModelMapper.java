@@ -44,7 +44,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
                                                         List<ExtendedFieldDefinition> fieldDefs,
                                                         String parentTypeName) {
         // Example: PersonResolver
-        String className = parentTypeName + "Resolver";
+        String className = MapperUtils.getTypeResolverClassNameWithPrefixAndSuffix(mappingContext, parentTypeName);
         return mapToResolverModel(mappingContext, parentTypeName, className, fieldDefs,
                 singletonList("Resolver for " + parentTypeName),
                 getParentInterface(mappingContext, parentTypeName));

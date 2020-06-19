@@ -65,9 +65,10 @@ public class GraphQLCodegen {
         this.mappingConfig = mappingConfig;
         this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
         initDefaultValues(mappingConfig);
+        validateConfigs(mappingConfig);
     }
 
-    private void initDefaultValues(MappingConfig mappingConfig) {
+    private static void initDefaultValues(MappingConfig mappingConfig) {
         if (mappingConfig.getModelValidationAnnotation() == null) {
             mappingConfig.setModelValidationAnnotation(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION);
         }
@@ -90,7 +91,7 @@ public class GraphQLCodegen {
             mappingConfig.setResponseProjectionSuffix(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX);
         }
         if (mappingConfig.getParametrizedInputSuffix() == null) {
-            mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFIX);
+            mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX);
         }
         if (mappingConfig.getGenerateImmutableModels() == null) {
             mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
@@ -102,7 +103,10 @@ public class GraphQLCodegen {
             mappingConfig.setGenerateApis(MappingConfigConstants.DEFAULT_GENERATE_APIS);
         }
         if (mappingConfig.getApiNameSuffix() == null) {
-            mappingConfig.setApiNameSuffix(MappingConfigConstants.DEFAULT_API_NAME_SUFFIX);
+            mappingConfig.setApiNameSuffix(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX);
+        }
+        if (mappingConfig.getTypeResolverSuffix() == null) {
+            mappingConfig.setTypeResolverSuffix(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX);
         }
         if (mappingConfig.getGenerateAsyncApi() == null) {
             mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
@@ -116,6 +120,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateDataFetchingEnvironmentArgumentInApis() == null) {
             mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV);
         }
+        if (mappingConfig.getGenerateModelsForRootTypes() == null) {
+            mappingConfig.setGenerateModelsForRootTypes(MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES);
+        }
         if (mappingConfig.getApiNamePrefixStrategy() == null) {
             mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);
         }
@@ -126,10 +133,29 @@ public class GraphQLCodegen {
             // required for request serialization
             mappingConfig.setGenerateToString(true);
         }
+    }
+
+    private static void validateConfigs(MappingConfig mappingConfig) {
         if (mappingConfig.getApiRootInterfaceStrategy() == ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA &&
                 mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
-            // that's because we will have a conflict in case there is "type Query" in multiple graphql schema files
+            // we will have a conflict in case there is "type Query" in multiple graphql schema files
             throw new IllegalArgumentException("API prefix should not be CONSTANT for INTERFACE_PER_SCHEMA option");
+        }
+        if (mappingConfig.getGenerateApis() &&
+                mappingConfig.getGenerateModelsForRootTypes() &&
+                mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
+            // checking for conflict between root type model classes and api interfaces
+            if (Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNamePrefix(), mappingConfig.getModelNamePrefix()) &&
+                    Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNameSuffix(), mappingConfig.getModelNameSuffix())) {
+                // we will have a conflict between model pojo (Query.java) and api interface (Query.java)
+                throw new IllegalArgumentException("Either disable APIs generation or set different Prefix/Suffix for API classes and model classes");
+            }
+            // checking for conflict between root type model resolver classes and api interfaces
+            if (Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNamePrefix(), mappingConfig.getTypeResolverPrefix()) &&
+                    Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNameSuffix(), mappingConfig.getTypeResolverSuffix())) {
+                // we will have a conflict between model resolver interface (QueryResolver.java) and api interface resolver (QueryResolver.java)
+                throw new IllegalArgumentException("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes");
+            }
         }
     }
 
@@ -138,7 +164,7 @@ public class GraphQLCodegen {
         long startTime = System.currentTimeMillis();
         List<File> generatedFiles = Collections.emptyList();
         if (!schemas.isEmpty()) {
-            ExtendedDocument document = GraphQLDocumentParser.getDocument(schemas);
+            ExtendedDocument document = GraphQLDocumentParser.getDocument(mappingConfig, schemas);
             initCustomTypeMappings(document.getScalarDefinitions());
             generatedFiles = processDefinitions(document);
         }

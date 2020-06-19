@@ -50,7 +50,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY;
     private String apiNamePrefix;
-    private String apiNameSuffix;
+    private String apiNameSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;;
+    private String typeResolverPrefix;
+    private String typeResolverSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
@@ -65,6 +67,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateParameterizedFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
     private Boolean generateExtensionFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
+    private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
@@ -86,7 +89,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     public void generate() throws Exception {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
-        mappingConfig.setCustomTypesMapping(customTypesMapping);
+        mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
@@ -97,18 +100,21 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setModelPackageName(modelPackageName);
         mappingConfig.setGenerateBuilder(generateBuilder);
         mappingConfig.setGenerateApis(generateApis);
+        mappingConfig.setTypeResolverSuffix(typeResolverSuffix);
+        mappingConfig.setTypeResolverPrefix(typeResolverPrefix);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
-        mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
-        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
+        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
+        mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
-        mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
-        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers);
-        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers);
+        mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
+        mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
+        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
@@ -331,6 +337,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
+    public Boolean getGenerateModelsForRootTypes() {
+        return generateModelsForRootTypes;
+    }
+
+    public void setGenerateModelsForRootTypes(Boolean generateModelsForRootTypes) {
+        this.generateModelsForRootTypes = generateModelsForRootTypes;
+    }
+
+    @Input
+    @Optional
+    @Override
     public String getModelValidationAnnotation() {
         return modelValidationAnnotation;
     }
@@ -414,6 +431,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGenerateParameterizedFieldsResolvers(Boolean generateParameterizedFieldsResolvers) {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getTypeResolverPrefix() {
+        return typeResolverPrefix;
+    }
+
+    public void setTypeResolverPrefix(String typeResolverPrefix) {
+        this.typeResolverPrefix = typeResolverPrefix;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getTypeResolverSuffix() {
+        return typeResolverSuffix;
+    }
+
+    public void setTypeResolverSuffix(String typeResolverSuffix) {
+        this.typeResolverSuffix = typeResolverSuffix;
     }
 
     @Input
