@@ -24,13 +24,13 @@ jobs:
         with:
           java-version: ${{ matrix.jdk-version }}
 
-      - name: Gradle Cache
+      - name: Gradle cache
         uses: actions/cache@v1
         with:
           path: ~/.gradle
           key: gradle
 
-      - name: Maven Cache
+      - name: Maven cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
@@ -63,7 +63,7 @@ jobs:
         working-directory: plugins/maven/example-client
         run: mvn package
 
-  code-coverage:
+  sonar:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -72,15 +72,15 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11
 
-      - name: Gradle Cache
+      - name: Gradle cache
         uses: actions/cache@v1
         with:
           path: ~/.gradle
           key: gradle
 
-      - name: Maven Cache
+      - name: Maven cache
         uses: actions/cache@v1
         with:
           path: ~/.m2
@@ -89,38 +89,7 @@ jobs:
       - name: Generate code coverage report
         run: ./gradlew codeCoverageReport
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-
-  sonar:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
-      - name: Gradle Cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle
-          key: gradle
-
-      - name: Maven Cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: m2
-
-      - name: Sonar report
+      - name: Generate and publish Sonar report
         run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
