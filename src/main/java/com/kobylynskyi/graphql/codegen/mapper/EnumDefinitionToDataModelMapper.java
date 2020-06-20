@@ -29,6 +29,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
  */
 public class EnumDefinitionToDataModelMapper {
 
+    private EnumDefinitionToDataModelMapper() {
+    }
+
     /**
      * Map field definition to a Freemarker data model
      *

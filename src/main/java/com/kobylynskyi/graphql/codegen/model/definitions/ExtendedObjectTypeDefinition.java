@@ -58,7 +58,7 @@ public class ExtendedObjectTypeDefinition extends ExtendedDefinition<ObjectTypeD
         return definitionMap;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "java:S3740"})
     public List<Type> getImplements() {
         List<Type> definitionImplements = new ArrayList<>();
         if (definition != null) {

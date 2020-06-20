@@ -29,6 +29,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -122,7 +123,7 @@ public class GraphQLCodegen {
         if (mappingConfig.getApiRootInterfaceStrategy() == null) {
             mappingConfig.setApiRootInterfaceStrategy(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY);
         }
-        if (mappingConfig.getGenerateClient()) {
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             // required for request serialization
             mappingConfig.setGenerateToString(true);
         }
@@ -133,7 +134,7 @@ public class GraphQLCodegen {
         }
     }
 
-    public List<File> generate() throws Exception {
+    public List<File> generate() throws IOException {
         GraphQLCodegenFileCreator.prepareOutputDir(outputDir);
         long startTime = System.currentTimeMillis();
         List<File> generatedFiles = Collections.emptyList();
@@ -160,10 +161,10 @@ public class GraphQLCodegen {
                     .ifPresent(generatedFiles::add);
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getOperationDefinitions()) {
-            if (mappingConfig.getGenerateApis()) {
+            if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
                 generatedFiles.addAll(generateServerOperations(context, extendedObjectTypeDefinition));
             }
-            if (mappingConfig.getGenerateClient()) {
+            if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
                 generatedFiles.addAll(generateClient(context, extendedObjectTypeDefinition));
             }
         }
@@ -267,7 +268,7 @@ public class GraphQLCodegen {
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingContext, definition);
         generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.typeTemplate, dataModel, outputDir));
 
-        if (mappingConfig.getGenerateClient()) {
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
 

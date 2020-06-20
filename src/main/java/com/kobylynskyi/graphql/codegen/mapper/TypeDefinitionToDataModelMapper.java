@@ -34,6 +34,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FO
  */
 public class TypeDefinitionToDataModelMapper {
 
+    private TypeDefinitionToDataModelMapper() {
+    }
+
     /**
      * Map type definition to a Freemarker data model
      *

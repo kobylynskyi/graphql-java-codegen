@@ -32,6 +32,9 @@ import static java.util.Collections.singletonList;
  */
 public class FieldDefinitionsToResolverDataModelMapper {
 
+    private FieldDefinitionsToResolverDataModelMapper() {
+    }
+
     /**
      * Map field definition to a Freemarker data model
      *
@@ -160,7 +163,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         parameters.addAll(InputValueDefinitionToParameterMapper.map(mappingContext, resolvedField.getInputValueDefinitions(), resolvedField.getName()));
 
         // 3. Last parameter (optional) is the DataFetchingEnvironment
-        if (mappingContext.getGenerateDataFetchingEnvironmentArgumentInApis()) {
+        if (Boolean.TRUE.equals(mappingContext.getGenerateDataFetchingEnvironmentArgumentInApis())) {
             parameters.add(ParameterDefinition.DATA_FETCHING_ENVIRONMENT);
         }
         return parameters;

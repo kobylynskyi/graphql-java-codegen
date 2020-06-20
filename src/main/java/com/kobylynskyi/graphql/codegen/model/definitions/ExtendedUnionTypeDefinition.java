@@ -26,19 +26,19 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
     }
 
     private Set<String> getMemberTypeNames() {
-        Set<String> memberTypeNames = new HashSet<>();
+        Set<String> allTypeNames = new HashSet<>();
         if (definition != null) {
             definition.getMemberTypes().stream()
                     .map(NamedNode.class::cast)
                     .map(NamedNode::getName)
-                    .forEach(memberTypeNames::add);
+                    .forEach(allTypeNames::add);
         }
         extensions.stream()
                 .map(UnionTypeDefinition::getMemberTypes)
                 .flatMap(Collection::stream)
                 .map(NamedNode.class::cast)
                 .map(NamedNode::getName)
-                .forEach(memberTypeNames::add);
-        return memberTypeNames;
+                .forEach(allTypeNames::add);
+        return allTypeNames;
     }
 }

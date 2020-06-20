@@ -21,6 +21,9 @@ import java.util.Map;
  */
 class GraphqlTypeToJavaTypeMapper {
 
+    private GraphqlTypeToJavaTypeMapper() {
+    }
+
     /**
      * Convert GraphQL type to a corresponding Java type
      *
@@ -28,7 +31,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @param type           GraphQL type
      * @return Corresponding Java type
      */
-    static String getJavaType(MappingContext mappingContext, Type type) {
+    static String getJavaType(MappingContext mappingContext, Type<?> type) {
         return getJavaType(mappingContext, type, null, null).getName();
     }
 
@@ -45,7 +48,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @param parentTypeName Name of the parent type
      * @return Corresponding Java type
      */
-    static NamedDefinition getJavaType(MappingContext mappingContext, Type graphqlType, String name, String parentTypeName) {
+    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
         if (graphqlType instanceof TypeName) {
             return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName);
         } else if (graphqlType instanceof ListType) {
@@ -72,7 +75,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @param graphqlType GraphQL type
      * @return GraphQL type without List/NonNull wrapping
      */
-    static String getNestedTypeName(Type graphqlType) {
+    static String getNestedTypeName(Type<?> graphqlType) {
         if (graphqlType instanceof TypeName) {
             return ((TypeName) graphqlType).getName();
         } else if (graphqlType instanceof ListType) {

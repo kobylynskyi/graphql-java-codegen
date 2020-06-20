@@ -6,7 +6,10 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDe
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
 /**
  * Map interface definition to a Freemarker data model
@@ -14,6 +17,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
  * @author kobylynskyi
  */
 public class InterfaceDefinitionToDataModelMapper {
+
+    private InterfaceDefinitionToDataModelMapper() {
+    }
 
     /**
      * Map interface definition to a Freemarker data model

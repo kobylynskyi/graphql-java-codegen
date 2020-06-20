@@ -25,4 +25,7 @@ public final class DataModelFields {
     public static final String OPERATION_NAME = "operationName";
     public static final String RETURN_TYPE_NAME = "returnTypeName";
 
+    private DataModelFields() {
+    }
+
 }
