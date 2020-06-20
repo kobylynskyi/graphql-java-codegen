@@ -93,3 +93,29 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
+
+  sonar:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Gradle Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle
+          key: gradle
+
+      - name: Maven Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: m2
+
+      - name: Sonar report
+        run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }}
