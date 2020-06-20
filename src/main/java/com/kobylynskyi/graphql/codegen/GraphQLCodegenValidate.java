@@ -20,9 +20,8 @@ public class GraphQLCodegenValidate {
     private final List<String> schemas;
 
     public void validate() throws IOException {
-        try {
-            long startTime = System.currentTimeMillis();
-            MultiSourceReader reader = GraphQLDocumentParser.createMultiSourceReader(schemas);
+        long startTime = System.currentTimeMillis();
+        try (MultiSourceReader reader = GraphQLDocumentParser.createMultiSourceReader(schemas)) {
             new Parser().parseDocument(reader);
             System.out.println(String.format("Validated schemas '%s' in %d ms",
                     schemas, System.currentTimeMillis() - startTime));

@@ -62,7 +62,7 @@ class GraphQLDocumentParser {
                     populateDefinition(operationDefinitions, definition, definitionName,
                             ObjectTypeDefinition.class, ObjectTypeExtensionDefinition.class,
                             s -> new ExtendedObjectTypeDefinition());
-                    if (mappingConfig.getGenerateModelsForRootTypes()) {
+                    if (Boolean.TRUE.equals(mappingConfig.getGenerateModelsForRootTypes())) {
                         populateDefinition(typeDefinitions, definition, definitionName,
                                 ObjectTypeDefinition.class, ObjectTypeExtensionDefinition.class,
                                 s -> new ExtendedObjectTypeDefinition());

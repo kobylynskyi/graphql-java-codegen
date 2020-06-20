@@ -42,7 +42,7 @@ class GraphQLCodegenModelsForRootTypesTest {
         mappingConfig.setApiNamePrefix(null);
         mappingConfig.setModelNamePrefix("");
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig).generate(),
+                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and model classes",
@@ -53,7 +53,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_sameResolverSuffixes() {
         // by default apiNamePrefix is same as typeResolverSuffix
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig).generate(),
+                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes",
