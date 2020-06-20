@@ -13,6 +13,9 @@ public class GraphQLRequestSerializer {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private GraphQLRequestSerializer() {
+    }
+
     /**
      * Serializes GraphQL request to be used as HTTP JSON body
      * according to https://graphql.org/learn/serving-over-http specifications

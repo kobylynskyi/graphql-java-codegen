@@ -9,6 +9,9 @@ import java.io.IOException;
 
 class FreeMarkerTemplatesRegistry {
 
+    private FreeMarkerTemplatesRegistry() {
+    }
+
     static final Template typeTemplate;
     static final Template enumTemplate;
     static final Template unionTemplate;

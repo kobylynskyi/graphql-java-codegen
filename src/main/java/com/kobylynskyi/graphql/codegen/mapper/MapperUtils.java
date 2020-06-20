@@ -32,6 +32,9 @@ class MapperUtils {
             "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
+    private MapperUtils() {
+    }
+
     /**
      * Capitalize field name if it is Java-restricted.
      * Examples:

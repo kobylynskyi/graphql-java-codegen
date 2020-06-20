@@ -19,6 +19,9 @@ import static java.util.stream.Collectors.toList;
  */
 public class InputValueDefinitionToParameterMapper {
 
+    private InputValueDefinitionToParameterMapper() {
+    }
+
     /**
      * Map input value definition to a Freemarker-understandable data model type
      *

@@ -36,4 +36,7 @@ public class MappingConfigConstants {
     public static final String DEFAULT_RESPONSE_SUFFIX = "Response";
     public static final String DEFAULT_RESPONSE_PROJECTION_SUFFIX = "ResponseProjection";
     public static final String DEFAULT_PARAMETRIZED_INPUT_SUFFIX = "ParametrizedInput";
+
+    private MappingConfigConstants() {
+    }
 }

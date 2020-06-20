@@ -6,7 +6,16 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectType
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
 
 /**
  * Map input type definition to a Freemarker data model
@@ -14,6 +23,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
  * @author kobylynskyi
  */
 public class InputDefinitionToDataModelMapper {
+
+    private InputDefinitionToDataModelMapper() {
+    }
 
     /**
      * Map input type definition to a Freemarker data model

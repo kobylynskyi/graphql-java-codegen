@@ -9,7 +9,9 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.List;
 
-import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.*;
+import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getAnnotations;
+import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getJavaType;
+import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getNestedTypeName;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -18,6 +20,9 @@ import static java.util.stream.Collectors.toList;
  * @author kobylynskyi
  */
 public class FieldDefinitionToParameterMapper {
+
+    private FieldDefinitionToParameterMapper() {
+    }
 
     /**
      * Map field definition to a Freemarker-understandable data model type

@@ -38,9 +38,11 @@ class GraphQLDocumentParser {
 
     private static final Parser GRAPHQL_PARSER = new Parser();
 
+    private GraphQLDocumentParser() {
+    }
+
     static ExtendedDocument getDocument(MappingConfig mappingConfig, List<String> schemaPaths) throws IOException {
-        MultiSourceReader reader = createMultiSourceReader(schemaPaths);
-        Document document = GRAPHQL_PARSER.parseDocument(reader);
+        Document document = readDocument(schemaPaths);
 
         Map<String, ExtendedObjectTypeDefinition> operationDefinitions = new HashMap<>();
         Map<String, ExtendedObjectTypeDefinition> typeDefinitions = new HashMap<>();
@@ -92,8 +94,8 @@ class GraphQLDocumentParser {
                 populateDefinition(interfaceDefinitions, definition, definitionName,
                         InterfaceTypeDefinition.class, InterfaceTypeExtensionDefinition.class,
                         s -> new ExtendedInterfaceTypeDefinition());
-                //} else if (definition instanceof DirectiveDefinition) {
             }
+            // TODO: consider DirectiveDefinition
         }
         return ExtendedDocument.builder()
                 .operationDefinitions(operationDefinitions.values())
@@ -121,6 +123,12 @@ class GraphQLDocumentParser {
             extendedDefinition.getExtensions().add((E) definition);
         } else {
             extendedDefinition.setDefinition((B) definition);
+        }
+    }
+
+    private static Document readDocument(List<String> schemaPaths) throws IOException {
+        try (MultiSourceReader reader = createMultiSourceReader(schemaPaths)) {
+            return GRAPHQL_PARSER.parseDocument(reader);
         }
     }
 

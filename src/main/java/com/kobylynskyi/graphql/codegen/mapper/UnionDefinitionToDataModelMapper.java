@@ -6,7 +6,9 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefini
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
 /**
  * Map union definition to a Freemarker data model
@@ -14,6 +16,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
  * @author kobylynskyi
  */
 public class UnionDefinitionToDataModelMapper {
+
+    private UnionDefinitionToDataModelMapper() {
+    }
 
     /**
      * Map union definition to a Freemarker data model

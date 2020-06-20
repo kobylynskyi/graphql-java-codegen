@@ -19,6 +19,9 @@ class GraphQLCodegenFileCreator {
 
     private static final String EXTENSION = ".java";
 
+    private GraphQLCodegenFileCreator() {
+    }
+
     static File generateFile(Template template, Map<String, Object> dataModel, File outputDir) {
         String fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);

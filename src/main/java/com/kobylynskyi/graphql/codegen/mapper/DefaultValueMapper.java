@@ -1,16 +1,33 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import graphql.language.*;
+import graphql.language.ArrayValue;
+import graphql.language.BooleanValue;
+import graphql.language.EnumValue;
+import graphql.language.FloatValue;
+import graphql.language.IntValue;
+import graphql.language.ListType;
+import graphql.language.NonNullType;
+import graphql.language.NullValue;
+import graphql.language.ObjectValue;
+import graphql.language.StringValue;
+import graphql.language.Type;
+import graphql.language.TypeName;
+import graphql.language.Value;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DefaultValueMapper {
 
+    private static final String NULL_STRING = "null";
+
+    private DefaultValueMapper() {
+    }
+
     public static String map(MappingContext mappingContext, Value<?> defaultValue, Type<?> graphQLType) {
         if (defaultValue instanceof NullValue) {
-            return mapNullValue();
+            return NULL_STRING;
         }
         if (defaultValue instanceof BooleanValue) {
             return mapBoolean((BooleanValue) defaultValue);
@@ -28,17 +45,14 @@ public class DefaultValueMapper {
             return mapEnum(mappingContext, graphQLType, (EnumValue) defaultValue);
         }
         if (defaultValue instanceof ObjectValue) {
-            return mapObject((ObjectValue) defaultValue);
+            // default object values are not supported yet, same behaviour as before for those
+            return null;
         }
         if (defaultValue instanceof ArrayValue) {
             return mapArray(mappingContext, graphQLType, (ArrayValue) defaultValue);
         }
         // no default value, or not a known type
         return null;
-    }
-
-    private static String mapNullValue() {
-        return "null";
     }
 
     private static String mapBoolean(BooleanValue defaultValue) {
@@ -69,11 +83,7 @@ public class DefaultValueMapper {
         throw new IllegalArgumentException("Unexpected Enum default value for list type");
     }
 
-    private static String mapObject(ObjectValue defaultValue) {
-        // default object values are not supported yet, same behaviour as before for those
-        return null;
-    }
-
+    @SuppressWarnings({"rawtypes", "java:S3740"})
     private static String mapArray(MappingContext mappingContext, Type<?> graphQLType, ArrayValue defaultValue) {
         if (graphQLType instanceof NonNullType) {
             return mapArray(mappingContext, ((NonNullType) graphQLType).getType(), defaultValue);

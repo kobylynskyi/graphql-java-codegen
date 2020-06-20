@@ -33,6 +33,9 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FO
  */
 public class RequestResponseDefinitionToDataModelMapper {
 
+    private RequestResponseDefinitionToDataModelMapper() {
+    }
+
     /**
      * Map type definition to a Freemarker data model of Response Projection.
      *
