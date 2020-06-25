@@ -49,7 +49,6 @@ task codeCoverageReport(type: JacocoReport) {
 codeCoverageReport.dependsOn test
 
 
-
 java {
     withJavadocJar()
     withSourcesJar()
@@ -125,18 +124,6 @@ publishing {
             credentials {
                 username sonatypeUsername
                 password sonatypePassword
-            }
-        }
-        ivy {
-            url "${System.properties['user.home']}/.ivy2/local"
-            patternLayout {
-                // Need to publish twice due to a Gradle bug https://github.com/gradle/gradle/issues/12911
-                // First uncomment the 'layout' line below and comment out the 'artifact' and 'ivy' lines and run `./gradlew publishIvyPublicationToIvyRepository`
-                // Then restore the code to its original state and run `./gradlew publishIvyPublicationToIvyRepository` again
-
-                // layout "ivy"
-                artifact '[organisation]/[module]/[revision]/[ext]s/[artifact](-[classifier])(.[ext])'
-                ivy '[organisation]/[module]/[revision]/[artifact]/[artifact](-[classifier])(.[ext])'
             }
         }
     }
