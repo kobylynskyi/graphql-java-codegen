@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Various utilities
@@ -88,6 +89,36 @@ public final class Utils {
             }
         }
         return false;
+    }
+
+    /**
+     * Copy of org.apache.commons.lang3.StringUtils.isBlank(CharSequence cs)
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace only
+     */
+    public static boolean isBlank(final CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if strings are equal (consider blank strings equal to null)
+     *
+     * @param a a string
+     * @param b a string to be compared with {@code a}
+     * @return {@code true} if strings are equal
+     */
+    public static boolean stringsEqualIgnoreSpaces(String a, String b) {
+        return Objects.equals(a, b) || (isBlank(a) && isBlank(b));
     }
 
     /**

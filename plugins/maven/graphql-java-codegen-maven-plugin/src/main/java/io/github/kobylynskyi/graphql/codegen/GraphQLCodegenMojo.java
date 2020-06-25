@@ -71,7 +71,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String apiNamePrefix;
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_NAME_SUFFIX)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX)
     private String apiNameSuffix;
 
     @Parameter
@@ -82,6 +82,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Parameter
     private String modelNameSuffix;
+
+    @Parameter
+    private String typeResolverPrefix;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX)
+    private String typeResolverSuffix;
 
     @Parameter
     private String subscriptionReturnType;
@@ -107,6 +113,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING)
     private boolean generateDataFetchingEnvironmentArgumentInApis;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING)
+    private boolean generateModelsForRootTypes;
+
     @Parameter
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
@@ -125,7 +134,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX)
     private String responseProjectionSuffix;
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFIX)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX)
     private String parametrizedInputSuffix;
 
     @Parameter
@@ -157,6 +166,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setModelPackageName(modelPackageName);
         mappingConfig.setGenerateBuilder(generateBuilder);
         mappingConfig.setGenerateApis(generateApis);
+        mappingConfig.setTypeResolverSuffix(typeResolverSuffix);
+        mappingConfig.setTypeResolverPrefix(typeResolverPrefix);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
@@ -167,6 +178,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
+        mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setGenerateClient(generateClient);
@@ -360,6 +372,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Boolean getGenerateModelsForRootTypes() {
+        return generateModelsForRootTypes;
+    }
+
+    public void setGenerateModelsForRootTypes(boolean generateModelsForRootTypes) {
+        this.generateModelsForRootTypes = generateModelsForRootTypes;
+    }
+
+    @Override
     public Boolean getGenerateEqualsAndHashCode() {
         return generateEqualsAndHashCode;
     }
@@ -420,6 +441,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateParameterizedFieldsResolvers(boolean generateParameterizedFieldsResolvers) {
         this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    @Override
+    public String getTypeResolverPrefix() {
+        return typeResolverPrefix;
+    }
+
+    public void setTypeResolverPrefix(String typeResolverPrefix) {
+        this.typeResolverPrefix = typeResolverPrefix;
+    }
+
+    @Override
+    public String getTypeResolverSuffix() {
+        return typeResolverSuffix;
+    }
+
+    public void setTypeResolverSuffix(String typeResolverSuffix) {
+        this.typeResolverSuffix = typeResolverSuffix;
     }
 
     @Override
