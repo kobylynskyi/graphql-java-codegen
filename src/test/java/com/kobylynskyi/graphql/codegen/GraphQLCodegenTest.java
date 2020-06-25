@@ -13,7 +13,11 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
@@ -21,7 +25,9 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphQLCodegenTest {
 
@@ -192,8 +198,7 @@ class GraphQLCodegenTest {
         assertFileContainsElements(files, "Event.java", System.lineSeparator() +
                 "/**" + System.lineSeparator() +
                 " * An event that describes a thing that happens" + System.lineSeparator() +
-                " */" + System.lineSeparator() +
-                "@javax.annotation.Generated{");
+                " */" + System.lineSeparator());
     }
 
     @Test

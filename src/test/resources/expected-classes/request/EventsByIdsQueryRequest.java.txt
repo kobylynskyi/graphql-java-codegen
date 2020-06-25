@@ -9,10 +9,10 @@ import java.util.Objects;
 /**
  * Events by IDs.
  */
-@javax.annotation.Generated{
+@javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
-}
+)
 public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;

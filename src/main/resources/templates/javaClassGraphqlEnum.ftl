@@ -10,10 +10,10 @@ package ${package};
  */
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
-@${generatedInfo.getGeneratedType()}{
+@${generatedInfo.getGeneratedType()}(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "${generatedInfo.getDateTime()}"
-}
+)
 </#if>
 public enum ${className}<#if implements?has_content> implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 

@@ -4,10 +4,10 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-@javax.annotation.Generated{
+@javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
-}
+)
 public class AcceptTopicSuggestionInput implements java.io.Serializable {
 
     private String clientMutationId;

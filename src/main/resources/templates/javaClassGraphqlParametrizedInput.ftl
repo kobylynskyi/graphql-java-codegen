@@ -17,10 +17,10 @@ import java.util.Objects;
  */
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
-@${generatedInfo.getGeneratedType()}{
+@${generatedInfo.getGeneratedType()}(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "${generatedInfo.getDateTime()}"
-}
+)
 </#if>
 public class ${className} implements GraphQLParametrizedInput {
 

@@ -13,10 +13,10 @@ import java.util.Map;
  */
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
-@${generatedInfo.getGeneratedType()}{
+@${generatedInfo.getGeneratedType()}(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "${generatedInfo.getDateTime()}"
-}
+)
 </#if>
 public class ${className} extends GraphQLResult<Map<String, ${returnTypeName}>> {
 

@@ -6,10 +6,10 @@ import java.util.Map;
 /**
  * Version of the application.
  */
-@javax.annotation.Generated{
+@javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
-}
+)
 public class VersionQueryResponse extends GraphQLResult<Map<String, String>> {
 
     private static final String OPERATION_NAME = "version";

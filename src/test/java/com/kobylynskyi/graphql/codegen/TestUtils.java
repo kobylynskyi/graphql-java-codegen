@@ -27,7 +27,22 @@ public class TestUtils {
     public static void assertSameTrimmedContent(File expected, File file) throws IOException {
         String expectedContent = Utils.getFileContent(expected.getPath()).trim();
         String actualContent = Utils.getFileContent(file.getPath()).trim();
+        if (atLeastJava9()) {
+            // doing this hack in order to make the build work on all Java versions
+            actualContent = actualContent.replace(
+                    "javax.annotation.processing.Generated",
+                    "javax.annotation.Generated");
+        }
         assertEquals(expectedContent, actualContent);
+    }
+
+    private static boolean atLeastJava9() {
+        try {
+            Class.forName("javax.annotation.processing.Generated");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     public static GeneratedInformation getStaticGeneratedInfo() {

@@ -11,10 +11,10 @@ package ${package};
  */
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
-@${generatedInfo.getGeneratedType()}{
+@${generatedInfo.getGeneratedType()}(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "${generatedInfo.getDateTime()}"
-}
+)
 </#if>
 public interface ${className} {
 

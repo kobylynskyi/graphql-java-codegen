@@ -29,6 +29,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String modelNameSuffix;
     private String apiNamePrefix;
     private String apiNameSuffix;
+    private String typeResolverPrefix;
+    private String typeResolverSuffix;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
@@ -44,6 +46,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
+    private Boolean generateModelsForRootTypes;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -87,6 +90,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.apiNameSuffix = source.apiNameSuffix != null ? source.apiNameSuffix : this.apiNameSuffix;
         this.apiRootInterfaceStrategy = source.apiRootInterfaceStrategy != null ? source.apiRootInterfaceStrategy : this.apiRootInterfaceStrategy;
         this.apiNamePrefixStrategy = source.apiNamePrefixStrategy != null ? source.apiNamePrefixStrategy : this.apiNamePrefixStrategy;
+        this.typeResolverPrefix = source.typeResolverPrefix != null ? source.typeResolverPrefix : this.typeResolverPrefix;
+        this.typeResolverSuffix = source.typeResolverSuffix != null ? source.typeResolverSuffix : this.typeResolverSuffix;
         this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
         this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
         this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;
@@ -97,6 +102,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
         this.generateExtensionFieldsResolvers = source.generateExtensionFieldsResolvers != null ? source.generateExtensionFieldsResolvers : this.generateExtensionFieldsResolvers;
         this.generateDataFetchingEnvironmentArgumentInApis = source.generateDataFetchingEnvironmentArgumentInApis != null ? source.generateDataFetchingEnvironmentArgumentInApis : this.generateDataFetchingEnvironmentArgumentInApis;
+        this.generateModelsForRootTypes = source.generateModelsForRootTypes != null ? source.generateModelsForRootTypes : this.generateModelsForRootTypes;
         if (this.fieldsWithResolvers != null && source.fieldsWithResolvers != null) {
             this.fieldsWithResolvers.addAll(source.fieldsWithResolvers);
         } else if (this.fieldsWithResolvers == null) {
