@@ -27,7 +27,7 @@ class GraphQLCodegenFieldsResolversTest {
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
         generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig);
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

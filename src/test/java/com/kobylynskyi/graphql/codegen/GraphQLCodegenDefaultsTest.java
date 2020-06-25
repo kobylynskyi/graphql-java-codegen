@@ -28,7 +28,7 @@ class GraphQLCodegenDefaultsTest {
     void init() {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.testdefaults");
         generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/defaults.graphqls"),
-                outputBuildDir, mappingConfig);
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

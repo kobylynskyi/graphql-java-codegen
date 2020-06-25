@@ -9,6 +9,10 @@ import java.util.Objects;
 /**
  * List of events of a specified category.
  */
+@javax.annotation.Generated{
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+}
 public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;

@@ -4,6 +4,10 @@ package com.github.graphql;
 /**
  * Resolver for Commit
  */
+@javax.annotation.Generated{
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+}
 public interface CommitResolver {
 
     PullRequestConnection associatedPullRequests(Commit commit, String after, String before, Integer first, Integer last, PullRequestOrder orderBy, graphql.schema.DataFetchingEnvironment env) throws Exception;

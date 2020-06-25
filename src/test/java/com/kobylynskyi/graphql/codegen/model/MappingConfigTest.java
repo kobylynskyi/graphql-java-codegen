@@ -2,11 +2,19 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("unchecked")
 class MappingConfigTest {

@@ -25,7 +25,7 @@ class GraphQLCodegenImmutableTest {
     void init() {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.immutable");
         generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig);
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

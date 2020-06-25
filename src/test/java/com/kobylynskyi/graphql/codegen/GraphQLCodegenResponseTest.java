@@ -36,7 +36,7 @@ class GraphQLCodegenResponseTest {
     void generate_RequestAndResponseProjections() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

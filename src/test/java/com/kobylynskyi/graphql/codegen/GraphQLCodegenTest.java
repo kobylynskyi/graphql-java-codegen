@@ -37,7 +37,7 @@ class GraphQLCodegenTest {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig);
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach
@@ -76,7 +76,7 @@ class GraphQLCodegenTest {
     void generate_NoBuilder() throws Exception {
         mappingConfig.setGenerateBuilder(false);
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -193,7 +193,7 @@ class GraphQLCodegenTest {
                 "/**" + System.lineSeparator() +
                 " * An event that describes a thing that happens" + System.lineSeparator() +
                 " */" + System.lineSeparator() +
-                "public class Event implements java.io.Serializable {");
+                "@javax.annotation.Generated{");
     }
 
     @Test
@@ -365,7 +365,7 @@ class GraphQLCodegenTest {
     @Test
     void generate_deprecated() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/deprecated.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -382,7 +382,7 @@ class GraphQLCodegenTest {
     @Test
     void generate_QueriesWithSameName() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -396,7 +396,7 @@ class GraphQLCodegenTest {
     @Test
     void generate_InterfaceAndTypeHavingDuplicateFields() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/type-interface-duplicate-fields.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -407,7 +407,7 @@ class GraphQLCodegenTest {
     @Test
     void generate_InterfaceAndTypeHavingDuplicateFields1() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/type-interface-duplicate-fields1.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

@@ -6,6 +6,10 @@ import java.util.Map;
 /**
  * List of events of a specified category.
  */
+@javax.annotation.Generated{
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+}
 public class EventsByCategoryAndStatusQueryResponse extends GraphQLResult<Map<String, java.util.List<EventTO>>> {
 
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";

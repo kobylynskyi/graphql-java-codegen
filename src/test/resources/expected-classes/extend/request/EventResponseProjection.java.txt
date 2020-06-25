@@ -4,6 +4,10 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 /**
  * Response projection for Event
  */
+@javax.annotation.Generated{
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+}
 public class EventResponseProjection extends GraphQLResponseProjection {
 
     public EventResponseProjection() {

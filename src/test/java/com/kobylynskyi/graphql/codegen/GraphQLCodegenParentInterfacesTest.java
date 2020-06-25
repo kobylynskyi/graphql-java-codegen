@@ -25,7 +25,7 @@ class GraphQLCodegenParentInterfacesTest {
     void init() {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
         generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig);
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

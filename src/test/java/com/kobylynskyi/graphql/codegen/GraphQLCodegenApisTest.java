@@ -41,7 +41,8 @@ class GraphQLCodegenApisTest {
     @Test
     void generate_FileNameAsPrefix() throws Exception {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -52,7 +53,8 @@ class GraphQLCodegenApisTest {
     @Test
     void generate_FolderNameAsPrefix() throws Exception {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -63,7 +65,8 @@ class GraphQLCodegenApisTest {
     @Test
     void generate_Constant() throws Exception {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -75,7 +78,8 @@ class GraphQLCodegenApisTest {
     void generate_InterfacePerSchemaAndFolderNameAsPrefix() throws Exception {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -87,7 +91,8 @@ class GraphQLCodegenApisTest {
     void generate_InterfacePerSchemaAndFileNameAsPrefix() throws Exception {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -100,7 +105,7 @@ class GraphQLCodegenApisTest {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig).generate();
+            new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
         });
     }
 
