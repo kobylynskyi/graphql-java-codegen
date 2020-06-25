@@ -43,6 +43,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateApis();
 
     /**
+     * Specifies whether model classes should be generated for Query/Subscription/Mutation.
+     *
+     * @return <b>true</b> is model classes (POJOs) should be generated for GraphQL root types.
+     */
+    Boolean getGenerateModelsForRootTypes();
+
+    /**
      * Specifies the strategy of generating root api interface.
      *
      * @return strategy of generating root api interface.
@@ -163,6 +170,20 @@ public interface GraphQLCodegenConfiguration {
      * <b>false</b> if field should be added to the type definition and field parameters should be ignored.
      */
     Boolean getGenerateParameterizedFieldsResolvers();
+
+    /**
+     * Sets the prefix for GraphQL type resolver classes.
+     *
+     * @return The prefix for GraphQL type resolver classes.
+     */
+    String getTypeResolverPrefix();
+
+    /**
+     * Sets the suffix for GraphQL type resolver classes.
+     *
+     * @return The suffix for GraphQL type resolver classes.
+     */
+    String getTypeResolverSuffix();
 
     /**
      * Whether all fields in extensions (<code>extend type</code> and <code>extend interface</code>) should be present

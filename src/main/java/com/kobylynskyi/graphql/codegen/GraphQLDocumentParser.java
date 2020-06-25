@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
@@ -28,7 +29,6 @@ import graphql.parser.MultiSourceReader;
 import graphql.parser.Parser;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +41,7 @@ class GraphQLDocumentParser {
     private GraphQLDocumentParser() {
     }
 
-    static ExtendedDocument getDocument(String schemaFilePath) throws IOException {
-        return getDocument(Collections.singletonList(schemaFilePath));
-    }
-
-    static ExtendedDocument getDocument(List<String> schemaPaths) throws IOException {
+    static ExtendedDocument getDocument(MappingConfig mappingConfig, List<String> schemaPaths) throws IOException {
         Document document = readDocument(schemaPaths);
 
         Map<String, ExtendedObjectTypeDefinition> operationDefinitions = new HashMap<>();
@@ -68,6 +64,11 @@ class GraphQLDocumentParser {
                     populateDefinition(operationDefinitions, definition, definitionName,
                             ObjectTypeDefinition.class, ObjectTypeExtensionDefinition.class,
                             s -> new ExtendedObjectTypeDefinition());
+                    if (Boolean.TRUE.equals(mappingConfig.getGenerateModelsForRootTypes())) {
+                        populateDefinition(typeDefinitions, definition, definitionName,
+                                ObjectTypeDefinition.class, ObjectTypeExtensionDefinition.class,
+                                s -> new ExtendedObjectTypeDefinition());
+                    }
                 } else {
                     populateDefinition(typeDefinitions, definition, definitionName,
                             ObjectTypeDefinition.class, ObjectTypeExtensionDefinition.class,
@@ -108,12 +109,15 @@ class GraphQLDocumentParser {
     }
 
     @SuppressWarnings("unchecked")
-    private static <D extends ExtendedDefinition<B, E>, B extends NamedNode<B>, E extends B> void populateDefinition(Map<String, D> definitionsMap,
-                                                                                                                     Definition<?> definition,
-                                                                                                                     String definitionName,
-                                                                                                                     Class<B> baseDefinitionClass,
-                                                                                                                     Class<E> extensionDefinitionClass,
-                                                                                                                     Function<String, D> mappingFunction) {
+    private static <
+            D extends ExtendedDefinition<B, E>,
+            B extends NamedNode<B>,
+            E extends B> void populateDefinition(Map<String, D> definitionsMap,
+                                                 Definition<?> definition,
+                                                 String definitionName,
+                                                 Class<B> baseDefinitionClass,
+                                                 Class<E> extensionDefinitionClass,
+                                                 Function<String, D> mappingFunction) {
         D extendedDefinition = definitionsMap.computeIfAbsent(definitionName, mappingFunction);
         if (extensionDefinitionClass.isAssignableFrom(definition.getClass())) {
             extendedDefinition.getExtensions().add((E) definition);
@@ -128,7 +132,10 @@ class GraphQLDocumentParser {
         }
     }
 
-    private static MultiSourceReader createMultiSourceReader(List<String> schemaPaths) throws IOException {
+    public static MultiSourceReader createMultiSourceReader(List<String> schemaPaths) throws IOException {
+        if (schemaPaths == null) {
+            return MultiSourceReader.newMultiSourceReader().build();
+        }
         MultiSourceReader.Builder builder = MultiSourceReader.newMultiSourceReader();
         for (String path : schemaPaths) {
             // appending EOL to ensure that schema tokens are not mixed in case files are not properly ended with EOL
