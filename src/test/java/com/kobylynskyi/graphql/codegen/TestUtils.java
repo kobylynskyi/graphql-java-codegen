@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.model.DateTimeGenerator;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
@@ -47,12 +46,7 @@ public class TestUtils {
 
     public static GeneratedInformation getStaticGeneratedInfo() {
         GeneratedInformation generatedInformation = new GeneratedInformation();
-        generatedInformation.setDateTimeGenerator(new DateTimeGenerator() {
-            @Override
-            public ZonedDateTime newDateTime() {
-                return GENERATED_DATE_TIME;
-            }
-        });
+        generatedInformation.setDateTimeSupplier(() -> GENERATED_DATE_TIME);
         return generatedInformation;
     }
 

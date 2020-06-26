@@ -1,25 +1,27 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Supplier;
 
 public class GeneratedInformation {
 
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
 
-    private DateTimeGenerator dateTimeGenerator;
+    private Supplier<ZonedDateTime> dateTimeSupplier;
     private final String generatedType;
 
     public GeneratedInformation() {
-        this(new DefaultDateTimeGenerator());
+        this(ZonedDateTime::now);
     }
 
-    public GeneratedInformation(DateTimeGenerator dateTimeGenerator) {
-        this.dateTimeGenerator = dateTimeGenerator;
+    public GeneratedInformation(Supplier<ZonedDateTime> dateTimeSupplier) {
+        this.dateTimeSupplier = dateTimeSupplier;
         this.generatedType = initGeneratedType();
     }
 
-    public void setDateTimeGenerator(DateTimeGenerator dateTimeGenerator) {
-        this.dateTimeGenerator = dateTimeGenerator;
+    public void setDateTimeSupplier(Supplier<ZonedDateTime> dateTimeSupplier) {
+        this.dateTimeSupplier = dateTimeSupplier;
     }
 
     public String getGeneratedType() {
@@ -27,7 +29,7 @@ public class GeneratedInformation {
     }
 
     public String getDateTime() {
-        return DATE_TIME_FORMAT.format(dateTimeGenerator.newDateTime());
+        return DATE_TIME_FORMAT.format(dateTimeSupplier.get());
     }
 
     private static String initGeneratedType() {
