@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.model.exception.SchemaValidationException
 import graphql.GraphQLException;
 import graphql.parser.MultiSourceReader;
 import graphql.parser.Parser;
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,10 +13,13 @@ import java.util.List;
  *
  * @author kobylynskyi
  */
-@AllArgsConstructor
 public class GraphQLCodegenValidate {
 
     private final List<String> schemas;
+
+    public GraphQLCodegenValidate(List<String> schemas) {
+        this.schemas = schemas;
+    }
 
     public void validate() throws IOException {
         long startTime = System.currentTimeMillis();

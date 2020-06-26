@@ -3,15 +3,15 @@ package com.kobylynskyi.graphql.codegen.model.definitions;
 import graphql.language.Comment;
 import graphql.language.Directive;
 import graphql.language.FieldDefinition;
-import lombok.Getter;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * Used to identify whether the field definition comes from the extension or base definition
  */
-@Getter
 public class ExtendedFieldDefinition extends FieldDefinition {
 
     private final boolean fromExtension;
@@ -41,4 +41,7 @@ public class ExtendedFieldDefinition extends FieldDefinition {
                 .collect(Collectors.toList());
     }
 
+    public boolean isFromExtension() {
+        return fromExtension;
+    }
 }

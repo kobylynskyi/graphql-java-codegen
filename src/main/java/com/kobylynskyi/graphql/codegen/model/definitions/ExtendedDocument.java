@@ -1,8 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import lombok.Builder;
-import lombok.Getter;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,8 +7,6 @@ import java.util.stream.Collectors;
 /**
  * GraphQL document that holds all extended definitions
  */
-@Getter
-@Builder
 public class ExtendedDocument {
 
     private final Collection<ExtendedObjectTypeDefinition> operationDefinitions;
@@ -21,6 +16,22 @@ public class ExtendedDocument {
     private final Collection<ExtendedScalarTypeDefinition> scalarDefinitions;
     private final Collection<ExtendedInterfaceTypeDefinition> interfaceDefinitions;
     private final Collection<ExtendedUnionTypeDefinition> unionDefinitions;
+
+    public ExtendedDocument(Collection<ExtendedObjectTypeDefinition> operationDefinitions,
+                            Collection<ExtendedObjectTypeDefinition> typeDefinitions,
+                            Collection<ExtendedInputObjectTypeDefinition> inputDefinitions,
+                            Collection<ExtendedEnumTypeDefinition> enumDefinitions,
+                            Collection<ExtendedScalarTypeDefinition> scalarDefinitions,
+                            Collection<ExtendedInterfaceTypeDefinition> interfaceDefinitions,
+                            Collection<ExtendedUnionTypeDefinition> unionDefinitions) {
+        this.operationDefinitions = operationDefinitions;
+        this.typeDefinitions = typeDefinitions;
+        this.inputDefinitions = inputDefinitions;
+        this.enumDefinitions = enumDefinitions;
+        this.scalarDefinitions = scalarDefinitions;
+        this.interfaceDefinitions = interfaceDefinitions;
+        this.unionDefinitions = unionDefinitions;
+    }
 
     public Set<String> getTypeNames() {
         return typeDefinitions.stream()
@@ -34,4 +45,31 @@ public class ExtendedDocument {
                 .collect(Collectors.toSet());
     }
 
+    public Collection<ExtendedObjectTypeDefinition> getOperationDefinitions() {
+        return operationDefinitions;
+    }
+
+    public Collection<ExtendedObjectTypeDefinition> getTypeDefinitions() {
+        return typeDefinitions;
+    }
+
+    public Collection<ExtendedInputObjectTypeDefinition> getInputDefinitions() {
+        return inputDefinitions;
+    }
+
+    public Collection<ExtendedEnumTypeDefinition> getEnumDefinitions() {
+        return enumDefinitions;
+    }
+
+    public Collection<ExtendedScalarTypeDefinition> getScalarDefinitions() {
+        return scalarDefinitions;
+    }
+
+    public Collection<ExtendedInterfaceTypeDefinition> getInterfaceDefinitions() {
+        return interfaceDefinitions;
+    }
+
+    public Collection<ExtendedUnionTypeDefinition> getUnionDefinitions() {
+        return unionDefinitions;
+    }
 }

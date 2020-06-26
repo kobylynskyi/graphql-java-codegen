@@ -138,15 +138,14 @@ class GraphQLDocumentParser {
         private final Map<String, ExtendedUnionTypeDefinition> unionDefinitions = new HashMap<>();
 
         ExtendedDocument build() {
-            return ExtendedDocument.builder()
-                    .operationDefinitions(operationDefinitions.values())
-                    .typeDefinitions(typeDefinitions.values())
-                    .inputDefinitions(inputDefinitions.values())
-                    .enumDefinitions(enumDefinitions.values())
-                    .scalarDefinitions(scalarDefinitions.values())
-                    .interfaceDefinitions(interfaceDefinitions.values())
-                    .unionDefinitions(unionDefinitions.values())
-                    .build();
+            return new ExtendedDocument(
+                    operationDefinitions.values(),
+                    typeDefinitions.values(),
+                    inputDefinitions.values(),
+                    enumDefinitions.values(),
+                    scalarDefinitions.values(),
+                    interfaceDefinitions.values(),
+                    unionDefinitions.values());
         }
 
     }

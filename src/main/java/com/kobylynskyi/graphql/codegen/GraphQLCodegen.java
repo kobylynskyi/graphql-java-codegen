@@ -26,8 +26,6 @@ import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.FieldDefinition;
 import graphql.language.ScalarTypeExtensionDefinition;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,14 +47,12 @@ import static java.util.stream.Collectors.toList;
  * @author kobylynskyi
  * @author valinhadev
  */
-@Getter
-@Setter
 public class GraphQLCodegen {
 
-    private List<String> schemas;
-    private File outputDir;
-    private MappingConfig mappingConfig;
-    private GeneratedInformation generatedInformation;
+    private final List<String> schemas;
+    private final File outputDir;
+    private final MappingConfig mappingConfig;
+    private final GeneratedInformation generatedInformation;
 
     public GraphQLCodegen(List<String> schemas,
                           File outputDir,

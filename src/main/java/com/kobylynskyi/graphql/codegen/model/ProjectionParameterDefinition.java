@@ -1,17 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
  * Freemarker-understandable format of parameter user in ResponseProjection
  *
  * @author kobylynskyi
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProjectionParameterDefinition {
 
     private String type;
@@ -19,4 +12,35 @@ public class ProjectionParameterDefinition {
     private boolean deprecated;
     private String parametrizedInputClassName;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public String getParametrizedInputClassName() {
+        return parametrizedInputClassName;
+    }
+
+    public void setParametrizedInputClassName(String parametrizedInputClassName) {
+        this.parametrizedInputClassName = parametrizedInputClassName;
+    }
 }

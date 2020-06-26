@@ -14,13 +14,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
@@ -283,8 +283,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_NoSchemas() throws Exception {
-        generator.setSchemas(Collections.emptyList());
-        generator.generate();
+        new GraphQLCodegen(emptyList(),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertEquals(0, files.length);
@@ -292,7 +292,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_WrongSchema() {
-        generator.setSchemas(singletonList("src/test/resources/schemas/wrong.graphqls"));
+        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
 
         Assertions.assertThrows(NoSuchFileException.class, () -> generator.generate());
     }
@@ -300,7 +301,8 @@ class GraphQLCodegenTest {
     @Test
     void generate_NoQueries() throws Exception {
         mappingConfig.setPackageName("");
-        generator.setSchemas(singletonList("src/test/resources/schemas/no-queries.graphqls"));
+        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/no-queries.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
@@ -313,7 +315,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_Empty() throws Exception {
-        generator.setSchemas(singletonList("src/test/resources/schemas/empty.graphqls"));
+        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/empty.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());

@@ -1,10 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +7,27 @@ import java.util.List;
  *
  * @author kobylynskyi
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class EnumValueDefinition {
 
-    private String value;
-    private List<String> javaDoc = new ArrayList<>();
-    private boolean deprecated;
+    private final String value;
+    private final List<String> javaDoc;
+    private final boolean deprecated;
 
+    public EnumValueDefinition(String value, List<String> javaDoc, boolean deprecated) {
+        this.value = value;
+        this.javaDoc = javaDoc;
+        this.deprecated = deprecated;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public List<String> getJavaDoc() {
+        return javaDoc;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
+    }
 }

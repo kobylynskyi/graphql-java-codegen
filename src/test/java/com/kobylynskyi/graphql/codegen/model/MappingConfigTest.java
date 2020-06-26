@@ -24,7 +24,7 @@ class MappingConfigTest {
         MappingConfig mappingConfig = buildEmptyMappingConfig();
         mappingConfig.combine(null);
 
-        assertEquals(buildEmptyMappingConfig(), mappingConfig);
+        compareMappingConfigs(mappingConfig, buildEmptyMappingConfig());
     }
 
     @Test
@@ -32,7 +32,7 @@ class MappingConfigTest {
         MappingConfig mappingConfig = buildEmptyMappingConfig();
         mappingConfig.combine(buildEmptyMappingConfig());
 
-        assertEquals(buildEmptyMappingConfig(), mappingConfig);
+        compareMappingConfigs(mappingConfig, buildEmptyMappingConfig());
     }
 
     @Test
@@ -213,6 +213,34 @@ class MappingConfigTest {
         mappingConfig.setFieldsWithResolvers(null);
         mappingConfig.setFieldsWithoutResolvers(null);
         return mappingConfig;
+    }
+
+    private static void compareMappingConfigs(MappingConfig mappingConfig, MappingConfig expectedMappingConfig) {
+        assertEquals(expectedMappingConfig.getCustomTypesMapping(), mappingConfig.getCustomTypesMapping());
+        assertEquals(expectedMappingConfig.getCustomAnnotationsMapping(), mappingConfig.getCustomAnnotationsMapping());
+        assertEquals(expectedMappingConfig.getApiPackageName(), mappingConfig.getApiPackageName());
+        assertEquals(expectedMappingConfig.getGenerateBuilder(), mappingConfig.getGenerateBuilder());
+        assertEquals(expectedMappingConfig.getGenerateApis(), mappingConfig.getGenerateApis());
+        assertEquals(expectedMappingConfig.getGenerateEqualsAndHashCode(), mappingConfig.getGenerateEqualsAndHashCode());
+        assertEquals(expectedMappingConfig.getGenerateImmutableModels(), mappingConfig.getGenerateImmutableModels());
+        assertEquals(expectedMappingConfig.getGenerateToString(), mappingConfig.getGenerateToString());
+        assertEquals(expectedMappingConfig.getModelNamePrefix(), mappingConfig.getModelNamePrefix());
+        assertEquals(expectedMappingConfig.getModelNameSuffix(), mappingConfig.getModelNameSuffix());
+        assertEquals(expectedMappingConfig.getModelPackageName(), mappingConfig.getModelPackageName());
+        assertEquals(expectedMappingConfig.getModelValidationAnnotation(), mappingConfig.getModelValidationAnnotation());
+        assertEquals(expectedMappingConfig.getPackageName(), mappingConfig.getPackageName());
+        assertEquals(expectedMappingConfig.getGenerateAsyncApi(), mappingConfig.getGenerateAsyncApi());
+        assertEquals(expectedMappingConfig.getGenerateParameterizedFieldsResolvers(), mappingConfig.getGenerateParameterizedFieldsResolvers());
+        assertEquals(expectedMappingConfig.getGenerateExtensionFieldsResolvers(), mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertEquals(expectedMappingConfig.getFieldsWithResolvers(), mappingConfig.getFieldsWithResolvers());
+        assertEquals(expectedMappingConfig.getFieldsWithoutResolvers(), mappingConfig.getFieldsWithoutResolvers());
+        assertEquals(expectedMappingConfig.getRequestSuffix(), mappingConfig.getRequestSuffix());
+        assertEquals(expectedMappingConfig.getResponseSuffix(), mappingConfig.getResponseSuffix());
+        assertEquals(expectedMappingConfig.getResponseProjectionSuffix(), mappingConfig.getResponseProjectionSuffix());
+        assertEquals(expectedMappingConfig.getGenerateClient(), mappingConfig.getGenerateClient());
+        assertEquals(expectedMappingConfig.getGenerateModelsForRootTypes(), mappingConfig.getGenerateModelsForRootTypes());
+        assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
+        assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
     }
 
 }

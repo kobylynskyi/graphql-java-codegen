@@ -4,8 +4,6 @@ import graphql.language.Comment;
 import graphql.language.NamedNode;
 import graphql.language.Node;
 import graphql.language.SourceLocation;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +16,6 @@ import java.util.Objects;
  * @param <T> base type
  * @param <E> extension type
  */
-@Getter
-@Setter
 public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
 
     /**
@@ -66,4 +62,19 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
         return comments;
     }
 
+    public T getDefinition() {
+        return definition;
+    }
+
+    public void setDefinition(T definition) {
+        this.definition = definition;
+    }
+
+    public List<E> getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(List<E> extensions) {
+        this.extensions = extensions;
+    }
 }

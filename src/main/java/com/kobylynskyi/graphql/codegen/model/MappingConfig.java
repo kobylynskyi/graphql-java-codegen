@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +12,6 @@ import java.util.function.Function;
  * @author kobylynskyi
  * @author valinha
  */
-@Data
 public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<MappingConfig> {
 
     private Map<String, String> customTypesMapping = new HashMap<>();
@@ -153,5 +150,329 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         if (!customTypesMapping.containsKey(from)) {
             customTypesMapping.put(from, to);
         }
+    }
+
+    @Override
+    public Map<String, String> getCustomTypesMapping() {
+        return customTypesMapping;
+    }
+
+    public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
+        this.customTypesMapping = customTypesMapping;
+    }
+
+    @Override
+    public Map<String, String> getCustomAnnotationsMapping() {
+        return customAnnotationsMapping;
+    }
+
+    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+        this.customAnnotationsMapping = customAnnotationsMapping;
+    }
+
+    @Override
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    @Override
+    public String getApiPackageName() {
+        return apiPackageName;
+    }
+
+    public void setApiPackageName(String apiPackageName) {
+        this.apiPackageName = apiPackageName;
+    }
+
+    @Override
+    public String getModelPackageName() {
+        return modelPackageName;
+    }
+
+    public void setModelPackageName(String modelPackageName) {
+        this.modelPackageName = modelPackageName;
+    }
+
+    @Override
+    public String getModelNamePrefix() {
+        return modelNamePrefix;
+    }
+
+    public void setModelNamePrefix(String modelNamePrefix) {
+        this.modelNamePrefix = modelNamePrefix;
+    }
+
+    @Override
+    public String getModelNameSuffix() {
+        return modelNameSuffix;
+    }
+
+    public void setModelNameSuffix(String modelNameSuffix) {
+        this.modelNameSuffix = modelNameSuffix;
+    }
+
+    @Override
+    public String getApiNamePrefix() {
+        return apiNamePrefix;
+    }
+
+    public void setApiNamePrefix(String apiNamePrefix) {
+        this.apiNamePrefix = apiNamePrefix;
+    }
+
+    @Override
+    public String getApiNameSuffix() {
+        return apiNameSuffix;
+    }
+
+    public void setApiNameSuffix(String apiNameSuffix) {
+        this.apiNameSuffix = apiNameSuffix;
+    }
+
+    @Override
+    public String getTypeResolverPrefix() {
+        return typeResolverPrefix;
+    }
+
+    public void setTypeResolverPrefix(String typeResolverPrefix) {
+        this.typeResolverPrefix = typeResolverPrefix;
+    }
+
+    @Override
+    public String getTypeResolverSuffix() {
+        return typeResolverSuffix;
+    }
+
+    public void setTypeResolverSuffix(String typeResolverSuffix) {
+        this.typeResolverSuffix = typeResolverSuffix;
+    }
+
+    @Override
+    public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
+        return apiRootInterfaceStrategy;
+    }
+
+    public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
+        this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Override
+    public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
+        return apiNamePrefixStrategy;
+    }
+
+    public void setApiNamePrefixStrategy(ApiNamePrefixStrategy apiNamePrefixStrategy) {
+        this.apiNamePrefixStrategy = apiNamePrefixStrategy;
+    }
+
+    @Override
+    public String getModelValidationAnnotation() {
+        return modelValidationAnnotation;
+    }
+
+    public void setModelValidationAnnotation(String modelValidationAnnotation) {
+        this.modelValidationAnnotation = modelValidationAnnotation;
+    }
+
+    @Override
+    public String getSubscriptionReturnType() {
+        return subscriptionReturnType;
+    }
+
+    public void setSubscriptionReturnType(String subscriptionReturnType) {
+        this.subscriptionReturnType = subscriptionReturnType;
+    }
+
+    @Override
+    public Boolean getGenerateApis() {
+        return generateApis;
+    }
+
+    public void setGenerateApis(Boolean generateApis) {
+        this.generateApis = generateApis;
+    }
+
+    @Override
+    public Boolean getGenerateBuilder() {
+        return generateBuilder;
+    }
+
+    public void setGenerateBuilder(Boolean generateBuilder) {
+        this.generateBuilder = generateBuilder;
+    }
+
+    @Override
+    public Boolean getGenerateEqualsAndHashCode() {
+        return generateEqualsAndHashCode;
+    }
+
+    public void setGenerateEqualsAndHashCode(Boolean generateEqualsAndHashCode) {
+        this.generateEqualsAndHashCode = generateEqualsAndHashCode;
+    }
+
+    @Override
+    public Boolean getGenerateToString() {
+        return generateToString;
+    }
+
+    public void setGenerateToString(Boolean generateToString) {
+        this.generateToString = generateToString;
+    }
+
+    @Override
+    public Boolean getGenerateImmutableModels() {
+        return generateImmutableModels;
+    }
+
+    public void setGenerateImmutableModels(Boolean generateImmutableModels) {
+        this.generateImmutableModels = generateImmutableModels;
+    }
+
+    @Override
+    public Boolean getGenerateAsyncApi() {
+        return generateAsyncApi;
+    }
+
+    public void setGenerateAsyncApi(Boolean generateAsyncApi) {
+        this.generateAsyncApi = generateAsyncApi;
+    }
+
+    @Override
+    public Boolean getGenerateParameterizedFieldsResolvers() {
+        return generateParameterizedFieldsResolvers;
+    }
+
+    public void setGenerateParameterizedFieldsResolvers(Boolean generateParameterizedFieldsResolvers) {
+        this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
+    }
+
+    @Override
+    public Boolean getGenerateExtensionFieldsResolvers() {
+        return generateExtensionFieldsResolvers;
+    }
+
+    public void setGenerateExtensionFieldsResolvers(Boolean generateExtensionFieldsResolvers) {
+        this.generateExtensionFieldsResolvers = generateExtensionFieldsResolvers;
+    }
+
+    @Override
+    public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
+        return generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
+        this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public Boolean getGenerateModelsForRootTypes() {
+        return generateModelsForRootTypes;
+    }
+
+    public void setGenerateModelsForRootTypes(Boolean generateModelsForRootTypes) {
+        this.generateModelsForRootTypes = generateModelsForRootTypes;
+    }
+
+    @Override
+    public Set<String> getFieldsWithResolvers() {
+        return fieldsWithResolvers;
+    }
+
+    public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
+        this.fieldsWithResolvers = fieldsWithResolvers;
+    }
+
+    @Override
+    public Set<String> getFieldsWithoutResolvers() {
+        return fieldsWithoutResolvers;
+    }
+
+    public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
+        this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Override
+    public String getQueryResolverParentInterface() {
+        return queryResolverParentInterface;
+    }
+
+    public void setQueryResolverParentInterface(String queryResolverParentInterface) {
+        this.queryResolverParentInterface = queryResolverParentInterface;
+    }
+
+    @Override
+    public String getMutationResolverParentInterface() {
+        return mutationResolverParentInterface;
+    }
+
+    public void setMutationResolverParentInterface(String mutationResolverParentInterface) {
+        this.mutationResolverParentInterface = mutationResolverParentInterface;
+    }
+
+    @Override
+    public String getSubscriptionResolverParentInterface() {
+        return subscriptionResolverParentInterface;
+    }
+
+    public void setSubscriptionResolverParentInterface(String subscriptionResolverParentInterface) {
+        this.subscriptionResolverParentInterface = subscriptionResolverParentInterface;
+    }
+
+    @Override
+    public String getResolverParentInterface() {
+        return resolverParentInterface;
+    }
+
+    public void setResolverParentInterface(String resolverParentInterface) {
+        this.resolverParentInterface = resolverParentInterface;
+    }
+
+    @Override
+    public Boolean getGenerateClient() {
+        return generateClient;
+    }
+
+    public void setGenerateClient(Boolean generateClient) {
+        this.generateClient = generateClient;
+    }
+
+    @Override
+    public String getRequestSuffix() {
+        return requestSuffix;
+    }
+
+    public void setRequestSuffix(String requestSuffix) {
+        this.requestSuffix = requestSuffix;
+    }
+
+    @Override
+    public String getResponseSuffix() {
+        return responseSuffix;
+    }
+
+    public void setResponseSuffix(String responseSuffix) {
+        this.responseSuffix = responseSuffix;
+    }
+
+    @Override
+    public String getResponseProjectionSuffix() {
+        return responseProjectionSuffix;
+    }
+
+    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
+        this.responseProjectionSuffix = responseProjectionSuffix;
+    }
+
+    @Override
+    public String getParametrizedInputSuffix() {
+        return parametrizedInputSuffix;
+    }
+
+    public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
+        this.parametrizedInputSuffix = parametrizedInputSuffix;
     }
 }
