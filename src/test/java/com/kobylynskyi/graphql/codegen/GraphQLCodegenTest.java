@@ -236,7 +236,7 @@ class GraphQLCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertNotEquals(files.length, 0);
+        assertNotEquals(0, files.length);
 
         for (File eventFile : files) {
             if (eventFile.getName().endsWith("TO.java")) {
@@ -264,7 +264,7 @@ class GraphQLCodegenTest {
         generator.generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertNotEquals(files.length, 0);
+        assertNotEquals(0, files.length);
 
         for (File eventFile : files) {
             if (eventFile.getName().endsWith("TO.java")) {

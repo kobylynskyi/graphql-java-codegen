@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The type Mapping config.
@@ -70,58 +71,73 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         if (source == null) {
             return;
         }
-        if (this.customTypesMapping != null && source.customTypesMapping != null) {
-            this.customTypesMapping.putAll(source.customTypesMapping);
-        } else if (this.customTypesMapping == null) {
-            this.customTypesMapping = source.customTypesMapping;
+        generateApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateApis);
+        packageName = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getPackageName);
+        apiPackageName = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiPackageName);
+        modelPackageName = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelPackageName);
+        modelNamePrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelNamePrefix);
+        modelNameSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelNameSuffix);
+        apiNamePrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefix);
+        apiNameSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNameSuffix);
+        apiRootInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiRootInterfaceStrategy);
+        apiNamePrefixStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefixStrategy);
+        typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
+        typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
+        modelValidationAnnotation = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelValidationAnnotation);
+        subscriptionReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionReturnType);
+        generateBuilder = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateBuilder);
+        generateEqualsAndHashCode = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
+        generateImmutableModels = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateImmutableModels);
+        generateToString = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateToString);
+        generateAsyncApi = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateAsyncApi);
+        generateParameterizedFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateParameterizedFieldsResolvers);
+        generateExtensionFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
+        generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
+        generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
+        queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
+        mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
+        subscriptionResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
+        resolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResolverParentInterface);
+        generateClient = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateClient);
+        requestSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRequestSuffix);
+        responseSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseSuffix);
+        responseProjectionSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionSuffix);
+        parametrizedInputSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getParametrizedInputSuffix);
+        fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
+        fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
+        customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
+        customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
+    }
+
+    private static Map<String, String> combineMap(Map<String, String> thisMap, Map<String, String> otherMap) {
+        if (thisMap != null && otherMap != null) {
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.putAll(thisMap);
+            resultMap.putAll(otherMap);
+            return resultMap;
+        } else if (thisMap == null) {
+            return otherMap;
+        } else {
+            return thisMap;
         }
-        if (this.customAnnotationsMapping != null && source.customAnnotationsMapping != null) {
-            this.customAnnotationsMapping.putAll(source.customAnnotationsMapping);
-        } else if (this.customAnnotationsMapping == null) {
-            this.customAnnotationsMapping = source.customAnnotationsMapping;
+    }
+
+    private static Set<String> combineSet(Set<String> thisSet, Set<String> otherSet) {
+        if (thisSet != null && otherSet != null) {
+            Set<String> resultSet = new HashSet<>();
+            resultSet.addAll(thisSet);
+            resultSet.addAll(otherSet);
+            return resultSet;
+        } else if (thisSet == null) {
+            return otherSet;
+        } else {
+            return thisSet;
         }
-        this.generateApis = source.generateApis != null ? source.generateApis : this.generateApis;
-        this.packageName = source.packageName != null ? source.packageName : this.packageName;
-        this.apiPackageName = source.apiPackageName != null ? source.apiPackageName : this.apiPackageName;
-        this.modelPackageName = source.modelPackageName != null ? source.modelPackageName : this.modelPackageName;
-        this.modelNamePrefix = source.modelNamePrefix != null ? source.modelNamePrefix : this.modelNamePrefix;
-        this.modelNameSuffix = source.modelNameSuffix != null ? source.modelNameSuffix : this.modelNameSuffix;
-        this.apiNamePrefix = source.apiNamePrefix != null ? source.apiNamePrefix : this.apiNamePrefix;
-        this.apiNameSuffix = source.apiNameSuffix != null ? source.apiNameSuffix : this.apiNameSuffix;
-        this.apiRootInterfaceStrategy = source.apiRootInterfaceStrategy != null ? source.apiRootInterfaceStrategy : this.apiRootInterfaceStrategy;
-        this.apiNamePrefixStrategy = source.apiNamePrefixStrategy != null ? source.apiNamePrefixStrategy : this.apiNamePrefixStrategy;
-        this.typeResolverPrefix = source.typeResolverPrefix != null ? source.typeResolverPrefix : this.typeResolverPrefix;
-        this.typeResolverSuffix = source.typeResolverSuffix != null ? source.typeResolverSuffix : this.typeResolverSuffix;
-        this.modelValidationAnnotation = source.modelValidationAnnotation != null ? source.modelValidationAnnotation : this.modelValidationAnnotation;
-        this.subscriptionReturnType = source.subscriptionReturnType != null ? source.subscriptionReturnType : this.subscriptionReturnType;
-        this.generateBuilder = source.generateBuilder != null ? source.generateBuilder : this.generateBuilder;
-        this.generateEqualsAndHashCode = source.generateEqualsAndHashCode != null ? source.generateEqualsAndHashCode : this.generateEqualsAndHashCode;
-        this.generateImmutableModels = source.generateImmutableModels != null ? source.generateImmutableModels : this.generateImmutableModels;
-        this.generateToString = source.generateToString != null ? source.generateToString : this.generateToString;
-        this.generateAsyncApi = source.generateAsyncApi != null ? source.generateAsyncApi : this.generateAsyncApi;
-        this.generateParameterizedFieldsResolvers = source.generateParameterizedFieldsResolvers != null ? source.generateParameterizedFieldsResolvers : this.generateParameterizedFieldsResolvers;
-        this.generateExtensionFieldsResolvers = source.generateExtensionFieldsResolvers != null ? source.generateExtensionFieldsResolvers : this.generateExtensionFieldsResolvers;
-        this.generateDataFetchingEnvironmentArgumentInApis = source.generateDataFetchingEnvironmentArgumentInApis != null ? source.generateDataFetchingEnvironmentArgumentInApis : this.generateDataFetchingEnvironmentArgumentInApis;
-        this.generateModelsForRootTypes = source.generateModelsForRootTypes != null ? source.generateModelsForRootTypes : this.generateModelsForRootTypes;
-        if (this.fieldsWithResolvers != null && source.fieldsWithResolvers != null) {
-            this.fieldsWithResolvers.addAll(source.fieldsWithResolvers);
-        } else if (this.fieldsWithResolvers == null) {
-            this.fieldsWithResolvers = source.fieldsWithResolvers;
-        }
-        if (this.fieldsWithoutResolvers != null && source.fieldsWithoutResolvers != null) {
-            this.fieldsWithoutResolvers.addAll(source.fieldsWithoutResolvers);
-        } else if (this.fieldsWithoutResolvers == null) {
-            this.fieldsWithoutResolvers = source.fieldsWithoutResolvers;
-        }
-        this.queryResolverParentInterface = source.queryResolverParentInterface != null ? source.queryResolverParentInterface : this.queryResolverParentInterface;
-        this.mutationResolverParentInterface = source.mutationResolverParentInterface != null ? source.mutationResolverParentInterface : this.mutationResolverParentInterface;
-        this.subscriptionResolverParentInterface = source.subscriptionResolverParentInterface != null ? source.subscriptionResolverParentInterface : this.subscriptionResolverParentInterface;
-        this.resolverParentInterface = source.resolverParentInterface != null ? source.resolverParentInterface : this.resolverParentInterface;
-        this.generateClient = source.generateClient != null ? source.generateClient : this.generateClient;
-        this.requestSuffix = source.requestSuffix != null ? source.requestSuffix : this.requestSuffix;
-        this.responseSuffix = source.responseSuffix != null ? source.responseSuffix : this.responseSuffix;
-        this.responseProjectionSuffix = source.responseProjectionSuffix != null ? source.responseProjectionSuffix : this.responseProjectionSuffix;
-        this.parametrizedInputSuffix = source.parametrizedInputSuffix != null ? source.parametrizedInputSuffix : this.parametrizedInputSuffix;
+    }
+
+    private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
+        T sourceValue = getValueFunction.apply(source);
+        return sourceValue != null ? sourceValue : getValueFunction.apply(this);
     }
 
     /**

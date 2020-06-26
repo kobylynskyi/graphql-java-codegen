@@ -3,16 +3,19 @@ package com.kobylynskyi.graphql.codegen.supplier;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonMappingConfigSupplierTest {
 
     @Test
     void loadCorrect() {
         MappingConfig externalMappingConfig = new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
-        assertEquals(externalMappingConfig.getPackageName(), "com.kobylynskyi.graphql.testconfigjson");
-        assertEquals(externalMappingConfig.getGenerateApis(), true);
-        assertEquals(externalMappingConfig.getCustomTypesMapping().get("Price.amount"), "java.math.BigDecimal");
+        assertEquals("com.kobylynskyi.graphql.testconfigjson", externalMappingConfig.getPackageName());
+        assertTrue(externalMappingConfig.getGenerateApis());
+        assertEquals("java.math.BigDecimal", externalMappingConfig.getCustomTypesMapping().get("Price.amount"));
         assertNull(externalMappingConfig.getApiPackageName());
     }
 
@@ -23,7 +26,8 @@ class JsonMappingConfigSupplierTest {
 
     @Test
     void loadInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> new JsonMappingConfigSupplier("blah.json").get());
+        JsonMappingConfigSupplier jsonMappingConfigSupplier = new JsonMappingConfigSupplier("blah.json");
+        assertThrows(IllegalArgumentException.class, jsonMappingConfigSupplier::get);
     }
 
 }

@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -9,9 +12,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,31 +27,31 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void nullRootDir_fails() {
+    void nullRootDir_fails() {
         assertThrows(IllegalArgumentException.class, () -> new SchemaFinder(null));
     }
 
     @Test
-    public void absentRootDir_fails() {
+    void absentRootDir_fails() {
         SchemaFinder finder = new SchemaFinder(Paths.get("does-not-exist"));
         assertThrows(NoSuchFileException.class, finder::findSchemas);
     }
 
     @Test
-    public void emptyRootDir() throws IOException {
+    void emptyRootDir() throws IOException {
         SchemaFinder finder = new SchemaFinder(root);
         assertEquals(Collections.emptyList(), finder.findSchemas());
     }
 
     @Test
-    public void emptyRootDir_nonRecursive() throws IOException {
+    void emptyRootDir_nonRecursive() throws IOException {
         SchemaFinder finder = new SchemaFinder(root);
         finder.setRecursive(false);
         assertEquals(Collections.emptyList(), finder.findSchemas());
     }
 
     @Test
-    public void singleFile_matchesDefaultRegex_graphqls() throws IOException {
+    void singleFile_matchesDefaultRegex_graphqls() throws IOException {
         Path singleFile = Files.createFile(root.resolve("single.graphqls"));
 
         SchemaFinder finder = new SchemaFinder(root);
@@ -60,7 +60,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_matchesDefaultRegex_grahql() throws IOException {
+    void singleFile_matchesDefaultRegex_grahql() throws IOException {
         Path singleFile = Files.createFile(root.resolve("single.graphql"));
 
         SchemaFinder finder = new SchemaFinder(root);
@@ -69,7 +69,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_matchesCustomRegex() throws IOException {
+    void singleFile_matchesCustomRegex() throws IOException {
         Path singleFile = Files.createFile(root.resolve("my-file.txt"));
 
         SchemaFinder finder = new SchemaFinder(root);
@@ -79,7 +79,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_filteredOutByRegex() throws IOException {
+    void singleFile_filteredOutByRegex() throws IOException {
         Files.createFile(root.resolve("not-a-match.txt"));
 
         SchemaFinder finder = new SchemaFinder(root);
@@ -88,7 +88,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_filteredOutByRelativeExclude() throws IOException {
+    void singleFile_filteredOutByRelativeExclude() throws IOException {
         String excludedFilename = "excluded.txt";
         Files.createFile(root.resolve(excludedFilename));
 
@@ -98,7 +98,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void singleFile_filteredOutByAbsoluteExclude() throws IOException {
+    void singleFile_filteredOutByAbsoluteExclude() throws IOException {
         Path excludedFilePath = root.resolve("excluded.txt").toAbsolutePath();
         Files.createFile(excludedFilePath);
 
@@ -108,7 +108,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void multipleFiles_shouldBeInAlphabeticalOrder() throws IOException {
+    void multipleFiles_shouldBeInAlphabeticalOrder() throws IOException {
         Path file1 = Files.createFile(root.resolve("file1.good"));
         Path file3 = Files.createFile(root.resolve("file3.good"));
         Path file2 = Files.createFile(root.resolve("file2.good"));
@@ -121,7 +121,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void multipleFiles_withRegexFilter() throws IOException {
+    void multipleFiles_withRegexFilter() throws IOException {
         Path singleFile = Files.createFile(root.resolve("abc.good"));
         Files.createFile(root.resolve("abc.bad"));
 
@@ -133,7 +133,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void multipleFiles_withExclude() throws IOException {
+    void multipleFiles_withExclude() throws IOException {
         Path singleFile = Files.createFile(root.resolve("abc.good"));
         String excludedFilename = "excluded.good";
         Files.createFile(root.resolve(excludedFilename));
@@ -147,7 +147,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void nestedDir_recursive() throws IOException {
+    void nestedDir_recursive() throws IOException {
         Path rootFile = Files.createFile(root.resolve("abc.good"));
         Path dir1 = Files.createDirectory(root.resolve("dir1"));
         Path dir1File = Files.createFile(dir1.resolve("file1.good"));
@@ -161,7 +161,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void nestedDir_nonRecursive() throws IOException {
+    void nestedDir_nonRecursive() throws IOException {
         Path rootFile = Files.createFile(root.resolve("abc.good"));
         Path dir1 = Files.createDirectory(root.resolve("dir1"));
         Files.createFile(dir1.resolve("file1.good"));
@@ -175,7 +175,7 @@ class SchemaFinderTest {
     }
 
     @Test
-    public void nestedDir_mixedCases() throws IOException {
+    void nestedDir_mixedCases() throws IOException {
         Path rootFile = Files.createFile(root.resolve("abc.good"));
         Path dir1 = Files.createDirectory(root.resolve("dir1"));
         Path dir2 = Files.createDirectory(root.resolve("dir2"));

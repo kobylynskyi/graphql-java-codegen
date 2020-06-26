@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The type Graphql codegen external config test.
@@ -21,9 +22,9 @@ class GraphQLCodegenExternalConfigTest {
     void check_mappingConfigFromJsonFile() {
         MappingConfig externalMappingConfig = new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
 
-        assertEquals(externalMappingConfig.getPackageName(), "com.kobylynskyi.graphql.testconfigjson");
-        assertEquals(externalMappingConfig.getGenerateApis(), true);
-        assertEquals(externalMappingConfig.getCustomTypesMapping().get("Price.amount"), "java.math.BigDecimal");
+        assertEquals("com.kobylynskyi.graphql.testconfigjson", externalMappingConfig.getPackageName());
+        assertTrue(externalMappingConfig.getGenerateApis());
+        assertEquals("java.math.BigDecimal", externalMappingConfig.getCustomTypesMapping().get("Price.amount"));
         assertNull(externalMappingConfig.getApiPackageName());
     }
 
@@ -39,7 +40,7 @@ class GraphQLCodegenExternalConfigTest {
         MappingConfig externalMappingConfig = new MappingConfig();
         externalMappingConfig.setPackageName("com.kobylynskyi.graphql.testconfig");
         mappingConfig.combine(externalMappingConfig);
-        assertEquals(externalMappingConfig.getPackageName(), mappingConfig.getPackageName());
+        assertEquals(mappingConfig.getPackageName(), externalMappingConfig.getPackageName());
     }
 
 

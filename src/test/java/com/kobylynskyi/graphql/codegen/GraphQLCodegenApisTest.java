@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -101,12 +104,13 @@ class GraphQLCodegenApisTest {
     }
 
     @Test
-    void generate_InterfacePerSchemaAndConstantPrefix() {
+    void generate_InterfacePerSchemaAndConstantPrefix() throws IOException {
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
-        });
+        GeneratedInformation generatedInformation = TestUtils.getStaticGeneratedInfo();
+        List<String> schemas = schemaFinder.findSchemas();
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, generatedInformation));
     }
 
 }
