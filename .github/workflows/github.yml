@@ -38,10 +38,10 @@ jobs:
 
 
       - name: Build library
-        run: ./gradlew build publishToMavenLocal
+        run: ./gradlew build publishToMavenLocal --warning-mode all
 
       - name: Build gradle plugin
-        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
 
       - name: Build maven plugin
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
@@ -49,11 +49,11 @@ jobs:
 
 
 
-      - name: Build gradle example-server
-        run: ./gradlew -p plugins/gradle/example-server test
+      - name: Build gradle example-server --warning-mode all
+        run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
 
       - name: Build gradle example-client
-        run: ./gradlew -p plugins/gradle/example-client test
+        run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
 
       - name: Build maven example-server
         working-directory: plugins/maven/example-server
