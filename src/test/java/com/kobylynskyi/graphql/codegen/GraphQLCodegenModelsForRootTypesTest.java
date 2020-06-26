@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class GraphQLCodegenModelsForRootTypesTest {
 
     private final MappingConfig mappingConfig = new MappingConfig();
-
+    private final GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/rootmodels");
     public static final List<String> SCHEMAS = singletonList("src/test/resources/schemas/test.graphqls");
@@ -42,7 +43,7 @@ class GraphQLCodegenModelsForRootTypesTest {
         mappingConfig.setApiNamePrefix(null);
         mappingConfig.setModelNamePrefix("");
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig),
+                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and model classes",
@@ -53,7 +54,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_sameResolverSuffixes() {
         // by default apiNamePrefix is same as typeResolverSuffix
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig),
+                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes",
@@ -63,7 +64,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     @Test
     void generate_CheckFiles_generateApisFalse() throws Exception {
         mappingConfig.setGenerateApis(false);
-        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
@@ -74,7 +75,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     @Test
     void generate_CheckFiles_generateApisTrue_CustomTypeResolverSuffix() throws Exception {
         mappingConfig.setTypeResolverSuffix("TypeResolver");
-        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig).generate();
+        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java",

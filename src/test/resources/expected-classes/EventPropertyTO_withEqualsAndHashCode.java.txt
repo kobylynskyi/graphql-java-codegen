@@ -5,6 +5,10 @@ import java.util.Objects;
 /**
  * An event property have all possible types
  */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
 public class EventPropertyTO implements java.io.Serializable {
 
     private Double floatVal;

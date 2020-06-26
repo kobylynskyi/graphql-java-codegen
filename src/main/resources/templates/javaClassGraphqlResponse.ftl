@@ -12,6 +12,12 @@ import java.util.Map;
 </#list>
  */
 </#if>
+<#if generatedInfo.getGeneratedType()?has_content>
+@${generatedInfo.getGeneratedType()}(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "${generatedInfo.getDateTime()}"
+)
+</#if>
 public class ${className} extends GraphQLResult<Map<String, ${returnTypeName}>> {
 
     private static final String OPERATION_NAME = "${operationName}";

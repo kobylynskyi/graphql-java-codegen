@@ -2,6 +2,10 @@
  * Queries related to events
  * Queries related to assets
  */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
 public interface QueryResolver {
 
     @javax.validation.constraints.NotNull

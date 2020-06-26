@@ -10,6 +10,7 @@ import com.kobylynskyi.graphql.codegen.mapper.TypeDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.UnionDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -55,18 +56,34 @@ public class GraphQLCodegen {
     private List<String> schemas;
     private File outputDir;
     private MappingConfig mappingConfig;
+    private GeneratedInformation generatedInformation;
 
-    public GraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig) {
-        this(schemas, outputDir, mappingConfig, null);
+    public GraphQLCodegen(List<String> schemas,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          GeneratedInformation generatedInformation) {
+        this(schemas, outputDir, mappingConfig, null, generatedInformation);
     }
 
-    public GraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
+    public GraphQLCodegen(List<String> schemas,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          MappingConfigSupplier externalMappingConfigSupplier) {
+        this(schemas, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation());
+    }
+
+    public GraphQLCodegen(List<String> schemas,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          MappingConfigSupplier externalMappingConfigSupplier,
+                          GeneratedInformation generatedInformation) {
         this.schemas = schemas;
         this.outputDir = outputDir;
         this.mappingConfig = mappingConfig;
         this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
         initDefaultValues(mappingConfig);
         validateConfigs(mappingConfig);
+        this.generatedInformation = generatedInformation;
     }
 
     private static void initDefaultValues(MappingConfig mappingConfig) {
@@ -175,8 +192,7 @@ public class GraphQLCodegen {
     }
 
     private List<File> processDefinitions(ExtendedDocument document) {
-        MappingContext context = new MappingContext(mappingConfig, document,
-                document.getTypeNames(), document.getInterfaceNames());
+        MappingContext context = new MappingContext(mappingConfig, document, generatedInformation);
 
         List<File> generatedFiles = new ArrayList<>();
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {

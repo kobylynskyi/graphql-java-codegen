@@ -18,6 +18,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.DEPRECATED;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_TYPE;
@@ -53,6 +54,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(FIELDS, getProjectionFields(mappingContext, typeDefinition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }
@@ -78,6 +80,7 @@ public class RequestResponseDefinitionToDataModelMapper {
                 mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName()));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }
@@ -105,6 +108,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(DEPRECATED, operationDef.isDeprecated());
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(RETURN_TYPE_NAME, javaType);
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 
@@ -133,6 +137,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(TO_STRING, mappingContext.getGenerateToString());
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 

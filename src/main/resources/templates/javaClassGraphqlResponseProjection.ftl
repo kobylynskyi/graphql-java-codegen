@@ -15,6 +15,12 @@ import java.util.Objects;
 </#list>
  */
 </#if>
+<#if generatedInfo.getGeneratedType()?has_content>
+@${generatedInfo.getGeneratedType()}(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "${generatedInfo.getDateTime()}"
+)
+</#if>
 public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {

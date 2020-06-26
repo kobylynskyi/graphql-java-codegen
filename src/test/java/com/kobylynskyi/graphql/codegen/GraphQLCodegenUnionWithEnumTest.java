@@ -30,7 +30,7 @@ class GraphQLCodegenUnionWithEnumTest {
         List<String> schemas = Collections.singletonList(
                 "src/test/resources/schemas/union-with-enum.graphqls"
         );
-        generator = new GraphQLCodegen(schemas, outputBuildDir, mappingConfig);
+        generator = new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

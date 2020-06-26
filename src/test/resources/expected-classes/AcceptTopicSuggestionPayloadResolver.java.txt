@@ -4,6 +4,10 @@ package com.github.graphql;
 /**
  * Resolver for AcceptTopicSuggestionPayload
  */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
 public interface AcceptTopicSuggestionPayloadResolver {
 
     GithubTopicTO topic(GithubAcceptTopicSuggestionPayloadTO githubAcceptTopicSuggestionPayloadTO, graphql.schema.DataFetchingEnvironment env) throws Exception;

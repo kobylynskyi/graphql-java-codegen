@@ -46,6 +46,19 @@ task codeCoverageReport(type: JacocoReport) {
     }
 }
 
+test {
+    testLogging {
+        events "failed"
+
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+
+        showStandardStreams = false
+    }
+}
+
 codeCoverageReport.dependsOn test
 
 

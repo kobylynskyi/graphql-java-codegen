@@ -10,6 +10,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
@@ -47,6 +48,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());
         dataModel.put(TO_STRING, mappingContext.getGenerateToString());
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 

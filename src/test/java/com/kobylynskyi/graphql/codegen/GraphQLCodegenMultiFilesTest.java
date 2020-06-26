@@ -30,7 +30,7 @@ class GraphQLCodegenMultiFilesTest {
                 "src/test/resources/schemas/multi1.graphqls",
                 "src/test/resources/schemas/multi2.graphqls"
         );
-        generator = new GraphQLCodegen(schemas, outputBuildDir, mappingConfig);
+        generator = new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

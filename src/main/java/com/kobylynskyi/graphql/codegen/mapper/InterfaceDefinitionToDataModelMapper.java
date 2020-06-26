@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
@@ -36,6 +37,7 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(
                 mappingContext, definition.getFieldDefinitions(), definition.getName()));
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
@@ -47,6 +48,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(IMPLEMENTS, getUnionInterfaces(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, map(definition.getValueDefinitions()));
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 

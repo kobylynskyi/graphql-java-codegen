@@ -24,6 +24,12 @@ import java.util.StringJoiner;
 </#list>
  */
 </#if>
+<#if generatedInfo.getGeneratedType()?has_content>
+@${generatedInfo.getGeneratedType()}(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "${generatedInfo.getDateTime()}"
+)
+</#if>
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
 <#list fields as field>

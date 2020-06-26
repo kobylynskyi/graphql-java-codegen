@@ -15,6 +15,12 @@ import ${import}.*;
 </#list>
  */
 </#if>
+<#if generatedInfo.getGeneratedType()?has_content>
+@${generatedInfo.getGeneratedType()}(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "${generatedInfo.getDateTime()}"
+)
+</#if>
 public interface ${className} <#if implements?has_content>extends <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
 <#list fields as field>

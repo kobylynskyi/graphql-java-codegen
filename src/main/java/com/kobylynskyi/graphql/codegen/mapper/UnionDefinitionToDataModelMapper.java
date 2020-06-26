@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
@@ -33,6 +34,7 @@ public class UnionDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
 

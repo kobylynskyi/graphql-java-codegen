@@ -40,7 +40,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_RequestAndResponseProjections() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -64,7 +64,7 @@ class GraphQLCodegenRequestTest {
     void generate_WithModelSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -79,7 +79,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_RequestAndResponseProjections_github() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -93,7 +93,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_ToStringIsEnabledForInput() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -105,7 +105,7 @@ class GraphQLCodegenRequestTest {
     void generate_emptyRequestSuffix() throws Exception {
         mappingConfig.setRequestSuffix("");
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -117,7 +117,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setApiPackageName("com.github.graphql.api");
         mappingConfig.setModelPackageName("com.github.graphql");
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -130,7 +130,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setModelPackageName("com.github.graphql");
         mappingConfig.setFieldsWithResolvers(singleton("Event"));
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -144,7 +144,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setModelPackageName("com.github.graphql");
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -155,7 +155,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_QueriesWithSameName() throws Exception {
         new GraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
-                outputBuildDir, mappingConfig).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

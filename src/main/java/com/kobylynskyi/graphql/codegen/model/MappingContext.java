@@ -1,18 +1,27 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
-import lombok.Data;
 
 import java.util.Map;
 import java.util.Set;
 
-@Data
 public class MappingContext implements GraphQLCodegenConfiguration {
 
     private final MappingConfig config;
     private final ExtendedDocument document;
     private final Set<String> typeNames;
     private final Set<String> interfaceNames;
+    private final GeneratedInformation generatedInformation;
+
+    public MappingContext(MappingConfig mappingConfig,
+                          ExtendedDocument document,
+                          GeneratedInformation generatedInformation) {
+        this.config = mappingConfig;
+        this.document = document;
+        this.typeNames = document.getTypeNames();
+        this.interfaceNames = document.getInterfaceNames();
+        this.generatedInformation = generatedInformation;
+    }
 
     @Override
     public Map<String, String> getCustomTypesMapping() {
@@ -194,4 +203,19 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.getResolverParentInterface();
     }
 
+    public ExtendedDocument getDocument() {
+        return document;
+    }
+
+    public Set<String> getTypeNames() {
+        return typeNames;
+    }
+
+    public Set<String> getInterfaceNames() {
+        return interfaceNames;
+    }
+
+    public GeneratedInformation getGeneratedInformation() {
+        return generatedInformation;
+    }
 }
