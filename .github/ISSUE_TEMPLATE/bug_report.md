@@ -22,7 +22,7 @@ assignees: ''
 
 ## Your Environment and Setup
 
-* **graphql-java-codegen**: *E.g.: 2.0.0*
+* **graphql-java-codegen**: *E.g.: 2.1.0*
 * **Build tool**: *E.g.: Maven*
 * **Java tool**: *E.g.: Oracle 8u241*
 * **Mapping Config**: *E.g.:* 
