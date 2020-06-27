@@ -1,0 +1,19 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query
+
+type Mutation
+
+type Event
+
+input EventInput
+
+enum Status
+
+interface Node
+
+union PinnableItem

@@ -1,0 +1,30 @@
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Event implements java.io.Serializable {
+
+
+    public Event() {
+    }
+
+
+
+
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
+    public static class Builder {
+
+
+        public Builder() {
+        }
+
+
+        public Event build() {
+            return new Event();
+        }
+
+    }
+}

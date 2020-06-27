@@ -32,6 +32,7 @@ import java.util.StringJoiner;
 </#if>
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.deprecated>
     @Deprecated
@@ -41,6 +42,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 </#list>
     private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
+</#if>
 
     public ${className}() {
     }
@@ -53,6 +55,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     }
 </#if>
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -84,6 +87,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 </#if>
 
 </#list>
+</#if>
 <#if equalsAndHashCode>
     @Override
     public boolean equals(Object obj) {
@@ -94,8 +98,12 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
             return false;
         }
         final ${className} that = (${className}) obj;
+<#if fields?has_content>
         return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
             && </#if></#list>;
+<#else>
+        return true;
+</#if>
     }
 
     @Override
@@ -138,13 +146,16 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
     public static class Builder {
 
+<#if fields?has_content>
 <#list fields as field>
         private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
+</#if>
 
         public Builder() {
         }
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
         /**
@@ -162,6 +173,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         }
 
 </#list>
+</#if>
 
         public ${className} build() {
             return new ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);

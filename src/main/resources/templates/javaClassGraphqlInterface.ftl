@@ -23,6 +23,7 @@ import ${import}.*;
 </#if>
 public interface ${className} <#if implements?has_content>extends <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>{
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -40,4 +41,5 @@ public interface ${className} <#if implements?has_content>extends <#list impleme
     ${field.type} get${field.name?cap_first}();
 
 </#list>
+</#if>
 }

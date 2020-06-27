@@ -24,6 +24,7 @@ import java.util.Objects;
 </#if>
 public class ${className} implements GraphQLParametrizedInput {
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.deprecated>
     @Deprecated
@@ -33,6 +34,7 @@ public class ${className} implements GraphQLParametrizedInput {
 </#list>
     private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
+</#if>
 
     public ${className}() {
     }
@@ -45,6 +47,7 @@ public class ${className} implements GraphQLParametrizedInput {
     }
 </#if>
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -62,6 +65,7 @@ public class ${className} implements GraphQLParametrizedInput {
     }
 
 </#list>
+</#if>
 <#if equalsAndHashCode>
     @Override
     public boolean equals(Object obj) {
@@ -72,8 +76,12 @@ public class ${className} implements GraphQLParametrizedInput {
             return false;
         }
         final ${className} that = (${className}) obj;
+<#if fields?has_content>
         return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
             && </#if></#list>;
+<#else>
+        return true;
+</#if>
     }
 
     @Override

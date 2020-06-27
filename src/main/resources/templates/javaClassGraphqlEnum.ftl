@@ -17,6 +17,7 @@ package ${package};
 </#if>
 public enum ${className}<#if implements?has_content> implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -30,5 +31,6 @@ public enum ${className}<#if implements?has_content> implements <#list implement
 </#if>
     ${field.value}<#if field_has_next>,</#if>
 </#list>
+</#if>
 
 }

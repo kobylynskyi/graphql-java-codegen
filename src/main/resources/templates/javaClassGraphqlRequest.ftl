@@ -33,6 +33,7 @@ public class ${className} implements GraphQLOperationRequest {
     public ${className}() {
     }
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -49,6 +50,7 @@ public class ${className} implements GraphQLOperationRequest {
     }
 
 </#list>
+</#if>
     @Override
     public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
@@ -94,13 +96,16 @@ public class ${className} implements GraphQLOperationRequest {
 <#if builder>
     public static class Builder {
 
+<#if fields?has_content>
 <#list fields as field>
         private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
+</#if>
 
         public Builder() {
         }
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
         /**
@@ -118,12 +123,15 @@ public class ${className} implements GraphQLOperationRequest {
         }
 
 </#list>
+</#if>
 
         public ${className} build() {
             ${className} obj = new ${className}();
+<#if fields?has_content>
 <#list fields as field>
             obj.set${field.name?cap_first}(${field.name});
 </#list>
+</#if>
             return obj;
         }
 

@@ -1,0 +1,30 @@
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class EventInput implements java.io.Serializable {
+
+
+    public EventInput() {
+    }
+
+
+
+
+    public static EventInput.Builder builder() {
+        return new EventInput.Builder();
+    }
+
+    public static class Builder {
+
+
+        public Builder() {
+        }
+
+
+        public EventInput build() {
+            return new EventInput();
+        }
+
+    }
+}

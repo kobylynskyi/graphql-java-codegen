@@ -26,6 +26,7 @@ public class ${className} extends GraphQLResponseProjection {
     public ${className}() {
     }
 
+<#if fields?has_content>
 <#list fields as field>
 <#if field.javaDoc?has_content>
     /**
@@ -58,6 +59,7 @@ public class ${className} extends GraphQLResponseProjection {
 
 </#if>
 </#list>
+</#if>
 <#if equalsAndHashCode>
     @Override
     public boolean equals(Object obj) {
