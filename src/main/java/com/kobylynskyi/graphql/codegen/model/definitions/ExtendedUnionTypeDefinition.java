@@ -25,7 +25,7 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
         return memberTypeNames.contains(definition.getName());
     }
 
-    private Set<String> getMemberTypeNames() {
+    public Set<String> getMemberTypeNames() {
         Set<String> allTypeNames = new HashSet<>();
         if (definition != null) {
             definition.getMemberTypes().stream()

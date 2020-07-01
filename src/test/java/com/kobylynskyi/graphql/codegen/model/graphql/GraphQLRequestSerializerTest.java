@@ -1,6 +1,19 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.data.*;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyChildParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyParentParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByCategoryAndStatusQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByIdsQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.IssueResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.OrganizationResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.Status;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueMutationRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssuePayloadResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateNodeUnionResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.VersionQueryRequest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,16 +29,16 @@ class GraphQLRequestSerializerTest {
 
     private static Stream<Arguments> provideStaticSerializers() {
         return Stream.of(
-          Arguments.of(
-                  "GraphQLRequestSerializer.toHttpJsonBody(request)",
-                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toHttpJsonBody,
-                  (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
-            ),
-          Arguments.of(
-                  "GraphQLRequestSerializer.toQueryString(request)",
-                  (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toQueryString,
-                  (Function<String, String>) (query) -> query
-            )
+                Arguments.of(
+                        "GraphQLRequestSerializer.toHttpJsonBody(request)",
+                        (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toHttpJsonBody,
+                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
+                ),
+                Arguments.of(
+                        "GraphQLRequestSerializer.toQueryString(request)",
+                        (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toQueryString,
+                        (Function<String, String>) (query) -> query
+                )
         );
     }
 
@@ -35,14 +48,14 @@ class GraphQLRequestSerializerTest {
                         "request.toHttpJsonBody()",
                         (Function<GraphQLRequest, String>) GraphQLRequest::toHttpJsonBody,
                         (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
-                  ),
+                ),
                 Arguments.of(
                         "request.toQueryString()",
                         (Function<GraphQLRequest, String>) GraphQLRequest::toQueryString,
                         (Function<String, String>) (query) -> query
-                  )
                 )
-              );
+                )
+        );
     }
 
     @ParameterizedTest(name = "{0}")
@@ -98,7 +111,7 @@ class GraphQLRequestSerializerTest {
                 "}";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
-    
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
     void serialize_withResponseProjectionAndAlias(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
@@ -252,6 +265,23 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
+    void serialize_withConditionalFragments(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequest graphQLRequest = new GraphQLRequest(new UpdateIssueMutationRequest(),
+                new UpdateIssuePayloadResponseProjection()
+                        .union(new UpdateNodeUnionResponseProjection()
+                                .onIssue(new IssueResponseProjection()
+                                        .activeLockReason())
+                                .onOrganization(new OrganizationResponseProjection()
+                                        .name())
+                                .typename()));
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "mutation { updateIssue{ " +
+                "union { ...on Issue { activeLockReason } ...on Organization { name } __typename } } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
     void serialize_collectionRequest(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
                 .setIds(Arrays.asList("\"", "\\", "\b", "\f", "\n", "\r", "\t", "\u1234"))
@@ -269,7 +299,7 @@ class GraphQLRequestSerializerTest {
                 "\"\\n\", " +
                 "\"\\r\", " +
                 "\"\\t\", " +
-                                            "\"ሴ\" ]){ id } }";
+                "\"ሴ\" ]){ id } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 

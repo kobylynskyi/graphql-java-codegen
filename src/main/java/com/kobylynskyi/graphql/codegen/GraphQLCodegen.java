@@ -213,7 +213,7 @@ public class GraphQLCodegen {
             generatedFiles.add(generateEnum(context, extendedEnumTypeDefinition));
         }
         for (ExtendedUnionTypeDefinition extendedUnionTypeDefinition : document.getUnionDefinitions()) {
-            generatedFiles.add(generateUnion(context, extendedUnionTypeDefinition));
+            generatedFiles.addAll(generateUnion(context, extendedUnionTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : document.getInterfaceDefinitions()) {
             generatedFiles.add(generateInterface(context, extendedInterfaceTypeDefinition));
@@ -227,9 +227,16 @@ public class GraphQLCodegen {
         return generatedFiles;
     }
 
-    private File generateUnion(MappingContext mappingContext, ExtendedUnionTypeDefinition definition) {
+    private List<File> generateUnion(MappingContext mappingContext, ExtendedUnionTypeDefinition definition) {
+        List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir);
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.unionTemplate, dataModel, outputDir));
+
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
+            Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
+        }
+        return generatedFiles;
     }
 
     private File generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {

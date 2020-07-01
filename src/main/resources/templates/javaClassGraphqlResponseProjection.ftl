@@ -38,21 +38,21 @@ public class ${className} extends GraphQLResponseProjection {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    public ${className} ${field.name}(<#if field.type?has_content>${field.type} subProjection</#if>) {
-        return ${field.name}(<#if field.parametrizedInputClassName?has_content>(String)</#if>null<#if field.type?has_content>, subProjection</#if>);
+    public ${className} ${field.methodName}(<#if field.type?has_content>${field.type} subProjection</#if>) {
+        return ${field.methodName}(<#if field.parametrizedInputClassName?has_content>(String)</#if>null<#if field.type?has_content>, subProjection</#if>);
     }
 
-    public ${className} ${field.name}(String alias<#if field.type?has_content>, ${field.type} subProjection</#if>) {
+    public ${className} ${field.methodName}(String alias<#if field.type?has_content>, ${field.type} subProjection</#if>) {
         fields.add(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>);
         return this;
     }
 
 <#if field.parametrizedInputClassName?has_content>
-    public ${className} ${field.name}(${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
+    public ${className} ${field.methodName}(${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
         return ${field.name}(null, input<#if field.type?has_content>, subProjection</#if>);
     }
 
-    public ${className} ${field.name}(String alias, ${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
+    public ${className} ${field.methodName}(String alias, ${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
         fields.add(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>);
         return this;
     }
