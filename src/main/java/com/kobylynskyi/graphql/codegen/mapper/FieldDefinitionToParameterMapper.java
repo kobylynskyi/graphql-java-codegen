@@ -89,8 +89,9 @@ public class FieldDefinitionToParameterMapper {
                                                                     ExtendedDefinition<?, ?> parentTypeDef) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
+        parameter.setMethodName(parameter.getName());
         String nestedType = getNestedTypeName(fieldDef.getType());
-        if (mappingContext.getTypeNames().contains(nestedType)) {
+        if (mappingContext.getTypeAndUnionNames().contains(nestedType)) {
             parameter.setType(nestedType + mappingContext.getResponseProjectionSuffix());
         }
         if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {

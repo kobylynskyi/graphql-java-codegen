@@ -91,6 +91,20 @@ class GraphQLCodegenGitHubTest {
                 commitFile);
     }
 
+    @Test
+    void generate_Client_ConditionalFragments() throws Exception {
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setGenerateApis(false);
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/SearchResultItemConnectionResponseProjection.java.txt"),
+                getFileByName(files, "SearchResultItemConnectionResponseProjection.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/SearchResultItemResponseProjection.java.txt"),
+                getFileByName(files, "SearchResultItemResponseProjection.java"));
+    }
+
     private static String getFileContent(File[] files, String fileName) throws IOException {
         return Utils.getFileContent(getFileByName(files, fileName).getPath());
     }

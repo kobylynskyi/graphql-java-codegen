@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,10 +34,15 @@ public class ExtendedDocument {
         this.unionDefinitions = unionDefinitions;
     }
 
-    public Set<String> getTypeNames() {
-        return typeDefinitions.stream()
+    public Set<String> getTypeAndUnionNames() {
+        Set<String> typeAndUnions = new LinkedHashSet<>();
+        typeDefinitions.stream()
                 .map(ExtendedDefinition::getName)
-                .collect(Collectors.toSet());
+                .forEach(typeAndUnions::add);
+        unionDefinitions.stream()
+                .map(ExtendedDefinition::getName)
+                .forEach(typeAndUnions::add);
+        return typeAndUnions;
     }
 
     public Set<String> getInterfaceNames() {

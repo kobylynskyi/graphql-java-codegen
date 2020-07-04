@@ -9,7 +9,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
 
     private final MappingConfig config;
     private final ExtendedDocument document;
-    private final Set<String> typeNames;
+    private final Set<String> typeAndUnionNames;
     private final Set<String> interfaceNames;
     private final GeneratedInformation generatedInformation;
 
@@ -18,7 +18,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
                           GeneratedInformation generatedInformation) {
         this.config = mappingConfig;
         this.document = document;
-        this.typeNames = document.getTypeNames();
+        this.typeAndUnionNames = document.getTypeAndUnionNames();
         this.interfaceNames = document.getInterfaceNames();
         this.generatedInformation = generatedInformation;
     }
@@ -207,8 +207,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return document;
     }
 
-    public Set<String> getTypeNames() {
-        return typeNames;
+    public Set<String> getTypeAndUnionNames() {
+        return typeAndUnionNames;
     }
 
     public Set<String> getInterfaceNames() {

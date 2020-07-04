@@ -1,0 +1,91 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+
+/**
+ * Response projection for SearchResultItem
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class SearchResultItemResponseProjection extends GraphQLResponseProjection {
+
+    public SearchResultItemResponseProjection() {
+    }
+
+    public SearchResultItemResponseProjection onApp(AppResponseProjection subProjection) {
+        return onApp(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onApp(String alias, AppResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on App").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onRepository(RepositoryResponseProjection subProjection) {
+        return onRepository(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onRepository(String alias, RepositoryResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on Repository").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onIssue(IssueResponseProjection subProjection) {
+        return onIssue(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onIssue(String alias, IssueResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on Issue").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onOrganization(OrganizationResponseProjection subProjection) {
+        return onOrganization(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onOrganization(String alias, OrganizationResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onUser(UserResponseProjection subProjection) {
+        return onUser(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onUser(String alias, UserResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on User").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onMarketplaceListing(MarketplaceListingResponseProjection subProjection) {
+        return onMarketplaceListing(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onMarketplaceListing(String alias, MarketplaceListingResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on MarketplaceListing").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection onPullRequest(PullRequestResponseProjection subProjection) {
+        return onPullRequest(null, subProjection);
+    }
+
+    public SearchResultItemResponseProjection onPullRequest(String alias, PullRequestResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("...on PullRequest").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SearchResultItemResponseProjection typename() {
+        return typename(null);
+    }
+
+    public SearchResultItemResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
+
+}

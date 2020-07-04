@@ -9,6 +9,7 @@ public class ProjectionParameterDefinition {
 
     private String type;
     private String name;
+    private String methodName;
     private boolean deprecated;
     private String parametrizedInputClassName;
 
@@ -26,6 +27,14 @@ public class ProjectionParameterDefinition {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
     public boolean isDeprecated() {

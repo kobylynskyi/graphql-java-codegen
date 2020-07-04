@@ -26,4 +26,13 @@ public class UpdateIssuePayloadResponseProjection extends GraphQLResponseProject
         return this;
     }
 
+    public UpdateIssuePayloadResponseProjection union(UpdateNodeUnionResponseProjection subProjection) {
+        return union(null, subProjection);
+    }
+
+    public UpdateIssuePayloadResponseProjection union(String alias, UpdateNodeUnionResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("union").alias(alias).projection(subProjection));
+        return this;
+    }
+
 }

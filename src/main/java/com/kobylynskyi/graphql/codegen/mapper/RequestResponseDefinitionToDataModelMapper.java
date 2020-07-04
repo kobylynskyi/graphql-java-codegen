@@ -2,8 +2,10 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
@@ -41,17 +43,17 @@ public class RequestResponseDefinitionToDataModelMapper {
      * Map type definition to a Freemarker data model of Response Projection.
      *
      * @param mappingContext Global mapping context
-     * @param typeDefinition GraphQL type definition
+     * @param definition     GraphQL definition (type or union)
      * @return Freemarker data model of the GraphQL Response Projection
      */
     public static Map<String, Object> mapResponseProjection(MappingContext mappingContext,
-                                                            ExtendedObjectTypeDefinition typeDefinition) {
+                                                            ExtendedDefinition<?, ?> definition) {
         Map<String, Object> dataModel = new HashMap<>();
         // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
-        dataModel.put(CLASS_NAME, Utils.capitalize(typeDefinition.getName()) + mappingContext.getResponseProjectionSuffix());
-        dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + typeDefinition.getName()));
-        dataModel.put(FIELDS, getProjectionFields(mappingContext, typeDefinition));
+        dataModel.put(CLASS_NAME, Utils.capitalize(definition.getName()) + mappingContext.getResponseProjectionSuffix());
+        dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + definition.getName()));
+        dataModel.put(FIELDS, getProjectionFields(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
@@ -167,23 +169,39 @@ public class RequestResponseDefinitionToDataModelMapper {
      * Get merged attributes from the type and attributes from the interface.
      *
      * @param mappingContext Global mapping context
-     * @param typeDefinition GraphQL type definition
+     * @param definition     GraphQL definition (type or union)
      * @return Freemarker data model of the GraphQL type
      */
     private static Collection<ProjectionParameterDefinition> getProjectionFields(MappingContext mappingContext,
-                                                                                 ExtendedObjectTypeDefinition typeDefinition) {
+                                                                                 ExtendedDefinition<?, ?> definition) {
         // using the map to exclude duplicate fields from the type and interfaces
         Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
 
-        // includes parameters from the base definition and extensions
-        FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
-                .forEach(p -> allParameters.put(p.getName(), p));
-        // includes parameters from the interface
-        MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
-                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
-                .flatMap(Collection::stream)
-                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
-                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+        if (definition instanceof ExtendedObjectTypeDefinition) {
+            ExtendedObjectTypeDefinition typeDefinition = (ExtendedObjectTypeDefinition) definition;
+            // includes parameters from the base definition and extensions
+            FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
+                    .forEach(p -> allParameters.put(p.getName(), p));
+            // includes parameters from the interface
+            MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
+                    .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
+                    .flatMap(Collection::stream)
+                    .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
+                    .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+        } else if (definition instanceof ExtendedUnionTypeDefinition) {
+            ExtendedUnionTypeDefinition unionDefinition = (ExtendedUnionTypeDefinition) definition;
+            for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
+                ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
+                parameter.setName("...on " + memberTypeName);
+                parameter.setMethodName("on" + memberTypeName);
+                parameter.setType(memberTypeName + mappingContext.getResponseProjectionSuffix());
+                allParameters.put(parameter.getName(), parameter);
+            }
+            ProjectionParameterDefinition typeNameProjParamDef = new ProjectionParameterDefinition();
+            typeNameProjParamDef.setName("__typename");
+            typeNameProjParamDef.setMethodName("typename");
+            allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+        }
         return allParameters.values();
     }
 
