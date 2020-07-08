@@ -4,7 +4,6 @@
 [![Gradle Plugins](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/io/github/kobylynskyi/graphql-java-codegen-gradle-plugin/maven-metadata.xml.svg?label=gradle)](https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-* [Description](#description)
 * [Plugin Setup](#plugin-setup)
 * [Plugin Options](#plugin-options)
 * [Sample Plugin Configuration](#sample-plugin-configuration)
@@ -13,17 +12,6 @@
   * [GraphQL **client** code generation](#graphql-client-code-generation)
 * [Different configurations for graphql schemas](#different-configurations-for-graphql-schemas)
 * [Convert generated Java classes to Kotlin classes](#convert-generated-java-classes-to-kotlin-classes)
-
-
-### Description
-
-This Gradle plugin is able to generate the following classes based on your GraphQL schema:
-* Interfaces for GraphQL queries, mutations and subscriptions
-* Interfaces for GraphQL unions
-* POJO classes for GraphQL types/inputs
-* Enum classes for GraphQL enums
-* Interface Resolvers for GraphQL type fields
-* Client Request classes for GraphQL queries, mutations and subscriptions
 
 
 ### Plugin Setup
