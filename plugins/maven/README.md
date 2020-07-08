@@ -4,24 +4,12 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.kobylynskyi/graphql-codegen-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.kobylynskyi/graphql-codegen-maven-plugin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-* [Description](#description)
 * [Plugin Setup and Configuration](#plugin-setup-and-configuration)
 * [Plugin Options](#plugin-options)
 * [Examples](#examples)
   * [GraphQL **server** code generation](#graphql-server-code-generation)
   * [GraphQL **client** code generation](#graphql-client-code-generation)
 * [Different configurations for graphql schemas](#different-configurations-for-graphql-schemas)
-
-
-### Description
-
-This Maven plugin is able to generate the following classes based on your GraphQL schema:
-* Interfaces for GraphQL queries, mutations and subscriptions
-* Interfaces for GraphQL unions
-* POJO classes for GraphQL types/inputs
-* Enum classes for GraphQL enums
-* Interface Resolvers for GraphQL type fields
-* Client Request classes for GraphQL queries, mutations and subscriptions
 
 
 ### Plugin Setup and Configuration
