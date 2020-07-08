@@ -10,7 +10,6 @@
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=kobylynskyi_graphql-java-codegen&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=kobylynskyi_graphql-java-codegen)
 
 
-
 GraphQL Java Codegen makes it easy to make your Java application to follow a schema-first approach.
 
 Following classes can be generated based on your GraphQL schema:
