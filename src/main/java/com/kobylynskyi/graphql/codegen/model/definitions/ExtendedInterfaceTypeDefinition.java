@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ExtendedInterfaceTypeDefinition extends ExtendedDefinition<InterfaceTypeDefinition, InterfaceTypeExtensionDefinition> {
+public class ExtendedInterfaceTypeDefinition extends ExtendedImplementingTypeDefinition<InterfaceTypeDefinition, InterfaceTypeExtensionDefinition> {
 
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();

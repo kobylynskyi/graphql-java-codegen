@@ -5,6 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedImplementingTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -309,11 +310,11 @@ class MapperUtils {
     /**
      * Scan document and return all interfaces that given type implements.
      *
-     * @param definition GraphQL type definition
+     * @param definition GraphQL definition that might implement some interfaces
      * @param document   GraphQL document
      * @return all interfaces that given type implements.
      */
-    static List<ExtendedInterfaceTypeDefinition> getInterfacesOfType(ExtendedObjectTypeDefinition definition,
+    static List<ExtendedInterfaceTypeDefinition> getInterfacesOfType(ExtendedImplementingTypeDefinition<?, ?> definition,
                                                                      ExtendedDocument document) {
         if (definition.getImplements().isEmpty()) {
             return Collections.emptyList();

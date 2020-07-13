@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
@@ -169,40 +171,109 @@ public class RequestResponseDefinitionToDataModelMapper {
      * Get merged attributes from the type and attributes from the interface.
      *
      * @param mappingContext Global mapping context
-     * @param definition     GraphQL definition (type or union)
+     * @param definition     GraphQL definition (type / union / interface)
      * @return Freemarker data model of the GraphQL type
      */
     private static Collection<ProjectionParameterDefinition> getProjectionFields(MappingContext mappingContext,
                                                                                  ExtendedDefinition<?, ?> definition) {
-        // using the map to exclude duplicate fields from the type and interfaces
-        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
 
         if (definition instanceof ExtendedObjectTypeDefinition) {
-            ExtendedObjectTypeDefinition typeDefinition = (ExtendedObjectTypeDefinition) definition;
-            // includes parameters from the base definition and extensions
-            FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
-                    .forEach(p -> allParameters.put(p.getName(), p));
-            // includes parameters from the interface
-            MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
-                    .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
-                    .flatMap(Collection::stream)
-                    .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
-                    .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+            return getProjectionFields(mappingContext, (ExtendedObjectTypeDefinition) definition);
         } else if (definition instanceof ExtendedUnionTypeDefinition) {
-            ExtendedUnionTypeDefinition unionDefinition = (ExtendedUnionTypeDefinition) definition;
-            for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
-                ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
-                parameter.setName("...on " + memberTypeName);
-                parameter.setMethodName("on" + memberTypeName);
-                parameter.setType(memberTypeName + mappingContext.getResponseProjectionSuffix());
-                allParameters.put(parameter.getName(), parameter);
-            }
-            ProjectionParameterDefinition typeNameProjParamDef = new ProjectionParameterDefinition();
-            typeNameProjParamDef.setName("__typename");
-            typeNameProjParamDef.setMethodName("typename");
-            allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+            return getProjectionFields(mappingContext, (ExtendedUnionTypeDefinition) definition);
+        } else if (definition instanceof ExtendedInterfaceTypeDefinition) {
+            return getProjectionFields(mappingContext, (ExtendedInterfaceTypeDefinition) definition);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get merged attributes from the type and attributes from the interface.
+     *
+     * @param mappingContext Global mapping context
+     * @param typeDefinition GraphQL type definition
+     * @return Freemarker data model for response projection of the GraphQL type
+     */
+    private static Collection<ProjectionParameterDefinition> getProjectionFields(
+            MappingContext mappingContext, ExtendedObjectTypeDefinition typeDefinition) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
+        // includes parameters from the base definition and extensions
+        FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
+                .forEach(p -> allParameters.put(p.getName(), p));
+        // includes parameters from the interface
+        MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
+                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
+                .flatMap(Collection::stream)
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+        return allParameters.values();
+    }
+
+    /**
+     * Get merged attributes from the type and attributes from the interface.
+     *
+     * @param mappingContext      Global mapping context
+     * @param interfaceDefinition GraphQL interface definition
+     * @return Freemarker data model for response projection of the GraphQL interface
+     */
+    private static Collection<ProjectionParameterDefinition> getProjectionFields(
+            MappingContext mappingContext, ExtendedInterfaceTypeDefinition interfaceDefinition) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
+        // includes parameters from the base definition and extensions
+        FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, interfaceDefinition.getFieldDefinitions(), interfaceDefinition)
+                .forEach(p -> allParameters.put(p.getName(), p));
+        // includes parameters from the interface
+        MapperUtils.getInterfacesOfType(interfaceDefinition, mappingContext.getDocument()).stream()
+                .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
+                .flatMap(Collection::stream)
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+
+        Set<String> interfaceChildren = mappingContext.getInterfaceChildren()
+                .getOrDefault(interfaceDefinition.getName(), Collections.emptySet());
+        for (String childName : interfaceChildren) {
+            ProjectionParameterDefinition childDef = getChildDefinition(mappingContext, childName);
+            allParameters.put(childDef.getName(), childDef);
         }
         return allParameters.values();
+    }
+
+    /**
+     * Get merged attributes from the type and attributes from the interface.
+     *
+     * @param mappingContext  Global mapping context
+     * @param unionDefinition GraphQL union definition
+     * @return Freemarker data model for response projection of the GraphQL union
+     */
+    private static Collection<ProjectionParameterDefinition> getProjectionFields(
+            MappingContext mappingContext, ExtendedUnionTypeDefinition unionDefinition) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
+        for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
+            ProjectionParameterDefinition memberDef = getChildDefinition(mappingContext, memberTypeName);
+            allParameters.put(memberDef.getName(), memberDef);
+        }
+        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+        allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+        return allParameters.values();
+    }
+
+    private static ProjectionParameterDefinition getChildDefinition(MappingContext mappingContext,
+                                                                    String childName) {
+        ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
+        parameter.setName("...on " + childName);
+        parameter.setMethodName("on" + childName);
+        parameter.setType(childName + mappingContext.getResponseProjectionSuffix());
+        return parameter;
+    }
+
+    private static ProjectionParameterDefinition getTypeNameProjectionParameterDefinition() {
+        ProjectionParameterDefinition typeNameProjParamDef = new ProjectionParameterDefinition();
+        typeNameProjParamDef.setName("__typename");
+        typeNameProjParamDef.setMethodName("typename");
+        return typeNameProjParamDef;
     }
 
 }

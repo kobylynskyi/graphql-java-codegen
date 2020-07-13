@@ -91,7 +91,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setMethodName(parameter.getName());
         String nestedType = getNestedTypeName(fieldDef.getType());
-        if (mappingContext.getTypeAndUnionNames().contains(nestedType)) {
+        if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
             parameter.setType(nestedType + mappingContext.getResponseProjectionSuffix());
         }
         if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {

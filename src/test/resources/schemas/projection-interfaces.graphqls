@@ -1,0 +1,30 @@
+schema {
+    query: Query
+}
+
+type Query {
+    vehicleById(vehicleId: ID!): Vehicle
+}
+
+interface Location  {
+    id: ID!
+    locationType: String!
+}
+
+type CustomerLocation implements Location  {
+    id: ID!
+    locationType: String!
+    postCode: String!
+}
+
+type DealerLocation implements Location {
+    id: ID!
+    locationType: String!
+    dealerCode: String!
+}
+
+type Vehicle {
+    vehicleId: ID!
+    registrationNumber: String!
+    location: Location!
+}

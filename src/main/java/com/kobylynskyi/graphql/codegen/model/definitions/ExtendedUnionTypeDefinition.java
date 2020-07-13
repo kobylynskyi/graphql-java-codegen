@@ -19,13 +19,17 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
      * @return <b>true</b> if <code>definition</code> is a part of <code>union</code>. <b>false</b>if <code>definition</code> is a part of <code>union</code>.
      */
     public boolean isDefinitionPartOfUnion(ExtendedDefinition<?, ?> definition) {
-        if (memberTypeNames == null) {
-            memberTypeNames = getMemberTypeNames();
-        }
-        return memberTypeNames.contains(definition.getName());
+        return getMemberTypeNames().contains(definition.getName());
     }
 
     public Set<String> getMemberTypeNames() {
+        if (memberTypeNames == null) {
+            memberTypeNames = getLazyMemberTypeNames();
+        }
+        return memberTypeNames;
+    }
+
+    private Set<String> getLazyMemberTypeNames() {
         Set<String> allTypeNames = new HashSet<>();
         if (definition != null) {
             definition.getMemberTypes().stream()

@@ -216,7 +216,7 @@ public class GraphQLCodegen {
             generatedFiles.addAll(generateUnion(context, extendedUnionTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : document.getInterfaceDefinitions()) {
-            generatedFiles.add(generateInterface(context, extendedInterfaceTypeDefinition));
+            generatedFiles.addAll(generateInterface(context, extendedInterfaceTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
             generateFieldResolver(context, definition.getFieldDefinitions(), definition.getName())
@@ -239,9 +239,16 @@ public class GraphQLCodegen {
         return generatedFiles;
     }
 
-    private File generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {
+    private List<File> generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {
+        List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir);
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.interfaceTemplate, dataModel, outputDir));
+
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
+            Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
+        }
+        return generatedFiles;
     }
 
     private List<File> generateServerOperations(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
