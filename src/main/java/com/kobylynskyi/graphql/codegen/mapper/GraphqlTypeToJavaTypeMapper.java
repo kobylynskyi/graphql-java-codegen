@@ -53,7 +53,7 @@ class GraphqlTypeToJavaTypeMapper {
             return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName);
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName);
-            if (mappedCollectionType.isInterface() && mappingContext.getInterfaceNames().contains(parentTypeName)) {
+            if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
                 mappedCollectionType.setName(wrapSuperTypeIntoJavaList(mappedCollectionType.getName()));
             } else {
                 mappedCollectionType.setName(wrapIntoJavaList(mappedCollectionType.getName()));
@@ -105,7 +105,7 @@ class GraphqlTypeToJavaTypeMapper {
         } else {
             javaTypeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
-        return new NamedDefinition(javaTypeName, mappingContext.getInterfaceNames().contains(graphQLType));
+        return new NamedDefinition(javaTypeName, mappingContext.getInterfacesName().contains(graphQLType));
     }
 
     /**
