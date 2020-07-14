@@ -18,7 +18,9 @@ Run project build so that GraphQL classes are regenerated.
 
 ### 4. Rename all references to API interfaces in your resolver classes (only for server-side codegen)
 
-If you were using generated API classes, then in your GraphQL Resolver implementation you should fix the reference to generated interfaces:
+If you were using generated API classes, then in your GraphQL Resolver implementation you should fix the reference to generated interfaces.
+This is because by default the suffix of API interface is now by default equals to `Resolver` (configurable via `apiNameSuffix` option).
+Example:
 ```java
 // old approach
 import com.example.graphql.generated.CreatePersonMutation;
