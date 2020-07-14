@@ -21,7 +21,7 @@
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>2.2.0</version>
+            <version>2.2.1</version>
             <executions>
                 <execution>
                     <goals>

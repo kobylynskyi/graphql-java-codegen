@@ -9,7 +9,7 @@ plugins {
     id "org.sonarqube" version "3.0"
 }
 
-version = "2.2.1-SNAPSHOT"
+version = "2.2.1"
 group = "io.github.kobylynskyi"
 
 repositories {
