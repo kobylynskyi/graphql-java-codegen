@@ -1,6 +1,7 @@
 package io.github.dreamylost.service;
 
 import io.github.dreamylost.model.Droid;
+import io.github.dreamylost.model.Episode;
 import io.github.dreamylost.model.Human;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class DroidResolverImplMain {
 
 
         System.out.println("=======get hero Episode.EMPIRE=======");
-//        io.github.dreamylost.model.Character character = droidResolver.hero(Episode.EMPIRE);
-//        System.out.println(character);
+        io.github.dreamylost.model.Character character = droidResolver.hero(Episode.EMPIRE);
+        System.out.println(character);
 
 
     }

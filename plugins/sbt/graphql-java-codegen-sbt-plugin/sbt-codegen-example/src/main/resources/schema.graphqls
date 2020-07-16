@@ -1,5 +1,3 @@
-scalar Email
-
 schema {
     query: Query
 }
@@ -42,3 +40,5 @@ type Droid implements Character {
     primaryFunction: String
     secretBackstory : String @deprecated(reason : "We have decided that this is not canon")
 }
+
+scalar Email

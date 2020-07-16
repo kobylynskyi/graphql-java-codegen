@@ -43,19 +43,21 @@ public class QueryResolverImpl implements QueryResolver {
         return result.droid();
     }
 
+
     @Override
     public Character hero(Episode episode) throws Exception {
         HeroQueryRequest heroQueryRequest = new HeroQueryRequest();
         heroQueryRequest.setEpisode(episode);
 
-        DroidResponseProjection droidResponseProjection = new DroidResponseProjection();
-        droidResponseProjection.id().name();
+        CharacterResponseProjection characterResponseProjection = new CharacterResponseProjection();
+        characterResponseProjection.id().name().onDroid(new DroidResponseProjection().id().name());
 
-        GraphQLRequest graphQLRequest = new GraphQLRequest(heroQueryRequest, droidResponseProjection);
+        GraphQLRequest graphQLRequest = new GraphQLRequest(heroQueryRequest, characterResponseProjection);
         HeroQueryResponse result = Config.restTemplate.exchange(URI.create(Config.productUrl), HttpMethod.POST, Config.httpEntity(graphQLRequest), HeroQueryResponse.class).getBody();
 
         assert result != null;
         return result.hero();
+
     }
 
     @Override

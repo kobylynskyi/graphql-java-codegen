@@ -8,7 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
  */
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-16T14:18:15+0800"
+    date = "2020-07-16T17:07:53+0800"
 )
 public class DroidResponseProjection extends GraphQLResponseProjection {
 
@@ -33,12 +33,12 @@ public class DroidResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
-    public DroidResponseProjection friends() {
-        return friends(null);
+    public DroidResponseProjection friends(CharacterResponseProjection subProjection) {
+        return friends(null, subProjection);
     }
 
-    public DroidResponseProjection friends(String alias) {
-        fields.add(new GraphQLResponseField("friends").alias(alias));
+    public DroidResponseProjection friends(String alias, CharacterResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("friends").alias(alias).projection(subProjection));
         return this;
     }
 

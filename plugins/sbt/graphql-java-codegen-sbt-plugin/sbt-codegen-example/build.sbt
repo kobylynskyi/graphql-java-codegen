@@ -18,7 +18,6 @@ libraryDependencies ++= GraphQLCodegen ++ Seq(
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.8.2")
 
 
-
 graphqlSchemaPaths := Array("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
 apiPackageName := Some("io.github.dreamylost.api")

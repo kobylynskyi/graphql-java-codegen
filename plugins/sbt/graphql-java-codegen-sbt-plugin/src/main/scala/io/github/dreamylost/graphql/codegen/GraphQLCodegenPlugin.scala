@@ -3,11 +3,12 @@ package io.github.dreamylost.graphql.codegen
 import java.nio.file.{ Path, Paths }
 import java.util
 
-import com.kobylynskyi.graphql.codegen.GraphQLCodegen
+import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
 import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
 import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
 import sbt.Keys.sLog
+import sbt.internal.util.complete.DefaultParsers.spaceDelimited
 
 import scala.collection.JavaConverters._
 
@@ -18,11 +19,17 @@ import scala.collection.JavaConverters._
  */
 object GraphQLCodegenPlugin extends AutoPlugin {
 
+  //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
+
+  private val codegen = "2.2.1";
+  private val jvalidation = "2.0.1.Final"
+
   object autoImport extends GraphQLCodegenKeys {
 
+    //for auto import
     val GraphQLCodegen: Seq[ModuleID] = Seq(
-      "io.github.kobylynskyi" % "graphql-java-codegen" % "2.2.0",
-      "javax.validation" % "validation-api" % "2.0.1.Final"
+      "io.github.kobylynskyi" % "graphql-java-codegen" % codegen,
+      "javax.validation" % "validation-api" % jvalidation
     )
   }
 
@@ -39,11 +46,16 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
     , outputDir := {
       val file = new File(defaultSourcePath)
+      if (!file.exists()) {
+        file.createNewFile()
+      }
       sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
       file
     }
 
-    , graphqlSchemaPaths := Array()
+    , graphqlSchemaPaths := Seq.empty
+
+    , graphqlSchemaValidate := Seq.empty
 
     , genPackageName := None
 
@@ -112,7 +124,6 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     , jsonConfigurationFile := None
 
     , parentInterfaces := new ParentInterfacesConfig()
-
   )
 
 
@@ -199,24 +210,34 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   }
 
   override lazy val projectSettings: Seq[Def.Setting[_]] = Seq(
-    generate := {
+    //use validate that config in build.sbt
+    graphqlCodegenValidate := new GraphQLCodegenValidate(graphqlSchemaPaths.value.asJava).validate()
+    //use validate at terminal by user
+    , graphqlSchemaValidate := {
+      //use by user
+      val args: Seq[String] = spaceDelimited("<arg>").parsed
+      new GraphQLCodegenValidate(args.asJava).validate()
+      args.foreach(a => sLog.value.info(s"Obtain args: $a"))
+      args
+    }
+    , graphqlCodegen := {
       val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
       var result: Seq[File] = Seq.empty
       try {
         result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
         for (file <- result) {
-          sLog.value.info(s"finish generate code, file name is <${file.getName}>.")
+          sLog.value.info(s"Finish generate code, file name is <${file.getName}>.")
         }
       }
       catch {
         case e: Exception =>
-          sLog.value.info(s"error: ${e.getLocalizedMessage}")
+          sLog.value.info(s"Error: ${e.getLocalizedMessage}")
           throw new Exception("Code generation failed. See above for the full exception.")
       }
 
 
       def getSchemas: util.List[String] = {
-        if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.toSeq.asJava
+        if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.asJava
         val schemasRootDir: Path = getSchemasRootDir
         val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
         finder.setRecursive(graphqlSchemas.value.recursive)
