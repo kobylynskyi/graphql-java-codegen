@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{ISO8601}] [%-5p] [%t#%T] %c#%L - %msg%n"/>
+        </Console>
+
+        <RollingFile name="AppRollingFile" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="[%d{ISO8601}] [%-5p] [%t#%T] %c#%L - %msg%n"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 23 * * ?"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="io.github" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AppRollingFile"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AppRollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
