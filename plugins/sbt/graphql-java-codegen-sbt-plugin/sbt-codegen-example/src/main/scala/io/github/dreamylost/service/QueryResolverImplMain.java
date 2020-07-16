@@ -9,8 +9,9 @@ import java.util.List;
 /**
  * @author liguobin@growingio.com
  * @version 1.0, 2020/7/16
+ * @see [[server code  https://github.com/jxnu-liguobin/springboot-examples/tree/master/graphql-complete]]
  */
-public class DroidResolverImplMain {
+public class QueryResolverImplMain {
 
     public static void main(String[] args) throws Exception {
         System.out.println("=======get droid id 2001=========");

@@ -5,10 +5,12 @@ import io.github.dreamylost.Config;
 import io.github.dreamylost.api.QueryResolver;
 import io.github.dreamylost.model.Character;
 import io.github.dreamylost.model.*;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liguobin@growingio.com
@@ -50,10 +52,11 @@ public class QueryResolverImpl implements QueryResolver {
         heroQueryRequest.setEpisode(episode);
 
         CharacterResponseProjection characterResponseProjection = new CharacterResponseProjection();
-        characterResponseProjection.id().name().onDroid(new DroidResponseProjection().id().name());
+        characterResponseProjection.id().name().friends(new CharacterResponseProjection().id()).appearsIn();
 
         GraphQLRequest graphQLRequest = new GraphQLRequest(heroQueryRequest, characterResponseProjection);
-        HeroQueryResponse result = Config.restTemplate.exchange(URI.create(Config.productUrl), HttpMethod.POST, Config.httpEntity(graphQLRequest), HeroQueryResponse.class).getBody();
+        ParameterizedTypeReference<HeroQueryResponse> p = new ParameterizedTypeReference<HeroQueryResponse>() {};
+        HeroQueryResponse result = Config.restTemplate.exchange(URI.create(Config.productUrl), HttpMethod.POST, Config.httpEntity(graphQLRequest), p).getBody();
 
         assert result != null;
         return result.hero();
