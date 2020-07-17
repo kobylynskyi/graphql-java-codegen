@@ -2,7 +2,7 @@ import java.util
 
 name := "sbt-codegen-exmaple"
 
-organization := "io.github.dreamylost"
+organization := "io.github.jxnu-liguobin"
 
 enablePlugins(GraphQLCodegenPlugin)
 

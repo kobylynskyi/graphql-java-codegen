@@ -1,17 +1,19 @@
 name := "graphql-java-codegen-sbt-plugin"
 
-organization := "io.github.dreamylost"
+// must be equals to oss Group Id
+organization := "io.github.jxnu-liguobin"
 
 lazy val scala212 = "2.12.12"
 lazy val scala211 = "2.11.12"
 
 scalaVersion := scala212
 
-organization := "io.github.dreamylost"
-
 enablePlugins(SbtPlugin)
 
 sbtPlugin := true
+
+// publish only root project
+publish / skip := true
 
 crossScalaVersions := List(scala212, scala211)
 scalacOptions += "-target:jvm-1.8"
@@ -26,7 +28,6 @@ lazy val `graphql-java-codegen-sbt-plugin` = Project(id = "graphql-java-codegen-
 //publish by sbt publishSigned
 lazy val publishSettings = Seq(
   credentials += Credentials(Path.userHome / ".ivy2" / ".sonatype_credentials"),
-  usePgpKeyHex("1D664559C485101D646C585A9ECAAA3675D99811"),
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value)
@@ -34,6 +35,13 @@ lazy val publishSettings = Seq(
     else
       Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
+  developers := List(
+    Developer(
+      id = "jxnu-liguobin",
+      name = "dreamylost",
+      email = "dreamylost@outlook.com",
+      url = url("http://dreamylost.cn")
+    )),
   licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/")),
   publishMavenStyle := true,
   publishArtifact in Test := false,
@@ -43,6 +51,7 @@ lazy val publishSettings = Seq(
   homepage := Some(url("https://github.com/jxnu-liguobin")),
   scmInfo := Some(
     ScmInfo(
+      //it is fork from https://github.com/kobylynskyi/graphql-java-codegen
       url("https://github.com/jxnu-liguobin/graphql-java-codegen"),
       "scm:git@github.com:jxnu-liguobin/graphql-java-codegen.git"
     ))
