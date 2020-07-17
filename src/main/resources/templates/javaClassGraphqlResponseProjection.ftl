@@ -21,6 +21,9 @@ import java.util.Objects;
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {

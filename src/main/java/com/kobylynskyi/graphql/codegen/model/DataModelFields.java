@@ -21,6 +21,7 @@ public final class DataModelFields {
     public static final String TO_STRING_FOR_REQUEST = "toStringForRequest";
     public static final String JAVA_DOC = "javaDoc";
     public static final String DEPRECATED = "deprecated";
+    public static final String ANNOTATIONS = "annotations";
     public static final String OPERATION_TYPE = "operationType";
     public static final String OPERATION_NAME = "operationName";
     public static final String RETURN_TYPE_NAME = "returnTypeName";
