@@ -1,6 +1,8 @@
 # GraphQL Codegen SBT plugin #
 
-this is draft sbt plugins for https://github.com/kobylynskyi/graphql-java-codegen
+this is a draft sbt plugins for https://github.com/kobylynskyi/graphql-java-codegen
+
+server example at https://github.com/jxnu-liguobin/springboot-examples/tree/master/graphql-complete
 
 
 ### Plugin Setup
