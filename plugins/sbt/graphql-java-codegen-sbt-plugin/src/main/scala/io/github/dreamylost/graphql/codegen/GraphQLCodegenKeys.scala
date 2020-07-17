@@ -13,7 +13,7 @@ import sbt._
 trait GraphQLCodegenKeys {
 
   //Conflict with SBT key
-  val genPackageName = settingKey[Option[String]]("packageName")
+  val generatePackageName = settingKey[Option[String]]("generatePackageName")
 
   //Scala collection and asJava cannot be used. The latter one uses the put method, which is not supported by Scala collection
   val customTypesMapping = settingKey[util.Map[String, String]]("customTypesMapping")
@@ -94,5 +94,9 @@ trait GraphQLCodegenKeys {
   val graphqlCodegen = taskKey[Seq[File]]("generate code task")
 
   val graphqlCodegenValidate = taskKey[Unit]("graphql validate task")
+
+  //for version
+  val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")
+  val javaxValidationApi = settingKey[Option[String]]("javax-validation-api version")
 
 }

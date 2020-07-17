@@ -21,21 +21,22 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
   //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
 
-  private val codegen = "2.2.1";
+  private val codegen = "2.2.1"
   private val jvalidation = "2.0.1.Final"
 
   object autoImport extends GraphQLCodegenKeys {
 
     //for auto import
     val GraphQLCodegen: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-      "io.github.kobylynskyi" % "graphql-java-codegen" % codegen,
-      "javax.validation" % "validation-api" % jvalidation
+      "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen),
+      "javax.validation" % "validation-api" % javaxValidationApi.value.getOrElse(jvalidation)
     )
 
     val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
     val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
   }
 
+  //do not Auto trigger.
   override def trigger: PluginTrigger = noTrigger
 
   import autoImport._
@@ -43,6 +44,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   private val defaultResourcesPath = "src/main/resources"
   private val defaultSourcePath = "src/main/java"
 
+  //must init setting key before use it in projectSettings
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     graphqlSchemas := schemaFinderConfig, outputDir := {
       val file = new File(defaultSourcePath)
@@ -51,16 +53,31 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       }
       sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
       file
-    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty, genPackageName := None, customTypesMapping := new util.HashMap[String, String](), apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None, modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None, generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None, customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None, generateImmutableModels := None, generateToString := None, subscriptionReturnType := None, generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None, generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None, generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](), fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None, responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None, jsonConfigurationFile := None, parentInterfaces := parentInterfacesConfig
+    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty,
+    generatePackageName := None, customTypesMapping := new util.HashMap[String, String](),
+    apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None,
+    modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None,
+    generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None,
+    customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None,
+    generateImmutableModels := None, generateToString := None, subscriptionReturnType := None,
+    generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None,
+    generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None,
+    generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](),
+    fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None,
+    responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None,
+    jsonConfigurationFile := None, parentInterfaces := parentInterfacesConfig,
+    graphqlJavaCodegenVersion := Some(codegen),
+    javaxValidationApi := Some(jvalidation)
   )
 
+  //setting key must use in Def、:=
   private def getMappingConfig(): Def.Initialize[MappingConfig] = {
     Def.setting[MappingConfig] {
 
       //TODO use builder
       val mappingConfig = new MappingConfig
 
-      mappingConfig.setPackageName(genPackageName.value.orNull)
+      mappingConfig.setPackageName(generatePackageName.value.orNull)
 
       mappingConfig.setCustomTypesMapping(customTypesMapping.value)
 

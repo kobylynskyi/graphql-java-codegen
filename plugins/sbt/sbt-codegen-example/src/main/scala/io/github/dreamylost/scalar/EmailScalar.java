@@ -6,8 +6,9 @@ import graphql.schema.*;
 import java.util.regex.Pattern;
 
 /**
- * 在graphql中自定义标量类型
- * 使用时还需要在graphqls中定义 scalar Email
+ * graphql scalar type
+ * <p>
+ * use in graphql schema like : scalar Email
  *
  * @author 梦境迷离
  * @time 2020年04月03日

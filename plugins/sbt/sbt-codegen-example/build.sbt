@@ -1,6 +1,6 @@
 import java.util
 
-name := "sbt-codegen-exmaple"
+name := "example-client"
 
 organization := "io.github.jxnu-liguobin"
 
@@ -22,14 +22,16 @@ modelPackageName := Some("io.github.dreamylost.model")
 apiPackageName := Some("io.github.dreamylost.api")
 generateClient := Some(true)
 generateApis := Some(true)
-//因为插件依赖的框架内部调用了put
+// Scala collection cannot be used. The latter one uses the put method, which is not supported by Scala collection.
+// in FB, collection is immutable
 customTypesMapping := {
   val mapping = new util.HashMap[String, String]
   mapping.put("Email", "io.github.dreamylost.scalar.EmailScalar")
-  //会与java.lang.* 冲突，指定自定义类型，会使用全类名构建
+  //Character will conflict with java.lang.Character. maybe because Scala imports it automatically java.lang *.
+  //So we use Full class name
   mapping.put("Character", "io.github.dreamylost.model.CharacterEntity")
   mapping
 }
 
-//也可以使用后缀避免与java.lang.* 冲突
-modelNameSuffix := Some("Entity")
+////Of course, you can also add a suffix to be different from it
+//modelNameSuffix := Some("Entity")
