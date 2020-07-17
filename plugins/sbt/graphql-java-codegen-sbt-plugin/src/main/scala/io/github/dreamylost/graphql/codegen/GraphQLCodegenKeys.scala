@@ -97,6 +97,6 @@ trait GraphQLCodegenKeys {
 
   //for version
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")
-  val javaxValidationApi = settingKey[Option[String]]("javax-validation-api version")
+  val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
 
 }

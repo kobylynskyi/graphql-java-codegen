@@ -3,12 +3,12 @@ package io.github.dreamylost.graphql.codegen
 import java.nio.file.{ Path, Paths }
 import java.util
 
-import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
 import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
+import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
+import sbt.Keys.{ sLog, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
 import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
-import sbt.Keys.{ sLog, _ }
 
 import scala.collection.JavaConverters._
 
@@ -21,6 +21,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
   //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
 
+  //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val codegen = "2.2.1"
   private val jvalidation = "2.0.1.Final"
 
@@ -29,7 +30,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     //for auto import
     val GraphQLCodegen: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen),
-      "javax.validation" % "validation-api" % javaxValidationApi.value.getOrElse(jvalidation)
+      "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jvalidation)
     )
 
     val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
@@ -67,7 +68,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None,
     jsonConfigurationFile := None, parentInterfaces := parentInterfacesConfig,
     graphqlJavaCodegenVersion := Some(codegen),
-    javaxValidationApi := Some(jvalidation)
+    javaxValidationApiVersion := Some(jvalidation)
   )
 
   //setting key must use in Def、:=
