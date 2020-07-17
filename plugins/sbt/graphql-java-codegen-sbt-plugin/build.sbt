@@ -13,7 +13,7 @@ enablePlugins(SbtPlugin)
 sbtPlugin := true
 
 // publish only root project
-publish / skip := true
+//publish / skip := true
 
 crossScalaVersions := List(scala212, scala211)
 scalacOptions += "-target:jvm-1.8"
@@ -35,13 +35,6 @@ lazy val publishSettings = Seq(
     else
       Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
-  developers := List(
-    Developer(
-      id = "jxnu-liguobin",
-      name = "dreamylost",
-      email = "dreamylost@outlook.com",
-      url = url("http://dreamylost.cn")
-    )),
   licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/")),
   publishMavenStyle := true,
   publishArtifact in Test := false,

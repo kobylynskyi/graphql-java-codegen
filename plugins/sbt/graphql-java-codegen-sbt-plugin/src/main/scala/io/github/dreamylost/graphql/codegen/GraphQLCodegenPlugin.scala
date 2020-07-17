@@ -6,9 +6,9 @@ import java.util
 import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
 import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
-import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
-import sbt.Keys.sLog
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
+import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
+import sbt.Keys.{ sLog, _ }
 
 import scala.collection.JavaConverters._
 
@@ -27,10 +27,13 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   object autoImport extends GraphQLCodegenKeys {
 
     //for auto import
-    val GraphQLCodegen: Seq[ModuleID] = Seq(
+    val GraphQLCodegen: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       "io.github.kobylynskyi" % "graphql-java-codegen" % codegen,
       "javax.validation" % "validation-api" % jvalidation
     )
+
+    val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
+    val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
   }
 
   override def trigger: PluginTrigger = noTrigger
@@ -41,14 +44,14 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   private val defaultSourcePath = "src/main/java"
 
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
-    graphqlSchemas := new SchemaFinderConfig(), outputDir := {
+    graphqlSchemas := schemaFinderConfig, outputDir := {
       val file = new File(defaultSourcePath)
       if (!file.exists()) {
         file.createNewFile()
       }
       sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
       file
-    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty, genPackageName := None, customTypesMapping := new util.HashMap[String, String](), apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None, modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None, generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None, customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None, generateImmutableModels := None, generateToString := None, subscriptionReturnType := None, generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None, generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None, generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](), fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None, responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None, jsonConfigurationFile := None, parentInterfaces := new ParentInterfacesConfig()
+    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty, genPackageName := None, customTypesMapping := new util.HashMap[String, String](), apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None, modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None, generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None, customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None, generateImmutableModels := None, generateToString := None, subscriptionReturnType := None, generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None, generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None, generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](), fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None, responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None, jsonConfigurationFile := None, parentInterfaces := parentInterfacesConfig
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = {

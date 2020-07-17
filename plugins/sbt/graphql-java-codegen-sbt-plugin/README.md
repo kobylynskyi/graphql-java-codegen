@@ -10,7 +10,7 @@ Server example at https://github.com/jxnu-liguobin/springboot-examples/tree/mast
 
 ```scala
 // plugins.sbt
-addSbtPlugin("io.github.jxnu-liguobin" % "graphql-java-codegen-sbt-plugin" % "0.0.1-SNAPSHOT")
+addSbtPlugin("io.github.jxnu-liguobin" % "graphql-java-codegen-sbt-plugin" % "0.0.2-SNAPSHOT")
 ```
 
 ### Config
