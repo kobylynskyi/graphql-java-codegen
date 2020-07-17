@@ -5,7 +5,7 @@ This is a draft sbt plugin for https://github.com/kobylynskyi/graphql-java-codeg
 Server example at https://github.com/jxnu-liguobin/springboot-examples/tree/master/graphql-complete (do not use plugin, only a normal graphql server )
 
 
-![Build](https://github.com/kobylynskyi/graphql-java-codegen/workflows/Build/badge.svg)
+![Build](https://github.com/jxnu-liguobin/graphql-java-codegen/workflows/Build/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.jxnu-liguobin/graphql-codegen-sbt-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.jxnu-liguobin/graphql-codegen-sbt-plugin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
