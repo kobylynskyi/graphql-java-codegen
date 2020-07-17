@@ -120,7 +120,23 @@ public interface GraphQLCodegenConfiguration {
     String getModelValidationAnnotation();
 
     /**
-     * Return type for subscription methods.
+     * Async return type for api methods (query / subscription)
+     * For example: `reactor.core.publisher.Mono`
+     *
+     * @return Return type for api methods (query / subscription)
+     */
+    String getApiAsyncReturnType();
+
+    /**
+     * Async return type for api methods (query / subscription) that return list values
+     * For example: `reactor.core.publisher.Flux`
+     *
+     * @return Return type for api methods (query / subscription) that return list values
+     */
+    String getApiAsyncReturnListType();
+
+    /**
+     * Async return type for subscription methods.
      * For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc.
      *
      * @return Return type for subscription methods

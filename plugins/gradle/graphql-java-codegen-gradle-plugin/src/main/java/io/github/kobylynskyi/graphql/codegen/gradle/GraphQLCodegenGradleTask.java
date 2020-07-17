@@ -50,12 +50,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY;
     private String apiNamePrefix;
-    private String apiNameSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;;
+    private String apiNameSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;
     private String typeResolverPrefix;
     private String typeResolverSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
+    private String apiAsyncReturnType = MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE;
+    private String apiAsyncReturnListType;
     private String subscriptionReturnType;
     private Boolean generateBuilder = MappingConfigConstants.DEFAULT_BUILDER;
     private Boolean generateApis = MappingConfigConstants.DEFAULT_GENERATE_APIS;
@@ -107,6 +109,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
+        mappingConfig.setApiAsyncReturnType(apiAsyncReturnType);
+        mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
@@ -398,6 +402,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGenerateToString(Boolean generateToString) {
         this.generateToString = generateToString;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getApiAsyncReturnType() {
+        return apiAsyncReturnType;
+    }
+
+    public void setApiAsyncReturnType(String apiAsyncReturnType) {
+        this.apiAsyncReturnType = apiAsyncReturnType;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public String getApiAsyncReturnListType() {
+        return apiAsyncReturnListType;
+    }
+
+    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
+        this.apiAsyncReturnListType = apiAsyncReturnListType;
     }
 
     @Input

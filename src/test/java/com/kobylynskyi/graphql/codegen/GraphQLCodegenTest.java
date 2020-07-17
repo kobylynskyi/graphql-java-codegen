@@ -134,18 +134,6 @@ class GraphQLCodegenTest {
     }
 
     @Test
-    void generate_CustomSubscriptionReturnType() throws Exception {
-        mappingConfig.setSubscriptionReturnType("org.reactivestreams.Publisher");
-
-        generator.generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
-        assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
-                "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
-    }
-
-    @Test
     void generate_NoPackage() throws Exception {
         mappingConfig.setPackageName(null);
         generator.generate();
@@ -308,12 +296,55 @@ class GraphQLCodegenTest {
 
         assertFileContainsElements(files, "VersionQueryResolver.java",
                 "java.util.concurrent.CompletableFuture<String> version()");
-
         assertFileContainsElements(files, "EventsByCategoryAndStatusQueryResolver.java",
                 "java.util.concurrent.CompletableFuture<java.util.List<Event>> eventsByCategoryAndStatus(");
-
         assertFileContainsElements(files, "EventByIdQueryResolver.java",
                 "java.util.concurrent.CompletableFuture<Event> eventById(");
+    }
+
+    @Test
+    void generate_AsyncQueryApis_CustomWithApiAsyncReturnTypeApiAsyncReturnListType() throws Exception {
+        mappingConfig.setGenerateAsyncApi(true);
+        mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
+        mappingConfig.setApiAsyncReturnListType("reactor.core.publisher.Flux");
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertFileContainsElements(files, "VersionQueryResolver.java",
+                "reactor.core.publisher.Mono<String> version()");
+        assertFileContainsElements(files, "EventsByCategoryAndStatusQueryResolver.java",
+                "reactor.core.publisher.Flux<Event> eventsByCategoryAndStatus(");
+        assertFileContainsElements(files, "EventByIdQueryResolver.java",
+                "reactor.core.publisher.Mono<Event> eventById(");
+    }
+
+    @Test
+    void generate_AsyncQueryApis_CustomWithApiAsyncReturnType() throws Exception {
+        mappingConfig.setGenerateAsyncApi(true);
+        mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertFileContainsElements(files, "VersionQueryResolver.java",
+                "reactor.core.publisher.Mono<String> version()");
+        assertFileContainsElements(files, "EventsByCategoryAndStatusQueryResolver.java",
+                "reactor.core.publisher.Mono<java.util.List<Event>> eventsByCategoryAndStatus(");
+        assertFileContainsElements(files, "EventByIdQueryResolver.java",
+                "reactor.core.publisher.Mono<Event> eventById(");
+    }
+
+    @Test
+    void generate_CustomSubscriptionReturnType() throws Exception {
+        mappingConfig.setSubscriptionReturnType("org.reactivestreams.Publisher");
+
+        generator.generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
+                "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
     }
 
     @Test
