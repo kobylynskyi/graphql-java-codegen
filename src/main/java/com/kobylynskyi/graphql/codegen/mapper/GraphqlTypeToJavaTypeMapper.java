@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.ListType;
@@ -130,7 +131,15 @@ class GraphqlTypeToJavaTypeMapper {
         return Collections.emptyList();
     }
 
-    private static List<String> getAnnotations(MappingContext mappingContext, String graphQLType, String name, String parentTypeName, boolean mandatory) {
+    static List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
+        return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null, false);
+    }
+
+    static List<String> getAnnotations(MappingContext mappingContext, String name) {
+        return getAnnotations(mappingContext, name, name, null, false);
+    }
+
+    static List<String> getAnnotations(MappingContext mappingContext, String graphQLType, String name, String parentTypeName, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();

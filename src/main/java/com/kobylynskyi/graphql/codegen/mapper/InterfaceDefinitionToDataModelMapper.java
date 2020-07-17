@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDe
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
@@ -35,6 +36,7 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(
                 mappingContext, definition.getFieldDefinitions(), definition.getName()));
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());

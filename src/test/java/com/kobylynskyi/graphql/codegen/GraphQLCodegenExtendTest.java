@@ -34,7 +34,7 @@ class GraphQLCodegenExtendTest {
 
     @AfterEach
     void cleanup() {
-        Utils.deleteDir(new File("build/generated"));
+        Utils.deleteDir(outputBuildDir);
     }
 
     @Test

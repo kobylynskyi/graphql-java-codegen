@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.AfterEach;
@@ -11,13 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.emptyList;
@@ -48,7 +47,7 @@ class GraphQLCodegenTest {
 
     @AfterEach
     void cleanup() {
-        Utils.deleteDir(new File("build/generated"));
+        Utils.deleteDir(outputBuildDir);
     }
 
     @Test
@@ -132,48 +131,6 @@ class GraphQLCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java", "String createdDateTime;");
-    }
-
-    @Test
-    void generate_CustomAnnotationMappings() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
-
-        generator.generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
-                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
-    }
-
-    @Test
-    void generate_CustomAnnotationMappings_Type() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
-
-        generator.generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
-                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
-    }
-
-    @Test
-    void generate_CustomAnnotationMappings_FieldType() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
-
-        generator.generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
-                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
     }
 
     @Test
@@ -421,13 +378,6 @@ class GraphQLCodegenTest {
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Person1.java.txt"),
                 getFileByName(files, "Person.java"));
-    }
-
-    private void assertFileContainsElements(File[] files, String fileName, String... elements)
-            throws IOException {
-        File file = getFileByName(files, fileName);
-        String fileContent = Utils.getFileContent(file.getPath());
-        assertThat(fileContent, Matchers.stringContainsInOrder(elements));
     }
 
 }

@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtils {
@@ -21,6 +23,13 @@ public class TestUtils {
                 .filter(f -> f.getName().equalsIgnoreCase(fileName))
                 .findFirst()
                 .orElseThrow(FileNotFoundException::new);
+    }
+
+    public static void assertFileContainsElements(File[] files, String fileName, String... elements)
+            throws IOException {
+        File file = getFileByName(files, fileName);
+        String fileContent = Utils.getFileContent(file.getPath());
+        assertThat(fileContent, Matchers.stringContainsInOrder(elements));
     }
 
     public static void assertSameTrimmedContent(File expected, File file) throws IOException {

@@ -23,6 +23,9 @@ import java.util.Objects;
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public class ${className} implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};

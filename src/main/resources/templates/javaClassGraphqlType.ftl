@@ -30,6 +30,9 @@ import java.util.StringJoiner;
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
 <#if fields?has_content>
