@@ -42,7 +42,7 @@ jobs:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
           restore-keys: |
-          ${{ runner.os }}-ivy-
+            ${{ runner.os }}-ivy-
 
       - name: Build library
         run: ./gradlew build publishToMavenLocal --warning-mode all
