@@ -217,7 +217,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       //use by user
       val args: Seq[String] = spaceDelimited("<arg>").parsed
       new GraphQLCodegenValidate(args.asJava).validate()
-      args.foreach(a => sLog.value.info(s"Obtain args: $a"))
+      args.foreach(a => sLog.value.info(s"Obtain args <$a>"))
       args
     }
     , graphqlCodegen := {
@@ -226,12 +226,12 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       try {
         result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
         for (file <- result) {
-          sLog.value.info(s"Finish generate code, file name is <${file.getName}>.")
+          sLog.value.info(s"Finish generate code, file name <${file.getName}>.")
         }
       }
       catch {
         case e: Exception =>
-          sLog.value.info(s"Error: ${e.getLocalizedMessage}")
+          sLog.value.debug(s"${e.getStackTrace}")
           throw new Exception("Code generation failed. See above for the full exception.")
       }
 
@@ -262,7 +262,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
           file.createNewFile()
         }
         val path = Paths.get(file.getPath)
-        sLog.value.info(s"Default resources path is <$path>")
+        sLog.value.info(s"Default resources path <$path>")
         path
       }
 
