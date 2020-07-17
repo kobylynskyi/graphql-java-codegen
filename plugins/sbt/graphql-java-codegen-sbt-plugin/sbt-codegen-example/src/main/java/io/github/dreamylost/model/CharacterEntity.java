@@ -3,9 +3,9 @@ package io.github.dreamylost.model;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-16T17:07:53+0800"
+    date = "2020-07-17T10:15:09+0800"
 )
-public interface Character {
+public interface CharacterEntity {
 
     @javax.validation.constraints.NotNull
     String getId();
@@ -13,10 +13,10 @@ public interface Character {
     @javax.validation.constraints.NotNull
     String getName();
 
-    java.util.List<? extends Character> getFriends();
+    java.util.List<? extends CharacterEntity> getFriends();
 
     @javax.validation.constraints.NotNull
-    java.util.List<Episode> getAppearsIn();
+    java.util.List<EpisodeEntity> getAppearsIn();
 
     @Deprecated
     String getSecretBackstory();

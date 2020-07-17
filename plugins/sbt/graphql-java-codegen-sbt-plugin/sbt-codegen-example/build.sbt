@@ -29,3 +29,5 @@ customTypesMapping := {
   mapping.put("Email", "io.github.dreamylost.scalar.EmailScalar")
   mapping
 }
+
+modelNameSuffix := Some("Entity")

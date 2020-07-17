@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-16T17:07:53+0800"
+    date = "2020-07-17T10:15:09+0800"
 )
 public class HeroQueryRequest implements GraphQLOperationRequest {
 
@@ -20,7 +20,7 @@ public class HeroQueryRequest implements GraphQLOperationRequest {
     public HeroQueryRequest() {
     }
 
-    public void setEpisode(Episode episode) {
+    public void setEpisode(EpisodeEntity episode) {
         this.input.put("episode", episode);
     }
 
@@ -46,12 +46,12 @@ public class HeroQueryRequest implements GraphQLOperationRequest {
 
     public static class Builder {
 
-        private Episode episode;
+        private EpisodeEntity episode;
 
         public Builder() {
         }
 
-        public Builder setEpisode(Episode episode) {
+        public Builder setEpisode(EpisodeEntity episode) {
             this.episode = episode;
             return this;
         }

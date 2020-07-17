@@ -5,31 +5,34 @@ import java.util.StringJoiner;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-16T17:07:53+0800"
+    date = "2020-07-17T10:15:09+0800"
 )
-public class Droid implements java.io.Serializable, Character {
+public class HumanEntity implements java.io.Serializable, CharacterEntity {
 
     @javax.validation.constraints.NotNull
     private String id;
     @javax.validation.constraints.NotNull
     private String name;
-    private java.util.List<Character> friends;
+    private java.util.List<CharacterEntity> friends;
     @javax.validation.constraints.NotNull
-    private java.util.List<Episode> appearsIn;
-    private String primaryFunction;
+    private java.util.List<EpisodeEntity> appearsIn;
+    private String homePlanet;
     @Deprecated
     private String secretBackstory;
+    @javax.validation.constraints.NotNull
+    private io.github.dreamylost.scalar.EmailScalar email;
 
-    public Droid() {
+    public HumanEntity() {
     }
 
-    public Droid(String id, String name, java.util.List<Character> friends, java.util.List<Episode> appearsIn, String primaryFunction, String secretBackstory) {
+    public HumanEntity(String id, String name, java.util.List<CharacterEntity> friends, java.util.List<EpisodeEntity> appearsIn, String homePlanet, String secretBackstory, io.github.dreamylost.scalar.EmailScalar email) {
         this.id = id;
         this.name = name;
         this.friends = friends;
         this.appearsIn = appearsIn;
-        this.primaryFunction = primaryFunction;
+        this.homePlanet = homePlanet;
         this.secretBackstory = secretBackstory;
+        this.email = email;
     }
 
     public String getId() {
@@ -46,25 +49,25 @@ public class Droid implements java.io.Serializable, Character {
         this.name = name;
     }
 
-    public java.util.List<Character> getFriends() {
+    public java.util.List<CharacterEntity> getFriends() {
         return friends;
     }
-    public void setFriends(java.util.List<Character> friends) {
+    public void setFriends(java.util.List<CharacterEntity> friends) {
         this.friends = friends;
     }
 
-    public java.util.List<Episode> getAppearsIn() {
+    public java.util.List<EpisodeEntity> getAppearsIn() {
         return appearsIn;
     }
-    public void setAppearsIn(java.util.List<Episode> appearsIn) {
+    public void setAppearsIn(java.util.List<EpisodeEntity> appearsIn) {
         this.appearsIn = appearsIn;
     }
 
-    public String getPrimaryFunction() {
-        return primaryFunction;
+    public String getHomePlanet() {
+        return homePlanet;
     }
-    public void setPrimaryFunction(String primaryFunction) {
-        this.primaryFunction = primaryFunction;
+    public void setHomePlanet(String homePlanet) {
+        this.homePlanet = homePlanet;
     }
 
     @Deprecated
@@ -74,6 +77,13 @@ public class Droid implements java.io.Serializable, Character {
     @Deprecated
     public void setSecretBackstory(String secretBackstory) {
         this.secretBackstory = secretBackstory;
+    }
+
+    public io.github.dreamylost.scalar.EmailScalar getEmail() {
+        return email;
+    }
+    public void setEmail(io.github.dreamylost.scalar.EmailScalar email) {
+        this.email = email;
     }
 
 
@@ -92,27 +102,31 @@ public class Droid implements java.io.Serializable, Character {
         if (appearsIn != null) {
             joiner.add("appearsIn: " + GraphQLRequestSerializer.getEntry(appearsIn));
         }
-        if (primaryFunction != null) {
-            joiner.add("primaryFunction: " + GraphQLRequestSerializer.getEntry(primaryFunction));
+        if (homePlanet != null) {
+            joiner.add("homePlanet: " + GraphQLRequestSerializer.getEntry(homePlanet));
         }
         if (secretBackstory != null) {
             joiner.add("secretBackstory: " + GraphQLRequestSerializer.getEntry(secretBackstory));
         }
+        if (email != null) {
+            joiner.add("email: " + GraphQLRequestSerializer.getEntry(email));
+        }
         return joiner.toString();
     }
 
-    public static Droid.Builder builder() {
-        return new Droid.Builder();
+    public static HumanEntity.Builder builder() {
+        return new HumanEntity.Builder();
     }
 
     public static class Builder {
 
         private String id;
         private String name;
-        private java.util.List<Character> friends;
-        private java.util.List<Episode> appearsIn;
-        private String primaryFunction;
+        private java.util.List<CharacterEntity> friends;
+        private java.util.List<EpisodeEntity> appearsIn;
+        private String homePlanet;
         private String secretBackstory;
+        private io.github.dreamylost.scalar.EmailScalar email;
 
         public Builder() {
         }
@@ -127,18 +141,18 @@ public class Droid implements java.io.Serializable, Character {
             return this;
         }
 
-        public Builder setFriends(java.util.List<Character> friends) {
+        public Builder setFriends(java.util.List<CharacterEntity> friends) {
             this.friends = friends;
             return this;
         }
 
-        public Builder setAppearsIn(java.util.List<Episode> appearsIn) {
+        public Builder setAppearsIn(java.util.List<EpisodeEntity> appearsIn) {
             this.appearsIn = appearsIn;
             return this;
         }
 
-        public Builder setPrimaryFunction(String primaryFunction) {
-            this.primaryFunction = primaryFunction;
+        public Builder setHomePlanet(String homePlanet) {
+            this.homePlanet = homePlanet;
             return this;
         }
 
@@ -148,9 +162,14 @@ public class Droid implements java.io.Serializable, Character {
             return this;
         }
 
+        public Builder setEmail(io.github.dreamylost.scalar.EmailScalar email) {
+            this.email = email;
+            return this;
+        }
 
-        public Droid build() {
-            return new Droid(id, name, friends, appearsIn, primaryFunction, secretBackstory);
+
+        public HumanEntity build() {
+            return new HumanEntity(id, name, friends, appearsIn, homePlanet, secretBackstory, email);
         }
 
     }

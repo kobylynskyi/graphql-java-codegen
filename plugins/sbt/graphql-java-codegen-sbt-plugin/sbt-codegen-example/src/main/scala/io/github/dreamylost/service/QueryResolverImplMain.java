@@ -1,8 +1,8 @@
 package io.github.dreamylost.service;
 
-import io.github.dreamylost.model.Droid;
-import io.github.dreamylost.model.Episode;
-import io.github.dreamylost.model.Human;
+import io.github.dreamylost.model.DroidEntity;
+import io.github.dreamylost.model.EpisodeEntity;
+import io.github.dreamylost.model.HumanEntity;
 
 import java.util.List;
 
@@ -16,22 +16,22 @@ public class QueryResolverImplMain {
     public static void main(String[] args) throws Exception {
         System.out.println("=======get droid id 2001=========");
         QueryResolverImpl droidResolver = new QueryResolverImpl();
-        Droid d = droidResolver.droid("2001");
+        DroidEntity d = droidResolver.droid("2001");
         System.out.println(d);
 
         System.out.println("=======get humans all=======");
-        List<Human> hums = droidResolver.humans();
-        for (Human h : hums) {
+        List<HumanEntity> hums = droidResolver.humans();
+        for (HumanEntity h : hums) {
             System.out.println(h);
         }
 
         System.out.println("=======get human id 1002=======");
-        Human hum = droidResolver.human("1002");
+        HumanEntity hum = droidResolver.human("1002");
         System.out.println(hum);
 
 
         System.out.println("=======get hero Episode.EMPIRE=======");
-        io.github.dreamylost.model.Character character = droidResolver.hero(Episode.EMPIRE);
+        io.github.dreamylost.model.CharacterEntity character = droidResolver.hero(EpisodeEntity.EMPIRE);
         System.out.println(character);
 
 

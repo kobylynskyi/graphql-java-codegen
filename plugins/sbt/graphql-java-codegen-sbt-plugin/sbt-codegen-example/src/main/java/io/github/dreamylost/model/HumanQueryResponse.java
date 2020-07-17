@@ -5,17 +5,17 @@ import java.util.Map;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-16T17:07:53+0800"
+    date = "2020-07-17T10:15:09+0800"
 )
-public class HumanQueryResponse extends GraphQLResult<Map<String, Human>> {
+public class HumanQueryResponse extends GraphQLResult<Map<String, HumanEntity>> {
 
     private static final String OPERATION_NAME = "human";
 
     public HumanQueryResponse() {
     }
 
-    public Human human() {
-        Map<String, Human> data = getData();
+    public HumanEntity human() {
+        Map<String, HumanEntity> data = getData();
         return data != null ? data.get(OPERATION_NAME) : null;
     }
 
