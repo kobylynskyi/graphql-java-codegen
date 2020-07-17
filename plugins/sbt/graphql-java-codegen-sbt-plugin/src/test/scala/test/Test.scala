@@ -9,7 +9,6 @@ object Test {
 
   import io.github.dreamylost.graphql.codegen.GraphQLCodegenPlugin
 
-
-  val s=  GraphQLCodegenPlugin
+  val s = GraphQLCodegenPlugin
 
 }

@@ -35,97 +35,21 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
   override def trigger: PluginTrigger = noTrigger
 
-
   import autoImport._
 
   private val defaultResourcesPath = "src/main/resources"
   private val defaultSourcePath = "src/main/java"
 
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
-    graphqlSchemas := new SchemaFinderConfig()
-
-    , outputDir := {
+    graphqlSchemas := new SchemaFinderConfig(), outputDir := {
       val file = new File(defaultSourcePath)
       if (!file.exists()) {
         file.createNewFile()
       }
       sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
       file
-    }
-
-    , graphqlSchemaPaths := Seq.empty
-
-    , graphqlSchemaValidate := Seq.empty
-
-    , genPackageName := None
-
-    , customTypesMapping := new util.HashMap[String, String]()
-
-    , apiNamePrefix := None
-
-    , apiNameSuffix := None
-
-    , apiRootInterfaceStrategy := None
-
-    , apiNamePrefixStrategy := None
-
-    , modelNamePrefix := None
-
-    , modelNameSuffix := None
-
-    , apiPackageName := None
-
-    , modelPackageName := None
-
-    , generateBuilder := None
-
-    , generateApis := None
-
-    , typeResolverPrefix := None
-
-    , typeResolverSuffix := None
-
-    , customAnnotationsMapping := new util.HashMap[String, String]()
-
-    , generateEqualsAndHashCode := None
-
-    , generateImmutableModels := None
-
-    , generateToString := None
-
-    , subscriptionReturnType := None
-
-    , generateAsyncApi := None
-
-    , modelValidationAnnotation := None
-
-    , generateParameterizedFieldsResolvers := None
-
-    , generateExtensionFieldsResolvers := None
-
-    , generateDataFetchingEnvironmentArgumentInApis := None
-
-    , generateModelsForRootTypes := None
-
-    , fieldsWithResolvers := new util.HashSet[String]()
-
-    , fieldsWithoutResolvers := new util.HashSet[String]()
-
-    , generateClient := None
-
-    , requestSuffix := None
-
-    , responseSuffix := None
-
-    , responseProjectionSuffix := None
-
-    , parametrizedInputSuffix := None
-
-    , jsonConfigurationFile := None
-
-    , parentInterfaces := new ParentInterfacesConfig()
+    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty, genPackageName := None, customTypesMapping := new util.HashMap[String, String](), apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None, modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None, generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None, customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None, generateImmutableModels := None, generateToString := None, subscriptionReturnType := None, generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None, generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None, generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](), fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None, responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None, jsonConfigurationFile := None, parentInterfaces := new ParentInterfacesConfig()
   )
-
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = {
     Def.setting[MappingConfig] {
@@ -211,30 +135,26 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
   override lazy val projectSettings: Seq[Def.Setting[_]] = Seq(
     //use validate that config in build.sbt
-    graphqlCodegenValidate := new GraphQLCodegenValidate(graphqlSchemaPaths.value.asJava).validate()
-    //use validate at terminal by user
+    graphqlCodegenValidate := new GraphQLCodegenValidate(graphqlSchemaPaths.value.asJava).validate() //use validate at terminal by user
     , graphqlSchemaValidate := {
       //use by user
       val args: Seq[String] = spaceDelimited("<arg>").parsed
       new GraphQLCodegenValidate(args.asJava).validate()
-      args.foreach(a => sLog.value.info(s"Obtain args <$a>"))
+      args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
       args
-    }
-    , graphqlCodegen := {
+    }, graphqlCodegen := {
       val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
       var result: Seq[File] = Seq.empty
       try {
         result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
-        for (file <- result) {
+        for (file ← result) {
           sLog.value.info(s"Finish generate code, file name <${file.getName}>.")
         }
-      }
-      catch {
-        case e: Exception =>
+      } catch {
+        case e: Exception ⇒
           sLog.value.debug(s"${e.getStackTrace}")
           throw new Exception("Code generation failed. See above for the full exception.")
       }
-
 
       def getSchemas: util.List[String] = {
         if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.asJava
@@ -269,7 +189,6 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       result
     }
   )
-
 
   private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty) new JsonMappingConfigSupplier(jsonConfigurationFile) else null
 

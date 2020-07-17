@@ -2,10 +2,7 @@ import java.util
 
 name := "sbt-codegen-exmaple"
 
-version := "1.0.0-SNAPSHOT"
-
 organization := "io.github.dreamylost"
-
 
 enablePlugins(GraphQLCodegenPlugin)
 
