@@ -5,15 +5,15 @@ import java.util.StringJoiner;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-17T10:15:09+0800"
+    date = "2020-07-17T11:17:19+0800"
 )
-public class HumanEntity implements java.io.Serializable, CharacterEntity {
+public class HumanEntity implements java.io.Serializable, io.github.dreamylost.model.CharacterEntity {
 
     @javax.validation.constraints.NotNull
     private String id;
     @javax.validation.constraints.NotNull
     private String name;
-    private java.util.List<CharacterEntity> friends;
+    private java.util.List<io.github.dreamylost.model.CharacterEntity> friends;
     @javax.validation.constraints.NotNull
     private java.util.List<EpisodeEntity> appearsIn;
     private String homePlanet;
@@ -25,7 +25,7 @@ public class HumanEntity implements java.io.Serializable, CharacterEntity {
     public HumanEntity() {
     }
 
-    public HumanEntity(String id, String name, java.util.List<CharacterEntity> friends, java.util.List<EpisodeEntity> appearsIn, String homePlanet, String secretBackstory, io.github.dreamylost.scalar.EmailScalar email) {
+    public HumanEntity(String id, String name, java.util.List<io.github.dreamylost.model.CharacterEntity> friends, java.util.List<EpisodeEntity> appearsIn, String homePlanet, String secretBackstory, io.github.dreamylost.scalar.EmailScalar email) {
         this.id = id;
         this.name = name;
         this.friends = friends;
@@ -49,10 +49,10 @@ public class HumanEntity implements java.io.Serializable, CharacterEntity {
         this.name = name;
     }
 
-    public java.util.List<CharacterEntity> getFriends() {
+    public java.util.List<io.github.dreamylost.model.CharacterEntity> getFriends() {
         return friends;
     }
-    public void setFriends(java.util.List<CharacterEntity> friends) {
+    public void setFriends(java.util.List<io.github.dreamylost.model.CharacterEntity> friends) {
         this.friends = friends;
     }
 
@@ -122,7 +122,7 @@ public class HumanEntity implements java.io.Serializable, CharacterEntity {
 
         private String id;
         private String name;
-        private java.util.List<CharacterEntity> friends;
+        private java.util.List<io.github.dreamylost.model.CharacterEntity> friends;
         private java.util.List<EpisodeEntity> appearsIn;
         private String homePlanet;
         private String secretBackstory;
@@ -141,7 +141,7 @@ public class HumanEntity implements java.io.Serializable, CharacterEntity {
             return this;
         }
 
-        public Builder setFriends(java.util.List<CharacterEntity> friends) {
+        public Builder setFriends(java.util.List<io.github.dreamylost.model.CharacterEntity> friends) {
             this.friends = friends;
             return this;
         }

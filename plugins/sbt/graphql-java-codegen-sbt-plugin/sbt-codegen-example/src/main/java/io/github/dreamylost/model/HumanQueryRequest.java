@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2020-07-17T10:15:09+0800"
+    date = "2020-07-17T11:17:19+0800"
 )
 public class HumanQueryRequest implements GraphQLOperationRequest {
 

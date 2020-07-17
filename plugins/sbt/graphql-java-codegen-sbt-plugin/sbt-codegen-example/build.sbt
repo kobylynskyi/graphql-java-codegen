@@ -27,7 +27,10 @@ generateApis := Some(true)
 customTypesMapping := {
   val mapping = new util.HashMap[String, String]
   mapping.put("Email", "io.github.dreamylost.scalar.EmailScalar")
+  //会与java.lang.* 冲突，指定自定义类型，会使用全类名构建
+  mapping.put("Character", "io.github.dreamylost.model.CharacterEntity")
   mapping
 }
 
+//也可以使用后缀避免与java.lang.* 冲突
 modelNameSuffix := Some("Entity")
