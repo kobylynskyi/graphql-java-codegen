@@ -48,8 +48,8 @@ jobs:
         run: mvn install
 
       - name: Build sbt plugin
-          working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
-          run: sbt compile publishLocalSigned --debug
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt compile publishLocalSigned --debug
 
       - name: Build gradle example-server --warning-mode all
         run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
@@ -66,8 +66,8 @@ jobs:
         run: mvn package
 
       - name: Build sbt client example
-          working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin/sbt-codegen-exmaple
-          run: sbt compile package --debug
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin/sbt-codegen-exmaple
+        run: sbt compile package --debug
 
   sonar:
     needs: build
