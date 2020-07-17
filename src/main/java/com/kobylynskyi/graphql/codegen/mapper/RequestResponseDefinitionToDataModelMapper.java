@@ -237,6 +237,8 @@ public class RequestResponseDefinitionToDataModelMapper {
             ProjectionParameterDefinition childDef = getChildDefinition(mappingContext, childName);
             allParameters.put(childDef.getName(), childDef);
         }
+        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+        allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
         return allParameters.values();
     }
 
