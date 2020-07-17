@@ -18,7 +18,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-
     - name: Build sbt plugin
       working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
       run: sbt compile publishLocalSigned --debug
