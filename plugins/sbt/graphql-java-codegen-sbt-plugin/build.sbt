@@ -1,4 +1,4 @@
-name := "graphql-java-codegen-sbt-plugin"
+name := "graphql-codegen-sbt-plugin"
 
 // must be equals to oss Group Id
 organization := "io.github.jxnu-liguobin"
@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
   "io.github.kobylynskyi" % "graphql-java-codegen" % "2.2.1"
 )
 
-lazy val `graphql-java-codegen-sbt-plugin` = Project(id = "graphql-java-codegen-sbt-plugin", base = file(".")).
+lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin", base = file(".")).
   settings(publishSettings)
 
 //publish by sbt publishSigned
@@ -35,7 +35,7 @@ lazy val publishSettings = Seq(
     else
       Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
-  licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/")),
+  licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT")),
   publishMavenStyle := true,
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },

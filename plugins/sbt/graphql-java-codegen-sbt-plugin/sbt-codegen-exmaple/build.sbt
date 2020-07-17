@@ -4,9 +4,7 @@ name := "sbt-codegen-exmaple"
 
 organization := "io.github.jxnu-liguobin"
 
-enablePlugins(GraphQLCodegenPlugin)
-
-libraryDependencies ++= GraphQLCodegen ++ Seq(
+libraryDependencies ++=  Seq(
   "org.springframework" % "spring-web" % "5.2.7.RELEASE"
 ) ++ Seq(
   "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0",
@@ -14,6 +12,10 @@ libraryDependencies ++= GraphQLCodegen ++ Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.8.2",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.8.2")
 
+
+enablePlugins(GraphQLCodegenPlugin)
+
+GraphQLCodegen
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")

@@ -5,12 +5,19 @@ This is a draft sbt plugins for https://github.com/kobylynskyi/graphql-java-code
 Server example at https://github.com/jxnu-liguobin/springboot-examples/tree/master/graphql-complete
 
 
+![Build](https://github.com/kobylynskyi/graphql-java-codegen/workflows/Build/badge.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.jxnu-liguobin/graphql-codegen-sbt-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.jxnu-liguobin/graphql-codegen-sbt-plugin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 ### Plugin Setup
 
 
 ```scala
 // plugins.sbt
-addSbtPlugin("io.github.jxnu-liguobin" % "graphql-java-codegen-sbt-plugin" % "0.0.2-SNAPSHOT")
+addSbtPlugin("io.github.jxnu-liguobin" % "graphql-codegen-sbt-plugin" % "<version>")
+
+//since graphql-java-codegen V2.2.1
 ```
 
 ### Config
@@ -21,7 +28,9 @@ addSbtPlugin("io.github.jxnu-liguobin" % "graphql-java-codegen-sbt-plugin" % "0.
 enablePlugins(GraphQLCodegenPlugin)
 
 // GraphQLCodegen will import graphql-java-codegen and java validation-api
-libraryDependencies ++= GraphQLCodegen ++ Seq(yours)
+GraphQLCodegen
+
+libraryDependencies ++= Seq(<yours>)
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 // all key is Option, because key impl by macro, nested call will error
