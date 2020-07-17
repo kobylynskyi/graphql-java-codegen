@@ -49,7 +49,7 @@ jobs:
 
       - name: Build sbt plugin
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
-        run: sbt compile publishLocalSigned --debug
+        run: sbt compile publishLocal --debug
 
       - name: Build gradle example-server --warning-mode all
         run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
