@@ -16,6 +16,9 @@ package ${package};
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public interface ${className} {
 
 }

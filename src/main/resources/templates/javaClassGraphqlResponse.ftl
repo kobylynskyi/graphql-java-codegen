@@ -18,6 +18,9 @@ import java.util.Map;
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public class ${className} extends GraphQLResult<Map<String, ${returnTypeName}>> {
 
     private static final String OPERATION_NAME = "${operationName}";

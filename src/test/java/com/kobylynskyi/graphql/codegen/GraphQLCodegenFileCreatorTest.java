@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ class GraphQLCodegenFileCreatorTest {
     void generateFile() {
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");
+        dataModel.put(DataModelFields.ANNOTATIONS, Collections.emptyList());
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
         GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, OUTPUT_DIR);
         assertThrows(UnableToCreateFileException.class,

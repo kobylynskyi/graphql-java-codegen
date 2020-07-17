@@ -51,5 +51,14 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public LocationResponseProjection typename() {
+        return typename(null);
+    }
+
+    public LocationResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
 
 }

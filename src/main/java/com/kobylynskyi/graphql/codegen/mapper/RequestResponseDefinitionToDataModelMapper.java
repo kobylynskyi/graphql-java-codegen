@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.DEPRECATED;
@@ -50,10 +51,12 @@ public class RequestResponseDefinitionToDataModelMapper {
      */
     public static Map<String, Object> mapResponseProjection(MappingContext mappingContext,
                                                             ExtendedDefinition<?, ?> definition) {
+        String className = Utils.capitalize(definition.getName()) + mappingContext.getResponseProjectionSuffix();
         Map<String, Object> dataModel = new HashMap<>();
         // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
-        dataModel.put(CLASS_NAME, Utils.capitalize(definition.getName()) + mappingContext.getResponseProjectionSuffix());
+        dataModel.put(CLASS_NAME, className);
+        dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, className));
         dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + definition.getName()));
         dataModel.put(FIELDS, getProjectionFields(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
@@ -74,10 +77,12 @@ public class RequestResponseDefinitionToDataModelMapper {
     public static Map<String, Object> mapParametrizedInput(MappingContext mappingContext,
                                                            ExtendedFieldDefinition fieldDefinition,
                                                            ExtendedObjectTypeDefinition parentTypeDefinition) {
+        String className = MapperUtils.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition);
         Map<String, Object> dataModel = new HashMap<>();
         // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
-        dataModel.put(CLASS_NAME, MapperUtils.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition));
+        dataModel.put(CLASS_NAME, className);
+        dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, className));
         dataModel.put(JAVA_DOC, Collections.singletonList(String.format("Parametrized input for field %s in type %s",
                 fieldDefinition.getName(), parentTypeDefinition.getName())));
         dataModel.put(FIELDS, InputValueDefinitionToParameterMapper.map(
@@ -102,12 +107,14 @@ public class RequestResponseDefinitionToDataModelMapper {
                                                   ExtendedFieldDefinition operationDef,
                                                   String objectTypeName,
                                                   List<String> fieldNames) {
+        String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix());
         String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
                 mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getName();
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
-        dataModel.put(CLASS_NAME, getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix()));
+        dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(DEPRECATED, operationDef.isDeprecated());
         dataModel.put(OPERATION_NAME, operationDef.getName());
@@ -129,10 +136,13 @@ public class RequestResponseDefinitionToDataModelMapper {
                                                  ExtendedFieldDefinition operationDef,
                                                  String objectTypeName,
                                                  List<String> fieldNames) {
+        String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getRequestSuffix());
+
         Map<String, Object> dataModel = new HashMap<>();
         // Request classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));
-        dataModel.put(CLASS_NAME, getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getRequestSuffix()));
+        dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(OPERATION_TYPE, objectTypeName.toUpperCase());
@@ -237,6 +247,8 @@ public class RequestResponseDefinitionToDataModelMapper {
             ProjectionParameterDefinition childDef = getChildDefinition(mappingContext, childName);
             allParameters.put(childDef.getName(), childDef);
         }
+        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+        allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
         return allParameters.values();
     }
 

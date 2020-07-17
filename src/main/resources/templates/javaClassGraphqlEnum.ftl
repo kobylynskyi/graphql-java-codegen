@@ -15,6 +15,9 @@ package ${package};
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
 public enum ${className}<#if implements?has_content> implements <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 
 <#if fields?has_content>
