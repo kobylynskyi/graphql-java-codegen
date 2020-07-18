@@ -1,0 +1,81 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.Objects;
+
+/**
+ * Response projection for Query
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class QueryResponseProjection extends GraphQLResponseProjection {
+
+    public QueryResponseProjection() {
+    }
+
+    public QueryResponseProjection Native() {
+        return Native(null);
+    }
+
+    public QueryResponseProjection Native(String alias) {
+        fields.add(new GraphQLResponseField("native").alias(alias));
+        return this;
+    }
+
+    public QueryResponseProjection Private(SynchronizedResponseProjection subProjection) {
+        return Private((String)null, subProjection);
+    }
+
+    public QueryResponseProjection Private(String alias, SynchronizedResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("private").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public QueryResponseProjection Private(QueryPrivateParametrizedInput input, SynchronizedResponseProjection subProjection) {
+        return Private(null, input, subProjection);
+    }
+
+    public QueryResponseProjection Private(String alias, QueryPrivateParametrizedInput input, SynchronizedResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("private").alias(alias).parameters(input).projection(subProjection));
+        return this;
+    }
+
+    public QueryResponseProjection Case() {
+        return Case((String)null);
+    }
+
+    public QueryResponseProjection Case(String alias) {
+        fields.add(new GraphQLResponseField("case").alias(alias));
+        return this;
+    }
+
+    public QueryResponseProjection Case(QueryCaseParametrizedInput input) {
+        return Case(null, input);
+    }
+
+    public QueryResponseProjection Case(String alias, QueryCaseParametrizedInput input) {
+        fields.add(new GraphQLResponseField("case").alias(alias).parameters(input));
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final QueryResponseProjection that = (QueryResponseProjection) obj;
+        return Objects.equals(fields, that.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields);
+    }
+
+}

@@ -47,6 +47,7 @@ public class InputValueDefinitionToParameterMapper {
     private static ParameterDefinition map(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
+        parameter.setOriginalName(inputValueDefinition.getName());
         parameter.setType(getJavaType(mappingContext, inputValueDefinition.getType()));
         parameter.setDefaultValue(DefaultValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
         parameter.setAnnotations(getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));

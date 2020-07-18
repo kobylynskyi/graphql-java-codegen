@@ -1,0 +1,68 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+import java.util.Objects;
+
+/**
+ * Parametrized input for field private in type Query
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
+
+    private Integer Int;
+    private String New;
+
+    public QueryPrivateParametrizedInput() {
+    }
+
+    public QueryPrivateParametrizedInput(Integer Int, String New) {
+        this.Int = Int;
+        this.New = New;
+    }
+
+    public QueryPrivateParametrizedInput Int(Integer Int) {
+        this.Int = Int;
+        return this;
+    }
+
+    public QueryPrivateParametrizedInput New(String New) {
+        this.New = New;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final QueryPrivateParametrizedInput that = (QueryPrivateParametrizedInput) obj;
+        return Objects.equals(Int, that.Int)
+            && Objects.equals(New, that.New);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Int, New);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "(", ")");
+        if (Int != null) {
+            joiner.add("int: " + GraphQLRequestSerializer.getEntry(Int));
+        }
+        if (New != null) {
+            joiner.add("new: " + GraphQLRequestSerializer.getEntry(New));
+        }
+        return joiner.toString();
+    }
+
+}

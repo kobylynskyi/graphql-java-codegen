@@ -10,7 +10,14 @@ import java.util.List;
  */
 public class OperationDefinition {
 
+    /**
+     * Normalized name using {@link com.kobylynskyi.graphql.codegen.mapper.MapperUtils#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     */
     private String name;
+    /**
+     * Original name that appears in GraphQL schema
+     */
+    private String originalName;
     private String type;
     private List<String> annotations = new ArrayList<>();
     private List<ParameterDefinition> parameters = new ArrayList<>();
@@ -23,6 +30,14 @@ public class OperationDefinition {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 
     public String getType() {

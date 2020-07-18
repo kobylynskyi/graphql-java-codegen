@@ -127,12 +127,12 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 <#list fields as field>
         if (${field.name} != null) {
 <#if toStringForRequest>
-            joiner.add("${field.name}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
 <#else>
 <#if field.type == "String">
-            joiner.add("${field.name}: \"" + ${field.name} + "\"");
+            joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
 <#else>
-            joiner.add("${field.name}: " + ${field.name});
+            joiner.add("${field.originalName}: " + ${field.name});
 </#if>
 </#if>
         }
