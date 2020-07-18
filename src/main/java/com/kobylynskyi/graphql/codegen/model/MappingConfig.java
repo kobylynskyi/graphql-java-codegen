@@ -32,6 +32,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
+    private String apiAsyncReturnType;
+    private String apiAsyncReturnListType;
     private String subscriptionReturnType;
 
     // various toggles
@@ -81,6 +83,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
         typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
         modelValidationAnnotation = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelValidationAnnotation);
+        apiAsyncReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnType);
+        apiAsyncReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnListType);
         subscriptionReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionReturnType);
         generateBuilder = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateBuilder);
         generateEqualsAndHashCode = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
@@ -276,6 +280,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setModelValidationAnnotation(String modelValidationAnnotation) {
         this.modelValidationAnnotation = modelValidationAnnotation;
+    }
+
+    @Override
+    public String getApiAsyncReturnType() {
+        return apiAsyncReturnType;
+    }
+
+    public void setApiAsyncReturnType(String apiAsyncReturnType) {
+        this.apiAsyncReturnType = apiAsyncReturnType;
+    }
+
+    @Override
+    public String getApiAsyncReturnListType() {
+        return apiAsyncReturnListType;
+    }
+
+    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
+        this.apiAsyncReturnListType = apiAsyncReturnListType;
     }
 
     @Override

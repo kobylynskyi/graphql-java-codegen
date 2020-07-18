@@ -8,7 +8,6 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedImplementingTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
 import graphql.language.SourceLocation;
@@ -272,17 +271,6 @@ class MapperUtils {
         }
         // not adding apiPackageName because it should not be imported in any other generated classes
         return imports;
-    }
-
-    /**
-     * Determines if the methods of the given type should use async return types.
-     *
-     * @param mappingContext Global mapping context
-     * @param typeName       Name of the type (Query, Mutation, Subscription or any POJO type in case of a resolver)
-     * @return true if the methods of the given type should be generated with async return types, false otherwise
-     */
-    static boolean shouldUseAsyncMethods(MappingContext mappingContext, String typeName) {
-        return mappingContext.getGenerateAsyncApi() && !GraphQLOperation.SUBSCRIPTION.name().equalsIgnoreCase(typeName);
     }
 
     /**

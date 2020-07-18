@@ -22,6 +22,8 @@ import java.util.Map;
  */
 class GraphqlTypeToJavaTypeMapper {
 
+    private static final String JAVA_UTIL_LIST = "java.util.List";
+
     private GraphqlTypeToJavaTypeMapper() {
     }
 
@@ -163,7 +165,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return String The name of the given type, wrapped into List<>
      */
     private static String wrapIntoJavaList(String type) {
-        return String.format("java.util.List<%s>", type);
+        return getGenericsString(JAVA_UTIL_LIST, type);
     }
 
     /**
@@ -174,21 +176,26 @@ class GraphqlTypeToJavaTypeMapper {
      * @return String The name of the the wrapped type.
      */
     private static String wrapSuperTypeIntoJavaList(String type) {
-        return String.format("java.util.List<? extends %s>", type);
-    }
-
-    /**
-     * Wrap java type into {@link java.util.concurrent.CompletableFuture}. E.g.: "String" becomes "CompletableFuture<String>"
-     *
-     * @param type Anything that will be wrapped into CompletableFuture<>
-     * @return String wrapped into CompletableFuture<>
-     */
-    private static String wrapIntoJavaCompletableFuture(String type) {
-        return String.format("java.util.concurrent.CompletableFuture<%s>", type);
+        return getGenericsString(JAVA_UTIL_LIST, "? extends " + type);
     }
 
     /**
      * Wraps type taking into account if an async api is needed, whether it is a Query, Mutation or Subscription
+     * <p>
+     * Wraps type into apiAsyncReturnType or subscriptionReturnType (defined in the mapping configuration).
+     * Examples:
+     * <p>
+     * - Given GraphQL schema:                   type Subscription { eventsCreated: [Event!]! }
+     * - Given subscriptionReturnType in config: org.reactivestreams.Publisher
+     * - Return:                                 org.reactivestreams.Publisher<Event>
+     * <p>
+     * - Given GraphQL schema:                   type Mutation { createEvent(inp: Inp): Event }
+     * - Given apiAsyncReturnType in config:     reactor.core.publisher.Mono
+     * - Return:                                 reactor.core.publisher.Mono<Event>
+     * <p>
+     * - Given GraphQL schema:                   type Query { events: [Event!]! }
+     * - Given apiAsyncReturnListType in config: reactor.core.publisher.Flux
+     * - Return:                                 reactor.core.publisher.Flux<Event>
      *
      * @param mappingContext Global mapping context
      * @param javaTypeName   The type that will be wrapped into
@@ -196,31 +203,28 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Java type wrapped into the subscriptionReturnType
      */
     static String wrapIntoAsyncIfRequired(MappingContext mappingContext, String javaTypeName, String parentTypeName) {
-        if (MapperUtils.shouldUseAsyncMethods(mappingContext, parentTypeName)) {
-            return wrapIntoJavaCompletableFuture(javaTypeName);
-        }
+        if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
+            if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+                // in case it is subscription and subscriptionReturnType is set
+                return getGenericsString(mappingContext.getSubscriptionReturnType(), javaTypeName);
+            }
+        } else if (Boolean.TRUE.equals(mappingContext.getGenerateAsyncApi())) {
+            if (javaTypeName.startsWith(JAVA_UTIL_LIST) &&
+                    Utils.isNotBlank(mappingContext.getApiAsyncReturnListType())) {
+                // in case it is query/mutation, return type is list and apiAsyncReturnListType is set
+                return javaTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiAsyncReturnListType());
+            }
+            if (Utils.isNotBlank(mappingContext.getApiAsyncReturnType())) {
+                // in case it is query/mutation and apiAsyncReturnType is set
+                return getGenericsString(mappingContext.getApiAsyncReturnType(), javaTypeName);
+            }
 
-        return wrapIntoSubscriptionIfRequired(mappingContext, javaTypeName, parentTypeName);
-    }
-
-    /**
-     * Wraps type into subscriptionReturnType (defined in the mapping configuration.
-     * Example:
-     * Given GraphQL schema:                           type Subscription { eventsCreated: [Event!]! }
-     * Given subscriptionReturnType in mapping config: org.reactivestreams.Publisher
-     * Return: org.reactivestreams.Publisher<Event>
-     *
-     * @param mappingContext Global mapping context
-     * @param javaTypeName   The type that will be wrapped into
-     * @param parentTypeName Name of the parent type
-     * @return Java type wrapped into the subscriptionReturnType
-     */
-    private static String wrapIntoSubscriptionIfRequired(MappingContext mappingContext, String javaTypeName, String parentTypeName) {
-        if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())
-                && Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
-            return String.format("%s<%s>", mappingContext.getSubscriptionReturnType(), javaTypeName);
         }
         return javaTypeName;
+    }
+
+    private static String getGenericsString(String genericType, String typeParameter) {
+        return String.format("%s<%s>", genericType, typeParameter);
     }
 
 }

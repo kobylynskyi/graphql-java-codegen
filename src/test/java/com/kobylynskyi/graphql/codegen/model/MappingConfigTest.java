@@ -53,6 +53,9 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
+        assertEquals("ApiAsyncReturnType", mappingConfig.getApiAsyncReturnType());
+        assertEquals("ApiAsyncReturnListType", mappingConfig.getApiAsyncReturnListType());
+        assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertTrue(mappingConfig.getGenerateExtensionFieldsResolvers());
@@ -85,6 +88,8 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
+        assertEquals("ApiAsyncReturnType", mappingConfig.getApiAsyncReturnType());
+        assertEquals("ApiAsyncReturnListType", mappingConfig.getApiAsyncReturnListType());
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
@@ -121,6 +126,8 @@ class MappingConfigTest {
         assertEquals("ModelPackageName2", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation2", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName2", mappingConfig.getPackageName());
+        assertEquals("ApiAsyncReturnType2", mappingConfig.getApiAsyncReturnType());
+        assertEquals("ApiAsyncReturnListType2", mappingConfig.getApiAsyncReturnListType());
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
         assertTrue(mappingConfig.getGenerateAsyncApi());
         assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
@@ -157,6 +164,8 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName");
         config.setModelValidationAnnotation("ModelValidationAnnotation");
         config.setPackageName("PackageName");
+        config.setApiAsyncReturnType("ApiAsyncReturnType");
+        config.setApiAsyncReturnListType("ApiAsyncReturnListType");
         config.setSubscriptionReturnType("SubscriptionsReturnType");
         config.setGenerateAsyncApi(false);
         config.setGenerateParameterizedFieldsResolvers(true);
@@ -189,6 +198,8 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName2");
         config.setModelValidationAnnotation("ModelValidationAnnotation2");
         config.setPackageName("PackageName2");
+        config.setApiAsyncReturnType("ApiAsyncReturnType2");
+        config.setApiAsyncReturnListType("ApiAsyncReturnListType2");
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
         config.setGenerateAsyncApi(true);
         config.setGenerateParameterizedFieldsResolvers(false);
@@ -224,6 +235,9 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getGenerateEqualsAndHashCode(), mappingConfig.getGenerateEqualsAndHashCode());
         assertEquals(expectedMappingConfig.getGenerateImmutableModels(), mappingConfig.getGenerateImmutableModels());
         assertEquals(expectedMappingConfig.getGenerateToString(), mappingConfig.getGenerateToString());
+        assertEquals(expectedMappingConfig.getSubscriptionReturnType(), mappingConfig.getSubscriptionReturnType());
+        assertEquals(expectedMappingConfig.getApiAsyncReturnType(), mappingConfig.getApiAsyncReturnType());
+        assertEquals(expectedMappingConfig.getApiAsyncReturnListType(), mappingConfig.getApiAsyncReturnListType());
         assertEquals(expectedMappingConfig.getModelNamePrefix(), mappingConfig.getModelNamePrefix());
         assertEquals(expectedMappingConfig.getModelNameSuffix(), mappingConfig.getModelNameSuffix());
         assertEquals(expectedMappingConfig.getModelPackageName(), mappingConfig.getModelPackageName());
