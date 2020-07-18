@@ -39,6 +39,13 @@ lazy val publishSettings = Seq(
   publishMavenStyle := true,
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },
+  developers := List(
+    Developer(
+      id    = "dreamylost",
+      name  = "梦境迷离",
+      email = "dreamylost@outlook.com",
+      url   = url("https://dreamylost.cn")
+    )),
   sonatypeProfileName := organization.value,
   isSnapshot := version.value endsWith "SNAPSHOT",
   homepage := Some(url("https://github.com/jxnu-liguobin")),

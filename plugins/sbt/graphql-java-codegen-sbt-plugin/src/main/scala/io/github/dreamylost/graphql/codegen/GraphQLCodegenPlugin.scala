@@ -49,7 +49,8 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   import GlobalImport._
 
-  //must init setting key before use it in projectSettings
+  //With the implementation of some other plugins, initialization is not necessary,
+  //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     graphqlSchemas := schemaFinderConfig,
     graphqlSchemaPaths := Seq.empty,
@@ -196,7 +197,6 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
       } // use a new src_managed for graphql, and must append to managedSourceDirectories
       , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql" //if generate code successfully but compile failed, reimport project, because ivy cache
-      //TODO refresh cache auto
       , managedSourceDirectories in configuration := {
         managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value)
       }, graphqlSchemaValidate := {
