@@ -34,4 +34,4 @@ customTypesMapping := {
 }
 
 ////Of course, you can also add a suffix to be different from it
-//modelNameSuffix := Some("Entity")
+modelNameSuffix := Some("Entity")
