@@ -191,6 +191,8 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       }).validate() //use validate at terminal by user
       // use a new src_managed for graphql, and must append to managedSourceDirectories
       , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql",
+      //if generate code successfully but compile failed, reimport project, because ivy cache
+      //TODO refresh cache auto
       managedSourceDirectories in Compile := managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value),
       graphqlSchemaValidate := {
         //use by user
