@@ -72,7 +72,7 @@ jobs:
         working-directory: plugins/maven/example-client
         run: mvn package
 
-      - name: Build sbt client example
+      - name: Build sbt example-client
         working-directory: plugins/sbt/example-client
         run: sbt compile package --debug
 
