@@ -74,7 +74,7 @@ jobs:
 
       - name: Build sbt example-client
         working-directory: plugins/sbt/example-client
-        run: sbt compile graphqlCodegen --debug
+        run:  sbt graphqlCodegen compile --debug
 
       - name: Build sbt-test
         working-directory: plugins/sbt/sbt-test

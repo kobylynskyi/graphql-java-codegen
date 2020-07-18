@@ -37,8 +37,9 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
   }
 
-  //Auto trigger
-  override def trigger: PluginTrigger = allRequirements
+  //no Auto trigger
+  //Eventually I decided not to use auto trigger
+  override def trigger: PluginTrigger = noTrigger
 
   override def requires = sbt.plugins.JvmPlugin
 
@@ -190,7 +191,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       }).validate() //use validate at terminal by user
       // use a new src_managed for graphql, and must append to managedSourceDirectories
       , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql",
-      managedSourceDirectories in Compile += (sourceManaged in graphqlCodegen).value,
+      managedSourceDirectories in Compile := managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value),
       graphqlSchemaValidate := {
         //use by user
         val args: Seq[String] = spaceDelimited("<arg>").parsed
