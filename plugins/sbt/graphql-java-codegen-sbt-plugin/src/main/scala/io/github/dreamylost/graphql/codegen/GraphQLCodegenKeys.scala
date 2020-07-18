@@ -26,17 +26,17 @@ trait GraphQLCodegenKeys {
 
   val apiNamePrefixStrategy = settingKey[Option[ApiNamePrefixStrategy]]("apiNamePrefixStrategy")
 
-  val modelNamePrefix = settingKey[Option[String]]("modelNamePrefix")
+  val modelNamePrefix = settingKey[Option[String]]("Prefix to append to the model class names.")
 
-  val modelNameSuffix = settingKey[Option[String]]("modelNameSuffix")
+  val modelNameSuffix = settingKey[Option[String]]("Suffix to append to the model class names.")
 
-  val apiPackageName = settingKey[Option[String]]("apiPackageName")
+  val apiPackageName = settingKey[Option[String]]("Java package to use when generating the API classes.")
 
-  val modelPackageName = settingKey[Option[String]]("modelPackageName")
+  val modelPackageName = settingKey[Option[String]]("Java package to use when generating the model classes.")
 
-  val generateBuilder = settingKey[Option[Boolean]]("generateBuilder")
+  val generateBuilder = settingKey[Option[Boolean]]("Specifies whether generated model classes should have builder.")
 
-  val generateApis = settingKey[Option[Boolean]]("generateApis")
+  val generateApis = settingKey[Option[Boolean]]("Specifies whether api classes should be generated as well as model classes.")
 
   val typeResolverPrefix = settingKey[Option[String]]("typeResolverPrefix")
 
@@ -44,23 +44,23 @@ trait GraphQLCodegenKeys {
 
   val customAnnotationsMapping = settingKey[util.Map[String, String]]("customAnnotationsMapping")
 
-  val generateEqualsAndHashCode = settingKey[Option[Boolean]]("generateEqualsAndHashCode")
+  val generateEqualsAndHashCode = settingKey[Option[Boolean]]("Specifies whether generated model classes should have equals and hashCode methods defined.")
 
   val generateImmutableModels = settingKey[Option[Boolean]]("generateImmutableModels")
 
-  val generateToString = settingKey[Option[Boolean]]("generateToString")
+  val generateToString = settingKey[Option[Boolean]]("Specifies whether generated model classes should have toString method defined.")
 
   val subscriptionReturnType = settingKey[Option[String]]("subscriptionReturnType")
 
-  val generateAsyncApi = settingKey[Option[Boolean]]("generateAsyncApi")
+  val generateAsyncApi = settingKey[Option[Boolean]]("If true, then wrap type into java.util.concurrent.CompletableFuture or subscriptionReturnType")
 
-  val modelValidationAnnotation = settingKey[Option[String]]("modelValidationAnnotation")
+  val modelValidationAnnotation = settingKey[Option[String]]("Annotation for mandatory (NonNull) fields. Can be None/empty.")
 
-  val generateParameterizedFieldsResolvers = settingKey[Option[Boolean]]("generateParameterizedFieldsResolvers")
+  val generateParameterizedFieldsResolvers = settingKey[Option[Boolean]]("If true, then generate separate Resolver interface for parametrized fields. If false, then add field to the type definition and ignore field parameters.")
 
-  val generateExtensionFieldsResolvers = settingKey[Option[Boolean]]("generateParameterizedFieldsResolvers")
+  val generateExtensionFieldsResolvers = settingKey[Option[Boolean]]("Specifies whether all fields in extensions (extend type and extend interface) should be present in Resolver interface instead of the type class itself.")
 
-  val generateDataFetchingEnvironmentArgumentInApis = settingKey[Option[Boolean]]("generateDataFetchingEnvironmentArgumentInApis")
+  val generateDataFetchingEnvironmentArgumentInApis = settingKey[Option[Boolean]]("If true, then graphql.schema.DataFetchingEnvironment env will be added as a last argument to all methods of root type resolvers and field resolvers.")
 
   val generateModelsForRootTypes = settingKey[Option[Boolean]]("generateModelsForRootTypes")
 
@@ -70,11 +70,11 @@ trait GraphQLCodegenKeys {
 
   val generateClient = settingKey[Option[Boolean]]("generateClient")
 
-  val requestSuffix = settingKey[Option[String]]("requestSuffix")
+  val requestSuffix = settingKey[Option[String]]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
 
   val responseSuffix = settingKey[Option[String]]("responseSuffix")
 
-  val responseProjectionSuffix = settingKey[Option[String]]("responseProjectionSuffix")
+  val responseProjectionSuffix = settingKey[Option[String]]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
 
   val parametrizedInputSuffix = settingKey[Option[String]]("parametrizedInputSuffix")
 
@@ -86,14 +86,14 @@ trait GraphQLCodegenKeys {
 
   val outputDir = settingKey[File]("outputDir")
 
-  val graphqlSchemaPaths = settingKey[Seq[String]]("graphqlSchemaPaths")
+  val graphqlSchemaPaths = settingKey[Seq[String]]("Locations of GraphQL schemas.")
 
   //use different paths
   val graphqlSchemaValidate = inputKey[Seq[String]]("graphqlSchemaValidatePaths")
 
-  val graphqlCodegen = taskKey[Seq[File]]("generate code task")
+  val graphqlCodegen = taskKey[Seq[File]]("Generate Java code")
 
-  val graphqlCodegenValidate = taskKey[Unit]("graphql validate task")
+  val graphqlCodegenValidate = taskKey[Unit]("Validate graphql schema")
 
   //for version
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")

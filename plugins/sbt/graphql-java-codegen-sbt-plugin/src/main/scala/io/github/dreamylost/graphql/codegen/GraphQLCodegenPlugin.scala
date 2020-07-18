@@ -6,7 +6,7 @@ import java.util
 import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
 import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
-import sbt.Keys.{ sLog, _ }
+import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
 import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
 
@@ -37,38 +37,54 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
   }
 
-  //do not Auto trigger.
-  override def trigger: PluginTrigger = noTrigger
+  //Auto trigger
+  override def trigger: PluginTrigger = allRequirements
+
+  override def requires = sbt.plugins.JvmPlugin
 
   import autoImport._
 
-  private val defaultResourcesPath = "src/main/resources"
-  private val defaultSourcePath = "src/main/java"
-
   //must init setting key before use it in projectSettings
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
-    graphqlSchemas := schemaFinderConfig, outputDir := {
-      val file = new File(defaultSourcePath)
-      if (!file.exists()) {
-        file.createNewFile()
-      }
-      sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
-      file
-    }, graphqlSchemaPaths := Seq.empty, graphqlSchemaValidate := Seq.empty,
-    generatePackageName := None, customTypesMapping := new util.HashMap[String, String](),
-    apiNamePrefix := None, apiNameSuffix := None, apiRootInterfaceStrategy := None, apiNamePrefixStrategy := None,
-    modelNamePrefix := None, modelNameSuffix := None, apiPackageName := None, modelPackageName := None,
-    generateBuilder := None, generateApis := None, typeResolverPrefix := None, typeResolverSuffix := None,
-    customAnnotationsMapping := new util.HashMap[String, String](), generateEqualsAndHashCode := None,
-    generateImmutableModels := None, generateToString := None, subscriptionReturnType := None,
-    generateAsyncApi := None, modelValidationAnnotation := None, generateParameterizedFieldsResolvers := None,
-    generateExtensionFieldsResolvers := None, generateDataFetchingEnvironmentArgumentInApis := None,
-    generateModelsForRootTypes := None, fieldsWithResolvers := new util.HashSet[String](),
-    fieldsWithoutResolvers := new util.HashSet[String](), generateClient := None, requestSuffix := None,
-    responseSuffix := None, responseProjectionSuffix := None, parametrizedInputSuffix := None,
-    jsonConfigurationFile := None, parentInterfaces := parentInterfacesConfig,
+    graphqlSchemas := schemaFinderConfig,
+    graphqlSchemaPaths := Seq.empty,
+    graphqlSchemaValidate := Seq.empty,
+    generatePackageName := None,
+    customTypesMapping := new util.HashMap[String, String](),
+    apiNamePrefix := None,
+    apiNameSuffix := None,
+    apiRootInterfaceStrategy := None,
+    apiNamePrefixStrategy := None,
+    modelNamePrefix := None,
+    modelNameSuffix := None,
+    apiPackageName := None,
+    modelPackageName := None,
+    generateBuilder := None,
+    generateApis := None,
+    typeResolverPrefix := None,
+    typeResolverSuffix := None,
+    customAnnotationsMapping := new util.HashMap[String, String](),
+    generateEqualsAndHashCode := None,
+    generateImmutableModels := None,
+    generateToString := None,
+    subscriptionReturnType := None,
+    generateAsyncApi := None,
+    modelValidationAnnotation := None,
+    generateParameterizedFieldsResolvers := None,
+    generateExtensionFieldsResolvers := None,
+    generateDataFetchingEnvironmentArgumentInApis := None,
+    generateModelsForRootTypes := None,
+    fieldsWithResolvers := new util.HashSet[String](),
+    fieldsWithoutResolvers := new util.HashSet[String](),
+    generateClient := None,
+    requestSuffix := None,
+    responseSuffix := None,
+    responseProjectionSuffix := None,
+    parametrizedInputSuffix := None,
+    jsonConfigurationFile := None,
+    parentInterfaces := parentInterfacesConfig,
     graphqlJavaCodegenVersion := Some(codegen),
-    javaxValidationApiVersion := Some(jvalidation)
+    javaxValidationApiVersion := Some(jvalidation),
   )
 
   //setting key must use in Def、:=
@@ -154,62 +170,81 @@ object GraphQLCodegenPlugin extends AutoPlugin {
     }
   }
 
-  override lazy val projectSettings: Seq[Def.Setting[_]] = Seq(
-    //use validate that config in build.sbt
-    graphqlCodegenValidate := new GraphQLCodegenValidate(graphqlSchemaPaths.value.asJava).validate() //use validate at terminal by user
-    , graphqlSchemaValidate := {
-      //use by user
-      val args: Seq[String] = spaceDelimited("<arg>").parsed
-      new GraphQLCodegenValidate(args.asJava).validate()
-      args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
-      args
-    }, graphqlCodegen := {
-      val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
-      var result: Seq[File] = Seq.empty
-      try {
-        result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
-        for (file ← result) {
-          sLog.value.info(s"Finish generate code, file name <${file.getName}>.")
-        }
-      } catch {
-        case e: Exception ⇒
-          sLog.value.debug(s"${e.getStackTrace}")
-          throw new Exception("Code generation failed. See above for the full exception.")
-      }
-
-      def getSchemas: util.List[String] = {
-        if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.asJava
-        val schemasRootDir: Path = getSchemasRootDir
-        val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
-        finder.setRecursive(graphqlSchemas.value.recursive)
-        finder.setIncludePattern(graphqlSchemas.value.includePattern)
-        finder.setExcludedFiles(graphqlSchemas.value.excludedFiles.asJava)
-        finder.findSchemas
-      }
-
-      def getSchemasRootDir: Path = {
-        val rootDir = graphqlSchemas.value.rootDir
-        if (rootDir == null) {
-          val default = getDefaultResourcesDirectory
-          if (default == null) throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
-          else return default
-        }
-        Paths.get(rootDir)
-      }
-
-      def getDefaultResourcesDirectory: Path = {
-        val file = new File(defaultResourcesPath)
+  //skip test
+  override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(Compile) {
+    Seq(
+      //must use sourceManaged in projectSettings
+      outputDir := {
+        val file = (sourceManaged in graphqlCodegen).value
         if (!file.exists()) {
           file.createNewFile()
         }
-        val path = Paths.get(file.getPath)
-        sLog.value.info(s"Default resources path <$path>")
-        path
-      }
+        sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
+        file
+      },
+      //use validate that config in build.sbt
+      graphqlCodegenValidate := new GraphQLCodegenValidate(if (graphqlSchemaPaths.value.isEmpty) {
+        Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath).asJava
+      } else {
+        graphqlSchemaPaths.value.asJava
+      }).validate() //use validate at terminal by user
+      // use a new src_managed for graphql, and must append to managedSourceDirectories
+      , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql",
+      managedSourceDirectories in Compile += (sourceManaged in graphqlCodegen).value,
+      graphqlSchemaValidate := {
+        //use by user
+        val args: Seq[String] = spaceDelimited("<arg>").parsed
+        new GraphQLCodegenValidate(args.asJava).validate()
+        args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
+        args
+      }, graphqlCodegen := {
+        val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        var result: Seq[File] = Seq.empty
+        try {
+          result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
+          for (file ← result) {
+            sLog.value.info(s"Finish generate code, file name <${file.getName}>.")
+          }
+        } catch {
+          case e: Exception ⇒
+            sLog.value.debug(s"${e.getStackTrace}")
+            throw new Exception("Code generation failed. See above for the full exception.")
+        }
 
-      result
-    }
-  )
+        def getSchemas: util.List[String] = {
+          if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.asJava
+          val schemasRootDir: Path = getSchemasRootDir
+          val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
+          finder.setRecursive(graphqlSchemas.value.recursive)
+          finder.setIncludePattern(graphqlSchemas.value.includePattern)
+          finder.setExcludedFiles(graphqlSchemas.value.excludedFiles.asJava)
+          finder.findSchemas
+        }
+
+        def getSchemasRootDir: Path = {
+          val rootDir = graphqlSchemas.value.rootDir
+          if (rootDir == null) {
+            val default = getDefaultResourcesDirectory
+            if (default == null) throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
+            else return default
+          }
+          Paths.get(rootDir)
+        }
+
+        def getDefaultResourcesDirectory: Path = {
+          val file = sourceDirectory.value / "resources"
+          if (!file.exists()) {
+            file.createNewFile()
+          }
+          val path = Paths.get(file.getPath)
+          sLog.value.info(s"Default resources path <$path>")
+          path
+        }
+
+        result
+      }
+    )
+  }
 
   private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty) new JsonMappingConfigSupplier(jsonConfigurationFile) else null
 
