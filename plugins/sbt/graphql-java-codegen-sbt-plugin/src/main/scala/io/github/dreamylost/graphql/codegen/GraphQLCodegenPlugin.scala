@@ -177,7 +177,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
       outputDir := {
         val file = (sourceManaged in graphqlCodegen).value
         if (!file.exists()) {
-          file.createNewFile()
+          file.mkdirs()
         }
         sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
         file
@@ -234,7 +234,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
         def getDefaultResourcesDirectory: Path = {
           val file = sourceDirectory.value / "resources"
           if (!file.exists()) {
-            file.createNewFile()
+            file.mkdirs()
           }
           val path = Paths.get(file.getPath)
           sLog.value.info(s"Default resources path <$path>")

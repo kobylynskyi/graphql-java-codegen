@@ -76,6 +76,10 @@ jobs:
         working-directory: plugins/sbt/example-client
         run: sbt compile package --debug
 
+      - name: Build sbt-test simple
+        working-directory: plugins/sbt/sbt-test
+        run: bash test.sh
+
   sonar:
     needs: build
     runs-on: ubuntu-latest
