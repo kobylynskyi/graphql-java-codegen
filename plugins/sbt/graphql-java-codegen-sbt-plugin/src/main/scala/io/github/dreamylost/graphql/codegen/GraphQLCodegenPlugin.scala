@@ -17,7 +17,12 @@ import scala.collection.JavaConverters._
  * @author liguobin@growingio.com
  * @version 1.0,2020/7/15
  */
-object GraphQLCodegenPlugin extends AutoPlugin {
+object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile) {
+  //for auto import
+  val autoImport = GlobalImport
+}
+
+class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with Compat {
 
   //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
 
@@ -25,10 +30,9 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   private val codegen = "2.2.1"
   private val jvalidation = "2.0.1.Final"
 
-  object autoImport extends GraphQLCodegenKeys {
+  object GlobalImport extends GraphQLCodegenKeys {
 
-    //for auto import
-    val GraphQLCodegen: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+    val GraphQLCodegenDependency: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen),
       "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jvalidation)
     )
@@ -43,7 +47,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
   override def requires = sbt.plugins.JvmPlugin
 
-  import autoImport._
+  import GlobalImport._
 
   //must init setting key before use it in projectSettings
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
@@ -172,7 +176,7 @@ object GraphQLCodegenPlugin extends AutoPlugin {
   }
 
   //skip test
-  override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(Compile) {
+  override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(configuration) {
     Seq(
       //must use sourceManaged in projectSettings
       outputDir := {
@@ -182,26 +186,27 @@ object GraphQLCodegenPlugin extends AutoPlugin {
         }
         sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
         file
-      },
-      //use validate that config in build.sbt
-      graphqlCodegenValidate := new GraphQLCodegenValidate(if (graphqlSchemaPaths.value.isEmpty) {
-        Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath).asJava
-      } else {
-        graphqlSchemaPaths.value.asJava
-      }).validate() //use validate at terminal by user
-      // use a new src_managed for graphql, and must append to managedSourceDirectories
-      , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql",
-      //if generate code successfully but compile failed, reimport project, because ivy cache
+      } //use validate that config in build.sbt
+      , graphqlCodegenValidate := {
+        val schemas = if (graphqlSchemaPaths.value.isEmpty) {
+          Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath).asJava
+        } else {
+          graphqlSchemaPaths.value.asJava
+        }
+        new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
+      } // use a new src_managed for graphql, and must append to managedSourceDirectories
+      , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql" //if generate code successfully but compile failed, reimport project, because ivy cache
       //TODO refresh cache auto
-      managedSourceDirectories in Compile := managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value),
-      graphqlSchemaValidate := {
+      , managedSourceDirectories in configuration := {
+        managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value)
+      }, graphqlSchemaValidate := {
         //use by user
         val args: Seq[String] = spaceDelimited("<arg>").parsed
         new GraphQLCodegenValidate(args.asJava).validate()
         args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
         args
       }, graphqlCodegen := {
-        val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
         var result: Seq[File] = Seq.empty
         try {
           result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
@@ -246,9 +251,12 @@ object GraphQLCodegenPlugin extends AutoPlugin {
 
         result
       }
-    )
+    //watch graphql schema source
+    ) ++ watchSourcesSetting
   }
 
-  private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty) new JsonMappingConfigSupplier(jsonConfigurationFile) else null
+  private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = {
+    if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty) new JsonMappingConfigSupplier(jsonConfigurationFile) else null
+  }
 
 }

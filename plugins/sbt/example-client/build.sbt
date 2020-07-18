@@ -4,7 +4,7 @@ name := "example-client"
 
 organization := "io.github.jxnu-liguobin"
 
-libraryDependencies ++=  Seq(
+libraryDependencies ++= Seq(
   "org.springframework" % "spring-web" % "5.2.7.RELEASE"
 ) ++ Seq(
   "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0",
@@ -15,7 +15,7 @@ libraryDependencies ++=  Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-GraphQLCodegen
+GraphQLCodegenDependency
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")

@@ -5,4 +5,4 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.2",
     apiPackageName := Some("io.github.kobylynskyi.graphql.test.api"),
     modelPackageName := Some("io.github.kobylynskyi.graphql.test.model")
-  ).enablePlugins(GraphQLCodegenPlugin).settings(GraphQLCodegen)
+  ).enablePlugins(GraphQLCodegenPlugin).settings(GraphQLCodegenDependency)
