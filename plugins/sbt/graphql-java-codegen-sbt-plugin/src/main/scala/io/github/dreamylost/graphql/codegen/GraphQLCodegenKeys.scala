@@ -95,6 +95,10 @@ trait GraphQLCodegenKeys {
 
   val graphqlCodegenValidate = taskKey[Unit]("Validate graphql schema")
 
+  val apiAsyncReturnType = settingKey[Option[String]]("apiAsyncReturnType")
+
+  val apiAsyncReturnListType = settingKey[Option[String]]("apiAsyncReturnListType")
+
   //for version
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

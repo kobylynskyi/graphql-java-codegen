@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-GraphQLCodegenDependency
+GraphQLCodegenPluginDependencies
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
