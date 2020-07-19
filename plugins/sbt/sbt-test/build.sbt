@@ -1,4 +1,10 @@
 name := "sbt-test"
+
+
+//because in ci, can not find maven local
+resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+
+
 lazy val root = (project in file("."))
   .settings(
     version := "0.1",

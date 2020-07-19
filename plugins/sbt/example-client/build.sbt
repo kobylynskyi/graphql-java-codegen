@@ -4,6 +4,9 @@ name := "example-client"
 
 organization := "io.github.jxnu-liguobin"
 
+//because in ci, can not find maven local
+resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+
 libraryDependencies ++= Seq(
   "org.springframework" % "spring-web" % "5.2.7.RELEASE"
 ) ++ Seq(

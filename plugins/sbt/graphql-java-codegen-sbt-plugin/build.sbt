@@ -4,7 +4,7 @@ name := "graphql-codegen-sbt-plugin"
 // must be equals to oss Group Id
 organization := "io.github.jxnu-liguobin"
 
-//because in ci, can not find local
+//because in ci, can not find maven local
 resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
 
 // publish only root project
