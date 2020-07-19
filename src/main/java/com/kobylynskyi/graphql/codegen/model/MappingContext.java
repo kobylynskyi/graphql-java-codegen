@@ -96,6 +96,16 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public String getApiAsyncReturnType() {
+        return config.getApiAsyncReturnType();
+    }
+
+    @Override
+    public String getApiAsyncReturnListType() {
+        return config.getApiAsyncReturnListType();
+    }
+
+    @Override
     public String getSubscriptionReturnType() {
         return config.getSubscriptionReturnType();
     }

@@ -112,9 +112,9 @@ jobs:
             ${{ runner.os }}-ivy-
 
       - name: Generate code coverage report
-        run: ./gradlew codeCoverageReport
+        run: ./gradlew codeCoverageReport --stacktrace
 
       - name: Generate and publish Sonar report
-        run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }}
+        run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }} --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

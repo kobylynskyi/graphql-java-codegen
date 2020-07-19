@@ -89,6 +89,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX)
     private String typeResolverSuffix;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE)
+    private String apiAsyncReturnType;
+
+    @Parameter
+    private String apiAsyncReturnListType;
+
     @Parameter
     private String subscriptionReturnType;
 
@@ -173,6 +179,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
+        mappingConfig.setApiAsyncReturnType(apiAsyncReturnType);
+        mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
         mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
@@ -414,6 +422,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateAsyncApi(boolean generateAsyncApi) {
         this.generateAsyncApi = generateAsyncApi;
+    }
+
+    @Override
+    public String getApiAsyncReturnType() {
+        return apiAsyncReturnType;
+    }
+
+    public void setApiAsyncReturnType(String apiAsyncReturnType) {
+        this.apiAsyncReturnType = apiAsyncReturnType;
+    }
+
+    @Override
+    public String getApiAsyncReturnListType() {
+        return apiAsyncReturnListType;
+    }
+
+    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
+        this.apiAsyncReturnListType = apiAsyncReturnListType;
     }
 
     @Override
