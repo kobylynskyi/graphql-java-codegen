@@ -27,8 +27,9 @@ addSbtPlugin("io.github.jxnu-liguobin" % "graphql-codegen-sbt-plugin" % "<versio
 // build.sbt
 enablePlugins(GraphQLCodegenPlugin)
 
-// GraphQLCodegenPluginDependencies will import graphql-java-codegen and java validation-api
-// also you can override them version by graphqlJavaCodegenVersion and javaxValidationApiVersion
+// GraphQLCodegenPluginDependencies will import java validation-api
+// also you can override them version by  javaxValidationApiVersion
+// and graphql-java-codegen will be use
 GraphQLCodegenPluginDependencies
 
 libraryDependencies ++= Seq(<yours>)

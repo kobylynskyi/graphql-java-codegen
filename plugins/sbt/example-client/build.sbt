@@ -15,7 +15,10 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-GraphQLCodegenPluginDependencies
+//if can not found javax.validation use it
+
+//GraphQLCodegenPluginDependencies
+
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")

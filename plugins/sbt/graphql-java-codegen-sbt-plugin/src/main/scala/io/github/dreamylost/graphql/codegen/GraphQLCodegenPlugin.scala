@@ -27,17 +27,12 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
   //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
-  private val codegen = "2.2.1"
   private val jValidation = "2.0.1.Final"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
     //because in ci, can not find maven local
-    resolvers += "Local Maven Repository" at sbt.Path.userHome.asFile.toURI.toURL + ".m2/repository"
-
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-      //keep version is equals with parent project `graphql-java-codegen`
-      "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen),
       "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jValidation)
     )
 
@@ -93,7 +88,6 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     parametrizedInputSuffix := None,
     jsonConfigurationFile := None,
     parentInterfaces := parentInterfacesConfig,
-    graphqlJavaCodegenVersion := None,
     javaxValidationApiVersion := None,
     apiAsyncReturnType := None,
     apiAsyncReturnListType := None
