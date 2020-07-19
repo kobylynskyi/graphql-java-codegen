@@ -1,0 +1,96 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class PrivateQueryRequest implements GraphQLOperationRequest {
+
+    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
+    private static final String OPERATION_NAME = "private";
+
+    private Map<String, Object> input = new LinkedHashMap<>();
+
+    public PrivateQueryRequest() {
+    }
+
+    public void setInt(Integer Int) {
+        this.input.put("int", Int);
+    }
+
+    public void setNew(String New) {
+        this.input.put("new", New);
+    }
+
+    @Override
+    public GraphQLOperation getOperationType() {
+        return OPERATION_TYPE;
+    }
+
+    @Override
+    public String getOperationName() {
+        return OPERATION_NAME;
+    }
+
+    @Override
+    public Map<String, Object> getInput() {
+        return input;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final PrivateQueryRequest that = (PrivateQueryRequest) obj;
+        return Objects.equals(getOperationType(), that.getOperationType()) &&
+                   Objects.equals(getOperationName(), that.getOperationName()) &&
+                   Objects.equals(input, that.input);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOperationType(), getOperationName(), input);
+    }
+    @Override
+    public String toString() {
+        return Objects.toString(input);
+    }
+
+    public static class Builder {
+
+        private Integer Int;
+        private String New;
+
+        public Builder() {
+        }
+
+        public Builder setInt(Integer Int) {
+            this.Int = Int;
+            return this;
+        }
+
+        public Builder setNew(String New) {
+            this.New = New;
+            return this;
+        }
+
+
+        public PrivateQueryRequest build() {
+            PrivateQueryRequest obj = new PrivateQueryRequest();
+            obj.setInt(Int);
+            obj.setNew(New);
+            return obj;
+        }
+
+    }
+}

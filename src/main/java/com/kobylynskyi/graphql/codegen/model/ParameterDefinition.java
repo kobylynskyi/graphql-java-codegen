@@ -15,10 +15,17 @@ import static java.util.Collections.emptyList;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-            DataFetchingEnvironment.class.getName(), "env", null, emptyList(), emptyList(), false);
+            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), false);
 
     private String type;
+    /**
+     * Normalized name using {@link com.kobylynskyi.graphql.codegen.mapper.MapperUtils#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     */
     private String name;
+    /**
+     * Original name that appears in GraphQL schema
+     */
+    private String originalName;
     private String defaultValue;
     private List<String> annotations = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
@@ -27,12 +34,11 @@ public class ParameterDefinition {
     public ParameterDefinition() {
     }
 
-    public ParameterDefinition(String type, String name, String defaultValue,
-                               List<String> annotations,
-                               List<String> javaDoc,
-                               boolean deprecated) {
+    public ParameterDefinition(String type, String name, String originalName, String defaultValue,
+                               List<String> annotations, List<String> javaDoc, boolean deprecated) {
         this.type = type;
         this.name = name;
+        this.originalName = originalName;
         this.defaultValue = defaultValue;
         this.annotations = annotations;
         this.javaDoc = javaDoc;
@@ -53,6 +59,14 @@ public class ParameterDefinition {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 
     public String getDefaultValue() {

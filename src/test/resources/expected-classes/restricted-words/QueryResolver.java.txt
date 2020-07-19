@@ -1,0 +1,17 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+
+/**
+ * Resolver for Query
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface QueryResolver {
+
+    Synchronized Private(Integer Int, String New) throws Exception;
+
+    String Case(java.util.List<Char> Final) throws Exception;
+
+}

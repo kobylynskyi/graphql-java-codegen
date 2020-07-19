@@ -1,0 +1,57 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+import java.util.Objects;
+
+/**
+ * Parametrized input for field case in type Query
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class QueryCaseParametrizedInput implements GraphQLParametrizedInput {
+
+    private java.util.List<Char> Final;
+
+    public QueryCaseParametrizedInput() {
+    }
+
+    public QueryCaseParametrizedInput(java.util.List<Char> Final) {
+        this.Final = Final;
+    }
+
+    public QueryCaseParametrizedInput Final(java.util.List<Char> Final) {
+        this.Final = Final;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final QueryCaseParametrizedInput that = (QueryCaseParametrizedInput) obj;
+        return Objects.equals(Final, that.Final);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Final);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "(", ")");
+        if (Final != null) {
+            joiner.add("final: " + GraphQLRequestSerializer.getEntry(Final));
+        }
+        return joiner.toString();
+    }
+
+}

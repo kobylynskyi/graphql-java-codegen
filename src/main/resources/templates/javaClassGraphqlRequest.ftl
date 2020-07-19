@@ -49,7 +49,7 @@ public class ${className} implements GraphQLOperationRequest {
     @Deprecated
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
-        this.input.put("${field.name}", ${field.name});
+        this.input.put("${field.originalName}", ${field.name});
     }
 
 </#list>

@@ -25,6 +25,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_H
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.METHOD_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_TYPE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
@@ -118,6 +119,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(DEPRECATED, operationDef.isDeprecated());
         dataModel.put(OPERATION_NAME, operationDef.getName());
+        dataModel.put(METHOD_NAME, MapperUtils.capitalizeMethodNameIfRestricted(operationDef.getName()));
         dataModel.put(RETURN_TYPE_NAME, javaType);
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
@@ -277,7 +279,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName("...on " + childName);
         parameter.setMethodName("on" + childName);
-        parameter.setType(childName + mappingContext.getResponseProjectionSuffix());
+        parameter.setType(Utils.capitalize(childName + mappingContext.getResponseProjectionSuffix()));
         return parameter;
     }
 

@@ -1,0 +1,77 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.Objects;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Query implements java.io.Serializable {
+
+    private String Native;
+
+    public Query() {
+    }
+
+    public Query(String Native) {
+        this.Native = Native;
+    }
+
+    public String getNative() {
+        return Native;
+    }
+    public void setNative(String Native) {
+        this.Native = Native;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Query that = (Query) obj;
+        return Objects.equals(Native, that.Native);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Native);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (Native != null) {
+            joiner.add("native: " + GraphQLRequestSerializer.getEntry(Native));
+        }
+        return joiner.toString();
+    }
+
+    public static Query.Builder builder() {
+        return new Query.Builder();
+    }
+
+    public static class Builder {
+
+        private String Native;
+
+        public Builder() {
+        }
+
+        public Builder setNative(String Native) {
+            this.Native = Native;
+            return this;
+        }
+
+
+        public Query build() {
+            return new Query(Native);
+        }
+
+    }
+}

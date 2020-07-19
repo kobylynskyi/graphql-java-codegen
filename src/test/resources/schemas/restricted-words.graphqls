@@ -1,0 +1,17 @@
+schema {
+    query: Query
+}
+
+type Query {
+    native: String
+    private(int: Int, new: String): Synchronized
+    case(final: [char]): ID
+}
+
+type Synchronized {
+    void: String
+    wait: char
+}
+
+interface char {
+}

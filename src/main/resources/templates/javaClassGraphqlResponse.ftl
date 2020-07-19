@@ -38,7 +38,7 @@ public class ${className} extends GraphQLResult<Map<String, ${returnTypeName}>> 
 <#if deprecated>
     @Deprecated
 </#if>
-    public ${returnTypeName} ${operationName}() {
+    public ${returnTypeName} ${methodName}() {
         Map<String, ${returnTypeName}> data = getData();
         return data != null ? data.get(OPERATION_NAME) : null;
     }

@@ -23,7 +23,7 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class MapperUtils {
+public class MapperUtils {
 
     private static final Set<String> JAVA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
@@ -32,23 +32,46 @@ class MapperUtils {
             "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
+    private static final Set<String> JAVA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
+            "getClass", "notify", "notifyAll", "wait"));
+
     private MapperUtils() {
     }
 
     /**
      * Capitalize field name if it is Java-restricted.
      * Examples:
-     * * class -> Class
-     * * int -> Int
+     * * 'class' becomes 'Class'
+     * * 'int' becomes 'Int'
      *
      * @param fieldName any string
      * @return capitalized value if it is restricted in Java, same value as parameter otherwise
      */
-    static String capitalizeIfRestricted(String fieldName) {
+    public static String capitalizeIfRestricted(String fieldName) {
         if (JAVA_RESTRICTED_KEYWORDS.contains(fieldName)) {
             return Utils.capitalize(fieldName);
         }
         return fieldName;
+    }
+
+    /**
+     * Capitalize method name if it is Java-restricted.
+     * Examples:
+     * * 'getClass' becomes 'GetClass'
+     * * 'wait' becomes 'Wait'
+     * * 'this' becomes 'This'
+     *
+     * @param methodName any string
+     * @return capitalized value if it is restricted in Java, same value as parameter otherwise
+     */
+    public static String capitalizeMethodNameIfRestricted(String methodName) {
+        if (JAVA_RESTRICTED_KEYWORDS.contains(methodName)) {
+            return Utils.capitalize(methodName);
+        }
+        if (JAVA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
+            return Utils.capitalize(methodName);
+        }
+        return methodName;
     }
 
     /**

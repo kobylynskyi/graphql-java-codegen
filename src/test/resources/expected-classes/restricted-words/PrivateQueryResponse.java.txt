@@ -1,0 +1,22 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
+import java.util.Map;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class PrivateQueryResponse extends GraphQLResult<Map<String, Synchronized>> {
+
+    private static final String OPERATION_NAME = "private";
+
+    public PrivateQueryResponse() {
+    }
+
+    public Synchronized Private() {
+        Map<String, Synchronized> data = getData();
+        return data != null ? data.get(OPERATION_NAME) : null;
+    }
+
+}

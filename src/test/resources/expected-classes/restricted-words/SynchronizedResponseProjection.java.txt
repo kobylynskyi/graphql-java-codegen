@@ -1,0 +1,54 @@
+package com.kobylynskyi.graphql.codegen.prot;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.Objects;
+
+/**
+ * Response projection for Synchronized
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class SynchronizedResponseProjection extends GraphQLResponseProjection {
+
+    public SynchronizedResponseProjection() {
+    }
+
+    public SynchronizedResponseProjection Void() {
+        return Void(null);
+    }
+
+    public SynchronizedResponseProjection Void(String alias) {
+        fields.add(new GraphQLResponseField("void").alias(alias));
+        return this;
+    }
+
+    public SynchronizedResponseProjection Wait(CharResponseProjection subProjection) {
+        return Wait(null, subProjection);
+    }
+
+    public SynchronizedResponseProjection Wait(String alias, CharResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("wait").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final SynchronizedResponseProjection that = (SynchronizedResponseProjection) obj;
+        return Objects.equals(fields, that.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields);
+    }
+
+}
