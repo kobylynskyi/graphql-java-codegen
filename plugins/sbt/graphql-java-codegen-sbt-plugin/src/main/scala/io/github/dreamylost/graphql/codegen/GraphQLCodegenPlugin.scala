@@ -1,6 +1,6 @@
 package io.github.dreamylost.graphql.codegen
 
-import java.nio.file.{ Path, Paths }
+import java.nio.file.{ Paths }
 import java.util
 
 import com.kobylynskyi.graphql.codegen.model._
@@ -8,7 +8,7 @@ import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, Sch
 import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
-import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
+import sbt.{ AutoPlugin, Def, Path, PluginTrigger, _ }
 
 import scala.collection.JavaConverters._
 
@@ -32,11 +32,15 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   object GlobalImport extends GraphQLCodegenKeys {
 
+    //because in ci, can not find maven local
+    resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       //keep version is equals with parent project `graphql-java-codegen`
       "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen),
       "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jValidation)
     )
+
     lazy val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
     lazy val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
   }
