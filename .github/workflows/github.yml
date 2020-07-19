@@ -78,7 +78,7 @@ jobs:
 
       - name: Build sbt-test
         working-directory: plugins/sbt/sbt-test
-        run: bash test.sh
+        run: sbt graphqlCodegen update
 
   sonar:
     needs: build
