@@ -1,6 +1,6 @@
 package io.github.dreamylost.graphql.codegen
 
-import java.nio.file.{ Paths }
+import java.nio.file.{ Path, Paths }
 import java.util
 
 import com.kobylynskyi.graphql.codegen.model._
@@ -33,7 +33,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
   object GlobalImport extends GraphQLCodegenKeys {
 
     //because in ci, can not find maven local
-    resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+    resolvers += "Local Maven Repository" at sbt.Path.userHome.asFile.toURI.toURL + ".m2/repository"
 
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       //keep version is equals with parent project `graphql-java-codegen`
