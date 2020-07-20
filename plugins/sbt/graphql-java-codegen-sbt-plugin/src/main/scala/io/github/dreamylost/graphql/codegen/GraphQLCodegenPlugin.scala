@@ -3,12 +3,12 @@ package io.github.dreamylost.graphql.codegen
 import java.nio.file.{ Path, Paths }
 import java.util
 
+import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
 import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
-import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
+import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
-import sbt.{ AutoPlugin, Def, Path, PluginTrigger, _ }
 
 import scala.collection.JavaConverters._
 
@@ -28,12 +28,14 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = "2.0.1.Final"
+  private val codegen = "2.2.1"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
-    //because in ci, can not find maven local
+    //should look for a way to automatically add to the classpath
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-      "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jValidation)
+      "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jValidation),
+      "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen)
     )
 
     lazy val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
@@ -88,9 +90,10 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     parametrizedInputSuffix := None,
     jsonConfigurationFile := None,
     parentInterfaces := parentInterfacesConfig,
-    javaxValidationApiVersion := None,
     apiAsyncReturnType := None,
-    apiAsyncReturnListType := None
+    apiAsyncReturnListType := None,
+    javaxValidationApiVersion := None,
+    graphqlJavaCodegenVersion := None
   )
 
   //setting key must use in Def、:=

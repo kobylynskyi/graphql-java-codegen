@@ -15,9 +15,8 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-//if can not found javax.validation use it
 
-//GraphQLCodegenPluginDependencies
+GraphQLCodegenPluginDependencies
 
 
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
