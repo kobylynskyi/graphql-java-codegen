@@ -58,7 +58,7 @@ jobs:
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt compile publishLocal --debug
 
-      - name: Build sbt-test
+      - name: Build sbt test
           working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
           run: sbt scripted
 
@@ -76,9 +76,6 @@ jobs:
         working-directory: plugins/maven/example-client
         run: mvn package
 
-      - name: Build sbt example-client
-        working-directory: plugins/sbt/example-client
-        run:  sbt graphqlCodegen compile
 
   sonar:
     needs: build

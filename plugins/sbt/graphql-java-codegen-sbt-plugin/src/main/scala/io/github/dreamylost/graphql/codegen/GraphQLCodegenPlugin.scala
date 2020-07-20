@@ -204,6 +204,10 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
       , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql" //if generate code successfully but compile failed, reimport project, because ivy cache
       , managedSourceDirectories in configuration := {
         managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value)
+      }, javaSource := {
+        (sourceManaged in graphqlCodegen).value
+      }, managedClasspath := {
+        Classpaths.managedJars(configuration, classpathTypes.value, update.value)
       }, graphqlSchemaValidate := {
         //use by user
         val args: Seq[String] = spaceDelimited("<arg>").parsed
