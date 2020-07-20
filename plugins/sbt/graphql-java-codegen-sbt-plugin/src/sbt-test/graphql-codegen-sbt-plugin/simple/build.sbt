@@ -1,4 +1,4 @@
-name := "sbt-test"
+name := "simple"
 
 lazy val root = (project in file("."))
   .settings(
