@@ -3,7 +3,6 @@ package com.kobylynskyi.graphql.codegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,21 +11,14 @@ import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonList;
 
 class GraphQLCodegenParentInterfacesTest {
 
-    private GraphQLCodegen generator;
     private final MappingConfig mappingConfig = new MappingConfig();
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/interfaces");
-
-    @BeforeEach
-    void init() {
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
-        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
-    }
 
     @AfterEach
     void cleanup() {
@@ -35,13 +27,16 @@ class GraphQLCodegenParentInterfacesTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
+        mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
         mappingConfig.setModelNameSuffix("TO");
         mappingConfig.setFieldsWithResolvers(Collections.singleton("Event"));
         mappingConfig.setQueryResolverParentInterface("graphql.kickstart.tools.GraphQLQueryResolver");
         mappingConfig.setMutationResolverParentInterface("graphql.kickstart.tools.GraphQLMutationResolver");
         mappingConfig.setSubscriptionResolverParentInterface("graphql.kickstart.tools.GraphQLSubscriptionResolver");
         mappingConfig.setResolverParentInterface("graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>");
-        generator.generate();
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

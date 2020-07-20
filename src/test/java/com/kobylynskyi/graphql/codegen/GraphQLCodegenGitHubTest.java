@@ -9,16 +9,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class GraphQLCodegenGitHubTest {
-
-    private GraphQLCodegen generator;
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
@@ -28,8 +26,6 @@ class GraphQLCodegenGitHubTest {
     void init() {
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
         mappingConfig.setPackageName("com.github.graphql");
-        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach
@@ -39,7 +35,8 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -55,7 +52,8 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -83,9 +81,11 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_NoValidationAnnotation() throws Exception {
-        mappingConfig.setModelValidationAnnotation(null);
+        mappingConfig.setModelValidationAnnotation("");
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
         File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
                 commitFile);
@@ -96,7 +96,8 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/SearchResultItemConnectionResponseProjection.java.txt"),

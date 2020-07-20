@@ -79,6 +79,7 @@ public class GraphQLCodegen {
         this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
         initDefaultValues(mappingConfig);
         validateConfigs(mappingConfig);
+        sanitizeValues(mappingConfig);
         this.generatedInformation = generatedInformation;
     }
 
@@ -172,6 +173,18 @@ public class GraphQLCodegen {
                     Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNameSuffix(), mappingConfig.getTypeResolverSuffix())) {
                 // we will have a conflict between model resolver interface (QueryResolver.java) and api interface resolver (QueryResolver.java)
                 throw new IllegalArgumentException("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes");
+            }
+        }
+    }
+
+    private static void sanitizeValues(MappingConfig mappingConfig) {
+        mappingConfig.setModelValidationAnnotation(
+                Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
+
+        Map<String, String> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
+        if (customAnnotationsMapping != null) {
+            for (Map.Entry<String, String> entry : customAnnotationsMapping.entrySet()) {
+                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
             }
         }
     }

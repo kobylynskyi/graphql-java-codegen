@@ -13,11 +13,10 @@ import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
 class GraphQLCodegenFieldsResolversTest {
-
-    private GraphQLCodegen generator;
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
@@ -26,8 +25,6 @@ class GraphQLCodegenFieldsResolversTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
-        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach
@@ -42,7 +39,8 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap(
                 "Commit.blame", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -59,7 +57,8 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -73,7 +72,8 @@ class GraphQLCodegenFieldsResolversTest {
     void generate_ResolverForWholeType() throws Exception {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("CommentDeletedEvent"));
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
