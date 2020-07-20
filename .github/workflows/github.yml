@@ -45,7 +45,7 @@ jobs:
             ${{ runner.os }}-ivy-
 
       - name: Build library
-        run: ./gradlew build publishToMavenLocal --warning-mode all
+        run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
 
       - name: Build gradle plugin
         run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
@@ -57,6 +57,10 @@ jobs:
       - name: Build sbt plugin
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt compile publishLocal --debug
+
+      - name: Build sbt-test
+          working-directory: plugins/sbt/sbt-test
+          run: sbt graphqlCodegen compile
 
       - name: Build gradle example-server --warning-mode all
         run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
@@ -74,11 +78,7 @@ jobs:
 
       - name: Build sbt example-client
         working-directory: plugins/sbt/example-client
-        run:  sbt graphqlCodegen update
-
-      - name: Build sbt-test
-        working-directory: plugins/sbt/sbt-test
-        run: sbt graphqlCodegen update
+        run:  sbt graphqlCodegen compile
 
   sonar:
     needs: build
