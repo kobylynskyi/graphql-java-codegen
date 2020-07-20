@@ -108,11 +108,6 @@ publishing {
                         name = "Bogdan Kobylynskyi"
                         email = "92bogdan@gmail.com"
                     }
-                    developer {
-                        id = "valinha"
-                        name = "Alberto Valiña"
-                        email = "valinhadev@gmail.com"
-                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ dependencies {
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:7.1.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:7.1.0"
+    implementation "com.graphql-java:graphql-java-extended-scalars:1.0"
 
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
@@ -37,13 +38,14 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
 }
 
+
 /**
  * Generate requests and model from external service
  */
 compileJava.dependsOn "graphqlCodegenProductService"
 sourceSets.main.java.srcDir "$buildDir/generated-client"
 task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
-    graphqlSchemaPaths = ["$projectDir/src/main/resources/external/schema-product-service.graphqls".toString()]
+    graphqlSchemas.includePattern = "schema-product-service\\.graphqls"
     outputDir = new File("$buildDir/generated-client")
     modelPackageName = "io.github.kobylynskyi.product.graphql.model"
     customTypesMapping = [
@@ -54,13 +56,14 @@ task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
     generateApis = false
 }
 
+
 /**
  * Generate apis and model
  */
 compileJava.dependsOn "graphqlCodegenOrderService"
 sourceSets.main.java.srcDir "$buildDir/generated-server"
 task graphqlCodegenOrderService(type: GraphQLCodegenGradleTask) {
-    graphqlSchemaPaths = ["$projectDir/src/main/resources/schema.graphqls".toString()]
+    graphqlSchemas.includePattern = "schema\\.graphqls"
     outputDir = new File("$buildDir/generated-server")
     apiPackageName = "io.github.kobylynskyi.order.graphql.api"
     modelPackageName = "io.github.kobylynskyi.order.graphql.model"
@@ -69,6 +72,28 @@ task graphqlCodegenOrderService(type: GraphQLCodegenGradleTask) {
     ]
     modelNameSuffix = "TO"
 }
+
+
+/**
+ * Generate requests and model from another external service
+ */
+compileJava.dependsOn "graphqlCodegenStarwarsService"
+sourceSets.main.java.srcDir "$buildDir/generated-client-starwars"
+task graphqlCodegenStarwarsService(type: GraphQLCodegenGradleTask) {
+    graphqlSchemas.includePattern = "schema-starwars-service\\.graphqls"
+    outputDir = new File("$buildDir/generated-client-starwars")
+    packageName = "io.github.kobylynskyi.starwars.graphql"
+    customAnnotationsMapping = [
+            "Character": "com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
+                    + System.lineSeparator()
+                    + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+    ]
+    generateClient = true
+    generateApis = false
+    generateBuilder = false
+    generateToString = true
+}
+
 
 repositories {
     jcenter()
