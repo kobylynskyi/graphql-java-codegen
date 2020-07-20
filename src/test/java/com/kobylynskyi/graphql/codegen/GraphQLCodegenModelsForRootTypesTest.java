@@ -42,6 +42,7 @@ class GraphQLCodegenModelsForRootTypesTest {
         mappingConfig.setModelNameSuffix(null);
         mappingConfig.setApiNamePrefix(null);
         mappingConfig.setModelNamePrefix("");
+
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
                 () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
@@ -64,7 +65,9 @@ class GraphQLCodegenModelsForRootTypesTest {
     @Test
     void generate_CheckFiles_generateApisFalse() throws Exception {
         mappingConfig.setGenerateApis(false);
+
         new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
@@ -75,7 +78,9 @@ class GraphQLCodegenModelsForRootTypesTest {
     @Test
     void generate_CheckFiles_generateApisTrue_CustomTypeResolverSuffix() throws Exception {
         mappingConfig.setTypeResolverSuffix("TypeResolver");
+
         new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java",

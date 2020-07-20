@@ -3,7 +3,6 @@ package com.kobylynskyi.graphql.codegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -18,22 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenRestrictedWordsTest {
 
+    private final MappingConfig mappingConfig = new MappingConfig();
+
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/codegen/prot");
-
-    private MappingConfig mappingConfig;
-
-    @BeforeEach
-    void init() {
-        mappingConfig = new MappingConfig();
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
-        mappingConfig.setGenerateClient(true);
-        mappingConfig.setGenerateBuilder(true);
-        mappingConfig.setGenerateEqualsAndHashCode(true);
-        mappingConfig.setGenerateToString(true);
-        mappingConfig.setGenerateModelsForRootTypes(true);
-        mappingConfig.setApiNameSuffix("API");
-    }
 
     @AfterEach
     void cleanup() {
@@ -42,6 +29,14 @@ class GraphQLCodegenRestrictedWordsTest {
 
     @Test
     void generate() throws Exception {
+        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setGenerateModelsForRootTypes(true);
+        mappingConfig.setApiNameSuffix("API");
+
         new GraphQLCodegen(singletonList("src/test/resources/schemas/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 

@@ -190,4 +190,17 @@ public final class Utils {
         return collection == null || collection.isEmpty();
     }
 
+    /**
+     * Replace leading annotation (@) sign
+     *
+     * @param value annotation value with/without @ sign
+     * @return value without leading @ sign
+     */
+    public static String replaceLeadingAtSign(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.replaceAll("^@+", "");
+    }
+
 }
