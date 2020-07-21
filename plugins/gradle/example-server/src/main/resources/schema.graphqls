@@ -5,7 +5,9 @@ schema {
 
 type Query {
     products: [Product]
+
     productById(id: ID!): Product
+
     productsByIds(ids: [ID!]!): [Product]
 }
 
