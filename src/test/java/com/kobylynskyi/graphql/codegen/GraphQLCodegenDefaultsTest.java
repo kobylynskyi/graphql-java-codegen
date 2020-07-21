@@ -8,17 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenDefaultsTest {
 
-    private GraphQLCodegen generator;
     private final MappingConfig mappingConfig = new MappingConfig();
 
     private final File outputBuildDir = new File("build/generated");
@@ -27,8 +26,6 @@ class GraphQLCodegenDefaultsTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.testdefaults");
-        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/defaults.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach
@@ -38,7 +35,8 @@ class GraphQLCodegenDefaultsTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -55,7 +53,8 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_WithPrefixSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
 
-        generator.generate();
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());

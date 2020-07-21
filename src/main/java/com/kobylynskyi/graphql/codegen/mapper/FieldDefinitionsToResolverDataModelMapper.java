@@ -139,7 +139,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
         String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
                 mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName).getName();
         OperationDefinition operation = new OperationDefinition();
-        operation.setName(resolvedField.getName());
+        operation.setName(MapperUtils.capitalizeIfRestricted(resolvedField.getName()));
+        operation.setOriginalName(resolvedField.getName());
         operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingContext, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext,
                 resolvedField.getType(), resolvedField.getName(), parentTypeName, false));
@@ -158,7 +159,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, new TypeName(parentTypeName));
             String parentObjectParamName = MapperUtils.capitalizeIfRestricted(Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated()));
+            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated()));
         }
 
         // 2. Next parameters are input values

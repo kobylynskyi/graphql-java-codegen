@@ -103,7 +103,7 @@ public class ${className} implements GraphQLParametrizedInput {
 <#if fields?has_content>
 <#list fields as field>
         if (${field.name} != null) {
-            joiner.add("${field.name}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
         }
 </#list>
 </#if>

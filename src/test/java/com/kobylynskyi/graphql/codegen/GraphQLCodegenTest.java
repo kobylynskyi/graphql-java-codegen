@@ -5,11 +5,11 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphQLCodegenTest {
@@ -34,15 +35,12 @@ class GraphQLCodegenTest {
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/test1");
 
     private MappingConfig mappingConfig;
-    private GraphQLCodegen generator;
 
     @BeforeEach
     void init() {
         mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
-        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach
@@ -52,7 +50,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_CheckFileReferences() throws Exception {
-        List<File> generatedFiles = generator.generate();
+        List<File> generatedFiles = generate("src/test/resources/schemas/test.graphqls");
+
         List<File> filesInTheFolder = Arrays.asList(Objects.requireNonNull(outputJavaClassesDir.listFiles()));
         assertEquals(generatedFiles.size(), filesInTheFolder.size());
         assertTrue(generatedFiles.containsAll(filesInTheFolder));
@@ -61,7 +60,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -80,11 +79,10 @@ class GraphQLCodegenTest {
     @Test
     void generate_NoBuilder() throws Exception {
         mappingConfig.setGenerateBuilder(false);
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Event_noBuilder.java.txt"),
                 getFileByName(files, "Event.java"));
     }
@@ -93,10 +91,9 @@ class GraphQLCodegenTest {
     void generate_CustomMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "java.util.Date")));
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
         assertFileContainsElements(files, "Event.java", "java.util.Date createdDateTime;");
     }
 
@@ -104,7 +101,7 @@ class GraphQLCodegenTest {
     void generate_CustomMappings_Nested() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -117,7 +114,7 @@ class GraphQLCodegenTest {
     void generate_NoCustomMappings() throws Exception {
         mappingConfig.setModelNameSuffix(" ");
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java", "String createdDateTime;");
@@ -127,7 +124,7 @@ class GraphQLCodegenTest {
     void generate_NullCustomMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(null);
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java", "String createdDateTime;");
@@ -136,10 +133,10 @@ class GraphQLCodegenTest {
     @Test
     void generate_NoPackage() throws Exception {
         mappingConfig.setPackageName(null);
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-
         assertFileContainsElements(files, "Event.java", System.lineSeparator() +
                 "/**" + System.lineSeparator() +
                 " * An event that describes a thing that happens" + System.lineSeparator() +
@@ -150,7 +147,8 @@ class GraphQLCodegenTest {
     void generate_CustomModelAndApiPackages() throws Exception {
         mappingConfig.setModelPackageName("com.kobylynskyi.graphql.test1.model");
         mappingConfig.setApiPackageName("com.kobylynskyi.graphql.test1.api");
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
@@ -178,7 +176,7 @@ class GraphQLCodegenTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setModelNameSuffix("TO");
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertNotEquals(0, files.length);
@@ -206,7 +204,7 @@ class GraphQLCodegenTest {
         mappingConfig.setGenerateToString(true);
         mappingConfig.setModelNameSuffix("TO");
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertNotEquals(0, files.length);
@@ -237,18 +235,17 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_WrongSchema() {
-        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
+        GraphQLCodegen graphQLCodegen = new GraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
 
-        Assertions.assertThrows(NoSuchFileException.class, () -> generator.generate());
+        assertThrows(NoSuchFileException.class, graphQLCodegen::generate);
     }
 
     @Test
     void generate_NoQueries() throws Exception {
         mappingConfig.setPackageName("");
-        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/no-queries.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
-        generator.generate();
+
+        generate("src/test/resources/schemas/no-queries.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertEquals(2, files.length);
@@ -260,9 +257,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_Empty() throws Exception {
-        generator = new GraphQLCodegen(singletonList("src/test/resources/schemas/empty.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
-        generator.generate();
+        generate("src/test/resources/schemas/empty.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertEquals(0, files.length);
@@ -271,7 +266,8 @@ class GraphQLCodegenTest {
     @Test
     void generate_OnlyModel() throws Exception {
         mappingConfig.setGenerateApis(false);
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -281,7 +277,8 @@ class GraphQLCodegenTest {
     @Test
     void generate_WithoutAsyncApis() throws Exception {
         mappingConfig.setGenerateAsyncApi(false);
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "VersionQueryResolver.java", "String version()");
@@ -290,7 +287,8 @@ class GraphQLCodegenTest {
     @Test
     void generate_AsyncQueryApis() throws Exception {
         mappingConfig.setGenerateAsyncApi(true);
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -307,7 +305,8 @@ class GraphQLCodegenTest {
         mappingConfig.setGenerateAsyncApi(true);
         mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
         mappingConfig.setApiAsyncReturnListType("reactor.core.publisher.Flux");
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -323,7 +322,8 @@ class GraphQLCodegenTest {
     void generate_AsyncQueryApis_CustomWithApiAsyncReturnType() throws Exception {
         mappingConfig.setGenerateAsyncApi(true);
         mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -339,10 +339,9 @@ class GraphQLCodegenTest {
     void generate_CustomSubscriptionReturnType() throws Exception {
         mappingConfig.setSubscriptionReturnType("org.reactivestreams.Publisher");
 
-        generator.generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
         assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
                 "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
     }
@@ -350,18 +349,17 @@ class GraphQLCodegenTest {
     @Test
     void generate_AsyncMutationApis() throws Exception {
         mappingConfig.setGenerateAsyncApi(true);
-        generator.generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
         assertFileContainsElements(files, "CreateEventMutationResolver.java",
                 "java.util.concurrent.CompletableFuture<Event> createEvent(");
     }
 
     @Test
     void generate_deprecated() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/deprecated.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/deprecated.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -377,8 +375,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_QueriesWithSameName() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/queries-same-name.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -391,8 +388,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_InterfaceAndTypeHavingDuplicateFields() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/type-interface-duplicate-fields.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/type-interface-duplicate-fields.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -402,13 +398,17 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_InterfaceAndTypeHavingDuplicateFields1() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/type-interface-duplicate-fields1.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/type-interface-duplicate-fields1.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Person1.java.txt"),
                 getFileByName(files, "Person.java"));
+    }
+
+    private List<File> generate(String s) throws IOException {
+        return new GraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
     }
 
 }

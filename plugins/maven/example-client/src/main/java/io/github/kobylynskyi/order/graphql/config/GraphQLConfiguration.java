@@ -1,46 +1,29 @@
 package io.github.kobylynskyi.order.graphql.config;
 
-import graphql.language.StringValue;
-import graphql.schema.*;
+import graphql.GraphQLError;
+import graphql.kickstart.spring.error.ThrowableGraphQLError;
+import graphql.scalars.ExtendedScalars;
+import graphql.schema.GraphQLScalarType;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-/**
- * @author bogdankobylinsky
- */
-@Configuration
+@Component
 public class GraphQLConfiguration {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+    @ExceptionHandler(Exception.class)
+    public GraphQLError exception(Exception e) {
+        return new ThrowableGraphQLError(e);
+    }
 
     @Bean
-    public GraphQLScalarType dateGraphQLScalarType() {
-        return GraphQLScalarType.newScalar()
-                .name("DateTime")
-                .coercing(new Coercing() {
-                    @Override
-                    public Object serialize(Object o) throws CoercingSerializeException {
-                        return DATE_FORMAT.format((Date) o);
-                    }
+    public GraphQLScalarType extendedScalarsDateTime() {
+        return ExtendedScalars.DateTime;
+    }
 
-                    @Override
-                    public Object parseValue(Object o) throws CoercingParseValueException {
-                        return serialize(o);
-                    }
-
-                    @Override
-                    public Object parseLiteral(Object o) throws CoercingParseLiteralException {
-                        try {
-                            return DATE_FORMAT.parse(((StringValue) o).getValue());
-                        } catch (ParseException e) {
-                            return null;
-                        }
-                    }
-                }).build();
+    @Bean
+    public GraphQLScalarType extendedScalarsDate() {
+        return ExtendedScalars.Date;
     }
 
 }

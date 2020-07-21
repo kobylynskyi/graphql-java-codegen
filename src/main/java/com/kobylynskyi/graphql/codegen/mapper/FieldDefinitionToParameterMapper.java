@@ -69,6 +69,7 @@ public class FieldDefinitionToParameterMapper {
                                                 String parentTypeName) {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
+        parameter.setOriginalName(fieldDef.getName());
         parameter.setType(getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName).getName());
         parameter.setAnnotations(getAnnotations(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
@@ -88,11 +89,11 @@ public class FieldDefinitionToParameterMapper {
                                                                     ExtendedFieldDefinition fieldDef,
                                                                     ExtendedDefinition<?, ?> parentTypeDef) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
-        parameter.setMethodName(parameter.getName());
+        parameter.setName(fieldDef.getName());
+        parameter.setMethodName(MapperUtils.capitalizeMethodNameIfRestricted(parameter.getName()));
         String nestedType = getNestedTypeName(fieldDef.getType());
         if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
-            parameter.setType(nestedType + mappingContext.getResponseProjectionSuffix());
+            parameter.setType(Utils.capitalize(nestedType + mappingContext.getResponseProjectionSuffix()));
         }
         if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {
             parameter.setParametrizedInputClassName(

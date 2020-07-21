@@ -1,4 +1,4 @@
-package io.github.kobylynskyi.order.external;
+package io.github.kobylynskyi.order.external.product;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
 import io.github.kobylynskyi.order.model.Product;

@@ -52,7 +52,7 @@ public class ${className} extends GraphQLResponseProjection {
 
 <#if field.parametrizedInputClassName?has_content>
     public ${className} ${field.methodName}(${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
-        return ${field.name}(null, input<#if field.type?has_content>, subProjection</#if>);
+        return ${field.methodName}(null, input<#if field.type?has_content>, subProjection</#if>);
     }
 
     public ${className} ${field.methodName}(String alias, ${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {

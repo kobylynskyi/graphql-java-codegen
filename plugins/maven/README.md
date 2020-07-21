@@ -21,14 +21,19 @@
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>2.2.1</version>
+            <version>2.3.0</version>
             <executions>
                 <execution>
                     <goals>
                         <goal>generate</goal>
                     </goals>
                     <configuration>
-                        <graphqlSchemaPaths>${project.basedir}/src/main/resources/schema.graphqls</graphqlSchemaPaths>
+                        <!-- all config options: 
+                        https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+                        -->
+                        <graphqlSchemas>
+                            <includePattern>schema\.graphqls</includePattern>
+                        </graphqlSchemas>
                         <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                         <packageName>io.github.kobylynskyi.bikeshop.graphql.model</packageName>
                         <customTypesMapping>
@@ -36,7 +41,7 @@
                             <Price.amount>java.math.BigDecimal</Price.amount>
                         </customTypesMapping>
                         <customAnnotationsMapping>
-                            <EpochMillis>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class</EpochMillis>
+                            <EpochMillis>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</EpochMillis>
                         </customAnnotationsMapping>
                         <modelNameSuffix>TO</modelNameSuffix>
                     </configuration>

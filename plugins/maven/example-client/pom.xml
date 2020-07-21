@@ -4,7 +4,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin-example-client</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>2.3.1-SNAPSHOT</version>
     <name>graphql-codegen-maven-plugin-example-client</name>
 
     <build>
@@ -18,14 +18,14 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-sources-client</id>
+                        <id>generate-sources-product-client</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <graphqlSchemaPaths>
-                                <graphqlSchemaPath>${project.basedir}/src/main/resources/external/schema-product-service.graphqls</graphqlSchemaPath>
-                            </graphqlSchemaPaths>
+                            <graphqlSchemas>
+                                <includePattern>schema-product-service\.graphqls</includePattern>
+                            </graphqlSchemas>
                             <outputDir>${project.build.directory}/generated-sources/client</outputDir>
                             <modelPackageName>io.github.kobylynskyi.product.graphql.model</modelPackageName>
                             <customTypesMapping>
@@ -42,9 +42,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <graphqlSchemaPaths>
-                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schema.graphqls</graphqlSchemaPath>
-                            </graphqlSchemaPaths>
+                            <graphqlSchemas>
+                                <includePattern>schema\.graphqls</includePattern>
+                            </graphqlSchemas>
                             <outputDir>${project.build.directory}/generated-sources/server</outputDir>
                             <apiPackageName>io.github.kobylynskyi.order.graphql.api</apiPackageName>
                             <modelPackageName>io.github.kobylynskyi.order.graphql.model</modelPackageName>
@@ -52,6 +52,29 @@
                                 <DateTime>java.util.Date</DateTime>
                             </customTypesMapping>
                             <modelNameSuffix>TO</modelNameSuffix>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-sources-starwars-client</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <graphqlSchemas>
+                                <includePattern>schema-starwars-service\.graphqls</includePattern>
+                            </graphqlSchemas>
+                            <outputDir>${project.build.directory}/generated-sources/client-starwars</outputDir>
+                            <modelPackageName>io.github.kobylynskyi.starwars.graphql</modelPackageName>
+                            <customAnnotationsMapping>
+                                <Character>
+                                    com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
+                                    @com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)
+                                </Character>
+                            </customAnnotationsMapping>
+                            <generateClient>true</generateClient>
+                            <generateApis>false</generateApis>
+                            <generateBuilder>false</generateBuilder>
+                            <generateToString>true</generateToString>
                         </configuration>
                     </execution>
                 </executions>
@@ -106,6 +129,12 @@
             <artifactId>graphiql-spring-boot-starter</artifactId>
             <version>7.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.github.kobylynskyi</groupId>
