@@ -70,6 +70,15 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public CodeOfConductResponseProjection typename() {
+        return typename(null);
+    }
+
+    public CodeOfConductResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

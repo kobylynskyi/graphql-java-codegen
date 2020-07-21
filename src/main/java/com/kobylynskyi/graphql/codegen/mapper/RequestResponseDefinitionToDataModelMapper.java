@@ -214,11 +214,17 @@ public class RequestResponseDefinitionToDataModelMapper {
         FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
                 .forEach(p -> allParameters.put(p.getName(), p));
         // includes parameters from the interface
-        MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument()).stream()
+        List<ExtendedInterfaceTypeDefinition> interfacesOfType = MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument());
+        interfacesOfType.stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
                 .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
                 .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+        if (!interfacesOfType.isEmpty()) {
+            // if the type inherits some interface then add __typename to the response projection
+            ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+            allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+        }
         return allParameters.values();
     }
 
