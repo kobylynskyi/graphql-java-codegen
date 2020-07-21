@@ -28,7 +28,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = "2.0.1.Final"
-  private val codegen = "2.2.1"
+  private val codegen = "2.3.0"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
@@ -54,46 +54,51 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
   //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     graphqlSchemas := schemaFinderConfig,
+    jsonConfigurationFile := None,
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
-    generatePackageName := None,
     customTypesMapping := new util.HashMap[String, String](),
+    customAnnotationsMapping := new util.HashMap[String, String](),
+    javaxValidationApiVersion := None,
+    graphqlJavaCodegenVersion := None,
+    // suffix/prefix/strategies:
     apiNamePrefix := None,
-    apiNameSuffix := None,
-    apiRootInterfaceStrategy := None,
-    apiNamePrefixStrategy := None,
+    apiNameSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
+    apiRootInterfaceStrategy := ApiRootInterfaceStrategy.valueOf(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING),
+    apiNamePrefixStrategy := ApiNamePrefixStrategy.valueOf(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY_STRING),
     modelNamePrefix := None,
     modelNameSuffix := None,
+    requestSuffix := MappingConfigConstants.DEFAULT_REQUEST_SUFFIX,
+    responseSuffix := MappingConfigConstants.DEFAULT_RESPONSE_SUFFIX,
+    responseProjectionSuffix := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX,
+    parametrizedInputSuffix := MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX,
+    typeResolverPrefix := None,
+    typeResolverSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
+    subscriptionReturnType := None,
+    modelValidationAnnotation := MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION,
+    apiAsyncReturnType := MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE,
+    apiAsyncReturnListType := None,
+    // package name configs:
     apiPackageName := None,
     modelPackageName := None,
-    generateBuilder := None,
-    generateApis := None,
-    typeResolverPrefix := None,
-    typeResolverSuffix := None,
-    customAnnotationsMapping := new util.HashMap[String, String](),
-    generateEqualsAndHashCode := None,
-    generateImmutableModels := None,
-    generateToString := None,
-    subscriptionReturnType := None,
-    generateAsyncApi := None,
-    modelValidationAnnotation := None,
-    generateParameterizedFieldsResolvers := None,
-    generateExtensionFieldsResolvers := None,
-    generateDataFetchingEnvironmentArgumentInApis := None,
-    generateModelsForRootTypes := None,
+    // field resolvers configs:
     fieldsWithResolvers := new util.HashSet[String](),
     fieldsWithoutResolvers := new util.HashSet[String](),
-    generateClient := None,
-    requestSuffix := None,
-    responseSuffix := None,
-    responseProjectionSuffix := None,
-    parametrizedInputSuffix := None,
-    jsonConfigurationFile := None,
-    parentInterfaces := parentInterfacesConfig,
-    apiAsyncReturnType := None,
-    apiAsyncReturnListType := None,
-    javaxValidationApiVersion := None,
-    graphqlJavaCodegenVersion := None
+    // various toggles:
+    generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING.toBoolean,
+    generateAsyncApi := MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING.toBoolean,
+    generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING.toBoolean,
+    generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING.toBoolean,
+    generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING.toBoolean,
+    generateModelsForRootTypes := MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING.toBoolean,
+    generatePackageName := None,
+    generateBuilder := MappingConfigConstants.DEFAULT_BUILDER_STRING.toBoolean,
+    generateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS_STRING.toBoolean,
+    generateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE_STRING.toBoolean,
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING.toBoolean,
+    generateToString := MappingConfigConstants.DEFAULT_TO_STRING_STRING.toBoolean,
+    // parent interfaces configs:
+    parentInterfaces := parentInterfacesConfig
   )
 
   //setting key must use in Def、:=
@@ -101,83 +106,45 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
     //TODO use builder
     val mappingConfig = new MappingConfig
-
     mappingConfig.setPackageName(generatePackageName.value.orNull)
-
     mappingConfig.setCustomTypesMapping(customTypesMapping.value)
-
-    mappingConfig.setApiNameSuffix(apiNameSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX))
-
+    mappingConfig.setApiNameSuffix(apiNameSuffix.value)
     mappingConfig.setApiNamePrefix(apiNamePrefix.value.orNull)
-
-    mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy.value.getOrElse(ApiRootInterfaceStrategy.valueOf(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING)))
-
-    mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy.value.getOrElse(ApiNamePrefixStrategy.valueOf(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY_STRING)))
-
+    mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy.value)
+    mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy.value)
     mappingConfig.setModelNamePrefix(modelNamePrefix.value.orNull)
-
     mappingConfig.setModelNameSuffix(modelNameSuffix.value.orNull)
-
     mappingConfig.setApiPackageName(apiPackageName.value.orNull)
-
     mappingConfig.setModelPackageName(modelPackageName.value.orNull)
-
-    mappingConfig.setGenerateBuilder(generateBuilder.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_BUILDER_STRING.toBoolean))
-
-    mappingConfig.setGenerateApis(generateApis.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_APIS_STRING.toBoolean))
-
-    mappingConfig.setTypeResolverSuffix(typeResolverSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX))
-
+    mappingConfig.setGenerateBuilder(generateBuilder.value)
+    mappingConfig.setGenerateApis(generateApis.value)
+    mappingConfig.setTypeResolverSuffix(typeResolverSuffix.value)
     mappingConfig.setTypeResolverPrefix(typeResolverPrefix.value.orNull)
-
-    mappingConfig.setModelValidationAnnotation(modelValidationAnnotation.value.getOrElse(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION))
-
+    mappingConfig.setModelValidationAnnotation(modelValidationAnnotation.value)
     mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping.value)
-
-    mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE_STRING.toBoolean))
-
-    mappingConfig.setGenerateImmutableModels(generateImmutableModels.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING.toBoolean))
-
-    mappingConfig.setGenerateToString(generateToString.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_TO_STRING_STRING.toBoolean))
-
+    mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode.value)
+    mappingConfig.setGenerateImmutableModels(generateImmutableModels.value)
+    mappingConfig.setGenerateToString(generateToString.value)
     mappingConfig.setSubscriptionReturnType(subscriptionReturnType.value.orNull)
-
-    mappingConfig.setGenerateAsyncApi(generateAsyncApi.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING.toBoolean))
-
-    mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING.toBoolean))
-
-    mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING.toBoolean))
-
-    mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING.toBoolean))
-
-    mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING.toBoolean))
-
+    mappingConfig.setGenerateAsyncApi(generateAsyncApi.value)
+    mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers.value)
+    mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis.value)
+    mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers.value)
+    mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes.value)
     mappingConfig.setFieldsWithResolvers(fieldsWithResolvers.value)
-
     mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers.value)
-
-    mappingConfig.setGenerateClient(generateClient.value.getOrElse[Boolean](MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING.toBoolean))
-
-    mappingConfig.setRequestSuffix(requestSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_REQUEST_SUFFIX))
-
-    mappingConfig.setResponseSuffix(responseSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_RESPONSE_SUFFIX))
-
-    mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX))
-
-    mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix.value.getOrElse(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX))
-
+    mappingConfig.setGenerateClient(generateClient.value)
+    mappingConfig.setRequestSuffix(requestSuffix.value)
+    mappingConfig.setResponseSuffix(responseSuffix.value)
+    mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix.value)
+    mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix.value)
     mappingConfig.setResolverParentInterface(parentInterfaces.value.resolver)
-
     mappingConfig.setQueryResolverParentInterface(parentInterfaces.value.queryResolver)
-
     mappingConfig.setMutationResolverParentInterface(parentInterfaces.value.mutationResolver)
-
     mappingConfig.setSubscriptionResolverParentInterface(parentInterfaces.value.subscriptionResolver)
-
-    mappingConfig.setApiAsyncReturnType(apiAsyncReturnType.value.getOrElse(MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE))
-
+    mappingConfig.setApiAsyncReturnType(apiAsyncReturnType.value)
     mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType.value.orNull)
-
+    sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
   }
 

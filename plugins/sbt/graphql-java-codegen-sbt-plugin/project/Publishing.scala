@@ -1,5 +1,5 @@
-import sbt.Keys._
 import sbt._
+import sbt.Keys._
 import xerial.sbt.Sonatype.autoImport.sonatypeProfileName
 
 /**
@@ -9,7 +9,7 @@ import xerial.sbt.Sonatype.autoImport.sonatypeProfileName
  * @since 2020-07-19
  * @version v1.0
  */
-object Publishing extends AutoPlugin {
+object Publishing {
 
   //publish by sbt publishSigned
   lazy val publishSettings = Seq(

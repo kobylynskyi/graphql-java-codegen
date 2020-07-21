@@ -9,7 +9,8 @@ organization := "io.github.jxnu-liguobin"
 
 //keep version is equals with parent project `graphql-java-codegen`
 lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin", base = file(".")).
-  enablePlugins(SbtPlugin, Publishing).
+  enablePlugins(SbtPlugin).
+  settings(Publishing.publishSettings).
   settings(
     sbtPlugin := true,
     scalaVersion := Versions.scala212,

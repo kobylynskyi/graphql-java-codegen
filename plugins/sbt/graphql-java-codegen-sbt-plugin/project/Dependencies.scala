@@ -13,7 +13,7 @@ object Dependencies {
   object Versions {
     lazy val scala212 = "2.12.12"
     lazy val scala211 = "2.11.12"
-    val codegen = "2.2.2-SNAPSHOT"
+    val codegen = "2.3.0"
   }
 
   import Versions._
