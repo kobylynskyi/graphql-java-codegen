@@ -48,6 +48,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Map<String, String> customAnnotationsMapping;
 
     @Parameter
+    private Map<String, String> directiveAnnotationsMapping;
+
+    @Parameter
     private String packageName;
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_BUILDER_STRING)
@@ -162,6 +165,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
@@ -175,7 +180,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setTypeResolverSuffix(typeResolverSuffix);
         mappingConfig.setTypeResolverPrefix(typeResolverPrefix);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
-        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
@@ -281,6 +285,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Map<String, String> getCustomAnnotationsMapping() {
+        return customAnnotationsMapping;
+    }
+
+    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+        this.customAnnotationsMapping = customAnnotationsMapping;
+    }
+
+    @Override
+    public Map<String, String> getDirectiveAnnotationsMapping() {
+        return directiveAnnotationsMapping;
+    }
+
+    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+        this.directiveAnnotationsMapping = directiveAnnotationsMapping;
+    }
+
+    @Override
     public String getPackageName() {
         return packageName;
     }
@@ -341,15 +363,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setModelNameSuffix(String modelNameSuffix) {
         this.modelNameSuffix = modelNameSuffix;
-    }
-
-    @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
-        return customAnnotationsMapping;
-    }
-
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
-        this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Override

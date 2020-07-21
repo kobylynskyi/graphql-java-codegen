@@ -5,7 +5,11 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.Argument;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
 import graphql.language.ListType;
+import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.Type;
 import graphql.language.TypeName;
@@ -116,32 +120,33 @@ class GraphqlTypeToJavaTypeMapper {
      *
      * @param mappingContext Global mapping context
      * @param type           GraphQL type
-     * @param name           GraphQL type name
+     * @param def            GraphQL definition
      * @param parentTypeName Name of the parent type
      * @param mandatory      Type is mandatory
      * @return list of Java annotations for a given GraphQL type
      */
-    static List<String> getAnnotations(MappingContext mappingContext, Type<?> type, String name, String parentTypeName,
-                                       boolean mandatory) {
-        if (type instanceof TypeName) {
-            return getAnnotations(mappingContext, ((TypeName) type).getName(), name, parentTypeName, mandatory);
-        } else if (type instanceof ListType) {
-            return getAnnotations(mappingContext, ((ListType) type).getType(), name, parentTypeName, mandatory);
+    static List<String> getAnnotations(MappingContext mappingContext, Type<?> type,
+                                       NamedNode<?> def, String parentTypeName, boolean mandatory) {
+        if (type instanceof ListType) {
+            return getAnnotations(mappingContext, ((ListType) type).getType(), def, parentTypeName, mandatory);
         } else if (type instanceof NonNullType) {
-            return getAnnotations(mappingContext, ((NonNullType) type).getType(), name, parentTypeName, true);
+            return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
+        } else if (type instanceof TypeName) {
+            return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName, getDirectives(def), mandatory);
         }
         return Collections.emptyList();
     }
 
     static List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
-        return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null, false);
+        return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null, Collections.emptyList(), false);
     }
 
     static List<String> getAnnotations(MappingContext mappingContext, String name) {
-        return getAnnotations(mappingContext, name, name, null, false);
+        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false);
     }
 
-    static List<String> getAnnotations(MappingContext mappingContext, String graphQLType, String name, String parentTypeName, boolean mandatory) {
+    static List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
+                                       String parentTypeName, List<Directive> directives, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
@@ -152,10 +157,31 @@ class GraphqlTypeToJavaTypeMapper {
         Map<String, String> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
         if (name != null && parentTypeName != null && customAnnotationsMapping.containsKey(parentTypeName + "." + name)) {
             annotations.add(customAnnotationsMapping.get(parentTypeName + "." + name));
-        } else if (customAnnotationsMapping.containsKey(graphQLType)) {
-            annotations.add(customAnnotationsMapping.get(graphQLType));
+        } else if (customAnnotationsMapping.containsKey(graphQLTypeName)) {
+            annotations.add(customAnnotationsMapping.get(graphQLTypeName));
+        }
+        Map<String, String> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
+        for (Directive directive : directives) {
+            if (directiveAnnotationsMapping.containsKey(directive.getName())) {
+                annotations.add(getAnnotationForDirective(mappingContext, directiveAnnotationsMapping, directive));
+            }
         }
         return annotations;
+    }
+
+    private static String getAnnotationForDirective(MappingContext mappingContext,
+                                                    Map<String, String> directiveAnnotationsMapping,
+                                                    Directive directive) {
+        String annotation = directiveAnnotationsMapping.get(directive.getName());
+        for (Argument dirArg : directive.getArguments()) {
+            String argumentValueFormatter = Utils.substringBetween(annotation, "{{" + dirArg.getName(), "}}");
+            // if argumentValueFormatter == null then the placeholder {{dirArg.getName()}} does not exist
+            if (argumentValueFormatter != null) {
+                annotation = annotation.replace(String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
+                        ValueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
+            }
+        }
+        return annotation;
     }
 
     /**
@@ -225,6 +251,13 @@ class GraphqlTypeToJavaTypeMapper {
 
     private static String getGenericsString(String genericType, String typeParameter) {
         return String.format("%s<%s>", genericType, typeParameter);
+    }
+
+    private static List<Directive> getDirectives(NamedNode<?> def) {
+        if (def instanceof DirectivesContainer) {
+            return ((DirectivesContainer<?>) def).getDirectives();
+        }
+        return Collections.emptyList();
     }
 
 }

@@ -8,7 +8,6 @@ import graphql.language.InputValueDefinition;
 
 import java.util.List;
 
-import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getAnnotations;
 import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getJavaType;
 import static java.util.stream.Collectors.toList;
 
@@ -49,8 +48,8 @@ public class InputValueDefinitionToParameterMapper {
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
         parameter.setType(getJavaType(mappingContext, inputValueDefinition.getType()));
-        parameter.setDefaultValue(DefaultValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName, false));
+        parameter.setDefaultValue(ValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
         return parameter;
     }
