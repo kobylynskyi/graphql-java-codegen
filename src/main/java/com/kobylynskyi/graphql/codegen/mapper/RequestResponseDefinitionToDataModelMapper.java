@@ -212,19 +212,16 @@ public class RequestResponseDefinitionToDataModelMapper {
         Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
         // includes parameters from the base definition and extensions
         FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
-                .forEach(p -> allParameters.put(p.getName(), p));
+                .forEach(p -> allParameters.put(p.getMethodName(), p));
         // includes parameters from the interface
         List<ExtendedInterfaceTypeDefinition> interfacesOfType = MapperUtils.getInterfacesOfType(typeDefinition, mappingContext.getDocument());
         interfacesOfType.stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
-                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
-                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
-        if (!interfacesOfType.isEmpty()) {
-            // if the type inherits some interface then add __typename to the response projection
-            ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
-            allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
-        }
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getMethodName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getMethodName(), paramDef));
+        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+        allParameters.put(typeNameProjParamDef.getMethodName(), typeNameProjParamDef);
         return allParameters.values();
     }
 
@@ -241,22 +238,22 @@ public class RequestResponseDefinitionToDataModelMapper {
         Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
         // includes parameters from the base definition and extensions
         FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, interfaceDefinition.getFieldDefinitions(), interfaceDefinition)
-                .forEach(p -> allParameters.put(p.getName(), p));
+                .forEach(p -> allParameters.put(p.getMethodName(), p));
         // includes parameters from the interface
         MapperUtils.getInterfacesOfType(interfaceDefinition, mappingContext.getDocument()).stream()
                 .map(i -> FieldDefinitionToParameterMapper.mapProjectionFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
-                .filter(paramDef -> !allParameters.containsKey(paramDef.getName()))
-                .forEach(paramDef -> allParameters.put(paramDef.getName(), paramDef));
+                .filter(paramDef -> !allParameters.containsKey(paramDef.getMethodName()))
+                .forEach(paramDef -> allParameters.put(paramDef.getMethodName(), paramDef));
 
         Set<String> interfaceChildren = mappingContext.getInterfaceChildren()
                 .getOrDefault(interfaceDefinition.getName(), Collections.emptySet());
         for (String childName : interfaceChildren) {
             ProjectionParameterDefinition childDef = getChildDefinition(mappingContext, childName);
-            allParameters.put(childDef.getName(), childDef);
+            allParameters.put(childDef.getMethodName(), childDef);
         }
         ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
-        allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+        allParameters.put(typeNameProjParamDef.getMethodName(), typeNameProjParamDef);
         return allParameters.values();
     }
 
@@ -273,10 +270,10 @@ public class RequestResponseDefinitionToDataModelMapper {
         Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
         for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
             ProjectionParameterDefinition memberDef = getChildDefinition(mappingContext, memberTypeName);
-            allParameters.put(memberDef.getName(), memberDef);
+            allParameters.put(memberDef.getMethodName(), memberDef);
         }
         ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
-        allParameters.put(typeNameProjParamDef.getName(), typeNameProjParamDef);
+        allParameters.put(typeNameProjParamDef.getMethodName(), typeNameProjParamDef);
         return allParameters.values();
     }
 

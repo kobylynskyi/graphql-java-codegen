@@ -34,6 +34,15 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public SynchronizedResponseProjection typename() {
+        return typename(null);
+    }
+
+    public SynchronizedResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
