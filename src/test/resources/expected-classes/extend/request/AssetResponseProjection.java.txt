@@ -49,5 +49,14 @@ public class AssetResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public AssetResponseProjection typename() {
+        return typename(null);
+    }
+
+    public AssetResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
 
 }

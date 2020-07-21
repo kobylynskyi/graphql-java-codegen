@@ -13,5 +13,14 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     public EventResponseProjection() {
     }
 
+    public EventResponseProjection typename() {
+        return typename(null);
+    }
+
+    public EventResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
 
 }

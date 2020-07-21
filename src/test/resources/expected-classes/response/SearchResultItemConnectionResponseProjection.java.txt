@@ -87,5 +87,14 @@ public class SearchResultItemConnectionResponseProjection extends GraphQLRespons
         return this;
     }
 
+    public SearchResultItemConnectionResponseProjection typename() {
+        return typename(null);
+    }
+
+    public SearchResultItemConnectionResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
 
 }

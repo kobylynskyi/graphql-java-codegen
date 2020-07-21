@@ -88,6 +88,15 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public EventPropertyResponseProjection typename() {
+        return typename(null);
+    }
+
+    public EventPropertyResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
