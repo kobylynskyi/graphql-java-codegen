@@ -18,7 +18,7 @@
 
 ```groovy
 plugins {
-  id "io.github.kobylynskyi.graphql.codegen" version "2.2.1"
+  id "io.github.kobylynskyi.graphql.codegen" version "2.3.0"
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:2.2.1"
+    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:2.3.0"
   }
 }
 
@@ -49,9 +49,9 @@ Please refer to [Codegen Options](../../docs/codegen-options.md)
 
 ```groovy
 graphqlCodegen {
-    graphqlSchemaPaths = [
-        "$projectDir/src/main/resources/schema.graphqls".toString()
-    ]
+    // all config options: 
+    // https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+    graphqlSchemas.includePattern = "schema\\.graphqls"
     outputDir = new File("$buildDir/generated")
     packageName = "com.example.graphql.model"
     customTypesMapping = [
@@ -59,7 +59,7 @@ graphqlCodegen {
         Price.amount: "java.math.BigDecimal"
     ]
     customAnnotationsMapping = [
-        DateTime: "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class"
+        DateTime: "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"
     ]
     modelNameSuffix = "TO"
 }
@@ -77,11 +77,13 @@ You can also refer to build.gradle files in example projects: [example-client/bu
 
 ```kotlin
 tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
+    // all config options: 
+    // https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
     graphqlSchemaPaths = listOf("$projectDir/src/main/resources/graphql/schema.graphqls")
     outputDir = File("$buildDir/generated")
     packageName = "com.example.graphql.model"
     customTypesMapping = mutableMapOf(Pair("EpochMillis", "java.time.LocalDateTime"))
-    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class"))
+    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"))
 }
 
 // Automatically generate GraphQL code on project build:
@@ -118,12 +120,12 @@ If you want to have different configuration for different `.graphqls` files (e.g
 
 ```groovy
 task graphqlCodegenService1(type: GraphqlCodegenGradleTask) {
-    graphqlSchemaPaths = ["$projectDir/src/main/resources/schema1.graphqls".toString()]
+    graphqlSchemas.includePattern = "schema1\\.graphqls"
     outputDir = new File("$buildDir/generated/example1")
 }
 
 task graphqlCodegenService2(type: GraphqlCodegenGradleTask) {
-    graphqlSchemaPaths = ["$projectDir/src/main/resources/schema2.graphqls".toString()]
+    graphqlSchemas.includePattern = "schema2\\.graphqls"
     outputDir = new File("$buildDir/generated/example2")
 }
 ```

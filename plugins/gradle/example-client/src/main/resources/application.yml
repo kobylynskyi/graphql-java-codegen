@@ -5,6 +5,8 @@ external:
   service:
     product:
       url: http://localhost:8081/graphql
+    starwars:
+      url: http://localhost:8081/star-wars/graphql
 
 graphql:
   tools:

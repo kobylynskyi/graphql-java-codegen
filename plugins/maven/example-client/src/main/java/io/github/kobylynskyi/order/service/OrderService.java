@@ -1,7 +1,12 @@
 package io.github.kobylynskyi.order.service;
 
-import io.github.kobylynskyi.order.external.ProductServiceGraphQLClient;
-import io.github.kobylynskyi.order.model.*;
+import io.github.kobylynskyi.order.external.product.ProductServiceGraphQLClient;
+import io.github.kobylynskyi.order.model.Item;
+import io.github.kobylynskyi.order.model.Order;
+import io.github.kobylynskyi.order.model.OrderNotFoundException;
+import io.github.kobylynskyi.order.model.Product;
+import io.github.kobylynskyi.order.model.UnableToRetrieveProductException;
+import io.github.kobylynskyi.order.model.UnableToRetrieveProductsException;
 import io.github.kobylynskyi.order.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

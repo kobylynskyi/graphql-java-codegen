@@ -53,7 +53,7 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Type() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -83,15 +83,15 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Class() throws Exception {
         Map<String, String> customAnnotationsMapping = new HashMap<>();
         // input
-        customAnnotationsMapping.put("AcceptTopicSuggestionInput", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionInputDeserializer.class)");
+        customAnnotationsMapping.put("AcceptTopicSuggestionInput", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionInputDeserializer.class)");
         // type
         customAnnotationsMapping.put("AcceptTopicSuggestionPayload", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionPayloadDeserializer.class)");
         // interface
-        customAnnotationsMapping.put("Actor", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = ActorDeserializer.class)");
+        customAnnotationsMapping.put("Actor", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = ActorDeserializer.class)");
         // union
         customAnnotationsMapping.put("Assignee", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AssigneeDeserializer.class)");
         // enum
-        customAnnotationsMapping.put("DeploymentOrderField", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = DeploymentOrderFieldDeserializer.class)");
+        customAnnotationsMapping.put("DeploymentOrderField", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = DeploymentOrderFieldDeserializer.class)");
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
