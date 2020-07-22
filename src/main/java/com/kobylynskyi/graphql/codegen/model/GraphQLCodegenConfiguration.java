@@ -29,7 +29,7 @@ public interface GraphQLCodegenConfiguration {
      * * Map of (GraphqlObjectName.fieldName) to (JavaAnnotation)
      * * Map of (GraphqlType) to (JavaAnnotation)
      * <p>
-     * e.g.: EpochMillis --- com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
+     * e.g.: EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */

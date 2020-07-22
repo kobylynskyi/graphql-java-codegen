@@ -18,7 +18,7 @@
 
 ```groovy
 plugins {
-  id "io.github.kobylynskyi.graphql.codegen" version "2.3.0"
+  id "io.github.kobylynskyi.graphql.codegen" version "2.4.0"
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:2.3.0"
+    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:2.4.0"
   }
 }
 
@@ -59,7 +59,7 @@ graphqlCodegen {
         Price.amount: "java.math.BigDecimal"
     ]
     customAnnotationsMapping = [
-        DateTime: "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"
+        DateTime: "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"
     ]
     modelNameSuffix = "TO"
 }
@@ -83,7 +83,7 @@ tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
     outputDir = File("$buildDir/generated")
     packageName = "com.example.graphql.model"
     customTypesMapping = mutableMapOf(Pair("EpochMillis", "java.time.LocalDateTime"))
-    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"))
+    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"))
 }
 
 // Automatically generate GraphQL code on project build:

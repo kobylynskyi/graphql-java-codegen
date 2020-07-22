@@ -40,7 +40,7 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -55,7 +55,7 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Type() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -70,7 +70,7 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -121,7 +121,7 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_RequestResponseClasses() throws Exception {
         Map<String, String> customAnnotationsMapping = new HashMap<>();
         // request
-        customAnnotationsMapping.put("CodeOfConductQueryRequest", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryRequestDeserializer.class)");
+        customAnnotationsMapping.put("CodeOfConductQueryRequest", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryRequestDeserializer.class)");
         // response
         customAnnotationsMapping.put("CodeOfConductQueryResponse", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryResponseDeserializer.class)");
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);

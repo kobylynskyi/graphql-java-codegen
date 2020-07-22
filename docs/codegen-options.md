@@ -107,8 +107,8 @@ Supports following formats:
 Can be used to supply custom annotations (serializers) for scalars. 
 
 Supports following formats:
-* Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
-* Map of (GraphQLType) to (JavaAnnotation). E.g.: `EpochMillis = com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
+* Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
+* Map of (GraphQLType) to (JavaAnnotation). E.g.: `EpochMillis = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
 
 
 ### Option `directiveAnnotationsMapping`
