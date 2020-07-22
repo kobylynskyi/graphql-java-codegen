@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
@@ -135,6 +137,25 @@ class GraphQLCodegenAnnotationsTest {
         assertFileContainsElements(files, "CodeOfConductQueryResponse.java",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryResponseDeserializer.class)"
                         + System.lineSeparator() + "public class CodeOfConductQueryResponse extends GraphQLResult<Map<String, CodeOfConduct>> {");
+    }
+
+    @Test
+    void generate_Directives() throws Exception {
+        Map<String, String> directiveAnnotationsMapping = new HashMap<>();
+        directiveAnnotationsMapping.put("auth",
+                "@com.example.CustomAnnotation(roles={{roles?toArray}}, boo={{boo?toArray}}, float={{float?toArrayOfStrings}}, int={{int}}, n={{n?toString}})");
+        mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/annotation/CreateEventMutationResolver.java.txt"),
+                getFileByName(files, "CreateEventMutationResolver.java"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/annotation/MutationResolver.java.txt"),
+                getFileByName(files, "MutationResolver.java"));
     }
 
 }

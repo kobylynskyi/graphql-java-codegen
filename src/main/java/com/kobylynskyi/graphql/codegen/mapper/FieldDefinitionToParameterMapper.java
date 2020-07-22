@@ -9,7 +9,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.List;
 
-import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getAnnotations;
 import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getJavaType;
 import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getNestedTypeName;
 import static java.util.stream.Collectors.toList;
@@ -71,7 +70,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setOriginalName(fieldDef.getName());
         parameter.setType(getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName).getName());
-        parameter.setAnnotations(getAnnotations(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName, false));
+        parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(fieldDef.isDeprecated());
         return parameter;

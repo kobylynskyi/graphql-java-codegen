@@ -36,6 +36,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Map<String, String> getDirectiveAnnotationsMapping() {
+        return config.getDirectiveAnnotationsMapping();
+    }
+
+    @Override
     public Boolean getGenerateApis() {
         return config.getGenerateApis();
     }

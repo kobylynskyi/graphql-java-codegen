@@ -143,7 +143,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setOriginalName(resolvedField.getName());
         operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingContext, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext,
-                resolvedField.getType(), resolvedField.getName(), parentTypeName, false));
+                resolvedField.getType(), resolvedField, parentTypeName, false));
         operation.setParameters(getOperationParameters(mappingContext, resolvedField, parentTypeName));
         operation.setJavaDoc(resolvedField.getJavaDoc());
         operation.setDeprecated(resolvedField.isDeprecated());

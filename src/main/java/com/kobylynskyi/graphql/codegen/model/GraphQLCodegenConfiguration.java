@@ -36,6 +36,21 @@ public interface GraphQLCodegenConfiguration {
     Map<String, String> getCustomAnnotationsMapping();
 
     /**
+     * Map GraphQL directives to Java annotations.
+     * <p>
+     * Directive fields can be used in annotations via: {{directiveFieldName}}
+     * <p>
+     * Example:
+     * <p>
+     * schema: directive <code>@auth (roles: [String])</code>
+     * <p>
+     * directiveAnnotationsMapping: auth --- @org.springframework.security.access.annotation.Secured({{roles}})
+     *
+     * @return mappings from GraphQL directives to Java annotations.
+     */
+    Map<String, String> getDirectiveAnnotationsMapping();
+
+    /**
      * Specifies whether api classes should be generated.
      *
      * @return <b>true</b> is API interfaces should be generated.

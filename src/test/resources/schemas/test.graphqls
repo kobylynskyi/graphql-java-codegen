@@ -26,7 +26,13 @@ type Query {
 
 type Mutation {
     # Create a new event.
-    createEvent(categoryId: String!, createdBy: String!): Event! @auth(role:"admin")
+    createEvent(categoryId: String!, createdBy: String!): Event!
+    @auth(
+        roles: ["admin", "moderator"],
+        boo: [true, false, true],
+        float: [12.0, null],
+        int: 42,
+        n: null)
 }
 
 type Subscription {
@@ -81,3 +87,11 @@ enum EventStatus {
     # Logging completed
     LOGGED
 }
+
+directive @auth (
+    roles: [String] = ["viewer"],
+    float: [Float] = [],
+    n: ID,
+    int: Int,
+    boo: [Boolean]
+) on FIELD_DEFINITION | QUERY | MUTATION | SUBSCRIPTION
