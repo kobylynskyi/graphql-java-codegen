@@ -52,8 +52,9 @@ task graphqlCodegenProductService(type: GraphQLCodegenGradleTask) {
             DateTime: "java.util.Date"
     ]
     modelNameSuffix = "TO"
-    generateClient = true
     generateApis = false
+    generateClient = true
+    generateParameterizedFieldsResolvers = false
 }
 
 
@@ -92,6 +93,7 @@ task graphqlCodegenStarwarsService(type: GraphQLCodegenGradleTask) {
     generateApis = false
     generateBuilder = false
     generateToString = true
+    generateParameterizedFieldsResolvers = false
 }
 
 
