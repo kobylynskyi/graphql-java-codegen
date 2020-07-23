@@ -28,7 +28,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = "2.0.1.Final"
-  private val codegen = "2.3.0"
+  private val codegen = "2.4.0"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
@@ -59,6 +59,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     graphqlSchemaValidate := Seq.empty,
     customTypesMapping := new util.HashMap[String, String](),
     customAnnotationsMapping := new util.HashMap[String, String](),
+    directiveAnnotationsMapping := new util.HashMap[String, String](),
     javaxValidationApiVersion := None,
     graphqlJavaCodegenVersion := None,
     // suffix/prefix/strategies:
@@ -144,6 +145,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     mappingConfig.setSubscriptionResolverParentInterface(parentInterfaces.value.subscriptionResolver)
     mappingConfig.setApiAsyncReturnType(apiAsyncReturnType.value)
     mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType.value.orNull)
+    mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping.value)
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
   }

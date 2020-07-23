@@ -99,6 +99,8 @@ trait GraphQLCodegenKeys {
 
   val apiAsyncReturnListType = settingKey[Option[String]]("apiAsyncReturnListType")
 
+  val directiveAnnotationsMapping = settingKey[util.HashMap[String, String]]("directiveAnnotationsMapping")
+
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")

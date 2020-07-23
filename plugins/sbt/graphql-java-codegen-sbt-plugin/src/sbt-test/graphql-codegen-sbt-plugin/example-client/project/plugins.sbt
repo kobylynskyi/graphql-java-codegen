@@ -1,1 +1,1 @@
-addSbtPlugin("io.github.jxnu-liguobin" % "graphql-codegen-sbt-plugin" % "2.3.0")
+addSbtPlugin("io.github.jxnu-liguobin" % "graphql-codegen-sbt-plugin" % "2.4.0")
