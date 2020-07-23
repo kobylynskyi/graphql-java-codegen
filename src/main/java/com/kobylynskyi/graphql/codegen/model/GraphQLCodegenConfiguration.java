@@ -29,11 +29,26 @@ public interface GraphQLCodegenConfiguration {
      * * Map of (GraphqlObjectName.fieldName) to (JavaAnnotation)
      * * Map of (GraphqlType) to (JavaAnnotation)
      * <p>
-     * e.g.: EpochMillis --- com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
+     * e.g.: EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */
     Map<String, String> getCustomAnnotationsMapping();
+
+    /**
+     * Map GraphQL directives to Java annotations.
+     * <p>
+     * Directive fields can be used in annotations via: {{directiveFieldName}}
+     * <p>
+     * Example:
+     * <p>
+     * schema: directive <code>@auth (roles: [String])</code>
+     * <p>
+     * directiveAnnotationsMapping: auth --- @org.springframework.security.access.annotation.Secured({{roles}})
+     *
+     * @return mappings from GraphQL directives to Java annotations.
+     */
+    Map<String, String> getDirectiveAnnotationsMapping();
 
     /**
      * Specifies whether api classes should be generated.

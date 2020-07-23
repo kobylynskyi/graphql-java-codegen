@@ -21,7 +21,7 @@
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>2.3.0</version>
+            <version>2.4.0</version>
             <executions>
                 <execution>
                     <goals>
@@ -41,7 +41,7 @@
                             <Price.amount>java.math.BigDecimal</Price.amount>
                         </customTypesMapping>
                         <customAnnotationsMapping>
-                            <EpochMillis>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</EpochMillis>
+                            <EpochMillis>@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</EpochMillis>
                         </customAnnotationsMapping>
                         <modelNameSuffix>TO</modelNameSuffix>
                     </configuration>

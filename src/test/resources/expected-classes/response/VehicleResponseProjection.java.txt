@@ -42,5 +42,14 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    public VehicleResponseProjection typename() {
+        return typename(null);
+    }
+
+    public VehicleResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
 
 }

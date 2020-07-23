@@ -92,7 +92,7 @@ public final class Utils {
     }
 
     /**
-     * Copy of org.apache.commons.lang3.StringUtils.isBlank(CharSequence cs)
+     * Copy of org.apache.commons.lang3.StringUtils#isBlank(CharSequence)
      *
      * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace only
@@ -201,6 +201,31 @@ public final class Utils {
             return null;
         }
         return value.replaceAll("^@+", "");
+    }
+
+    /**
+     * Copy of org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
+     * <p>
+     * Gets the String that is nested in between two Strings.
+     * Only the first match is returned.
+     *
+     * @param str   the String containing the substring, may be null
+     * @param open  the String before the substring, may be null
+     * @param close the String after the substring, may be null
+     * @return the substring, {@code null} if no match
+     */
+    public static String substringBetween(final String str, final String open, final String close) {
+        if (str == null || open == null || close == null) {
+            return null;
+        }
+        final int start = str.indexOf(open);
+        if (start != -1) {
+            int end = str.indexOf(close, start + open.length());
+            if (end != -1) {
+                return str.substring(start + open.length(), end);
+            }
+        }
+        return null;
     }
 
 }

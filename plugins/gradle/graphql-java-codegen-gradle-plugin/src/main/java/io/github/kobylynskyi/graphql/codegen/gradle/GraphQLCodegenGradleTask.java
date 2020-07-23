@@ -45,6 +45,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
+    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
@@ -92,6 +93,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
@@ -105,7 +108,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setTypeResolverSuffix(typeResolverSuffix);
         mappingConfig.setTypeResolverPrefix(typeResolverPrefix);
         mappingConfig.setModelValidationAnnotation(modelValidationAnnotation);
-        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
@@ -215,6 +217,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
         this.customTypesMapping = customTypesMapping;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Map<String, String> getCustomAnnotationsMapping() {
+        return customAnnotationsMapping;
+    }
+
+    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+        this.customAnnotationsMapping = customAnnotationsMapping;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Map<String, String> getDirectiveAnnotationsMapping() {
+        return directiveAnnotationsMapping;
+    }
+
+    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+        this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 
     @Input
@@ -358,17 +382,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setModelValidationAnnotation(String modelValidationAnnotation) {
         this.modelValidationAnnotation = modelValidationAnnotation;
-    }
-
-    @Input
-    @Optional
-    @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
-        return customAnnotationsMapping;
-    }
-
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
-        this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Input

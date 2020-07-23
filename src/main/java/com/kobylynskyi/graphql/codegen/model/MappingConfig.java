@@ -16,6 +16,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, String> customAnnotationsMapping = new HashMap<>();
+    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
 
     // package name configs:
     private String packageName;
@@ -108,6 +109,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
+        directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
     }
 
     private static Map<String, String> combineMap(Map<String, String> thisMap, Map<String, String> otherMap) {
@@ -172,6 +174,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
         this.customAnnotationsMapping = customAnnotationsMapping;
+    }
+
+    @Override
+    public Map<String, String> getDirectiveAnnotationsMapping() {
+        return directiveAnnotationsMapping;
+    }
+
+    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+        this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 
     @Override

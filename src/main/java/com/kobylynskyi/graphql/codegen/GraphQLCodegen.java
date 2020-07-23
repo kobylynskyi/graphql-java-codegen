@@ -187,6 +187,12 @@ public class GraphQLCodegen {
                 entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
             }
         }
+        Map<String, String> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
+        if (directiveAnnotationsMapping != null) {
+            for (Map.Entry<String, String> entry : directiveAnnotationsMapping.entrySet()) {
+                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
+            }
+        }
     }
 
     public List<File> generate() throws IOException {

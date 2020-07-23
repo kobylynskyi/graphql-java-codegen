@@ -25,8 +25,9 @@
 | `modelValidationAnnotation`                     | String                                                             | @javax.validation.<br>constraints.NotNull     | Annotation for mandatory (NonNull) fields. Can be null/empty. |
 | `typeResolverPrefix`                            | String                                                             | Empty                                         | Sets the prefix for GraphQL type resolver classes. |
 | `typeResolverSuffix`                            | String                                                             | `Resolver`                                    | Sets the suffix for GraphQL type resolver classes. |
-| `customTypesMapping`                            | Map(String,String)                                                 | Empty                                         | Can be used to supply custom mappings for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaType) <br/> * Map of (GraphqlType) to (JavaType) |
-| `customAnnotationsMapping`                      | Map(String,String)                                                 | Empty                                         | Can be used to supply custom annotations (serializers) for scalars. <br/> Supports:<br/> * Map of (GraphqlObjectName.fieldName) to (JavaAnnotation) <br/> * Map of (GraphqlType) to (JavaAnnotation) |
+| `customTypesMapping`                            | Map(String,String)                                                 | Empty                                         | *See [CustomTypesMapping](#option-customtypesmapping)*  |
+| `customAnnotationsMapping`                      | Map(String,String)                                                 | Empty                                         | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
+| `directiveAnnotationsMapping`                   | Map(String,String)                                                 | Empty                                         | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
 | `fieldsWithResolvers`                           | Set(String)                                                        | Empty                                         | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. |
 | `fieldsWithoutResolvers`                        | Set(String)                                                        | Empty                                         | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. |
 | `generateParameterizedFieldsResolvers`          | Boolean                                                            | True                                          | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
@@ -92,8 +93,36 @@ Can be handy if you are using [graphql-java-tools](https://github.com/graphql-ja
 | `resolver`                    | String    | Empty         | Interface that will be added as "extend" to all generated TypeResolver interfaces. |
 
 
+### Option `customTypesMapping`
 
-#### External mapping configuration
+Can be used to supply custom mappings for scalars. 
+
+Supports following formats:
+* Map of (GraphQLObjectName.fieldName) to (JavaType). E.g.: `Event.dateTime = java.util.Date` 
+* Map of (GraphQLType) to (JavaType). E.g.: `EpochMillis = java.time.LocalDateTime`
+
+
+### Option `customAnnotationsMapping`
+
+Can be used to supply custom annotations (serializers) for scalars. 
+
+Supports following formats:
+* Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
+* Map of (GraphQLType) to (JavaAnnotation). E.g.: `EpochMillis = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
+
+
+### Option `directiveAnnotationsMapping`
+
+Can be used to supply custom annotations for directives in a following format: 
+Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`
+
+**Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. 
+You can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`, `{{val?toArrayOfStrings}}`.
+
+
+
+
+### External mapping configuration
 
 Provide a path to external file via property `jsonConfigurationFile`
 Sample content of the file:
