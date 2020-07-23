@@ -38,7 +38,7 @@ class QueryResolverImpl extends QueryResolver {
     val humanQueryRequest = new HumanQueryRequest
     humanQueryRequest.setId(id)
     //must use typename, and add jackson annotation to support, since v2.4
-    val humanResponseProjection = new HumanResponseProjection().id().name().email()
+    val humanResponseProjection = new HumanResponseProjection().id().name().typename()
     val graphQLRequest = new GraphQLRequest(humanQueryRequest, humanResponseProjection)
     val retFuture = OkHttp.executeRequest(graphQLRequest, new TypeReference[HumanDO] {})
     val ret = Await.result(retFuture, Duration.Inf)
@@ -50,7 +50,7 @@ class QueryResolverImpl extends QueryResolver {
     import scala.collection.JavaConverters._
     val humanQueryRequest = new HumansQueryRequest
     //must use typename, and add jackson annotation to support, since v2.4
-    val humanResponseProjection = new HumanResponseProjection().id().name()
+    val humanResponseProjection = new HumanResponseProjection().id().name().typename()
     val graphQLRequest = new GraphQLRequest(humanQueryRequest, humanResponseProjection)
     val retFuture = OkHttp.executeRequest(graphQLRequest, new TypeReference[List[HumanDO]] {})
     val ret = Await.result(retFuture, Duration.Inf)
@@ -62,7 +62,7 @@ class QueryResolverImpl extends QueryResolver {
     val productByIdQueryRequest = new DroidQueryRequest
     productByIdQueryRequest.setId(id)
     //must use typename, and add jackson annotation to support, since v2.4
-    val droidResponseProjection = new DroidResponseProjection().id().name()
+    val droidResponseProjection = new DroidResponseProjection().id().name().typename()
     val graphQLRequest = new GraphQLRequest(productByIdQueryRequest, droidResponseProjection)
     val retFuture = OkHttp.executeRequest(graphQLRequest, new TypeReference[DroidDO] {})
     val ret = Await.result(retFuture, Duration.Inf)
