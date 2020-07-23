@@ -131,6 +131,14 @@ publishing {
                 password sonatypePassword
             }
         }
+        ivy {
+            url "${System.properties['user.home']}/.ivy2/local"
+            patternLayout {
+                artifact '[organisation]/[module]/[revision]/[ext]s/[artifact](-[classifier])(.[ext])'
+                // for ci and local, must publish to ivy2 local, can be used for sbt plugin
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact](.[ext])'
+            }
+        }
     }
 }
 

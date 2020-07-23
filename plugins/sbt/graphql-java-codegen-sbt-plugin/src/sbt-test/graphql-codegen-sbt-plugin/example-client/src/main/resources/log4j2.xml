@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{ISO8601}] [%-5p] [%t#%T] %c#%L - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="io.github" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

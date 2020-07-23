@@ -1,0 +1,6 @@
+# check if the file gets created
+> graphqlCodegen
+> graphqlSchemaValidate src/main/resources/schema.graphql
+> graphqlCodegenValidate
+> compile
+$ exists target/scala-2.13/src_managed_graphql/io/github/kobylynskyi/graphql/test/model/User.java
