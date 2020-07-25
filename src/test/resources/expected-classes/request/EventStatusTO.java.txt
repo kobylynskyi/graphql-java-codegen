@@ -13,11 +13,22 @@ public enum EventStatusTO {
      * OPEN status
      * Means just created
      */
-    OPEN,
-    IN_PROGRESS,
+    OPEN("OPEN"),
+    IN_PROGRESS("IN_PROGRESS"),
     /**
      * Logging completed
      */
-    LOGGED
+    LOGGED("LOGGED");
+
+    private final String graphqlName;
+
+    private EventStatusTO(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
 
 }

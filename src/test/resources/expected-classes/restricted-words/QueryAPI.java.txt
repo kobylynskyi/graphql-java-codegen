@@ -9,7 +9,7 @@ public interface QueryAPI {
 
     String Native() throws Exception;
 
-    Synchronized Private(Integer Int, String New) throws Exception;
+    Synchronized Private(Integer Int, String New, TestEnum Enum) throws Exception;
 
     String Case(java.util.List<Char> Final) throws Exception;
 

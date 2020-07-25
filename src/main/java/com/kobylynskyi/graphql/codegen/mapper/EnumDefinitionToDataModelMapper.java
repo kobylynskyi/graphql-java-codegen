@@ -74,6 +74,7 @@ public class EnumDefinitionToDataModelMapper {
         return enumValueDefinitions.stream()
                 .map(f -> new EnumValueDefinition(
                         MapperUtils.capitalizeIfRestricted(f.getName()),
+                        f.getName(),
                         getJavaDoc(f.getComments()),
                         isDeprecated(f)))
                 .collect(Collectors.toList());

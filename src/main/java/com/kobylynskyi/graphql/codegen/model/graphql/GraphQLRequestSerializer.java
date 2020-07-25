@@ -88,8 +88,8 @@ public class GraphQLRequestSerializer {
         if (input == null) {
             return null;
         }
-        if (input instanceof Collection) {
-            Collection<?> inputCollection = (Collection) input;
+        if (input instanceof Collection<?>) {
+            Collection<?> inputCollection = (Collection<?>) input;
             return inputCollection.stream()
                     .map(i -> GraphQLRequestSerializer.getEntry(i, jsonQuery))
                     .collect(Collectors.joining(", ", "[ ", " ]"));

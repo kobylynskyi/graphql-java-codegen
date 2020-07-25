@@ -6,8 +6,19 @@ package com.kobylynskyi.graphql.testdefaults;
 )
 public enum MyEnum {
 
-    ONE,
-    TWO,
-    THREE
+    ONE("ONE"),
+    TWO("TWO"),
+    THREE("THREE");
+
+    private final String graphqlName;
+
+    private MyEnum(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
 
 }

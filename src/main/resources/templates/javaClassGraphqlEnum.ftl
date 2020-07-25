@@ -32,8 +32,19 @@ public enum ${className}<#if implements?has_content> implements <#list implement
 <#if field.deprecated>
     @Deprecated
 </#if>
-    ${field.value}<#if field_has_next>,</#if>
+    ${field.javaName}("${field.graphqlName}")<#if field_has_next>,<#else>;</#if>
 </#list>
 </#if>
+
+    private final String graphqlName;
+
+    private ${className}(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
 
 }

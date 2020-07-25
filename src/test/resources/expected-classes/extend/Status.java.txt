@@ -4,8 +4,19 @@
 )
 public enum Status {
 
-    CREATED,
-    IN_PROGRESS,
-    ASSIGNED
+    CREATED("CREATED"),
+    IN_PROGRESS("IN_PROGRESS"),
+    ASSIGNED("ASSIGNED");
+
+    private final String graphqlName;
+
+    private Status(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
 
 }

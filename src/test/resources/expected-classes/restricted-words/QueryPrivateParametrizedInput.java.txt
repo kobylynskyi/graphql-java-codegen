@@ -16,13 +16,15 @@ public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
 
     private Integer Int;
     private String New;
+    private TestEnum Enum = TestEnum.Long;
 
     public QueryPrivateParametrizedInput() {
     }
 
-    public QueryPrivateParametrizedInput(Integer Int, String New) {
+    public QueryPrivateParametrizedInput(Integer Int, String New, TestEnum Enum) {
         this.Int = Int;
         this.New = New;
+        this.Enum = Enum;
     }
 
     public QueryPrivateParametrizedInput Int(Integer Int) {
@@ -32,6 +34,11 @@ public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
 
     public QueryPrivateParametrizedInput New(String New) {
         this.New = New;
+        return this;
+    }
+
+    public QueryPrivateParametrizedInput Enum(TestEnum Enum) {
+        this.Enum = Enum;
         return this;
     }
 
@@ -45,12 +52,13 @@ public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
         }
         final QueryPrivateParametrizedInput that = (QueryPrivateParametrizedInput) obj;
         return Objects.equals(Int, that.Int)
-            && Objects.equals(New, that.New);
+            && Objects.equals(New, that.New)
+            && Objects.equals(Enum, that.Enum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Int, New);
+        return Objects.hash(Int, New, Enum);
     }
 
     @Override
@@ -61,6 +69,9 @@ public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
         }
         if (New != null) {
             joiner.add("new: " + GraphQLRequestSerializer.getEntry(New));
+        }
+        if (Enum != null) {
+            joiner.add("enum: " + GraphQLRequestSerializer.getEntry(Enum));
         }
         return joiner.toString();
     }

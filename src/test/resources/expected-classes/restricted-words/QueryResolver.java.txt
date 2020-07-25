@@ -10,7 +10,7 @@ package com.kobylynskyi.graphql.codegen.prot;
 )
 public interface QueryResolver {
 
-    Synchronized Private(Integer Int, String New) throws Exception;
+    Synchronized Private(Integer Int, String New, TestEnum Enum) throws Exception;
 
     String Case(java.util.List<Char> Final) throws Exception;
 
