@@ -28,7 +28,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = "2.0.1.Final"
-  private val codegen = "2.4.0"
+  private val codegen = "2.4.1"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
