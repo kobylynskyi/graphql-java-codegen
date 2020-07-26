@@ -81,7 +81,7 @@ public class ValueMapper {
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
             typeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);
-            return typeName + "." + value.getName();
+            return typeName + "." + MapperUtils.capitalizeIfRestricted(value.getName());
         }
         if (graphQLType instanceof NonNullType) {
             return mapEnum(mappingContext, value, ((NonNullType) graphQLType).getType());

@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.codegen.prot;
 )
 public interface PrivateQueryAPI {
 
-    Synchronized Private(Integer Int, String New) throws Exception;
+    Synchronized Private(Integer Int, String New, TestEnum Enum) throws Exception;
 
 }

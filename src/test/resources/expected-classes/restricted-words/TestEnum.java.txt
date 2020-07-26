@@ -1,18 +1,17 @@
-package com.kobylynskyi.graphql.test1;
+package com.kobylynskyi.graphql.codegen.prot;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
 )
-public enum Status {
+public enum TestEnum {
 
-    @Deprecated
-    CREATED("CREATED"),
-    IN_PROGRESS("IN_PROGRESS");
+    Long("long"),
+    Short("short");
 
     private final String graphqlName;
 
-    private Status(String graphqlName) {
+    private TestEnum(String graphqlName) {
         this.graphqlName = graphqlName;
     }
 
