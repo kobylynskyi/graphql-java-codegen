@@ -47,7 +47,7 @@ public class InputValueDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        parameter.setType(getJavaType(mappingContext, inputValueDefinition.getType()));
+        parameter.setType(getJavaType(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName).getName());
         parameter.setDefaultValue(ValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
         parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
