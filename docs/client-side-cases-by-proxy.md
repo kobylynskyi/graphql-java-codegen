@@ -152,6 +152,7 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
         try {
             //handle List
             Type type = method.getGenericReturnType();
+            //it is more rigorous to judge whether it is a List
             if (type instanceof ParameterizedType) {
                 Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();
                 entityClazzName = parameterizedType[0].getTypeName();
@@ -181,7 +182,7 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
                 invokeOnProjection(projection, parentMethod, 1);
             }
 
-            return executeByHttp(entityClazzName, request, projection);
+            return executeByHttp(entityClazzName, request, projection);// request and projection for creating GraphQLRequest, entityClazzName for deserialize 
 
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
