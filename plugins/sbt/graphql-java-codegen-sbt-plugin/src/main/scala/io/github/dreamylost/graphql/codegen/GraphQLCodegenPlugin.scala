@@ -189,7 +189,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         try {
           result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
           for (file ← result) {
-            sLog.value.info(s"Finish generate code, file name <${file.getName}>.")
+            sLog.value.success(s"${file.getName}")
           }
         } catch {
           case e: Exception ⇒
