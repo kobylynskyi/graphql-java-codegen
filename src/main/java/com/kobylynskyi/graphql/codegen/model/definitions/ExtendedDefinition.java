@@ -1,6 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.AbstractDescribedNode;
 import graphql.language.Comment;
+import graphql.language.Description;
 import graphql.language.NamedNode;
 import graphql.language.Node;
 import graphql.language.SourceLocation;
@@ -41,24 +44,42 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
     }
 
     public List<String> getJavaDoc() {
+        List<String> javaDocFromDescription = getJavaDocFromDescription();
+        if (javaDocFromDescription.isEmpty()) {
+            return getJavaDocFromComments();
+        }
+        return javaDocFromDescription;
+    }
+
+    public List<String> getJavaDocFromDescription() {
+        List<String> descriptions = new ArrayList<>();
+        if (this.definition instanceof AbstractDescribedNode) {
+            Description description = ((AbstractDescribedNode<?>) this.definition).getDescription();
+            if (description != null && Utils.isNotBlank(description.getContent())) {
+                descriptions.add(description.getContent().trim());
+            }
+            this.extensions.stream()
+                    .filter(Objects::nonNull)
+                    .map(AbstractDescribedNode.class::cast)
+                    .map(AbstractDescribedNode::getDescription).filter(Objects::nonNull)
+                    .map(Description::getContent).filter(Utils::isNotBlank)
+                    .map(String::trim).forEach(descriptions::add);
+        }
+        return descriptions;
+    }
+
+    public List<String> getJavaDocFromComments() {
         List<String> comments = new ArrayList<>();
         if (definition != null && definition.getComments() != null) {
             definition.getComments().stream()
-                    .map(Comment::getContent)
-                    .filter(Objects::nonNull)
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .forEach(comments::add);
+                    .map(Comment::getContent).filter(Utils::isNotBlank)
+                    .map(String::trim).forEach(comments::add);
         }
         extensions.stream()
                 .map(Node::getComments)
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull)
-                .map(Comment::getContent)
-                .filter(Objects::nonNull)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .forEach(comments::add);
+                .flatMap(Collection::stream).filter(Objects::nonNull)
+                .map(Comment::getContent).filter(Utils::isNotBlank)
+                .map(String::trim).forEach(comments::add);
         return comments;
     }
 
