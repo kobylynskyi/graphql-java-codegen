@@ -11,10 +11,12 @@ schema {
 }
 
 type Query {
-    # Version of the application.
+    "       Version of the application.    "
     version: String!
 
-    # List of events of a specified category.
+    """
+     List of events of a specified category.
+    """
     eventsByCategoryAndStatus(categoryId: ID!, status: EventStatus): [Event]!
 
     # Single event by ID.
