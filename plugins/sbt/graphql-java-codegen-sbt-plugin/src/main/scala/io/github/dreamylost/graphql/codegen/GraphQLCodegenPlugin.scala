@@ -163,10 +163,10 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         file
       } //use validate that config in build.sbt
       , graphqlCodegenValidate := {
-        val schemas = if (graphqlSchemaPaths.value.isEmpty) {
-          Seq((sourceDirectory.value / "resources/schema.graphql").getCanonicalPath).asJava
+        val schemas = if ((graphqlSchemaPaths in configuration).value.isEmpty) {
+          Seq((resourceDirectory.value / "schema.graphql").getCanonicalPath).asJava
         } else {
-          graphqlSchemaPaths.value.asJava
+          (graphqlSchemaPaths in configuration).value.asJava
         }
         new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
       } // use a new src_managed for graphql, and must append to managedSourceDirectories
@@ -184,7 +184,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
         args
       }, graphqlCodegen := {
-        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in configuration).value.orNull)
         var result: Seq[File] = Seq.empty
         try {
           result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
@@ -198,17 +198,18 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         }
 
         def getSchemas: util.List[String] = {
-          if (graphqlSchemaPaths != null && graphqlSchemaPaths.value.nonEmpty) return graphqlSchemaPaths.value.asJava
+          if ((graphqlSchemaPaths in configuration).value != null && (graphqlSchemaPaths in configuration).value.nonEmpty)
+            return (graphqlSchemaPaths in configuration).value.asJava
           val schemasRootDir: Path = getSchemasRootDir
           val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
-          finder.setRecursive(graphqlSchemas.value.recursive)
-          finder.setIncludePattern(graphqlSchemas.value.includePattern)
-          finder.setExcludedFiles(graphqlSchemas.value.excludedFiles.asJava)
+          finder.setRecursive((graphqlSchemas in configuration).value.recursive)
+          finder.setIncludePattern((graphqlSchemas in configuration).value.includePattern)
+          finder.setExcludedFiles((graphqlSchemas in configuration).value.excludedFiles.asJava)
           finder.findSchemas
         }
 
         def getSchemasRootDir: Path = {
-          val rootDir = graphqlSchemas.value.rootDir
+          val rootDir = (graphqlSchemas in configuration).value.rootDir
           if (rootDir == null) {
             val default = getDefaultResourcesDirectory
             if (default == null) throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
@@ -218,7 +219,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         }
 
         def getDefaultResourcesDirectory: Path = {
-          val file = sourceDirectory.value / "resources"
+          val file = resourceDirectory.value
           if (!file.exists()) {
             file.mkdirs()
           }
