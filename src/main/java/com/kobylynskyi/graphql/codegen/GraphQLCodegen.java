@@ -123,12 +123,6 @@ public class GraphQLCodegen {
         if (mappingConfig.getTypeResolverSuffix() == null) {
             mappingConfig.setTypeResolverSuffix(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX);
         }
-        if (mappingConfig.getGenerateAsyncApi() == null) {
-            mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
-        }
-        if (mappingConfig.getApiAsyncReturnType() == null) {
-            mappingConfig.setApiAsyncReturnType(MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE);
-        }
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }

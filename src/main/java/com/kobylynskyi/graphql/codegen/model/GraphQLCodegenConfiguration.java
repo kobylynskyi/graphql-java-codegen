@@ -135,23 +135,23 @@ public interface GraphQLCodegenConfiguration {
     String getModelValidationAnnotation();
 
     /**
-     * Async return type for api methods (query / subscription)
+     * Return type for api methods (query / subscription)
      * For example: `reactor.core.publisher.Mono`
      *
      * @return Return type for api methods (query / subscription)
      */
-    String getApiAsyncReturnType();
+    String getApiReturnType();
 
     /**
-     * Async return type for api methods (query / subscription) that return list values
+     * Return type for api methods (query / subscription) that return list values
      * For example: `reactor.core.publisher.Flux`
      *
      * @return Return type for api methods (query / subscription) that return list values
      */
-    String getApiAsyncReturnListType();
+    String getApiReturnListType();
 
     /**
-     * Async return type for subscription methods.
+     * Return type for subscription methods.
      * For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc.
      *
      * @return Return type for subscription methods
@@ -185,13 +185,6 @@ public interface GraphQLCodegenConfiguration {
      * @return <b>true</b> if generated model classes should have toString method defined.
      */
     Boolean getGenerateToString();
-
-    /**
-     * If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType`
-     *
-     * @return <b>true</b> if types need to be wrapped into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType`
-     */
-    Boolean getGenerateAsyncApi();
 
     /**
      * If true, then generate separate `Resolver` interface for parametrized fields.

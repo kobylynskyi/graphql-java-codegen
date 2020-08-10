@@ -57,8 +57,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
-    private String apiAsyncReturnType = MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE;
-    private String apiAsyncReturnListType;
+    private String apiReturnType;
+    private String apiReturnListType;
     private String subscriptionReturnType;
     private Boolean generateBuilder = MappingConfigConstants.DEFAULT_BUILDER;
     private Boolean generateApis = MappingConfigConstants.DEFAULT_GENERATE_APIS;
@@ -66,7 +66,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateEqualsAndHashCode = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE;
     private Boolean generateImmutableModels = MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS;
     private Boolean generateToString = MappingConfigConstants.DEFAULT_TO_STRING;
-    private Boolean generateAsyncApi = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS;
     private Boolean generateParameterizedFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
     private Boolean generateExtensionFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
@@ -111,10 +110,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
-        mappingConfig.setApiAsyncReturnType(apiAsyncReturnType);
-        mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType);
+        mappingConfig.setApiReturnType(apiReturnType);
+        mappingConfig.setApiReturnListType(apiReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
-        mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
@@ -420,23 +418,23 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public String getApiAsyncReturnType() {
-        return apiAsyncReturnType;
+    public String getApiReturnType() {
+        return apiReturnType;
     }
 
-    public void setApiAsyncReturnType(String apiAsyncReturnType) {
-        this.apiAsyncReturnType = apiAsyncReturnType;
+    public void setApiReturnType(String apiReturnType) {
+        this.apiReturnType = apiReturnType;
     }
 
     @Input
     @Optional
     @Override
-    public String getApiAsyncReturnListType() {
-        return apiAsyncReturnListType;
+    public String getApiReturnListType() {
+        return apiReturnListType;
     }
 
-    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
-        this.apiAsyncReturnListType = apiAsyncReturnListType;
+    public void setApiReturnListType(String apiReturnListType) {
+        this.apiReturnListType = apiReturnListType;
     }
 
     @Input
@@ -448,17 +446,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setSubscriptionReturnType(String subscriptionReturnType) {
         this.subscriptionReturnType = subscriptionReturnType;
-    }
-
-    @Input
-    @Optional
-    @Override
-    public Boolean getGenerateAsyncApi() {
-        return generateAsyncApi;
-    }
-
-    public void setGenerateAsyncApi(Boolean generateAsyncApi) {
-        this.generateAsyncApi = generateAsyncApi;
     }
 
     @Input

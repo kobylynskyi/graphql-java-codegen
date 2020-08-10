@@ -141,7 +141,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         OperationDefinition operation = new OperationDefinition();
         operation.setName(MapperUtils.capitalizeIfRestricted(resolvedField.getName()));
         operation.setOriginalName(resolvedField.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingContext, javaType, parentTypeName));
+        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoReturnTypeIfRequired(mappingContext, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext,
                 resolvedField.getType(), resolvedField, parentTypeName, false));
         operation.setParameters(getOperationParameters(mappingContext, resolvedField, parentTypeName));

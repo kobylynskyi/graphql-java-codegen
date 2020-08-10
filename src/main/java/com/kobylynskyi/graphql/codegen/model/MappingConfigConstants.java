@@ -3,12 +3,9 @@ package com.kobylynskyi.graphql.codegen.model;
 public class MappingConfigConstants {
 
     public static final String DEFAULT_VALIDATION_ANNOTATION = "javax.validation.constraints.NotNull";
-    public static final String DEFAULT_API_ASYNC_RETURN_TYPE = "java.util.concurrent.CompletableFuture";
     public static final String PARENT_INTERFACE_TYPE_PLACEHOLDER = "{{TYPE}}";
     public static final boolean DEFAULT_GENERATE_APIS = true;
     public static final String DEFAULT_GENERATE_APIS_STRING = "true";
-    public static final boolean DEFAULT_GENERATE_ASYNC_APIS = false;
-    public static final String DEFAULT_GENERATE_ASYNC_APIS_STRING = "false";
     public static final boolean DEFAULT_BUILDER = true;
     public static final String DEFAULT_BUILDER_STRING = "true";
     public static final boolean DEFAULT_EQUALS_AND_HASHCODE = false;

@@ -101,13 +101,13 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public String getApiAsyncReturnType() {
-        return config.getApiAsyncReturnType();
+    public String getApiReturnType() {
+        return config.getApiReturnType();
     }
 
     @Override
-    public String getApiAsyncReturnListType() {
-        return config.getApiAsyncReturnListType();
+    public String getApiReturnListType() {
+        return config.getApiReturnListType();
     }
 
     @Override
@@ -133,11 +133,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Boolean getGenerateToString() {
         return config.getGenerateToString();
-    }
-
-    @Override
-    public Boolean getGenerateAsyncApi() {
-        return config.getGenerateAsyncApi();
     }
 
     @Override

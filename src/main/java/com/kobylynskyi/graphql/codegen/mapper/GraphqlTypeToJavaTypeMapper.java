@@ -206,9 +206,7 @@ class GraphqlTypeToJavaTypeMapper {
     }
 
     /**
-     * Wraps type taking into account if an async api is needed, whether it is a Query, Mutation or Subscription
-     * <p>
-     * Wraps type into apiAsyncReturnType or subscriptionReturnType (defined in the mapping configuration).
+     * Wraps type into apiReturnType or subscriptionReturnType (defined in the mapping configuration).
      * Examples:
      * <p>
      * - Given GraphQL schema:                   type Subscription { eventsCreated: [Event!]! }
@@ -216,11 +214,11 @@ class GraphqlTypeToJavaTypeMapper {
      * - Return:                                 org.reactivestreams.Publisher<Event>
      * <p>
      * - Given GraphQL schema:                   type Mutation { createEvent(inp: Inp): Event }
-     * - Given apiAsyncReturnType in config:     reactor.core.publisher.Mono
+     * - Given apiReturnType in config:          reactor.core.publisher.Mono
      * - Return:                                 reactor.core.publisher.Mono<Event>
      * <p>
      * - Given GraphQL schema:                   type Query { events: [Event!]! }
-     * - Given apiAsyncReturnListType in config: reactor.core.publisher.Flux
+     * - Given apiReturnListType in config:      reactor.core.publisher.Flux
      * - Return:                                 reactor.core.publisher.Flux<Event>
      *
      * @param mappingContext Global mapping context
@@ -228,21 +226,21 @@ class GraphqlTypeToJavaTypeMapper {
      * @param parentTypeName Name of the parent type
      * @return Java type wrapped into the subscriptionReturnType
      */
-    static String wrapIntoAsyncIfRequired(MappingContext mappingContext, String javaTypeName, String parentTypeName) {
+    static String wrapIntoReturnTypeIfRequired(MappingContext mappingContext, String javaTypeName, String parentTypeName) {
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
             if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
                 // in case it is subscription and subscriptionReturnType is set
                 return getGenericsString(mappingContext.getSubscriptionReturnType(), javaTypeName);
             }
-        } else if (Boolean.TRUE.equals(mappingContext.getGenerateAsyncApi())) {
+        } else {
             if (javaTypeName.startsWith(JAVA_UTIL_LIST) &&
-                    Utils.isNotBlank(mappingContext.getApiAsyncReturnListType())) {
-                // in case it is query/mutation, return type is list and apiAsyncReturnListType is set
-                return javaTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiAsyncReturnListType());
+                    Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                // in case it is query/mutation, return type is list and apiReturnListType is set
+                return javaTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
             }
-            if (Utils.isNotBlank(mappingContext.getApiAsyncReturnType())) {
-                // in case it is query/mutation and apiAsyncReturnType is set
-                return getGenericsString(mappingContext.getApiAsyncReturnType(), javaTypeName);
+            if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
+                // in case it is query/mutation and apiReturnType is set
+                return getGenericsString(mappingContext.getApiReturnType(), javaTypeName);
             }
 
         }

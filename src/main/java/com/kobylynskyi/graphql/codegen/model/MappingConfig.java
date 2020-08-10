@@ -33,8 +33,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
-    private String apiAsyncReturnType;
-    private String apiAsyncReturnListType;
+    private String apiReturnType;
+    private String apiReturnListType;
     private String subscriptionReturnType;
 
     // various toggles
@@ -43,7 +43,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
     private Boolean generateImmutableModels;
-    private Boolean generateAsyncApi;
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
@@ -84,14 +83,13 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
         typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
         modelValidationAnnotation = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelValidationAnnotation);
-        apiAsyncReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnType);
-        apiAsyncReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnListType);
+        apiReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnType);
+        apiReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnListType);
         subscriptionReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionReturnType);
         generateBuilder = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateBuilder);
         generateEqualsAndHashCode = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
         generateImmutableModels = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateImmutableModels);
         generateToString = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateToString);
-        generateAsyncApi = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateAsyncApi);
         generateParameterizedFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateParameterizedFieldsResolvers);
         generateExtensionFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
@@ -294,21 +292,21 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public String getApiAsyncReturnType() {
-        return apiAsyncReturnType;
+    public String getApiReturnType() {
+        return apiReturnType;
     }
 
-    public void setApiAsyncReturnType(String apiAsyncReturnType) {
-        this.apiAsyncReturnType = apiAsyncReturnType;
+    public void setApiReturnType(String apiReturnType) {
+        this.apiReturnType = apiReturnType;
     }
 
     @Override
-    public String getApiAsyncReturnListType() {
-        return apiAsyncReturnListType;
+    public String getApiReturnListType() {
+        return apiReturnListType;
     }
 
-    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
-        this.apiAsyncReturnListType = apiAsyncReturnListType;
+    public void setApiReturnListType(String apiReturnListType) {
+        this.apiReturnListType = apiReturnListType;
     }
 
     @Override
@@ -363,15 +361,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateImmutableModels(Boolean generateImmutableModels) {
         this.generateImmutableModels = generateImmutableModels;
-    }
-
-    @Override
-    public Boolean getGenerateAsyncApi() {
-        return generateAsyncApi;
-    }
-
-    public void setGenerateAsyncApi(Boolean generateAsyncApi) {
-        this.generateAsyncApi = generateAsyncApi;
     }
 
     @Override

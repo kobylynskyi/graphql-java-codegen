@@ -77,8 +77,8 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     typeResolverSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
     subscriptionReturnType := None,
     modelValidationAnnotation := MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION,
-    apiAsyncReturnType := MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE,
-    apiAsyncReturnListType := None,
+    apiReturnType := None,
+    apiReturnListType := None,
     // package name configs:
     apiPackageName := None,
     modelPackageName := None,
@@ -87,7 +87,6 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     fieldsWithoutResolvers := new util.HashSet[String](),
     // various toggles:
     generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING.toBoolean,
-    generateAsyncApi := MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING.toBoolean,
     generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING.toBoolean,
     generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING.toBoolean,
     generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING.toBoolean,
@@ -127,7 +126,6 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     mappingConfig.setGenerateImmutableModels(generateImmutableModels.value)
     mappingConfig.setGenerateToString(generateToString.value)
     mappingConfig.setSubscriptionReturnType(subscriptionReturnType.value.orNull)
-    mappingConfig.setGenerateAsyncApi(generateAsyncApi.value)
     mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers.value)
     mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis.value)
     mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers.value)
@@ -143,8 +141,8 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     mappingConfig.setQueryResolverParentInterface(parentInterfaces.value.queryResolver)
     mappingConfig.setMutationResolverParentInterface(parentInterfaces.value.mutationResolver)
     mappingConfig.setSubscriptionResolverParentInterface(parentInterfaces.value.subscriptionResolver)
-    mappingConfig.setApiAsyncReturnType(apiAsyncReturnType.value)
-    mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType.value.orNull)
+    mappingConfig.setApiReturnType(apiReturnType.value)
+    mappingConfig.setApiReturnListType(apiReturnListType.value.orNull)
     mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping.value)
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
