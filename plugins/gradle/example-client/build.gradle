@@ -85,9 +85,10 @@ task graphqlCodegenStarwarsService(type: GraphQLCodegenGradleTask) {
     outputDir = new File("$buildDir/generated-client-starwars")
     packageName = "io.github.kobylynskyi.starwars.graphql"
     customAnnotationsMapping = [
-            "Character": "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
-                    + System.lineSeparator()
-                    + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+            "Character": [
+                    "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
+                    "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+            ]
     ]
     generateClient = true
     generateApis = false

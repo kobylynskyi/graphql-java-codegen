@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */
-    Map<String, String> getCustomAnnotationsMapping();
+    Map<String, List<String>> getCustomAnnotationsMapping();
 
     /**
      * Map GraphQL directives to Java annotations.
@@ -48,7 +49,7 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return mappings from GraphQL directives to Java annotations.
      */
-    Map<String, String> getDirectiveAnnotationsMapping();
+    Map<String, List<String>> getDirectiveAnnotationsMapping();
 
     /**
      * Specifies whether api classes should be generated.

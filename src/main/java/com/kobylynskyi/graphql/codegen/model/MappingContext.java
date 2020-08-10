@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,12 +32,12 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return config.getCustomAnnotationsMapping();
     }
 
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return config.getDirectiveAnnotationsMapping();
     }
 

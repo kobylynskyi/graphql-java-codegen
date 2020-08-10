@@ -41,8 +41,8 @@ class MappingConfigTest {
         mappingConfig.combine(buildMappingConfig());
 
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
-        assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(singletonMap("5", "6"), mappingConfig.getDirectiveAnnotationsMapping());
+        assertEquals(singletonMap("3", singletonList("4")), mappingConfig.getCustomAnnotationsMapping());
+        assertEquals(singletonMap("5", singletonList("6")), mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
@@ -77,8 +77,8 @@ class MappingConfigTest {
         mappingConfig.combine(buildEmptyMappingConfig());
 
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
-        assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(singletonMap("5", "6"), mappingConfig.getDirectiveAnnotationsMapping());
+        assertEquals(singletonMap("3", singletonList("4")), mappingConfig.getCustomAnnotationsMapping());
+        assertEquals(singletonMap("5", singletonList("6")), mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
@@ -115,9 +115,9 @@ class MappingConfigTest {
 
         assertEquals(hashMap(new HashMap.SimpleEntry<>("1", "2"), new HashMap.SimpleEntry<>("11", "22")),
                 mappingConfig.getCustomTypesMapping());
-        assertEquals(hashMap(new HashMap.SimpleEntry<>("3", "4"), new HashMap.SimpleEntry<>("33", "44")),
+        assertEquals(hashMap(new HashMap.SimpleEntry<>("3", singletonList("4")), new HashMap.SimpleEntry<>("33", singletonList("44"))),
                 mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(hashMap(new HashMap.SimpleEntry<>("5", "6"), new HashMap.SimpleEntry<>("55", "66")),
+        assertEquals(hashMap(new HashMap.SimpleEntry<>("5", singletonList("6")), new HashMap.SimpleEntry<>("55", singletonList("66"))),
                 mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName2", mappingConfig.getApiPackageName());
         assertFalse(mappingConfig.getGenerateBuilder());
@@ -148,7 +148,7 @@ class MappingConfigTest {
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());
     }
 
-    private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
+    private static <T> Map<String, T> hashMap(AbstractMap.SimpleEntry<String, T>... entries) {
         return Arrays.stream(entries).collect(
                 Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (a, b) -> b));
     }
@@ -156,8 +156,8 @@ class MappingConfigTest {
     private static MappingConfig buildMappingConfig() {
         MappingConfig config = new MappingConfig();
         config.setCustomTypesMapping(new HashMap<>(singletonMap("1", "2")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", "4")));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("5", "6")));
+        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", singletonList("4"))));
+        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("5", singletonList("6"))));
         config.setApiPackageName("ApiPackageName");
         config.setGenerateBuilder(true);
         config.setGenerateApis(true);
@@ -191,8 +191,8 @@ class MappingConfigTest {
     private static MappingConfig buildMappingConfig2() {
         MappingConfig config = new MappingConfig();
         config.setCustomTypesMapping(new HashMap<>(singletonMap("11", "22")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", "44")));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("55", "66")));
+        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", singletonList("44"))));
+        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("55", singletonList("66"))));
         config.setApiPackageName("ApiPackageName2");
         config.setGenerateBuilder(false);
         config.setGenerateApis(false);

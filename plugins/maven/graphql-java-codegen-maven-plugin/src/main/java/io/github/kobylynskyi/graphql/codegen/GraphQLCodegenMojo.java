@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,10 +46,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Map<String, String> customTypesMapping;
 
     @Parameter
-    private Map<String, String> customAnnotationsMapping;
+    private Map<String, String[]> customAnnotationsMapping;
 
     @Parameter
-    private Map<String, String> directiveAnnotationsMapping;
+    private Map<String, String[]> directiveAnnotationsMapping;
 
     @Parameter
     private String packageName;
@@ -126,10 +127,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private boolean generateModelsForRootTypes;
 
     @Parameter
-    private Set<String> fieldsWithResolvers = new HashSet<>();
+    private String[] fieldsWithResolvers;
 
     @Parameter
-    private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private String[] fieldsWithoutResolvers;
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING)
     private boolean generateClient;
@@ -165,8 +166,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
-        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
-        mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(convertToListsMap(customAnnotationsMapping));
+        mappingConfig.setDirectiveAnnotationsMapping(convertToListsMap(directiveAnnotationsMapping));
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
@@ -191,8 +192,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
-        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
-        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
+        mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
@@ -285,21 +286,21 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
-        return customAnnotationsMapping;
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
+        return convertToListsMap(customAnnotationsMapping);
     }
 
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
-        this.customAnnotationsMapping = customAnnotationsMapping;
+    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
+        this.customAnnotationsMapping = convertToArraysMap(customAnnotationsMapping);
     }
 
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
-        return directiveAnnotationsMapping;
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
+        return convertToListsMap(directiveAnnotationsMapping);
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
-        this.directiveAnnotationsMapping = directiveAnnotationsMapping;
+    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
+        this.directiveAnnotationsMapping = convertToArraysMap(directiveAnnotationsMapping);
     }
 
     @Override
@@ -529,20 +530,20 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Override
     public Set<String> getFieldsWithResolvers() {
-        return fieldsWithResolvers;
+        return mapToHashSet(fieldsWithResolvers);
     }
 
     public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
-        this.fieldsWithResolvers = fieldsWithResolvers;
+        this.fieldsWithResolvers = mapToArray(fieldsWithResolvers);
     }
 
     @Override
     public Set<String> getFieldsWithoutResolvers() {
-        return fieldsWithoutResolvers;
+        return mapToHashSet(fieldsWithoutResolvers);
     }
 
     public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
-        this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+        this.fieldsWithoutResolvers = mapToArray(fieldsWithoutResolvers);
     }
 
     @Override
@@ -625,4 +626,45 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     public void setJsonConfigurationFile(String jsonConfigurationFile) {
         this.jsonConfigurationFile = jsonConfigurationFile;
     }
+
+    private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {
+        if (sourceMap == null) {
+            return new HashMap<>();
+        }
+        Map<String, List<String>> map = new HashMap<>();
+        for (Map.Entry<String, String[]> e : sourceMap.entrySet()) {
+            if (e.getValue() != null) {
+                map.put(e.getKey(), Arrays.asList(e.getValue()));
+            }
+        }
+        return map;
+    }
+
+    private static Map<String, String[]> convertToArraysMap(Map<String, List<String>> sourceMap) {
+        if (sourceMap == null) {
+            return new HashMap<>();
+        }
+        Map<String, String[]> map = new HashMap<>();
+        for (Map.Entry<String, List<String>> e : sourceMap.entrySet()) {
+            if (e.getValue() != null) {
+                map.put(e.getKey(), e.getValue().toArray(new String[0]));
+            }
+        }
+        return map;
+    }
+
+    private static Set<String> mapToHashSet(String[] sourceSet) {
+        if (sourceSet == null) {
+            return Collections.emptySet();
+        }
+        return new HashSet<>(Arrays.asList(sourceSet));
+    }
+
+    private static String[] mapToArray(Set<String> sourceSet) {
+        if (sourceSet == null) {
+            return new String[0];
+        }
+        return sourceSet.toArray(new String[0]);
+    }
+
 }

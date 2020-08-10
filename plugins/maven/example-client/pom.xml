@@ -68,8 +68,8 @@
                             <modelPackageName>io.github.kobylynskyi.starwars.graphql</modelPackageName>
                             <customAnnotationsMapping>
                                 <Character>
-                                    @com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
-                                    @com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)
+                                    <annotation>@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")</annotation>
+                                    <annotation>@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)</annotation>
                                 </Character>
                             </customAnnotationsMapping>
                             <generateClient>true</generateClient>
