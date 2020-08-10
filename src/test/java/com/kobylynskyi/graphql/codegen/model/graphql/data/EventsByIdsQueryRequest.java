@@ -18,8 +18,16 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     public EventsByIdsQueryRequest() {
     }
 
+    public void setContextId(String contextId) {
+        this.input.put("contextId", contextId);
+    }
+
     public void setIds(Collection<String> ids) {
         this.input.put("ids", ids);
+    }
+
+    public void setTranslated(Boolean translated) {
+        this.input.put("translated", translated);
     }
 
     @Override
@@ -44,9 +52,16 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
     public static class Builder {
 
+        private String contextId;
         private Collection<String> ids;
+        private Boolean translated;
 
         public Builder() {
+        }
+
+        public Builder setContextId(String contextId) {
+            this.contextId = contextId;
+            return this;
         }
 
         public Builder setIds(Collection<String> ids) {
@@ -54,10 +69,17 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
             return this;
         }
 
+        public Builder setTranslated(Boolean translated) {
+            this.translated = translated;
+            return this;
+        }
+
 
         public EventsByIdsQueryRequest build() {
             EventsByIdsQueryRequest obj = new EventsByIdsQueryRequest();
+            obj.setContextId(contextId);
             obj.setIds(ids);
+            obj.setTranslated(translated);
             return obj;
         }
 

@@ -49,15 +49,17 @@ public class GraphQLRequestSerializer {
         if (input != null && !input.isEmpty()) {
             builder.append("(");
             Iterator<Map.Entry<String, Object>> inputEntryIterator = input.entrySet().iterator();
+            boolean valueAdded = false;
             while (inputEntryIterator.hasNext()) {
                 Map.Entry<String, Object> inputEntry = inputEntryIterator.next();
                 if (inputEntry.getValue() != null) {
+                    if (valueAdded) {
+                        builder.append(", ");
+                    }
                     builder.append(inputEntry.getKey());
                     builder.append(": ");
                     builder.append(getEntry(inputEntry.getValue(), jsonQuery));
-                }
-                if (inputEntryIterator.hasNext()) {
-                    builder.append(", ");
+                    valueAdded = true;
                 }
             }
             builder.append(")");
