@@ -44,8 +44,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private File outputDir;
 
     private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<String, String> customAnnotationsMapping = new HashMap<>();
-    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
@@ -222,22 +222,22 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
 
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
         this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Input
     @Optional
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return directiveAnnotationsMapping;
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
         this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 

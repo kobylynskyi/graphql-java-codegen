@@ -26,8 +26,8 @@
 | `typeResolverPrefix`                            | String                                                             | Empty                                         | Sets the prefix for GraphQL type resolver classes. |
 | `typeResolverSuffix`                            | String                                                             | `Resolver`                                    | Sets the suffix for GraphQL type resolver classes. |
 | `customTypesMapping`                            | Map(String,String)                                                 | Empty                                         | *See [CustomTypesMapping](#option-customtypesmapping)*  |
-| `customAnnotationsMapping`                      | Map(String,String)                                                 | Empty                                         | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
-| `directiveAnnotationsMapping`                   | Map(String,String)                                                 | Empty                                         | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
+| `customAnnotationsMapping`                      | Map(String,String[])                                               | Empty                                         | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
+| `directiveAnnotationsMapping`                   | Map(String,String[])                                               | Empty                                         | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
 | `fieldsWithResolvers`                           | Set(String)                                                        | Empty                                         | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. |
 | `fieldsWithoutResolvers`                        | Set(String)                                                        | Empty                                         | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. |
 | `generateParameterizedFieldsResolvers`          | Boolean                                                            | True                                          | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
@@ -104,7 +104,8 @@ Supports following formats:
 
 ### Option `customAnnotationsMapping`
 
-Can be used to supply custom annotations (serializers) for scalars. 
+Can be used to supply custom annotations (serializers) for scalars.
+`@` in front of the annotation class is optional. 
 
 Supports following formats:
 * Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
@@ -114,7 +115,8 @@ Supports following formats:
 ### Option `directiveAnnotationsMapping`
 
 Can be used to supply custom annotations for directives in a following format: 
-Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`
+Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`.
+`@` in front of the annotation class is optional.
 
 **Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. 
 You can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`, `{{val?toArrayOfStrings}}`.
