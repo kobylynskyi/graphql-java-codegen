@@ -175,7 +175,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         val schemas = if ((graphqlSchemaPaths in GraphQLCodegenConfig).value.isEmpty) {
           Seq(((resourceDirectory in configuration).value / "schema.graphql").getCanonicalPath).asJava
         } else {
-          (graphqlSchemaPaths in configuration).value.asJava
+          (graphqlSchemaPaths in GraphQLCodegenConfig).value.asJava
         }
         new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
       },

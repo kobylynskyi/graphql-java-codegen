@@ -85,5 +85,6 @@ SBT task
 Please refer to [Codegen Options](../../docs/codegen-options.md)
 
 > in sbt plugin option `packageName` was rename to `generatePackageName`
+> in sbt plugin option `generateCodegenTargetPath` can be used for setting codegen path where code have be created by task `graphqlCodegen`
 
 
