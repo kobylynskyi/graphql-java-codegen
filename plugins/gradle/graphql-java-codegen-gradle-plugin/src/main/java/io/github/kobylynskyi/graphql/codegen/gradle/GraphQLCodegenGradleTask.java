@@ -1,6 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
@@ -50,6 +51,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String apiPackageName;
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY;
+    private ApiInterfaceStrategy apiInterfaceStrategy = MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY;
     private String apiNamePrefix;
     private String apiNameSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;
     private String typeResolverPrefix;
@@ -98,6 +100,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
+        mappingConfig.setApiInterfaceStrategy(apiInterfaceStrategy);
         mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
@@ -294,6 +297,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
         this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return apiInterfaceStrategy;
+    }
+
+    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
+        this.apiInterfaceStrategy = apiInterfaceStrategy;
     }
 
     @Input

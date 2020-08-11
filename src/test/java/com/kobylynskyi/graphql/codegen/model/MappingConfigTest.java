@@ -59,6 +59,10 @@ class MappingConfigTest {
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertTrue(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertTrue(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.INTERFACE_PER_OPERATION, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
@@ -94,6 +98,10 @@ class MappingConfigTest {
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertTrue(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertTrue(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.INTERFACE_PER_OPERATION, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
@@ -133,6 +141,10 @@ class MappingConfigTest {
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
         assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertFalse(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertFalse(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.DO_NOT_GENERATE, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.DO_NOT_GENERATE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
         assertEquals(new HashSet<>(Arrays.asList("8", "88")), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("66", mappingConfig.getRequestSuffix());
@@ -171,6 +183,10 @@ class MappingConfigTest {
         config.setSubscriptionReturnType("SubscriptionsReturnType");
         config.setGenerateParameterizedFieldsResolvers(true);
         config.setGenerateExtensionFieldsResolvers(true);
+        config.setUseOptionalForNullableReturnTypes(true);
+        config.setApiInterfaceStrategy(ApiInterfaceStrategy.INTERFACE_PER_OPERATION);
+        config.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
+        config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.SINGLE_INTERFACE);
         config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
         config.setFieldsWithoutResolvers(new HashSet<>(singleton("8")));
         config.setRequestSuffix("6");
@@ -205,6 +221,10 @@ class MappingConfigTest {
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
         config.setGenerateParameterizedFieldsResolvers(false);
         config.setGenerateExtensionFieldsResolvers(false);
+        config.setUseOptionalForNullableReturnTypes(false);
+        config.setApiInterfaceStrategy(ApiInterfaceStrategy.DO_NOT_GENERATE);
+        config.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
+        config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.DO_NOT_GENERATE);
         config.setFieldsWithResolvers(singleton("55"));
         config.setFieldsWithoutResolvers(singleton("88"));
         config.setRequestSuffix("66");
@@ -257,6 +277,7 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getGenerateModelsForRootTypes(), mappingConfig.getGenerateModelsForRootTypes());
         assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
         assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
+        assertEquals(expectedMappingConfig.getUseOptionalForNullableReturnTypes(), mappingConfig.getUseOptionalForNullableReturnTypes());
     }
 
 }

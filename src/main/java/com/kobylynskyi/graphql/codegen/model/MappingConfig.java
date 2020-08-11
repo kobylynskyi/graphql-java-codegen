@@ -32,6 +32,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String typeResolverPrefix;
     private String typeResolverSuffix;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
+    private ApiInterfaceStrategy apiInterfaceStrategy;
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
     private String apiReturnType;
@@ -81,6 +82,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         apiNamePrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefix);
         apiNameSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNameSuffix);
         apiRootInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiRootInterfaceStrategy);
+        apiInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiInterfaceStrategy);
         apiNamePrefixStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefixStrategy);
         typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
         typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
@@ -274,6 +276,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
         this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return apiInterfaceStrategy;
+    }
+
+    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
+        this.apiInterfaceStrategy = apiInterfaceStrategy;
     }
 
     @Override
