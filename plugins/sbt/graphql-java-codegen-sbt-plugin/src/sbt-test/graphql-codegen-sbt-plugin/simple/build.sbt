@@ -10,3 +10,6 @@ lazy val root = (project in file("."))
     generateAsyncApi := true
     //use full class name is good
   ).enablePlugins(GraphQLCodegenPlugin).settings(GraphQLCodegenPluginDependencies)
+
+
+//javaSource in Compile := crossTarget.value / "src_managed_graphql"

@@ -15,22 +15,23 @@ import java.util.regex.Pattern;
  */
 public class EmailScalar {
 
-    public static final GraphQLScalarType Email = new GraphQLScalarType("Email", "A custom scalar that handles emails", new Coercing() {
-        @Override
-        public Object serialize(Object dataFetcherResult) {
-            return serializeEmail(dataFetcherResult);
-        }
+    public static final GraphQLScalarType Email = GraphQLScalarType.newScalar().name("Email").description("A custom scalar that handles emails").coercing(
+            new Coercing() {
+                @Override
+                public Object serialize(Object dataFetcherResult) {
+                    return serializeEmail(dataFetcherResult);
+                }
 
-        @Override
-        public Object parseValue(Object input) {
-            return parseEmailFromVariable(input);
-        }
+                @Override
+                public Object parseValue(Object input) {
+                    return parseEmailFromVariable(input);
+                }
 
-        @Override
-        public Object parseLiteral(Object input) {
-            return parseEmailFromAstLiteral(input);
-        }
-    });
+                @Override
+                public Object parseLiteral(Object input) {
+                    return parseEmailFromAstLiteral(input);
+                }
+            }).build();
 
 
     private static boolean looksLikeAnEmailAddress(String possibleEmailValue) {
