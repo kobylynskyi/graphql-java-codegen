@@ -168,34 +168,45 @@ class GraphqlTypeToJavaTypeMapper {
                 annotations.add(modelValidationAnnotation);
             }
         }
-        Map<String, String> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
+        Map<String, List<String>> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
         if (name != null && parentTypeName != null && customAnnotationsMapping.containsKey(parentTypeName + "." + name)) {
-            annotations.add(customAnnotationsMapping.get(parentTypeName + "." + name));
+            List<String> annotationsToAdd = customAnnotationsMapping.get(parentTypeName + "." + name);
+            if (!Utils.isEmpty(annotationsToAdd)) {
+                annotations.addAll(annotationsToAdd);
+            }
         } else if (customAnnotationsMapping.containsKey(graphQLTypeName)) {
-            annotations.add(customAnnotationsMapping.get(graphQLTypeName));
+            List<String> annotationsToAdd = customAnnotationsMapping.get(graphQLTypeName);
+            if (!Utils.isEmpty(annotationsToAdd)) {
+                annotations.addAll(annotationsToAdd);
+            }
         }
-        Map<String, String> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
+        Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
             if (directiveAnnotationsMapping.containsKey(directive.getName())) {
-                annotations.add(getAnnotationForDirective(mappingContext, directiveAnnotationsMapping, directive));
+                annotations.addAll(getAnnotationForDirective(mappingContext, directiveAnnotationsMapping.get(directive.getName()), directive));
             }
         }
         return annotations;
     }
 
-    private static String getAnnotationForDirective(MappingContext mappingContext,
-                                                    Map<String, String> directiveAnnotationsMapping,
-                                                    Directive directive) {
-        String annotation = directiveAnnotationsMapping.get(directive.getName());
-        for (Argument dirArg : directive.getArguments()) {
-            String argumentValueFormatter = Utils.substringBetween(annotation, "{{" + dirArg.getName(), "}}");
-            // if argumentValueFormatter == null then the placeholder {{dirArg.getName()}} does not exist
-            if (argumentValueFormatter != null) {
-                annotation = annotation.replace(String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
-                        ValueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
+    private static List<String> getAnnotationForDirective(MappingContext mappingContext,
+                                                          List<String> directiveAnnotations,
+                                                          Directive directive) {
+        List<String> directiveAnnotationsMapped = new ArrayList<>();
+        for (String annotation : directiveAnnotations) {
+            String directiveAnnotationMapped = annotation;
+            for (Argument dirArg : directive.getArguments()) {
+                String argumentValueFormatter = Utils.substringBetween(annotation, "{{" + dirArg.getName(), "}}");
+                // if argumentValueFormatter == null then the placeholder {{dirArg.getName()}} does not exist
+                if (argumentValueFormatter != null) {
+                    directiveAnnotationMapped = directiveAnnotationMapped.replace(
+                            String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
+                            ValueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
+                }
             }
+            directiveAnnotationsMapped.add(directiveAnnotationMapped);
         }
-        return annotation;
+        return directiveAnnotationsMapped;
     }
 
     /**

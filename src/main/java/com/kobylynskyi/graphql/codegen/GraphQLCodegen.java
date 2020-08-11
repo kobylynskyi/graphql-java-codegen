@@ -178,16 +178,20 @@ public class GraphQLCodegen {
         mappingConfig.setModelValidationAnnotation(
                 Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
 
-        Map<String, String> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
+        Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
         if (customAnnotationsMapping != null) {
-            for (Map.Entry<String, String> entry : customAnnotationsMapping.entrySet()) {
-                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
+            for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
             }
         }
-        Map<String, String> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
+        Map<String, List<String>> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
         if (directiveAnnotationsMapping != null) {
-            for (Map.Entry<String, String> entry : directiveAnnotationsMapping.entrySet()) {
-                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
+            for (Map.Entry<String, List<String>> entry : directiveAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
             }
         }
     }

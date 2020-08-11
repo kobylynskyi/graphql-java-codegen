@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -15,8 +16,8 @@ import java.util.function.Function;
 public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<MappingConfig> {
 
     private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<String, String> customAnnotationsMapping = new HashMap<>();
-    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
 
     // package name configs:
     private String packageName;
@@ -112,9 +113,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
     }
 
-    private static Map<String, String> combineMap(Map<String, String> thisMap, Map<String, String> otherMap) {
+    private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
         if (thisMap != null && otherMap != null) {
-            Map<String, String> resultMap = new HashMap<>();
+            Map<String, T> resultMap = new HashMap<>();
             resultMap.putAll(thisMap);
             resultMap.putAll(otherMap);
             return resultMap;
@@ -168,20 +169,20 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
 
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
         this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return directiveAnnotationsMapping;
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
         this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 

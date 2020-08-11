@@ -59,7 +59,7 @@ graphqlCodegen {
         Price.amount: "java.math.BigDecimal"
     ]
     customAnnotationsMapping = [
-        DateTime: "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"
+        DateTime: ["@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"]
     ]
     modelNameSuffix = "TO"
 }
@@ -83,7 +83,7 @@ tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
     outputDir = File("$buildDir/generated")
     packageName = "com.example.graphql.model"
     customTypesMapping = mutableMapOf(Pair("EpochMillis", "java.time.LocalDateTime"))
-    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"))
+    customAnnotationsMapping = mutableMapOf(Pair("EpochMillis", listOf("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)")))
 }
 
 // Automatically generate GraphQL code on project build:
