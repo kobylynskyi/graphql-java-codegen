@@ -9,3 +9,6 @@ lazy val root = (project in file("."))
     apiReturnType := "scala.concurrent.Future", // if Async class is not at current source, need import dependency
     //use full class name is good
   ).enablePlugins(GraphQLCodegenPlugin).settings(GraphQLCodegenPluginDependencies)
+
+
+//javaSource in Compile := crossTarget.value / "src_managed_graphql"
