@@ -11,7 +11,6 @@
 | `modelPackageName`                              | String                                                             | Empty                                         | Java package for generated model classes (type, input, interface, enum, union). |
 | `generateBuilder`                               | Boolean                                                            | True                                          | Specifies whether generated model classes should have builder. |
 | `generateApis`                                  | Boolean                                                            | True                                          | Specifies whether api classes should be generated as well as model classes. |
-| `generateAsyncApi`                              | Boolean                                                            | False                                         | If true, then wrap return types of query/mutation into the value of `apiAsyncReturnType` (`apiAsyncReturnListType` for lists) and wrap return types of subscription into the value of `subscriptionReturnType` |
 | `generateDataFetchingEnvironmentArgumentInApis` | Boolean                                                            | False                                         | If true, then `graphql.schema.DataFetchingEnvironment env` will be added as a last argument to all methods of root type resolvers and field resolvers. |
 | `generateEqualsAndHashCode`                     | Boolean                                                            | False                                         | Specifies whether generated model classes should have equals and hashCode methods defined. |
 | `generateImmutableModels`                       | Boolean                                                            | False                                         | Specifies whether generated model classes should be immutable. |
@@ -26,15 +25,16 @@
 | `typeResolverPrefix`                            | String                                                             | Empty                                         | Sets the prefix for GraphQL type resolver classes. |
 | `typeResolverSuffix`                            | String                                                             | `Resolver`                                    | Sets the suffix for GraphQL type resolver classes. |
 | `customTypesMapping`                            | Map(String,String)                                                 | Empty                                         | *See [CustomTypesMapping](#option-customtypesmapping)*  |
-| `customAnnotationsMapping`                      | Map(String,String)                                                 | Empty                                         | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
-| `directiveAnnotationsMapping`                   | Map(String,String)                                                 | Empty                                         | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
+| `customAnnotationsMapping`                      | Map(String,String[])                                               | Empty                                         | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
+| `directiveAnnotationsMapping`                   | Map(String,String[])                                               | Empty                                         | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
 | `fieldsWithResolvers`                           | Set(String)                                                        | Empty                                         | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. |
 | `fieldsWithoutResolvers`                        | Set(String)                                                        | Empty                                         | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. |
 | `generateParameterizedFieldsResolvers`          | Boolean                                                            | True                                          | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
 | `generateExtensionFieldsResolvers`              | Boolean                                                            | False                                         | Specifies whether all fields in extensions (`extend type` and `extend interface`) should be present in Resolver interface instead of the type class itself. |
 | `generateModelsForRootTypes`                    | Boolean                                                            | False                                         | Specifies whether model classes should be generated for `type Query`, `type Subscription`, `type Mutation`. |
-| `apiAsyncReturnType`                            | String                                                             | `java.util.concurrent.CompletableFuture`      | Async return type for api methods (query/mutation). For example: `reactor.core.publisher.Mono`, etc. |
-| `apiAsyncReturnListType`                        | String                                                             | Empty                                         | Async return type for api methods (query/mutation) having list type. For example: `reactor.core.publisher.Flux`, etc. By default is empty, so `apiAsyncReturnType` will be used. |
+| `useOptionalForNullableReturnTypes`             | Boolean                                                            | False                                         | Specifies whether nullable return types of api methods should be wrapped into [`java.util.Optional<>`](https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Optional.html). Lists will not be wrapped. |
+| `apiReturnType`                                 | String                                                             | Empty                                         | Return type for api methods (query/mutation). For example: `reactor.core.publisher.Mono`, etc. |
+| `apiReturnListType`                             | String                                                             | Empty                                         | Return type for api methods (query/mutation) having list type. For example: `reactor.core.publisher.Flux`, etc. By default is empty, so `apiReturnType` will be used. |
 | `subscriptionReturnType`                        | String                                                             | Empty                                         | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
 | `generateClient`                                | Boolean                                                            | False                                         | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` classes (contain input data), `ResponseProjection` classes for each type (contain response fields) and `Response` classes (contain response data). |
 | `requestSuffix`                                 | String                                                             | Request                                       | Sets the suffix for `Request` classes. |
@@ -104,7 +104,8 @@ Supports following formats:
 
 ### Option `customAnnotationsMapping`
 
-Can be used to supply custom annotations (serializers) for scalars. 
+Can be used to supply custom annotations (serializers) for scalars.
+`@` in front of the annotation class is optional. 
 
 Supports following formats:
 * Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
@@ -114,7 +115,8 @@ Supports following formats:
 ### Option `directiveAnnotationsMapping`
 
 Can be used to supply custom annotations for directives in a following format: 
-Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`
+Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`.
+`@` in front of the annotation class is optional.
 
 **Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. 
 You can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`, `{{val?toArrayOfStrings}}`.

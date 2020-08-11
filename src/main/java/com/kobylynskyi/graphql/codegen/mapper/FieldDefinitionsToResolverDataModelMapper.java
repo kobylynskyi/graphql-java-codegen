@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -136,12 +137,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
      */
     private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition resolvedField,
                                            String parentTypeName) {
-        String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
-                mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName).getName();
+        NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
+                mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName);
         OperationDefinition operation = new OperationDefinition();
         operation.setName(MapperUtils.capitalizeIfRestricted(resolvedField.getName()));
         operation.setOriginalName(resolvedField.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoAsyncIfRequired(mappingContext, javaType, parentTypeName));
+        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoReturnTypeIfRequired(mappingContext, javaType, parentTypeName));
         operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext,
                 resolvedField.getType(), resolvedField, parentTypeName, false));
         operation.setParameters(getOperationParameters(mappingContext, resolvedField, parentTypeName));

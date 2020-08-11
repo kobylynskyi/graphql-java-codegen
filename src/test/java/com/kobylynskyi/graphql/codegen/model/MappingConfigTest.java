@@ -41,8 +41,8 @@ class MappingConfigTest {
         mappingConfig.combine(buildMappingConfig());
 
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
-        assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(singletonMap("5", "6"), mappingConfig.getDirectiveAnnotationsMapping());
+        assertEquals(singletonMap("3", singletonList("4")), mappingConfig.getCustomAnnotationsMapping());
+        assertEquals(singletonMap("5", singletonList("6")), mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
@@ -54,12 +54,15 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
-        assertEquals("ApiAsyncReturnType", mappingConfig.getApiAsyncReturnType());
-        assertEquals("ApiAsyncReturnListType", mappingConfig.getApiAsyncReturnListType());
+        assertEquals("ApiReturnType", mappingConfig.getApiReturnType());
+        assertEquals("ApiReturnListType", mappingConfig.getApiReturnListType());
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
-        assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertTrue(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertTrue(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.INTERFACE_PER_OPERATION, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
@@ -77,8 +80,8 @@ class MappingConfigTest {
         mappingConfig.combine(buildEmptyMappingConfig());
 
         assertEquals(singletonMap("1", "2"), mappingConfig.getCustomTypesMapping());
-        assertEquals(singletonMap("3", "4"), mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(singletonMap("5", "6"), mappingConfig.getDirectiveAnnotationsMapping());
+        assertEquals(singletonMap("3", singletonList("4")), mappingConfig.getCustomAnnotationsMapping());
+        assertEquals(singletonMap("5", singletonList("6")), mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName", mappingConfig.getApiPackageName());
         assertTrue(mappingConfig.getGenerateBuilder());
         assertTrue(mappingConfig.getGenerateApis());
@@ -90,12 +93,15 @@ class MappingConfigTest {
         assertEquals("ModelPackageName", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName", mappingConfig.getPackageName());
-        assertEquals("ApiAsyncReturnType", mappingConfig.getApiAsyncReturnType());
-        assertEquals("ApiAsyncReturnListType", mappingConfig.getApiAsyncReturnListType());
+        assertEquals("ApiReturnType", mappingConfig.getApiReturnType());
+        assertEquals("ApiReturnListType", mappingConfig.getApiReturnListType());
         assertEquals("SubscriptionsReturnType", mappingConfig.getSubscriptionReturnType());
-        assertFalse(mappingConfig.getGenerateAsyncApi());
         assertTrue(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertTrue(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertTrue(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.INTERFACE_PER_OPERATION, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("6", mappingConfig.getRequestSuffix());
@@ -115,9 +121,9 @@ class MappingConfigTest {
 
         assertEquals(hashMap(new HashMap.SimpleEntry<>("1", "2"), new HashMap.SimpleEntry<>("11", "22")),
                 mappingConfig.getCustomTypesMapping());
-        assertEquals(hashMap(new HashMap.SimpleEntry<>("3", "4"), new HashMap.SimpleEntry<>("33", "44")),
+        assertEquals(hashMap(new HashMap.SimpleEntry<>("3", singletonList("4")), new HashMap.SimpleEntry<>("33", singletonList("44"))),
                 mappingConfig.getCustomAnnotationsMapping());
-        assertEquals(hashMap(new HashMap.SimpleEntry<>("5", "6"), new HashMap.SimpleEntry<>("55", "66")),
+        assertEquals(hashMap(new HashMap.SimpleEntry<>("5", singletonList("6")), new HashMap.SimpleEntry<>("55", singletonList("66"))),
                 mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName2", mappingConfig.getApiPackageName());
         assertFalse(mappingConfig.getGenerateBuilder());
@@ -130,12 +136,15 @@ class MappingConfigTest {
         assertEquals("ModelPackageName2", mappingConfig.getModelPackageName());
         assertEquals("ModelValidationAnnotation2", mappingConfig.getModelValidationAnnotation());
         assertEquals("PackageName2", mappingConfig.getPackageName());
-        assertEquals("ApiAsyncReturnType2", mappingConfig.getApiAsyncReturnType());
-        assertEquals("ApiAsyncReturnListType2", mappingConfig.getApiAsyncReturnListType());
+        assertEquals("ApiReturnType2", mappingConfig.getApiReturnType());
+        assertEquals("ApiReturnListType2", mappingConfig.getApiReturnListType());
         assertEquals("SubscriptionsReturnType2", mappingConfig.getSubscriptionReturnType());
-        assertTrue(mappingConfig.getGenerateAsyncApi());
         assertFalse(mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertFalse(mappingConfig.getGenerateExtensionFieldsResolvers());
+        assertFalse(mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(ApiInterfaceStrategy.DO_NOT_GENERATE, mappingConfig.getApiInterfaceStrategy());
+        assertEquals(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX, mappingConfig.getApiNamePrefixStrategy());
+        assertEquals(ApiRootInterfaceStrategy.DO_NOT_GENERATE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
         assertEquals(new HashSet<>(Arrays.asList("8", "88")), mappingConfig.getFieldsWithoutResolvers());
         assertEquals("66", mappingConfig.getRequestSuffix());
@@ -148,7 +157,7 @@ class MappingConfigTest {
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());
     }
 
-    private static Map<String, String> hashMap(AbstractMap.SimpleEntry<String, String>... entries) {
+    private static <T> Map<String, T> hashMap(AbstractMap.SimpleEntry<String, T>... entries) {
         return Arrays.stream(entries).collect(
                 Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (a, b) -> b));
     }
@@ -156,8 +165,8 @@ class MappingConfigTest {
     private static MappingConfig buildMappingConfig() {
         MappingConfig config = new MappingConfig();
         config.setCustomTypesMapping(new HashMap<>(singletonMap("1", "2")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", "4")));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("5", "6")));
+        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", singletonList("4"))));
+        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("5", singletonList("6"))));
         config.setApiPackageName("ApiPackageName");
         config.setGenerateBuilder(true);
         config.setGenerateApis(true);
@@ -169,12 +178,15 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName");
         config.setModelValidationAnnotation("ModelValidationAnnotation");
         config.setPackageName("PackageName");
-        config.setApiAsyncReturnType("ApiAsyncReturnType");
-        config.setApiAsyncReturnListType("ApiAsyncReturnListType");
+        config.setApiReturnType("ApiReturnType");
+        config.setApiReturnListType("ApiReturnListType");
         config.setSubscriptionReturnType("SubscriptionsReturnType");
-        config.setGenerateAsyncApi(false);
         config.setGenerateParameterizedFieldsResolvers(true);
         config.setGenerateExtensionFieldsResolvers(true);
+        config.setUseOptionalForNullableReturnTypes(true);
+        config.setApiInterfaceStrategy(ApiInterfaceStrategy.INTERFACE_PER_OPERATION);
+        config.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
+        config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.SINGLE_INTERFACE);
         config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
         config.setFieldsWithoutResolvers(new HashSet<>(singleton("8")));
         config.setRequestSuffix("6");
@@ -191,8 +203,8 @@ class MappingConfigTest {
     private static MappingConfig buildMappingConfig2() {
         MappingConfig config = new MappingConfig();
         config.setCustomTypesMapping(new HashMap<>(singletonMap("11", "22")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", "44")));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("55", "66")));
+        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", singletonList("44"))));
+        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("55", singletonList("66"))));
         config.setApiPackageName("ApiPackageName2");
         config.setGenerateBuilder(false);
         config.setGenerateApis(false);
@@ -204,12 +216,15 @@ class MappingConfigTest {
         config.setModelPackageName("ModelPackageName2");
         config.setModelValidationAnnotation("ModelValidationAnnotation2");
         config.setPackageName("PackageName2");
-        config.setApiAsyncReturnType("ApiAsyncReturnType2");
-        config.setApiAsyncReturnListType("ApiAsyncReturnListType2");
+        config.setApiReturnType("ApiReturnType2");
+        config.setApiReturnListType("ApiReturnListType2");
         config.setSubscriptionReturnType("SubscriptionsReturnType2");
-        config.setGenerateAsyncApi(true);
         config.setGenerateParameterizedFieldsResolvers(false);
         config.setGenerateExtensionFieldsResolvers(false);
+        config.setUseOptionalForNullableReturnTypes(false);
+        config.setApiInterfaceStrategy(ApiInterfaceStrategy.DO_NOT_GENERATE);
+        config.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
+        config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.DO_NOT_GENERATE);
         config.setFieldsWithResolvers(singleton("55"));
         config.setFieldsWithoutResolvers(singleton("88"));
         config.setRequestSuffix("66");
@@ -244,14 +259,13 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getGenerateImmutableModels(), mappingConfig.getGenerateImmutableModels());
         assertEquals(expectedMappingConfig.getGenerateToString(), mappingConfig.getGenerateToString());
         assertEquals(expectedMappingConfig.getSubscriptionReturnType(), mappingConfig.getSubscriptionReturnType());
-        assertEquals(expectedMappingConfig.getApiAsyncReturnType(), mappingConfig.getApiAsyncReturnType());
-        assertEquals(expectedMappingConfig.getApiAsyncReturnListType(), mappingConfig.getApiAsyncReturnListType());
+        assertEquals(expectedMappingConfig.getApiReturnType(), mappingConfig.getApiReturnType());
+        assertEquals(expectedMappingConfig.getApiReturnListType(), mappingConfig.getApiReturnListType());
         assertEquals(expectedMappingConfig.getModelNamePrefix(), mappingConfig.getModelNamePrefix());
         assertEquals(expectedMappingConfig.getModelNameSuffix(), mappingConfig.getModelNameSuffix());
         assertEquals(expectedMappingConfig.getModelPackageName(), mappingConfig.getModelPackageName());
         assertEquals(expectedMappingConfig.getModelValidationAnnotation(), mappingConfig.getModelValidationAnnotation());
         assertEquals(expectedMappingConfig.getPackageName(), mappingConfig.getPackageName());
-        assertEquals(expectedMappingConfig.getGenerateAsyncApi(), mappingConfig.getGenerateAsyncApi());
         assertEquals(expectedMappingConfig.getGenerateParameterizedFieldsResolvers(), mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertEquals(expectedMappingConfig.getGenerateExtensionFieldsResolvers(), mappingConfig.getGenerateExtensionFieldsResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithResolvers(), mappingConfig.getFieldsWithResolvers());
@@ -263,6 +277,7 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getGenerateModelsForRootTypes(), mappingConfig.getGenerateModelsForRootTypes());
         assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
         assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
+        assertEquals(expectedMappingConfig.getUseOptionalForNullableReturnTypes(), mappingConfig.getUseOptionalForNullableReturnTypes());
     }
 
 }

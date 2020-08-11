@@ -82,8 +82,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     typeResolverSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
     subscriptionReturnType := None,
     modelValidationAnnotation := MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION,
-    apiAsyncReturnType := MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE,
-    apiAsyncReturnListType := None,
+    apiReturnType := None,
+    apiReturnListType := None,
     // package name configs:
     apiPackageName := None,
     modelPackageName := None,
@@ -92,7 +92,6 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     fieldsWithoutResolvers := new util.HashSet[String](),
     // various toggles:
     generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING.toBoolean,
-    generateAsyncApi := MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS_STRING.toBoolean,
     generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING.toBoolean,
     generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING.toBoolean,
     generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING.toBoolean,

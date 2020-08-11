@@ -14,6 +14,11 @@ public enum ApiRootInterfaceStrategy {
      * Generate a single QueryResolver.java, MutationResolver.java, SubscriptionResolver.java for all graphqls
      * (in addition to separate interfaces for each query/mutation/subscription)
      */
-    SINGLE_INTERFACE;
+    SINGLE_INTERFACE,
+
+    /**
+     * Do not generate super interface for GraphQL operations.
+     */
+    DO_NOT_GENERATE
 
 }
