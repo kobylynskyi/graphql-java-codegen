@@ -57,7 +57,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     jsonConfigurationFile := None,
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
-    customTypesMapping := new util.HashMap[String, String](),
+    customTypesMapping := new util.HashMap[String, String](),//TODO use scala Map, convert to java Map
     customAnnotationsMapping := new util.HashMap[String, String](),
     directiveAnnotationsMapping := new util.HashMap[String, String](),
     javaxValidationApiVersion := None,
@@ -102,7 +102,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     parentInterfaces := parentInterfacesConfig
   )
 
-  //setting key must use in Def、:=
+  //TODO support scope for mutile modules
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
 
     //TODO use builder
