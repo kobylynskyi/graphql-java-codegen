@@ -22,6 +22,8 @@ public class MappingConfigConstants {
     public static final String DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING = "false";
     public static final boolean DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES = false;
     public static final String DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING = "false";
+    public static final boolean DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES = false;
+    public static final String DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING = "false";
     public static final ApiNamePrefixStrategy DEFAULT_API_NAME_PREFIX_STRATEGY = ApiNamePrefixStrategy.CONSTANT;
     public static final String DEFAULT_API_NAME_PREFIX_STRATEGY_STRING = "CONSTANT";
     public static final ApiRootInterfaceStrategy DEFAULT_API_ROOT_INTERFACE_STRATEGY = ApiRootInterfaceStrategy.SINGLE_INTERFACE;

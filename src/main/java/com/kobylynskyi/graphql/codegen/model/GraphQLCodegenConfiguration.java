@@ -251,6 +251,13 @@ public interface GraphQLCodegenConfiguration {
     Set<String> getFieldsWithoutResolvers();
 
     /**
+     * Specifies whether return types of generated API interface should be wrapped into <code>java.util.Optional</code>
+     *
+     * @return <b>true</b> if return types should be wrapped into <code>java.util.Optional</code>
+     */
+    Boolean getUseOptionalForNullableReturnTypes();
+
+    /**
      * Specifies whether client-side classes should be generated for each query, mutation and subscription.
      * This includes: `Request` class (contains input data) and `ResponseProjection` class (contains response fields).
      *

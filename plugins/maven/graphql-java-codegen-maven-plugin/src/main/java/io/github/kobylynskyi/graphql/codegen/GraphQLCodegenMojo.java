@@ -122,6 +122,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING)
     private boolean generateModelsForRootTypes;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING)
+    private boolean useOptionalForNullableReturnTypes;
+
     @Parameter
     private Set<String> fieldsWithResolvers = new HashSet<>();
 
@@ -187,6 +190,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
+        mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setGenerateClient(generateClient);
@@ -494,6 +498,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return useOptionalForNullableReturnTypes;
+    }
+
+    public void setUseOptionalForNullableReturnTypes(boolean useOptionalForNullableReturnTypes) {
+        this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
     }
 
     @Override

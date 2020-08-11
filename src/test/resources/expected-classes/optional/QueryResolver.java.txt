@@ -1,0 +1,67 @@
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface QueryResolver {
+
+    java.util.Optional<CodeOfConduct> codeOfConduct(String key) throws Exception;
+
+    java.util.List<CodeOfConduct> codesOfConduct() throws Exception;
+
+    java.util.Optional<License> license(String key) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    java.util.List<License> licenses() throws Exception;
+
+    @javax.validation.constraints.NotNull
+    java.util.List<MarketplaceCategory> marketplaceCategories(Boolean excludeEmpty, Boolean excludeSubcategories, java.util.List<String> includeCategories) throws Exception;
+
+    java.util.Optional<MarketplaceCategory> marketplaceCategory(String slug, Boolean useTopicAliases) throws Exception;
+
+    java.util.Optional<MarketplaceListing> marketplaceListing(String slug) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    MarketplaceListingConnection marketplaceListings(String adminId, String after, Boolean allStates, String before, String categorySlug, Integer first, Integer last, String organizationId, Boolean primaryCategoryOnly, java.util.List<String> slugs, Boolean useTopicAliases, Boolean viewerCanAdmin, Boolean withFreeTrialsOnly) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    GitHubMetadata meta() throws Exception;
+
+    java.util.Optional<Node> node(String id) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    java.util.List<Node> nodes(java.util.List<String> ids) throws Exception;
+
+    java.util.Optional<Organization> organization(String login) throws Exception;
+
+    java.util.Optional<RateLimit> rateLimit(Boolean dryRun) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    Query relay() throws Exception;
+
+    java.util.Optional<Repository> repository(String name, String owner) throws Exception;
+
+    java.util.Optional<RepositoryOwner> repositoryOwner(String login) throws Exception;
+
+    java.util.Optional<UniformResourceLocatable> resource(String url) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    SearchResultItemConnection search(String after, String before, Integer first, Integer last, String query, SearchType type) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    SecurityAdvisoryConnection securityAdvisories(String after, String before, Integer first, SecurityAdvisoryIdentifierFilter identifier, Integer last, SecurityAdvisoryOrder orderBy, String publishedSince, String updatedSince) throws Exception;
+
+    java.util.Optional<SecurityAdvisory> securityAdvisory(String ghsaId) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    SecurityVulnerabilityConnection securityVulnerabilities(String after, String before, SecurityAdvisoryEcosystem ecosystem, Integer first, Integer last, SecurityVulnerabilityOrder orderBy, String Package, java.util.List<SecurityAdvisorySeverity> severities) throws Exception;
+
+    java.util.Optional<SponsorsListing> sponsorsListing(String slug) throws Exception;
+
+    java.util.Optional<Topic> topic(String name) throws Exception;
+
+    java.util.Optional<User> user(String login) throws Exception;
+
+    @javax.validation.constraints.NotNull
+    User viewer() throws Exception;
+
+}

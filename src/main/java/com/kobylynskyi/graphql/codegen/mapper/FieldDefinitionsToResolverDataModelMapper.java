@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -136,8 +137,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
      */
     private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition resolvedField,
                                            String parentTypeName) {
-        String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
-                mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName).getName();
+        NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
+                mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName);
         OperationDefinition operation = new OperationDefinition();
         operation.setName(MapperUtils.capitalizeIfRestricted(resolvedField.getName()));
         operation.setOriginalName(resolvedField.getName());

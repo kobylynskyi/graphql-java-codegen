@@ -161,6 +161,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return config.getUseOptionalForNullableReturnTypes();
+    }
+
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return config.getFieldsWithResolvers();
     }

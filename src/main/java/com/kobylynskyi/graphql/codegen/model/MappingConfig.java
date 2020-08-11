@@ -47,6 +47,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Boolean generateModelsForRootTypes;
+    private Boolean useOptionalForNullableReturnTypes;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -94,6 +95,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generateExtensionFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
         generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
+        useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
         queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
         subscriptionResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
@@ -397,6 +399,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateModelsForRootTypes(Boolean generateModelsForRootTypes) {
         this.generateModelsForRootTypes = generateModelsForRootTypes;
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return useOptionalForNullableReturnTypes;
+    }
+
+    public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
+        this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
     }
 
     @Override

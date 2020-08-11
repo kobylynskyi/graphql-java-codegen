@@ -27,49 +27,9 @@ import java.util.Map;
 class GraphqlTypeToJavaTypeMapper {
 
     private static final String JAVA_UTIL_LIST = "java.util.List";
+    private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
 
     private GraphqlTypeToJavaTypeMapper() {
-    }
-
-    /**
-     * Convert GraphQL type to a corresponding Java type
-     *
-     * @param mappingContext Global mapping context
-     * @param type           GraphQL type
-     * @return Corresponding Java type
-     */
-    static String getJavaType(MappingContext mappingContext, Type<?> type) {
-        return getJavaType(mappingContext, type, null, null).getName();
-    }
-
-    static String getJavaType(MappingContext mappingContext, String graphqlTypeName) {
-        return getJavaType(mappingContext, graphqlTypeName, null, null).getName();
-    }
-
-    /**
-     * Convert GraphQL type to a corresponding Java type
-     *
-     * @param mappingContext Global mapping context
-     * @param graphqlType    GraphQL type
-     * @param name           GraphQL type name
-     * @param parentTypeName Name of the parent type
-     * @return Corresponding Java type
-     */
-    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
-        if (graphqlType instanceof TypeName) {
-            return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName);
-        } else if (graphqlType instanceof ListType) {
-            NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName);
-            if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
-                mappedCollectionType.setName(wrapSuperTypeIntoJavaList(mappedCollectionType.getName()));
-            } else {
-                mappedCollectionType.setName(wrapIntoJavaList(mappedCollectionType.getName()));
-            }
-            return mappedCollectionType;
-        } else if (graphqlType instanceof NonNullType) {
-            return getJavaType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName);
-        }
-        throw new IllegalArgumentException("Unknown type: " + graphqlType);
     }
 
     /**
@@ -97,12 +57,66 @@ class GraphqlTypeToJavaTypeMapper {
      * Convert GraphQL type to a corresponding Java type
      *
      * @param mappingContext Global mapping context
-     * @param graphQLType    GraphQL type
+     * @param type           GraphQL type
+     * @return Corresponding Java type
+     */
+    static String getJavaType(MappingContext mappingContext, Type<?> type) {
+        return getJavaType(mappingContext, type, null, null).getName();
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding Java type
+     *
+     * @param mappingContext Global mapping context
+     * @param graphqlType    GraphQL type
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
      * @return Corresponding Java type
      */
-    private static NamedDefinition getJavaType(MappingContext mappingContext, String graphQLType, String name, String parentTypeName) {
+    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
+        return getJavaType(mappingContext, graphqlType, name, parentTypeName, false);
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding Java type
+     *
+     * @param mappingContext Global mapping context
+     * @param graphqlType    GraphQL type
+     * @param name           GraphQL type name
+     * @param parentTypeName Name of the parent type
+     * @param mandatory      GraphQL type is non-null
+     * @return Corresponding Java type
+     */
+    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName,
+                                       boolean mandatory) {
+        if (graphqlType instanceof TypeName) {
+            return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory);
+        } else if (graphqlType instanceof ListType) {
+            NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName, false);
+            if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
+                mappedCollectionType.setName(wrapSuperTypeIntoJavaList(mappedCollectionType.getName()));
+            } else {
+                mappedCollectionType.setName(wrapIntoJavaList(mappedCollectionType.getName()));
+            }
+            return mappedCollectionType;
+        } else if (graphqlType instanceof NonNullType) {
+            return getJavaType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true);
+        }
+        throw new IllegalArgumentException("Unknown type: " + graphqlType);
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding Java type
+     *
+     * @param mappingContext Global mapping context
+     * @param graphQLType    GraphQL type
+     * @param name           GraphQL type name
+     * @param parentTypeName Name of the parent type
+     * @param mandatory      GraphQL type is non-null
+     * @return Corresponding Java type
+     */
+    private static NamedDefinition getJavaType(MappingContext mappingContext, String graphQLType, String name,
+                                               String parentTypeName, boolean mandatory) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         String javaTypeName;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
@@ -112,7 +126,7 @@ class GraphqlTypeToJavaTypeMapper {
         } else {
             javaTypeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
-        return new NamedDefinition(javaTypeName, mappingContext.getInterfacesName().contains(graphQLType));
+        return new NamedDefinition(javaTypeName, mappingContext.getInterfacesName().contains(graphQLType), mandatory);
     }
 
     /**
@@ -145,8 +159,8 @@ class GraphqlTypeToJavaTypeMapper {
         return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false);
     }
 
-    static List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
-                                       String parentTypeName, List<Directive> directives, boolean mandatory) {
+    private static List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
+                                               String parentTypeName, List<Directive> directives, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
@@ -209,6 +223,10 @@ class GraphqlTypeToJavaTypeMapper {
      * Wraps type into apiReturnType or subscriptionReturnType (defined in the mapping configuration).
      * Examples:
      * <p>
+     * - Given GraphQL schema:                   type Query { events: [Event!]! }
+     * - Given config:                           useOptionalForNullableReturnTypes = true
+     * - Return:                                 java.util.Optional<Event>
+     * <p>
      * - Given GraphQL schema:                   type Subscription { eventsCreated: [Event!]! }
      * - Given subscriptionReturnType in config: org.reactivestreams.Publisher
      * - Return:                                 org.reactivestreams.Publisher<Event>
@@ -221,16 +239,22 @@ class GraphqlTypeToJavaTypeMapper {
      * - Given apiReturnListType in config:      reactor.core.publisher.Flux
      * - Return:                                 reactor.core.publisher.Flux<Event>
      *
-     * @param mappingContext Global mapping context
-     * @param javaTypeName   The type that will be wrapped into
-     * @param parentTypeName Name of the parent type
+     * @param mappingContext  Global mapping context
+     * @param namedDefinition Named definition
+     * @param parentTypeName  Name of the parent type
      * @return Java type wrapped into the subscriptionReturnType
      */
-    static String wrapIntoReturnTypeIfRequired(MappingContext mappingContext, String javaTypeName, String parentTypeName) {
+    static String wrapIntoReturnTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+        String javaTypeName = namedDefinition.getName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
             if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
                 // in case it is subscription and subscriptionReturnType is set
                 return getGenericsString(mappingContext.getSubscriptionReturnType(), javaTypeName);
+            }
+        } else if (mappingContext.getUseOptionalForNullableReturnTypes()) {
+            // wrap the type into java.util.Optional (except lists)
+            if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
+                return getGenericsString(JAVA_UTIL_OPTIONAL, javaTypeName);
             }
         } else {
             if (javaTypeName.startsWith(JAVA_UTIL_LIST) &&
@@ -242,7 +266,6 @@ class GraphqlTypeToJavaTypeMapper {
                 // in case it is query/mutation and apiReturnType is set
                 return getGenericsString(mappingContext.getApiReturnType(), javaTypeName);
             }
-
         }
         return javaTypeName;
     }
