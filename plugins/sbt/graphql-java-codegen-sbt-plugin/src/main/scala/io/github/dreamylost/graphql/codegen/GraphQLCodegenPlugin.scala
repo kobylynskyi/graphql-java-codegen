@@ -17,12 +17,13 @@ import scala.collection.JavaConverters._
  * @author liguobin@growingio.com
  * @version 1.0,2020/7/15
  */
-object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile) {
+object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile, configurationPostfix = "-main") {
   //for auto import
   val autoImport = GlobalImport
 }
 
-class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with Compat {
+class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val configurationPostfix: String = "") extends AutoPlugin with Compat {
+  self =>
 
   //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
 
@@ -40,6 +41,8 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
     lazy val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
     lazy val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
+    lazy val GraphQLCodegenConfig = self.GraphQLCodegenConfig
+
   }
 
   //no Auto trigger
@@ -48,16 +51,18 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
 
   override def requires = sbt.plugins.JvmPlugin
 
+  override def projectConfigurations: Seq[Configuration] = GraphQLCodegenConfig :: Nil
+
   import GlobalImport._
 
   //With the implementation of some other plugins, initialization is not necessary,
   //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
-  override def globalSettings: Seq[Def.Setting[_]] = Seq(
+  override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
     graphqlSchemas := schemaFinderConfig,
     jsonConfigurationFile := None,
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
-    customTypesMapping := new util.HashMap[String, String](),//TODO use scala Map, convert to java Map
+    customTypesMapping := new util.HashMap[String, String](), //TODO use scala Map, convert to java Map
     customAnnotationsMapping := new util.HashMap[String, String](),
     directiveAnnotationsMapping := new util.HashMap[String, String](),
     javaxValidationApiVersion := None,
@@ -102,92 +107,89 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
     parentInterfaces := parentInterfacesConfig
   )
 
-  //TODO support scope for mutile modules
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
 
     //TODO use builder
     val mappingConfig = new MappingConfig
-    mappingConfig.setPackageName(generatePackageName.value.orNull)
-    mappingConfig.setCustomTypesMapping(customTypesMapping.value)
-    mappingConfig.setApiNameSuffix(apiNameSuffix.value)
-    mappingConfig.setApiNamePrefix(apiNamePrefix.value.orNull)
-    mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy.value)
-    mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy.value)
-    mappingConfig.setModelNamePrefix(modelNamePrefix.value.orNull)
-    mappingConfig.setModelNameSuffix(modelNameSuffix.value.orNull)
-    mappingConfig.setApiPackageName(apiPackageName.value.orNull)
-    mappingConfig.setModelPackageName(modelPackageName.value.orNull)
-    mappingConfig.setGenerateBuilder(generateBuilder.value)
-    mappingConfig.setGenerateApis(generateApis.value)
-    mappingConfig.setTypeResolverSuffix(typeResolverSuffix.value)
-    mappingConfig.setTypeResolverPrefix(typeResolverPrefix.value.orNull)
-    mappingConfig.setModelValidationAnnotation(modelValidationAnnotation.value)
-    mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping.value)
-    mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode.value)
-    mappingConfig.setGenerateImmutableModels(generateImmutableModels.value)
-    mappingConfig.setGenerateToString(generateToString.value)
-    mappingConfig.setSubscriptionReturnType(subscriptionReturnType.value.orNull)
-    mappingConfig.setGenerateAsyncApi(generateAsyncApi.value)
-    mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers.value)
-    mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis.value)
-    mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers.value)
-    mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes.value)
-    mappingConfig.setFieldsWithResolvers(fieldsWithResolvers.value)
-    mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers.value)
-    mappingConfig.setGenerateClient(generateClient.value)
-    mappingConfig.setRequestSuffix(requestSuffix.value)
-    mappingConfig.setResponseSuffix(responseSuffix.value)
-    mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix.value)
-    mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix.value)
-    mappingConfig.setResolverParentInterface(parentInterfaces.value.resolver)
-    mappingConfig.setQueryResolverParentInterface(parentInterfaces.value.queryResolver)
-    mappingConfig.setMutationResolverParentInterface(parentInterfaces.value.mutationResolver)
-    mappingConfig.setSubscriptionResolverParentInterface(parentInterfaces.value.subscriptionResolver)
-    mappingConfig.setApiAsyncReturnType(apiAsyncReturnType.value)
-    mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType.value.orNull)
-    mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping.value)
+    mappingConfig.setPackageName((generatePackageName in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setCustomTypesMapping((customTypesMapping in GraphQLCodegenConfig).value)
+    mappingConfig.setApiNameSuffix((apiNameSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setApiNamePrefix((apiNamePrefix in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setApiRootInterfaceStrategy((apiRootInterfaceStrategy in GraphQLCodegenConfig).value)
+    mappingConfig.setApiNamePrefixStrategy((apiNamePrefixStrategy in GraphQLCodegenConfig).value)
+    mappingConfig.setModelNamePrefix((modelNamePrefix in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setModelNameSuffix((modelNameSuffix in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setApiPackageName((apiPackageName in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setModelPackageName((modelPackageName in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setGenerateBuilder((generateBuilder in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateApis((generateApis in GraphQLCodegenConfig).value)
+    mappingConfig.setTypeResolverSuffix((typeResolverSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setTypeResolverPrefix((typeResolverPrefix in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setModelValidationAnnotation((modelValidationAnnotation in GraphQLCodegenConfig).value)
+    mappingConfig.setCustomAnnotationsMapping((customAnnotationsMapping in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateEqualsAndHashCode((generateEqualsAndHashCode in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateImmutableModels((generateImmutableModels in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateToString((generateToString in GraphQLCodegenConfig).value)
+    mappingConfig.setSubscriptionReturnType((subscriptionReturnType in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setGenerateAsyncApi((generateAsyncApi in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateParameterizedFieldsResolvers((generateParameterizedFieldsResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis((generateDataFetchingEnvironmentArgumentInApis in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateExtensionFieldsResolvers((generateExtensionFieldsResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateModelsForRootTypes((generateModelsForRootTypes in GraphQLCodegenConfig).value)
+    mappingConfig.setFieldsWithResolvers((fieldsWithResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setFieldsWithoutResolvers((fieldsWithoutResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateClient((generateClient in GraphQLCodegenConfig).value)
+    mappingConfig.setRequestSuffix((requestSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setResponseSuffix((responseSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setResponseProjectionSuffix((responseProjectionSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setParametrizedInputSuffix((parametrizedInputSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.resolver)
+    mappingConfig.setQueryResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.queryResolver)
+    mappingConfig.setMutationResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.mutationResolver)
+    mappingConfig.setSubscriptionResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.subscriptionResolver)
+    mappingConfig.setApiAsyncReturnType((apiAsyncReturnType in GraphQLCodegenConfig).value)
+    mappingConfig.setApiAsyncReturnListType((apiAsyncReturnListType in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setDirectiveAnnotationsMapping((directiveAnnotationsMapping in GraphQLCodegenConfig).value)
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
   }
 
-  //skip test
-  override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(configuration) {
+  override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(GraphQLCodegenConfig) {
     Seq(
-      //must use sourceManaged in projectSettings
+      generateCodegenTargetPath := crossTarget.value / "src_managed_graphql",
+      sourceManaged := (generateCodegenTargetPath in GraphQLCodegenConfig).value,
+      javaSource in configuration := (sourceManaged in GraphQLCodegenConfig).value,
+      managedSourceDirectories in configuration ++= Seq((sourceManaged in GraphQLCodegenConfig).value),
+      managedClasspath := {
+        Classpaths.managedJars(GraphQLCodegenConfig, (classpathTypes in GraphQLCodegenConfig).value, (update in GraphQLCodegenConfig).value)
+      },
       outputDir := {
-        val file = (sourceManaged in graphqlCodegen).value
+        val file = (javaSource in configuration).value
         if (!file.exists()) {
           file.mkdirs()
         }
         sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
         file
-      } //use validate that config in build.sbt
-      , graphqlCodegenValidate := {
-        val schemas = if ((graphqlSchemaPaths in configuration).value.isEmpty) {
-          Seq((resourceDirectory.value / "schema.graphql").getCanonicalPath).asJava
+      }, //use validate that config in build.sbt
+      graphqlCodegenValidate := {
+        val schemas = if ((graphqlSchemaPaths in GraphQLCodegenConfig).value.isEmpty) {
+          Seq(((resourceDirectory in configuration).value / "schema.graphql").getCanonicalPath).asJava
         } else {
           (graphqlSchemaPaths in configuration).value.asJava
         }
         new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
-      } // use a new src_managed for graphql, and must append to managedSourceDirectories
-      , sourceManaged in graphqlCodegen := crossTarget.value / "src_managed_graphql" //if generate code successfully but compile failed, reimport project, because ivy cache
-      , managedSourceDirectories in configuration := {
-        managedSourceDirectories.value ++ Seq((sourceManaged in graphqlCodegen).value)
-      }, javaSource := {
-        (sourceManaged in graphqlCodegen).value
-      }, managedClasspath := {
-        Classpaths.managedJars(configuration, classpathTypes.value, update.value)
-      }, graphqlSchemaValidate := {
+      },
+      graphqlSchemaValidate := {
         //use by user
         val args: Seq[String] = spaceDelimited("<arg>").parsed
         new GraphQLCodegenValidate(args.asJava).validate()
         args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
         args
       }, graphqlCodegen := {
-        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in configuration).value.orNull)
+        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in GraphQLCodegenConfig).value.orNull)
         var result: Seq[File] = Seq.empty
         try {
-          result = new GraphQLCodegen(getSchemas, outputDir.value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
+          result = new GraphQLCodegen(getSchemas, (outputDir in GraphQLCodegenConfig).value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
           for (file ← result) {
             sLog.value.success(s"${file.getName}")
           }
@@ -198,18 +200,18 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         }
 
         def getSchemas: util.List[String] = {
-          if ((graphqlSchemaPaths in configuration).value != null && (graphqlSchemaPaths in configuration).value.nonEmpty)
-            return (graphqlSchemaPaths in configuration).value.asJava
+          if ((graphqlSchemaPaths in GraphQLCodegenConfig).value != null && (graphqlSchemaPaths in GraphQLCodegenConfig).value.nonEmpty)
+            return (graphqlSchemaPaths in GraphQLCodegenConfig).value.asJava
           val schemasRootDir: Path = getSchemasRootDir
           val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
-          finder.setRecursive((graphqlSchemas in configuration).value.recursive)
-          finder.setIncludePattern((graphqlSchemas in configuration).value.includePattern)
-          finder.setExcludedFiles((graphqlSchemas in configuration).value.excludedFiles.asJava)
+          finder.setRecursive((graphqlSchemas in GraphQLCodegenConfig).value.recursive)
+          finder.setIncludePattern((graphqlSchemas in GraphQLCodegenConfig).value.includePattern)
+          finder.setExcludedFiles((graphqlSchemas in GraphQLCodegenConfig).value.excludedFiles.asJava)
           finder.findSchemas
         }
 
         def getSchemasRootDir: Path = {
-          val rootDir = (graphqlSchemas in configuration).value.rootDir
+          val rootDir = (graphqlSchemas in GraphQLCodegenConfig).value.rootDir
           if (rootDir == null) {
             val default = getDefaultResourcesDirectory
             if (default == null) throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
@@ -219,7 +221,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         }
 
         def getDefaultResourcesDirectory: Path = {
-          val file = resourceDirectory.value
+          val file = (resourceDirectory in configuration).value
           if (!file.exists()) {
             file.mkdirs()
           }
@@ -231,7 +233,7 @@ class GraphQLCodegenPlugin(configuration: Configuration) extends AutoPlugin with
         result
       }
     //watch graphql schema source
-    ) ++ watchSourcesSetting
+    ) ++ watchSourcesSetting ++ Seq(cleanFiles += (generateCodegenTargetPath in GraphQLCodegenConfig).value)
   }
 
   private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = {

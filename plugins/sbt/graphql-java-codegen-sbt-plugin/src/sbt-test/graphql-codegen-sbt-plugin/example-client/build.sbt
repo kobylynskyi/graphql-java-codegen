@@ -51,3 +51,5 @@ customAnnotationsMapping := {
        |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
   mapping
 }
+
+generateCodegenTargetPath in GraphQLCodegenConfig  := crossTarget.value / "src_managed_graphql_my_folder"

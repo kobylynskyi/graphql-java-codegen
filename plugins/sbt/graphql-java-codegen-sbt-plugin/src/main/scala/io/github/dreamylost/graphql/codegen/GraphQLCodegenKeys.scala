@@ -105,4 +105,6 @@ trait GraphQLCodegenKeys {
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")
 
+  val generateCodegenTargetPath = settingKey[File]("The path for graphqlCodegen to save java code which generate by plugin")
+
 }
