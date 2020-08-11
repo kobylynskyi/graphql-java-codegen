@@ -123,12 +123,6 @@ public class GraphQLCodegen {
         if (mappingConfig.getTypeResolverSuffix() == null) {
             mappingConfig.setTypeResolverSuffix(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX);
         }
-        if (mappingConfig.getGenerateAsyncApi() == null) {
-            mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
-        }
-        if (mappingConfig.getApiAsyncReturnType() == null) {
-            mappingConfig.setApiAsyncReturnType(MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE);
-        }
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
@@ -140,6 +134,9 @@ public class GraphQLCodegen {
         }
         if (mappingConfig.getGenerateModelsForRootTypes() == null) {
             mappingConfig.setGenerateModelsForRootTypes(MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES);
+        }
+        if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
+            mappingConfig.setUseOptionalForNullableReturnTypes(MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
         }
         if (mappingConfig.getApiNamePrefixStrategy() == null) {
             mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);

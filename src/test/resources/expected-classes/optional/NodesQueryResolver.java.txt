@@ -1,0 +1,11 @@
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface NodesQueryResolver {
+
+    @javax.validation.constraints.NotNull
+    java.util.List<Node> nodes(java.util.List<String> ids) throws Exception;
+
+}

@@ -102,13 +102,13 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public String getApiAsyncReturnType() {
-        return config.getApiAsyncReturnType();
+    public String getApiReturnType() {
+        return config.getApiReturnType();
     }
 
     @Override
-    public String getApiAsyncReturnListType() {
-        return config.getApiAsyncReturnListType();
+    public String getApiReturnListType() {
+        return config.getApiReturnListType();
     }
 
     @Override
@@ -137,11 +137,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Boolean getGenerateAsyncApi() {
-        return config.getGenerateAsyncApi();
-    }
-
-    @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return config.getGenerateParameterizedFieldsResolvers();
     }
@@ -164,6 +159,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
         return config.getGenerateDataFetchingEnvironmentArgumentInApis();
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return config.getUseOptionalForNullableReturnTypes();
     }
 
     @Override
