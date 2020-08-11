@@ -1,0 +1,19 @@
+type Query {
+    queryINeed(
+        input: ZonedDateTime!
+    ): [ResponseContainingDate]
+    otherQueryUsedAsExample(
+        input: InputContainingDate!
+    ): String
+}
+
+type ResponseContainingDate{
+    a: ZonedDateTime
+}
+
+input InputContainingDate{
+    a: ZonedDateTime
+}
+
+# ZonedDateTime Scalar
+scalar ZonedDateTime

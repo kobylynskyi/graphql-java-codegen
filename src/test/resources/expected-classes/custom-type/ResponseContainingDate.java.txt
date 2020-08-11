@@ -1,0 +1,60 @@
+package com.kobylynskyi.graphql.test1;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class ResponseContainingDate implements java.io.Serializable {
+
+    private java.time.ZonedDateTime a;
+
+    public ResponseContainingDate() {
+    }
+
+    public ResponseContainingDate(java.time.ZonedDateTime a) {
+        this.a = a;
+    }
+
+    public java.time.ZonedDateTime getA() {
+        return a;
+    }
+    public void setA(java.time.ZonedDateTime a) {
+        this.a = a;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (a != null) {
+            joiner.add("a: " + GraphQLRequestSerializer.getEntry(a));
+        }
+        return joiner.toString();
+    }
+
+    public static ResponseContainingDate.Builder builder() {
+        return new ResponseContainingDate.Builder();
+    }
+
+    public static class Builder {
+
+        private java.time.ZonedDateTime a;
+
+        public Builder() {
+        }
+
+        public Builder setA(java.time.ZonedDateTime a) {
+            this.a = a;
+            return this;
+        }
+
+
+        public ResponseContainingDate build() {
+            return new ResponseContainingDate(a);
+        }
+
+    }
+}

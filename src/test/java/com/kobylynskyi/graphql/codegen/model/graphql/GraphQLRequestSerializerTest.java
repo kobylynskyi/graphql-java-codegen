@@ -303,6 +303,23 @@ class GraphQLRequestSerializerTest {
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_collectionRequest_Null(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
+                .setContextId("something")
+                .setIds(null)
+                .setTranslated(false)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { eventsByIds(contextId: \"something\", translated: false){ id } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
     private static String jsonQuery(String expectedQueryDecorator) {
         return String.format("{\"query\":\"%s\"}", expectedQueryDecorator.replace("\\", "\\\\").replace("\"", "\\\""));
     }
