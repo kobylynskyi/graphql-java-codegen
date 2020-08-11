@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
@@ -8,7 +9,6 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,11 +32,6 @@ class GraphQLCodegenApisTest {
     private final MappingConfig mappingConfig = new MappingConfig();
     private final SchemaFinder schemaFinder = new SchemaFinder(Paths.get("src/test/resources"));
 
-    @BeforeEach
-    void init() {
-        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
-    }
-
     @AfterEach
     void cleanup() {
         Utils.deleteDir(outputBuildDir);
@@ -43,6 +39,7 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_FileNameAsPrefix() throws Exception {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
@@ -55,6 +52,7 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_FolderNameAsPrefix() throws Exception {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
@@ -67,6 +65,7 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_Constant() throws Exception {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
@@ -79,6 +78,7 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_InterfacePerSchemaAndFolderNameAsPrefix() throws Exception {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
@@ -92,6 +92,7 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_InterfacePerSchemaAndFileNameAsPrefix() throws Exception {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
@@ -105,12 +106,44 @@ class GraphQLCodegenApisTest {
 
     @Test
     void generate_InterfacePerSchemaAndConstantPrefix() throws IOException {
+        schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         GeneratedInformation generatedInformation = TestUtils.getStaticGeneratedInfo();
         List<String> schemas = schemaFinder.findSchemas();
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, generatedInformation));
+    }
+
+    @Test
+    void generate_DoNotGenerateApiInterfaceForOperations() throws IOException {
+        schemaFinder.setIncludePattern("test.*\\.graphqls");
+        mappingConfig.setApiInterfaceStrategy(ApiInterfaceStrategy.DO_NOT_GENERATE);
+
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertEquals(Arrays.asList(
+                "Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
+                "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java"),
+                Arrays.stream(files).map(File::getName).sorted().collect(toList()));
+    }
+
+    @Test
+    void generate_DoNotGenerateRootApiInterfaces() throws IOException {
+        schemaFinder.setIncludePattern("test.*\\.graphqls");
+        mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.DO_NOT_GENERATE);
+
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertEquals(Arrays.asList(
+                "CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java", "EventProperty.java",
+                "EventPropertyResolver.java", "EventStatus.java", "EventsByCategoryAndStatusQueryResolver.java",
+                "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "VersionQueryResolver.java"),
+                Arrays.stream(files).map(File::getName).sorted().collect(toList()));
     }
 
 }

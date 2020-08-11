@@ -57,6 +57,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return config.getApiInterfaceStrategy();
+    }
+
+    @Override
     public String getPackageName() {
         return config.getPackageName();
     }

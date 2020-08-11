@@ -1,6 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
@@ -105,6 +106,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING)
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY_STRING)
+    private ApiInterfaceStrategy apiInterfaceStrategy;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY_STRING)
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
 
@@ -171,6 +175,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
+        mappingConfig.setApiInterfaceStrategy(apiInterfaceStrategy);
         mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
@@ -517,6 +522,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
         this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return apiInterfaceStrategy;
+    }
+
+    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
+        this.apiInterfaceStrategy = apiInterfaceStrategy;
     }
 
     @Override

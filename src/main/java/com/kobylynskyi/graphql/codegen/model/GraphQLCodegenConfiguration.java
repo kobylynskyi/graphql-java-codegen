@@ -73,6 +73,13 @@ public interface GraphQLCodegenConfiguration {
     ApiRootInterfaceStrategy getApiRootInterfaceStrategy();
 
     /**
+     * Specifies the strategy of generating api interfaces.
+     *
+     * @return strategy of generating api interfaces.
+     */
+    ApiInterfaceStrategy getApiInterfaceStrategy();
+
+    /**
      * Java package for generated classes.
      *
      * @return Java package for generated classes.
