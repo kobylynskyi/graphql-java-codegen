@@ -4,13 +4,12 @@ public class NamedDefinition {
 
     private String name;
     private boolean isInterface;
+    private boolean mandatory;
 
-    public NamedDefinition() {
-    }
-
-    public NamedDefinition(String name, boolean isInterface) {
+    public NamedDefinition(String name, boolean isInterface, boolean mandatory) {
         this.name = name;
         this.isInterface = isInterface;
+        this.mandatory = mandatory;
     }
 
     public String getName() {
@@ -27,5 +26,13 @@ public class NamedDefinition {
 
     public void setInterface(boolean anInterface) {
         isInterface = anInterface;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
     }
 }

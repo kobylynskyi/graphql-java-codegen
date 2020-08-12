@@ -52,8 +52,6 @@ trait GraphQLCodegenKeys {
 
   val subscriptionReturnType = settingKey[Option[String]]("subscriptionReturnType")
 
-  val generateAsyncApi = settingKey[Boolean]("If true, then wrap type into java.util.concurrent.CompletableFuture or subscriptionReturnType")
-
   val modelValidationAnnotation = settingKey[String]("Annotation for mandatory (NonNull) fields. Can be None/empty.")
 
   val generateParameterizedFieldsResolvers = settingKey[Boolean]("If true, then generate separate Resolver interface for parametrized fields. If false, then add field to the type definition and ignore field parameters.")
@@ -95,9 +93,9 @@ trait GraphQLCodegenKeys {
 
   val graphqlCodegenValidate = taskKey[Unit]("Validate graphql schema")
 
-  val apiAsyncReturnType = settingKey[String]("apiAsyncReturnType")
+  val apiReturnType = settingKey[Option[String]]("apiReturnType")
 
-  val apiAsyncReturnListType = settingKey[Option[String]]("apiAsyncReturnListType")
+  val apiReturnListType = settingKey[Option[String]]("apiReturnListType")
 
   val directiveAnnotationsMapping = settingKey[util.HashMap[String, String]]("directiveAnnotationsMapping")
 

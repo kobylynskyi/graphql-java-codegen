@@ -1,6 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
@@ -44,12 +45,13 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private File outputDir;
 
     private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<String, String> customAnnotationsMapping = new HashMap<>();
-    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
     private ApiNamePrefixStrategy apiNamePrefixStrategy = MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy = MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY;
+    private ApiInterfaceStrategy apiInterfaceStrategy = MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY;
     private String apiNamePrefix;
     private String apiNameSuffix = MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX;
     private String typeResolverPrefix;
@@ -57,8 +59,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String modelPackageName;
     private String modelNamePrefix;
     private String modelNameSuffix;
-    private String apiAsyncReturnType = MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE;
-    private String apiAsyncReturnListType;
+    private String apiReturnType;
+    private String apiReturnListType;
     private String subscriptionReturnType;
     private Boolean generateBuilder = MappingConfigConstants.DEFAULT_BUILDER;
     private Boolean generateApis = MappingConfigConstants.DEFAULT_GENERATE_APIS;
@@ -66,11 +68,11 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateEqualsAndHashCode = MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE;
     private Boolean generateImmutableModels = MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS;
     private Boolean generateToString = MappingConfigConstants.DEFAULT_TO_STRING;
-    private Boolean generateAsyncApi = MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS;
     private Boolean generateParameterizedFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS;
     private Boolean generateExtensionFieldsResolvers = MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS;
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
+    private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
 
@@ -98,6 +100,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
+        mappingConfig.setApiInterfaceStrategy(apiInterfaceStrategy);
         mappingConfig.setApiNamePrefixStrategy(apiNamePrefixStrategy);
         mappingConfig.setModelNamePrefix(modelNamePrefix);
         mappingConfig.setModelNameSuffix(modelNameSuffix);
@@ -111,10 +114,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateEqualsAndHashCode(generateEqualsAndHashCode);
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
-        mappingConfig.setApiAsyncReturnType(apiAsyncReturnType);
-        mappingConfig.setApiAsyncReturnListType(apiAsyncReturnListType);
+        mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
+        mappingConfig.setApiReturnType(apiReturnType);
+        mappingConfig.setApiReturnListType(apiReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
-        mappingConfig.setGenerateAsyncApi(generateAsyncApi);
         mappingConfig.setGenerateParameterizedFieldsResolvers(generateParameterizedFieldsResolvers);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
@@ -222,22 +225,22 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
 
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
         this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Input
     @Optional
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return directiveAnnotationsMapping;
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
         this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 
@@ -294,6 +297,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
         this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return apiInterfaceStrategy;
+    }
+
+    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
+        this.apiInterfaceStrategy = apiInterfaceStrategy;
     }
 
     @Input
@@ -420,23 +434,23 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public String getApiAsyncReturnType() {
-        return apiAsyncReturnType;
+    public String getApiReturnType() {
+        return apiReturnType;
     }
 
-    public void setApiAsyncReturnType(String apiAsyncReturnType) {
-        this.apiAsyncReturnType = apiAsyncReturnType;
+    public void setApiReturnType(String apiReturnType) {
+        this.apiReturnType = apiReturnType;
     }
 
     @Input
     @Optional
     @Override
-    public String getApiAsyncReturnListType() {
-        return apiAsyncReturnListType;
+    public String getApiReturnListType() {
+        return apiReturnListType;
     }
 
-    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
-        this.apiAsyncReturnListType = apiAsyncReturnListType;
+    public void setApiReturnListType(String apiReturnListType) {
+        this.apiReturnListType = apiReturnListType;
     }
 
     @Input
@@ -448,17 +462,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setSubscriptionReturnType(String subscriptionReturnType) {
         this.subscriptionReturnType = subscriptionReturnType;
-    }
-
-    @Input
-    @Optional
-    @Override
-    public Boolean getGenerateAsyncApi() {
-        return generateAsyncApi;
-    }
-
-    public void setGenerateAsyncApi(Boolean generateAsyncApi) {
-        this.generateAsyncApi = generateAsyncApi;
     }
 
     @Input
@@ -514,6 +517,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return useOptionalForNullableReturnTypes;
+    }
+
+    public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
+        this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
     }
 
     @Input

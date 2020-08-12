@@ -36,8 +36,8 @@ class GraphQLCodegenFieldsResolversTest {
     void generate_ParametrizedFields() throws Exception {
         mappingConfig.setGenerateParameterizedFieldsResolvers(true);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap(
-                "Commit.blame", "com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)")));
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Commit.blame",
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();

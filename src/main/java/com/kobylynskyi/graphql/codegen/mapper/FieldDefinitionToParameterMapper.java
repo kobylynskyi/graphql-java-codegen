@@ -9,8 +9,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.List;
 
-import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getJavaType;
-import static com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper.getNestedTypeName;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -69,7 +67,7 @@ public class FieldDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
         parameter.setOriginalName(fieldDef.getName());
-        parameter.setType(getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName).getName());
+        parameter.setType(GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName).getName());
         parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(fieldDef.isDeprecated());
@@ -90,7 +88,7 @@ public class FieldDefinitionToParameterMapper {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(fieldDef.getName());
         parameter.setMethodName(MapperUtils.capitalizeMethodNameIfRestricted(parameter.getName()));
-        String nestedType = getNestedTypeName(fieldDef.getType());
+        String nestedType = GraphqlTypeToJavaTypeMapper.getNestedTypeName(fieldDef.getType());
         if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
             parameter.setType(Utils.capitalize(nestedType + mappingContext.getResponseProjectionSuffix()));
         }
