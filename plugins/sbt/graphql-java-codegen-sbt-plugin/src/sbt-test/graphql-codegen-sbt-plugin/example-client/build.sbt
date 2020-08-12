@@ -41,14 +41,16 @@ customTypesMapping := {
 modelNameSuffix := Some("DO")
 
 customAnnotationsMapping := {
-  val mapping = new util.HashMap[String, String]
+  val mapping = new util.HashMap[String, util.List[String]]
+  val annotations = new util.ArrayList[String]()
+  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("""@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
   //must add this annotation
   //property is __typename and you must with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
   //and in @JsonSubTypes.Type, name is __typename's value
-  mapping.put("Character",
-    s"""@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = "__typename")${System.lineSeparator()}@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
-       |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
-       |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
+  mapping.put("Character",annotations)//since v3.0.0
   mapping
 }
 
