@@ -29,7 +29,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
 
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = "2.0.1.Final"
-  private val codegen = "2.4.1"
+  private val codegen = "3.0.0-SNAPSHOT"
 
   object GlobalImport extends GraphQLCodegenKeys {
 
@@ -63,8 +63,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
     customTypesMapping := new util.HashMap[String, String](), //TODO use scala Map, convert to java Map
-    customAnnotationsMapping := new util.HashMap[String, String](),
-    directiveAnnotationsMapping := new util.HashMap[String, String](),
+    customAnnotationsMapping := new util.HashMap[String, util.List[String]](),
+    directiveAnnotationsMapping := new util.HashMap[String, util.List[String]](),
     javaxValidationApiVersion := None,
     graphqlJavaCodegenVersion := None,
     // suffix/prefix/strategies:
@@ -84,6 +84,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     modelValidationAnnotation := MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION,
     apiReturnType := None,
     apiReturnListType := None,
+    apiInterfaceStrategy := MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY,
+    useOptionalForNullableReturnTypes := MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES,
     // package name configs:
     apiPackageName := None,
     modelPackageName := None,
@@ -130,7 +132,6 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateImmutableModels((generateImmutableModels in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateToString((generateToString in GraphQLCodegenConfig).value)
     mappingConfig.setSubscriptionReturnType((subscriptionReturnType in GraphQLCodegenConfig).value.orNull)
-    mappingConfig.setGenerateAsyncApi((generateAsyncApi in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateParameterizedFieldsResolvers((generateParameterizedFieldsResolvers in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis((generateDataFetchingEnvironmentArgumentInApis in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateExtensionFieldsResolvers((generateExtensionFieldsResolvers in GraphQLCodegenConfig).value)
@@ -146,9 +147,12 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setQueryResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.queryResolver)
     mappingConfig.setMutationResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.mutationResolver)
     mappingConfig.setSubscriptionResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.subscriptionResolver)
-    mappingConfig.setApiAsyncReturnType((apiAsyncReturnType in GraphQLCodegenConfig).value)
-    mappingConfig.setApiAsyncReturnListType((apiAsyncReturnListType in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setApiReturnType((apiReturnType in GraphQLCodegenConfig).value.orNull)
+    mappingConfig.setApiReturnListType((apiReturnListType in GraphQLCodegenConfig).value.orNull)
     mappingConfig.setDirectiveAnnotationsMapping((directiveAnnotationsMapping in GraphQLCodegenConfig).value)
+    mappingConfig.setApiInterfaceStrategy((apiInterfaceStrategy in GraphQLCodegenConfig).value)
+    mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
+
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
   }
