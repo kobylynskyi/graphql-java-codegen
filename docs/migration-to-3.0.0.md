@@ -1,5 +1,6 @@
 Some breaking changes were introduced in [Release 3.0.0](https://github.com/kobylynskyi/graphql-java-codegen/releases/tag/v3.0.0).
-So if you were using version 1.x.x or 2.x.x then please follow steps below.
+So if you were using version 2.x.x then please follow steps below.
+Note: if you are migrating from version 1.x.x, then please also follow [2.0.0 migration guide](migration-to-2.0.0.md) first.
 
 ## Migration steps
 
