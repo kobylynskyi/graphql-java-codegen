@@ -43,7 +43,7 @@ apiReturnListType=reactor.core.publisher.Flux
 
 
 ### 3. Update plugin configuration for `customAnnotationsMapping` and `directiveAnnotationsMapping`
-If you have used `customAnnotationsMapping` config option, then it should be updated by providing an array of annotations in the following format:
+If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` config options, then it should be updated by providing an array of annotations in the following format:
 
 #### Maven
 ```xml
