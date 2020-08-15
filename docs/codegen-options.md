@@ -17,6 +17,7 @@
 | `generateToString`                              | Boolean                                                            | False                                         | Specifies whether generated model classes should have toString method defined. |
 | `apiNamePrefix`                                 | String                                                             | Empty                                         | Sets the prefix for GraphQL api classes (query, mutation, subscription). |
 | `apiNameSuffix`                                 | String                                                             | `Resolver`                                    | Sets the suffix for GraphQL api classes (query, mutation, subscription). |
+| `apiInterfaceStrategy`                          | *See [ApiInterfaceStrategy](#option-apiinterfacestrategy)*         | `INTERFACE_PER_OPERATION`                     | *See [ApiInterfaceStrategy](#option-apiinterfacestrategy)* |
 | `apiRootInterfaceStrategy`                      | *See [ApiRootInterfaceStrategy](#option-apirootinterfacestrategy)* | `SINGLE_INTERFACE`                            | *See [ApiRootInterfaceStrategy](#option-apirootinterfacestrategy)* |
 | `apiNamePrefixStrategy`                         | *See [ApiNamePrefixStrategy](#option-apinameprefixstrategy)*       | `CONSTANT`                                    | *See [ApiNamePrefixStrategy](#option-apinameprefixstrategy)* |
 | `modelNamePrefix`                               | String                                                             | Empty                                         | Sets the prefix for GraphQL model classes (type, input, interface, enum, union). |
@@ -57,25 +58,37 @@ The parameters inside that block are the following:
 | `excludedFiles`             | Set<String>  | (empty set)        | A set of files to exclude, even if they match the include pattern. These paths should be either absolute or relative to the provided `rootDir`. |
 
 
+### Option `ApiInterfaceStrategy`
+
+Defines how to generate interfaces (resolvers) for each operation: `Query`/`Mutation`/`Subscription`.
+Provides ability to skip generation of separate interface class for each operation in favor of having a single "root" interface (see *[ApiRootInterfaceStrategy](#option-apirootinterfacestrategy)* and *[ApiNamePrefixStrategy](#option-apinameprefixstrategy)*)
+
+| Value                                   | Description |
+| --------------------------------------- | ----------- |
+| `INTERFACE_PER_OPERATION` **(default)** | Generate separate interface classes for each GraphQL operation. |
+| `DO_NOT_GENERATE`                       | Do not generate separate interfaces classes for GraphQL operation. |
+
+
 ### Option `ApiRootInterfaceStrategy`
 
 Defines how root interface (`QueryResolver` / `MutationResolver` / `SubscriptionResolver` will be generated (in addition to separate interfaces for each query/mutation/subscription)
 
-| Value                  | Description |
-| ---------------------- | ----------- |
-| `INTERFACE_PER_SCHEMA` | Generate multiple super-interfaces for each graphql file. <br>Takes into account `apiNamePrefixStrategy`. <br>E.g.: `OrderServiceQueryResolver.java`, `ProductServiceQueryResolver.java`, etc. |
-| `SINGLE_INTERFACE`     | Generate a single `QueryResolver.java`, `MutationResolver.java`, `SubscriptionResolver.java` for all graphql schema files. |
+| Value                            | Description |
+| -------------------------------- | ----------- |
+| `INTERFACE_PER_SCHEMA`           | Generate multiple super-interfaces for each graphql file. <br>Takes into account `apiNamePrefixStrategy`. <br>E.g.: `OrderServiceQueryResolver.java`, `ProductServiceQueryResolver.java`, etc. |
+| `SINGLE_INTERFACE` **(default)** | Generate a single `QueryResolver.java`, `MutationResolver.java`, `SubscriptionResolver.java` for all graphql schema files. |
+| `DO_NOT_GENERATE`                | Do not generate super interface for GraphQL operations. |
 
 
 ### Option `ApiNamePrefixStrategy`
 
 Defines which prefix to use for API interfaces.
 
-| Value                   | Description |
-| ----------------------- | ----------- |
-| `FILE_NAME_AS_PREFIX`   | Will take GraphQL file name as a prefix for all generated API interfaces + value of `apiNamePrefix` config option. <br>E.g.:<br> * following schemas: *resources/schemas/order-service.graphql*, *resources/schemas/product-service.graphql*<br> * will result in: `OrderServiceQueryResolver.java`, `ProductServiceQueryResolver.java`, etc |
-| `FOLDER_NAME_AS_PREFIX` | Will take parent folder name as a prefix for all generated API interfaces + value of `apiNamePrefix` config option. E.g.:<br> * following schemas: *resources/order-service/schema1.graphql*, *resources/order-service/schema2.graphql*<br> * will result in: `OrderServiceQueryResolver.java`, `OrderServiceGetOrderByIdQueryResolver.java`, etc |
-| `CONSTANT`              | Will take only the value of `apiNamePrefix` config option. |
+| Value                    | Description |
+| ------------------------ | ----------- |
+| `FILE_NAME_AS_PREFIX`    | Will take GraphQL file name as a prefix for all generated API interfaces + value of `apiNamePrefix` config option. <br>E.g.:<br> * following schemas: *resources/schemas/order-service.graphql*, *resources/schemas/product-service.graphql*<br> * will result in: `OrderServiceQueryResolver.java`, `ProductServiceQueryResolver.java`, etc |
+| `FOLDER_NAME_AS_PREFIX`  | Will take parent folder name as a prefix for all generated API interfaces + value of `apiNamePrefix` config option. E.g.:<br> * following schemas: *resources/order-service/schema1.graphql*, *resources/order-service/schema2.graphql*<br> * will result in: `OrderServiceQueryResolver.java`, `OrderServiceGetOrderByIdQueryResolver.java`, etc |
+| `CONSTANT` **(default)** | Will take only the value of `apiNamePrefix` config option. |
 
 
 ### Option `parentInterfaces`
