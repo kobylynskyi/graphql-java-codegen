@@ -42,6 +42,17 @@ apiReturnListType=reactor.core.publisher.Flux
 // NEW APPROACH
 ```
 
+#### SBT
+```sbt
+// OLD APPROACH
+generateAsyncApis := true
+apiAsyncReturnType := "scala.concurrent.Future"
+// OLD APPROACH
+
+// NEW APPROACH
+apiReturnType := Some("scala.concurrent.Future")
+// NEW APPROACH
+```
 
 ### 3. Update plugin configuration for `customAnnotationsMapping` and `directiveAnnotationsMapping`
 If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` config options, then it should be updated by providing an array of annotations in the following format:
@@ -103,6 +114,40 @@ directiveAnnotationsMapping = [
 // NEW APPROACH
 ```
 
+#### SBT
+```sbt
+// OLD APPROACH
+customAnnotationsMapping := {
+  val mapping = new util.HashMap[String, String]
+  //must add this annotation
+  //property is __typename and you must use with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
+  //and in @JsonSubTypes.Type, name is __typename's value
+  mapping.put("Character",
+    s"""@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = "__typename")${System.lineSeparator()}@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+      |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+      |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})
+      |""".stripMargin)
+  mapping
+}
+// OLD APPROACH
+
+// NEW APPROACH
+customAnnotationsMapping := {
+  val mapping = new util.HashMap[String, util.List[String]]
+  val annotations = new util.ArrayList[String]()
+  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("""@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
+  //must add this annotation
+  //property is __typename and you must use with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
+  //and in @JsonSubTypes.Type, name is __typename's value
+  mapping.put("Character", annotations)
+  mapping
+}
+// NEW APPROACH
+```
+`directiveAnnotationsMapping`, In the same way.
 
 
 ### 4. Regenerate the code
