@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,12 +32,12 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return config.getCustomAnnotationsMapping();
     }
 
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return config.getDirectiveAnnotationsMapping();
     }
 
@@ -53,6 +54,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
         return config.getApiRootInterfaceStrategy();
+    }
+
+    @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return config.getApiInterfaceStrategy();
     }
 
     @Override
@@ -101,13 +107,13 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public String getApiAsyncReturnType() {
-        return config.getApiAsyncReturnType();
+    public String getApiReturnType() {
+        return config.getApiReturnType();
     }
 
     @Override
-    public String getApiAsyncReturnListType() {
-        return config.getApiAsyncReturnListType();
+    public String getApiReturnListType() {
+        return config.getApiReturnListType();
     }
 
     @Override
@@ -136,11 +142,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Boolean getGenerateAsyncApi() {
-        return config.getGenerateAsyncApi();
-    }
-
-    @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return config.getGenerateParameterizedFieldsResolvers();
     }
@@ -163,6 +164,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
         return config.getGenerateDataFetchingEnvironmentArgumentInApis();
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return config.getUseOptionalForNullableReturnTypes();
     }
 
     @Override

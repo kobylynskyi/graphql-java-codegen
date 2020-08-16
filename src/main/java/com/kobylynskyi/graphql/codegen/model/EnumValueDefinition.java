@@ -9,18 +9,24 @@ import java.util.List;
  */
 public class EnumValueDefinition {
 
-    private final String value;
+    private final String javaName;
+    private final String graphqlName;
     private final List<String> javaDoc;
     private final boolean deprecated;
 
-    public EnumValueDefinition(String value, List<String> javaDoc, boolean deprecated) {
-        this.value = value;
+    public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc, boolean deprecated) {
+        this.javaName = javaName;
+        this.graphqlName = graphqlName;
         this.javaDoc = javaDoc;
         this.deprecated = deprecated;
     }
 
-    public String getValue() {
-        return value;
+    public String getJavaName() {
+        return javaName;
+    }
+
+    public String getGraphqlName() {
+        return graphqlName;
     }
 
     public List<String> getJavaDoc() {

@@ -47,7 +47,7 @@ class GraphQLCodegenRestrictedWordsTest {
                 "NativeQueryResponse.java", "PrivateQueryAPI.java", "PrivateQueryRequest.java",
                 "PrivateQueryResponse.java", "Query.java", "QueryAPI.java", "QueryCaseParametrizedInput.java",
                 "QueryPrivateParametrizedInput.java", "QueryResolver.java", "QueryResponseProjection.java",
-                "Synchronized.java", "SynchronizedResponseProjection.java"), generatedFileNames);
+                "Synchronized.java", "SynchronizedResponseProjection.java", "TestEnum.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(

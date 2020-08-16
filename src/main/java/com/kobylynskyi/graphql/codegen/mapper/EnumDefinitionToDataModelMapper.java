@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
@@ -12,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -74,7 +74,8 @@ public class EnumDefinitionToDataModelMapper {
         return enumValueDefinitions.stream()
                 .map(f -> new EnumValueDefinition(
                         MapperUtils.capitalizeIfRestricted(f.getName()),
-                        getJavaDoc(f.getComments()),
+                        f.getName(),
+                        getJavaDoc(f),
                         isDeprecated(f)))
                 .collect(Collectors.toList());
     }
@@ -85,16 +86,16 @@ public class EnumDefinitionToDataModelMapper {
                 .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
-    private static List<String> getJavaDoc(List<Comment> comments) {
-        if (comments == null) {
+    private static List<String> getJavaDoc(graphql.language.EnumValueDefinition def) {
+        if (def.getDescription() != null) {
+            return Collections.singletonList(def.getDescription().getContent());
+        }
+        if (def.getComments() == null) {
             return Collections.emptyList();
         }
-        return comments.stream()
-                .map(Comment::getContent)
-                .filter(Objects::nonNull)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
+        return def.getComments().stream()
+                .map(Comment::getContent).filter(Utils::isNotBlank)
+                .map(String::trim).collect(Collectors.toList());
     }
 
 }

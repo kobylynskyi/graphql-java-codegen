@@ -4,6 +4,7 @@ import java.util
 
 import com.kobylynskyi.graphql.codegen.model.{ ApiNamePrefixStrategy, ApiRootInterfaceStrategy }
 import sbt._
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy
 
 /**
  *
@@ -42,7 +43,7 @@ trait GraphQLCodegenKeys {
 
   val typeResolverSuffix = settingKey[String]("typeResolverSuffix")
 
-  val customAnnotationsMapping = settingKey[util.Map[String, String]]("customAnnotationsMapping")
+  val customAnnotationsMapping = settingKey[util.Map[String, util.List[String]]]("customAnnotationsMapping")
 
   val generateEqualsAndHashCode = settingKey[Boolean]("Specifies whether generated model classes should have equals and hashCode methods defined.")
 
@@ -51,8 +52,6 @@ trait GraphQLCodegenKeys {
   val generateToString = settingKey[Boolean]("Specifies whether generated model classes should have toString method defined.")
 
   val subscriptionReturnType = settingKey[Option[String]]("subscriptionReturnType")
-
-  val generateAsyncApi = settingKey[Boolean]("If true, then wrap type into java.util.concurrent.CompletableFuture or subscriptionReturnType")
 
   val modelValidationAnnotation = settingKey[String]("Annotation for mandatory (NonNull) fields. Can be None/empty.")
 
@@ -95,14 +94,20 @@ trait GraphQLCodegenKeys {
 
   val graphqlCodegenValidate = taskKey[Unit]("Validate graphql schema")
 
-  val apiAsyncReturnType = settingKey[String]("apiAsyncReturnType")
+  val apiReturnType = settingKey[Option[String]]("apiReturnType")
 
-  val apiAsyncReturnListType = settingKey[Option[String]]("apiAsyncReturnListType")
+  val apiReturnListType = settingKey[Option[String]]("apiReturnListType")
 
-  val directiveAnnotationsMapping = settingKey[util.HashMap[String, String]]("directiveAnnotationsMapping")
+  val directiveAnnotationsMapping = settingKey[util.Map[String, util.List[String]]]("directiveAnnotationsMapping")
+
+  val apiInterfaceStrategy = settingKey[ApiInterfaceStrategy]("apiInterfaceStrategy")
+
+  val useOptionalForNullableReturnTypes = settingKey[Boolean]("useOptionalForNullableReturnTypes")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")
+
+  val generateCodegenTargetPath = settingKey[File]("The path for graphqlCodegen to save java code which generate by plugin")
 
 }

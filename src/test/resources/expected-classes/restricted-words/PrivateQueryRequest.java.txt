@@ -28,6 +28,10 @@ public class PrivateQueryRequest implements GraphQLOperationRequest {
         this.input.put("new", New);
     }
 
+    public void setEnum(TestEnum Enum) {
+        this.input.put("enum", Enum);
+    }
+
     @Override
     public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
@@ -70,6 +74,7 @@ public class PrivateQueryRequest implements GraphQLOperationRequest {
 
         private Integer Int;
         private String New;
+        private TestEnum Enum = TestEnum.Long;
 
         public Builder() {
         }
@@ -84,11 +89,17 @@ public class PrivateQueryRequest implements GraphQLOperationRequest {
             return this;
         }
 
+        public Builder setEnum(TestEnum Enum) {
+            this.Enum = Enum;
+            return this;
+        }
+
 
         public PrivateQueryRequest build() {
             PrivateQueryRequest obj = new PrivateQueryRequest();
             obj.setInt(Int);
             obj.setNew(New);
+            obj.setEnum(Enum);
             return obj;
         }
 

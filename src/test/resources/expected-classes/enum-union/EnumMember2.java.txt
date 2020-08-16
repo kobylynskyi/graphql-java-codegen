@@ -6,6 +6,17 @@ package com.kobylynskyi.graphql.enumunion;
 )
 public enum EnumMember2 implements EnumUnion {
 
-    OTHER_VALUE
+    OTHER_VALUE("OTHER_VALUE");
+
+    private final String graphqlName;
+
+    private EnumMember2(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
 
 }

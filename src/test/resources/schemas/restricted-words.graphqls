@@ -4,13 +4,18 @@ schema {
 
 type Query {
     native: String
-    private(int: Int, new: String): Synchronized
+    private(int: Int, new: String, enum: TestEnum = long): Synchronized
     case(final: [char]): ID
 }
 
 type Synchronized {
     void: String
     wait: char
+}
+
+enum TestEnum {
+    long,
+    short
 }
 
 interface char {

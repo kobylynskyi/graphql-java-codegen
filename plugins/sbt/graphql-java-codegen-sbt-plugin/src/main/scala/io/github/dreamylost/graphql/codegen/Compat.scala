@@ -5,6 +5,7 @@ import sbt.Watched.WatchSource
 import sbt.internal.io.Source
 import sbt.io.{ AllPassFilter, SuffixFilter }
 import sbt.{ Def, Task }
+import sbt.Configuration
 
 /**
  *
@@ -23,5 +24,7 @@ trait Compat {
       new SuffixFilter(".graphql") | new SuffixFilter(".graphqls"),
       AllPassFilter)
   }
+
+  protected[this] lazy val GraphQLCodegenConfig = Configuration.of("GraphQLCodegen", "graphqlCodegen" + configurationPostfix)
 
 }

@@ -7,14 +7,14 @@ plugins {
 
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "2.4.1-SNAPSHOT"
+    id "io.github.kobylynskyi.graphql.codegen" version "3.0.0-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.order.Application"
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE"
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.3.1.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.3.2.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.3.2.RELEASE"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:7.1.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:7.1.0"
@@ -22,7 +22,7 @@ dependencies {
 
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
-    implementation "io.github.kobylynskyi:graphql-java-codegen:2.4.1-SNAPSHOT"
+    implementation "io.github.kobylynskyi:graphql-java-codegen:3.0.0-SNAPSHOT"
 
     implementation "org.apache.httpcomponents:httpclient:4.5.12"
     implementation "javax.validation:validation-api:2.0.1.Final"
@@ -85,9 +85,10 @@ task graphqlCodegenStarwarsService(type: GraphQLCodegenGradleTask) {
     outputDir = new File("$buildDir/generated-client-starwars")
     packageName = "io.github.kobylynskyi.starwars.graphql"
     customAnnotationsMapping = [
-            "Character": "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
-                    + System.lineSeparator()
-                    + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+            "Character": [
+                    "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
+                    "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+            ]
     ]
     generateClient = true
     generateApis = false

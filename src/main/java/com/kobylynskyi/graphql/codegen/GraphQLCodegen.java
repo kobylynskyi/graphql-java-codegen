@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.mapper.InterfaceDefinitionToDataModelMapp
 import com.kobylynskyi.graphql.codegen.mapper.RequestResponseDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.TypeDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.UnionDefinitionToDataModelMapper;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
@@ -123,12 +124,6 @@ public class GraphQLCodegen {
         if (mappingConfig.getTypeResolverSuffix() == null) {
             mappingConfig.setTypeResolverSuffix(MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX);
         }
-        if (mappingConfig.getGenerateAsyncApi() == null) {
-            mappingConfig.setGenerateAsyncApi(MappingConfigConstants.DEFAULT_GENERATE_ASYNC_APIS);
-        }
-        if (mappingConfig.getApiAsyncReturnType() == null) {
-            mappingConfig.setApiAsyncReturnType(MappingConfigConstants.DEFAULT_API_ASYNC_RETURN_TYPE);
-        }
         if (mappingConfig.getGenerateParameterizedFieldsResolvers() == null) {
             mappingConfig.setGenerateParameterizedFieldsResolvers(MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS);
         }
@@ -141,11 +136,17 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateModelsForRootTypes() == null) {
             mappingConfig.setGenerateModelsForRootTypes(MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES);
         }
+        if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
+            mappingConfig.setUseOptionalForNullableReturnTypes(MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
+        }
         if (mappingConfig.getApiNamePrefixStrategy() == null) {
             mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);
         }
         if (mappingConfig.getApiRootInterfaceStrategy() == null) {
             mappingConfig.setApiRootInterfaceStrategy(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY);
+        }
+        if (mappingConfig.getApiInterfaceStrategy() == null) {
+            mappingConfig.setApiInterfaceStrategy(MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY);
         }
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             // required for request serialization
@@ -181,16 +182,20 @@ public class GraphQLCodegen {
         mappingConfig.setModelValidationAnnotation(
                 Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
 
-        Map<String, String> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
+        Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
         if (customAnnotationsMapping != null) {
-            for (Map.Entry<String, String> entry : customAnnotationsMapping.entrySet()) {
-                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
+            for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
             }
         }
-        Map<String, String> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
+        Map<String, List<String>> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
         if (directiveAnnotationsMapping != null) {
-            for (Map.Entry<String, String> entry : directiveAnnotationsMapping.entrySet()) {
-                entry.setValue(Utils.replaceLeadingAtSign(entry.getValue()));
+            for (Map.Entry<String, List<String>> entry : directiveAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
             }
         }
     }
@@ -283,29 +288,33 @@ public class GraphQLCodegen {
                     generatedFiles.add(generateRootApi(mappingContext, defInFile));
                 }
                 break;
+            case DO_NOT_GENERATE:
+                break;
             case SINGLE_INTERFACE:
             default:
                 generatedFiles.add(generateRootApi(mappingContext, definition));
                 break;
         }
 
-        // Generate separate interfaces for all queries, mutations and subscriptions
-        List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
-        switch (mappingContext.getApiNamePrefixStrategy()) {
-            case FOLDER_NAME_AS_PREFIX:
-                for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFolder().values()) {
-                    generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
-                }
-                break;
-            case FILE_NAME_AS_PREFIX:
-                for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFile().values()) {
-                    generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
-                }
-                break;
-            case CONSTANT:
-            default:
-                generatedFiles.addAll(generateApis(mappingContext, definition, fieldNames));
-                break;
+        if (mappingContext.getApiInterfaceStrategy() == ApiInterfaceStrategy.INTERFACE_PER_OPERATION) {
+            // Generate separate interfaces for all queries, mutations and subscriptions
+            List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
+            switch (mappingContext.getApiNamePrefixStrategy()) {
+                case FOLDER_NAME_AS_PREFIX:
+                    for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFolder().values()) {
+                        generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
+                    }
+                    break;
+                case FILE_NAME_AS_PREFIX:
+                    for (ExtendedObjectTypeDefinition fileDef : definition.groupBySourceLocationFile().values()) {
+                        generatedFiles.addAll(generateApis(mappingContext, fileDef, fieldNames));
+                    }
+                    break;
+                case CONSTANT:
+                default:
+                    generatedFiles.addAll(generateApis(mappingContext, definition, fieldNames));
+                    break;
+            }
         }
         return generatedFiles;
     }

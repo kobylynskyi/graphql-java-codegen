@@ -275,36 +275,9 @@ class GraphQLCodegenTest {
     }
 
     @Test
-    void generate_WithoutAsyncApis() throws Exception {
-        mappingConfig.setGenerateAsyncApi(false);
-
-        generate("src/test/resources/schemas/test.graphqls");
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertFileContainsElements(files, "VersionQueryResolver.java", "String version()");
-    }
-
-    @Test
-    void generate_AsyncQueryApis() throws Exception {
-        mappingConfig.setGenerateAsyncApi(true);
-
-        generate("src/test/resources/schemas/test.graphqls");
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-
-        assertFileContainsElements(files, "VersionQueryResolver.java",
-                "java.util.concurrent.CompletableFuture<String> version()");
-        assertFileContainsElements(files, "EventsByCategoryAndStatusQueryResolver.java",
-                "java.util.concurrent.CompletableFuture<java.util.List<Event>> eventsByCategoryAndStatus(");
-        assertFileContainsElements(files, "EventByIdQueryResolver.java",
-                "java.util.concurrent.CompletableFuture<Event> eventById(");
-    }
-
-    @Test
-    void generate_AsyncQueryApis_CustomWithApiAsyncReturnTypeApiAsyncReturnListType() throws Exception {
-        mappingConfig.setGenerateAsyncApi(true);
-        mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
-        mappingConfig.setApiAsyncReturnListType("reactor.core.publisher.Flux");
+    void generate_QueryApis_CustomWithApiReturnTypeApiReturnListType() throws Exception {
+        mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
+        mappingConfig.setApiReturnListType("reactor.core.publisher.Flux");
 
         generate("src/test/resources/schemas/test.graphqls");
 
@@ -319,9 +292,8 @@ class GraphQLCodegenTest {
     }
 
     @Test
-    void generate_AsyncQueryApis_CustomWithApiAsyncReturnType() throws Exception {
-        mappingConfig.setGenerateAsyncApi(true);
-        mappingConfig.setApiAsyncReturnType("reactor.core.publisher.Mono");
+    void generate_QueryApis_CustomWithApiReturnType() throws Exception {
+        mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
 
         generate("src/test/resources/schemas/test.graphqls");
 
@@ -344,17 +316,6 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
                 "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
-    }
-
-    @Test
-    void generate_AsyncMutationApis() throws Exception {
-        mappingConfig.setGenerateAsyncApi(true);
-
-        generate("src/test/resources/schemas/test.graphqls");
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertFileContainsElements(files, "CreateEventMutationResolver.java",
-                "java.util.concurrent.CompletableFuture<Event> createEvent(");
     }
 
     @Test

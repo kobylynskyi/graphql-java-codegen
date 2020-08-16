@@ -5,4 +5,15 @@
 public enum Status {
 
 
+    private final String graphqlName;
+
+    private Status(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
+
 }

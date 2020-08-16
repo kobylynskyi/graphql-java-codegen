@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -15,8 +16,8 @@ import java.util.function.Function;
 public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<MappingConfig> {
 
     private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<String, String> customAnnotationsMapping = new HashMap<>();
-    private Map<String, String> directiveAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
 
     // package name configs:
     private String packageName;
@@ -31,10 +32,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String typeResolverPrefix;
     private String typeResolverSuffix;
     private ApiRootInterfaceStrategy apiRootInterfaceStrategy;
+    private ApiInterfaceStrategy apiInterfaceStrategy;
     private ApiNamePrefixStrategy apiNamePrefixStrategy;
     private String modelValidationAnnotation;
-    private String apiAsyncReturnType;
-    private String apiAsyncReturnListType;
+    private String apiReturnType;
+    private String apiReturnListType;
     private String subscriptionReturnType;
 
     // various toggles
@@ -43,11 +45,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateEqualsAndHashCode;
     private Boolean generateToString;
     private Boolean generateImmutableModels;
-    private Boolean generateAsyncApi;
     private Boolean generateParameterizedFieldsResolvers;
     private Boolean generateExtensionFieldsResolvers;
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Boolean generateModelsForRootTypes;
+    private Boolean useOptionalForNullableReturnTypes;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -80,22 +82,23 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         apiNamePrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefix);
         apiNameSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNameSuffix);
         apiRootInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiRootInterfaceStrategy);
+        apiInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiInterfaceStrategy);
         apiNamePrefixStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefixStrategy);
         typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
         typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
         modelValidationAnnotation = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getModelValidationAnnotation);
-        apiAsyncReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnType);
-        apiAsyncReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiAsyncReturnListType);
+        apiReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnType);
+        apiReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnListType);
         subscriptionReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionReturnType);
         generateBuilder = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateBuilder);
         generateEqualsAndHashCode = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
         generateImmutableModels = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateImmutableModels);
         generateToString = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateToString);
-        generateAsyncApi = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateAsyncApi);
         generateParameterizedFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateParameterizedFieldsResolvers);
         generateExtensionFieldsResolvers = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
         generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
+        useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
         queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
         subscriptionResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
@@ -112,9 +115,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
     }
 
-    private static Map<String, String> combineMap(Map<String, String> thisMap, Map<String, String> otherMap) {
+    private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
         if (thisMap != null && otherMap != null) {
-            Map<String, String> resultMap = new HashMap<>();
+            Map<String, T> resultMap = new HashMap<>();
             resultMap.putAll(thisMap);
             resultMap.putAll(otherMap);
             return resultMap;
@@ -168,20 +171,20 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Map<String, String> getCustomAnnotationsMapping() {
+    public Map<String, List<String>> getCustomAnnotationsMapping() {
         return customAnnotationsMapping;
     }
 
-    public void setCustomAnnotationsMapping(Map<String, String> customAnnotationsMapping) {
+    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
         this.customAnnotationsMapping = customAnnotationsMapping;
     }
 
     @Override
-    public Map<String, String> getDirectiveAnnotationsMapping() {
+    public Map<String, List<String>> getDirectiveAnnotationsMapping() {
         return directiveAnnotationsMapping;
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, String> directiveAnnotationsMapping) {
+    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
         this.directiveAnnotationsMapping = directiveAnnotationsMapping;
     }
 
@@ -276,6 +279,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
+    public ApiInterfaceStrategy getApiInterfaceStrategy() {
+        return apiInterfaceStrategy;
+    }
+
+    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
+        this.apiInterfaceStrategy = apiInterfaceStrategy;
+    }
+
+    @Override
     public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
         return apiNamePrefixStrategy;
     }
@@ -294,21 +306,21 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public String getApiAsyncReturnType() {
-        return apiAsyncReturnType;
+    public String getApiReturnType() {
+        return apiReturnType;
     }
 
-    public void setApiAsyncReturnType(String apiAsyncReturnType) {
-        this.apiAsyncReturnType = apiAsyncReturnType;
+    public void setApiReturnType(String apiReturnType) {
+        this.apiReturnType = apiReturnType;
     }
 
     @Override
-    public String getApiAsyncReturnListType() {
-        return apiAsyncReturnListType;
+    public String getApiReturnListType() {
+        return apiReturnListType;
     }
 
-    public void setApiAsyncReturnListType(String apiAsyncReturnListType) {
-        this.apiAsyncReturnListType = apiAsyncReturnListType;
+    public void setApiReturnListType(String apiReturnListType) {
+        this.apiReturnListType = apiReturnListType;
     }
 
     @Override
@@ -366,15 +378,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Boolean getGenerateAsyncApi() {
-        return generateAsyncApi;
-    }
-
-    public void setGenerateAsyncApi(Boolean generateAsyncApi) {
-        this.generateAsyncApi = generateAsyncApi;
-    }
-
-    @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return generateParameterizedFieldsResolvers;
     }
@@ -408,6 +411,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateModelsForRootTypes(Boolean generateModelsForRootTypes) {
         this.generateModelsForRootTypes = generateModelsForRootTypes;
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableReturnTypes() {
+        return useOptionalForNullableReturnTypes;
+    }
+
+    public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
+        this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
     }
 
     @Override

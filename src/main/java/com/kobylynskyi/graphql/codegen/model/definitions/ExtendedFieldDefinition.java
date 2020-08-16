@@ -1,12 +1,13 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
+import graphql.language.Description;
 import graphql.language.Directive;
 import graphql.language.FieldDefinition;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -30,15 +31,18 @@ public class ExtendedFieldDefinition extends FieldDefinition {
     }
 
     public List<String> getJavaDoc() {
-        if (getComments() == null) {
+        Description description = getDescription();
+        if (description != null && Utils.isNotBlank(description.getContent())) {
+            return Collections.singletonList(description.getContent().trim());
+        }
+        List<Comment> comments = getComments();
+        if (comments == null) {
             return Collections.emptyList();
         }
-        return getComments().stream()
-                .map(Comment::getContent)
-                .filter(Objects::nonNull)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
+        return comments.stream()
+                .map(Comment::getContent).filter(Utils::isNotBlank)
+                .map(String::trim).collect(Collectors.toList());
+
     }
 
     public boolean isFromExtension() {

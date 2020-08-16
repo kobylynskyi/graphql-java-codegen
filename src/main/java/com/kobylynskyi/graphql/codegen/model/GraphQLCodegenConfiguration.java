@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */
-    Map<String, String> getCustomAnnotationsMapping();
+    Map<String, List<String>> getCustomAnnotationsMapping();
 
     /**
      * Map GraphQL directives to Java annotations.
@@ -48,7 +49,7 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return mappings from GraphQL directives to Java annotations.
      */
-    Map<String, String> getDirectiveAnnotationsMapping();
+    Map<String, List<String>> getDirectiveAnnotationsMapping();
 
     /**
      * Specifies whether api classes should be generated.
@@ -70,6 +71,13 @@ public interface GraphQLCodegenConfiguration {
      * @return strategy of generating root api interface.
      */
     ApiRootInterfaceStrategy getApiRootInterfaceStrategy();
+
+    /**
+     * Specifies the strategy of generating api interfaces.
+     *
+     * @return strategy of generating api interfaces.
+     */
+    ApiInterfaceStrategy getApiInterfaceStrategy();
 
     /**
      * Java package for generated classes.
@@ -135,23 +143,23 @@ public interface GraphQLCodegenConfiguration {
     String getModelValidationAnnotation();
 
     /**
-     * Async return type for api methods (query / subscription)
+     * Return type for api methods (query / subscription)
      * For example: `reactor.core.publisher.Mono`
      *
      * @return Return type for api methods (query / subscription)
      */
-    String getApiAsyncReturnType();
+    String getApiReturnType();
 
     /**
-     * Async return type for api methods (query / subscription) that return list values
+     * Return type for api methods (query / subscription) that return list values
      * For example: `reactor.core.publisher.Flux`
      *
      * @return Return type for api methods (query / subscription) that return list values
      */
-    String getApiAsyncReturnListType();
+    String getApiReturnListType();
 
     /**
-     * Async return type for subscription methods.
+     * Return type for subscription methods.
      * For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc.
      *
      * @return Return type for subscription methods
@@ -185,13 +193,6 @@ public interface GraphQLCodegenConfiguration {
      * @return <b>true</b> if generated model classes should have toString method defined.
      */
     Boolean getGenerateToString();
-
-    /**
-     * If true, then wrap type into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType`
-     *
-     * @return <b>true</b> if types need to be wrapped into `java.util.concurrent.CompletableFuture` or `subscriptionReturnType`
-     */
-    Boolean getGenerateAsyncApi();
 
     /**
      * If true, then generate separate `Resolver` interface for parametrized fields.
@@ -256,6 +257,13 @@ public interface GraphQLCodegenConfiguration {
      * @return Set of types and fields that should NOT have Resolver interfaces.
      */
     Set<String> getFieldsWithoutResolvers();
+
+    /**
+     * Specifies whether return types of generated API interface should be wrapped into <code>java.util.Optional</code>
+     *
+     * @return <b>true</b> if return types should be wrapped into <code>java.util.Optional</code>
+     */
+    Boolean getUseOptionalForNullableReturnTypes();
 
     /**
      * Specifies whether client-side classes should be generated for each query, mutation and subscription.
