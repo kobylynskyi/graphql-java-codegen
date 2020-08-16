@@ -88,7 +88,6 @@ class GraphQLDocumentParser {
             populateDefinition(extendedDocumentBuilder.interfaceDefinitions, definition, definitionName,
                     InterfaceTypeExtensionDefinition.class, s -> new ExtendedInterfaceTypeDefinition());
         }
-        // TODO: consider DirectiveDefinition
     }
 
     @SuppressWarnings("unchecked")

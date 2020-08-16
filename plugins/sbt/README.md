@@ -33,7 +33,7 @@ enablePlugins(GraphQLCodegenPlugin)
 GraphQLCodegenPluginDependencies
 
 //default graphqlJavaCodegen is release
-graphqlJavaCodegenVersion := Some("2.4.1")
+graphqlJavaCodegenVersion := Some("3.0.0")
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
 apiPackageName := Some("io.github.dreamylost.api")

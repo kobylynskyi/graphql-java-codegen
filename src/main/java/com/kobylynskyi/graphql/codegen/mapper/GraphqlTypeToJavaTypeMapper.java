@@ -262,7 +262,7 @@ class GraphqlTypeToJavaTypeMapper {
                 // in case it is subscription and subscriptionReturnType is set
                 return getGenericsString(mappingContext.getSubscriptionReturnType(), javaTypeName);
             }
-        } else if (mappingContext.getUseOptionalForNullableReturnTypes()) {
+        } else if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())) {
             // wrap the type into java.util.Optional (except lists)
             if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
                 return getGenericsString(JAVA_UTIL_OPTIONAL, javaTypeName);
