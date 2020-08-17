@@ -15,6 +15,8 @@ import graphql.language.Type;
 import graphql.language.TypeName;
 import graphql.language.Value;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +41,7 @@ public class ValueMapper {
             return ValueFormatter.format(mapBoolean((BooleanValue) value), formatter);
         }
         if (value instanceof IntValue) {
-            return ValueFormatter.format(mapInt((IntValue) value), formatter);
+            return ValueFormatter.format(mapInt(mappingContext, (IntValue) value, graphQLType), formatter);
         }
         if (value instanceof FloatValue) {
             return ValueFormatter.format(mapFloat((FloatValue) value), formatter);
@@ -65,7 +67,26 @@ public class ValueMapper {
         return value.isValue() ? "true" : "false";
     }
 
-    private static String mapInt(IntValue value) {
+    private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
+        //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
+        //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
+        List<Field> fields = Arrays.stream(graphQLType.getClass().getDeclaredFields()).collect(Collectors.toList());
+        String customType = mappingContext.getCustomTypesMapping().get("Long");
+        for (Field f : fields) {
+            if (f.getName().equals("name") && ("java.lang.Long".equals(customType) || "Long".equals(customType))) {
+                f.setAccessible(true);
+                try {
+                    String graphqlTypeName = (String) f.get(graphQLType);//from expand scalar
+                    f.setAccessible(false);
+                    if ("Long".equals(graphqlTypeName)) {
+                        return String.valueOf(value.getValue()).concat("L");
+                    }
+                } catch (IllegalAccessException e) {
+                    return String.valueOf(value.getValue());
+                }
+            }
+
+        }
         return String.valueOf(value.getValue());
     }
 

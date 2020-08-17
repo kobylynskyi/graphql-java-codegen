@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -59,6 +61,23 @@ class GraphQLCodegenDefaultsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("InputWithDefaultsTO.java", "MyEnumTO.java", "SomeObjectTO.java"), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
+                    file.getName())),
+                    file);
+        }
+    }
+
+    @Test
+    void generate_CheckFiles_OnLongDefault() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Long", "java.lang.Long")));
+        mappingConfig.setModelNameSuffix("DTO");
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(Arrays.asList("InputWithDefaultsDTO.java", "MyEnumDTO.java", "SomeObjectDTO.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",

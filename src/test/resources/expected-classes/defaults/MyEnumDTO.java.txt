@@ -1,0 +1,24 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public enum MyEnumDTO {
+
+    ONE("ONE"),
+    TWO("TWO"),
+    THREE("THREE");
+
+    private final String graphqlName;
+
+    private MyEnumDTO(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
+
+}
