@@ -73,7 +73,7 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_OnLongDefault() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Long", "java.lang.Long")));
         mappingConfig.setModelNameSuffix("DTO");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults-with-Long.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
