@@ -12,6 +12,7 @@ input InputWithDefaults {
     intList: [Int] = [1, 2, 3]
     intListEmptyDefault: [Int] = []
     objectListEmptyDefault: [SomeObject]! = []
+    longValue: Long = 123456
 }
 
 input SomeObject {
@@ -21,3 +22,6 @@ input SomeObject {
 enum MyEnum {
     ONE, TWO, THREE
 }
+
+
+scalar Long

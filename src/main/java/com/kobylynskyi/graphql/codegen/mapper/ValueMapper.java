@@ -39,7 +39,7 @@ public class ValueMapper {
             return ValueFormatter.format(mapBoolean((BooleanValue) value), formatter);
         }
         if (value instanceof IntValue) {
-            return ValueFormatter.format(mapInt((IntValue) value), formatter);
+            return ValueFormatter.format(mapInt(mappingContext, (IntValue) value, graphQLType), formatter);
         }
         if (value instanceof FloatValue) {
             return ValueFormatter.format(mapFloat((FloatValue) value), formatter);
@@ -65,7 +65,21 @@ public class ValueMapper {
         return value.isValue() ? "true" : "false";
     }
 
-    private static String mapInt(IntValue value) {
+    private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
+        //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
+        //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
+        if (graphQLType instanceof TypeName) {
+            String customType = mappingContext.getCustomTypesMapping().get("Long");
+            String typeName = ((TypeName) graphQLType).getName();
+            if ("Long".equals(typeName) && ("java.lang.Long".equals(customType) || "Long".equals(customType))) {
+                return String.valueOf(value.getValue()).concat("L");
+            }
+        }
+
+        if (graphQLType instanceof NonNullType) {
+            // unwrapping NonNullType
+            return mapInt(mappingContext, value, ((NonNullType) graphQLType).getType());
+        }
         return String.valueOf(value.getValue());
     }
 
