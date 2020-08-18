@@ -15,8 +15,6 @@ import graphql.language.Type;
 import graphql.language.TypeName;
 import graphql.language.Value;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,24 +68,17 @@ public class ValueMapper {
     private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
         //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
         //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
-        if (graphQLType != null) {
-            List<Field> fields = Arrays.stream(graphQLType.getClass().getDeclaredFields()).collect(Collectors.toList());
+        if (graphQLType instanceof TypeName) {
             String customType = mappingContext.getCustomTypesMapping().get("Long");
-            for (Field f : fields) {
-                if (f.getName().equals("name") && ("java.lang.Long".equals(customType) || "Long".equals(customType))) {
-                    f.setAccessible(true);
-                    try {
-                        String graphqlTypeName = (String) f.get(graphQLType);//from expand scalar
-                        f.setAccessible(false);
-                        if ("Long".equals(graphqlTypeName)) {
-                            return String.valueOf(value.getValue()).concat("L");
-                        }
-                    } catch (IllegalAccessException e) {
-                        return String.valueOf(value.getValue());
-                    }
-                }
-
+            String typeName = ((TypeName) graphQLType).getName();
+            if ("Long".equals(typeName) && ("java.lang.Long".equals(customType) || "Long".equals(customType))) {
+                return String.valueOf(value.getValue()).concat("L");
             }
+        }
+
+        if (graphQLType instanceof NonNullType) {
+            // unwrapping NonNullType
+            return mapInt(mappingContext, value, ((NonNullType) graphQLType).getType());
         }
         return String.valueOf(value.getValue());
     }
