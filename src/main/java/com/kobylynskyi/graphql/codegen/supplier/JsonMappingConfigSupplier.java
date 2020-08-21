@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +12,6 @@ import java.io.IOException;
  * @author valinha
  */
 public class JsonMappingConfigSupplier implements MappingConfigSupplier {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String jsonConfigFile;
 
@@ -30,7 +28,7 @@ public class JsonMappingConfigSupplier implements MappingConfigSupplier {
     public MappingConfig get() {
         if (jsonConfigFile != null && !jsonConfigFile.isEmpty()) {
             try {
-                return OBJECT_MAPPER.readValue(new File(jsonConfigFile), MappingConfig.class);
+                return Utils.OBJECT_MAPPER.readValue(new File(jsonConfigFile), MappingConfig.class);
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
             }
