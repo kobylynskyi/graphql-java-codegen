@@ -204,8 +204,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
           }
         } catch {
           case e: Exception ⇒
-            sLog.value.debug(s"${e.getStackTrace}")
-            throw new Exception("Code generation failed. See above for the full exception.")
+            throw new Exception(s"${e.getLocalizedMessage}")
         }
 
         def getSchemas: util.List[String] = {

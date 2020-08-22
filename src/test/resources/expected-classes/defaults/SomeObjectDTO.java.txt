@@ -1,0 +1,51 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class SomeObjectDTO implements java.io.Serializable {
+
+    @javax.validation.constraints.NotNull
+    private String name;
+
+    public SomeObjectDTO() {
+    }
+
+    public SomeObjectDTO(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public static SomeObjectDTO.Builder builder() {
+        return new SomeObjectDTO.Builder();
+    }
+
+    public static class Builder {
+
+        private String name;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+
+        public SomeObjectDTO build() {
+            return new SomeObjectDTO(name);
+        }
+
+    }
+}
