@@ -1,0 +1,65 @@
+package com.github.graphql;
+
+
+/**
+ * An event property have all possible types
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class EventProperty implements java.io.Serializable {
+
+    private Double floatVal;
+
+    public EventProperty() {
+    }
+
+    public EventProperty(Double floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    /**
+     * Float property
+     * with multiline comment
+     */
+    public Double getFloatVal() {
+        return floatVal;
+    }
+    /**
+     * Float property
+     * with multiline comment
+     */
+    public void setFloatVal(Double floatVal) {
+        this.floatVal = floatVal;
+    }
+
+
+
+    public static EventProperty.Builder builder() {
+        return new EventProperty.Builder();
+    }
+
+    public static class Builder {
+
+        private Double floatVal;
+
+        public Builder() {
+        }
+
+        /**
+         * Float property
+         * with multiline comment
+         */
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+
+        public EventProperty build() {
+            return new EventProperty(floatVal);
+        }
+
+    }
+}

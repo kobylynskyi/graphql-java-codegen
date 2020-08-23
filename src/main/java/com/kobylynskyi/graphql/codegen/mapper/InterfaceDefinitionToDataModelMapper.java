@@ -38,7 +38,7 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, FieldDefinitionToParameterMapper.mapFields(
-                mappingContext, definition.getFieldDefinitions(), definition.getName()));
+                mappingContext, definition.getFieldDefinitions(), definition));
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }

@@ -236,23 +236,25 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateDataFetchingEnvironmentArgumentInApis();
 
     /**
-     * Fields that require Resolvers should be defined here in format: TypeName.fieldName
+     * Fields that require Resolvers should be defined here in format: TypeName, TypeName.fieldName, @directive
      * If just type is specified, then all fields of this type will have resolvers
      * <p>
      * E.g.: "Person.friends"
      * E.g.: "Person"
+     * E.g.: "@customResolver"
      *
      * @return Set of types and fields that should have Resolver interfaces.
      */
     Set<String> getFieldsWithResolvers();
 
     /**
-     * Fields that DO NOT require Resolvers should be defined here in format: TypeName.fieldName
+     * Fields that DO NOT require Resolvers should be defined here in format: TypeName, TypeName.fieldName, @directive
      * If just type is specified, then all fields of this type will NOT have resolvers
      * Can be used in conjunction with "generateExtensionFieldsResolvers"
      * <p>
      * E.g.: "Person.friends"
      * E.g.: "Person"
+     * E.g.: "@noResolver"
      *
      * @return Set of types and fields that should NOT have Resolver interfaces.
      */
