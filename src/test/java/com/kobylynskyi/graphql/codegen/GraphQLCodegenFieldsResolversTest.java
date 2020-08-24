@@ -83,4 +83,25 @@ class GraphQLCodegenFieldsResolversTest {
                 getFileByName(files, "CommentDeletedEvent.java"));
     }
 
+    @Test
+    void generate_FieldResolversViaDirective() throws Exception {
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("@customResolver"));
+        mappingConfig.setFieldsWithoutResolvers(Collections.singleton("@noResolver"));
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventResolver.java.txt"),
+                getFileByName(files, "EventResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/Event.java.txt"),
+                getFileByName(files, "Event.java"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventPropertyResolver.java.txt"),
+                getFileByName(files, "EventPropertyResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventProperty.java.txt"),
+                getFileByName(files, "EventProperty.java"));
+    }
+
 }

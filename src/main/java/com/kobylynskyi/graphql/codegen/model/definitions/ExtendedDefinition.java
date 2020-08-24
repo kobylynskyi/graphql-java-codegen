@@ -4,6 +4,8 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.AbstractDescribedNode;
 import graphql.language.Comment;
 import graphql.language.Description;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
 import graphql.language.NamedNode;
 import graphql.language.Node;
 import graphql.language.SourceLocation;
@@ -81,6 +83,21 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
                 .map(Comment::getContent).filter(Utils::isNotBlank)
                 .map(String::trim).forEach(comments::add);
         return comments;
+    }
+
+    public List<String> getDirectiveNames() {
+        List<String> directives = new ArrayList<>();
+        if (this.definition instanceof DirectivesContainer) {
+            List<Directive> definitionDirectives = ((DirectivesContainer<?>) this.definition).getDirectives();
+            if (!Utils.isEmpty(definitionDirectives)) {
+                definitionDirectives.stream().map(Directive::getName).forEach(directives::add);
+            }
+            this.extensions.stream().filter(Objects::nonNull)
+                    .map(DirectivesContainer.class::cast)
+                    .map(DirectivesContainer::getDirectives).filter(Objects::nonNull)
+                    .forEach(ds -> ds.forEach(d -> directives.add(((Directive) d).getName())));
+        }
+        return directives;
     }
 
     public T getDefinition() {

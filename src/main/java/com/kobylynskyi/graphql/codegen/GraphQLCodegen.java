@@ -15,6 +15,7 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -222,7 +223,7 @@ public class GraphQLCodegen {
             generatedFiles.addAll(generateType(context, extendedObjectTypeDefinition));
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
-            generateFieldResolver(context, extendedObjectTypeDefinition.getFieldDefinitions(), extendedObjectTypeDefinition.getName())
+            generateFieldResolver(context, extendedObjectTypeDefinition.getFieldDefinitions(), extendedObjectTypeDefinition)
                     .ifPresent(generatedFiles::add);
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getOperationDefinitions()) {
@@ -246,8 +247,7 @@ public class GraphQLCodegen {
             generatedFiles.addAll(generateInterface(context, extendedInterfaceTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
-            generateFieldResolver(context, definition.getFieldDefinitions(), definition.getName())
-                    .ifPresent(generatedFiles::add);
+            generateFieldResolver(context, definition.getFieldDefinitions(), definition).ifPresent(generatedFiles::add);
         }
         System.out.println(String.format("Generated %d definition classes in folder %s",
                 generatedFiles.size(), outputDir.getAbsolutePath()));
@@ -365,12 +365,14 @@ public class GraphQLCodegen {
         return generatedFiles;
     }
 
-    private Optional<File> generateFieldResolver(MappingContext mappingContext, List<ExtendedFieldDefinition> fieldDefinitions, String definitionName) {
+    private Optional<File> generateFieldResolver(MappingContext mappingContext,
+                                                 List<ExtendedFieldDefinition> fieldDefinitions,
+                                                 ExtendedDefinition<?, ?> parentDefinition) {
         List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
-                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, definitionName))
+                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, parentDefinition))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, definitionName);
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
             return Optional.of(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
         }
         return Optional.empty();

@@ -82,11 +82,11 @@ public class TypeDefinitionToDataModelMapper {
         Map<String, ParameterDefinition> allParameters = new LinkedHashMap<>();
 
         // includes parameters from the base definition and extensions
-        FieldDefinitionToParameterMapper.mapFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition.getName())
+        FieldDefinitionToParameterMapper.mapFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
                 .forEach(p -> allParameters.put(p.getName(), p));
         // includes parameters from the interface
         MapperUtils.getInterfacesOfType(typeDefinition, document).stream()
-                .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingContext, i.getFieldDefinitions(), i.getName()))
+                .map(i -> FieldDefinitionToParameterMapper.mapFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
                 .forEach(paramDef -> allParameters.merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
         return allParameters.values();
