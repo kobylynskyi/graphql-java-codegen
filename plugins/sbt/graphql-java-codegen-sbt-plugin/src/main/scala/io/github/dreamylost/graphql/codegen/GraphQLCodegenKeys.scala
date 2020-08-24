@@ -104,6 +104,8 @@ trait GraphQLCodegenKeys {
 
   val useOptionalForNullableReturnTypes = settingKey[Boolean]("useOptionalForNullableReturnTypes")
 
+  val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
+
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")

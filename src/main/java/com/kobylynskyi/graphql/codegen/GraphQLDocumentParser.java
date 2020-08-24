@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
@@ -10,6 +11,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefin
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.introspection.IntrospectionResultToSchema;
 import graphql.language.Definition;
 import graphql.language.Document;
 import graphql.language.EnumTypeDefinition;
@@ -41,8 +43,27 @@ class GraphQLDocumentParser {
     private GraphQLDocumentParser() {
     }
 
-    static ExtendedDocument getDocument(MappingConfig mappingConfig, List<String> schemaPaths) throws IOException {
+    static ExtendedDocument getDocumentFromSchemas(MappingConfig mappingConfig, List<String> schemaPaths) throws IOException {
         Document document = readDocument(schemaPaths);
+
+        ExtendedDocumentBuilder extendedDocumentBuilder = new ExtendedDocumentBuilder();
+
+        for (Definition<?> definition : document.getDefinitions()) {
+            processDefinition(mappingConfig, extendedDocumentBuilder, definition);
+        }
+        return extendedDocumentBuilder.build();
+    }
+
+    static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig, String introspectionResult) throws IOException {
+        String introspectionResultContent = Utils.getFileContent(introspectionResult);
+        Map<String, Object> introspectionResultMap = Utils.OBJECT_MAPPER.readValue(introspectionResultContent,
+                new TypeReference<Map<String, Object>>() {
+                });
+        // unwrapping "data" (in case such GraphQL response supplied)
+        if (introspectionResultMap.containsKey("data")) {
+            introspectionResultMap = (Map<String, Object>) introspectionResultMap.get("data");
+        }
+        Document document = new IntrospectionResultToSchema().createSchemaDefinition(introspectionResultMap);
 
         ExtendedDocumentBuilder extendedDocumentBuilder = new ExtendedDocumentBuilder();
 

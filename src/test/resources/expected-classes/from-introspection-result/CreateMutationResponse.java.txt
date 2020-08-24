@@ -1,0 +1,22 @@
+package com.kobylynskyi.graphql.test1;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
+import java.util.Map;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class CreateMutationResponse extends GraphQLResult<Map<String, Product>> {
+
+    private static final String OPERATION_NAME = "create";
+
+    public CreateMutationResponse() {
+    }
+
+    public Product create() {
+        Map<String, Product> data = getData();
+        return data != null ? data.get(OPERATION_NAME) : null;
+    }
+
+}

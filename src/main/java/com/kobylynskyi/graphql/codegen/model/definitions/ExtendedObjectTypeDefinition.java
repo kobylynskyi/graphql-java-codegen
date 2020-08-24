@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
+import graphql.language.Node;
 import graphql.language.ObjectTypeDefinition;
 import graphql.language.ObjectTypeExtensionDefinition;
 
@@ -45,16 +46,26 @@ public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefini
     private Map<String, ExtendedObjectTypeDefinition> groupBySourceLocation(Function<File, String> fileStringFunction) {
         Map<String, ExtendedObjectTypeDefinition> definitionMap = new HashMap<>();
         if (definition != null) {
-            File file = new File(definition.getSourceLocation().getSourceName());
+            File file = new File(getSourceLocationName(definition));
             definitionMap.computeIfAbsent(fileStringFunction.apply(file), d -> new ExtendedObjectTypeDefinition())
                     .setDefinition(definition);
         }
         for (ObjectTypeExtensionDefinition extension : extensions) {
-            File file = new File(extension.getSourceLocation().getSourceName());
+            File file = new File(getSourceLocationName(extension));
             definitionMap.computeIfAbsent(fileStringFunction.apply(file), d -> new ExtendedObjectTypeDefinition())
                     .getExtensions().add(extension);
         }
         return definitionMap;
+    }
+
+    /**
+     * Get source location of the node.
+     * In some cases Node does not have a source location defined, so returning "unknown"
+     *
+     * @return source location if present or "unknown" otherwise
+     */
+    private static String getSourceLocationName(Node<?> node) {
+        return node.getSourceLocation() != null ? node.getSourceLocation().getSourceName() : "unknown";
     }
 
 }

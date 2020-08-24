@@ -41,6 +41,7 @@ import java.util.Set;
 public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCodegenConfiguration {
 
     private List<String> graphqlSchemaPaths;
+    private String graphqlQueryIntrospectionResultPath;
     private final SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
     private File outputDir;
 
@@ -134,7 +135,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
-        new GraphQLCodegen(getActualSchemaPaths(), outputDir, mappingConfig, buildJsonSupplier()).generate();
+        new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
 
     // This is only public so that it can be part of the inputs.
@@ -190,6 +191,16 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGraphqlSchemaPaths(List<String> graphqlSchemaPaths) {
         this.graphqlSchemaPaths = graphqlSchemaPaths;
+    }
+
+    @InputFile
+    @Optional
+    public String getGraphqlQueryIntrospectionResultPath() {
+        return graphqlQueryIntrospectionResultPath;
+    }
+
+    public void setGraphqlQueryIntrospectionResultPath(String graphqlQueryIntrospectionResultPath) {
+        this.graphqlQueryIntrospectionResultPath = graphqlQueryIntrospectionResultPath;
     }
 
     @Nested

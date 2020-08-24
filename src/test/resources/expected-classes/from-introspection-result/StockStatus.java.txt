@@ -1,0 +1,27 @@
+package com.kobylynskyi.graphql.test1;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public enum StockStatus {
+
+    IN_STOCK("IN_STOCK"),
+    SPECIAL_ORDER("SPECIAL_ORDER"),
+    BACK_ORDERED("BACK_ORDERED"),
+    COMING_SOON("COMING_SOON"),
+    SOLD_OUT("SOLD_OUT"),
+    DISCONTINUED("DISCONTINUED");
+
+    private final String graphqlName;
+
+    private StockStatus(String graphqlName) {
+        this.graphqlName = graphqlName;
+    }
+
+    @Override
+    public String toString() {
+        return this.graphqlName;
+    }
+
+}
