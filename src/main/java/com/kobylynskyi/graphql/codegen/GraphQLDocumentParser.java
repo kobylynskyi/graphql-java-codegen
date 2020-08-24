@@ -60,7 +60,7 @@ class GraphQLDocumentParser {
                 new TypeReference<Map<String, Object>>() {
                 });
         // unwrapping "data" (in case such GraphQL response supplied)
-        if (introspectionResultMap.containsKey("data") && !introspectionResultMap.containsKey("__schema")) {
+        if (introspectionResultMap.containsKey("data")) {
             introspectionResultMap = (Map<String, Object>) introspectionResultMap.get("data");
         }
         Document document = new IntrospectionResultToSchema().createSchemaDefinition(introspectionResultMap);

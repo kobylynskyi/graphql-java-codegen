@@ -170,8 +170,8 @@ public class GraphQLCodegen {
     }
 
     private void validateConfigs(MappingConfig mappingConfig) {
-        if (schemas != null && introspectionResult != null ||
-                (schemas == null && introspectionResult == null)) {
+        if (!Utils.isEmpty(schemas) && introspectionResult != null ||
+                (Utils.isEmpty(schemas) && introspectionResult == null)) {
             // either schemas or introspection result should be provided
             throw new IllegalArgumentException("Either graphql schema path or introspection result path should be supplied");
         }
@@ -224,7 +224,7 @@ public class GraphQLCodegen {
         GraphQLCodegenFileCreator.prepareOutputDir(outputDir);
         long startTime = System.currentTimeMillis();
         List<File> generatedFiles = Collections.emptyList();
-        if (schemas != null && !schemas.isEmpty()) {
+        if (!Utils.isEmpty(schemas)) {
             ExtendedDocument document = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, schemas);
             initCustomTypeMappings(document.getScalarDefinitions());
             generatedFiles = processDefinitions(document);
