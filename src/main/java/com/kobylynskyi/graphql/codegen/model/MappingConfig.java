@@ -69,15 +69,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String parametrizedInputSuffix;
 
     @Override
-    public Integer getMaxDepth() {
-        return maxDepth;
+    public Integer getProjectionMaxDepth() {
+        return projectionMaxDepth;
     }
 
-    public void setMaxDepth(Integer maxDepth) {
-        this.maxDepth = maxDepth;
+    public void setProjectionMaxDepth(Integer projectionMaxDepth) {
+        this.projectionMaxDepth = projectionMaxDepth;
     }
 
-    private Integer maxDepth;
+    private Integer projectionMaxDepth;
 
     @Override
     public void combine(MappingConfig source) {
@@ -124,7 +124,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
-        maxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMaxDepth);
+        projectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getProjectionMaxDepth);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {

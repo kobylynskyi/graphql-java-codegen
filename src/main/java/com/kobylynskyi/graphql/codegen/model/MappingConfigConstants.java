@@ -39,6 +39,9 @@ public class MappingConfigConstants {
     public static final String DEFAULT_RESPONSE_PROJECTION_SUFFIX = "ResponseProjection";
     public static final String DEFAULT_PARAMETRIZED_INPUT_SUFFIX = "ParametrizedInput";
 
+    public static final String DEFAULT_PROJECTION_MAX_DEPTH_STRING = "5";
+    public static final int DEFAULT_PROJECTION_MAX_DEPTH = 5;
+
     private MappingConfigConstants() {
     }
 }

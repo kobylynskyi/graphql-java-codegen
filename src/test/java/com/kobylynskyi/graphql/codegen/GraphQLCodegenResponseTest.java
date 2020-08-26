@@ -1,8 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +63,7 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_projections_with_selectAll() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        mappingConfig.setMaxDepth(5);
+        mappingConfig.setProjectionMaxDepth(5);
         new GraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 

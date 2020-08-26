@@ -106,7 +106,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING.toBoolean,
     generateToString := MappingConfigConstants.DEFAULT_TO_STRING_STRING.toBoolean,
     // parent interfaces configs:
-    parentInterfaces := parentInterfacesConfig
+    parentInterfaces := parentInterfacesConfig,
+    projectionMaxDepth := MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
@@ -153,6 +154,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setDirectiveAnnotationsMapping((directiveAnnotationsMapping in GraphQLCodegenConfig).value)
     mappingConfig.setApiInterfaceStrategy((apiInterfaceStrategy in GraphQLCodegenConfig).value)
     mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
+    mappingConfig.setProjectionMaxDepth((projectionMaxDepth in GraphQLCodegenConfig).value)
 
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig

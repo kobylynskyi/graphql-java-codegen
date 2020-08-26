@@ -73,6 +73,18 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
+    public void setMaxProjectionDepth(int maxProjectionDepth) {
+        this.maxProjectionDepth = maxProjectionDepth;
+    }
+
+    @Override
+    public Integer getProjectionMaxDepth() {
+        return maxProjectionDepth;
+    }
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH_STRING)
+    private int maxProjectionDepth;
+
     @Parameter
     private String apiPackageName;
 
@@ -211,6 +223,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+        mappingConfig.setProjectionMaxDepth(getProjectionMaxDepth());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 

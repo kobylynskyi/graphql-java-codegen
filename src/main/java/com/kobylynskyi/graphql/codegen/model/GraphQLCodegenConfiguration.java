@@ -334,8 +334,8 @@ public interface GraphQLCodegenConfiguration {
     /**
      * Interface that will be limit depth when `selectAll` invoke which has subProjections
      *
-     * @return
+     * @return limit depth when the projection is constructed automatically
      */
-    Integer getMaxDepth();
+    Integer getProjectionMaxDepth();
 
 }

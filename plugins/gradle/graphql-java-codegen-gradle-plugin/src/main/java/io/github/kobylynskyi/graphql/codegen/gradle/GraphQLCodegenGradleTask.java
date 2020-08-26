@@ -86,6 +86,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
 
+    private int projectionMaxDepth = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH;
+
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
         setDescription("Generates Java POJOs and interfaces based on GraphQL schemas");
@@ -134,6 +136,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+        mappingConfig.setProjectionMaxDepth(getProjectionMaxDepth());
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -662,4 +665,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.jsonConfigurationFile = jsonConfigurationFile;
     }
 
+    @Input
+    @Optional
+    @Override
+    public Integer getProjectionMaxDepth() {
+        return projectionMaxDepth;
+    }
+
+    public void setProjectionMaxDepth(int projectionMaxDepth) {
+        this.projectionMaxDepth = projectionMaxDepth;
+    }
 }
