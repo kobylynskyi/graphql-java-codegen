@@ -24,11 +24,11 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
             projection = projection.id();
             projection = projection.locationType();
             if (subProjectionDepth.getOrDefault("onCustomerLocation", 0) < 5){
-                subProjectionDepth.put("onCustomerLocation", onCustomerLocation.getOrDefault(s, 0) + 1);
+                subProjectionDepth.put("onCustomerLocation", onCustomerLocation.getOrDefault("onCustomerLocation", 0) + 1);
                 projection = projection.onCustomerLocation(new CustomerLocationResponseProjection().selectAll());
             }
             if (subProjectionDepth.getOrDefault("onDealerLocation", 0) < 5){
-                subProjectionDepth.put("onDealerLocation", onDealerLocation.getOrDefault(s, 0) + 1);
+                subProjectionDepth.put("onDealerLocation", onDealerLocation.getOrDefault("onDealerLocation", 0) + 1);
                 projection = projection.onDealerLocation(new DealerLocationResponseProjection().selectAll());
             }
             projection = projection.typename();

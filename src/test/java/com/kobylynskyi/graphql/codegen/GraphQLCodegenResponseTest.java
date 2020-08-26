@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,10 +27,10 @@ class GraphQLCodegenResponseTest {
         mappingConfig.setGenerateApis(false);
     }
 
-//    @AfterEach
-//    void cleanup() {
-//        Utils.deleteDir(outputBuildDir);
-//    }
+    @AfterEach
+    void cleanup() {
+        Utils.deleteDir(outputBuildDir);
+    }
 
     @Test
     void generate_RequestAndResponseProjections() throws Exception {

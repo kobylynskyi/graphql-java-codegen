@@ -38,8 +38,8 @@ public class ${className} extends GraphQLResponseProjection {
     public ${className} selectAll() {
     <#list fields as field>
         <#if field.type?has_content>
-            if (subProjectionDepth.getOrDefault("${field.methodName}", 0) < ${maxDepth}){
-                subProjectionDepth.put("${field.methodName}", ${field.methodName}.getOrDefault(s, 0) + 1);
+            if (subProjectionDepth.getOrDefault("${field.methodName}", 0) < ${projectionMaxDepth}){
+                subProjectionDepth.put("${field.methodName}", ${field.methodName}.getOrDefault("${field.methodName}", 0) + 1);
                 projection = projection.${field.methodName}(new ${field.type}().selectAll());
             }
         <#else>

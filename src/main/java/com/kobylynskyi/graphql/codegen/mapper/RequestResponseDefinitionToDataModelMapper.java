@@ -49,7 +49,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
-        dataModel.put(MAX_DEPTH, mappingContext.getProjectionMaxDepth());
+        dataModel.put(PROJECTION_MAX_DEPTH, mappingContext.getProjectionMaxDepth());
         // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }

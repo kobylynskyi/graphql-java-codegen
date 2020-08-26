@@ -24,7 +24,7 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
             projection = projection.vehicleId();
             projection = projection.registrationNumber();
             if (subProjectionDepth.getOrDefault("location", 0) < 5){
-                subProjectionDepth.put("location", location.getOrDefault(s, 0) + 1);
+                subProjectionDepth.put("location", location.getOrDefault("location", 0) + 1);
                 projection = projection.location(new LocationResponseProjection().selectAll());
             }
             projection = projection.typename();
