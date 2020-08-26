@@ -38,6 +38,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private String[] graphqlSchemaPaths;
 
     @Parameter
+    private String graphqlQueryIntrospectionResultPath;
+
+    @Parameter
     private SchemaFinderConfig graphqlSchemas = new SchemaFinderConfig();
 
     @Parameter(required = true)
@@ -212,7 +215,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
         try {
-            new GraphQLCodegen(getSchemas(), outputDir, mappingConfig, mappingConfigSupplier).generate();
+            new GraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier).generate();
         } catch (Exception e) {
             getLog().error(e);
             throw new MojoExecutionException("Code generation failed. See above for the full exception.");
@@ -263,6 +266,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setGraphqlSchemaPaths(String[] graphqlSchemaPaths) {
         this.graphqlSchemaPaths = graphqlSchemaPaths;
+    }
+
+    public String getGraphqlQueryIntrospectionResultPath() {
+        return graphqlQueryIntrospectionResultPath;
+    }
+
+    public void setGraphqlQueryIntrospectionResultPath(String graphqlQueryIntrospectionResultPath) {
+        this.graphqlQueryIntrospectionResultPath = graphqlQueryIntrospectionResultPath;
     }
 
     public SchemaFinderConfig getGraphqlSchemas() {

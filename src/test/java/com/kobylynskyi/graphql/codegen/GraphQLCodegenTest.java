@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.core.StringContains;
@@ -225,12 +226,11 @@ class GraphQLCodegenTest {
     }
 
     @Test
-    void generate_NoSchemas() throws Exception {
-        new GraphQLCodegen(emptyList(),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
-
-        File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-        assertEquals(0, files.length);
+    void generate_NoSchemas() {
+        GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
+        List<String> schemas = emptyList();
+        assertThrows(IllegalArgumentException.class, () ->
+                new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, staticGeneratedInfo));
     }
 
     @Test
@@ -239,6 +239,8 @@ class GraphQLCodegenTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
 
         assertThrows(NoSuchFileException.class, graphQLCodegen::generate);
+
+        assertEquals(0, Objects.requireNonNull(outputBuildDir.listFiles()).length);
     }
 
     @Test

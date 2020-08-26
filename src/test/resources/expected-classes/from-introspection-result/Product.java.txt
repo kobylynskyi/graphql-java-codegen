@@ -1,0 +1,173 @@
+package com.kobylynskyi.graphql.test1;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Product implements java.io.Serializable {
+
+    @javax.validation.constraints.NotNull
+    private String id;
+    @javax.validation.constraints.NotNull
+    private String title;
+    private String description;
+    @javax.validation.constraints.NotNull
+    private String price;
+    @javax.validation.constraints.NotNull
+    private String sku;
+    private StockStatus stockStatus;
+    @javax.validation.constraints.NotNull
+    private String addedDateTime;
+
+    public Product() {
+    }
+
+    public Product(String id, String title, String description, String price, String sku, StockStatus stockStatus, String addedDateTime) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.sku = sku;
+        this.stockStatus = stockStatus;
+        this.addedDateTime = addedDateTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public StockStatus getStockStatus() {
+        return stockStatus;
+    }
+    public void setStockStatus(StockStatus stockStatus) {
+        this.stockStatus = stockStatus;
+    }
+
+    public String getAddedDateTime() {
+        return addedDateTime;
+    }
+    public void setAddedDateTime(String addedDateTime) {
+        this.addedDateTime = addedDateTime;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (id != null) {
+            joiner.add("id: " + GraphQLRequestSerializer.getEntry(id));
+        }
+        if (title != null) {
+            joiner.add("title: " + GraphQLRequestSerializer.getEntry(title));
+        }
+        if (description != null) {
+            joiner.add("description: " + GraphQLRequestSerializer.getEntry(description));
+        }
+        if (price != null) {
+            joiner.add("price: " + GraphQLRequestSerializer.getEntry(price));
+        }
+        if (sku != null) {
+            joiner.add("sku: " + GraphQLRequestSerializer.getEntry(sku));
+        }
+        if (stockStatus != null) {
+            joiner.add("stockStatus: " + GraphQLRequestSerializer.getEntry(stockStatus));
+        }
+        if (addedDateTime != null) {
+            joiner.add("addedDateTime: " + GraphQLRequestSerializer.getEntry(addedDateTime));
+        }
+        return joiner.toString();
+    }
+
+    public static Product.Builder builder() {
+        return new Product.Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String title;
+        private String description;
+        private String price;
+        private String sku;
+        private StockStatus stockStatus;
+        private String addedDateTime;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setPrice(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setSku(String sku) {
+            this.sku = sku;
+            return this;
+        }
+
+        public Builder setStockStatus(StockStatus stockStatus) {
+            this.stockStatus = stockStatus;
+            return this;
+        }
+
+        public Builder setAddedDateTime(String addedDateTime) {
+            this.addedDateTime = addedDateTime;
+            return this;
+        }
+
+
+        public Product build() {
+            return new Product(id, title, description, price, sku, stockStatus, addedDateTime);
+        }
+
+    }
+}

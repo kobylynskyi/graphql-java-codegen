@@ -58,6 +58,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
   //With the implementation of some other plugins, initialization is not necessary,
   //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
   override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
+    graphqlQueryIntrospectionResultPath := None,
     graphqlSchemas := schemaFinderConfig,
     jsonConfigurationFile := None,
     graphqlSchemaPaths := Seq.empty,
@@ -192,7 +193,12 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in GraphQLCodegenConfig).value.orNull)
         var result: Seq[File] = Seq.empty
         try {
-          result = new GraphQLCodegen(getSchemas, (outputDir in GraphQLCodegenConfig).value, getMappingConfig().value, mappingConfigSupplier).generate.asScala
+          result = new GraphQLCodegen(
+            getSchemas,
+            (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull,
+            (outputDir in GraphQLCodegenConfig).value,
+            getMappingConfig().value,
+            mappingConfigSupplier).generate.asScala
           for (file ← result) {
             sLog.value.success(s"${file.getName}")
           }

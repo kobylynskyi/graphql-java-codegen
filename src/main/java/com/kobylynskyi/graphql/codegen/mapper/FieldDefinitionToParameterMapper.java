@@ -26,15 +26,15 @@ public class FieldDefinitionToParameterMapper {
      *
      * @param mappingContext   Global mapping context
      * @param fieldDefinitions List of GraphQL field definitions
-     * @param parentTypeName   Name of the parent GraphQL type
+     * @param parentDefinition Parent GraphQL definition
      * @return Freemarker data model of the GraphQL field definition
      */
     public static List<ParameterDefinition> mapFields(MappingContext mappingContext,
                                                       List<ExtendedFieldDefinition> fieldDefinitions,
-                                                      String parentTypeName) {
+                                                      ExtendedDefinition<?, ?> parentDefinition) {
         return fieldDefinitions.stream()
-                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentTypeName))
-                .map(fieldDef -> mapField(mappingContext, fieldDef, parentTypeName))
+                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
+                .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition.getName()))
                 .collect(toList());
     }
 
@@ -103,35 +103,42 @@ public class FieldDefinitionToParameterMapper {
     /**
      * Check whether FieldResolver should be generated for a given field.
      *
-     * @param mappingContext Global mapping context
-     * @param fieldDef       GraphQL field definition
-     * @param parentTypeName Name of the parent type
+     * @param mappingContext   Global mapping context
+     * @param fieldDef         GraphQL field definition
+     * @param parentDefinition Parent GraphQL definition
      * @return <code>true</code> if FieldResolver will be generated for the field. <code>false</code> otherwise
      */
     public static boolean generateResolversForField(MappingContext mappingContext,
                                                     ExtendedFieldDefinition fieldDef,
-                                                    String parentTypeName) {
+                                                    ExtendedDefinition<?, ?> parentDefinition) {
+        String parentTypeName = parentDefinition.getName();
         boolean noResolverForWholeType = mappingContext.getFieldsWithoutResolvers().contains(parentTypeName);
-        if (noResolverForWholeType) {
+        boolean noResolverForSpecificField = mappingContext.getFieldsWithoutResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        if (noResolverForWholeType || noResolverForSpecificField) {
             return false;
         }
-        boolean noResolverForSpecificField = mappingContext.getFieldsWithoutResolvers().contains(parentTypeName + "." + fieldDef.getName());
-        if (noResolverForSpecificField) {
-            return false;
+        for (String fieldWithoutResolver : mappingContext.getFieldsWithoutResolvers()) {
+            boolean noResolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(fd -> fieldWithoutResolver.equals("@" + fd));
+            boolean noResolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(fd -> fieldWithoutResolver.equals("@" + fd.getName()));
+            if (noResolverForWholeTypeViaDirective || noResolverForSpecificFieldViaDirective) {
+                return false;
+            }
         }
         boolean resolverForParamField = mappingContext.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
-        if (resolverForParamField) {
-            return true;
-        }
         boolean resolverForExtendedType = mappingContext.getGenerateExtensionFieldsResolvers() && fieldDef.isFromExtension();
-        if (resolverForExtendedType) {
-            return true;
-        }
         boolean resolverForWholeType = mappingContext.getFieldsWithResolvers().contains(parentTypeName);
-        if (resolverForWholeType) {
+        boolean resolverForTypeField = mappingContext.getFieldsWithResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        if (resolverForParamField || resolverForExtendedType || resolverForWholeType || resolverForTypeField) {
             return true;
         }
-        return mappingContext.getFieldsWithResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        for (String fieldWithResolver : mappingContext.getFieldsWithResolvers()) {
+            boolean resolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(fd -> fieldWithResolver.equals("@" + fd));
+            boolean resolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(fd -> fieldWithResolver.equals("@" + fd.getName()));
+            if (resolverForWholeTypeViaDirective || resolverForSpecificFieldViaDirective) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

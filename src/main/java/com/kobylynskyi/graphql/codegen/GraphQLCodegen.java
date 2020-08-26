@@ -15,6 +15,7 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -51,30 +52,45 @@ import static java.util.stream.Collectors.toList;
 public class GraphQLCodegen {
 
     private final List<String> schemas;
+    private final String introspectionResult;
     private final File outputDir;
     private final MappingConfig mappingConfig;
     private final GeneratedInformation generatedInformation;
 
+    // used in tests
     public GraphQLCodegen(List<String> schemas,
                           File outputDir,
                           MappingConfig mappingConfig,
                           GeneratedInformation generatedInformation) {
-        this(schemas, outputDir, mappingConfig, null, generatedInformation);
+        this(schemas, null, outputDir, mappingConfig, null, generatedInformation);
     }
 
+    // used in tests
+    public GraphQLCodegen(String introspectionResult,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          GeneratedInformation generatedInformation) {
+        this(null, introspectionResult, outputDir, mappingConfig, null, generatedInformation);
+    }
+
+    // used in plugins
     public GraphQLCodegen(List<String> schemas,
+                          String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
                           MappingConfigSupplier externalMappingConfigSupplier) {
-        this(schemas, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation());
+        this(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation());
     }
 
+    // used by other constructors
     public GraphQLCodegen(List<String> schemas,
+                          String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
                           MappingConfigSupplier externalMappingConfigSupplier,
                           GeneratedInformation generatedInformation) {
         this.schemas = schemas;
+        this.introspectionResult = introspectionResult;
         this.outputDir = outputDir;
         this.mappingConfig = mappingConfig;
         this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
@@ -154,7 +170,12 @@ public class GraphQLCodegen {
         }
     }
 
-    private static void validateConfigs(MappingConfig mappingConfig) {
+    private void validateConfigs(MappingConfig mappingConfig) {
+        if (!Utils.isEmpty(schemas) && introspectionResult != null ||
+                (Utils.isEmpty(schemas) && introspectionResult == null)) {
+            // either schemas or introspection result should be provided
+            throw new IllegalArgumentException("Either graphql schema path or introspection result path should be supplied");
+        }
         if (mappingConfig.getApiRootInterfaceStrategy() == ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA &&
                 mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
             // we will have a conflict in case there is "type Query" in multiple graphql schema files
@@ -204,13 +225,20 @@ public class GraphQLCodegen {
         GraphQLCodegenFileCreator.prepareOutputDir(outputDir);
         long startTime = System.currentTimeMillis();
         List<File> generatedFiles = Collections.emptyList();
-        if (!schemas.isEmpty()) {
-            ExtendedDocument document = GraphQLDocumentParser.getDocument(mappingConfig, schemas);
+        if (!Utils.isEmpty(schemas)) {
+            ExtendedDocument document = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, schemas);
             initCustomTypeMappings(document.getScalarDefinitions());
             generatedFiles = processDefinitions(document);
+            System.out.println(String.format("Finished processing %d schema(s) in %d ms", schemas.size(),
+                    System.currentTimeMillis() - startTime));
+        } else if (introspectionResult != null) {
+            ExtendedDocument document = GraphQLDocumentParser.getDocumentFromIntrospectionResult(mappingConfig, introspectionResult);
+            initCustomTypeMappings(document.getScalarDefinitions());
+            generatedFiles = processDefinitions(document);
+            System.out.println(String.format("Finished processing introspection result in %d ms",
+                    System.currentTimeMillis() - startTime));
         }
-        long elapsed = System.currentTimeMillis() - startTime;
-        System.out.println(String.format("Finished processing %d schema(s) in %d ms", schemas.size(), elapsed));
+
         return generatedFiles;
     }
 
@@ -222,7 +250,7 @@ public class GraphQLCodegen {
             generatedFiles.addAll(generateType(context, extendedObjectTypeDefinition));
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
-            generateFieldResolver(context, extendedObjectTypeDefinition.getFieldDefinitions(), extendedObjectTypeDefinition.getName())
+            generateFieldResolver(context, extendedObjectTypeDefinition.getFieldDefinitions(), extendedObjectTypeDefinition)
                     .ifPresent(generatedFiles::add);
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getOperationDefinitions()) {
@@ -246,8 +274,7 @@ public class GraphQLCodegen {
             generatedFiles.addAll(generateInterface(context, extendedInterfaceTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
-            generateFieldResolver(context, definition.getFieldDefinitions(), definition.getName())
-                    .ifPresent(generatedFiles::add);
+            generateFieldResolver(context, definition.getFieldDefinitions(), definition).ifPresent(generatedFiles::add);
         }
         System.out.println(String.format("Generated %d definition classes in folder %s",
                 generatedFiles.size(), outputDir.getAbsolutePath()));
@@ -365,12 +392,14 @@ public class GraphQLCodegen {
         return generatedFiles;
     }
 
-    private Optional<File> generateFieldResolver(MappingContext mappingContext, List<ExtendedFieldDefinition> fieldDefinitions, String definitionName) {
+    private Optional<File> generateFieldResolver(MappingContext mappingContext,
+                                                 List<ExtendedFieldDefinition> fieldDefinitions,
+                                                 ExtendedDefinition<?, ?> parentDefinition) {
         List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
-                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, definitionName))
+                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, parentDefinition))
                 .collect(toList());
         if (!fieldDefsWithResolvers.isEmpty()) {
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, definitionName);
+            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
             return Optional.of(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
         }
         return Optional.empty();
