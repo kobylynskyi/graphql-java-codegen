@@ -2,6 +2,8 @@
 package ${package};
 
 </#if>
+import java.util.Map;
+import java.util.HashMap;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 <#if equalsAndHashCode>
@@ -28,6 +30,25 @@ public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {
     }
+
+<#if fields?has_content>
+    private ${className} projection = new ${className}();
+    private Map<String, Integer> subProjectionDepth = new HashMap<String, Integer>();
+
+    public ${className} selectAll() {
+    <#list fields as field>
+        <#if field.type?has_content>
+            if (subProjectionDepth.getOrDefault("${field.methodName}", 0) < ${maxDepth}){
+                subProjectionDepth.put("${field.methodName}", ${field.methodName}.getOrDefault(s, 0) + 1);
+                projection = projection.${field.methodName}(new ${field.type}().selectAll());
+            }
+        <#else>
+            projection = projection.${field.methodName}();
+        </#if>
+    </#list>
+        return projection;
+    }
+</#if>
 
 <#if fields?has_content>
 <#list fields as field>

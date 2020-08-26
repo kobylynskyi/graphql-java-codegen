@@ -1,0 +1,71 @@
+package com.github.graphql;
+
+import java.util.Map;
+import java.util.HashMap;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+
+/**
+ * Response projection for Vehicle
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class VehicleResponseProjection extends GraphQLResponseProjection {
+
+    public VehicleResponseProjection() {
+    }
+
+    private VehicleResponseProjection projection = new VehicleResponseProjection();
+    private Map<String, Integer> subProjectionDepth = new HashMap<String, Integer>();
+
+    public VehicleResponseProjection selectAll() {
+            projection = projection.vehicleId();
+            projection = projection.registrationNumber();
+            if (subProjectionDepth.getOrDefault("location", 0) < 5){
+                subProjectionDepth.put("location", location.getOrDefault(s, 0) + 1);
+                projection = projection.location(new LocationResponseProjection().selectAll());
+            }
+            projection = projection.typename();
+        return projection;
+    }
+
+    public VehicleResponseProjection vehicleId() {
+        return vehicleId(null);
+    }
+
+    public VehicleResponseProjection vehicleId(String alias) {
+        fields.add(new GraphQLResponseField("vehicleId").alias(alias));
+        return this;
+    }
+
+    public VehicleResponseProjection registrationNumber() {
+        return registrationNumber(null);
+    }
+
+    public VehicleResponseProjection registrationNumber(String alias) {
+        fields.add(new GraphQLResponseField("registrationNumber").alias(alias));
+        return this;
+    }
+
+    public VehicleResponseProjection location(LocationResponseProjection subProjection) {
+        return location(null, subProjection);
+    }
+
+    public VehicleResponseProjection location(String alias, LocationResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("location").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public VehicleResponseProjection typename() {
+        return typename(null);
+    }
+
+    public VehicleResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
+
+}

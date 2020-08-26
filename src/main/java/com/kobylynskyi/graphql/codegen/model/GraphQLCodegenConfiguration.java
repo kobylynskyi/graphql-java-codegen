@@ -331,4 +331,11 @@ public interface GraphQLCodegenConfiguration {
      */
     String getResolverParentInterface();
 
+    /**
+     * Interface that will be limit depth when `selectAll` invoke which has subProjections
+     *
+     * @return
+     */
+    Integer getMaxDepth();
+
 }
