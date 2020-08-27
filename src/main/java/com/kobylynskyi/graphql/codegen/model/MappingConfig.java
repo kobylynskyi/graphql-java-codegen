@@ -67,6 +67,16 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private Integer projectionMaxDepth;
+    private Boolean generateSelectAll;
+
+    public Boolean getGenerateSelectAll() {
+        return generateSelectAll;
+    }
+
+    public void setGenerateSelectAll(Boolean generateSelectAll) {
+        this.generateSelectAll = generateSelectAll;
+    }
 
     @Override
     public Integer getProjectionMaxDepth() {
@@ -77,7 +87,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.projectionMaxDepth = projectionMaxDepth;
     }
 
-    private Integer projectionMaxDepth;
 
     @Override
     public void combine(MappingConfig source) {
@@ -125,6 +134,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         projectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getProjectionMaxDepth);
+        generateSelectAll = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateSelectAll);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {

@@ -32,6 +32,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateSelectAll() {
+        return config.getGenerateSelectAll();
+    }
+
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }

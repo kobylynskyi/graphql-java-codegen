@@ -32,7 +32,6 @@ object QueryResolverImplMain extends App {
   val character = droidResolver.hero(EpisodeDO.EMPIRE)
   println(character)
 
-
   println("=======QueryResolverImpl2=======")
   /**
    * MAX DEPTH = 5

@@ -28,6 +28,7 @@ public final class DataModelFields {
     public static final String RETURN_TYPE_NAME = "returnTypeName";
     public static final String GENERATED_INFO = "generatedInfo";
     public static final String PROJECTION_MAX_DEPTH = "projectionMaxDepth";
+    public static final String SELECT_ALL = "selectAll";
 
     private DataModelFields() {
     }

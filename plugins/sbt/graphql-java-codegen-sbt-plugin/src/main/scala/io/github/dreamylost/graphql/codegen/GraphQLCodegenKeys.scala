@@ -108,6 +108,8 @@ trait GraphQLCodegenKeys {
 
   val projectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
+  val generateSelectAll = settingKey[Boolean]("if true will generate selectAll$ method on projections")
+
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")

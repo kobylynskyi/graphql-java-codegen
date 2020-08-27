@@ -28,14 +28,13 @@ public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {
     }
-
 <#if fields?has_content>
+<#if selectAll == true >
+
     public ${className} selectAll$() {
         return selectAll$(${projectionMaxDepth});
     }
-</#if>
 
-<#if fields?has_content>
     public ${className} selectAll$(int maxDepth) {
     <#list fields as field>
         <#if field.type?has_content>
@@ -47,10 +46,11 @@ public class ${className} extends GraphQLResponseProjection {
         </#if>
     <#else>
         this.${field.methodName}();
-    </#if>
-</#list>
+        </#if>
+    </#list>
         return this;
     }
+</#if>
 </#if>
 
 <#if fields?has_content>

@@ -44,6 +44,7 @@
 | `responseProjectionSuffix`                      | String                                                             | ResponseProjection                            | Sets the suffix for `ResponseProjection` classes. |
 | `parametrizedInputSuffix`                       | String                                                             | ParametrizedInput                             | Sets the suffix for `ParametrizedInput` classes. |
 | `parentInterfaces`                              | *See [parentInterfaces](#option-parentinterfaces)*                 | Empty                                         | Block to define parent interfaces for generated interfaces (query / mutation / subscription / type resolver). *See [parentInterfaces](#option-parentinterfaces)* |
+| `generateSelectAll`                             | Boolean                                                            | false                                         | Specifies whether generated projection classes should have selectAll$ method defined. |
 | `projectionMaxDepth`                            | Integer                                                            | 5                                             | Sets max depth when use `selectAll$()` which for facilitating the construction of projection automatically, the fields on all projections are provided when it be invoked. This is a global configuration, of course, you can use `selectAll$(max)` to set for each method. For self recursive types, too big depth may result in a large number of returned data!|
 
 

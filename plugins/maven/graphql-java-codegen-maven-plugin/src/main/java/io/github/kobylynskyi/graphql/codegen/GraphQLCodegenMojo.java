@@ -77,13 +77,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         this.maxProjectionDepth = maxProjectionDepth;
     }
 
-    @Override
-    public Integer getProjectionMaxDepth() {
-        return maxProjectionDepth;
-    }
-
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH_STRING)
     private int maxProjectionDepth;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_SELECT_ALL_STRING)
+    private Boolean generateSelectAll;
 
     @Parameter
     private String apiPackageName;
@@ -224,6 +222,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
         mappingConfig.setProjectionMaxDepth(getProjectionMaxDepth());
+        mappingConfig.setGenerateSelectAll(getGenerateSelectAll());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -663,6 +662,20 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setJsonConfigurationFile(String jsonConfigurationFile) {
         this.jsonConfigurationFile = jsonConfigurationFile;
+    }
+
+    @Override
+    public Integer getProjectionMaxDepth() {
+        return maxProjectionDepth;
+    }
+
+    @Override
+    public Boolean getGenerateSelectAll() {
+        return generateSelectAll;
+    }
+
+    public void setGenerateSelectAll(Boolean generateSelectAll) {
+        this.generateSelectAll = generateSelectAll;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {
