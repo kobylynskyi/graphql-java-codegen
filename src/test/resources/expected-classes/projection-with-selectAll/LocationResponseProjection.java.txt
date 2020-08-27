@@ -1,7 +1,5 @@
 package com.github.graphql;
 
-import java.util.Map;
-import java.util.HashMap;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 

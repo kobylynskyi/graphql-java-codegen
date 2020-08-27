@@ -37,20 +37,17 @@ object QueryResolverImplMain extends App {
   /**
    * MAX DEPTH = 5
    * gql:{{{
-   *   { id name friends {
-   *      id name friends {
-   *          id name friends {
-   *              id name friends {
-   *                   id name friends {
-   *                       id name friends {
-   *                         id name appearsIn secretBackstory __typename }
-   *                         appearsIn secretBackstory __typename
-   *                     }
-   *                     appearsIn secretBackstory __typename
-   *             } appearsIn secretBackstory __typename
-   *         } appearsIn secretBackstory __typename
-   *     } appearsIn secretBackstory __typename
-   * } appearsIn primaryFunction secretBackstory __typename }
+   * { id name friends {
+   *     id name friends {
+   *         id name friends {
+   *             id name friends {
+   *                 id name friends {
+   *                      id name appearsIn secretBackstory __typename }
+   *                 appearsIn secretBackstory __typename }
+   *             appearsIn secretBackstory __typename }
+   *         appearsIn secretBackstory __typename }
+   *     appearsIn secretBackstory __typename }
+   * appearsIn primaryFunction secretBackstory __typename }
    * }}}
    */
   val droidResolver2 = new QueryResolverImpl2

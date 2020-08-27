@@ -1,7 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The implementation class should basically contain the fields of the particular type which
@@ -24,11 +23,12 @@ public abstract class GraphQLResponseProjection {
      *     friends: [Character]
      * }
      * Note:
-     * Map key is parentProjection.childProjection.currentMethod. e.g. Character.Character.friends (Excluding the first layer)
-     * Map value is current depth for Character type. e.g. 1
+     * Map key is parentProjection.childProjection.currentMethod. e.g. Character.Character.friends (Including the first layer, so if only want the first layer, use `selectAll$(1)`)
+     * Map value is current depth for Character type. Values exists 1 or 0, because each projection have a new instance of projectionDepthOnFields, so it always be `1` and `maxDepth` will reduce by recursive.
+     * it's actually a marker.
      * }}
      */
-    protected final static Map<String, Integer> projectionDepthOnFields = new ConcurrentHashMap<>();
+    protected final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     @Override
     public String toString() {

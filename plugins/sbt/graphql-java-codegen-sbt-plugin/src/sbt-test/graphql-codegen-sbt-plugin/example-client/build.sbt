@@ -58,3 +58,5 @@ customAnnotationsMapping := {
 generateCodegenTargetPath in GraphQLCodegenConfig  := crossTarget.value / "src_managed_graphql_my_folder"
 
 generateEqualsAndHashCode := true
+
+generateToString := true

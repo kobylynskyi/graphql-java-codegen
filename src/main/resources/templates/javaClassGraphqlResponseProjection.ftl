@@ -2,8 +2,6 @@
 package ${package};
 
 </#if>
-import java.util.Map;
-import java.util.HashMap;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 <#if equalsAndHashCode>
@@ -44,7 +42,7 @@ public class ${className} extends GraphQLResponseProjection {
             <#if field.methodName?substring(0,2) != "on">
         if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) < maxDepth) {
             projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1);
-            this.${field.methodName}(new ${field.type}().selectAll$());
+            this.${field.methodName}(new ${field.type}().selectAll$(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)));
         }
         </#if>
     <#else>
