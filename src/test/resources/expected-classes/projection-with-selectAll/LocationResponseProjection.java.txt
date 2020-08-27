@@ -17,22 +17,15 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     public LocationResponseProjection() {
     }
 
-    private LocationResponseProjection projection = new LocationResponseProjection();
-    private Map<String, Integer> subProjectionDepth = new HashMap<String, Integer>();
+    public LocationResponseProjection selectAll$() {
+        return selectAll$(5);
+    }
 
-    public LocationResponseProjection selectAll() {
-            projection = projection.id();
-            projection = projection.locationType();
-            if (subProjectionDepth.getOrDefault("onCustomerLocation", 0) < 5){
-                subProjectionDepth.put("onCustomerLocation", onCustomerLocation.getOrDefault("onCustomerLocation", 0) + 1);
-                projection = projection.onCustomerLocation(new CustomerLocationResponseProjection().selectAll());
-            }
-            if (subProjectionDepth.getOrDefault("onDealerLocation", 0) < 5){
-                subProjectionDepth.put("onDealerLocation", onDealerLocation.getOrDefault("onDealerLocation", 0) + 1);
-                projection = projection.onDealerLocation(new DealerLocationResponseProjection().selectAll());
-            }
-            projection = projection.typename();
-        return projection;
+    public LocationResponseProjection selectAll$(int maxDepth) {
+        this.id();
+        this.locationType();
+        this.typename();
+        return this;
     }
 
     public LocationResponseProjection id() {

@@ -44,6 +44,7 @@
 | `responseProjectionSuffix`                      | String                                                             | ResponseProjection                            | Sets the suffix for `ResponseProjection` classes. |
 | `parametrizedInputSuffix`                       | String                                                             | ParametrizedInput                             | Sets the suffix for `ParametrizedInput` classes. |
 | `parentInterfaces`                              | *See [parentInterfaces](#option-parentinterfaces)*                 | Empty                                         | Block to define parent interfaces for generated interfaces (query / mutation / subscription / type resolver). *See [parentInterfaces](#option-parentinterfaces)* |
+| `projectionMaxDepth`                            | Integer                                                            | 5                                             | Sets max depth when use `selectAll$` which to facilitate the construction of projection, the fields on all projections are provided by default. For self recursive types, too big depth may result in a large number of returned data!|
 
 
 ### Option `graphqlSchemas`

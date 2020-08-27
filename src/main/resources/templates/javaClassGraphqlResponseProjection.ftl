@@ -32,21 +32,26 @@ public class ${className} extends GraphQLResponseProjection {
     }
 
 <#if fields?has_content>
-    private ${className} projection = new ${className}();
-    private Map<String, Integer> subProjectionDepth = new HashMap<String, Integer>();
+    public ${className} selectAll$() {
+        return selectAll$(${projectionMaxDepth});
+    }
+</#if>
 
-    public ${className} selectAll() {
+<#if fields?has_content>
+    public ${className} selectAll$(int maxDepth) {
     <#list fields as field>
         <#if field.type?has_content>
-            if (subProjectionDepth.getOrDefault("${field.methodName}", 0) < ${projectionMaxDepth}){
-                subProjectionDepth.put("${field.methodName}", ${field.methodName}.getOrDefault("${field.methodName}", 0) + 1);
-                projection = projection.${field.methodName}(new ${field.type}().selectAll());
-            }
-        <#else>
-            projection = projection.${field.methodName}();
+            <#if field.methodName?substring(0,2) != "on">
+        if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) < maxDepth) {
+            projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1);
+            this.${field.methodName}(new ${field.type}().selectAll$());
+        }
         </#if>
-    </#list>
-        return projection;
+    <#else>
+        this.${field.methodName}();
+    </#if>
+</#list>
+        return this;
     }
 </#if>
 

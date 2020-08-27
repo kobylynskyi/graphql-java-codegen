@@ -17,18 +17,19 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     public VehicleResponseProjection() {
     }
 
-    private VehicleResponseProjection projection = new VehicleResponseProjection();
-    private Map<String, Integer> subProjectionDepth = new HashMap<String, Integer>();
+    public VehicleResponseProjection selectAll$() {
+        return selectAll$(5);
+    }
 
-    public VehicleResponseProjection selectAll() {
-            projection = projection.vehicleId();
-            projection = projection.registrationNumber();
-            if (subProjectionDepth.getOrDefault("location", 0) < 5){
-                subProjectionDepth.put("location", location.getOrDefault("location", 0) + 1);
-                projection = projection.location(new LocationResponseProjection().selectAll());
-            }
-            projection = projection.typename();
-        return projection;
+    public VehicleResponseProjection selectAll$(int maxDepth) {
+        this.vehicleId();
+        this.registrationNumber();
+        if (projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0) < maxDepth) {
+            projectionDepthOnFields.put("VehicleResponseProjection.LocationResponseProjection.location", projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0) + 1);
+            this.location(new LocationResponseProjection().selectAll$());
+        }
+        this.typename();
+        return this;
     }
 
     public VehicleResponseProjection vehicleId() {
