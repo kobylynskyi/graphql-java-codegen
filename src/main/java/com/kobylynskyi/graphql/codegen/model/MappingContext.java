@@ -27,13 +27,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Integer getProjectionMaxDepth() {
-        return config.getProjectionMaxDepth();
-    }
-
-    @Override
-    public Boolean getGenerateSelectAll() {
-        return config.getGenerateSelectAll();
+    public Integer getResponseProjectionMaxDepth() {
+        return config.getResponseProjectionMaxDepth();
     }
 
     @Override

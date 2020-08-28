@@ -15,6 +15,17 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     public LocationResponseProjection() {
     }
 
+    public LocationResponseProjection all$() {
+        return all$(3);
+    }
+
+    public LocationResponseProjection all$(int maxDepth) {
+        this.id();
+        this.locationType();
+        this.typename();
+        return this;
+    }
+
     public LocationResponseProjection id() {
         return id(null);
     }

@@ -16,6 +16,21 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     public QueryResponseProjection() {
     }
 
+    public QueryResponseProjection all$() {
+        return all$(3);
+    }
+
+    public QueryResponseProjection all$(int maxDepth) {
+        this.Native();
+        if (projectionDepthOnFields.getOrDefault("QueryResponseProjection.SynchronizedResponseProjection.Private", 0) <= maxDepth) {
+            projectionDepthOnFields.put("QueryResponseProjection.SynchronizedResponseProjection.Private", projectionDepthOnFields.getOrDefault("QueryResponseProjection.SynchronizedResponseProjection.Private", 0) + 1);
+            this.Private(new SynchronizedResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("QueryResponseProjection.SynchronizedResponseProjection.Private", 0)));
+        }
+        this.Case();
+        this.typename();
+        return this;
+    }
+
     public QueryResponseProjection Native() {
         return Native(null);
     }

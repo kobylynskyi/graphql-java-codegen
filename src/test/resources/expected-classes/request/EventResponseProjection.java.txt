@@ -16,6 +16,26 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     public EventResponseProjection() {
     }
 
+    public EventResponseProjection all$() {
+        return all$(3);
+    }
+
+    public EventResponseProjection all$(int maxDepth) {
+        this.id();
+        this.categoryId();
+        if (projectionDepthOnFields.getOrDefault("EventResponseProjection.EventPropertyResponseProjection.properties", 0) <= maxDepth) {
+            projectionDepthOnFields.put("EventResponseProjection.EventPropertyResponseProjection.properties", projectionDepthOnFields.getOrDefault("EventResponseProjection.EventPropertyResponseProjection.properties", 0) + 1);
+            this.properties(new EventPropertyResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("EventResponseProjection.EventPropertyResponseProjection.properties", 0)));
+        }
+        this.status();
+        this.createdBy();
+        this.createdDateTime();
+        this.active();
+        this.rating();
+        this.typename();
+        return this;
+    }
+
     public EventResponseProjection id() {
         return id(null);
     }

@@ -27,8 +27,7 @@ public final class DataModelFields {
     public static final String METHOD_NAME = "methodName";
     public static final String RETURN_TYPE_NAME = "returnTypeName";
     public static final String GENERATED_INFO = "generatedInfo";
-    public static final String PROJECTION_MAX_DEPTH = "projectionMaxDepth";
-    public static final String SELECT_ALL = "selectAll";
+    public static final String RESPONSE_PROJECTION_MAX_DEPTH = "responseProjectionMaxDepth";
 
     private DataModelFields() {
     }

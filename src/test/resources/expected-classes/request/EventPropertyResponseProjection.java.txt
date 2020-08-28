@@ -16,6 +16,27 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     public EventPropertyResponseProjection() {
     }
 
+    public EventPropertyResponseProjection all$() {
+        return all$(3);
+    }
+
+    public EventPropertyResponseProjection all$(int maxDepth) {
+        this.floatVal();
+        this.booleanVal();
+        this.intVal();
+        this.stringVal();
+        if (projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventPropertyResponseProjection.child", 0) <= maxDepth) {
+            projectionDepthOnFields.put("EventPropertyResponseProjection.EventPropertyResponseProjection.child", projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventPropertyResponseProjection.child", 0) + 1);
+            this.child(new EventPropertyResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventPropertyResponseProjection.child", 0)));
+        }
+        if (projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventResponseProjection.parent", 0) <= maxDepth) {
+            projectionDepthOnFields.put("EventPropertyResponseProjection.EventResponseProjection.parent", projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventResponseProjection.parent", 0) + 1);
+            this.parent(new EventResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventResponseProjection.parent", 0)));
+        }
+        this.typename();
+        return this;
+    }
+
     public EventPropertyResponseProjection floatVal() {
         return floatVal(null);
     }

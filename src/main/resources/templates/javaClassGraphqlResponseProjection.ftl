@@ -29,19 +29,18 @@ public class ${className} extends GraphQLResponseProjection {
     public ${className}() {
     }
 <#if fields?has_content>
-<#if selectAll == true >
 
-    public ${className} selectAll$() {
-        return selectAll$(${projectionMaxDepth});
+    public ${className} all$() {
+        return all$(${responseProjectionMaxDepth});
     }
 
-    public ${className} selectAll$(int maxDepth) {
+    public ${className} all$(int maxDepth) {
     <#list fields as field>
         <#if field.type?has_content>
             <#if field.methodName?substring(0,2) != "on">
-        if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) < maxDepth) {
+        if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) <= maxDepth) {
             projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1);
-            this.${field.methodName}(new ${field.type}().selectAll$(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)));
+            this.${field.methodName}(new ${field.type}().all$(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)));
         }
         </#if>
     <#else>
@@ -50,7 +49,6 @@ public class ${className} extends GraphQLResponseProjection {
     </#list>
         return this;
     }
-</#if>
 </#if>
 
 <#if fields?has_content>

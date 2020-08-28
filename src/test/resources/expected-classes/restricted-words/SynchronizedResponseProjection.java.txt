@@ -16,6 +16,20 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     public SynchronizedResponseProjection() {
     }
 
+    public SynchronizedResponseProjection all$() {
+        return all$(3);
+    }
+
+    public SynchronizedResponseProjection all$(int maxDepth) {
+        this.Void();
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.Wait", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) + 1);
+            this.Wait(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0)));
+        }
+        this.typename();
+        return this;
+    }
+
     public SynchronizedResponseProjection Void() {
         return Void(null);
     }

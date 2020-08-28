@@ -15,16 +15,16 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     public VehicleResponseProjection() {
     }
 
-    public VehicleResponseProjection selectAll$() {
-        return selectAll$(5);
+    public VehicleResponseProjection all$() {
+        return all$(3);
     }
 
-    public VehicleResponseProjection selectAll$(int maxDepth) {
+    public VehicleResponseProjection all$(int maxDepth) {
         this.vehicleId();
         this.registrationNumber();
-        if (projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0) < maxDepth) {
+        if (projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0) <= maxDepth) {
             projectionDepthOnFields.put("VehicleResponseProjection.LocationResponseProjection.location", projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0) + 1);
-            this.location(new LocationResponseProjection().selectAll$(maxDepth - projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0)));
+            this.location(new LocationResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("VehicleResponseProjection.LocationResponseProjection.location", 0)));
         }
         this.typename();
         return this;

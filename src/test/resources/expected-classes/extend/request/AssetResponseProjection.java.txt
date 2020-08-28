@@ -13,6 +13,19 @@ public class AssetResponseProjection extends GraphQLResponseProjection {
     public AssetResponseProjection() {
     }
 
+    public AssetResponseProjection all$() {
+        return all$(3);
+    }
+
+    public AssetResponseProjection all$(int maxDepth) {
+        this.name();
+        this.status();
+        this.id();
+        this.createdBy();
+        this.typename();
+        return this;
+    }
+
     public AssetResponseProjection name() {
         return name(null);
     }

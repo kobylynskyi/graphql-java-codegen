@@ -87,7 +87,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String jsonConfigurationFile;
 
     private int projectionMaxDepth = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH;
-    private Boolean generateSelectAll = MappingConfigConstants.DEFAULT_GENERATE_SELECT_ALL;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -137,8 +136,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
-        mappingConfig.setProjectionMaxDepth(getProjectionMaxDepth());
-        mappingConfig.setGenerateSelectAll(getGenerateSelectAll());
+        mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -670,19 +668,12 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public Integer getProjectionMaxDepth() {
+    public Integer getResponseProjectionMaxDepth() {
         return projectionMaxDepth;
     }
 
     public void setProjectionMaxDepth(int projectionMaxDepth) {
         this.projectionMaxDepth = projectionMaxDepth;
-    }
-
-    @Input
-    @Optional
-    @Override
-    public Boolean getGenerateSelectAll() {
-        return generateSelectAll;
     }
 
     public void setGenerateSelectAll(Boolean generateSelectAll) {

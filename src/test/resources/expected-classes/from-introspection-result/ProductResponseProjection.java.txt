@@ -15,6 +15,22 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     public ProductResponseProjection() {
     }
 
+    public ProductResponseProjection all$() {
+        return all$(3);
+    }
+
+    public ProductResponseProjection all$(int maxDepth) {
+        this.id();
+        this.title();
+        this.description();
+        this.price();
+        this.sku();
+        this.stockStatus();
+        this.addedDateTime();
+        this.typename();
+        return this;
+    }
+
     public ProductResponseProjection id() {
         return id(null);
     }

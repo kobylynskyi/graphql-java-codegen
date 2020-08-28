@@ -34,7 +34,7 @@ object QueryResolverImplMain extends App {
 
   println("=======QueryResolverImpl2=======")
   /**
-   * MAX DEPTH = 5
+   * MAX DEPTH = 4
    * gql:{{{
    * { id name friends {
    *     id name friends {

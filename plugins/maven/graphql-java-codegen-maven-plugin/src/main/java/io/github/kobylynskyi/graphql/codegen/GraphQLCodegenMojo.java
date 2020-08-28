@@ -73,15 +73,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
-    public void setMaxProjectionDepth(int maxProjectionDepth) {
-        this.maxProjectionDepth = maxProjectionDepth;
+    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH_STRING)
-    private int maxProjectionDepth;
-
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_SELECT_ALL_STRING)
-    private Boolean generateSelectAll;
+    private int responseProjectionMaxDepth;
 
     @Parameter
     private String apiPackageName;
@@ -221,8 +218,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
-        mappingConfig.setProjectionMaxDepth(getProjectionMaxDepth());
-        mappingConfig.setGenerateSelectAll(getGenerateSelectAll());
+        mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -665,17 +661,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
-    public Integer getProjectionMaxDepth() {
-        return maxProjectionDepth;
-    }
-
-    @Override
-    public Boolean getGenerateSelectAll() {
-        return generateSelectAll;
-    }
-
-    public void setGenerateSelectAll(Boolean generateSelectAll) {
-        this.generateSelectAll = generateSelectAll;
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {

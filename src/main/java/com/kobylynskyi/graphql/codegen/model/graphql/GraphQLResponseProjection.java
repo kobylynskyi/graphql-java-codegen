@@ -23,8 +23,8 @@ public abstract class GraphQLResponseProjection {
      *     friends: [Character]
      * }
      * Note:
-     * Map key is parentProjection.childProjection.currentMethod. e.g. Character.Character.friends (Including the first layer, so if only want the first layer, use `selectAll$(1)`)
-     * Map value is current depth for Character type. Values exists 1 or 0, because each projection have a new instance of projectionDepthOnFields, so it always be `1` and `maxDepth` will reduce by recursive.
+     * Map key is parentProjection.childProjection.currentMethod. e.g. Character.Character.friends (excluding the first layer, so if only want the first child layer, use `selectAll$(1)`)
+     * Map value is current depth for Character type. Values exists 1 or 0, because each projection have a new instance of projectionDepthOnFields, so it always be `1` and `responseProjectionMaxDepth` will reduce by recursive.
      * it's actually a marker.
      * }}
      */

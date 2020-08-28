@@ -106,9 +106,7 @@ trait GraphQLCodegenKeys {
 
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
 
-  val projectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
-
-  val generateSelectAll = settingKey[Boolean]("if true will generate selectAll$ method on projections")
+  val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

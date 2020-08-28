@@ -13,6 +13,15 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     public EventResponseProjection() {
     }
 
+    public EventResponseProjection all$() {
+        return all$(3);
+    }
+
+    public EventResponseProjection all$(int maxDepth) {
+        this.typename();
+        return this;
+    }
+
     public EventResponseProjection typename() {
         return typename(null);
     }

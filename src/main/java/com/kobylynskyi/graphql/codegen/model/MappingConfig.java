@@ -67,7 +67,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
-    private Integer projectionMaxDepth;
+    private Integer responseProjectionMaxDepth;
     private Boolean generateSelectAll;
 
     public Boolean getGenerateSelectAll() {
@@ -79,12 +79,12 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Integer getProjectionMaxDepth() {
-        return projectionMaxDepth;
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
     }
 
-    public void setProjectionMaxDepth(Integer projectionMaxDepth) {
-        this.projectionMaxDepth = projectionMaxDepth;
+    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
 
@@ -133,8 +133,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
-        projectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getProjectionMaxDepth);
-        generateSelectAll = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateSelectAll);
+        responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {

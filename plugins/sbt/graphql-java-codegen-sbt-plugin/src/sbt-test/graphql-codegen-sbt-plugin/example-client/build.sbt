@@ -60,5 +60,3 @@ generateCodegenTargetPath in GraphQLCodegenConfig  := crossTarget.value / "src_m
 generateEqualsAndHashCode := true
 
 generateToString := true
-
-generateSelectAll := true

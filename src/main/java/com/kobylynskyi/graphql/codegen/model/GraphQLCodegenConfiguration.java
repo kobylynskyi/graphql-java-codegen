@@ -336,13 +336,6 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return limit depth when the projection is constructed automatically
      */
-    Integer getProjectionMaxDepth();
-
-    /**
-     * Specifies whether generated projection classes should have selectAll method defined.
-     *
-     * @return <b>true</b> if generated projection classes should have selectAll method defined.
-     */
-    Boolean getGenerateSelectAll();
+    Integer getResponseProjectionMaxDepth();
 
 }

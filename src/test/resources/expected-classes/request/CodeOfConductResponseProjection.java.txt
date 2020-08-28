@@ -16,6 +16,21 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     public CodeOfConductResponseProjection() {
     }
 
+    public CodeOfConductResponseProjection all$() {
+        return all$(3);
+    }
+
+    public CodeOfConductResponseProjection all$(int maxDepth) {
+        this.body();
+        this.id();
+        this.key();
+        this.name();
+        this.resourcePath();
+        this.url();
+        this.typename();
+        return this;
+    }
+
     public CodeOfConductResponseProjection body() {
         return body(null);
     }

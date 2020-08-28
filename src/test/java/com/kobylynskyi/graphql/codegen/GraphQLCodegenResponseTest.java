@@ -65,8 +65,6 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_projections_with_selectAll() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        mappingConfig.setProjectionMaxDepth(5);
-        mappingConfig.setGenerateSelectAll(true);
         new GraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
