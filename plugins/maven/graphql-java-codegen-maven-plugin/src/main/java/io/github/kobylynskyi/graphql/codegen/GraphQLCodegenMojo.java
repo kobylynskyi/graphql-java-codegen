@@ -77,7 +77,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
 
     @Parameter

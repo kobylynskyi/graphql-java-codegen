@@ -169,7 +169,7 @@ public class GraphQLCodegen {
             mappingConfig.setGenerateToString(true);
         }
         if (mappingConfig.getResponseProjectionMaxDepth() == null) {
-            mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH);
+            mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH);
         }
     }
 

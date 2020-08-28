@@ -107,7 +107,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateToString := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
     parentInterfaces := parentInterfacesConfig,
-    responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH
+    responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {

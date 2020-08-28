@@ -86,7 +86,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
 
-    private int projectionMaxDepth = MappingConfigConstants.DEFAULT_PROJECTION_MAX_DEPTH;
+    private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -669,14 +669,11 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Optional
     @Override
     public Integer getResponseProjectionMaxDepth() {
-        return projectionMaxDepth;
+        return responseProjectionMaxDepth;
     }
 
-    public void setProjectionMaxDepth(int projectionMaxDepth) {
-        this.projectionMaxDepth = projectionMaxDepth;
+    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
-    public void setGenerateSelectAll(Boolean generateSelectAll) {
-        this.generateSelectAll = generateSelectAll;
-    }
 }
