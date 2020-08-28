@@ -13,11 +13,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 /**
- * use selectAll$()
+ * use all$()
  *
  * At now, we can simply construct a request and call it directly.
  *
- * Next, we'll replace the reflection in the proxy with `selectAll$()`
+ * Next, we'll replace the reflection in the proxy with `all$()`
  *
  * @author liguobin@growingio.com
  * @version 1.0,2020/8/27

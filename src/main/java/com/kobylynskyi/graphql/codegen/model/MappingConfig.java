@@ -68,15 +68,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
     private Integer responseProjectionMaxDepth;
-    private Boolean generateSelectAll;
-
-    public Boolean getGenerateSelectAll() {
-        return generateSelectAll;
-    }
-
-    public void setGenerateSelectAll(Boolean generateSelectAll) {
-        this.generateSelectAll = generateSelectAll;
-    }
 
     @Override
     public Integer getResponseProjectionMaxDepth() {
