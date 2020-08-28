@@ -15,10 +15,12 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     public ProductResponseProjection() {
     }
 
+    @Override
     public ProductResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public ProductResponseProjection all$(int maxDepth) {
         this.id();
         this.title();

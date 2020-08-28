@@ -15,10 +15,12 @@ public class SearchResultItemConnectionResponseProjection extends GraphQLRespons
     public SearchResultItemConnectionResponseProjection() {
     }
 
+    @Override
     public SearchResultItemConnectionResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public SearchResultItemConnectionResponseProjection all$(int maxDepth) {
         this.codeCount();
         if (projectionDepthOnFields.getOrDefault("SearchResultItemConnectionResponseProjection.SearchResultItemEdgeResponseProjection.edges", 0) <= maxDepth) {

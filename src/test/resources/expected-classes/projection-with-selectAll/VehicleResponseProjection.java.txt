@@ -15,10 +15,12 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     public VehicleResponseProjection() {
     }
 
+    @Override
     public VehicleResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public VehicleResponseProjection all$(int maxDepth) {
         this.vehicleId();
         this.registrationNumber();

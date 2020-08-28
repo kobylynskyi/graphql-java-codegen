@@ -16,10 +16,12 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     public EventPropertyResponseProjection() {
     }
 
+    @Override
     public EventPropertyResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public EventPropertyResponseProjection all$(int maxDepth) {
         this.floatVal();
         this.booleanVal();

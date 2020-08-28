@@ -42,6 +42,7 @@ object OkHttp {
       post(RequestBody.create(request.toHttpJsonBody, json))
     val promise = Promise[T]
 
+    println("Graphql query "+request.toHttpJsonBody)
     OkHttp.client.newCall(rb.build()).enqueue(new Callback {
 
       override def onFailure(call: Call, e: IOException): Unit = {

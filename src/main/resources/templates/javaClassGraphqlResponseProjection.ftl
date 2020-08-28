@@ -30,10 +30,12 @@ public class ${className} extends GraphQLResponseProjection {
     }
 <#if fields?has_content>
 
+    @Override
     public ${className} all$() {
         return all$(${responseProjectionMaxDepth});
     }
 
+    @Override
     public ${className} all$(int maxDepth) {
     <#list fields as field>
         <#if field.type?has_content>

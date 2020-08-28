@@ -15,10 +15,12 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     public LocationResponseProjection() {
     }
 
+    @Override
     public LocationResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public LocationResponseProjection all$(int maxDepth) {
         this.id();
         this.locationType();

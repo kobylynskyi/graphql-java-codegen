@@ -13,10 +13,12 @@ public class AssetResponseProjection extends GraphQLResponseProjection {
     public AssetResponseProjection() {
     }
 
+    @Override
     public AssetResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public AssetResponseProjection all$(int maxDepth) {
         this.name();
         this.status();

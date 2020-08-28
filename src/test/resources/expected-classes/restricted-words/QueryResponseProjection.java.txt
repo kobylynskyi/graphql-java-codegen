@@ -16,10 +16,12 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     public QueryResponseProjection() {
     }
 
+    @Override
     public QueryResponseProjection all$() {
         return all$(3);
     }
 
+    @Override
     public QueryResponseProjection all$(int maxDepth) {
         this.Native();
         if (projectionDepthOnFields.getOrDefault("QueryResponseProjection.SynchronizedResponseProjection.Private", 0) <= maxDepth) {
