@@ -12,7 +12,8 @@ public abstract class GraphQLResponseProjection {
 
     /**
      * save current depth for self recursive type.
-     * such as {{@code
+     * such as
+     * {{@code
      * type Human implements Character {
      *     id: ID!
      *     friends: [Character] # if you response this field on Human projection , Character has itself,
@@ -22,10 +23,11 @@ public abstract class GraphQLResponseProjection {
      *     id: ID!
      *     friends: [Character]
      * }
+     *
      * Note:
-     * Map key is parentProjection.childProjection.currentMethod. e.g. Character.Character.friends (excluding the first layer, so if only want the first child layer, use `selectAll$(1)`)
-     * Map value is current depth for Character type. Values exists 1 or 0, because each projection have a new instance of projectionDepthOnFields, so it always be `1` and `responseProjectionMaxDepth` will reduce by recursive.
-     * it's actually a marker.
+     * Map key is parentProjection.childProjection.currentMethod. e.g. CharacterResponseProjection.CharacterResponseProjection.friends (excluding the first layer, so if only want the first child layer, use `all$(1)`)
+     * Map value is current depth for Character type. Values exists 1 or 0, because each projection have a new instance of projectionDepthOnFields, so it always be `1`
+     * and `responseProjectionMaxDepth` will reduce by recursive. it's actually a marker.
      * }}
      */
     protected final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
