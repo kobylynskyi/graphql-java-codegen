@@ -7,6 +7,7 @@ import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.RelayConfig;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -155,6 +156,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private String parametrizedInputSuffix;
 
     @Parameter
+    private RelayConfig relayConfig = new RelayConfig();
+
+    @Parameter
     private String jsonConfigurationFile;
 
     @Parameter
@@ -211,6 +215,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+        mappingConfig.setRelayConfig(relayConfig);
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -511,6 +516,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Boolean getGenerateDataFetchingEnvironmentArgumentInApis() {
         return generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public RelayConfig getRelayConfig() {
+        return relayConfig;
+    }
+
+    public void setRelayConfig(RelayConfig relayConfig) {
+        this.relayConfig = relayConfig;
     }
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(boolean generateDataFetchingEnvironmentArgumentInApis) {

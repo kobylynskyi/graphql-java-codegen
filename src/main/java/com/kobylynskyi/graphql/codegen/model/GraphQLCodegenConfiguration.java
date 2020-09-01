@@ -236,6 +236,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateDataFetchingEnvironmentArgumentInApis();
 
     /**
+     * Relay-related configurations.
+     *
+     * @return Relay-related configurations.
+     */
+    RelayConfig getRelayConfig();
+
+    /**
      * Fields that require Resolvers should be defined here in format: TypeName, TypeName.fieldName, @directive
      * If just type is specified, then all fields of this type will have resolvers
      * <p>

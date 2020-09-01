@@ -72,6 +72,7 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateModelsForRootTypes());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
+        assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
     }
 
     @Test
@@ -112,6 +113,7 @@ class MappingConfigTest {
         assertEquals("9", mappingConfig.getParametrizedInputSuffix());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
+        assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
     }
 
     @Test
@@ -155,6 +157,7 @@ class MappingConfigTest {
         assertEquals("99", mappingConfig.getParametrizedInputSuffix());
         assertEquals("1111", mappingConfig.getTypeResolverPrefix());
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());
+        assertEquals("for", mappingConfig.getRelayConfig().getDirectiveArgumentName());
     }
 
     private static <T> Map<String, T> hashMap(AbstractMap.SimpleEntry<String, T>... entries) {
@@ -197,6 +200,9 @@ class MappingConfigTest {
         config.setParametrizedInputSuffix("9");
         config.setTypeResolverPrefix("11");
         config.setTypeResolverSuffix("12");
+        RelayConfig relayConfig = new RelayConfig();
+        relayConfig.setDirectiveArgumentName("key");
+        config.setRelayConfig(relayConfig);
         return config;
     }
 
@@ -235,6 +241,9 @@ class MappingConfigTest {
         config.setParametrizedInputSuffix("99");
         config.setTypeResolverPrefix("1111");
         config.setTypeResolverSuffix("1212");
+        RelayConfig relayConfig = new RelayConfig();
+        relayConfig.setDirectiveArgumentName("for");
+        config.setRelayConfig(relayConfig);
         return config;
     }
 
@@ -245,6 +254,7 @@ class MappingConfigTest {
         mappingConfig.setDirectiveAnnotationsMapping(null);
         mappingConfig.setFieldsWithResolvers(null);
         mappingConfig.setFieldsWithoutResolvers(null);
+        mappingConfig.setRelayConfig(null);
         return mappingConfig;
     }
 
@@ -278,6 +288,7 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
         assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
         assertEquals(expectedMappingConfig.getUseOptionalForNullableReturnTypes(), mappingConfig.getUseOptionalForNullableReturnTypes());
+        assertEquals(expectedMappingConfig.getRelayConfig(), mappingConfig.getRelayConfig());
     }
 
 }

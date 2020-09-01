@@ -38,6 +38,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String apiReturnType;
     private String apiReturnListType;
     private String subscriptionReturnType;
+    private RelayConfig relayConfig = new RelayConfig();
 
     // various toggles
     private Boolean generateApis;
@@ -99,6 +100,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
         generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
+        relayConfig = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRelayConfig);
         queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
         subscriptionResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
@@ -402,6 +404,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public RelayConfig getRelayConfig() {
+        return relayConfig;
+    }
+
+    public void setRelayConfig(RelayConfig relayConfig) {
+        this.relayConfig = relayConfig;
     }
 
     @Override
