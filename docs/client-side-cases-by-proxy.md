@@ -9,7 +9,7 @@ However, since we have simplified the client-side logic as much as possible, thi
 so that the users do not need to choose the fields on projection. 
 This will also have a bad effect, we can only use all fields of the projection on the returned structure by default. 
 Moreover, we also need set to default the depth of nested queries so that the proxy can end smoothly. 
-All in all, the scenarios used are limited. Currently, `.. on` and `alias` not be supported.
+All in all, the scenarios used are limited. Currently, `.. on` and `alias` are not supported.
 
 Here is only to provide a way, the specific implementation for reference only, not verified by production environment!
 
