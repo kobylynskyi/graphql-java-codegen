@@ -38,6 +38,7 @@
 | `apiReturnType`                                 | String                                                             | Empty                                         | Return type for api methods (query/mutation). For example: `reactor.core.publisher.Mono`, etc. |
 | `apiReturnListType`                             | String                                                             | Empty                                         | Return type for api methods (query/mutation) having list type. For example: `reactor.core.publisher.Flux`, etc. By default is empty, so `apiReturnType` will be used. |
 | `subscriptionReturnType`                        | String                                                             | Empty                                         | Return type for subscription methods. For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc. |
+| `relayConfig`                                   | *See [RelayConfig](#option-relayconfig)*                           | `@connection(for: ...)`                       | *See [RelayConfig](#option-relayconfig)* |
 | `generateClient`                                | Boolean                                                            | False                                         | Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: `Request` classes (contain input data), `ResponseProjection` classes for each type (contain response fields) and `Response` classes (contain response data). |
 | `requestSuffix`                                 | String                                                             | Request                                       | Sets the suffix for `Request` classes. |
 | `responseSuffix`                                | String                                                             | Response                                      | Sets the suffix for `Response` classes. |
@@ -135,6 +136,27 @@ Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springfra
 **Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. 
 You can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`, `{{val?toArrayOfStrings}}`.
 
+
+
+### Option `relayConfig`
+
+Can be used to supply a custom configuration for Relay support.
+For reference see: https://www.graphql-java-kickstart.com/tools/relay/
+
+| Key inside `relayConfig` | Data Type | Default value              | Description |
+| ------------------------ | --------- | -------------------------- | ----------- |
+| `directiveName`          | String    | `connection`               | Directive name used for marking a field. |
+| `directiveArgumentName`  | String    | `for`                      | Directive argument name that contains a GraphQL type name. |
+| `connectionType`         | String    | `graphql.relay.Connection` | Generic Connection type. |
+
+For example, the following schema:
+```
+type Query { users(first: Int, after: String): UserConnection @connection(for: "User") }
+```
+will result in generating the interface with the following method:
+```
+graphql.relay.Connection<User> users(Integer first, String after) throws Exception;
+```
 
 
 

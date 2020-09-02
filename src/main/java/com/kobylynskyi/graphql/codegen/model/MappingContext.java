@@ -167,6 +167,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public RelayConfig getRelayConfig() {
+        return config.getRelayConfig();
+    }
+
+    @Override
     public Boolean getUseOptionalForNullableReturnTypes() {
         return config.getUseOptionalForNullableReturnTypes();
     }

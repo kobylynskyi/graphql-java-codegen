@@ -1,0 +1,64 @@
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class User implements java.io.Serializable {
+
+    @javax.validation.constraints.NotNull
+    private String id;
+    private String name;
+
+    public User() {
+    }
+
+    public User(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public static User.Builder builder() {
+        return new User.Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String name;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+
+        public User build() {
+            return new User(id, name);
+        }
+
+    }
+}

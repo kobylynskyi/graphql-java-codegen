@@ -76,6 +76,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private RelayConfig relayConfig = new RelayConfig();
 
 
     private Boolean generateClient;
@@ -134,6 +135,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+        mappingConfig.setRelayConfig(relayConfig);
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -616,6 +618,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
         this.parametrizedInputSuffix = parametrizedInputSuffix;
+    }
+
+    @Nested
+    @Optional
+    @Override
+    public RelayConfig getRelayConfig() {
+        return relayConfig;
+    }
+
+    public void relayConfig(Action<? super RelayConfig> action) {
+        action.execute(relayConfig);
     }
 
     @Nested
