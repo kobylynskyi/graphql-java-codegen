@@ -1,0 +1,13 @@
+type Query {
+    users(first: Int, after: String): UserConnection @connection(for: "User")
+    organizations(first: Int, after: String): OrganizationConnection @connection(for: "Organization")
+}
+
+type User {
+    id: ID!
+    name: String
+}
+
+type Organization {
+    id: ID!
+}

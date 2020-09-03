@@ -255,7 +255,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @return Java type wrapped into the subscriptionReturnType
      */
-    static String wrapIntoReturnTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+    static String wrapApiReturnTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
         String javaTypeName = namedDefinition.getName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
             if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
@@ -281,7 +281,7 @@ class GraphqlTypeToJavaTypeMapper {
         return javaTypeName;
     }
 
-    private static String getGenericsString(String genericType, String typeParameter) {
+    static String getGenericsString(String genericType, String typeParameter) {
         return String.format("%s<%s>", genericType, typeParameter);
     }
 

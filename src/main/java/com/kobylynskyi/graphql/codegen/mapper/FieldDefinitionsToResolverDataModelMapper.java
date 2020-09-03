@@ -4,10 +4,14 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.RelayConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.Argument;
+import graphql.language.Directive;
+import graphql.language.StringValue;
 import graphql.language.TypeName;
 
 import java.util.ArrayList;
@@ -131,23 +135,26 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * Builds a Freemarker-understandable structure representing an operation to resolve a field for a given parent type.
      *
      * @param mappingContext Global mapping context
-     * @param resolvedField  The GraphQL definition of the field that the method should resolve
+     * @param fieldDef       The GraphQL definition of the field that the method should resolve
      * @param parentTypeName Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operation
      */
-    private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition resolvedField,
+    private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
                                            String parentTypeName) {
-        NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
-                mappingContext, resolvedField.getType(), resolvedField.getName(), parentTypeName);
+        String name = MapperUtils.capitalizeIfRestricted(fieldDef.getName());
+        NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+        String returnType = getReturnType(mappingContext, fieldDef, javaType, parentTypeName);
+        List<String> annotations = GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false);
+        List<ParameterDefinition> parameters = getOperationParameters(mappingContext, fieldDef, parentTypeName);
+
         OperationDefinition operation = new OperationDefinition();
-        operation.setName(MapperUtils.capitalizeIfRestricted(resolvedField.getName()));
-        operation.setOriginalName(resolvedField.getName());
-        operation.setType(GraphqlTypeToJavaTypeMapper.wrapIntoReturnTypeIfRequired(mappingContext, javaType, parentTypeName));
-        operation.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext,
-                resolvedField.getType(), resolvedField, parentTypeName, false));
-        operation.setParameters(getOperationParameters(mappingContext, resolvedField, parentTypeName));
-        operation.setJavaDoc(resolvedField.getJavaDoc());
-        operation.setDeprecated(resolvedField.isDeprecated());
+        operation.setName(name);
+        operation.setOriginalName(fieldDef.getName());
+        operation.setType(returnType);
+        operation.setAnnotations(annotations);
+        operation.setParameters(parameters);
+        operation.setJavaDoc(fieldDef.getJavaDoc());
+        operation.setDeprecated(fieldDef.isDeprecated());
         return operation;
     }
 
@@ -194,6 +201,26 @@ public class FieldDefinitionsToResolverDataModelMapper {
         return mappingContext.getResolverParentInterface()
                 .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
                         MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName));
+    }
+
+    private static String getReturnType(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
+                                        NamedDefinition namedDefinition, String parentTypeName) {
+        RelayConfig relayConfig = mappingContext.getRelayConfig();
+        if (relayConfig != null && relayConfig.getDirectiveName() != null) {
+            Directive connectionDirective = fieldDef.getDirective(relayConfig.getDirectiveName());
+            if (connectionDirective != null) {
+                Argument argument = connectionDirective.getArgument(relayConfig.getDirectiveArgumentName());
+                // as of now supporting only string value of directive argument
+                if (argument != null && argument.getValue() instanceof StringValue) {
+                    String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
+                    String javaTypeName = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext,
+                            new TypeName(graphqlTypeName), graphqlTypeName, parentTypeName, false).getName();
+                    return GraphqlTypeToJavaTypeMapper.getGenericsString(relayConfig.getConnectionType(), javaTypeName);
+                }
+            }
+        }
+        return GraphqlTypeToJavaTypeMapper.wrapApiReturnTypeIfRequired(mappingContext, namedDefinition, parentTypeName);
+
     }
 
 }
