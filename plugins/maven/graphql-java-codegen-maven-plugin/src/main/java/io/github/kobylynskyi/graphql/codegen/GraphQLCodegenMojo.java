@@ -73,10 +73,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
-    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
-        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
-    }
-
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
 
@@ -663,6 +659,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Integer getResponseProjectionMaxDepth() {
         return responseProjectionMaxDepth;
+    }
+
+    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {

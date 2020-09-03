@@ -40,4 +40,13 @@ public class UpdateNodeUnionResponseProjection extends GraphQLResponseProjection
     }
 
 
+    @Override
+    public GraphQLResponseProjection all$() {
+        return null;
+    }
+
+    @Override
+    public GraphQLResponseProjection all$(int maxDepth) {
+        return null;
+    }
 }

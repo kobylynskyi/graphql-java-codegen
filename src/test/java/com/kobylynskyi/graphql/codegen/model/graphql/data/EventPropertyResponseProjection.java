@@ -83,4 +83,13 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
+    @Override
+    public GraphQLResponseProjection all$() {
+        return null;
+    }
+
+    @Override
+    public GraphQLResponseProjection all$(int maxDepth) {
+        return null;
+    }
 }
