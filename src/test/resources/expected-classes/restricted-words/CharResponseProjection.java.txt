@@ -16,6 +16,17 @@ public class CharResponseProjection extends GraphQLResponseProjection {
     public CharResponseProjection() {
     }
 
+    @Override
+    public CharResponseProjection all$() {
+        return all$(3);
+    }
+
+    @Override
+    public CharResponseProjection all$(int maxDepth) {
+        this.typename();
+        return this;
+    }
+
     public CharResponseProjection typename() {
         return typename(null);
     }

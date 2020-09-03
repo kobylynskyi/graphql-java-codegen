@@ -94,19 +94,20 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     fieldsWithResolvers := new util.HashSet[String](),
     fieldsWithoutResolvers := new util.HashSet[String](),
     // various toggles:
-    generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING.toBoolean,
-    generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS_STRING.toBoolean,
-    generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS_STRING.toBoolean,
-    generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV_STRING.toBoolean,
-    generateModelsForRootTypes := MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING.toBoolean,
+    generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT,
+    generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
+    generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
+    generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV,
+    generateModelsForRootTypes := MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES,
     generatePackageName := None,
-    generateBuilder := MappingConfigConstants.DEFAULT_BUILDER_STRING.toBoolean,
-    generateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS_STRING.toBoolean,
-    generateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE_STRING.toBoolean,
-    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS_STRING.toBoolean,
-    generateToString := MappingConfigConstants.DEFAULT_TO_STRING_STRING.toBoolean,
+    generateBuilder := MappingConfigConstants.DEFAULT_BUILDER,
+    generateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS,
+    generateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS,
+    generateToString := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
-    parentInterfaces := parentInterfacesConfig
+    parentInterfaces := parentInterfacesConfig,
+    responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
@@ -153,6 +154,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setDirectiveAnnotationsMapping((directiveAnnotationsMapping in GraphQLCodegenConfig).value)
     mappingConfig.setApiInterfaceStrategy((apiInterfaceStrategy in GraphQLCodegenConfig).value)
     mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
+    mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
 
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig

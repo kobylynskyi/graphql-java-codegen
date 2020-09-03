@@ -16,6 +16,16 @@ public class IssueResponseProjection extends GraphQLResponseProjection {
         fields.add(new GraphQLResponseField("activeLockReason").alias(alias));
         return this;
     }
+
+    @Override
+    public GraphQLResponseProjection all$() {
+        return null;
+    }
+
+    @Override
+    public GraphQLResponseProjection all$(int maxDepth) {
+        return null;
+    }
     // REST OF THE STUFF WAS REMOVED
 
 }

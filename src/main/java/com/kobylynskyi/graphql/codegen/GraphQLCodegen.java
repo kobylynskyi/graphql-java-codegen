@@ -168,6 +168,9 @@ public class GraphQLCodegen {
             // required for request serialization
             mappingConfig.setGenerateToString(true);
         }
+        if (mappingConfig.getResponseProjectionMaxDepth() == null) {
+            mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH);
+        }
     }
 
     private void validateConfigs(MappingConfig mappingConfig) {

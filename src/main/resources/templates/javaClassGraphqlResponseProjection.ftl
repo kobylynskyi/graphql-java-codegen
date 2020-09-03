@@ -28,6 +28,30 @@ public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {
     }
+<#if fields?has_content>
+
+    @Override
+    public ${className} all$() {
+        return all$(${responseProjectionMaxDepth});
+    }
+
+    @Override
+    public ${className} all$(int maxDepth) {
+    <#list fields as field>
+        <#if field.type?has_content>
+            <#if field.methodName?substring(0,2) != "on">
+        if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) <= maxDepth) {
+            projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1);
+            this.${field.methodName}(new ${field.type}().all$(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)));
+        }
+        </#if>
+    <#else>
+        this.${field.methodName}();
+        </#if>
+    </#list>
+        return this;
+    }
+</#if>
 
 <#if fields?has_content>
 <#list fields as field>

@@ -62,4 +62,18 @@ class GraphQLCodegenResponseTest {
                 getFileByName(files, "LocationResponseProjection.java"));
     }
 
+    @Test
+    void generate_projections_with_selectAll() throws Exception {
+        mappingConfig.setModelNameSuffix("TO");
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/VehicleResponseProjection.java.txt"),
+                getFileByName(files, "VehicleResponseProjection.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/LocationResponseProjection.java.txt"),
+                getFileByName(files, "LocationResponseProjection.java"));
+    }
+
 }

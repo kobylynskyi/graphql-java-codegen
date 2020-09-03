@@ -9,11 +9,12 @@ However, since we have simplified the client-side logic as much as possible, thi
 so that the users do not need to choose the fields on projection. 
 This will also have a bad effect, we can only use all fields of the projection on the returned structure by default. 
 Moreover, we also need set to default the depth of nested queries so that the proxy can end smoothly. 
-All in all, the scenarios used are limited. Currently `.. on` and `alias` are not supported.
+All in all, the scenarios used are limited. Currently, `.. on` and `alias` are not supported.
 
 Here is only to provide a way, the specific implementation for reference only, not verified by production environment!
-                                                                               
 
+> Because reflection is heavily used, don't consider this approach if you need high performance.
+  
 1. First of all, we need to implement dynamic proxy, and be able to automatically add parameters to request and select return fields on projection.
    
 ```java
@@ -148,48 +149,49 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
      */
     private Object proxyInvoke(Method method, Object[] args) {
         int i = 0;
+        Field field = null;
+        List<GraphQLResponseField> fields = null;
         String entityClazzName;
+        //handle List
+        Type type = method.getGenericReturnType();
+        //it is more rigorous to judge whether it is a List
+        if (type instanceof ParameterizedType) {
+            Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();
+            entityClazzName = parameterizedType[0].getTypeName();
+        } else {
+            entityClazzName = type.getTypeName();
+        }
+        List<Parameter> parameters = Arrays.stream(method.getParameters()).collect(Collectors.toList());
+
+        //if this method have no parameter, then do not need invoke on request instance
+        //other wise, we need append parameters to request field which use hashmap store params
+        if (!parameters.isEmpty()) {
+           for (Parameter parameter : parameters) {
+               Object argsCopy = args[i++];
+               request.getInput().put(parameter.getName(), argsCopy);
+           }
+        }
         try {
-            //handle List
-            Type type = method.getGenericReturnType();
-            //it is more rigorous to judge whether it is a List
-            if (type instanceof ParameterizedType) {
-                Type[] parameterizedType = ((ParameterizedType) type).getActualTypeArguments();
-                entityClazzName = parameterizedType[0].getTypeName();
-            } else {
-                entityClazzName = type.getTypeName();
-            }
-            List<Parameter> parameters = Arrays.stream(method.getParameters()).collect(Collectors.toList());
-
-            //if this method have no parameter, then do not need invoke on request instance
-            //other wise, we need append parameters to request field which use hashmap store params
-            if (!parameters.isEmpty()) {
-                Field input = request.getClass().getDeclaredField("input");
-                input.setAccessible(true);
-                Map<String, Object> params = new LinkedHashMap<>();
-                for (Parameter parameter : parameters) {
-                    Object argsCopy = args[i++];
-                    params.put(parameter.getName(), argsCopy);
-                    System.out.println("request parameter <" + parameter.getName() + "> and parameter type <" + parameter.getType().getName() + ">");
-                }
-
-                input.set(request, params);
-                input.setAccessible(false);
-            }
-
-            //newInstance GraphQLResponseProjection and GraphQLOperationRequest
-            for (Method parentMethod : projection.getClass().getDeclaredMethods()) {
-                invokeOnProjection(projection, parentMethod, 1);
-            }
-
-            return executeByHttp(entityClazzName, request, projection);// request and projection for creating GraphQLRequest, entityClazzName for deserialize 
-
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+            field = projection.getClass().getSuperclass().getDeclaredField("fields");
+            field.setAccessible(true);
+            fields = (List<GraphQLResponseField>) field.get(projection);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
+        } finally {
+            if (field != null) {
+                field.setAccessible(false);
+            }
         }
 
-        return null;
-    }
+        //if fields not null, use it directly, because user want to select fields
+        if (projection != null && (fields == null || fields.isEmpty())) {
+            for (Method m : projection.getClass().getDeclaredMethods()) {
+                invokeOnProjection(projection, m, 1);
+            }
+        }
+
+        return executeByHttp(entityClazzName, request, projection);// request and projection for creating GraphQLRequest, entityClazzName for deserialize
+    } 
 }
 ```
 

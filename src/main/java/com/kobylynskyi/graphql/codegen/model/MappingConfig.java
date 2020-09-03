@@ -68,6 +68,17 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private Integer responseProjectionMaxDepth;
+
+    @Override
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
+    }
+
+    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    }
+
 
     @Override
     public void combine(MappingConfig source) {
@@ -115,6 +126,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
+        responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {

@@ -15,6 +15,17 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     public SearchResultItemResponseProjection() {
     }
 
+    @Override
+    public SearchResultItemResponseProjection all$() {
+        return all$(3);
+    }
+
+    @Override
+    public SearchResultItemResponseProjection all$(int maxDepth) {
+        this.typename();
+        return this;
+    }
+
     public SearchResultItemResponseProjection onApp(AppResponseProjection subProjection) {
         return onApp(null, subProjection);
     }

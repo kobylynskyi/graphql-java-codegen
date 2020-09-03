@@ -17,6 +17,7 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
+graphqlJavaCodegenVersion := Some("3.0.1-SNAPSHOT")
 
 GraphQLCodegenPluginDependencies
 
@@ -31,7 +32,7 @@ generateApis := true
 // in FB, collection is immutable
 customTypesMapping := {
   val mapping = new util.HashMap[String, String]
-  mapping.put("Email", "io.github.dreamylost.scalar.EmailScalar")
+//  mapping.put("Email", "io.github.dreamylost.scalar.EmailScalar")
   //Character will conflict with java.lang.Character. maybe because Scala imports it automatically java.lang *.
   //So we use Full class name
   mapping
@@ -55,3 +56,7 @@ customAnnotationsMapping := {
 }
 
 generateCodegenTargetPath in GraphQLCodegenConfig  := crossTarget.value / "src_managed_graphql_my_folder"
+
+generateEqualsAndHashCode := true
+
+generateToString := true
