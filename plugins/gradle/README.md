@@ -92,9 +92,9 @@ sourceSets {
 }
 
 // Add generated sources to your project source sets:
-val check: DefaultTask by tasks
-val graphqlCodegen: DefaultTask by tasks
-check.dependsOn(graphqlCodegen)    
+tasks.named<JavaCompile>("compileJava") {
+    dependsOn("graphqlCodegen")
+}
 ```
 
 
