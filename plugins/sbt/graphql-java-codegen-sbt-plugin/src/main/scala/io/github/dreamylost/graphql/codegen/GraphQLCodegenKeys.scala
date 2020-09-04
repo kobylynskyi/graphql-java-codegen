@@ -2,9 +2,8 @@ package io.github.dreamylost.graphql.codegen
 
 import java.util
 
-import com.kobylynskyi.graphql.codegen.model.{ ApiNamePrefixStrategy, ApiRootInterfaceStrategy }
+import com.kobylynskyi.graphql.codegen.model.{ ApiInterfaceStrategy, ApiNamePrefixStrategy, ApiRootInterfaceStrategy, RelayConfig }
 import sbt._
-import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy
 
 /**
  *
@@ -107,6 +106,8 @@ trait GraphQLCodegenKeys {
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
 
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
+
+  val relayConfig = settingKey[RelayConfig]("Can be used to supply a custom configuration for Relay support.")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

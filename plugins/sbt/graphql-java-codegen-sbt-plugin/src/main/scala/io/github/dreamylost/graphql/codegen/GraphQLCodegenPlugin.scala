@@ -41,6 +41,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
 
     lazy val schemaFinderConfig: SchemaFinderConfig = SchemaFinderConfig(null)
     lazy val parentInterfacesConfig: ParentInterfacesConfig = ParentInterfacesConfig()
+    lazy val defaultRelayConfig = new RelayConfig() //for auto import which can change it by `set` methods.
     lazy val GraphQLCodegenConfig = self.GraphQLCodegenConfig
 
   }
@@ -87,6 +88,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     apiReturnListType := None,
     apiInterfaceStrategy := MappingConfigConstants.DEFAULT_API_INTERFACE_STRATEGY,
     useOptionalForNullableReturnTypes := MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES,
+    relayConfig := defaultRelayConfig,
     // package name configs:
     apiPackageName := None,
     modelPackageName := None,
@@ -155,6 +157,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setApiInterfaceStrategy((apiInterfaceStrategy in GraphQLCodegenConfig).value)
     mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
+    mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
 
     sLog.value.debug(s"Current mapping config is <$mappingConfig>")
     mappingConfig
