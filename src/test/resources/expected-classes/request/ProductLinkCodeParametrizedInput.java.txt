@@ -1,0 +1,41 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+/**
+ * Parametrized input for field linkCode in type Product
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class ProductLinkCodeParametrizedInput implements GraphQLParametrizedInput {
+
+    @javax.validation.constraints.NotNull
+    private String pid;
+
+    public ProductLinkCodeParametrizedInput() {
+    }
+
+    public ProductLinkCodeParametrizedInput(String pid) {
+        this.pid = pid;
+    }
+
+    public ProductLinkCodeParametrizedInput pid(String pid) {
+        this.pid = pid;
+        return this;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "(", ")");
+        if (pid != null) {
+            joiner.add("pid: " + GraphQLRequestSerializer.getEntry(pid));
+        }
+        return joiner.toString();
+    }
+
+}

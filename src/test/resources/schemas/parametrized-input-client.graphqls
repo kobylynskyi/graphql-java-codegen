@@ -1,0 +1,15 @@
+type Query {
+    product(
+        companyId: ID!
+    ): Product!
+}
+
+interface Product {
+    linkCode(
+        pid: ID!
+    ): LinkCode
+}
+
+type LinkCode {
+    html: String
+}
