@@ -279,8 +279,7 @@ public class GraphQLCodegen {
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
             generateFieldResolver(context, definition.getFieldDefinitions(), definition).ifPresent(generatedFiles::add);
         }
-        System.out.println(String.format("Generated %d definition classes in folder %s",
-                generatedFiles.size(), outputDir.getAbsolutePath()));
+        System.out.printf("Generated %d definition classes in folder %s%n", generatedFiles.size(), outputDir.getAbsolutePath());
         return generatedFiles;
     }
 
@@ -304,6 +303,13 @@ public class GraphQLCodegen {
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.responseProjectionTemplate, responseProjDataModel, outputDir));
+
+            for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
+                if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
+                    Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.parametrizedInputTemplate, fieldProjDataModel, outputDir));
+                }
+            }
         }
         return generatedFiles;
     }
@@ -398,12 +404,14 @@ public class GraphQLCodegen {
     private Optional<File> generateFieldResolver(MappingContext mappingContext,
                                                  List<ExtendedFieldDefinition> fieldDefinitions,
                                                  ExtendedDefinition<?, ?> parentDefinition) {
-        List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
-                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, parentDefinition))
-                .collect(toList());
-        if (!fieldDefsWithResolvers.isEmpty()) {
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
-            return Optional.of(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())) {
+            List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
+                    .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, parentDefinition))
+                    .collect(toList());
+            if (!fieldDefsWithResolvers.isEmpty()) {
+                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
+                return Optional.of(GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.operationsTemplate, dataModel, outputDir));
+            }
         }
         return Optional.empty();
     }

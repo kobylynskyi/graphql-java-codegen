@@ -64,7 +64,7 @@ public class RequestResponseDefinitionToDataModelMapper {
      */
     public static Map<String, Object> mapParametrizedInput(MappingContext mappingContext,
                                                            ExtendedFieldDefinition fieldDefinition,
-                                                           ExtendedObjectTypeDefinition parentTypeDefinition) {
+                                                           ExtendedDefinition<?, ?> parentTypeDefinition) {
         String className = MapperUtils.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition);
         Map<String, Object> dataModel = new HashMap<>();
         // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed

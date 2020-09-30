@@ -70,8 +70,8 @@ class GraphQLCodegenModelsForRootTypesTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
-                "Mutation.java", "MutationResolver.java", "Query.java", "QueryResolver.java", "Subscription.java"),
+        assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java",
+                "Mutation.java", "Query.java", "Subscription.java"),
                 generatedFileNames);
     }
 
