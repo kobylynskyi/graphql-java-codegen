@@ -17,12 +17,12 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-graphqlJavaCodegenVersion := Some("3.1.1-SNAPSHOT")
+graphqlJavaCodegenVersion := Some("3.1.1")
 
 GraphQLCodegenPluginDependencies
 
 //default graphqlJavaCodegen is release
-//graphqlJavaCodegenVersion := Some("3.1.1-SNAPSHOT")
+//graphqlJavaCodegenVersion := Some("3.1.1")
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
 apiPackageName := Some("io.github.dreamylost.api")
