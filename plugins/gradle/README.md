@@ -110,7 +110,7 @@ tasks.named<JavaCompile>("compileJava") {
 
 [example-client](example-client):
   * [Plugin configuration in build.gradle](example-client/build.gradle)
-  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
+  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/product/ProductServiceGraphQLClient.java)
   * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
 
 
