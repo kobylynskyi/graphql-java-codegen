@@ -74,7 +74,7 @@ Please refer to [Codegen Options](../../docs/codegen-options.md)
 
 [example-client](example-client):
   * [Plugin configuration in pom.xml](example-client/pom.xml)
-  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/ProductServiceGraphQLClient.java)
+  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/product/ProductServiceGraphQLClient.java)
   * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
 
 
