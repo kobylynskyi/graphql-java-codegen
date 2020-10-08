@@ -124,12 +124,12 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>7.1.0</version>
+            <version>8.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>7.1.0</version>
+            <version>8.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
