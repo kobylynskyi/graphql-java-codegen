@@ -1,13 +1,9 @@
 package io.github.kobylynskyi.product.graphql.config;
 
-import graphql.language.StringValue;
-import graphql.schema.*;
+import graphql.scalars.ExtendedScalars;
+import graphql.schema.GraphQLScalarType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author bogdankobylinsky
@@ -15,32 +11,20 @@ import java.util.Date;
 @Configuration
 public class GraphQLConfiguration {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 
     @Bean
-    public GraphQLScalarType dateGraphQLScalarType() {
-        return GraphQLScalarType.newScalar()
-                .name("DateTime")
-                .coercing(new Coercing() {
-                    @Override
-                    public Object serialize(Object o) throws CoercingSerializeException {
-                        return DATE_FORMAT.format((Date) o);
-                    }
+    public GraphQLScalarType extendedScalarsDateTime() {
+        return ExtendedScalars.DateTime;
+    }
 
-                    @Override
-                    public Object parseValue(Object o) throws CoercingParseValueException {
-                        return serialize(o);
-                    }
+    @Bean
+    public GraphQLScalarType extendedScalarsDate() {
+        return ExtendedScalars.Date;
+    }
 
-                    @Override
-                    public Object parseLiteral(Object o) throws CoercingParseLiteralException {
-                        try {
-                            return DATE_FORMAT.parse(((StringValue) o).getValue());
-                        } catch (ParseException e) {
-                            return null;
-                        }
-                    }
-                }).build();
+    @Bean
+    public GraphQLScalarType extendedScalarsBigDecimal() {
+        return ExtendedScalars.GraphQLBigDecimal;
     }
 
 }

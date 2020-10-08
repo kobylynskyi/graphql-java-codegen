@@ -26,4 +26,9 @@ public class GraphQLConfiguration {
         return ExtendedScalars.Date;
     }
 
+    @Bean
+    public GraphQLScalarType extendedScalarsBigDecimal() {
+        return ExtendedScalars.GraphQLBigDecimal;
+    }
+
 }
