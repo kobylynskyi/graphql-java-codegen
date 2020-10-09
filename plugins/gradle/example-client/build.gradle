@@ -30,7 +30,7 @@ dependencies {
     implementation "org.mapstruct:mapstruct:1.4.0.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.4.0.Final"
 
-    compileOnly "org.projectlombok:lombok:1.18.14"
+    compileOnly "org.projectlombok:lombok:1.18.12"
     annotationProcessor "org.projectlombok:lombok:1.18.12"
 
     testImplementation "io.rest-assured:rest-assured:4.3.1"
