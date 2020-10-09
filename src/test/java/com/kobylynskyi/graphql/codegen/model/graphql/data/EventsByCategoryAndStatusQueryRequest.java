@@ -8,9 +8,14 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public EventsByCategoryAndStatusQueryRequest() {
+    }
+
+    public EventsByCategoryAndStatusQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setCategoryId(String categoryId) {
@@ -32,6 +37,11 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     }
 
     @Override
+    public String getAlias() {
+        return alias;
+    }
+
+    @Override
     public Map<String, Object> getInput() {
         return input;
     }
@@ -43,10 +53,16 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
 
     public static class Builder {
 
+        private String $alias;
         private String categoryId;
         private Status status;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setCategoryId(String categoryId) {
@@ -61,7 +77,7 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
 
 
         public EventsByCategoryAndStatusQueryRequest build() {
-            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest();
+            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest($alias);
             obj.setCategoryId(categoryId);
             obj.setStatus(status);
             return obj;

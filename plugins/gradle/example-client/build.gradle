@@ -92,7 +92,7 @@ task graphqlCodegenStarwarsService(type: GraphQLCodegenGradleTask) {
     ]
     generateClient = true
     generateApis = false
-    generateBuilder = false
+    generateBuilder = true
     generateToString = true
     generateParameterizedFieldsResolvers = false
 }

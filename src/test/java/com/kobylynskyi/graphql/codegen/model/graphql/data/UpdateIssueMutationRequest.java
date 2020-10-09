@@ -11,9 +11,14 @@ public class UpdateIssueMutationRequest implements GraphQLOperationRequest {
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
     private static final String OPERATION_NAME = "updateIssue";
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public UpdateIssueMutationRequest() {
+    }
+
+    public UpdateIssueMutationRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setInput(UpdateIssueInput input) {
@@ -28,6 +33,11 @@ public class UpdateIssueMutationRequest implements GraphQLOperationRequest {
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias;
     }
 
     @Override

@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class ProductsByCategoryIdAndStatusQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "products";
+    public static final String OPERATION_NAME = "products";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public ProductsByCategoryIdAndStatusQueryRequest() {
+    }
+
+    public ProductsByCategoryIdAndStatusQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setCategoryId(String categoryId) {
@@ -36,6 +41,11 @@ public class ProductsByCategoryIdAndStatusQueryRequest implements GraphQLOperati
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -66,12 +76,22 @@ public class ProductsByCategoryIdAndStatusQueryRequest implements GraphQLOperati
         return Objects.toString(input);
     }
 
+    public static ProductsByCategoryIdAndStatusQueryRequest.Builder builder() {
+        return new ProductsByCategoryIdAndStatusQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private String categoryId;
         private String status;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setCategoryId(String categoryId) {
@@ -86,7 +106,7 @@ public class ProductsByCategoryIdAndStatusQueryRequest implements GraphQLOperati
 
 
         public ProductsByCategoryIdAndStatusQueryRequest build() {
-            ProductsByCategoryIdAndStatusQueryRequest obj = new ProductsByCategoryIdAndStatusQueryRequest();
+            ProductsByCategoryIdAndStatusQueryRequest obj = new ProductsByCategoryIdAndStatusQueryRequest($alias);
             obj.setCategoryId(categoryId);
             obj.setStatus(status);
             return obj;

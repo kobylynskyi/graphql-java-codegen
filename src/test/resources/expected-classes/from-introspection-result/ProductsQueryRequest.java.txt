@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class ProductsQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "products";
+    public static final String OPERATION_NAME = "products";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public ProductsQueryRequest() {
+    }
+
+    public ProductsQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     @Override
@@ -31,6 +36,11 @@ public class ProductsQueryRequest implements GraphQLOperationRequest {
     }
 
     @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
+    }
+
+    @Override
     public Map<String, Object> getInput() {
         return input;
     }
@@ -40,15 +50,25 @@ public class ProductsQueryRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static ProductsQueryRequest.Builder builder() {
+        return new ProductsQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
 
         public Builder() {
         }
 
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
+        }
+
 
         public ProductsQueryRequest build() {
-            ProductsQueryRequest obj = new ProductsQueryRequest();
+            ProductsQueryRequest obj = new ProductsQueryRequest($alias);
             return obj;
         }
 

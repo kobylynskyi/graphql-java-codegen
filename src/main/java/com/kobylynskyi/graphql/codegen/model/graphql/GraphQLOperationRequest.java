@@ -23,6 +23,13 @@ public interface GraphQLOperationRequest {
     String getOperationName();
 
     /**
+     * Alias of GraphQL operation.
+     *
+     * @return alias of GraphQL operation
+     */
+    String getAlias();
+
+    /**
      * Input for for GraphQL operation. Where:
      * - key is input field name
      * - value is input field value

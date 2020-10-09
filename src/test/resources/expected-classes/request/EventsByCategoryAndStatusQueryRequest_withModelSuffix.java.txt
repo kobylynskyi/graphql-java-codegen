@@ -15,12 +15,17 @@ import java.util.Objects;
 )
 public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
+    public static final String OPERATION_NAME = "eventsByCategoryAndStatus";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public EventsByCategoryAndStatusQueryRequest() {
+    }
+
+    public EventsByCategoryAndStatusQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setCategoryId(String categoryId) {
@@ -39,6 +44,11 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -69,12 +79,22 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
         return Objects.toString(input);
     }
 
+    public static EventsByCategoryAndStatusQueryRequest.Builder builder() {
+        return new EventsByCategoryAndStatusQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private String categoryId;
         private EventStatusTO status;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setCategoryId(String categoryId) {
@@ -89,7 +109,7 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
 
 
         public EventsByCategoryAndStatusQueryRequest build() {
-            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest();
+            EventsByCategoryAndStatusQueryRequest obj = new EventsByCategoryAndStatusQueryRequest($alias);
             obj.setCategoryId(categoryId);
             obj.setStatus(status);
             return obj;
