@@ -27,7 +27,7 @@ public class GraphQLRequestSerializer {
         if (graphQLRequests.getRequests().isEmpty()) {
             throw new IllegalArgumentException("At least one GraphQL request should be supplied");
         }
-        GraphQLOperation operation = null;
+        GraphQLOperation operation = GraphQLOperation.QUERY;
         StringBuilder queryBuilder = new StringBuilder();
         for (GraphQLRequest request : graphQLRequests.getRequests()) {
             if (request == null || request.getRequest() == null) {
@@ -75,6 +75,7 @@ public class GraphQLRequestSerializer {
     }
 
     private static String operationWrapper(String query, GraphQLOperation operationType) {
+        assert operationType != null;
         return operationType.name().toLowerCase() + " { " + query + " }";
     }
 
