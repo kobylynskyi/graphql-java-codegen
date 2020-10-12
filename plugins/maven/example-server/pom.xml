@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.0.Final</version>
+            <version>1.4.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
