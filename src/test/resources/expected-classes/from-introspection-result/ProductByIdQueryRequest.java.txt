@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class ProductByIdQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "productById";
+    public static final String OPERATION_NAME = "productById";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public ProductByIdQueryRequest() {
+    }
+
+    public ProductByIdQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setId(String id) {
@@ -35,6 +40,11 @@ public class ProductByIdQueryRequest implements GraphQLOperationRequest {
     }
 
     @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
+    }
+
+    @Override
     public Map<String, Object> getInput() {
         return input;
     }
@@ -44,11 +54,21 @@ public class ProductByIdQueryRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static ProductByIdQueryRequest.Builder builder() {
+        return new ProductByIdQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private String id;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setId(String id) {
@@ -58,7 +78,7 @@ public class ProductByIdQueryRequest implements GraphQLOperationRequest {
 
 
         public ProductByIdQueryRequest build() {
-            ProductByIdQueryRequest obj = new ProductByIdQueryRequest();
+            ProductByIdQueryRequest obj = new ProductByIdQueryRequest($alias);
             obj.setId(id);
             return obj;
         }

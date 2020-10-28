@@ -15,12 +15,17 @@ import java.util.Objects;
 )
 public class VersionQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "version";
+    public static final String OPERATION_NAME = "version";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public VersionQueryRequest() {
+    }
+
+    public VersionQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     @Override
@@ -31,6 +36,11 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -61,15 +71,25 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static VersionQueryRequest.Builder builder() {
+        return new VersionQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
 
         public Builder() {
         }
 
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
+        }
+
 
         public VersionQueryRequest build() {
-            VersionQueryRequest obj = new VersionQueryRequest();
+            VersionQueryRequest obj = new VersionQueryRequest($alias);
             return obj;
         }
 

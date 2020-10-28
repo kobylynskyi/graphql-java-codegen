@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class CaseQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "case";
+    public static final String OPERATION_NAME = "case";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public CaseQueryRequest() {
+    }
+
+    public CaseQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setFinal(java.util.List<Char> Final) {
@@ -32,6 +37,11 @@ public class CaseQueryRequest implements GraphQLOperationRequest {
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -62,11 +72,21 @@ public class CaseQueryRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static CaseQueryRequest.Builder builder() {
+        return new CaseQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private java.util.List<Char> Final;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setFinal(java.util.List<Char> Final) {
@@ -76,7 +96,7 @@ public class CaseQueryRequest implements GraphQLOperationRequest {
 
 
         public CaseQueryRequest build() {
-            CaseQueryRequest obj = new CaseQueryRequest();
+            CaseQueryRequest obj = new CaseQueryRequest($alias);
             obj.setFinal(Final);
             return obj;
         }

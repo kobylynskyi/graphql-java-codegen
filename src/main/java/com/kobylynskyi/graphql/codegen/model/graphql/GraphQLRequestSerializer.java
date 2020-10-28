@@ -17,6 +17,32 @@ public class GraphQLRequestSerializer {
     }
 
     /**
+     * Serializes GraphQL requests to be used as HTTP JSON body
+     * according to https://graphql.org/learn/serving-over-http specifications
+     *
+     * @param graphQLRequests GraphQL requests to serialize
+     * @return the serialized request
+     */
+    public static String toHttpJsonBody(GraphQLRequests graphQLRequests) {
+        if (graphQLRequests.getRequests().isEmpty()) {
+            throw new IllegalArgumentException("At least one GraphQL request should be supplied");
+        }
+        GraphQLOperation operation = GraphQLOperation.QUERY;
+        StringBuilder queryBuilder = new StringBuilder();
+        for (GraphQLRequest request : graphQLRequests.getRequests()) {
+            if (request == null || request.getRequest() == null) {
+                throw new IllegalArgumentException("Null GraphQL request was supplied");
+            }
+            if (operation != null && operation != request.getRequest().getOperationType()) {
+                throw new IllegalArgumentException("Only operations of the same type (query/mutation/subscription) can be executed at once");
+            }
+            queryBuilder.append(buildQuery(request)).append(" ");
+            operation = request.getRequest().getOperationType();
+        }
+        return jsonQuery(operationWrapper(queryBuilder.toString(), operation));
+    }
+
+    /**
      * Serializes GraphQL request to be used as HTTP JSON body
      * according to https://graphql.org/learn/serving-over-http specifications
      *
@@ -24,7 +50,13 @@ public class GraphQLRequestSerializer {
      * @return the serialized request
      */
     public static String toHttpJsonBody(GraphQLRequest graphQLRequest) {
-        return buildQuery(graphQLRequest, true);
+        if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
+            return null;
+        }
+        GraphQLOperation operationType = graphQLRequest.getRequest().getOperationType();
+        String query = buildQuery(graphQLRequest);
+        String queryString = operationWrapper(query, operationType);
+        return jsonQuery(queryString);
     }
 
     /**
@@ -34,16 +66,24 @@ public class GraphQLRequestSerializer {
      * @return the serialized request
      */
     public static String toQueryString(GraphQLRequest graphQLRequest) {
-        return buildQuery(graphQLRequest, false);
-    }
-
-    private static String buildQuery(GraphQLRequest graphQLRequest, boolean jsonQuery) {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
         }
+        GraphQLOperation operationType = graphQLRequest.getRequest().getOperationType();
+        String query = buildQuery(graphQLRequest);
+        return operationWrapper(query, operationType);
+    }
+
+    private static String operationWrapper(String query, GraphQLOperation operationType) {
+        assert operationType != null;
+        return operationType.name().toLowerCase() + " { " + query + " }";
+    }
+
+    private static String buildQuery(GraphQLRequest graphQLRequest) {
         StringBuilder builder = new StringBuilder();
-        builder.append(graphQLRequest.getRequest().getOperationType().name().toLowerCase());
-        builder.append(" { ");
+        if (graphQLRequest.getRequest().getAlias() != null) {
+            builder.append(graphQLRequest.getRequest().getAlias()).append(": ");
+        }
         builder.append(graphQLRequest.getRequest().getOperationName());
         Map<String, Object> input = graphQLRequest.getRequest().getInput();
         if (input != null && !input.isEmpty()) {
@@ -58,7 +98,7 @@ public class GraphQLRequestSerializer {
                     }
                     builder.append(inputEntry.getKey());
                     builder.append(": ");
-                    builder.append(getEntry(inputEntry.getValue(), jsonQuery));
+                    builder.append(getEntry(inputEntry.getValue()));
                     valueAdded = true;
                 }
             }
@@ -67,12 +107,10 @@ public class GraphQLRequestSerializer {
         if (graphQLRequest.getResponseProjection() != null) {
             builder.append(graphQLRequest.getResponseProjection().toString());
         }
-        builder.append(" }");
-        String query = builder.toString();
-        return jsonQuery ? buildJsonQuery(query) : query;
+        return builder.toString();
     }
 
-    private static String buildJsonQuery(String queryString) {
+    private static String jsonQuery(String queryString) {
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
         objectNode.put("query", queryString);
         try {
@@ -83,17 +121,13 @@ public class GraphQLRequestSerializer {
     }
 
     public static String getEntry(Object input) {
-        return getEntry(input, true);
-    }
-
-    private static String getEntry(Object input, boolean jsonQuery) {
         if (input == null) {
             return null;
         }
         if (input instanceof Collection<?>) {
             Collection<?> inputCollection = (Collection<?>) input;
             return inputCollection.stream()
-                    .map(i -> GraphQLRequestSerializer.getEntry(i, jsonQuery))
+                    .map(GraphQLRequestSerializer::getEntry)
                     .collect(Collectors.joining(", ", "[ ", " ]"));
         }
         if (input instanceof Enum<?>) {

@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class CreateMutationRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
-    private static final String OPERATION_NAME = "create";
+    public static final String OPERATION_NAME = "create";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public CreateMutationRequest() {
+    }
+
+    public CreateMutationRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setProductInput(ProductInput productInput) {
@@ -35,6 +40,11 @@ public class CreateMutationRequest implements GraphQLOperationRequest {
     }
 
     @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
+    }
+
+    @Override
     public Map<String, Object> getInput() {
         return input;
     }
@@ -44,11 +54,21 @@ public class CreateMutationRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static CreateMutationRequest.Builder builder() {
+        return new CreateMutationRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private ProductInput productInput;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setProductInput(ProductInput productInput) {
@@ -58,7 +78,7 @@ public class CreateMutationRequest implements GraphQLOperationRequest {
 
 
         public CreateMutationRequest build() {
-            CreateMutationRequest obj = new CreateMutationRequest();
+            CreateMutationRequest obj = new CreateMutationRequest($alias);
             obj.setProductInput(productInput);
             return obj;
         }

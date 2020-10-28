@@ -1,6 +1,9 @@
 package io.github.kobylynskyi.order.external.product;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequests;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponse;
 import io.github.kobylynskyi.order.model.Product;
 import io.github.kobylynskyi.order.model.UnableToCreateProductException;
 import io.github.kobylynskyi.order.model.UnableToRetrieveProductException;
@@ -23,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +39,9 @@ public class ProductServiceGraphQLClient {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${external.service.product.url}")
     private String productUrl;
@@ -79,19 +84,11 @@ public class ProductServiceGraphQLClient {
         return result.productsByIds().stream().map(productMapper::map).collect(Collectors.toList());
     }
 
-    public Product createProduct(String productTitle, String productSku, BigDecimal productPrice) throws UnableToCreateProductException {
+    public Product createProduct(ProductInput input) throws UnableToCreateProductException {
         CreateMutationRequest createProductRequest = new CreateMutationRequest();
-        createProductRequest.setProductInput(new ProductInputTO.Builder()
-                .setTitle(productTitle)
-                .setPrice(productPrice.toString())
-                .setSku(productSku)
-                .build());
-        ProductResponseProjection responseProjection = new ProductResponseProjection()
-                .id()
-                .title()
-                .price()
-                .sku();
-        GraphQLRequest request = new GraphQLRequest(createProductRequest, responseProjection);
+        createProductRequest.setProductInput(mapInputTO(input));
+        GraphQLRequest request = new GraphQLRequest(createProductRequest,
+                new ProductResponseProjection().id().title().price().sku());
 
         CreateMutationResponse result = restTemplate.exchange(URI.create(productUrl),
                 HttpMethod.POST,
@@ -104,10 +101,48 @@ public class ProductServiceGraphQLClient {
         return productMapper.map(productTO);
     }
 
+    public List<Product> createMultipleProduct(List<ProductInput> inputs) throws UnableToCreateProductException {
+        GraphQLRequests requests = new GraphQLRequests();
+        for (ProductInput input : inputs) {
+            CreateMutationRequest createProductRequest = new CreateMutationRequest("create" + input.getSku());
+            createProductRequest.setProductInput(mapInputTO(input));
+            requests.addRequest(new GraphQLRequest(createProductRequest,
+                    new ProductResponseProjection().id().title().price().sku()));
+        }
+
+        GraphQLResponse result = restTemplate.exchange(URI.create(productUrl),
+                HttpMethod.POST,
+                httpEntity(requests),
+                GraphQLResponse.class).getBody();
+        if (result.hasErrors()) {
+            throw new UnableToCreateProductException(result.getErrors().get(0).getMessage());
+        }
+        return result.getData().values().stream()
+                .map(o -> objectMapper.convertValue(o, ProductTO.class))
+                .map(productMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    public ProductInputTO mapInputTO(ProductInput input) {
+        return new ProductInputTO.Builder()
+                .setTitle(input.getTitle())
+                .setPrice(input.getPrice().toString())
+                .setSku(input.getSku())
+                .build();
+    }
+
     private static HttpEntity<String> httpEntity(GraphQLRequest request) {
+        return new HttpEntity<>(request.toHttpJsonBody(), getHttpHeaders());
+    }
+
+    private static HttpEntity<String> httpEntity(GraphQLRequests request) {
+        return new HttpEntity<>(request.toHttpJsonBody(), getHttpHeaders());
+    }
+
+    private static HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(request.toHttpJsonBody(), headers);
+        return headers;
     }
 }

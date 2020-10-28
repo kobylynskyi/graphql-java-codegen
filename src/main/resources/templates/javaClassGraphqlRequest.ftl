@@ -28,12 +28,17 @@ import java.util.Objects;
 </#list>
 public class ${className} implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};
-    private static final String OPERATION_NAME = "${operationName}";
+    public static final String OPERATION_NAME = "${operationName}";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public ${className}() {
+    }
+
+    public ${className}(String alias) {
+        this.alias = alias;
     }
 
 <#if fields?has_content>
@@ -62,6 +67,11 @@ public class ${className} implements GraphQLOperationRequest {
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -97,8 +107,13 @@ public class ${className} implements GraphQLOperationRequest {
 </#if>
 
 <#if builder>
+    public static ${className}.Builder builder() {
+        return new ${className}.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
 <#if fields?has_content>
 <#list fields as field>
         private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
@@ -106,6 +121,11 @@ public class ${className} implements GraphQLOperationRequest {
 </#if>
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
 <#if fields?has_content>
@@ -129,7 +149,7 @@ public class ${className} implements GraphQLOperationRequest {
 </#if>
 
         public ${className} build() {
-            ${className} obj = new ${className}();
+            ${className} obj = new ${className}($alias);
 <#if fields?has_content>
 <#list fields as field>
             obj.set${field.name?cap_first}(${field.name});

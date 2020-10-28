@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class QueryINeedQueryRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
-    private static final String OPERATION_NAME = "queryINeed";
+    public static final String OPERATION_NAME = "queryINeed";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public QueryINeedQueryRequest() {
+    }
+
+    public QueryINeedQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setInput(String input) {
@@ -35,6 +40,11 @@ public class QueryINeedQueryRequest implements GraphQLOperationRequest {
     }
 
     @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
+    }
+
+    @Override
     public Map<String, Object> getInput() {
         return input;
     }
@@ -44,11 +54,21 @@ public class QueryINeedQueryRequest implements GraphQLOperationRequest {
         return Objects.toString(input);
     }
 
+    public static QueryINeedQueryRequest.Builder builder() {
+        return new QueryINeedQueryRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private String input;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setInput(String input) {
@@ -58,7 +78,7 @@ public class QueryINeedQueryRequest implements GraphQLOperationRequest {
 
 
         public QueryINeedQueryRequest build() {
-            QueryINeedQueryRequest obj = new QueryINeedQueryRequest();
+            QueryINeedQueryRequest obj = new QueryINeedQueryRequest($alias);
             obj.setInput(input);
             return obj;
         }

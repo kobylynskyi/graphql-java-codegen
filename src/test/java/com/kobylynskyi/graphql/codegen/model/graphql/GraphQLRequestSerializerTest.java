@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GraphQLRequestSerializerTest {
 
@@ -32,14 +33,11 @@ class GraphQLRequestSerializerTest {
                 Arguments.of(
                         "GraphQLRequestSerializer.toHttpJsonBody(request)",
                         (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toHttpJsonBody,
-                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
-                ),
+                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery),
                 Arguments.of(
                         "GraphQLRequestSerializer.toQueryString(request)",
                         (Function<GraphQLRequest, String>) GraphQLRequestSerializer::toQueryString,
-                        (Function<String, String>) (query) -> query
-                )
-        );
+                        (Function<String, String>) (query) -> query));
     }
 
     private static Stream<Arguments> provideAllSerializers() {
@@ -47,15 +45,18 @@ class GraphQLRequestSerializerTest {
                 Arguments.of(
                         "request.toHttpJsonBody()",
                         (Function<GraphQLRequest, String>) GraphQLRequest::toHttpJsonBody,
-                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery
-                ),
+                        (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery),
                 Arguments.of(
                         "request.toQueryString()",
                         (Function<GraphQLRequest, String>) GraphQLRequest::toQueryString,
-                        (Function<String, String>) (query) -> query
-                )
-                )
-        );
+                        (Function<String, String>) (query) -> query)));
+    }
+
+    private static Stream<Arguments> provideStaticSerializerForMultiRequest() {
+        return Stream.of(Arguments.of(
+                "GraphQLRequestSerializer.toHttpJsonBody(request)",
+                (Function<GraphQLRequests, String>) GraphQLRequestSerializer::toHttpJsonBody,
+                (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery));
     }
 
     @ParameterizedTest(name = "{0}")
@@ -318,6 +319,65 @@ class GraphQLRequestSerializerTest {
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "query { eventsByIds(contextId: \"something\", translated: false){ id } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequests(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+        EventsByCategoryAndStatusQueryRequest request1 = new EventsByCategoryAndStatusQueryRequest.Builder().alias("req1").setStatus(Status.OPEN).build();
+        GraphQLRequest graphQLRequest1 = new GraphQLRequest(request1, new EventResponseProjection().id());
+
+        EventsByCategoryAndStatusQueryRequest request2 = new EventsByCategoryAndStatusQueryRequest("req2");
+        GraphQLRequest graphQLRequest2 = new GraphQLRequest(request2, new EventResponseProjection().id().status());
+
+        EventsByCategoryAndStatusQueryRequest request21 = new EventsByCategoryAndStatusQueryRequest();
+        GraphQLRequest graphQLRequest21 = new GraphQLRequest(request21);
+
+        String serializedQuery = serializer.apply(new GraphQLRequests(graphQLRequest1, graphQLRequest2, graphQLRequest21)).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { " +
+                "req1: eventsByCategoryAndStatus(status: OPEN){ id } " +
+                "req2: eventsByCategoryAndStatus{ id status } " +
+                "eventsByCategoryAndStatus " +
+                "}";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequests_DiffTypes(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequests graphQLRequests = new GraphQLRequests(
+                new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
+                new GraphQLRequest(new UpdateIssueMutationRequest()));
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.apply(graphQLRequests));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequests_NullRequest(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequests graphQLRequests = new GraphQLRequests(
+                new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
+                null);
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.apply(graphQLRequests));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequests_NullRequestRequest(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequests graphQLRequests = new GraphQLRequests(
+                new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
+                new GraphQLRequest(null));
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.apply(graphQLRequests));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequests_NoRequests(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequests graphQLRequests = new GraphQLRequests();
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.apply(graphQLRequests));
     }
 
     private static String jsonQuery(String expectedQueryDecorator) {

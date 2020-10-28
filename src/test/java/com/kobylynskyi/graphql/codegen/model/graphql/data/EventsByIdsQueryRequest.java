@@ -13,9 +13,14 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByIds";
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public EventsByIdsQueryRequest() {
+    }
+
+    public EventsByIdsQueryRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setContextId(String contextId) {
@@ -38,6 +43,11 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias;
     }
 
     @Override

@@ -12,12 +12,17 @@ import java.util.Objects;
 )
 public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest {
 
-    private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
-    private static final String OPERATION_NAME = "updateRepository";
+    public static final String OPERATION_NAME = "updateRepository";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
 
+    private String alias;
     private Map<String, Object> input = new LinkedHashMap<>();
 
     public UpdateRepositoryMutationRequest() {
+    }
+
+    public UpdateRepositoryMutationRequest(String alias) {
+        this.alias = alias;
     }
 
     public void setInput(UpdateRepositoryInput input) {
@@ -32,6 +37,11 @@ public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest 
     @Override
     public String getOperationName() {
         return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
     }
 
     @Override
@@ -62,11 +72,21 @@ public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest 
         return Objects.toString(input);
     }
 
+    public static UpdateRepositoryMutationRequest.Builder builder() {
+        return new UpdateRepositoryMutationRequest.Builder();
+    }
+
     public static class Builder {
 
+        private String $alias;
         private UpdateRepositoryInput input;
 
         public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
         }
 
         public Builder setInput(UpdateRepositoryInput input) {
@@ -76,7 +96,7 @@ public class UpdateRepositoryMutationRequest implements GraphQLOperationRequest 
 
 
         public UpdateRepositoryMutationRequest build() {
-            UpdateRepositoryMutationRequest obj = new UpdateRepositoryMutationRequest();
+            UpdateRepositoryMutationRequest obj = new UpdateRepositoryMutationRequest($alias);
             obj.setInput(input);
             return obj;
         }
