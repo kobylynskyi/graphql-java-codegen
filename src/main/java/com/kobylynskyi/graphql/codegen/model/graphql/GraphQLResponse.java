@@ -5,6 +5,7 @@ import java.util.Map;
 public class GraphQLResponse extends GraphQLResult<Map<String, Object>> {
 
     public GraphQLResponse() {
+        super();
     }
 
     public Object getData(String name) {

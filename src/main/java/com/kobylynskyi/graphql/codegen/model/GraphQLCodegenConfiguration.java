@@ -236,6 +236,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateDataFetchingEnvironmentArgumentInApis();
 
     /**
+     * Whether signatures of API interface methods should have <code>throws Exception</code>.
+     *
+     * @return <b>true</b> if API interfaces methods signature should contain <code>throws Exception</code>.
+     */
+    Boolean getGenerateApisWithThrowsException();
+
+    /**
      * Relay-related configurations.
      *
      * @return Relay-related configurations.

@@ -74,6 +74,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
+    private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private RelayConfig relayConfig = new RelayConfig();
@@ -119,6 +120,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
+        mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setApiReturnType(apiReturnType);
         mappingConfig.setApiReturnListType(apiReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
@@ -544,6 +546,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
         this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getGenerateApisWithThrowsException() {
+        return generateApisWithThrowsException;
+    }
+
+    public void setGenerateApisWithThrowsException(Boolean generateApisWithThrowsException) {
+        this.generateApisWithThrowsException = generateApisWithThrowsException;
     }
 
     @Input

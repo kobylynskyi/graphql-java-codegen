@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -144,6 +146,24 @@ class GraphQLCodegenApisTest {
                 "EventPropertyResolver.java", "EventStatus.java", "EventsByCategoryAndStatusQueryResolver.java",
                 "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "VersionQueryResolver.java"),
                 Arrays.stream(files).map(File::getName).sorted().collect(toList()));
+    }
+
+    @Test
+    void generate_WithoutThrowsException() throws IOException {
+        schemaFinder.setIncludePattern("github.*\\.graphqls");
+        mappingConfig.setGenerateApisWithThrowsException(false);
+
+        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/apis/CodeOfConductQueryResolver_withoutThrowsException.java.txt"),
+                getFileByName(files, "CodeOfConductQueryResolver.java"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/apis/MutationResolver_withoutThrowsException.java.txt"),
+                getFileByName(files, "MutationResolver.java"));
     }
 
 }

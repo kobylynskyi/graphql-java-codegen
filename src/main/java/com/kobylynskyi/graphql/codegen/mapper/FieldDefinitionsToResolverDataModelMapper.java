@@ -155,6 +155,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setParameters(parameters);
         operation.setJavaDoc(fieldDef.getJavaDoc());
         operation.setDeprecated(fieldDef.isDeprecated());
+        operation.setThrowsException(mappingContext.getGenerateApisWithThrowsException());
         return operation;
     }
 

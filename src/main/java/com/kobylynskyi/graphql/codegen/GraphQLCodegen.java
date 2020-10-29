@@ -152,6 +152,9 @@ public class GraphQLCodegen {
         if (mappingConfig.getGenerateModelsForRootTypes() == null) {
             mappingConfig.setGenerateModelsForRootTypes(MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES);
         }
+        if (mappingConfig.getGenerateApisWithThrowsException() == null) {
+            mappingConfig.setGenerateApisWithThrowsException(MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION);
+        }
         if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
             mappingConfig.setUseOptionalForNullableReturnTypes(MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
         }
@@ -184,7 +187,7 @@ public class GraphQLCodegen {
             // we will have a conflict in case there is "type Query" in multiple graphql schema files
             throw new IllegalArgumentException("API prefix should not be CONSTANT for INTERFACE_PER_SCHEMA option");
         }
-        if (mappingConfig.getGenerateApis() &&
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateApis()) &&
                 mappingConfig.getGenerateModelsForRootTypes() &&
                 mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
             // checking for conflict between root type model classes and api interfaces
