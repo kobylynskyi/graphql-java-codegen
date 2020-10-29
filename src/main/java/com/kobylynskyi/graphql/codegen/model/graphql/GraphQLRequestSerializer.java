@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GraphQLRequestSerializer {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private GraphQLRequestSerializer() {
     }
@@ -111,10 +109,10 @@ public class GraphQLRequestSerializer {
     }
 
     private static String jsonQuery(String queryString) {
-        ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
+        ObjectNode objectNode = Utils.OBJECT_MAPPER.createObjectNode();
         objectNode.put("query", queryString);
         try {
-            return OBJECT_MAPPER.writeValueAsString(objectNode);
+            return Utils.OBJECT_MAPPER.writeValueAsString(objectNode);
         } catch (JsonProcessingException e) {
             throw new UnableToBuildJsonQueryException(e);
         }
