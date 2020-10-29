@@ -38,8 +38,6 @@ import java.util.function.Function;
 
 class GraphQLDocumentParser {
 
-    private static final Parser GRAPHQL_PARSER = new Parser();
-
     private GraphQLDocumentParser() {
     }
 
@@ -130,7 +128,7 @@ class GraphQLDocumentParser {
 
     private static Document readDocument(List<String> schemaPaths) throws IOException {
         try (MultiSourceReader reader = createMultiSourceReader(schemaPaths)) {
-            return GRAPHQL_PARSER.parseDocument(reader);
+            return new Parser().parseDocument(reader);
         }
     }
 
