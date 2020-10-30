@@ -29,7 +29,7 @@ import static java.util.Arrays.asList;
  *
  * @author kobylynskyi
  */
-class GraphqlTypeToJavaTypeMapper {
+public class GraphqlTypeToJavaTypeMapper {
 
     private static final String JAVA_UTIL_LIST = "java.util.List";
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
@@ -178,7 +178,7 @@ class GraphqlTypeToJavaTypeMapper {
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphQLTypeName));
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
-            if (Utils.isNotBlank(modelValidationAnnotation) && !JAVA_PRIMITIVE_TYPES.contains(possiblyPrimitiveType)) {
+            if (Utils.isNotBlank(modelValidationAnnotation) && !isJavaPrimitive(possiblyPrimitiveType)) {
                 annotations.add(modelValidationAnnotation);
             }
         }
@@ -305,11 +305,15 @@ class GraphqlTypeToJavaTypeMapper {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphqlTypeName));
-            if (JAVA_PRIMITIVE_TYPES.contains(possiblyPrimitiveType)) {
+            if (isJavaPrimitive(possiblyPrimitiveType)) {
                 return possiblyPrimitiveType;
             }
         }
         return namedDefinition.getJavaName();
+    }
+
+    public static boolean isJavaPrimitive(String javaType) {
+        return JAVA_PRIMITIVE_TYPES.contains(javaType);
     }
 
     private static String getMandatoryType(String typeName) {

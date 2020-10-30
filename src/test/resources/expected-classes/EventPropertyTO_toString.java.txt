@@ -123,9 +123,7 @@ public class EventPropertyTO implements java.io.Serializable {
         if (booleanVal != null) {
             joiner.add("booleanVal: " + booleanVal);
         }
-        if (intVal != null) {
-            joiner.add("intVal: " + intVal);
-        }
+        joiner.add("intVal: " + intVal);
         if (intVals != null) {
             joiner.add("intVals: " + intVals);
         }

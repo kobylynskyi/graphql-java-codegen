@@ -30,6 +30,12 @@
                             <modelPackageName>io.github.kobylynskyi.product.graphql.model</modelPackageName>
                             <customTypesMapping>
                                 <DateTime>java.util.Date</DateTime>
+                                <!-- Following code can be used to generate boxed types instead of primitives:
+                                <property>
+                                    <name>Int!</name>
+                                    <value>Integer</value>
+                                </property>
+                                -->
                             </customTypesMapping>
                             <modelNameSuffix>TO</modelNameSuffix>
                             <generateApis>false</generateApis>

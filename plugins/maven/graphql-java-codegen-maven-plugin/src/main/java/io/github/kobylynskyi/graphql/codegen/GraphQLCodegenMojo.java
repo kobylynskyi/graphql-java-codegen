@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
@@ -48,7 +49,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private File outputDir;
 
     @Parameter
-    private Map<String, String> customTypesMapping;
+    private Properties customTypesMapping = new Properties();
 
     @Parameter
     private Map<String, String[]> customAnnotationsMapping;
@@ -179,7 +180,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
-        mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomTypesMapping(convertToMap(customTypesMapping));
         mappingConfig.setCustomAnnotationsMapping(convertToListsMap(customAnnotationsMapping));
         mappingConfig.setDirectiveAnnotationsMapping(convertToListsMap(directiveAnnotationsMapping));
         mappingConfig.setApiNameSuffix(apiNameSuffix);
@@ -303,11 +304,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Override
     public Map<String, String> getCustomTypesMapping() {
-        return customTypesMapping;
+        return convertToMap(customTypesMapping);
     }
 
     public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
-        this.customTypesMapping = customTypesMapping;
+        this.customTypesMapping = convertToProperties(customTypesMapping);
     }
 
     @Override
@@ -717,6 +718,28 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
             return new String[0];
         }
         return sourceSet.toArray(new String[0]);
+    }
+
+    private static Map<String, String> convertToMap(Properties properties) {
+        if (properties == null) {
+            return null;
+        }
+        Map<String, String> result = new HashMap<>(properties.size());
+        for (String name : properties.stringPropertyNames()) {
+            result.put(name, properties.getProperty(name));
+        }
+        return result;
+    }
+
+    private static Properties convertToProperties(Map<String, String> customTypesMapping) {
+        if (customTypesMapping == null) {
+            return null;
+        }
+        Properties result = new Properties();
+        for (Map.Entry<String, String> entry : customTypesMapping.entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
 }
