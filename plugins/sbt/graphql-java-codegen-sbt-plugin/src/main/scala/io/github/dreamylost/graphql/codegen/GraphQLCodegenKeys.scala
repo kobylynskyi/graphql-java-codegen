@@ -103,6 +103,8 @@ trait GraphQLCodegenKeys {
 
   val useOptionalForNullableReturnTypes = settingKey[Boolean]("useOptionalForNullableReturnTypes")
 
+  val generateApisWithThrowsException = settingKey[Boolean]("generateApisWithThrowsException")
+
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
 
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")

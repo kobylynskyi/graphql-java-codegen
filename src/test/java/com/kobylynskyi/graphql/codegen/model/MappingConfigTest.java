@@ -70,6 +70,7 @@ class MappingConfigTest {
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
         assertFalse(mappingConfig.getGenerateClient());
         assertFalse(mappingConfig.getGenerateModelsForRootTypes());
+        assertTrue(mappingConfig.getGenerateApisWithThrowsException());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
         assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
@@ -110,6 +111,7 @@ class MappingConfigTest {
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
         assertFalse(mappingConfig.getGenerateClient());
         assertFalse(mappingConfig.getGenerateModelsForRootTypes());
+        assertTrue(mappingConfig.getGenerateApisWithThrowsException());
         assertEquals("9", mappingConfig.getParametrizedInputSuffix());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
@@ -154,6 +156,7 @@ class MappingConfigTest {
         assertEquals("77", mappingConfig.getResponseProjectionSuffix());
         assertTrue(mappingConfig.getGenerateClient());
         assertTrue(mappingConfig.getGenerateModelsForRootTypes());
+        assertFalse(mappingConfig.getGenerateApisWithThrowsException());
         assertEquals("99", mappingConfig.getParametrizedInputSuffix());
         assertEquals("1111", mappingConfig.getTypeResolverPrefix());
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());
@@ -197,6 +200,7 @@ class MappingConfigTest {
         config.setResponseProjectionSuffix("7");
         config.setGenerateClient(false);
         config.setGenerateModelsForRootTypes(false);
+        config.setGenerateApisWithThrowsException(true);
         config.setParametrizedInputSuffix("9");
         config.setTypeResolverPrefix("11");
         config.setTypeResolverSuffix("12");
@@ -238,6 +242,7 @@ class MappingConfigTest {
         config.setResponseProjectionSuffix("77");
         config.setGenerateClient(true);
         config.setGenerateModelsForRootTypes(true);
+        config.setGenerateApisWithThrowsException(false);
         config.setParametrizedInputSuffix("99");
         config.setTypeResolverPrefix("1111");
         config.setTypeResolverSuffix("1212");
@@ -285,6 +290,7 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getResponseProjectionSuffix(), mappingConfig.getResponseProjectionSuffix());
         assertEquals(expectedMappingConfig.getGenerateClient(), mappingConfig.getGenerateClient());
         assertEquals(expectedMappingConfig.getGenerateModelsForRootTypes(), mappingConfig.getGenerateModelsForRootTypes());
+        assertEquals(expectedMappingConfig.getGenerateApisWithThrowsException(), mappingConfig.getGenerateApisWithThrowsException());
         assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
         assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
         assertEquals(expectedMappingConfig.getUseOptionalForNullableReturnTypes(), mappingConfig.getUseOptionalForNullableReturnTypes());

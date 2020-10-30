@@ -137,6 +137,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING)
     private boolean useOptionalForNullableReturnTypes;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING)
+    private boolean generateApisWithThrowsException;
+
     @Parameter
     private String[] fieldsWithResolvers;
 
@@ -207,6 +210,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
+        mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setGenerateClient(generateClient);
@@ -542,6 +546,15 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setUseOptionalForNullableReturnTypes(boolean useOptionalForNullableReturnTypes) {
         this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
+    }
+
+    @Override
+    public Boolean getGenerateApisWithThrowsException() {
+        return generateApisWithThrowsException;
+    }
+
+    public void setGenerateApisWithThrowsException(boolean generateApisWithThrowsException) {
+        this.generateApisWithThrowsException = generateApisWithThrowsException;
     }
 
     @Override

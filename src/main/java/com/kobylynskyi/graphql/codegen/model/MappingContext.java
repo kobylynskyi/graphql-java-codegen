@@ -172,6 +172,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateApisWithThrowsException() {
+        return config.getGenerateApisWithThrowsException();
+    }
+
+    @Override
     public RelayConfig getRelayConfig() {
         return config.getRelayConfig();
     }

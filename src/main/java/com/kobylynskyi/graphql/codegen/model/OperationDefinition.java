@@ -23,6 +23,7 @@ public class OperationDefinition {
     private List<ParameterDefinition> parameters = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
     private boolean deprecated;
+    private boolean throwsException;
 
     public String getName() {
         return name;
@@ -78,5 +79,13 @@ public class OperationDefinition {
 
     public void setDeprecated(boolean deprecated) {
         this.deprecated = deprecated;
+    }
+
+    public boolean isThrowsException() {
+        return throwsException;
+    }
+
+    public void setThrowsException(boolean throwsException) {
+        this.throwsException = throwsException;
     }
 }

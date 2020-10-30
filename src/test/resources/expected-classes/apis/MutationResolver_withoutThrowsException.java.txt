@@ -1,0 +1,142 @@
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface MutationResolver {
+
+    AcceptTopicSuggestionPayload acceptTopicSuggestion(AcceptTopicSuggestionInput input);
+
+    AddAssigneesToAssignablePayload addAssigneesToAssignable(AddAssigneesToAssignableInput input);
+
+    AddCommentPayload addComment(AddCommentInput input);
+
+    AddLabelsToLabelablePayload addLabelsToLabelable(AddLabelsToLabelableInput input);
+
+    AddProjectCardPayload addProjectCard(AddProjectCardInput input);
+
+    AddProjectColumnPayload addProjectColumn(AddProjectColumnInput input);
+
+    AddPullRequestReviewPayload addPullRequestReview(AddPullRequestReviewInput input);
+
+    AddPullRequestReviewCommentPayload addPullRequestReviewComment(AddPullRequestReviewCommentInput input);
+
+    AddReactionPayload addReaction(AddReactionInput input);
+
+    AddStarPayload addStar(AddStarInput input);
+
+    ChangeUserStatusPayload changeUserStatus(ChangeUserStatusInput input);
+
+    ClearLabelsFromLabelablePayload clearLabelsFromLabelable(ClearLabelsFromLabelableInput input);
+
+    CloneProjectPayload cloneProject(CloneProjectInput input);
+
+    CloneTemplateRepositoryPayload cloneTemplateRepository(CloneTemplateRepositoryInput input);
+
+    CloseIssuePayload closeIssue(CloseIssueInput input);
+
+    ClosePullRequestPayload closePullRequest(ClosePullRequestInput input);
+
+    ConvertProjectCardNoteToIssuePayload convertProjectCardNoteToIssue(ConvertProjectCardNoteToIssueInput input);
+
+    CreateBranchProtectionRulePayload createBranchProtectionRule(CreateBranchProtectionRuleInput input);
+
+    CreateIssuePayload createIssue(CreateIssueInput input);
+
+    CreateProjectPayload createProject(CreateProjectInput input);
+
+    CreatePullRequestPayload createPullRequest(CreatePullRequestInput input);
+
+    CreateRefPayload createRef(CreateRefInput input);
+
+    CreateRepositoryPayload createRepository(CreateRepositoryInput input);
+
+    DeclineTopicSuggestionPayload declineTopicSuggestion(DeclineTopicSuggestionInput input);
+
+    DeleteBranchProtectionRulePayload deleteBranchProtectionRule(DeleteBranchProtectionRuleInput input);
+
+    DeleteIssuePayload deleteIssue(DeleteIssueInput input);
+
+    DeleteIssueCommentPayload deleteIssueComment(DeleteIssueCommentInput input);
+
+    DeleteProjectPayload deleteProject(DeleteProjectInput input);
+
+    DeleteProjectCardPayload deleteProjectCard(DeleteProjectCardInput input);
+
+    DeleteProjectColumnPayload deleteProjectColumn(DeleteProjectColumnInput input);
+
+    DeletePullRequestReviewPayload deletePullRequestReview(DeletePullRequestReviewInput input);
+
+    DeletePullRequestReviewCommentPayload deletePullRequestReviewComment(DeletePullRequestReviewCommentInput input);
+
+    DeleteRefPayload deleteRef(DeleteRefInput input);
+
+    DismissPullRequestReviewPayload dismissPullRequestReview(DismissPullRequestReviewInput input);
+
+    LinkRepositoryToProjectPayload linkRepositoryToProject(LinkRepositoryToProjectInput input);
+
+    LockLockablePayload lockLockable(LockLockableInput input);
+
+    MergeBranchPayload mergeBranch(MergeBranchInput input);
+
+    MergePullRequestPayload mergePullRequest(MergePullRequestInput input);
+
+    MoveProjectCardPayload moveProjectCard(MoveProjectCardInput input);
+
+    MoveProjectColumnPayload moveProjectColumn(MoveProjectColumnInput input);
+
+    RemoveAssigneesFromAssignablePayload removeAssigneesFromAssignable(RemoveAssigneesFromAssignableInput input);
+
+    RemoveLabelsFromLabelablePayload removeLabelsFromLabelable(RemoveLabelsFromLabelableInput input);
+
+    RemoveOutsideCollaboratorPayload removeOutsideCollaborator(RemoveOutsideCollaboratorInput input);
+
+    RemoveReactionPayload removeReaction(RemoveReactionInput input);
+
+    RemoveStarPayload removeStar(RemoveStarInput input);
+
+    ReopenIssuePayload reopenIssue(ReopenIssueInput input);
+
+    ReopenPullRequestPayload reopenPullRequest(ReopenPullRequestInput input);
+
+    RequestReviewsPayload requestReviews(RequestReviewsInput input);
+
+    ResolveReviewThreadPayload resolveReviewThread(ResolveReviewThreadInput input);
+
+    SubmitPullRequestReviewPayload submitPullRequestReview(SubmitPullRequestReviewInput input);
+
+    UnlinkRepositoryFromProjectPayload unlinkRepositoryFromProject(UnlinkRepositoryFromProjectInput input);
+
+    UnlockLockablePayload unlockLockable(UnlockLockableInput input);
+
+    UnmarkIssueAsDuplicatePayload unmarkIssueAsDuplicate(UnmarkIssueAsDuplicateInput input);
+
+    UnresolveReviewThreadPayload unresolveReviewThread(UnresolveReviewThreadInput input);
+
+    UpdateBranchProtectionRulePayload updateBranchProtectionRule(UpdateBranchProtectionRuleInput input);
+
+    UpdateIssuePayload updateIssue(UpdateIssueInput input);
+
+    UpdateIssueCommentPayload updateIssueComment(UpdateIssueCommentInput input);
+
+    UpdateProjectPayload updateProject(UpdateProjectInput input);
+
+    UpdateProjectCardPayload updateProjectCard(UpdateProjectCardInput input);
+
+    UpdateProjectColumnPayload updateProjectColumn(UpdateProjectColumnInput input);
+
+    UpdatePullRequestPayload updatePullRequest(UpdatePullRequestInput input);
+
+    UpdatePullRequestReviewPayload updatePullRequestReview(UpdatePullRequestReviewInput input);
+
+    UpdatePullRequestReviewCommentPayload updatePullRequestReviewComment(UpdatePullRequestReviewCommentInput input);
+
+    UpdateRefPayload updateRef(UpdateRefInput input);
+
+    UpdateRepositoryPayload updateRepository(UpdateRepositoryInput input);
+
+    UpdateSubscriptionPayload updateSubscription(UpdateSubscriptionInput input);
+
+    UpdateTopicsPayload updateTopics(UpdateTopicsInput input);
+
+}

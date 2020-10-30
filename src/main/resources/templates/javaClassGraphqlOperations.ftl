@@ -35,7 +35,7 @@ public interface ${className}<#if implements?has_content> extends <#list impleme
 <#list operation.annotations as annotation>
     @${annotation}
 </#list>
-    ${operation.type} ${operation.name}(<#list operation.parameters as param>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) throws Exception;
+    ${operation.type} ${operation.name}(<#list operation.parameters as param>${param.type} ${param.name}<#if param_has_next>, </#if></#list>)<#if operation.throwsException> throws Exception</#if>;
 
 </#list>
 }

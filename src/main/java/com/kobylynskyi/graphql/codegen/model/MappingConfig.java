@@ -51,6 +51,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Boolean generateModelsForRootTypes;
     private Boolean useOptionalForNullableReturnTypes;
+    private Boolean generateApisWithThrowsException;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -111,6 +112,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
         generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
+        generateApisWithThrowsException = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
         relayConfig = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRelayConfig);
         queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
@@ -416,6 +418,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
+    }
+
+    @Override
+    public Boolean getGenerateApisWithThrowsException() {
+        return generateApisWithThrowsException;
+    }
+
+    public void setGenerateApisWithThrowsException(Boolean generateApisWithThrowsException) {
+        this.generateApisWithThrowsException = generateApisWithThrowsException;
     }
 
     @Override
