@@ -26,6 +26,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
         this.floatVal();
         this.booleanVal();
         this.intVal();
+        this.intVals();
         this.stringVal();
         if (projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventPropertyResponseProjection.child", 0) <= maxDepth) {
             projectionDepthOnFields.put("EventPropertyResponseProjection.EventPropertyResponseProjection.child", projectionDepthOnFields.getOrDefault("EventPropertyResponseProjection.EventPropertyResponseProjection.child", 0) + 1);
@@ -63,6 +64,15 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public EventPropertyResponseProjection intVal(String alias) {
         fields.add(new GraphQLResponseField("intVal").alias(alias));
+        return this;
+    }
+
+    public EventPropertyResponseProjection intVals() {
+        return intVals(null);
+    }
+
+    public EventPropertyResponseProjection intVals(String alias) {
+        fields.add(new GraphQLResponseField("intVals").alias(alias));
         return this;
     }
 

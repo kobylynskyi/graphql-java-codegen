@@ -76,4 +76,15 @@ class GraphQLCodegenResponseTest {
                 getFileByName(files, "LocationResponseProjection.java"));
     }
 
+    @Test
+    void generate_ResponseWithPrimitiveType() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/VersionQueryResponse_int.java.txt"),
+                getFileByName(files, "VersionQueryResponse.java"));
+    }
+
 }

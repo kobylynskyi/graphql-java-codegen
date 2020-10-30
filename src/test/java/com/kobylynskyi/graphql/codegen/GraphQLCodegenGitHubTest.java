@@ -106,6 +106,21 @@ class GraphQLCodegenGitHubTest {
                 getFileByName(files, "SearchResultItemResponseProjection.java"));
     }
 
+    @Test
+    void generate_NoPrimitives() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Integer");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
+        mappingConfig.setUseOptionalForNullableReturnTypes(true);
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_withoutPrimitives.java.txt"),
+                getFileByName(files, "Commit.java"));
+    }
+
     private static String getFileContent(File[] files, String fileName) throws IOException {
         return Utils.getFileContent(getFileByName(files, fileName).getPath());
     }

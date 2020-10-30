@@ -9,7 +9,7 @@ input InputWithDefaults {
     nonNullEnumVal: MyEnum! = TWO
     objectWithNullDefault: SomeObject = null
     objectWithNonNullDefault: SomeObject = { name: "Bob" }
-    intList: [Int] = [1, 2, 3]
+    intList: [Int!] = [1, 2, 3]
     intListEmptyDefault: [Int] = []
     objectListEmptyDefault: [SomeObject]! = []
     longValue: Long = 123456

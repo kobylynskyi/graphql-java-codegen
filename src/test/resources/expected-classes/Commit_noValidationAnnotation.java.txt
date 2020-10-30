@@ -8,20 +8,20 @@ package com.github.graphql;
 public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
 
     private String abbreviatedOid;
-    private Integer additions;
+    private int additions;
     private PullRequestConnection associatedPullRequests;
     private GitActor author;
-    private Boolean authoredByCommitter;
+    private boolean authoredByCommitter;
     private String authoredDate;
     private Blame blame;
-    private Integer changedFiles;
+    private int changedFiles;
     private CommitCommentConnection comments;
     private String commitResourcePath;
     private String commitUrl;
     private String committedDate;
-    private Boolean committedViaWeb;
+    private boolean committedViaWeb;
     private GitActor committer;
-    private Integer deletions;
+    private int deletions;
     private DeploymentConnection deployments;
     private CommitHistoryConnection history;
     private String id;
@@ -42,14 +42,14 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
     private String treeResourcePath;
     private String treeUrl;
     private String url;
-    private Boolean viewerCanSubscribe;
+    private boolean viewerCanSubscribe;
     private SubscriptionState viewerSubscription;
     private String zipballUrl;
 
     public Commit() {
     }
 
-    public Commit(String abbreviatedOid, Integer additions, PullRequestConnection associatedPullRequests, GitActor author, Boolean authoredByCommitter, String authoredDate, Blame blame, Integer changedFiles, CommitCommentConnection comments, String commitResourcePath, String commitUrl, String committedDate, Boolean committedViaWeb, GitActor committer, Integer deletions, DeploymentConnection deployments, CommitHistoryConnection history, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, CommitConnection parents, String pushedDate, Repository repository, String resourcePath, GitSignature signature, Status status, String tarballUrl, Tree tree, String treeResourcePath, String treeUrl, String url, Boolean viewerCanSubscribe, SubscriptionState viewerSubscription, String zipballUrl) {
+    public Commit(String abbreviatedOid, int additions, PullRequestConnection associatedPullRequests, GitActor author, boolean authoredByCommitter, String authoredDate, Blame blame, int changedFiles, CommitCommentConnection comments, String commitResourcePath, String commitUrl, String committedDate, boolean committedViaWeb, GitActor committer, int deletions, DeploymentConnection deployments, CommitHistoryConnection history, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, CommitConnection parents, String pushedDate, Repository repository, String resourcePath, GitSignature signature, Status status, String tarballUrl, Tree tree, String treeResourcePath, String treeUrl, String url, boolean viewerCanSubscribe, SubscriptionState viewerSubscription, String zipballUrl) {
         this.abbreviatedOid = abbreviatedOid;
         this.additions = additions;
         this.associatedPullRequests = associatedPullRequests;
@@ -97,10 +97,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.abbreviatedOid = abbreviatedOid;
     }
 
-    public Integer getAdditions() {
+    public int getAdditions() {
         return additions;
     }
-    public void setAdditions(Integer additions) {
+    public void setAdditions(int additions) {
         this.additions = additions;
     }
 
@@ -118,10 +118,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.author = author;
     }
 
-    public Boolean getAuthoredByCommitter() {
+    public boolean getAuthoredByCommitter() {
         return authoredByCommitter;
     }
-    public void setAuthoredByCommitter(Boolean authoredByCommitter) {
+    public void setAuthoredByCommitter(boolean authoredByCommitter) {
         this.authoredByCommitter = authoredByCommitter;
     }
 
@@ -139,10 +139,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.blame = blame;
     }
 
-    public Integer getChangedFiles() {
+    public int getChangedFiles() {
         return changedFiles;
     }
-    public void setChangedFiles(Integer changedFiles) {
+    public void setChangedFiles(int changedFiles) {
         this.changedFiles = changedFiles;
     }
 
@@ -174,10 +174,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.committedDate = committedDate;
     }
 
-    public Boolean getCommittedViaWeb() {
+    public boolean getCommittedViaWeb() {
         return committedViaWeb;
     }
-    public void setCommittedViaWeb(Boolean committedViaWeb) {
+    public void setCommittedViaWeb(boolean committedViaWeb) {
         this.committedViaWeb = committedViaWeb;
     }
 
@@ -188,10 +188,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.committer = committer;
     }
 
-    public Integer getDeletions() {
+    public int getDeletions() {
         return deletions;
     }
-    public void setDeletions(Integer deletions) {
+    public void setDeletions(int deletions) {
         this.deletions = deletions;
     }
 
@@ -335,10 +335,10 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.url = url;
     }
 
-    public Boolean getViewerCanSubscribe() {
+    public boolean getViewerCanSubscribe() {
         return viewerCanSubscribe;
     }
-    public void setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+    public void setViewerCanSubscribe(boolean viewerCanSubscribe) {
         this.viewerCanSubscribe = viewerCanSubscribe;
     }
 
@@ -365,20 +365,20 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
     public static class Builder {
 
         private String abbreviatedOid;
-        private Integer additions;
+        private int additions;
         private PullRequestConnection associatedPullRequests;
         private GitActor author;
-        private Boolean authoredByCommitter;
+        private boolean authoredByCommitter;
         private String authoredDate;
         private Blame blame;
-        private Integer changedFiles;
+        private int changedFiles;
         private CommitCommentConnection comments;
         private String commitResourcePath;
         private String commitUrl;
         private String committedDate;
-        private Boolean committedViaWeb;
+        private boolean committedViaWeb;
         private GitActor committer;
-        private Integer deletions;
+        private int deletions;
         private DeploymentConnection deployments;
         private CommitHistoryConnection history;
         private String id;
@@ -399,7 +399,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         private String treeResourcePath;
         private String treeUrl;
         private String url;
-        private Boolean viewerCanSubscribe;
+        private boolean viewerCanSubscribe;
         private SubscriptionState viewerSubscription;
         private String zipballUrl;
 
@@ -411,7 +411,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setAdditions(Integer additions) {
+        public Builder setAdditions(int additions) {
             this.additions = additions;
             return this;
         }
@@ -426,7 +426,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setAuthoredByCommitter(Boolean authoredByCommitter) {
+        public Builder setAuthoredByCommitter(boolean authoredByCommitter) {
             this.authoredByCommitter = authoredByCommitter;
             return this;
         }
@@ -441,7 +441,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setChangedFiles(Integer changedFiles) {
+        public Builder setChangedFiles(int changedFiles) {
             this.changedFiles = changedFiles;
             return this;
         }
@@ -466,7 +466,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setCommittedViaWeb(Boolean committedViaWeb) {
+        public Builder setCommittedViaWeb(boolean committedViaWeb) {
             this.committedViaWeb = committedViaWeb;
             return this;
         }
@@ -476,7 +476,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setDeletions(Integer deletions) {
+        public Builder setDeletions(int deletions) {
             this.deletions = deletions;
             return this;
         }
@@ -581,7 +581,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
             return this;
         }
 
-        public Builder setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+        public Builder setViewerCanSubscribe(boolean viewerCanSubscribe) {
             this.viewerCanSubscribe = viewerCanSubscribe;
             return this;
         }
