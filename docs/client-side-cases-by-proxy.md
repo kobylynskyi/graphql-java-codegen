@@ -1,6 +1,4 @@
-# graphql-java-codegen use-cases
-
-## use Client-side code invoke Server-side
+## Using dynamic proxy to implement client-side calls to GraphQL server
 
 This is an example of using dynamic proxy to implement client-side call server, so in addition to generating code, 
 you almost do not need to write any code, only need to write a little code to call the server directly (This is a very small part of the method call code).
