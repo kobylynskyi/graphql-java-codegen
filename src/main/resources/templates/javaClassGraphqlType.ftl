@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper"]>
 <#if package?has_content>
 package ${package};
 
@@ -125,17 +126,25 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
 <#if fields?has_content>
 <#list fields as field>
+  <#if MapperUtil.isJavaPrimitive(field.type)>
+    <#if toStringForRequest>
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+    <#else>
+        joiner.add("${field.originalName}: " + ${field.name});
+    </#if>
+  <#else>
         if (${field.name} != null) {
-<#if toStringForRequest>
+    <#if toStringForRequest>
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
-<#else>
-<#if field.type == "String">
+    <#else>
+      <#if field.type == "String">
             joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
-<#else>
+      <#else>
             joiner.add("${field.originalName}: " + ${field.name});
-</#if>
-</#if>
+      </#if>
+    </#if>
         }
+  </#if>
 </#list>
 </#if>
         return joiner.toString();

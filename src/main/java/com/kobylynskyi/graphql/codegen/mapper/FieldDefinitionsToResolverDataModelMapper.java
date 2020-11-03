@@ -215,13 +215,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
                 if (argument != null && argument.getValue() instanceof StringValue) {
                     String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
                     String javaTypeName = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext,
-                            new TypeName(graphqlTypeName), graphqlTypeName, parentTypeName, false).getName();
+                            new TypeName(graphqlTypeName), graphqlTypeName, parentTypeName, false, false).getJavaName();
                     return GraphqlTypeToJavaTypeMapper.getGenericsString(relayConfig.getConnectionType(), javaTypeName);
                 }
             }
         }
-        return GraphqlTypeToJavaTypeMapper.wrapApiReturnTypeIfRequired(mappingContext, namedDefinition, parentTypeName);
-
+        return GraphqlTypeToJavaTypeMapper.wrapApiReturnTypeIfRequired(mappingContext, fieldDef, namedDefinition, parentTypeName);
     }
 
 }

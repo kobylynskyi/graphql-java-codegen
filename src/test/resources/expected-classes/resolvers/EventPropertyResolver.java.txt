@@ -12,7 +12,12 @@ public interface EventPropertyResolver {
 
     Boolean booleanVal(EventProperty eventProperty) throws Exception;
 
-    Integer intVal(EventProperty eventProperty) throws Exception;
+    int intVal(EventProperty eventProperty) throws Exception;
+
+    /**
+     * primitive should not be generated
+     */
+    java.util.List<Integer> intVals(EventProperty eventProperty) throws Exception;
 
     /**
      * String comment

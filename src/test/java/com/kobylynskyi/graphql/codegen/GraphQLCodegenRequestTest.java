@@ -166,4 +166,16 @@ class GraphQLCodegenRequestTest {
                 getFileByName(files, "ProductsByIdsQueryRequest.java"));
     }
 
+    @Test
+    void generate_ClassesWithoutPrimitiveTypes() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Integer");
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyChildParametrizedInput_withoutPrimitives.java.txt"),
+                getFileByName(files, "EventPropertyChildParametrizedInput.java"));
+    }
+
 }

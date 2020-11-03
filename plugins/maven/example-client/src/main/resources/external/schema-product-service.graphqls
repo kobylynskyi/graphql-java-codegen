@@ -21,6 +21,7 @@ type Product {
     description: String
     price: BigDecimal!
     sku: String!
+    stockNumber: Int!
     stockStatus: StockStatus
     addedDateTime: DateTime!
 }

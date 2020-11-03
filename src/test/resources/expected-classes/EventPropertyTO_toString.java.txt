@@ -13,7 +13,8 @@ public class EventPropertyTO implements java.io.Serializable {
 
     private Double floatVal;
     private Boolean booleanVal;
-    private Integer intVal;
+    private int intVal;
+    private java.util.List<Integer> intVals;
     private String stringVal;
     private java.util.List<EventPropertyTO> child;
     private EventTO parent;
@@ -21,10 +22,11 @@ public class EventPropertyTO implements java.io.Serializable {
     public EventPropertyTO() {
     }
 
-    public EventPropertyTO(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.List<EventPropertyTO> child, EventTO parent) {
+    public EventPropertyTO(Double floatVal, Boolean booleanVal, int intVal, java.util.List<Integer> intVals, String stringVal, java.util.List<EventPropertyTO> child, EventTO parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
+        this.intVals = intVals;
         this.stringVal = stringVal;
         this.child = child;
         this.parent = parent;
@@ -52,11 +54,24 @@ public class EventPropertyTO implements java.io.Serializable {
         this.booleanVal = booleanVal;
     }
 
-    public Integer getIntVal() {
+    public int getIntVal() {
         return intVal;
     }
-    public void setIntVal(Integer intVal) {
+    public void setIntVal(int intVal) {
         this.intVal = intVal;
+    }
+
+    /**
+     * primitive should not be generated
+     */
+    public java.util.List<Integer> getIntVals() {
+        return intVals;
+    }
+    /**
+     * primitive should not be generated
+     */
+    public void setIntVals(java.util.List<Integer> intVals) {
+        this.intVals = intVals;
     }
 
     /**
@@ -108,8 +123,9 @@ public class EventPropertyTO implements java.io.Serializable {
         if (booleanVal != null) {
             joiner.add("booleanVal: " + booleanVal);
         }
-        if (intVal != null) {
-            joiner.add("intVal: " + intVal);
+        joiner.add("intVal: " + intVal);
+        if (intVals != null) {
+            joiner.add("intVals: " + intVals);
         }
         if (stringVal != null) {
             joiner.add("stringVal: \"" + stringVal + "\"");
@@ -131,7 +147,8 @@ public class EventPropertyTO implements java.io.Serializable {
 
         private Double floatVal;
         private Boolean booleanVal;
-        private Integer intVal;
+        private int intVal;
+        private java.util.List<Integer> intVals;
         private String stringVal;
         private java.util.List<EventPropertyTO> child;
         private EventTO parent;
@@ -153,8 +170,16 @@ public class EventPropertyTO implements java.io.Serializable {
             return this;
         }
 
-        public Builder setIntVal(Integer intVal) {
+        public Builder setIntVal(int intVal) {
             this.intVal = intVal;
+            return this;
+        }
+
+        /**
+         * primitive should not be generated
+         */
+        public Builder setIntVals(java.util.List<Integer> intVals) {
+            this.intVals = intVals;
             return this;
         }
 
@@ -184,7 +209,7 @@ public class EventPropertyTO implements java.io.Serializable {
 
 
         public EventPropertyTO build() {
-            return new EventPropertyTO(floatVal, booleanVal, intVal, stringVal, child, parent);
+            return new EventPropertyTO(floatVal, booleanVal, intVal, intVals, stringVal, child, parent);
         }
 
     }

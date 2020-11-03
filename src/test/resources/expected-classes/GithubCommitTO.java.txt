@@ -9,18 +9,15 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
 
     @javax.validation.constraints.NotNull
     private String abbreviatedOid;
-    @javax.validation.constraints.NotNull
-    private Integer additions;
+    private int additions;
     private GithubPullRequestConnectionTO associatedPullRequests;
     private GithubGitActorTO author;
-    @javax.validation.constraints.NotNull
-    private Boolean authoredByCommitter;
+    private boolean authoredByCommitter;
     @javax.validation.constraints.NotNull
     private String authoredDate;
     @javax.validation.constraints.NotNull
     private GithubBlameTO blame;
-    @javax.validation.constraints.NotNull
-    private Integer changedFiles;
+    private int changedFiles;
     @javax.validation.constraints.NotNull
     private GithubCommitCommentConnectionTO comments;
     @javax.validation.constraints.NotNull
@@ -29,11 +26,9 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
     private String commitUrl;
     @javax.validation.constraints.NotNull
     private String committedDate;
-    @javax.validation.constraints.NotNull
-    private Boolean committedViaWeb;
+    private boolean committedViaWeb;
     private GithubGitActorTO committer;
-    @javax.validation.constraints.NotNull
-    private Integer deletions;
+    private int deletions;
     private GithubDeploymentConnectionTO deployments;
     @javax.validation.constraints.NotNull
     private GithubCommitHistoryConnectionTO history;
@@ -70,8 +65,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
     private String treeUrl;
     @javax.validation.constraints.NotNull
     private String url;
-    @javax.validation.constraints.NotNull
-    private Boolean viewerCanSubscribe;
+    private boolean viewerCanSubscribe;
     private GithubSubscriptionStateTO viewerSubscription;
     @javax.validation.constraints.NotNull
     private String zipballUrl;
@@ -79,7 +73,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
     public GithubCommitTO() {
     }
 
-    public GithubCommitTO(String abbreviatedOid, Integer additions, GithubPullRequestConnectionTO associatedPullRequests, GithubGitActorTO author, Boolean authoredByCommitter, String authoredDate, GithubBlameTO blame, Integer changedFiles, GithubCommitCommentConnectionTO comments, String commitResourcePath, String commitUrl, String committedDate, Boolean committedViaWeb, GithubGitActorTO committer, Integer deletions, GithubDeploymentConnectionTO deployments, GithubCommitHistoryConnectionTO history, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, GithubCommitConnectionTO parents, String pushedDate, GithubRepositoryTO repository, String resourcePath, GithubGitSignatureTO signature, GithubStatusTO status, String tarballUrl, GithubTreeTO tree, String treeResourcePath, String treeUrl, String url, Boolean viewerCanSubscribe, GithubSubscriptionStateTO viewerSubscription, String zipballUrl) {
+    public GithubCommitTO(String abbreviatedOid, int additions, GithubPullRequestConnectionTO associatedPullRequests, GithubGitActorTO author, boolean authoredByCommitter, String authoredDate, GithubBlameTO blame, int changedFiles, GithubCommitCommentConnectionTO comments, String commitResourcePath, String commitUrl, String committedDate, boolean committedViaWeb, GithubGitActorTO committer, int deletions, GithubDeploymentConnectionTO deployments, GithubCommitHistoryConnectionTO history, String id, String message, String messageBody, String messageBodyHTML, String messageHeadline, String messageHeadlineHTML, String oid, GithubCommitConnectionTO parents, String pushedDate, GithubRepositoryTO repository, String resourcePath, GithubGitSignatureTO signature, GithubStatusTO status, String tarballUrl, GithubTreeTO tree, String treeResourcePath, String treeUrl, String url, boolean viewerCanSubscribe, GithubSubscriptionStateTO viewerSubscription, String zipballUrl) {
         this.abbreviatedOid = abbreviatedOid;
         this.additions = additions;
         this.associatedPullRequests = associatedPullRequests;
@@ -127,10 +121,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.abbreviatedOid = abbreviatedOid;
     }
 
-    public Integer getAdditions() {
+    public int getAdditions() {
         return additions;
     }
-    public void setAdditions(Integer additions) {
+    public void setAdditions(int additions) {
         this.additions = additions;
     }
 
@@ -148,10 +142,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.author = author;
     }
 
-    public Boolean getAuthoredByCommitter() {
+    public boolean getAuthoredByCommitter() {
         return authoredByCommitter;
     }
-    public void setAuthoredByCommitter(Boolean authoredByCommitter) {
+    public void setAuthoredByCommitter(boolean authoredByCommitter) {
         this.authoredByCommitter = authoredByCommitter;
     }
 
@@ -169,10 +163,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.blame = blame;
     }
 
-    public Integer getChangedFiles() {
+    public int getChangedFiles() {
         return changedFiles;
     }
-    public void setChangedFiles(Integer changedFiles) {
+    public void setChangedFiles(int changedFiles) {
         this.changedFiles = changedFiles;
     }
 
@@ -204,10 +198,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.committedDate = committedDate;
     }
 
-    public Boolean getCommittedViaWeb() {
+    public boolean getCommittedViaWeb() {
         return committedViaWeb;
     }
-    public void setCommittedViaWeb(Boolean committedViaWeb) {
+    public void setCommittedViaWeb(boolean committedViaWeb) {
         this.committedViaWeb = committedViaWeb;
     }
 
@@ -218,10 +212,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.committer = committer;
     }
 
-    public Integer getDeletions() {
+    public int getDeletions() {
         return deletions;
     }
-    public void setDeletions(Integer deletions) {
+    public void setDeletions(int deletions) {
         this.deletions = deletions;
     }
 
@@ -365,10 +359,10 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         this.url = url;
     }
 
-    public Boolean getViewerCanSubscribe() {
+    public boolean getViewerCanSubscribe() {
         return viewerCanSubscribe;
     }
-    public void setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+    public void setViewerCanSubscribe(boolean viewerCanSubscribe) {
         this.viewerCanSubscribe = viewerCanSubscribe;
     }
 
@@ -395,20 +389,20 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
     public static class Builder {
 
         private String abbreviatedOid;
-        private Integer additions;
+        private int additions;
         private GithubPullRequestConnectionTO associatedPullRequests;
         private GithubGitActorTO author;
-        private Boolean authoredByCommitter;
+        private boolean authoredByCommitter;
         private String authoredDate;
         private GithubBlameTO blame;
-        private Integer changedFiles;
+        private int changedFiles;
         private GithubCommitCommentConnectionTO comments;
         private String commitResourcePath;
         private String commitUrl;
         private String committedDate;
-        private Boolean committedViaWeb;
+        private boolean committedViaWeb;
         private GithubGitActorTO committer;
-        private Integer deletions;
+        private int deletions;
         private GithubDeploymentConnectionTO deployments;
         private GithubCommitHistoryConnectionTO history;
         private String id;
@@ -429,7 +423,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
         private String treeResourcePath;
         private String treeUrl;
         private String url;
-        private Boolean viewerCanSubscribe;
+        private boolean viewerCanSubscribe;
         private GithubSubscriptionStateTO viewerSubscription;
         private String zipballUrl;
 
@@ -441,7 +435,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setAdditions(Integer additions) {
+        public Builder setAdditions(int additions) {
             this.additions = additions;
             return this;
         }
@@ -456,7 +450,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setAuthoredByCommitter(Boolean authoredByCommitter) {
+        public Builder setAuthoredByCommitter(boolean authoredByCommitter) {
             this.authoredByCommitter = authoredByCommitter;
             return this;
         }
@@ -471,7 +465,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setChangedFiles(Integer changedFiles) {
+        public Builder setChangedFiles(int changedFiles) {
             this.changedFiles = changedFiles;
             return this;
         }
@@ -496,7 +490,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setCommittedViaWeb(Boolean committedViaWeb) {
+        public Builder setCommittedViaWeb(boolean committedViaWeb) {
             this.committedViaWeb = committedViaWeb;
             return this;
         }
@@ -506,7 +500,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setDeletions(Integer deletions) {
+        public Builder setDeletions(int deletions) {
             this.deletions = deletions;
             return this;
         }
@@ -611,7 +605,7 @@ public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, Git
             return this;
         }
 
-        public Builder setViewerCanSubscribe(Boolean viewerCanSubscribe) {
+        public Builder setViewerCanSubscribe(boolean viewerCanSubscribe) {
             this.viewerCanSubscribe = viewerCanSubscribe;
             return this;
         }

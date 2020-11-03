@@ -17,7 +17,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.DEPRECATED;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.METHOD_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_TYPE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.RESPONSE_PROJECTION_MAX_DEPTH;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.RETURN_TYPE_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
 
 /**
  * Map request and response definition to a Freemarker data model
@@ -97,7 +112,7 @@ public class RequestResponseDefinitionToDataModelMapper {
                                                   List<String> fieldNames) {
         String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix());
         String javaType = GraphqlTypeToJavaTypeMapper.getJavaType(
-                mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getName();
+                mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getJavaName();
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, MapperUtils.getModelPackageName(mappingContext));

@@ -12,7 +12,8 @@ public class EventProperty implements java.io.Serializable {
 
     private Double floatVal;
     private Boolean booleanVal;
-    private Integer intVal;
+    private int intVal;
+    private java.util.List<Integer> intVals;
     private String stringVal;
     private java.util.List<EventProperty> child;
     private Event parent;
@@ -20,10 +21,11 @@ public class EventProperty implements java.io.Serializable {
     public EventProperty() {
     }
 
-    public EventProperty(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, java.util.List<EventProperty> child, Event parent) {
+    public EventProperty(Double floatVal, Boolean booleanVal, int intVal, java.util.List<Integer> intVals, String stringVal, java.util.List<EventProperty> child, Event parent) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
+        this.intVals = intVals;
         this.stringVal = stringVal;
         this.child = child;
         this.parent = parent;
@@ -51,11 +53,24 @@ public class EventProperty implements java.io.Serializable {
         this.booleanVal = booleanVal;
     }
 
-    public Integer getIntVal() {
+    public int getIntVal() {
         return intVal;
     }
-    public void setIntVal(Integer intVal) {
+    public void setIntVal(int intVal) {
         this.intVal = intVal;
+    }
+
+    /**
+     * primitive should not be generated
+     */
+    public java.util.List<Integer> getIntVals() {
+        return intVals;
+    }
+    /**
+     * primitive should not be generated
+     */
+    public void setIntVals(java.util.List<Integer> intVals) {
+        this.intVals = intVals;
     }
 
     /**
@@ -107,7 +122,8 @@ public class EventProperty implements java.io.Serializable {
 
         private Double floatVal;
         private Boolean booleanVal;
-        private Integer intVal;
+        private int intVal;
+        private java.util.List<Integer> intVals;
         private String stringVal;
         private java.util.List<EventProperty> child;
         private Event parent;
@@ -129,8 +145,16 @@ public class EventProperty implements java.io.Serializable {
             return this;
         }
 
-        public Builder setIntVal(Integer intVal) {
+        public Builder setIntVal(int intVal) {
             this.intVal = intVal;
+            return this;
+        }
+
+        /**
+         * primitive should not be generated
+         */
+        public Builder setIntVals(java.util.List<Integer> intVals) {
+            this.intVals = intVals;
             return this;
         }
 
@@ -160,7 +184,7 @@ public class EventProperty implements java.io.Serializable {
 
 
         public EventProperty build() {
-            return new EventProperty(floatVal, booleanVal, intVal, stringVal, child, parent);
+            return new EventProperty(floatVal, booleanVal, intVal, intVals, stringVal, child, parent);
         }
 
     }

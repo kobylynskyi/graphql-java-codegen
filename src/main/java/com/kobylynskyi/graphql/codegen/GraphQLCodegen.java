@@ -235,14 +235,14 @@ public class GraphQLCodegen {
             ExtendedDocument document = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, schemas);
             initCustomTypeMappings(document.getScalarDefinitions());
             generatedFiles = processDefinitions(document);
-            System.out.println(String.format("Finished processing %d schema(s) in %d ms", schemas.size(),
-                    System.currentTimeMillis() - startTime));
+            System.out.printf("Finished processing %d schema(s) in %d ms%n", schemas.size(),
+                    System.currentTimeMillis() - startTime);
         } else if (introspectionResult != null) {
             ExtendedDocument document = GraphQLDocumentParser.getDocumentFromIntrospectionResult(mappingConfig, introspectionResult);
             initCustomTypeMappings(document.getScalarDefinitions());
             generatedFiles = processDefinitions(document);
-            System.out.println(String.format("Finished processing introspection result in %d ms",
-                    System.currentTimeMillis() - startTime));
+            System.out.printf("Finished processing introspection result in %d ms%n",
+                    System.currentTimeMillis() - startTime);
         }
 
         return generatedFiles;
@@ -441,8 +441,11 @@ public class GraphQLCodegen {
         mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
         mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
+        mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
         mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "double");
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
     }
 
 }

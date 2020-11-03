@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
@@ -16,18 +17,24 @@ import graphql.language.TypeName;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 /**
  * Map GraphQL type to Java type
  *
  * @author kobylynskyi
  */
-class GraphqlTypeToJavaTypeMapper {
+public class GraphqlTypeToJavaTypeMapper {
 
     private static final String JAVA_UTIL_LIST = "java.util.List";
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
+    private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
+            "byte", "short", "int", "long", "float", "double", "char", "boolean"));
 
     private GraphqlTypeToJavaTypeMapper() {
     }
@@ -61,7 +68,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Corresponding Java type
      */
     static String getJavaType(MappingContext mappingContext, Type<?> type) {
-        return getJavaType(mappingContext, type, null, null).getName();
+        return getJavaType(mappingContext, type, null, null).getJavaName();
     }
 
     /**
@@ -74,7 +81,7 @@ class GraphqlTypeToJavaTypeMapper {
      * @return Corresponding Java type
      */
     static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
-        return getJavaType(mappingContext, graphqlType, name, parentTypeName, false);
+        return getJavaType(mappingContext, graphqlType, name, parentTypeName, false, false);
     }
 
     /**
@@ -85,22 +92,24 @@ class GraphqlTypeToJavaTypeMapper {
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
      * @param mandatory      GraphQL type is non-null
+     * @param collection     GraphQL type is collection
      * @return Corresponding Java type
      */
-    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName,
-                                       boolean mandatory) {
+    static NamedDefinition getJavaType(MappingContext mappingContext, Type<?> graphqlType,
+                                       String name, String parentTypeName,
+                                       boolean mandatory, boolean collection) {
         if (graphqlType instanceof TypeName) {
-            return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory);
+            return getJavaType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory, collection);
         } else if (graphqlType instanceof ListType) {
-            NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName, false);
+            NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName, false, true);
             if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
-                mappedCollectionType.setName(wrapSuperTypeIntoJavaList(mappedCollectionType.getName()));
+                mappedCollectionType.setJavaName(wrapSuperTypeIntoJavaList(mappedCollectionType.getJavaName()));
             } else {
-                mappedCollectionType.setName(wrapIntoJavaList(mappedCollectionType.getName()));
+                mappedCollectionType.setJavaName(wrapIntoJavaList(mappedCollectionType.getJavaName()));
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
-            return getJavaType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true);
+            return getJavaType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true, collection);
         }
         throw new IllegalArgumentException("Unknown type: " + graphqlType);
     }
@@ -113,20 +122,24 @@ class GraphqlTypeToJavaTypeMapper {
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
      * @param mandatory      GraphQL type is non-null
+     * @param collection     GraphQL type is collection
      * @return Corresponding Java type
      */
     private static NamedDefinition getJavaType(MappingContext mappingContext, String graphQLType, String name,
-                                               String parentTypeName, boolean mandatory) {
+                                               String parentTypeName, boolean mandatory, boolean collection) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         String javaTypeName;
+        boolean primitiveCanBeUsed = !collection;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             javaTypeName = customTypesMapping.get(parentTypeName + "." + name);
+            primitiveCanBeUsed = false;
         } else if (customTypesMapping.containsKey(graphQLType)) {
             javaTypeName = customTypesMapping.get(graphQLType);
         } else {
             javaTypeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
-        return new NamedDefinition(javaTypeName, mappingContext.getInterfacesName().contains(graphQLType), mandatory);
+        return new NamedDefinition(javaTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
+                mandatory, primitiveCanBeUsed);
     }
 
     /**
@@ -163,11 +176,13 @@ class GraphqlTypeToJavaTypeMapper {
                                                String parentTypeName, List<Directive> directives, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
+            String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphQLTypeName));
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
-            if (Utils.isNotBlank(modelValidationAnnotation)) {
+            if (Utils.isNotBlank(modelValidationAnnotation) && !isJavaPrimitive(possiblyPrimitiveType)) {
                 annotations.add(modelValidationAnnotation);
             }
         }
+
         Map<String, List<String>> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
         if (name != null && parentTypeName != null && customAnnotationsMapping.containsKey(parentTypeName + "." + name)) {
             List<String> annotationsToAdd = customAnnotationsMapping.get(parentTypeName + "." + name);
@@ -180,6 +195,7 @@ class GraphqlTypeToJavaTypeMapper {
                 annotations.addAll(annotationsToAdd);
             }
         }
+
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
             if (directiveAnnotationsMapping.containsKey(directive.getName())) {
@@ -255,8 +271,11 @@ class GraphqlTypeToJavaTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @return Java type wrapped into the subscriptionReturnType
      */
-    static String wrapApiReturnTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
-        String javaTypeName = namedDefinition.getName();
+    static String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
+                                              ExtendedFieldDefinition fieldDef,
+                                              NamedDefinition namedDefinition,
+                                              String parentTypeName) {
+        String javaTypeName = namedDefinition.getJavaName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
             if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
                 // in case it is subscription and subscriptionReturnType is set
@@ -278,7 +297,27 @@ class GraphqlTypeToJavaTypeMapper {
                 return getGenericsString(mappingContext.getApiReturnType(), javaTypeName);
             }
         }
-        return javaTypeName;
+        return GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition);
+    }
+
+    public static String getTypeConsideringPrimitive(MappingContext mappingContext,
+                                                     NamedDefinition namedDefinition) {
+        String graphqlTypeName = namedDefinition.getGraphqlTypeName();
+        if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
+            String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphqlTypeName));
+            if (isJavaPrimitive(possiblyPrimitiveType)) {
+                return possiblyPrimitiveType;
+            }
+        }
+        return namedDefinition.getJavaName();
+    }
+
+    public static boolean isJavaPrimitive(String javaType) {
+        return JAVA_PRIMITIVE_TYPES.contains(javaType);
+    }
+
+    private static String getMandatoryType(String typeName) {
+        return typeName + "!";
     }
 
     static String getGenericsString(String genericType, String typeParameter) {

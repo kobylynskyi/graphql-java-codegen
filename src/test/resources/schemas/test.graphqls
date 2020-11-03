@@ -65,7 +65,12 @@ type EventProperty @customResolver{
 
     #
     #
-    intVal: Int
+    intVal: Int!
+
+    """
+    primitive should not be generated
+    """
+    intVals: [Int!]
 
     # String comment
     stringVal: String
@@ -94,7 +99,7 @@ directive @auth (
     roles: [String] = ["viewer"],
     float: [Float] = [],
     n: ID,
-    int: Int,
+    int: Int!,
     boo: [Boolean]
 ) on FIELD_DEFINITION | QUERY | MUTATION | SUBSCRIPTION
 
