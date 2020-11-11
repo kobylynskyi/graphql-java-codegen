@@ -75,8 +75,8 @@ If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` con
     <!--NEW APPROACH-->
     <customAnnotationsMapping>
         <Character>
-            <annotation>com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")</annotation>
-            <annotation>com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)</annotation>
+            <annotation1>com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")</annotation1>
+            <annotation2>com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)</annotation2>
         </Character>
     </customAnnotationsMapping>
     <directiveAnnotationsMapping>
