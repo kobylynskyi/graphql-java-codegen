@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,10 +54,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Properties customTypesMapping = new Properties();
 
     @Parameter
-    private Map<String, String[]> customAnnotationsMapping;
+    private Map<String, Properties> customAnnotationsMapping;
 
     @Parameter
-    private Map<String, String[]> directiveAnnotationsMapping;
+    private Map<String, Properties> directiveAnnotationsMapping;
 
     @Parameter
     private String packageName;
@@ -278,32 +280,16 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return graphqlSchemaPaths;
     }
 
-    public void setGraphqlSchemaPaths(String[] graphqlSchemaPaths) {
-        this.graphqlSchemaPaths = graphqlSchemaPaths;
-    }
-
     public String getGraphqlQueryIntrospectionResultPath() {
         return graphqlQueryIntrospectionResultPath;
-    }
-
-    public void setGraphqlQueryIntrospectionResultPath(String graphqlQueryIntrospectionResultPath) {
-        this.graphqlQueryIntrospectionResultPath = graphqlQueryIntrospectionResultPath;
     }
 
     public SchemaFinderConfig getGraphqlSchemas() {
         return graphqlSchemas;
     }
 
-    public void setGraphqlSchemas(SchemaFinderConfig graphqlSchemas) {
-        this.graphqlSchemas = graphqlSchemas;
-    }
-
     public File getOutputDir() {
         return outputDir;
-    }
-
-    public void setOutputDir(File outputDir) {
-        this.outputDir = outputDir;
     }
 
     @Override
@@ -311,17 +297,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return convertToMap(customTypesMapping);
     }
 
-    public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
-        this.customTypesMapping = convertToProperties(customTypesMapping);
-    }
-
     @Override
     public Map<String, List<String>> getCustomAnnotationsMapping() {
         return convertToListsMap(customAnnotationsMapping);
-    }
-
-    public void setCustomAnnotationsMapping(Map<String, List<String>> customAnnotationsMapping) {
-        this.customAnnotationsMapping = convertToArraysMap(customAnnotationsMapping);
     }
 
     @Override
@@ -329,17 +307,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return convertToListsMap(directiveAnnotationsMapping);
     }
 
-    public void setDirectiveAnnotationsMapping(Map<String, List<String>> directiveAnnotationsMapping) {
-        this.directiveAnnotationsMapping = convertToArraysMap(directiveAnnotationsMapping);
-    }
-
     @Override
     public String getPackageName() {
         return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
     }
 
     @Override
@@ -347,17 +317,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return apiPackageName;
     }
 
-    public void setApiPackageName(String apiPackageName) {
-        this.apiPackageName = apiPackageName;
-    }
-
     @Override
     public String getApiNamePrefix() {
         return apiNamePrefix;
-    }
-
-    public void setApiNamePrefix(String apiNamePrefix) {
-        this.apiNamePrefix = apiNamePrefix;
     }
 
     @Override
@@ -365,17 +327,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return apiNameSuffix;
     }
 
-    public void setApiNameSuffix(String apiNameSuffix) {
-        this.apiNameSuffix = apiNameSuffix;
-    }
-
     @Override
     public String getModelPackageName() {
         return modelPackageName;
-    }
-
-    public void setModelPackageName(String modelPackageName) {
-        this.modelPackageName = modelPackageName;
     }
 
     @Override
@@ -383,17 +337,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return modelNamePrefix;
     }
 
-    public void setModelNamePrefix(String modelNamePrefix) {
-        this.modelNamePrefix = modelNamePrefix;
-    }
-
     @Override
     public String getModelNameSuffix() {
         return modelNameSuffix;
-    }
-
-    public void setModelNameSuffix(String modelNameSuffix) {
-        this.modelNameSuffix = modelNameSuffix;
     }
 
     @Override
@@ -401,17 +347,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return modelValidationAnnotation;
     }
 
-    public void setModelValidationAnnotation(String modelValidationAnnotation) {
-        this.modelValidationAnnotation = modelValidationAnnotation;
-    }
-
     @Override
     public Boolean getGenerateBuilder() {
         return generateBuilder;
-    }
-
-    public void setGenerateBuilder(boolean generateBuilder) {
-        this.generateBuilder = generateBuilder;
     }
 
     @Override
@@ -419,17 +357,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateApis;
     }
 
-    public void setGenerateApis(boolean generateApis) {
-        this.generateApis = generateApis;
-    }
-
     @Override
     public Boolean getGenerateModelsForRootTypes() {
         return generateModelsForRootTypes;
-    }
-
-    public void setGenerateModelsForRootTypes(boolean generateModelsForRootTypes) {
-        this.generateModelsForRootTypes = generateModelsForRootTypes;
     }
 
     @Override
@@ -437,17 +367,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateEqualsAndHashCode;
     }
 
-    public void setGenerateEqualsAndHashCode(boolean generateEqualsAndHashCode) {
-        this.generateEqualsAndHashCode = generateEqualsAndHashCode;
-    }
-
     @Override
     public Boolean getGenerateImmutableModels() {
         return generateImmutableModels;
-    }
-
-    public void setGenerateImmutableModels(boolean generateImmutableModels) {
-        this.generateImmutableModels = generateImmutableModels;
     }
 
     @Override
@@ -455,17 +377,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateToString;
     }
 
-    public void setGenerateToString(boolean generateToString) {
-        this.generateToString = generateToString;
-    }
-
     @Override
     public String getApiReturnType() {
         return apiReturnType;
-    }
-
-    public void setApiReturnType(String apiReturnType) {
-        this.apiReturnType = apiReturnType;
     }
 
     @Override
@@ -473,17 +387,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return apiReturnListType;
     }
 
-    public void setApiReturnListType(String apiReturnListType) {
-        this.apiReturnListType = apiReturnListType;
-    }
-
     @Override
     public String getSubscriptionReturnType() {
         return subscriptionReturnType;
-    }
-
-    public void setSubscriptionReturnType(String subscriptionReturnType) {
-        this.subscriptionReturnType = subscriptionReturnType;
     }
 
     @Override
@@ -491,17 +397,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateExtensionFieldsResolvers;
     }
 
-    public void setGenerateExtensionFieldsResolvers(boolean generateExtensionFieldsResolvers) {
-        this.generateExtensionFieldsResolvers = generateExtensionFieldsResolvers;
-    }
-
     @Override
     public Boolean getGenerateParameterizedFieldsResolvers() {
         return generateParameterizedFieldsResolvers;
-    }
-
-    public void setGenerateParameterizedFieldsResolvers(boolean generateParameterizedFieldsResolvers) {
-        this.generateParameterizedFieldsResolvers = generateParameterizedFieldsResolvers;
     }
 
     @Override
@@ -509,17 +407,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return typeResolverPrefix;
     }
 
-    public void setTypeResolverPrefix(String typeResolverPrefix) {
-        this.typeResolverPrefix = typeResolverPrefix;
-    }
-
     @Override
     public String getTypeResolverSuffix() {
         return typeResolverSuffix;
-    }
-
-    public void setTypeResolverSuffix(String typeResolverSuffix) {
-        this.typeResolverSuffix = typeResolverSuffix;
     }
 
     @Override
@@ -532,21 +422,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return relayConfig;
     }
 
-    public void setRelayConfig(RelayConfig relayConfig) {
-        this.relayConfig = relayConfig;
-    }
-
-    public void setGenerateDataFetchingEnvironmentArgumentInApis(boolean generateDataFetchingEnvironmentArgumentInApis) {
-        this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
-    }
-
     @Override
     public Boolean getUseOptionalForNullableReturnTypes() {
         return useOptionalForNullableReturnTypes;
-    }
-
-    public void setUseOptionalForNullableReturnTypes(boolean useOptionalForNullableReturnTypes) {
-        this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
     }
 
     @Override
@@ -554,17 +432,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateApisWithThrowsException;
     }
 
-    public void setGenerateApisWithThrowsException(boolean generateApisWithThrowsException) {
-        this.generateApisWithThrowsException = generateApisWithThrowsException;
-    }
-
     @Override
     public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
         return apiRootInterfaceStrategy;
-    }
-
-    public void setApiRootInterfaceStrategy(ApiRootInterfaceStrategy apiRootInterfaceStrategy) {
-        this.apiRootInterfaceStrategy = apiRootInterfaceStrategy;
     }
 
     @Override
@@ -572,17 +442,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return apiInterfaceStrategy;
     }
 
-    public void setApiInterfaceStrategy(ApiInterfaceStrategy apiInterfaceStrategy) {
-        this.apiInterfaceStrategy = apiInterfaceStrategy;
-    }
-
     @Override
     public ApiNamePrefixStrategy getApiNamePrefixStrategy() {
         return apiNamePrefixStrategy;
-    }
-
-    public void setApiNamePrefixStrategy(ApiNamePrefixStrategy apiNamePrefixStrategy) {
-        this.apiNamePrefixStrategy = apiNamePrefixStrategy;
     }
 
     @Override
@@ -590,17 +452,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return mapToHashSet(fieldsWithResolvers);
     }
 
-    public void setFieldsWithResolvers(Set<String> fieldsWithResolvers) {
-        this.fieldsWithResolvers = mapToArray(fieldsWithResolvers);
-    }
-
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return mapToHashSet(fieldsWithoutResolvers);
-    }
-
-    public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
-        this.fieldsWithoutResolvers = mapToArray(fieldsWithoutResolvers);
     }
 
     @Override
@@ -608,17 +462,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateClient;
     }
 
-    public void setGenerateClient(boolean generateClient) {
-        this.generateClient = generateClient;
-    }
-
     @Override
     public String getRequestSuffix() {
         return requestSuffix;
-    }
-
-    public void setRequestSuffix(String requestSuffix) {
-        this.requestSuffix = requestSuffix;
     }
 
     @Override
@@ -626,34 +472,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return responseSuffix;
     }
 
-    public void setResponseSuffix(String responseSuffix) {
-        this.responseSuffix = responseSuffix;
-    }
-
     @Override
     public String getResponseProjectionSuffix() {
         return responseProjectionSuffix;
     }
 
-    public void setResponseProjectionSuffix(String responseProjectionSuffix) {
-        this.responseProjectionSuffix = responseProjectionSuffix;
-    }
-
     @Override
     public String getParametrizedInputSuffix() {
         return parametrizedInputSuffix;
-    }
-
-    public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
-        this.parametrizedInputSuffix = parametrizedInputSuffix;
-    }
-
-    public ParentInterfacesConfig getParentInterfaces() {
-        return parentInterfaces;
-    }
-
-    public void setParentInterfaces(ParentInterfacesConfig parentInterfaces) {
-        this.parentInterfaces = parentInterfaces;
     }
 
     @Override
@@ -676,44 +502,32 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return parentInterfaces.getResolver();
     }
 
-    public String getJsonConfigurationFile() {
-        return jsonConfigurationFile;
-    }
-
-    public void setJsonConfigurationFile(String jsonConfigurationFile) {
-        this.jsonConfigurationFile = jsonConfigurationFile;
-    }
-
     @Override
     public Integer getResponseProjectionMaxDepth() {
         return responseProjectionMaxDepth;
     }
 
-    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
-        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
     }
 
-    private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {
+    public String getJsonConfigurationFile() {
+        return jsonConfigurationFile;
+    }
+
+    private static Map<String, List<String>> convertToListsMap(Map<String, Properties> sourceMap) {
         if (sourceMap == null) {
             return new HashMap<>();
         }
-        Map<String, List<String>> map = new HashMap<>();
-        for (Map.Entry<String, String[]> e : sourceMap.entrySet()) {
+        Map<String, List<String>> map = new HashMap<>(sourceMap.size());
+        for (Map.Entry<String, Properties> e : sourceMap.entrySet()) {
             if (e.getValue() != null) {
-                map.put(e.getKey(), Arrays.asList(e.getValue()));
-            }
-        }
-        return map;
-    }
-
-    private static Map<String, String[]> convertToArraysMap(Map<String, List<String>> sourceMap) {
-        if (sourceMap == null) {
-            return new HashMap<>();
-        }
-        Map<String, String[]> map = new HashMap<>();
-        for (Map.Entry<String, List<String>> e : sourceMap.entrySet()) {
-            if (e.getValue() != null) {
-                map.put(e.getKey(), e.getValue().toArray(new String[0]));
+                Collection<Object> values = e.getValue().values();
+                List<String> stringValues = new ArrayList<>(values.size());
+                for (Object value : values) {
+                    stringValues.add(value.toString());
+                }
+                map.put(e.getKey(), stringValues);
             }
         }
         return map;
@@ -726,13 +540,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return new HashSet<>(Arrays.asList(sourceSet));
     }
 
-    private static String[] mapToArray(Set<String> sourceSet) {
-        if (sourceSet == null) {
-            return new String[0];
-        }
-        return sourceSet.toArray(new String[0]);
-    }
-
     private static Map<String, String> convertToMap(Properties properties) {
         if (properties == null) {
             return null;
@@ -740,17 +547,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         Map<String, String> result = new HashMap<>(properties.size());
         for (String name : properties.stringPropertyNames()) {
             result.put(name, properties.getProperty(name));
-        }
-        return result;
-    }
-
-    private static Properties convertToProperties(Map<String, String> customTypesMapping) {
-        if (customTypesMapping == null) {
-            return null;
-        }
-        Properties result = new Properties();
-        for (Map.Entry<String, String> entry : customTypesMapping.entrySet()) {
-            result.put(entry.getKey(), entry.getValue());
         }
         return result;
     }
