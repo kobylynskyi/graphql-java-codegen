@@ -15,7 +15,7 @@ import static java.util.Collections.emptyList;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), false);
+            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), false, false);
 
     private String type;
     /**
@@ -30,12 +30,14 @@ public class ParameterDefinition {
     private List<String> annotations = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
     private boolean deprecated;
+    private boolean serializeUsingObjectMapper;
 
     public ParameterDefinition() {
     }
 
     public ParameterDefinition(String type, String name, String originalName, String defaultValue,
-                               List<String> annotations, List<String> javaDoc, boolean deprecated) {
+                               List<String> annotations, List<String> javaDoc,
+                               boolean deprecated, boolean serializeUsingObjectMapper) {
         this.type = type;
         this.name = name;
         this.originalName = originalName;
@@ -43,6 +45,7 @@ public class ParameterDefinition {
         this.annotations = annotations;
         this.javaDoc = javaDoc;
         this.deprecated = deprecated;
+        this.serializeUsingObjectMapper = serializeUsingObjectMapper;
     }
 
     public String getType() {
@@ -100,4 +103,13 @@ public class ParameterDefinition {
     public void setDeprecated(boolean deprecated) {
         this.deprecated = deprecated;
     }
+
+    public boolean isSerializeUsingObjectMapper() {
+        return serializeUsingObjectMapper;
+    }
+
+    public void setSerializeUsingObjectMapper(boolean serializeUsingObjectMapper) {
+        this.serializeUsingObjectMapper = serializeUsingObjectMapper;
+    }
+
 }

@@ -178,4 +178,30 @@ class GraphQLCodegenRequestTest {
                 getFileByName(files, "EventPropertyChildParametrizedInput.java"));
     }
 
+    @Test
+    void generate_UseObjectMapperToSerializeFields_Type() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/Event_useObjectMapperForRequestSerialization.java.txt"),
+                getFileByName(files, "Event.java"));
+    }
+
+    @Test
+    void generate_UseObjectMapperToSerializeFields_Field() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("Event.createdDateTime", "java.time.ZonedDateTime");
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/Event_useObjectMapperForRequestSerialization.java.txt"),
+                getFileByName(files, "Event.java"));
+    }
+
 }

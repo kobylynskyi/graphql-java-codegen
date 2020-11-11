@@ -128,14 +128,14 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 <#list fields as field>
   <#if MapperUtil.isJavaPrimitive(field.type)>
     <#if toStringForRequest>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
     <#else>
         joiner.add("${field.originalName}: " + ${field.name});
     </#if>
   <#else>
         if (${field.name} != null) {
     <#if toStringForRequest>
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
     <#else>
       <#if field.type == "String">
             joiner.add("${field.originalName}: \"" + ${field.name} + "\"");

@@ -1,0 +1,213 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.Objects;
+import java.util.StringJoiner;
+
+/**
+ * An event that describes a thing that happens
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Event implements java.io.Serializable {
+
+    private String id;
+    private String categoryId;
+    private java.util.List<EventProperty> properties;
+    private EventStatus status;
+    private String createdBy;
+    private java.time.ZonedDateTime createdDateTime;
+    private Boolean active;
+    private Integer rating;
+
+    public Event() {
+    }
+
+    public Event(String id, String categoryId, java.util.List<EventProperty> properties, EventStatus status, String createdBy, java.time.ZonedDateTime createdDateTime, Boolean active, Integer rating) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.properties = properties;
+        this.status = status;
+        this.createdBy = createdBy;
+        this.createdDateTime = createdDateTime;
+        this.active = active;
+        this.rating = rating;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public java.util.List<EventProperty> getProperties() {
+        return properties;
+    }
+    public void setProperties(java.util.List<EventProperty> properties) {
+        this.properties = properties;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public java.time.ZonedDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+    public void setCreatedDateTime(java.time.ZonedDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Event that = (Event) obj;
+        return Objects.equals(id, that.id)
+            && Objects.equals(categoryId, that.categoryId)
+            && Objects.equals(properties, that.properties)
+            && Objects.equals(status, that.status)
+            && Objects.equals(createdBy, that.createdBy)
+            && Objects.equals(createdDateTime, that.createdDateTime)
+            && Objects.equals(active, that.active)
+            && Objects.equals(rating, that.rating);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, categoryId, properties, status, createdBy, createdDateTime, active, rating);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (id != null) {
+            joiner.add("id: " + GraphQLRequestSerializer.getEntry(id));
+        }
+        if (categoryId != null) {
+            joiner.add("categoryId: " + GraphQLRequestSerializer.getEntry(categoryId));
+        }
+        if (properties != null) {
+            joiner.add("properties: " + GraphQLRequestSerializer.getEntry(properties));
+        }
+        if (status != null) {
+            joiner.add("status: " + GraphQLRequestSerializer.getEntry(status));
+        }
+        if (createdBy != null) {
+            joiner.add("createdBy: " + GraphQLRequestSerializer.getEntry(createdBy));
+        }
+        if (createdDateTime != null) {
+            joiner.add("createdDateTime: " + GraphQLRequestSerializer.getEntry(createdDateTime, true));
+        }
+        if (active != null) {
+            joiner.add("active: " + GraphQLRequestSerializer.getEntry(active));
+        }
+        if (rating != null) {
+            joiner.add("rating: " + GraphQLRequestSerializer.getEntry(rating));
+        }
+        return joiner.toString();
+    }
+
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String categoryId;
+        private java.util.List<EventProperty> properties;
+        private EventStatus status;
+        private String createdBy;
+        private java.time.ZonedDateTime createdDateTime;
+        private Boolean active;
+        private Integer rating;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setProperties(java.util.List<EventProperty> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(java.time.ZonedDateTime createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder setRating(Integer rating) {
+            this.rating = rating;
+            return this;
+        }
+
+
+        public Event build() {
+            return new Event(id, categoryId, properties, status, createdBy, createdDateTime, active, rating);
+        }
+
+    }
+}

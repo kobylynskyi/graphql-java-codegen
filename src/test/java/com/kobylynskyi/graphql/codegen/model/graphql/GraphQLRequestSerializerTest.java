@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.DateInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyChildParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyParentParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyResponseProjection;
@@ -9,15 +11,18 @@ import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByIdsQueryReques
 import com.kobylynskyi.graphql.codegen.model.graphql.data.IssueResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.OrganizationResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.Status;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateDateMutationRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueMutationRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssuePayloadResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateNodeUnionResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.VersionQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.ZonedDateTimeSerializer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -239,6 +244,24 @@ class GraphQLRequestSerializerTest {
                 "stringVal: \"default \\\" \\\\ \\b \\f \\n \\r \\t ሴ \", " +
                 "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ ] }){ " +
                 "clientMutationId issue { activeLockReason } } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_UseObjectMapperForSomeFields(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
+                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+
+        UpdateDateMutationRequest updateDateMutationRequest = new UpdateDateMutationRequest();
+        DateInput input = new DateInput();
+        input.setDateTime(ZonedDateTime.parse("2020-07-30T22:17:17.884-05:00[America/Chicago]"));
+        updateDateMutationRequest.setInput(input);
+        GraphQLRequest graphQLRequest = new GraphQLRequest(updateDateMutationRequest);
+
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "mutation { updateDate(input: { " +
+                "dateTime: \"2020-07-31T03:17:17.884Z\" }) }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
