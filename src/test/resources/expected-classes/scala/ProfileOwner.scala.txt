@@ -1,0 +1,39 @@
+package com.github.graphql
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+trait ProfileOwner  {
+
+    def getAnyPinnableItems(): boolean
+
+    def getEmail(): String
+
+    @javax.validation.constraints.NotNull
+    def getId(): String
+
+    @javax.validation.constraints.NotNull
+    def getItemShowcase(): ProfileItemShowcase
+
+    def getLocation(): String
+
+    @javax.validation.constraints.NotNull
+    def getLogin(): String
+
+    def getName(): String
+
+    @javax.validation.constraints.NotNull
+    def getPinnableItems(): PinnableItemConnection
+
+    @javax.validation.constraints.NotNull
+    def getPinnedItems(): PinnableItemConnection
+
+    def getPinnedItemsRemaining(): int
+
+    def getViewerCanChangePinnedItems(): boolean
+
+    def getWebsiteUrl(): String
+
+}

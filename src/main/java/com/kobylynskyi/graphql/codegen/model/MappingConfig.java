@@ -71,6 +71,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String parametrizedInputSuffix;
     private Integer responseProjectionMaxDepth;
 
+    private GeneratedLanguage generatedLanguage;
+
     @Override
     public Integer getResponseProjectionMaxDepth() {
         return responseProjectionMaxDepth;
@@ -172,9 +174,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         if (customTypesMapping == null) {
             customTypesMapping = new HashMap<>();
         }
-        if (!customTypesMapping.containsKey(from)) {
-            customTypesMapping.put(from, to);
-        }
+        //TODO  should enable to override it
+        customTypesMapping.put(from, to);
     }
 
     @Override
@@ -553,5 +554,14 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
         this.parametrizedInputSuffix = parametrizedInputSuffix;
+    }
+
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
+    }
+
+    public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
+        this.generatedLanguage = generatedLanguage;
     }
 }

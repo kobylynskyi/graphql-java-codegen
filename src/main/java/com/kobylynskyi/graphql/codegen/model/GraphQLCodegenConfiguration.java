@@ -352,4 +352,12 @@ public interface GraphQLCodegenConfiguration {
      */
     Integer getResponseProjectionMaxDepth();
 
+    /**
+     * Generate code with lang
+     *
+     * @return GeneratedLanguage.SCALA or GeneratedLanguage.JAVA
+     */
+    GeneratedLanguage getGeneratedLanguage();
+
+
 }

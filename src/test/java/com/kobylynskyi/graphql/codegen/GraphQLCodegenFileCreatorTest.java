@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -29,8 +30,8 @@ class GraphQLCodegenFileCreatorTest {
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");
         dataModel.put(DataModelFields.ANNOTATIONS, Collections.emptyList());
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
-        GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, OUTPUT_DIR);
+        GraphQLCodegenFileCreator.generateFile(GeneratedLanguage.JAVA, FreeMarkerTemplatesRegistry.getTemplateWithLang(GeneratedLanguage.JAVA, "enumTemplate"), dataModel, OUTPUT_DIR);
         assertThrows(UnableToCreateFileException.class,
-                () -> GraphQLCodegenFileCreator.generateFile(FreeMarkerTemplatesRegistry.enumTemplate, dataModel, OUTPUT_DIR));
+                () -> GraphQLCodegenFileCreator.generateFile(GeneratedLanguage.JAVA, FreeMarkerTemplatesRegistry.getTemplateWithLang(GeneratedLanguage.JAVA, "enumTemplate"), dataModel, OUTPUT_DIR));
     }
 }

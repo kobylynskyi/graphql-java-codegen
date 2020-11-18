@@ -1,0 +1,440 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.Objects
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+case class Commit(
+    @javax.validation.constraints.NotNull
+    var abbreviatedOid: String,
+    @javax.validation.constraints.NotNull
+    var additions: Integer,
+    var associatedPullRequests: PullRequestConnection,
+    var author: GitActor,
+    @javax.validation.constraints.NotNull
+    var authoredByCommitter: Boolean,
+    @javax.validation.constraints.NotNull
+    var authoredDate: String,
+    @javax.validation.constraints.NotNull
+    var blame: Blame,
+    @javax.validation.constraints.NotNull
+    var changedFiles: Integer,
+    @javax.validation.constraints.NotNull
+    var comments: CommitCommentConnection,
+    @javax.validation.constraints.NotNull
+    var commitResourcePath: String,
+    @javax.validation.constraints.NotNull
+    var commitUrl: String,
+    @javax.validation.constraints.NotNull
+    var committedDate: String,
+    @javax.validation.constraints.NotNull
+    var committedViaWeb: Boolean,
+    var committer: GitActor,
+    @javax.validation.constraints.NotNull
+    var deletions: Integer,
+    var deployments: DeploymentConnection,
+    @javax.validation.constraints.NotNull
+    var history: CommitHistoryConnection,
+    @javax.validation.constraints.NotNull
+    var id: String,
+    @javax.validation.constraints.NotNull
+    var message: String,
+    @javax.validation.constraints.NotNull
+    var messageBody: String,
+    @javax.validation.constraints.NotNull
+    var messageBodyHTML: String,
+    @javax.validation.constraints.NotNull
+    var messageHeadline: String,
+    @javax.validation.constraints.NotNull
+    var messageHeadlineHTML: String,
+    @javax.validation.constraints.NotNull
+    var oid: String,
+    @javax.validation.constraints.NotNull
+    var parents: CommitConnection,
+    var pushedDate: String,
+    @javax.validation.constraints.NotNull
+    var repository: Repository,
+    @javax.validation.constraints.NotNull
+    var resourcePath: String,
+    var signature: GitSignature,
+    var status: Status,
+    @javax.validation.constraints.NotNull
+    var tarballUrl: String,
+    @javax.validation.constraints.NotNull
+    var tree: Tree,
+    @javax.validation.constraints.NotNull
+    var treeResourcePath: String,
+    @javax.validation.constraints.NotNull
+    var treeUrl: String,
+    @javax.validation.constraints.NotNull
+    var url: String,
+    @javax.validation.constraints.NotNull
+    var viewerCanSubscribe: Boolean,
+    var viewerSubscription: SubscriptionState,
+    @javax.validation.constraints.NotNull
+    var zipballUrl: String
+) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
+
+    override def toString(): String = {
+        val joiner = new StringJoiner(", ", "{ ", " }")
+        if (abbreviatedOid != null) {
+            joiner.add(s"abbreviatedOid: $GraphQLRequestSerializer.getEntry(abbreviatedOid)")
+        }
+        if (additions != null) {
+            joiner.add(s"additions: $GraphQLRequestSerializer.getEntry(additions)")
+        }
+        if (associatedPullRequests != null) {
+            joiner.add(s"associatedPullRequests: $GraphQLRequestSerializer.getEntry(associatedPullRequests)")
+        }
+        if (author != null) {
+            joiner.add(s"author: $GraphQLRequestSerializer.getEntry(author)")
+        }
+        if (authoredByCommitter != null) {
+            joiner.add(s"authoredByCommitter: $GraphQLRequestSerializer.getEntry(authoredByCommitter)")
+        }
+        if (authoredDate != null) {
+            joiner.add(s"authoredDate: $GraphQLRequestSerializer.getEntry(authoredDate)")
+        }
+        if (blame != null) {
+            joiner.add(s"blame: $GraphQLRequestSerializer.getEntry(blame)")
+        }
+        if (changedFiles != null) {
+            joiner.add(s"changedFiles: $GraphQLRequestSerializer.getEntry(changedFiles)")
+        }
+        if (comments != null) {
+            joiner.add(s"comments: $GraphQLRequestSerializer.getEntry(comments)")
+        }
+        if (commitResourcePath != null) {
+            joiner.add(s"commitResourcePath: $GraphQLRequestSerializer.getEntry(commitResourcePath)")
+        }
+        if (commitUrl != null) {
+            joiner.add(s"commitUrl: $GraphQLRequestSerializer.getEntry(commitUrl)")
+        }
+        if (committedDate != null) {
+            joiner.add(s"committedDate: $GraphQLRequestSerializer.getEntry(committedDate)")
+        }
+        if (committedViaWeb != null) {
+            joiner.add(s"committedViaWeb: $GraphQLRequestSerializer.getEntry(committedViaWeb)")
+        }
+        if (committer != null) {
+            joiner.add(s"committer: $GraphQLRequestSerializer.getEntry(committer)")
+        }
+        if (deletions != null) {
+            joiner.add(s"deletions: $GraphQLRequestSerializer.getEntry(deletions)")
+        }
+        if (deployments != null) {
+            joiner.add(s"deployments: $GraphQLRequestSerializer.getEntry(deployments)")
+        }
+        if (history != null) {
+            joiner.add(s"history: $GraphQLRequestSerializer.getEntry(history)")
+        }
+        if (id != null) {
+            joiner.add(s"id: $GraphQLRequestSerializer.getEntry(id)")
+        }
+        if (message != null) {
+            joiner.add(s"message: $GraphQLRequestSerializer.getEntry(message)")
+        }
+        if (messageBody != null) {
+            joiner.add(s"messageBody: $GraphQLRequestSerializer.getEntry(messageBody)")
+        }
+        if (messageBodyHTML != null) {
+            joiner.add(s"messageBodyHTML: $GraphQLRequestSerializer.getEntry(messageBodyHTML)")
+        }
+        if (messageHeadline != null) {
+            joiner.add(s"messageHeadline: $GraphQLRequestSerializer.getEntry(messageHeadline)")
+        }
+        if (messageHeadlineHTML != null) {
+            joiner.add(s"messageHeadlineHTML: $GraphQLRequestSerializer.getEntry(messageHeadlineHTML)")
+        }
+        if (oid != null) {
+            joiner.add(s"oid: $GraphQLRequestSerializer.getEntry(oid)")
+        }
+        if (parents != null) {
+            joiner.add(s"parents: $GraphQLRequestSerializer.getEntry(parents)")
+        }
+        if (pushedDate != null) {
+            joiner.add(s"pushedDate: $GraphQLRequestSerializer.getEntry(pushedDate)")
+        }
+        if (repository != null) {
+            joiner.add(s"repository: $GraphQLRequestSerializer.getEntry(repository)")
+        }
+        if (resourcePath != null) {
+            joiner.add(s"resourcePath: $GraphQLRequestSerializer.getEntry(resourcePath)")
+        }
+        if (signature != null) {
+            joiner.add(s"signature: $GraphQLRequestSerializer.getEntry(signature)")
+        }
+        if (status != null) {
+            joiner.add(s"status: $GraphQLRequestSerializer.getEntry(status)")
+        }
+        if (tarballUrl != null) {
+            joiner.add(s"tarballUrl: $GraphQLRequestSerializer.getEntry(tarballUrl)")
+        }
+        if (tree != null) {
+            joiner.add(s"tree: $GraphQLRequestSerializer.getEntry(tree)")
+        }
+        if (treeResourcePath != null) {
+            joiner.add(s"treeResourcePath: $GraphQLRequestSerializer.getEntry(treeResourcePath)")
+        }
+        if (treeUrl != null) {
+            joiner.add(s"treeUrl: $GraphQLRequestSerializer.getEntry(treeUrl)")
+        }
+        if (url != null) {
+            joiner.add(s"url: $GraphQLRequestSerializer.getEntry(url)")
+        }
+        if (viewerCanSubscribe != null) {
+            joiner.add(s"viewerCanSubscribe: $GraphQLRequestSerializer.getEntry(viewerCanSubscribe)")
+        }
+        if (viewerSubscription != null) {
+            joiner.add(s"viewerSubscription: $GraphQLRequestSerializer.getEntry(viewerSubscription)")
+        }
+        if (zipballUrl != null) {
+            joiner.add(s"zipballUrl: $GraphQLRequestSerializer.getEntry(zipballUrl)")
+        }
+        joiner.toString()
+    }
+}
+
+object Commit {
+
+    def builder(): Commit.Builder = new Builder()
+
+    class Builder {
+
+        private var abbreviatedOid: String = _
+        private var additions: Integer = _
+        private var associatedPullRequests: PullRequestConnection = _
+        private var author: GitActor = _
+        private var authoredByCommitter: Boolean = _
+        private var authoredDate: String = _
+        private var blame: Blame = _
+        private var changedFiles: Integer = _
+        private var comments: CommitCommentConnection = _
+        private var commitResourcePath: String = _
+        private var commitUrl: String = _
+        private var committedDate: String = _
+        private var committedViaWeb: Boolean = _
+        private var committer: GitActor = _
+        private var deletions: Integer = _
+        private var deployments: DeploymentConnection = _
+        private var history: CommitHistoryConnection = _
+        private var id: String = _
+        private var message: String = _
+        private var messageBody: String = _
+        private var messageBodyHTML: String = _
+        private var messageHeadline: String = _
+        private var messageHeadlineHTML: String = _
+        private var oid: String = _
+        private var parents: CommitConnection = _
+        private var pushedDate: String = _
+        private var repository: Repository = _
+        private var resourcePath: String = _
+        private var signature: GitSignature = _
+        private var status: Status = _
+        private var tarballUrl: String = _
+        private var tree: Tree = _
+        private var treeResourcePath: String = _
+        private var treeUrl: String = _
+        private var url: String = _
+        private var viewerCanSubscribe: Boolean = _
+        private var viewerSubscription: SubscriptionState = _
+        private var zipballUrl: String = _
+
+        def setAbbreviatedOid(abbreviatedOid: String): Builder = {
+            this.abbreviatedOid = abbreviatedOid
+            this
+        }
+
+        def setAdditions(additions: Integer): Builder = {
+            this.additions = additions
+            this
+        }
+
+        def setAssociatedPullRequests(associatedPullRequests: PullRequestConnection): Builder = {
+            this.associatedPullRequests = associatedPullRequests
+            this
+        }
+
+        def setAuthor(author: GitActor): Builder = {
+            this.author = author
+            this
+        }
+
+        def setAuthoredByCommitter(authoredByCommitter: Boolean): Builder = {
+            this.authoredByCommitter = authoredByCommitter
+            this
+        }
+
+        def setAuthoredDate(authoredDate: String): Builder = {
+            this.authoredDate = authoredDate
+            this
+        }
+
+        def setBlame(blame: Blame): Builder = {
+            this.blame = blame
+            this
+        }
+
+        def setChangedFiles(changedFiles: Integer): Builder = {
+            this.changedFiles = changedFiles
+            this
+        }
+
+        def setComments(comments: CommitCommentConnection): Builder = {
+            this.comments = comments
+            this
+        }
+
+        def setCommitResourcePath(commitResourcePath: String): Builder = {
+            this.commitResourcePath = commitResourcePath
+            this
+        }
+
+        def setCommitUrl(commitUrl: String): Builder = {
+            this.commitUrl = commitUrl
+            this
+        }
+
+        def setCommittedDate(committedDate: String): Builder = {
+            this.committedDate = committedDate
+            this
+        }
+
+        def setCommittedViaWeb(committedViaWeb: Boolean): Builder = {
+            this.committedViaWeb = committedViaWeb
+            this
+        }
+
+        def setCommitter(committer: GitActor): Builder = {
+            this.committer = committer
+            this
+        }
+
+        def setDeletions(deletions: Integer): Builder = {
+            this.deletions = deletions
+            this
+        }
+
+        def setDeployments(deployments: DeploymentConnection): Builder = {
+            this.deployments = deployments
+            this
+        }
+
+        def setHistory(history: CommitHistoryConnection): Builder = {
+            this.history = history
+            this
+        }
+
+        def setId(id: String): Builder = {
+            this.id = id
+            this
+        }
+
+        def setMessage(message: String): Builder = {
+            this.message = message
+            this
+        }
+
+        def setMessageBody(messageBody: String): Builder = {
+            this.messageBody = messageBody
+            this
+        }
+
+        def setMessageBodyHTML(messageBodyHTML: String): Builder = {
+            this.messageBodyHTML = messageBodyHTML
+            this
+        }
+
+        def setMessageHeadline(messageHeadline: String): Builder = {
+            this.messageHeadline = messageHeadline
+            this
+        }
+
+        def setMessageHeadlineHTML(messageHeadlineHTML: String): Builder = {
+            this.messageHeadlineHTML = messageHeadlineHTML
+            this
+        }
+
+        def setOid(oid: String): Builder = {
+            this.oid = oid
+            this
+        }
+
+        def setParents(parents: CommitConnection): Builder = {
+            this.parents = parents
+            this
+        }
+
+        def setPushedDate(pushedDate: String): Builder = {
+            this.pushedDate = pushedDate
+            this
+        }
+
+        def setRepository(repository: Repository): Builder = {
+            this.repository = repository
+            this
+        }
+
+        def setResourcePath(resourcePath: String): Builder = {
+            this.resourcePath = resourcePath
+            this
+        }
+
+        def setSignature(signature: GitSignature): Builder = {
+            this.signature = signature
+            this
+        }
+
+        def setStatus(status: Status): Builder = {
+            this.status = status
+            this
+        }
+
+        def setTarballUrl(tarballUrl: String): Builder = {
+            this.tarballUrl = tarballUrl
+            this
+        }
+
+        def setTree(tree: Tree): Builder = {
+            this.tree = tree
+            this
+        }
+
+        def setTreeResourcePath(treeResourcePath: String): Builder = {
+            this.treeResourcePath = treeResourcePath
+            this
+        }
+
+        def setTreeUrl(treeUrl: String): Builder = {
+            this.treeUrl = treeUrl
+            this
+        }
+
+        def setUrl(url: String): Builder = {
+            this.url = url
+            this
+        }
+
+        def setViewerCanSubscribe(viewerCanSubscribe: Boolean): Builder = {
+            this.viewerCanSubscribe = viewerCanSubscribe
+            this
+        }
+
+        def setViewerSubscription(viewerSubscription: SubscriptionState): Builder = {
+            this.viewerSubscription = viewerSubscription
+            this
+        }
+
+        def setZipballUrl(zipballUrl: String): Builder = {
+            this.zipballUrl = zipballUrl
+            this
+        }
+
+        def build(): Commit = Commit(abbreviatedOid, additions, associatedPullRequests, author, authoredByCommitter, authoredDate, blame, changedFiles, comments, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, deployments, history, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, parents, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl)
+
+    }
+}

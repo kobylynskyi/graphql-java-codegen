@@ -32,6 +32,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return config.getGeneratedLanguage();
+    }
+
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }

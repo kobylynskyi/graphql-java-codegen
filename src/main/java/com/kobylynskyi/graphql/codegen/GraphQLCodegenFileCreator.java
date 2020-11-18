@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import freemarker.template.Template;
@@ -18,12 +19,18 @@ import java.util.Map;
 class GraphQLCodegenFileCreator {
 
     private static final String EXTENSION = ".java";
+    private static final String EXTENSION_SCALA = ".scala";
 
     private GraphQLCodegenFileCreator() {
     }
 
-    static File generateFile(Template template, Map<String, Object> dataModel, File outputDir) {
-        String fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
+    static File generateFile(GeneratedLanguage language, Template template, Map<String, Object> dataModel, File outputDir) {
+        String fileName;
+        if (language.equals(GeneratedLanguage.SCALA)) {
+            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION_SCALA;
+        } else {
+            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
+        }
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
         File javaSourceFile = new File(fileOutputDir, fileName);
         try {

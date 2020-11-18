@@ -1,0 +1,23 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+import java.util.{ Map => JMap }
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+class VersionQueryResponse extends GraphQLResult[Map[String, Int]] {
+
+    def version(): Int = {
+        val data: JMap[String, Int] = getData()
+        if (data != null) data.get(VersionQueryResponse.OPERATION_NAME) else null
+    }
+
+}
+
+object VersionQueryResponse {
+
+    private final val OPERATION_NAME: String = "version"
+
+}
