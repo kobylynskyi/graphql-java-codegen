@@ -4,6 +4,7 @@ import java.util
 
 import com.kobylynskyi.graphql.codegen.model.{ ApiInterfaceStrategy, ApiNamePrefixStrategy, ApiRootInterfaceStrategy, RelayConfig }
 import sbt._
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
 
 /**
  *
@@ -11,8 +12,6 @@ import sbt._
  * @version 1.0,2020/7/15
  */
 trait GraphQLCodegenKeys {
-
-  import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
 
   //Conflict with SBT key
   val generatePackageName = settingKey[Option[String]]("generatePackageName")
