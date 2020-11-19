@@ -3,6 +3,7 @@
 package ${package}
 
 </#if>
+import scala.beans.BeanProperty
 <#if imports??>
 <#list imports as import>
 import ${import}.*
@@ -17,6 +18,23 @@ import java.util.Objects
 <#if toString>
 import java.util.StringJoiner
 </#if>
+<#if fields?has_content>
+    <#if enumImportItSelfInScala?has_content>
+        <#list fields as field>
+            <#list enumImportItSelfInScala as enum>
+                <#if field.type?contains("Seq[")>
+                    <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
+import ${field.type?replace("Seq[", "")?replace("]", "")}._
+                    </#if>
+                <#else >
+                    <#if enum == field.type>
+import ${field.type}._
+                    </#if>
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -27,7 +45,7 @@ import java.util.StringJoiner
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
@@ -37,14 +55,14 @@ import java.util.StringJoiner
 case class ${className}(
 <#if fields?has_content>
 <#list fields as field>
-    <#if field.deprecated>
-        @Deprecated
-    </#if>
+  <#if field.deprecated>
+    @Deprecated
+  </#if>
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type?replace('<','[')? replace('>',']')}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
-    </#list>
+    @BeanProperty <#if !immutableModels>var <#else></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+</#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {
 
@@ -53,28 +71,28 @@ case class ${className}(
         val joiner = new StringJoiner(", ", "{ ", " }")
 <#if fields?has_content>
 <#list fields as field>
-  <#if MapperUtil.isJavaPrimitive(field.type)>
+  <#if MapperUtil.isScalaPrimitive(field.type)>
     <#if toStringForRequest>
-        joiner.add(s"${field.originalName}: $GraphQLRequestSerializer.getEntry(${field.name})")
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
     <#else>
-        joiner.add(s"${field.originalName}: $${field.name}")
+        joiner.add("${field.originalName}: " + ${field.name})
     </#if>
   <#else>
         if (${field.name} != null) {
     <#if toStringForRequest>
-            joiner.add(s"${field.originalName}: $GraphQLRequestSerializer.getEntry(${field.name})")
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
     <#else>
       <#if field.type == "String">
-            joiner.add(s"${field.originalName}: \"$${field.name}\"")
+            joiner.add("${field.originalName}: \"${field.name}\"")
       <#else>
-            joiner.add(s"${field.originalName}: $${field.name}")
+            joiner.add(${field.originalName}: ${field.name}")
       </#if>
     </#if>
         }
   </#if>
 </#list>
 </#if>
-        joiner.toString()
+        joiner.toString
     }
 </#if>
 }
@@ -88,7 +106,7 @@ object ${className} {
 
 <#if fields?has_content>
     <#list fields as field>
-        private var ${field.name}: ${field.type?replace('<','[')? replace('>',']')} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
     </#list>
 </#if>
 
@@ -104,7 +122,7 @@ object ${className} {
         <#if field.deprecated>
         @Deprecated
         </#if>
-        def set${field.name?cap_first}(${field.name}: ${field.type?replace('<','[')? replace('>',']')}): Builder = {
+        def set${field.name?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}
             this
         }

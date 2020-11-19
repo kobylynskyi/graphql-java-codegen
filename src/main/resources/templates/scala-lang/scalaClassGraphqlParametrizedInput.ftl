@@ -8,6 +8,23 @@ import java.util.StringJoiner
 <#if equalsAndHashCode>
 import java.util.Objects
 </#if>
+<#if fields?has_content>
+    <#if enumImportItSelfInScala?has_content>
+        <#list fields as field>
+            <#list enumImportItSelfInScala as enum>
+                <#if field.type?contains("Seq[")>
+                    <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
+import ${field.type?replace("Seq[", "")?replace("]", "")}._
+                    </#if>
+                <#else >
+                    <#if enum == field.type>
+import ${field.type}._
+                    </#if>
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -18,7 +35,7 @@ import java.util.Objects
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
@@ -35,12 +52,12 @@ class ${className} extends GraphQLParametrizedInput {
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    private var ${field.name}: ${field.type?replace('<','[')? replace('>',']')} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
+    private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
 </#list>
 </#if>
 
 <#if fields?has_content>
-    def this(<#list fields as field>${field.name}: ${field.type?replace('<','[')? replace('>',']')}<#if field_has_next>, </#if></#list>) {
+    def this(<#list fields as field>${field.name}: ${field.type}<#if field_has_next>, </#if></#list>) {
         this()
     <#list fields as field>
         this.${field.name} = ${field.name}
@@ -60,7 +77,7 @@ class ${className} extends GraphQLParametrizedInput {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    def ${field.name}(${field.name}: ${field.type?replace('<','[')? replace('>',']')}): ${className} = {
+    def ${field.name}(${field.name}: ${field.type}): ${className} = {
         this.${field.name} = ${field.name}
         this
     }
@@ -68,17 +85,17 @@ class ${className} extends GraphQLParametrizedInput {
 </#list>
 </#if>
 <#if equalsAndHashCode>
-    override def equals(obj: AnyRef): Boolean = {
+    override def equals(obj: Any): Boolean = {
         if (this == obj) {
             return true
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass != obj.getClass) {
             return false
         }
-        val ${className} that = obj.asInstanceOf[${className}]
+        val that = obj.asInstanceOf[${className}]
 <#if fields?has_content>
-        return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
-            && </#if></#list>
+        return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next> &&
+        </#if></#list>
 <#else>
         true
 </#if>
@@ -98,11 +115,11 @@ class ${className} extends GraphQLParametrizedInput {
 <#if fields?has_content>
 <#list fields as field>
         if (${field.name} != null) {
-            joiner.add(s"${field.originalName}: $GraphQLRequestSerializer.getEntry(${field.name})")
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
         }
 </#list>
 </#if>
-        joiner.toString()
+        joiner.toString
     }
 
 }

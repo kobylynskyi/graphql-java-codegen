@@ -44,6 +44,9 @@ public class MappingConfigConstants {
     public static final String DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING = "3";
     public static final int DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH = 3;
 
+    public static final GeneratedLanguage GENERATED_LANGUAGE = GeneratedLanguage.JAVA;
+    public static final String GENERATED_LANGUAGE_STRING = "JAVA";
+
     private MappingConfigConstants() {
     }
 }

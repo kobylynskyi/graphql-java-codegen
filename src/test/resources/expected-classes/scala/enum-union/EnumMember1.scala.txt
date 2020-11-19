@@ -1,0 +1,13 @@
+package com.kobylynskyi.graphql.enumunion
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+object EnumMember1 extends Enumeration with EnumUnion {
+
+    type EnumMember1 = Value
+
+    val VALUE: Value = Value("VALUE")
+
+}

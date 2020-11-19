@@ -169,7 +169,11 @@ public class GraphQLCodegen {
             mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH);
         }
         if(mappingConfig.getGeneratedLanguage() == null) {
-            mappingConfig.setGeneratedLanguage(GeneratedLanguage.JAVA);
+            mappingConfig.setGeneratedLanguage(MappingConfigConstants.GENERATED_LANGUAGE);
+        }
+        if(GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
+            // functional expression
+            mappingConfig.setGenerateImmutableModels(true);
         }
     }
 
@@ -249,6 +253,9 @@ public class GraphQLCodegen {
         MappingContext context = new MappingContext(mappingConfig, document, generatedInformation);
 
         List<File> generatedFiles = new ArrayList<>();
+        for (ExtendedEnumTypeDefinition extendedEnumTypeDefinition : document.getEnumDefinitions()) {
+            generatedFiles.add(generateEnum(context, extendedEnumTypeDefinition));
+        }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
             generatedFiles.addAll(generateType(context, extendedObjectTypeDefinition));
         }
@@ -266,9 +273,6 @@ public class GraphQLCodegen {
         }
         for (ExtendedInputObjectTypeDefinition extendedInputObjectTypeDefinition : document.getInputDefinitions()) {
             generatedFiles.add(generateInput(context, extendedInputObjectTypeDefinition));
-        }
-        for (ExtendedEnumTypeDefinition extendedEnumTypeDefinition : document.getEnumDefinitions()) {
-            generatedFiles.add(generateEnum(context, extendedEnumTypeDefinition));
         }
         for (ExtendedUnionTypeDefinition extendedUnionTypeDefinition : document.getUnionDefinitions()) {
             generatedFiles.addAll(generateUnion(context, extendedUnionTypeDefinition));
@@ -435,14 +439,26 @@ public class GraphQLCodegen {
                 mappingConfig.putCustomTypeMappingIfAbsent(extension.getName(), "String");
             }
         }
-        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
-        mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
+        if (GeneratedLanguage.JAVA.equals(mappingConfig.getGeneratedLanguage())) {
+            mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
+            mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
+            mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
+            mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
+            mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
+            mappingConfig.putCustomTypeMappingIfAbsent("Float!", "double");
+            mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
+            mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
+        } else if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
+            // scala primitive cannot be null, so use not null primitive type as java type
+            mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
+            mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
+            mappingConfig.putCustomTypeMappingIfAbsent("Int", "java.lang.Integer");
+            mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
+            mappingConfig.putCustomTypeMappingIfAbsent("Float", "java.lang.Double");
+            mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
+            mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "java.lang.Boolean");
+            mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
+        }
     }
 
 }

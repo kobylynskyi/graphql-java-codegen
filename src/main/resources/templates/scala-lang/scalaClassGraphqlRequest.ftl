@@ -9,6 +9,23 @@ import java.util.{ Map => JMap }
 <#if toString || equalsAndHashCode>
 import java.util.Objects
 </#if>
+<#if fields?has_content>
+    <#if enumImportItSelfInScala?has_content>
+        <#list fields as field>
+            <#list enumImportItSelfInScala as enum>
+                <#if field.type?contains("Seq[")>
+                    <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
+import ${field.type?replace("Seq[", "")?replace("]", "")}._
+                    </#if>
+                <#else >
+                    <#if enum == field.type>
+import ${field.type}._
+                    </#if>
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -19,7 +36,7 @@ import java.util.Objects
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
@@ -29,7 +46,7 @@ import java.util.Objects
 class ${className} extends GraphQLOperationRequest {
 
     private var alias: String = _
-    private final lazy val input = new JLinkedHashMap[String, AnyRef]()
+    private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
 
     def this(alias: String) {
         this()
@@ -48,7 +65,7 @@ class ${className} extends GraphQLOperationRequest {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    def set${field.name?cap_first}(${field.name}: ${field.type?replace('<','[')? replace('>',']')} ): Unit = {
+    def set${field.name?cap_first}(${field.name}: ${field.type} ): Unit = {
         this.input.put("${field.originalName}", ${field.name})
     }
 
@@ -60,17 +77,17 @@ class ${className} extends GraphQLOperationRequest {
 
     override def getAlias(): String = if (alias != null) alias else ${className}.OPERATION_NAME
 
-    override def getInput(): JMap[String, AnyRef] = input
-
+    override def getInput(): JMap[String, java.lang.Object] = input
 <#if equalsAndHashCode>
-    override def equals(Object obj): Boolean = {
+
+    override def equals(obj: Any): Boolean = {
         if (this == obj) {
             return true
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass != obj.getClass) {
             return false
         }
-        val ${className} that = obj.asInstanceOf[${className}]
+        val that = obj.asInstanceOf[${className}]
         Objects.equals(getOperationType(), that.getOperationType()) &&
                    Objects.equals(getOperationName(), that.getOperationName()) &&
                    Objects.equals(input, that.input)
@@ -79,6 +96,7 @@ class ${className} extends GraphQLOperationRequest {
     override def hashCode(): Int = Objects.hash(getOperationType(), getOperationName(), input)
 </#if>
 <#if toString>
+
     override def toString(): String = Objects.toString(input)
 </#if>
 }
@@ -96,7 +114,7 @@ object ${className} {
         private var $alias: String = _
         <#if fields?has_content>
             <#list fields as field>
-        private var ${field.name}: ${field.type?replace('<','[')? replace('>',']')} = <#if field.defaultValue?has_content> ${field.defaultValue} <#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content> ${field.defaultValue} <#else>_</#if>
             </#list>
         </#if>
 

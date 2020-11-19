@@ -1,0 +1,40 @@
+package com.kobylynskyi.graphql.enumunion
+
+
+import EnumMember1._
+import EnumUnion._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class TypeWithEnum(
+    test1: EnumMember1,
+    test2: EnumUnion
+) {
+
+}
+
+object TypeWithEnum {
+
+    def builder(): TypeWithEnum.Builder = new Builder()
+
+    class Builder {
+
+        private var test1: EnumMember1 = _
+        private var test2: EnumUnion = _
+
+        def setTest1(test1: EnumMember1): Builder = {
+            this.test1 = test1
+            this
+        }
+
+        def setTest2(test2: EnumUnion): Builder = {
+            this.test2 = test2
+            this
+        }
+
+        def build(): TypeWithEnum = TypeWithEnum(test1, test2)
+
+    }
+}

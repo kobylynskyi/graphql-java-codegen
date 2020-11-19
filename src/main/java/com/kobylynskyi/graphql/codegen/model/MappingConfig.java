@@ -127,6 +127,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         parametrizedInputSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getParametrizedInputSuffix);
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
+        generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
@@ -174,8 +175,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         if (customTypesMapping == null) {
             customTypesMapping = new HashMap<>();
         }
-        //TODO  should enable to override it
-        customTypesMapping.put(from, to);
+        if (!customTypesMapping.containsKey(from)) {
+            customTypesMapping.put(from, to);
+        }
     }
 
     @Override

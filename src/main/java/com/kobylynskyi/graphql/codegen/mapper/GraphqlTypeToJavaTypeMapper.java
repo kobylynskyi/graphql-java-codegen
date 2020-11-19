@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -32,9 +33,14 @@ import static java.util.Arrays.asList;
 public class GraphqlTypeToJavaTypeMapper {
 
     private static final String JAVA_UTIL_LIST = "java.util.List";
+    private static final String SCALA_UTIL_LIST = "Seq";
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
+    private static final String SCALA_UTIL_OPTIONAL = "Option";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
+
+    private static final Set<String> SCALA_PRIMITIVE_TYPES = new HashSet<>(asList(
+            "Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
 
     private GraphqlTypeToJavaTypeMapper() {
     }
@@ -103,9 +109,9 @@ public class GraphqlTypeToJavaTypeMapper {
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getJavaType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName, false, true);
             if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
-                mappedCollectionType.setJavaName(wrapSuperTypeIntoJavaList(mappedCollectionType.getJavaName()));
+                mappedCollectionType.setJavaName(wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName()));
             } else {
-                mappedCollectionType.setJavaName(wrapIntoJavaList(mappedCollectionType.getJavaName()));
+                mappedCollectionType.setJavaName(wrapIntoList(mappingContext, mappedCollectionType.getJavaName()));
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
@@ -226,24 +232,34 @@ public class GraphqlTypeToJavaTypeMapper {
     }
 
     /**
-     * Wrap Java type into {@link java.util.List}. E.g.: {@code "String"} becomes {@code "List<String>"}
+     * Wrap Java/Scala type into {@link java.util.List}. E.g.: {@code "String"} becomes {@code "List<String>"}
+     * E.g.: {@code "String"} becomes {@code "Seq[String]"} in Scala
      *
-     * @param type The name of a type that will be wrapped into List<>
-     * @return String The name of the given type, wrapped into List<>
+     * @param type           The name of a type that will be wrapped into List<> or Seq[] in Scala
+     * @param mappingContext Global mapping context
+     * @return String The name of the given type, wrapped into List<> or Seq[] in Scala
      */
-    private static String wrapIntoJavaList(String type) {
-        return getGenericsString(JAVA_UTIL_LIST, type);
+    private static String wrapIntoList(MappingContext mappingContext, String type) {
+        if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+            return getGenericsString(mappingContext, SCALA_UTIL_LIST, type);
+        }
+        return getGenericsString(mappingContext, JAVA_UTIL_LIST, type);
     }
 
     /**
      * Return upper bounded wildcard for the given interface type:
      * {@code "Foo"} becomes {@code "List<? extends Foo>"}.
+     * {@code "Foo"} becomes {@code "Seq[_ <: Foo]"} in Scala.
      *
-     * @param type The name of a type whose upper bound wildcard will be wrapped into a list.
+     * @param type           The name of a type whose upper bound wildcard will be wrapped into a list.
+     * @param mappingContext Global mapping context
      * @return String The name of the the wrapped type.
      */
-    private static String wrapSuperTypeIntoJavaList(String type) {
-        return getGenericsString(JAVA_UTIL_LIST, "? extends " + type);
+    private static String wrapSuperTypeIntoList(MappingContext mappingContext, String type) {
+        if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+            return getGenericsString(mappingContext, SCALA_UTIL_LIST, "_ <: " + type);
+        }
+        return getGenericsString(mappingContext, JAVA_UTIL_LIST, "? extends " + type);
     }
 
     /**
@@ -269,7 +285,7 @@ public class GraphqlTypeToJavaTypeMapper {
      * @param mappingContext  Global mapping context
      * @param namedDefinition Named definition
      * @param parentTypeName  Name of the parent type
-     * @return Java type wrapped into the subscriptionReturnType
+     * @return Java/Scala type wrapped into the subscriptionReturnType
      */
     static String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               ExtendedFieldDefinition fieldDef,
@@ -279,14 +295,30 @@ public class GraphqlTypeToJavaTypeMapper {
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
             if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
                 // in case it is subscription and subscriptionReturnType is set
-                return getGenericsString(mappingContext.getSubscriptionReturnType(), javaTypeName);
+                return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), javaTypeName);
             }
         } else if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())) {
             // wrap the type into java.util.Optional (except lists)
             if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
-                return getGenericsString(JAVA_UTIL_OPTIONAL, javaTypeName);
+                return getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, javaTypeName);
+            }
+            // wrap the type into java.util.Optional (except java list and scala list)
+            if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(SCALA_UTIL_LIST) && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
+                return getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, javaTypeName);
             }
         } else {
+            // scala
+            if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+                if (javaTypeName.startsWith(SCALA_UTIL_LIST) &&
+                        Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                    // in case it is query/mutation, return type is list and apiReturnListType is set
+                    return javaTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
+                }
+                if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
+                    // in case it is query/mutation and apiReturnType is set
+                    return getGenericsString(mappingContext, mappingContext.getApiReturnType(), javaTypeName);
+                }
+            }
             if (javaTypeName.startsWith(JAVA_UTIL_LIST) &&
                     Utils.isNotBlank(mappingContext.getApiReturnListType())) {
                 // in case it is query/mutation, return type is list and apiReturnListType is set
@@ -294,7 +326,7 @@ public class GraphqlTypeToJavaTypeMapper {
             }
             if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
                 // in case it is query/mutation and apiReturnType is set
-                return getGenericsString(mappingContext.getApiReturnType(), javaTypeName);
+                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), javaTypeName);
             }
         }
         return GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition);
@@ -305,9 +337,16 @@ public class GraphqlTypeToJavaTypeMapper {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphqlTypeName));
-            if (isJavaPrimitive(possiblyPrimitiveType)) {
-                return possiblyPrimitiveType;
+            if (GeneratedLanguage.JAVA.equals(mappingContext.getGeneratedLanguage())) {
+                if (isJavaPrimitive(possiblyPrimitiveType)) {
+                    return possiblyPrimitiveType;
+                }
+            } else if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+                if (isScalaPrimitive(possiblyPrimitiveType)) {
+                    return possiblyPrimitiveType;
+                }
             }
+            //TODO kotlin
         }
         return namedDefinition.getJavaName();
     }
@@ -316,11 +355,18 @@ public class GraphqlTypeToJavaTypeMapper {
         return JAVA_PRIMITIVE_TYPES.contains(javaType);
     }
 
+    public static boolean isScalaPrimitive(String scalaType) {
+        return SCALA_PRIMITIVE_TYPES.contains(scalaType);
+    }
+
     private static String getMandatoryType(String typeName) {
         return typeName + "!";
     }
 
-    static String getGenericsString(String genericType, String typeParameter) {
+    static String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
+        if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+            return String.format("%s[%s]", genericType, typeParameter);
+        }
         return String.format("%s<%s>", genericType, typeParameter);
     }
 
@@ -330,5 +376,6 @@ public class GraphqlTypeToJavaTypeMapper {
         }
         return Collections.emptyList();
     }
+
 
 }

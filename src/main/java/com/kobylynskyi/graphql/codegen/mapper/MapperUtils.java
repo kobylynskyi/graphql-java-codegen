@@ -1,25 +1,16 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedImplementingTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.*;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
 import graphql.language.SourceLocation;
 import graphql.language.TypeName;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,8 +23,19 @@ public class MapperUtils {
             "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
+    private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
+            "package", "import", "class", "object", "trait", "extends", "with", "type", "forSome",
+            "private", "protected", "abstract", "sealed", "final", "implicit", "lazy", "override"
+            , "try", "catch", "finally", "throw", "if", "else", "match", "case", "do", "while", "for", "return", "yield",
+            "def", "val", "var", "this", "super", "new", "true", "false", "null"
+    ));
+
     private static final Set<String> JAVA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
             "getClass", "notify", "notifyAll", "wait"));
+
+    //TODO maybe have others
+    private static final Set<String> SCALA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
+            "getClass", "notify", "notifyAll", "wait", "clone", "finalize"));
 
     private MapperUtils() {
     }
@@ -45,12 +47,20 @@ public class MapperUtils {
      * * 'int' becomes 'Int'
      *
      * @param fieldName any string
+     * @param mappingContext  Global mapping context
      * @return capitalized value if it is restricted in Java, same value as parameter otherwise
      */
-    public static String capitalizeIfRestricted(String fieldName) {
-        if (JAVA_RESTRICTED_KEYWORDS.contains(fieldName)) {
-            return Utils.capitalize(fieldName);
+    public static String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
+        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)) {
+            if (JAVA_RESTRICTED_KEYWORDS.contains(fieldName)) {
+                return Utils.capitalize(fieldName);
+            }
+        } else if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.SCALA)) {
+            if (SCALA_RESTRICTED_KEYWORDS.contains(fieldName)) {
+                return Utils.capitalize(fieldName);
+            }
         }
+        //TODO kotlin
         return fieldName;
     }
 
@@ -62,14 +72,25 @@ public class MapperUtils {
      * * 'this' becomes 'This'
      *
      * @param methodName any string
+     * @param mappingContext  Global mapping context
      * @return capitalized value if it is restricted in Java, same value as parameter otherwise
      */
-    public static String capitalizeMethodNameIfRestricted(String methodName) {
-        if (JAVA_RESTRICTED_KEYWORDS.contains(methodName)) {
-            return Utils.capitalize(methodName);
-        }
-        if (JAVA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-            return Utils.capitalize(methodName);
+    public static String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
+        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)) {
+            if (JAVA_RESTRICTED_KEYWORDS.contains(methodName)) {
+                return Utils.capitalize(methodName);
+            }
+            if (JAVA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
+                return Utils.capitalize(methodName);
+            }
+        } else if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.SCALA)) {
+            if (SCALA_RESTRICTED_KEYWORDS.contains(methodName)) {
+                return Utils.capitalize(methodName);
+            }
+            if (SCALA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
+                return Utils.capitalize(methodName);
+            }
+            //TODO kotlin
         }
         return methodName;
     }
@@ -77,13 +98,15 @@ public class MapperUtils {
     /**
      * Generates a model class name including prefix and suffix (if any)
      *
-     * @param mappingContext     Global mapping context
+     * @param mappingContext     Global mapping context, record enum type
      * @param extendedDefinition GraphQL extended definition
      * @return Class name of GraphQL model node
      */
     static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                        ExtendedDefinition<?, ?> extendedDefinition) {
-        return getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
+        String modelName = getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
+        mappingContext.getEnumImportItSelfInScala().add(modelName);
+        return modelName;
     }
 
     /**

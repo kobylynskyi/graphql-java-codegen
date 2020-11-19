@@ -1,0 +1,82 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest
+import java.util.{ LinkedHashMap => JLinkedHashMap }
+import java.util.{ Map => JMap }
+import java.util.Objects
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
+
+    private var alias: String = _
+    private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
+
+    def this(alias: String) {
+        this()
+        this.alias = alias
+    }
+
+    def setInput(input: AddLabelsToLabelableInput ): Unit = {
+        this.input.put("input", input)
+    }
+
+    override def getOperationType(): GraphQLOperation = AddLabelsToLabelableMutationRequest.OPERATION_TYPE
+
+    override def getOperationName(): String = AddLabelsToLabelableMutationRequest.OPERATION_NAME
+
+    override def getAlias(): String = if (alias != null) alias else AddLabelsToLabelableMutationRequest.OPERATION_NAME
+
+    override def getInput(): JMap[String, java.lang.Object] = input
+
+    override def equals(obj: Any): Boolean = {
+        if (this == obj) {
+            return true
+        }
+        if (obj == null || getClass != obj.getClass) {
+            return false
+        }
+        val that = obj.asInstanceOf[AddLabelsToLabelableMutationRequest]
+        Objects.equals(getOperationType(), that.getOperationType()) &&
+                   Objects.equals(getOperationName(), that.getOperationName()) &&
+                   Objects.equals(input, that.input)
+    }
+
+    override def hashCode(): Int = Objects.hash(getOperationType(), getOperationName(), input)
+
+    override def toString(): String = Objects.toString(input)
+}
+
+object AddLabelsToLabelableMutationRequest {
+
+    final val OPERATION_NAME: String = "addLabelsToLabelable"
+    final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.MUTATION
+
+    def builder(): Builder = new Builder()
+
+    class Builder {
+
+        private var $alias: String = _
+        private var input: AddLabelsToLabelableInput = _
+
+        def alias(alias: String): Builder = {
+            this.$alias = alias
+            this
+        }
+
+        def setInput(input: AddLabelsToLabelableInput ): Builder = {
+            this.input = input
+            this
+        }
+
+        def build(): AddLabelsToLabelableMutationRequest = {
+            val obj = new AddLabelsToLabelableMutationRequest($alias)
+            obj.setInput(input)
+            obj
+        }
+
+    }
+}

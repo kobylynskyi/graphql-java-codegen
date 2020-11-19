@@ -1,0 +1,13 @@
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait Node {
+
+    @javax.validation.constraints.NotNull
+    def getId(): String
+
+    def getCreatedBy(): String
+
+}

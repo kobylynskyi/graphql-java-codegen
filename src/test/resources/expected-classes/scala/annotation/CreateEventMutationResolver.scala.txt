@@ -1,0 +1,21 @@
+package com.kobylynskyi.graphql.test1
+
+
+/**
+ * Create a new event.
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait CreateEventMutationResolver {
+
+    /**
+     * Create a new event.
+     */
+    @javax.validation.constraints.NotNull
+    @com.example.CustomAnnotation(roles=Array("admin", "moderator"), boo=Array(true, false, true), float=Array("12.0", "null"), int=42, n="null")
+    @throws[Exception]
+    def createEvent(categoryId: String, createdBy: String): Event
+
+}

@@ -14,14 +14,14 @@ import java.util.{ Map => JMap }
 </#if>
 <#if generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
 <#list annotations as annotation>
 @${annotation}
 </#list>
-class ${className} extends GraphQLResult[Map[String, ${returnTypeName}]] {
+class ${className} extends GraphQLResult[JMap[String, ${returnTypeName}]] {
 
 <#if javaDoc?has_content>
     /**
@@ -33,8 +33,8 @@ class ${className} extends GraphQLResult[Map[String, ${returnTypeName}]] {
 <#if deprecated>
     @Deprecated
 </#if>
-    def ${methodName}(): ${returnTypeName?replace('<','[')? replace('>',']')} = {
-        val data: JMap[String, ${returnTypeName}] = getData()
+    def ${methodName}(): ${returnTypeName} = {
+        val data: JMap[String, ${returnTypeName}] = getData
         if (data != null) data.get(${className}.OPERATION_NAME) else null
     }
 

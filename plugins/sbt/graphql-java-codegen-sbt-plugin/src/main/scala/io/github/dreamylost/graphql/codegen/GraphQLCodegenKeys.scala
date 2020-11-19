@@ -12,6 +12,8 @@ import sbt._
  */
 trait GraphQLCodegenKeys {
 
+  import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
+
   //Conflict with SBT key
   val generatePackageName = settingKey[Option[String]]("generatePackageName")
 
@@ -110,6 +112,8 @@ trait GraphQLCodegenKeys {
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
   val relayConfig = settingKey[RelayConfig]("Can be used to supply a custom configuration for Relay support.")
+
+  val generatedLanguage = settingKey[GeneratedLanguage]("Generate code with language, like java/scala.")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

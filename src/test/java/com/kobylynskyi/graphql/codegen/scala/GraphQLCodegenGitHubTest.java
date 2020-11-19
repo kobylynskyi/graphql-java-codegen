@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.core.StringContains;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,10 +36,10 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
     }
 
-//    @AfterEach
-//    void cleanup() {
-//        Utils.deleteDir(outputBuildDir);
-//    }
+    @AfterEach
+    void cleanup() {
+        Utils.deleteDir(outputBuildDir);
+    }
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
@@ -118,6 +119,21 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_NoPrimitives() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Integer");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "java.lang.Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "java.lang.Boolean");
+        mappingConfig.setUseOptionalForNullableReturnTypes(true);
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_withoutPrimitives.scala.txt"),
+                getFileByName(files, "Commit.scala"));
+    }
+
+    @Test
+    void generate_Primitives() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
         mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
@@ -127,7 +143,7 @@ class GraphQLCodegenGitHubTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_withoutPrimitives.scala.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_withPrimitives.scala.txt"),
                 getFileByName(files, "Commit.scala"));
     }
 
@@ -146,6 +162,27 @@ class GraphQLCodegenGitHubTest {
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/VersionQueryResponse_int.scala.txt"),
                 getFileByName(files, "VersionQueryResponse.scala"));
+    }
+
+    @Test
+    void generate_ScalaList() throws Exception {
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/AddLabelsToLabelableInput.scala.txt"),
+                getFileByName(files, "AddLabelsToLabelableInput.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/AddLabelsToLabelableMutationRequest.scala.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationRequest.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/AddLabelsToLabelableMutationResolver.scala.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationResolver.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/AddLabelsToLabelableMutationResponse.scala.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationResponse.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/AddLabelsToLabelablePayload.scala.txt"),
+                getFileByName(files, "AddLabelsToLabelablePayload.scala"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/CodesOfConductQueryResolver.scala.txt"),
+                getFileByName(files, "CodesOfConductQueryResolver.scala"));
     }
 
 

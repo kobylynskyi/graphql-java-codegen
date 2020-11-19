@@ -1,33 +1,34 @@
 package com.github.graphql
 
+import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import java.util.Objects
 import java.util.StringJoiner
 
 @javax.annotation.Generated(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
 case class GithubAcceptTopicSuggestionInputTO(
-    var clientMutationId: String,
+    @BeanProperty clientMutationId: String,
     @javax.validation.constraints.NotNull
-    var name: String,
+    @BeanProperty name: String,
     @javax.validation.constraints.NotNull
-    var repositoryId: String
+    @BeanProperty repositoryId: String
 ) {
 
     override def toString(): String = {
         val joiner = new StringJoiner(", ", "{ ", " }")
         if (clientMutationId != null) {
-            joiner.add(s"clientMutationId: $GraphQLRequestSerializer.getEntry(clientMutationId)")
+            joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
         }
         if (name != null) {
-            joiner.add(s"name: $GraphQLRequestSerializer.getEntry(name)")
+            joiner.add("name: " + GraphQLRequestSerializer.getEntry(name))
         }
         if (repositoryId != null) {
-            joiner.add(s"repositoryId: $GraphQLRequestSerializer.getEntry(repositoryId)")
+            joiner.add("repositoryId: " + GraphQLRequestSerializer.getEntry(repositoryId))
         }
-        joiner.toString()
+        joiner.toString
     }
 }
 

@@ -1,0 +1,40 @@
+import scala.beans.BeanProperty
+import Status._
+import AssetInput._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class EventInput(
+    @javax.validation.constraints.NotNull
+    @BeanProperty status: Status,
+    @javax.validation.constraints.NotNull
+    @BeanProperty assets: Seq[AssetInput]
+) {
+
+}
+
+object EventInput {
+
+    def builder(): EventInput.Builder = new Builder()
+
+    class Builder {
+
+        private var status: Status = _
+        private var assets: Seq[AssetInput] = _
+
+        def setStatus(status: Status): Builder = {
+            this.status = status
+            this
+        }
+
+        def setAssets(assets: Seq[AssetInput]): Builder = {
+            this.assets = assets
+            this
+        }
+
+        def build(): EventInput = EventInput(status, assets)
+
+    }
+}

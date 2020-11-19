@@ -8,20 +8,20 @@ import java.util.Objects
  * Response projection for SearchResultItem
  */
 @javax.annotation.Generated(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
 class SearchResultItemResponseProjection extends GraphQLResponseProjection {
 
     override def all$(): SearchResultItemResponseProjection = all$(3)
 
-    override def all$(int maxDepth): SearchResultItemResponseProjection = {
+    override def all$(maxDepth: Int): SearchResultItemResponseProjection = {
         this.typename()
         this
     }
 
-    def onApp(subProjection: AppResponseProjection ): SearchResultItemResponseProjection  {
-        onApp(null, subProjection)
+    def onApp(subProjection: AppResponseProjection ): SearchResultItemResponseProjection = {
+        onApp(null.asInstanceOf[String], subProjection)
     }
 
     def onApp(alias: String, subProjection: AppResponseProjection): SearchResultItemResponseProjection = {
@@ -29,8 +29,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onRepository(subProjection: RepositoryResponseProjection ): SearchResultItemResponseProjection  {
-        onRepository(null, subProjection)
+    def onRepository(subProjection: RepositoryResponseProjection ): SearchResultItemResponseProjection = {
+        onRepository(null.asInstanceOf[String], subProjection)
     }
 
     def onRepository(alias: String, subProjection: RepositoryResponseProjection): SearchResultItemResponseProjection = {
@@ -38,8 +38,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onIssue(subProjection: IssueResponseProjection ): SearchResultItemResponseProjection  {
-        onIssue(null, subProjection)
+    def onIssue(subProjection: IssueResponseProjection ): SearchResultItemResponseProjection = {
+        onIssue(null.asInstanceOf[String], subProjection)
     }
 
     def onIssue(alias: String, subProjection: IssueResponseProjection): SearchResultItemResponseProjection = {
@@ -47,8 +47,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onOrganization(subProjection: OrganizationResponseProjection ): SearchResultItemResponseProjection  {
-        onOrganization(null, subProjection)
+    def onOrganization(subProjection: OrganizationResponseProjection ): SearchResultItemResponseProjection = {
+        onOrganization(null.asInstanceOf[String], subProjection)
     }
 
     def onOrganization(alias: String, subProjection: OrganizationResponseProjection): SearchResultItemResponseProjection = {
@@ -56,8 +56,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onUser(subProjection: UserResponseProjection ): SearchResultItemResponseProjection  {
-        onUser(null, subProjection)
+    def onUser(subProjection: UserResponseProjection ): SearchResultItemResponseProjection = {
+        onUser(null.asInstanceOf[String], subProjection)
     }
 
     def onUser(alias: String, subProjection: UserResponseProjection): SearchResultItemResponseProjection = {
@@ -65,8 +65,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onMarketplaceListing(subProjection: MarketplaceListingResponseProjection ): SearchResultItemResponseProjection  {
-        onMarketplaceListing(null, subProjection)
+    def onMarketplaceListing(subProjection: MarketplaceListingResponseProjection ): SearchResultItemResponseProjection = {
+        onMarketplaceListing(null.asInstanceOf[String], subProjection)
     }
 
     def onMarketplaceListing(alias: String, subProjection: MarketplaceListingResponseProjection): SearchResultItemResponseProjection = {
@@ -74,8 +74,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def onPullRequest(subProjection: PullRequestResponseProjection ): SearchResultItemResponseProjection  {
-        onPullRequest(null, subProjection)
+    def onPullRequest(subProjection: PullRequestResponseProjection ): SearchResultItemResponseProjection = {
+        onPullRequest(null.asInstanceOf[String], subProjection)
     }
 
     def onPullRequest(alias: String, subProjection: PullRequestResponseProjection): SearchResultItemResponseProjection = {
@@ -83,8 +83,8 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def typename(): SearchResultItemResponseProjection  {
-        typename(null)
+    def typename(): SearchResultItemResponseProjection = {
+        typename(null.asInstanceOf[String])
     }
 
     def typename(alias: String): SearchResultItemResponseProjection = {
@@ -92,14 +92,14 @@ class SearchResultItemResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    override def equals(Object obj): Boolean = {
+    override def equals(obj: Any): Boolean = {
         if (this == obj) {
             return true
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass != obj.getClass) {
             return false
         }
-        val SearchResultItemResponseProjection that = obj.asInstanceOf[SearchResultItemResponseProjection]
+        val that = obj.asInstanceOf[SearchResultItemResponseProjection]
         Objects.equals(fields, that.fields)
     }
 

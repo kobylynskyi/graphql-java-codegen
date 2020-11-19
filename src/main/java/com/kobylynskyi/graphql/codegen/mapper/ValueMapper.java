@@ -95,7 +95,7 @@ public class ValueMapper {
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
             typeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);
-            return typeName + "." + MapperUtils.capitalizeIfRestricted(value.getName());
+            return typeName + "." + MapperUtils.capitalizeIfRestricted(mappingContext, value.getName());
         }
         if (graphQLType instanceof NonNullType) {
             return mapEnum(mappingContext, value, ((NonNullType) graphQLType).getType());
@@ -109,14 +109,14 @@ public class ValueMapper {
         if (graphQLType == null || graphQLType instanceof ListType) {
             List<Value> values = value.getValues();
             if (values.isEmpty()) {
-                return ValueFormatter.formatList(Collections.emptyList(), formatter);
+                return ValueFormatter.formatList(mappingContext, Collections.emptyList(), formatter);
             }
             Type<?> elementType = null;
             if (graphQLType != null) {
                 elementType = ((ListType) graphQLType).getType();
             }
             Type<?> listElementType = elementType;
-            return ValueFormatter.formatList(values.stream()
+            return ValueFormatter.formatList(mappingContext, values.stream()
                     .map(v -> map(mappingContext, v, listElementType, formatter))
                     .collect(Collectors.toList()), formatter);
         }
