@@ -1,13 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
-import com.kobylynskyi.graphql.codegen.model.RelayConfig;
+import com.kobylynskyi.graphql.codegen.model.*;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -171,6 +165,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE_STRING)
+    private GeneratedLanguage generatedLanguage;
+
     /**
      * The project being built.
      */
@@ -225,6 +222,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
         mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
         mappingConfig.setRelayConfig(relayConfig);
+        mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -691,6 +689,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
         this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    }
+
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return this.generatedLanguage;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {

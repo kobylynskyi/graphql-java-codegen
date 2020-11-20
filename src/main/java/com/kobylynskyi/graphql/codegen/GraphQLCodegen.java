@@ -169,7 +169,7 @@ public class GraphQLCodegen {
             mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH);
         }
         if(mappingConfig.getGeneratedLanguage() == null) {
-            mappingConfig.setGeneratedLanguage(MappingConfigConstants.GENERATED_LANGUAGE);
+            mappingConfig.setGeneratedLanguage(MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE);
         }
         if(GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
             // functional expression

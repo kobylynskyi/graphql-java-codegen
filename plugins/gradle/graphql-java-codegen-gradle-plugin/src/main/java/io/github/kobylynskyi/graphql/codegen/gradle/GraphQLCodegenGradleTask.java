@@ -1,12 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.*;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -87,6 +82,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String parametrizedInputSuffix;
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
+    private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
 
     private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
 
@@ -141,6 +137,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
         mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
         mappingConfig.setRelayConfig(relayConfig);
+        mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -700,6 +697,12 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
         this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    }
+
+    @Input
+    @Optional
+    @Override    public GeneratedLanguage getGeneratedLanguage() {
+        return this.generatedLanguage;
     }
 
 }
