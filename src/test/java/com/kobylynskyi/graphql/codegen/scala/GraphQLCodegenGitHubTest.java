@@ -185,5 +185,17 @@ class GraphQLCodegenGitHubTest {
                 getFileByName(files, "CodesOfConductQueryResolver.scala"));
     }
 
+    @Test
+    void generate_Var_Field() throws Exception {
+        mappingConfig.setGenerateImmutableModels(false);
+
+        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_Var_Field.scala.txt"),
+                getFileByName(files, "Commit.scala"));
+    }
+
 
 }

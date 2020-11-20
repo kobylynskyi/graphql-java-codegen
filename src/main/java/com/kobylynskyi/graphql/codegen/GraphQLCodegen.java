@@ -120,7 +120,12 @@ public class GraphQLCodegen {
             mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX);
         }
         if (mappingConfig.getGenerateImmutableModels() == null) {
-            mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
+            if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
+                // functional expression
+                mappingConfig.setGenerateImmutableModels(true);
+            } else {
+                mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
+            }
         }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(MappingConfigConstants.DEFAULT_TO_STRING);
@@ -170,10 +175,6 @@ public class GraphQLCodegen {
         }
         if(mappingConfig.getGeneratedLanguage() == null) {
             mappingConfig.setGeneratedLanguage(MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE);
-        }
-        if(GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
-            // functional expression
-            mappingConfig.setGenerateImmutableModels(true);
         }
     }
 
