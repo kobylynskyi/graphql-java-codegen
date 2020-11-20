@@ -505,26 +505,13 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return responseProjectionMaxDepth;
     }
 
-    public ParentInterfacesConfig getParentInterfaces() {
-        return parentInterfaces;
-    }
-
     @Override
     public GeneratedLanguage getGeneratedLanguage() {
-        return this.generatedLanguage;
+        return generatedLanguage;
     }
 
-    private static Map<String, List<String>> convertToListsMap(Map<String, String[]> sourceMap) {
-        if (sourceMap == null) {
-            return new HashMap<>();
-        }
-        Map<String, List<String>> map = new HashMap<>();
-        for (Map.Entry<String, String[]> e : sourceMap.entrySet()) {
-            if (e.getValue() != null) {
-                map.put(e.getKey(), Arrays.asList(e.getValue()));
-            }
-        }
-        return map;
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
     }
 
     public String getJsonConfigurationFile() {
