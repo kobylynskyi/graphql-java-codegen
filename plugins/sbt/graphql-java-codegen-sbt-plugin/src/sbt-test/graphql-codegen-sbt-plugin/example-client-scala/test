@@ -1,0 +1,6 @@
+# check if the file gets created
+> graphqlCodegen
+> graphqlSchemaValidate src/main/resources/schema.graphqls
+> graphqlCodegenValidate
+> compile
+$ exists target/scala-2.12/src_managed_graphql_scala/io/github/dreamylost/model/CharacterDO.scala

@@ -92,7 +92,7 @@ trait GraphQLCodegenKeys {
   //use different paths
   val graphqlSchemaValidate = inputKey[Seq[String]]("graphqlSchemaValidatePaths")
 
-  val graphqlCodegen = taskKey[Seq[File]]("Generate Java code")
+  val graphqlCodegen = taskKey[Seq[File]]("Generate code")
 
   val graphqlCodegenValidate = taskKey[Unit]("Validate graphql schema")
 
@@ -120,6 +120,6 @@ trait GraphQLCodegenKeys {
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")
 
-  val generateCodegenTargetPath = settingKey[File]("The path for graphqlCodegen to save java code which generate by plugin")
+  val generateCodegenTargetPath = settingKey[File]("The path for graphqlCodegen to save code which generate by plugin")
 
 }
