@@ -25,7 +25,7 @@ class GraphQLCodegenFileCreator {
     private GraphQLCodegenFileCreator() {
     }
 
-    static File generateFile(MappingContext mappingContext, String templateName, Map<String, Object> dataModel, File outputDir) {
+    static File generateFile(MappingContext mappingContext, FreeMarkerTemplateType templateType, Map<String, Object> dataModel, File outputDir) {
         GeneratedLanguage language = mappingContext.getGeneratedLanguage();
         String fileName = getGeneratedFileName(dataModel, language);
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
@@ -34,7 +34,7 @@ class GraphQLCodegenFileCreator {
             if (!javaSourceFile.createNewFile()) {
                 throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
             }
-            Template template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateName);
+            Template template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
             template.process(dataModel, new FileWriter(javaSourceFile));
         } catch (Exception e) {
             throw new UnableToCreateFileException(e);

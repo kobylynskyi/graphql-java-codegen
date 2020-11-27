@@ -9,13 +9,22 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
+
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.ENUM;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.INTERFACE;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.OPERATIONS;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.PARAMETRIZED_INPUT;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.REQUEST;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.RESPONSE;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.RESPONSE_PROJECTION;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.TYPE;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.UNION;
 
 class FreeMarkerTemplatesRegistry {
 
     private static final Version FREEMARKER_TEMPLATE_VERSION = Configuration.VERSION_2_3_30;
-    private static final Map<String, Map<String, Template>> templateMap = new HashMap<>();
+    private static final EnumMap<GeneratedLanguage, EnumMap<FreeMarkerTemplateType, Template>> templateMap = new EnumMap<>(GeneratedLanguage.class);
 
     static {
         BeansWrapper beansWrapper = new BeansWrapper(FREEMARKER_TEMPLATE_VERSION);
@@ -28,29 +37,29 @@ class FreeMarkerTemplatesRegistry {
         configuration.setSharedVariable("statics", beansWrapper.getStaticModels());
 
         try {
-            Map<String, Template> javaTemplates = new HashMap<>();
-            javaTemplates.put("typeTemplate", configuration.getTemplate("templates/javaClassGraphqlType.ftl"));
-            javaTemplates.put("enumTemplate", configuration.getTemplate("templates/javaClassGraphqlEnum.ftl"));
-            javaTemplates.put("unionTemplate", configuration.getTemplate("templates/javaClassGraphqlUnion.ftl"));
-            javaTemplates.put("requestTemplate", configuration.getTemplate("templates/javaClassGraphqlRequest.ftl"));
-            javaTemplates.put("responseTemplate", configuration.getTemplate("templates/javaClassGraphqlResponse.ftl"));
-            javaTemplates.put("interfaceTemplate", configuration.getTemplate("templates/javaClassGraphqlInterface.ftl"));
-            javaTemplates.put("operationsTemplate", configuration.getTemplate("templates/javaClassGraphqlOperations.ftl"));
-            javaTemplates.put("parametrizedInputTemplate", configuration.getTemplate("templates/javaClassGraphqlParametrizedInput.ftl"));
-            javaTemplates.put("responseProjectionTemplate", configuration.getTemplate("templates/javaClassGraphqlResponseProjection.ftl"));
-            templateMap.put(GeneratedLanguage.JAVA.name(), javaTemplates);
+            EnumMap<FreeMarkerTemplateType, Template> javaTemplates = new EnumMap<>(FreeMarkerTemplateType.class);
+            javaTemplates.put(TYPE, configuration.getTemplate("templates/javaClassGraphqlType.ftl"));
+            javaTemplates.put(ENUM, configuration.getTemplate("templates/javaClassGraphqlEnum.ftl"));
+            javaTemplates.put(UNION, configuration.getTemplate("templates/javaClassGraphqlUnion.ftl"));
+            javaTemplates.put(REQUEST, configuration.getTemplate("templates/javaClassGraphqlRequest.ftl"));
+            javaTemplates.put(RESPONSE, configuration.getTemplate("templates/javaClassGraphqlResponse.ftl"));
+            javaTemplates.put(INTERFACE, configuration.getTemplate("templates/javaClassGraphqlInterface.ftl"));
+            javaTemplates.put(OPERATIONS, configuration.getTemplate("templates/javaClassGraphqlOperations.ftl"));
+            javaTemplates.put(PARAMETRIZED_INPUT, configuration.getTemplate("templates/javaClassGraphqlParametrizedInput.ftl"));
+            javaTemplates.put(RESPONSE_PROJECTION, configuration.getTemplate("templates/javaClassGraphqlResponseProjection.ftl"));
+            templateMap.put(GeneratedLanguage.JAVA, javaTemplates);
 
-            Map<String, Template> scalaTemplates = new HashMap<>();
-            scalaTemplates.put("typeTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlType.ftl"));
-            scalaTemplates.put("enumTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlEnum.ftl"));
-            scalaTemplates.put("unionTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlUnion.ftl"));
-            scalaTemplates.put("requestTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlRequest.ftl"));
-            scalaTemplates.put("responseTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponse.ftl"));
-            scalaTemplates.put("interfaceTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlInterface.ftl"));
-            scalaTemplates.put("operationsTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlOperations.ftl"));
-            scalaTemplates.put("parametrizedInputTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlParametrizedInput.ftl"));
-            scalaTemplates.put("responseProjectionTemplate", configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponseProjection.ftl"));
-            templateMap.put(GeneratedLanguage.SCALA.name(), scalaTemplates);
+            EnumMap<FreeMarkerTemplateType, Template> scalaTemplates = new EnumMap<>(FreeMarkerTemplateType.class);
+            scalaTemplates.put(TYPE, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlType.ftl"));
+            scalaTemplates.put(ENUM, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlEnum.ftl"));
+            scalaTemplates.put(UNION, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlUnion.ftl"));
+            scalaTemplates.put(REQUEST, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlRequest.ftl"));
+            scalaTemplates.put(RESPONSE, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponse.ftl"));
+            scalaTemplates.put(INTERFACE, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlInterface.ftl"));
+            scalaTemplates.put(OPERATIONS, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlOperations.ftl"));
+            scalaTemplates.put(PARAMETRIZED_INPUT, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlParametrizedInput.ftl"));
+            scalaTemplates.put(RESPONSE_PROJECTION, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponseProjection.ftl"));
+            templateMap.put(GeneratedLanguage.SCALA, scalaTemplates);
 
 
         } catch (IOException e) {
@@ -61,8 +70,8 @@ class FreeMarkerTemplatesRegistry {
     private FreeMarkerTemplatesRegistry() {
     }
 
-    public static Template getTemplateWithLang(GeneratedLanguage generatedLanguage, String templateName) {
-        return templateMap.get(generatedLanguage.name()).get(templateName);
+    public static Template getTemplateWithLang(GeneratedLanguage generatedLanguage, FreeMarkerTemplateType templateType) {
+        return templateMap.get(generatedLanguage).get(templateType);
     }
 
 }

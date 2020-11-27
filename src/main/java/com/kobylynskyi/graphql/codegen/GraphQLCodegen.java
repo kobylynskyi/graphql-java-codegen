@@ -298,11 +298,11 @@ public class GraphQLCodegen {
     private List<File> generateUnion(MappingContext mappingContext, ExtendedUnionTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "unionTemplate", dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.UNION, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
         }
         return generatedFiles;
     }
@@ -310,16 +310,16 @@ public class GraphQLCodegen {
     private List<File> generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "interfaceTemplate", dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.INTERFACE, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
                     Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
-                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "parametrizedInputTemplate", fieldProjDataModel, outputDir));
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, fieldProjDataModel, outputDir));
                 }
             }
         }
@@ -372,10 +372,10 @@ public class GraphQLCodegen {
         List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
             Map<String, Object> requestDataModel = RequestResponseDefinitionToDataModelMapper.mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "requestTemplate", requestDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.REQUEST, requestDataModel, outputDir));
 
             Map<String, Object> responseDataModel = RequestResponseDefinitionToDataModelMapper.mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseTemplate", responseDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE, responseDataModel, outputDir));
         }
         return generatedFiles;
     }
@@ -384,29 +384,29 @@ public class GraphQLCodegen {
         List<File> generatedFiles = new ArrayList<>();
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
             Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir));
         }
         return generatedFiles;
     }
 
     private File generateRootApi(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir);
     }
 
     private List<File> generateType(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "typeTemplate", dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.TYPE, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
                     Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
-                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "parametrizedInputTemplate", fieldProjDataModel, outputDir));
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, fieldProjDataModel, outputDir));
                 }
             }
         }
@@ -422,7 +422,7 @@ public class GraphQLCodegen {
                     .collect(toList());
             if (!fieldDefsWithResolvers.isEmpty()) {
                 Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
-                return Optional.of(GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir));
+                return Optional.of(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir));
             }
         }
         return Optional.empty();
@@ -430,12 +430,12 @@ public class GraphQLCodegen {
 
     private File generateInput(MappingContext mappingContext, ExtendedInputObjectTypeDefinition definition) {
         Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext, "typeTemplate", dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.TYPE, dataModel, outputDir);
     }
 
     private File generateEnum(MappingContext mappingContext, ExtendedEnumTypeDefinition definition) {
         Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext, "enumTemplate", dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, outputDir);
     }
 
     private void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {

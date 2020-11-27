@@ -41,8 +41,8 @@ class GraphQLCodegenFileCreatorTest {
         dataModel.put(DataModelFields.ANNOTATIONS, Collections.emptyList());
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
 
-        GraphQLCodegenFileCreator.generateFile(mappingContext, "enumTemplate", dataModel, OUTPUT_DIR);
+        GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR);
         assertThrows(UnableToCreateFileException.class,
-                () -> GraphQLCodegenFileCreator.generateFile(mappingContext, "enumTemplate", dataModel, OUTPUT_DIR));
+                () -> GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR));
     }
 }
