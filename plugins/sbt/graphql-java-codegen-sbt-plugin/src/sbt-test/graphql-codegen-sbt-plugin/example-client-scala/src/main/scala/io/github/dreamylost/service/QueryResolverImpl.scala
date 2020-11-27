@@ -11,12 +11,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 /**
- * use all$()
- *
- * At now, we can simply construct a request and call it directly.
- *
- * Next, we'll replace the reflection in the proxy with `all$()`
- *
  * This is scala style deserialization
  *
  * @author liguobin@growingio.com
