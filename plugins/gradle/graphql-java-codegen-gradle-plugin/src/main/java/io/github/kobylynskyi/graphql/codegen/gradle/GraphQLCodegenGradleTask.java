@@ -137,7 +137,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
         mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
         mappingConfig.setRelayConfig(relayConfig);
-        mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
+        mappingConfig.setGeneratedLanguage(generatedLanguage);
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -701,8 +701,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     @Input
     @Optional
-    @Override    public GeneratedLanguage getGeneratedLanguage() {
-        return this.generatedLanguage;
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
     }
 
 }

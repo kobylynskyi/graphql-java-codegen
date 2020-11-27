@@ -22,30 +22,13 @@ public class ValueFormatter {
         if (values == null) {
             return format("null", formatter);
         }
-        // scala
-        if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
-            if (formatter == null) {
-                if (values.isEmpty()) {
-                    return "Seq.empty";
-                } else {
-                    StringJoiner listJoiner = new StringJoiner(", ", "Seq(", ")");
-                    values.forEach(listJoiner::add);
-                    return listJoiner.toString();
-                }
-            }
-            switch (formatter) {
-                case FORMATTER_TO_ARRAY_OF_STRINGS:
-                    StringJoiner arrayOfStringsJoiner = new StringJoiner(", ", "Array(", ")");
-                    values.forEach(newElement -> arrayOfStringsJoiner.add(format(newElement, FORMATTER_TO_STRING)));
-                    return arrayOfStringsJoiner.toString();
-                case FORMATTER_TO_ARRAY:
-                default:
-                    StringJoiner listValuesJoiner = new StringJoiner(", ", "Array(", ")");
-                    values.forEach(listValuesJoiner::add);
-                    return listValuesJoiner.toString();
-            }
+        if (mappingContext.getGeneratedLanguage() == GeneratedLanguage.SCALA) {
+            return formatListScala(values, formatter);
         }
-        // java
+        return formatListJava(values, formatter);
+    }
+
+    private static String formatListJava(List<String> values, String formatter) {
         if (formatter == null) {
             if (values.isEmpty()) {
                 return "java.util.Collections.emptyList()";
@@ -65,6 +48,29 @@ public class ValueFormatter {
             default:
                 // samples: ``, `"1", "2"`
                 StringJoiner listValuesJoiner = new StringJoiner(", ", "{", "}");
+                values.forEach(listValuesJoiner::add);
+                return listValuesJoiner.toString();
+        }
+    }
+
+    private static String formatListScala(List<String> values, String formatter) {
+        if (formatter == null) {
+            if (values.isEmpty()) {
+                return "Seq.empty";
+            } else {
+                StringJoiner listJoiner = new StringJoiner(", ", "Seq(", ")");
+                values.forEach(listJoiner::add);
+                return listJoiner.toString();
+            }
+        }
+        switch (formatter) {
+            case FORMATTER_TO_ARRAY_OF_STRINGS:
+                StringJoiner arrayOfStringsJoiner = new StringJoiner(", ", "Array(", ")");
+                values.forEach(newElement -> arrayOfStringsJoiner.add(format(newElement, FORMATTER_TO_STRING)));
+                return arrayOfStringsJoiner.toString();
+            case FORMATTER_TO_ARRAY:
+            default:
+                StringJoiner listValuesJoiner = new StringJoiner(", ", "Array(", ")");
                 values.forEach(listValuesJoiner::add);
                 return listValuesJoiner.toString();
         }

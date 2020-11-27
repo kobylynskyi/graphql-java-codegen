@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import freemarker.template.Template;
@@ -24,24 +25,31 @@ class GraphQLCodegenFileCreator {
     private GraphQLCodegenFileCreator() {
     }
 
-    static File generateFile(GeneratedLanguage language, Template template, Map<String, Object> dataModel, File outputDir) {
-        String fileName;
-        if (language.equals(GeneratedLanguage.SCALA)) {
-            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION_SCALA;
-        } else {
-            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
-        }
+    static File generateFile(MappingContext mappingContext, String templateName, Map<String, Object> dataModel, File outputDir) {
+        GeneratedLanguage language = mappingContext.getGeneratedLanguage();
+        String fileName = getGeneratedFileName(dataModel, language);
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
         File javaSourceFile = new File(fileOutputDir, fileName);
         try {
             if (!javaSourceFile.createNewFile()) {
                 throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
             }
+            Template template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateName);
             template.process(dataModel, new FileWriter(javaSourceFile));
         } catch (Exception e) {
             throw new UnableToCreateFileException(e);
         }
         return javaSourceFile;
+    }
+
+    private static String getGeneratedFileName(Map<String, Object> dataModel, GeneratedLanguage language) {
+        String fileName;
+        if (language.equals(GeneratedLanguage.SCALA)) {
+            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION_SCALA;
+        } else {
+            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
+        }
+        return fileName;
     }
 
     static void prepareOutputDir(File outputDir) {

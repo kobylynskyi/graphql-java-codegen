@@ -8,7 +8,14 @@ import com.kobylynskyi.graphql.codegen.mapper.InterfaceDefinitionToDataModelMapp
 import com.kobylynskyi.graphql.codegen.mapper.RequestResponseDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.TypeDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.UnionDefinitionToDataModelMapper;
-import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
@@ -173,7 +180,7 @@ public class GraphQLCodegen {
         if (mappingConfig.getResponseProjectionMaxDepth() == null) {
             mappingConfig.setResponseProjectionMaxDepth(MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH);
         }
-        if(mappingConfig.getGeneratedLanguage() == null) {
+        if (mappingConfig.getGeneratedLanguage() == null) {
             mappingConfig.setGeneratedLanguage(MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE);
         }
     }
@@ -291,11 +298,11 @@ public class GraphQLCodegen {
     private List<File> generateUnion(MappingContext mappingContext, ExtendedUnionTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "unionTemplate"), dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "unionTemplate", dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "responseProjectionTemplate"), responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
         }
         return generatedFiles;
     }
@@ -303,16 +310,16 @@ public class GraphQLCodegen {
     private List<File> generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "interfaceTemplate"), dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "interfaceTemplate", dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "responseProjectionTemplate"), responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
                     Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
-                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "parametrizedInputTemplate"), fieldProjDataModel, outputDir));
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "parametrizedInputTemplate", fieldProjDataModel, outputDir));
                 }
             }
         }
@@ -365,10 +372,10 @@ public class GraphQLCodegen {
         List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
             Map<String, Object> requestDataModel = RequestResponseDefinitionToDataModelMapper.mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "requestTemplate"), requestDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "requestTemplate", requestDataModel, outputDir));
 
             Map<String, Object> responseDataModel = RequestResponseDefinitionToDataModelMapper.mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "responseTemplate"), responseDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseTemplate", responseDataModel, outputDir));
         }
         return generatedFiles;
     }
@@ -377,29 +384,29 @@ public class GraphQLCodegen {
         List<File> generatedFiles = new ArrayList<>();
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
             Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "operationsTemplate"), dataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir));
         }
         return generatedFiles;
     }
 
     private File generateRootApi(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "operationsTemplate"), dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir);
     }
 
     private List<File> generateType(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingContext, definition);
-        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "typeTemplate"), dataModel, outputDir));
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "typeTemplate", dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "responseProjectionTemplate"), responseProjDataModel, outputDir));
+            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "responseProjectionTemplate", responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
                     Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
-                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "parametrizedInputTemplate"), fieldProjDataModel, outputDir));
+                    generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, "parametrizedInputTemplate", fieldProjDataModel, outputDir));
                 }
             }
         }
@@ -415,7 +422,7 @@ public class GraphQLCodegen {
                     .collect(toList());
             if (!fieldDefsWithResolvers.isEmpty()) {
                 Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
-                return Optional.of(GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "operationsTemplate"), dataModel, outputDir));
+                return Optional.of(GraphQLCodegenFileCreator.generateFile(mappingContext, "operationsTemplate", dataModel, outputDir));
             }
         }
         return Optional.empty();
@@ -423,12 +430,12 @@ public class GraphQLCodegen {
 
     private File generateInput(MappingContext mappingContext, ExtendedInputObjectTypeDefinition definition) {
         Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "typeTemplate"), dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, "typeTemplate", dataModel, outputDir);
     }
 
     private File generateEnum(MappingContext mappingContext, ExtendedEnumTypeDefinition definition) {
         Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingContext, definition);
-        return GraphQLCodegenFileCreator.generateFile(mappingContext.getGeneratedLanguage(), FreeMarkerTemplatesRegistry.getTemplateWithLang(mappingContext.getGeneratedLanguage(), "enumTemplate"), dataModel, outputDir);
+        return GraphQLCodegenFileCreator.generateFile(mappingContext, "enumTemplate", dataModel, outputDir);
     }
 
     private void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
@@ -440,9 +447,9 @@ public class GraphQLCodegen {
                 mappingConfig.putCustomTypeMappingIfAbsent(extension.getName(), "String");
             }
         }
+        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
+        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
         if (GeneratedLanguage.JAVA.equals(mappingConfig.getGeneratedLanguage())) {
-            mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-            mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
             mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
             mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
             mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
@@ -451,8 +458,6 @@ public class GraphQLCodegen {
             mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
         } else if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
             // scala primitive cannot be null, so use not null primitive type as java type
-            mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-            mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
             mappingConfig.putCustomTypeMappingIfAbsent("Int", "java.lang.Integer");
             mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
             mappingConfig.putCustomTypeMappingIfAbsent("Float", "java.lang.Double");

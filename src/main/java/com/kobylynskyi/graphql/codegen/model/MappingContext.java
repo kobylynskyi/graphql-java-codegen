@@ -26,7 +26,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.interfacesName = document.getInterfacesNames();
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
-        enumImportItSelfInScala = new HashSet<>();
+        this.enumImportItSelfInScala = new HashSet<>();
     }
 
     @Override
