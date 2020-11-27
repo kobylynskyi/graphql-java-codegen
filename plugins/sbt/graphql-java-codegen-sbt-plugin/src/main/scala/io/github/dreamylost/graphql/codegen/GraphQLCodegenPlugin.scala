@@ -80,6 +80,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     responseSuffix := MappingConfigConstants.DEFAULT_RESPONSE_SUFFIX,
     responseProjectionSuffix := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX,
     parametrizedInputSuffix := MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX,
+    useObjectMapperForRequestSerialization := new util.HashSet[String](),
     typeResolverPrefix := None,
     typeResolverSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
     subscriptionReturnType := None,
@@ -148,6 +149,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setResponseSuffix((responseSuffix in GraphQLCodegenConfig).value)
     mappingConfig.setResponseProjectionSuffix((responseProjectionSuffix in GraphQLCodegenConfig).value)
     mappingConfig.setParametrizedInputSuffix((parametrizedInputSuffix in GraphQLCodegenConfig).value)
+    mappingConfig.setUseObjectMapperForRequestSerialization((useObjectMapperForRequestSerialization in GraphQLCodegenConfig).value)
     mappingConfig.setResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.resolver)
     mappingConfig.setQueryResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.queryResolver)
     mappingConfig.setMutationResolverParentInterface((parentInterfaces in GraphQLCodegenConfig).value.mutationResolver)

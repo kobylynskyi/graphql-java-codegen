@@ -13,11 +13,16 @@ public interface GraphQLCodegenConfiguration {
      * Can be used to supply custom mappings for scalars.
      * <p>
      * Supports:
-     * * Map of (GraphqlObjectName.fieldName) to (JavaType)
-     * * Map of (GraphqlType) to (JavaType)
+     * <ul>
+     *   <li>Map of (GraphqlObjectName.fieldName) to (JavaType)</li>
+     *   <li>Map of (GraphqlType) to (JavaType)</li>
+     * </ul>
      * <p>
-     * e.g.: DateTime --- String
-     * e.g.: Price.amount --- java.math.BigDecimal
+     * E.g.:
+     * <ul>
+     *   <li>{@code DateTime --- String}</li>
+     *   <li>{@code Price.amount --- java.math.BigDecimal}</li>
+     * </ul>
      *
      * @return mappings from GraphqlType to JavaType
      */
@@ -27,10 +32,13 @@ public interface GraphQLCodegenConfiguration {
      * Can be used to supply custom annotations (serializers) for scalars.
      * <p>
      * Supports:
-     * * Map of (GraphqlObjectName.fieldName) to (JavaAnnotation)
-     * * Map of (GraphqlType) to (JavaAnnotation)
+     * <ul>
+     *   <li>Map of (GraphqlObjectName.fieldName) to (JavaAnnotation)</li>
+     *   <li>Map of (GraphqlType) to (JavaAnnotation)</li>
+     * </ul>
      * <p>
-     * e.g.: EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)
+     * E.g.:
+     * {@code EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)}
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */
@@ -45,7 +53,7 @@ public interface GraphQLCodegenConfiguration {
      * <p>
      * schema: directive <code>@auth (roles: [String])</code>
      * <p>
-     * directiveAnnotationsMapping: auth --- @org.springframework.security.access.annotation.Secured({{roles}})
+     * {@code directiveAnnotationsMapping: auth --- @org.springframework.security.access.annotation.Secured({{roles}})}
      *
      * @return mappings from GraphQL directives to Java annotations.
      */
@@ -144,7 +152,7 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Return type for api methods (query / subscription)
-     * For example: `reactor.core.publisher.Mono`
+     * For example: <i>reactor.core.publisher.Mono</i>
      *
      * @return Return type for api methods (query / subscription)
      */
@@ -152,7 +160,7 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Return type for api methods (query / subscription) that return list values
-     * For example: `reactor.core.publisher.Flux`
+     * For example: <i>reactor.core.publisher.Flux</i>
      *
      * @return Return type for api methods (query / subscription) that return list values
      */
@@ -160,7 +168,7 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Return type for subscription methods.
-     * For example: `org.reactivestreams.Publisher`, `io.reactivex.Observable`, etc.
+     * For example: <i>org.reactivestreams.Publisher</i>, <i>io.reactivex.Observable</i>, etc.
      *
      * @return Return type for subscription methods
      */
@@ -250,25 +258,38 @@ public interface GraphQLCodegenConfiguration {
     RelayConfig getRelayConfig();
 
     /**
-     * Fields that require Resolvers should be defined here in format: TypeName, TypeName.fieldName, @directive
-     * If just type is specified, then all fields of this type will have resolvers
+     * Fields that require Resolvers.
      * <p>
-     * E.g.: "Person.friends"
-     * E.g.: "Person"
-     * E.g.: "@customResolver"
+     * Values should be defined here in format: TypeName, TypeName.fieldName, @directive
+     * <p>
+     * If just type is specified, then all fields of this type will have resolvers.
+     * <p>
+     * E.g.:
+     * <ul>
+     *   <li>{@code Person}</li>
+     *   <li>{@code Person.friends}</li>
+     *   <li>{@code @customResolver}</li>
+     * </ul>
      *
      * @return Set of types and fields that should have Resolver interfaces.
      */
     Set<String> getFieldsWithResolvers();
 
     /**
-     * Fields that DO NOT require Resolvers should be defined here in format: TypeName, TypeName.fieldName, @directive
-     * If just type is specified, then all fields of this type will NOT have resolvers
-     * Can be used in conjunction with "generateExtensionFieldsResolvers"
+     * Fields that DO NOT require Resolvers.
      * <p>
-     * E.g.: "Person.friends"
-     * E.g.: "Person"
-     * E.g.: "@noResolver"
+     * Values should be defined here in format: TypeName, TypeName.fieldName, @directive
+     * <p>
+     * If just type is specified, then all fields of this type will NOT have resolvers.
+     * <p>
+     * Can be used in conjunction with {@code generateExtensionFieldsResolvers}
+     * <p>
+     * E.g.:
+     * <ul>
+     *   <li>{@code Person}</li>
+     *   <li>{@code Person.friends}</li>
+     *   <li>{@code @customResolver}</li>
+     * </ul>
      *
      * @return Set of types and fields that should NOT have Resolver interfaces.
      */
@@ -346,10 +367,29 @@ public interface GraphQLCodegenConfiguration {
     String getResolverParentInterface();
 
     /**
-     * Interface that will be limit depth when `all$` invoke which has subProjections
+     * Limit depth when `all$` invoke which has subProjections
      *
      * @return limit depth when the projection is constructed automatically
      */
     Integer getResponseProjectionMaxDepth();
+
+    /**
+     * Fields that require serialization using
+     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     * <p>
+     * Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
+     * <p>
+     * If just type is specified, then all fields of this type will be serialized using ObjectMapper.
+     * <p>
+     * E.g.:
+     * <ul>
+     *   <li>{@code Person.createdDateTime}</li>
+     *   <li>{@code ZonedDateTime}</li>
+     * </ul>
+     *
+     * @return Set of types and fields that should be serialized using
+     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     */
+    Set<String> getUseObjectMapperForRequestSerialization();
 
 }

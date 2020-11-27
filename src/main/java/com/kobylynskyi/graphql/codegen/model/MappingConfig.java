@@ -70,16 +70,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
     private Integer responseProjectionMaxDepth;
-
-    @Override
-    public Integer getResponseProjectionMaxDepth() {
-        return responseProjectionMaxDepth;
-    }
-
-    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
-        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
-    }
-
+    private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
     @Override
     public void combine(MappingConfig source) {
@@ -129,6 +120,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
+        useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization, source.useObjectMapperForRequestSerialization);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
@@ -553,5 +545,23 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
         this.parametrizedInputSuffix = parametrizedInputSuffix;
+    }
+
+    @Override
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
+    }
+
+    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForRequestSerialization() {
+        return useObjectMapperForRequestSerialization;
+    }
+
+    public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
+        this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
     }
 }
