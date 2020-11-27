@@ -71,9 +71,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_TO_STRING_STRING)
     private boolean generateToString;
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
-    private int responseProjectionMaxDepth;
-
     @Parameter
     private String apiPackageName;
 
@@ -143,6 +140,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] fieldsWithoutResolvers;
 
+    @Parameter
+    private RelayConfig relayConfig = new RelayConfig();
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING)
     private boolean generateClient;
 
@@ -159,16 +159,19 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private String parametrizedInputSuffix;
 
     @Parameter
-    private RelayConfig relayConfig = new RelayConfig();
+    private String[] useObjectMapperForRequestSerialization;
 
-    @Parameter
-    private String jsonConfigurationFile;
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
+    private int responseProjectionMaxDepth;
 
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE_STRING)
     private GeneratedLanguage generatedLanguage;
+
+    @Parameter
+    private String jsonConfigurationFile;
 
     /**
      * The project being built.
@@ -213,17 +216,21 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
+        mappingConfig.setRelayConfig(relayConfig);
+
         mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
+        mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
+        mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
+
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
-        mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
-        mappingConfig.setRelayConfig(relayConfig);
+
         mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
@@ -456,6 +463,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
+    }
+
+    @Override
     public Boolean getGenerateClient() {
         return generateClient;
     }
@@ -481,6 +493,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Set<String> getUseObjectMapperForRequestSerialization() {
+        return mapToHashSet(useObjectMapperForRequestSerialization);
+    }
+
+    @Override
     public String getQueryResolverParentInterface() {
         return parentInterfaces.getQueryResolver();
     }
@@ -498,11 +515,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public String getResolverParentInterface() {
         return parentInterfaces.getResolver();
-    }
-
-    @Override
-    public Integer getResponseProjectionMaxDepth() {
-        return responseProjectionMaxDepth;
     }
 
     @Override

@@ -44,14 +44,16 @@ public class InputValueDefinitionToParameterMapper {
      * @return Freemarker-understandable format of parameter (field)
      */
     private static ParameterDefinition map(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName) {
+        NamedDefinition namedDefinition = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName);
+
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        NamedDefinition type = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName);
-        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, type));
+        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition));
         parameter.setDefaultValue(ValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
         parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
+        parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
     }
 

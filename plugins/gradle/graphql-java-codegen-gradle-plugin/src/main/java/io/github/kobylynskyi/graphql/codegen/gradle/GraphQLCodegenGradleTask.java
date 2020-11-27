@@ -80,11 +80,12 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
+    private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
+
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
-
-    private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -126,17 +127,21 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setRelayConfig(relayConfig);
+
         mappingConfig.setGenerateClient(generateClient);
         mappingConfig.setRequestSuffix(requestSuffix);
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
+        mappingConfig.setUseObjectMapperForRequestSerialization(useObjectMapperForRequestSerialization != null ? useObjectMapperForRequestSerialization : new HashSet<>());
+        mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
+
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
-        mappingConfig.setResponseProjectionMaxDepth(getResponseProjectionMaxDepth());
-        mappingConfig.setRelayConfig(relayConfig);
+
         mappingConfig.setGeneratedLanguage(generatedLanguage);
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
@@ -578,6 +583,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
     }
 
+    @Nested
+    @Optional
+    @Override
+    public RelayConfig getRelayConfig() {
+        return relayConfig;
+    }
+
+    public void relayConfig(Action<? super RelayConfig> action) {
+        action.execute(relayConfig);
+    }
+
     @Input
     @Optional
     @Override
@@ -633,15 +649,26 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.parametrizedInputSuffix = parametrizedInputSuffix;
     }
 
-    @Nested
+    @Input
     @Optional
     @Override
-    public RelayConfig getRelayConfig() {
-        return relayConfig;
+    public Set<String> getUseObjectMapperForRequestSerialization() {
+        return useObjectMapperForRequestSerialization;
     }
 
-    public void relayConfig(Action<? super RelayConfig> action) {
-        action.execute(relayConfig);
+    public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
+        this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
+    }
+
+    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
     @Nested
@@ -686,17 +713,6 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setJsonConfigurationFile(String jsonConfigurationFile) {
         this.jsonConfigurationFile = jsonConfigurationFile;
-    }
-
-    @Input
-    @Optional
-    @Override
-    public Integer getResponseProjectionMaxDepth() {
-        return responseProjectionMaxDepth;
-    }
-
-    public void setResponseProjectionMaxDepth(int responseProjectionMaxDepth) {
-        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
     }
 
     @Input

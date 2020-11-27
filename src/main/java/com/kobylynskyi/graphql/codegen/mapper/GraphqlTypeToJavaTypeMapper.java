@@ -134,8 +134,10 @@ public class GraphqlTypeToJavaTypeMapper {
     private static NamedDefinition getJavaType(MappingContext mappingContext, String graphQLType, String name,
                                                String parentTypeName, boolean mandatory, boolean collection) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
+        Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String javaTypeName;
         boolean primitiveCanBeUsed = !collection;
+        boolean serializeUsingObjectMapper = false;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             javaTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
@@ -144,8 +146,14 @@ public class GraphqlTypeToJavaTypeMapper {
         } else {
             javaTypeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
+        if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
+            serializeUsingObjectMapper = true;
+        }
+
         return new NamedDefinition(javaTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
-                mandatory, primitiveCanBeUsed);
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
     /**

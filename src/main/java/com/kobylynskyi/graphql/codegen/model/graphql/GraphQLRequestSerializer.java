@@ -1,15 +1,18 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.StringJoiner;
 
 public class GraphQLRequestSerializer {
+
+    public static final ObjectMapper OBJECT_MAPPER = Utils.OBJECT_MAPPER;
 
     private GraphQLRequestSerializer() {
     }
@@ -111,22 +114,26 @@ public class GraphQLRequestSerializer {
     private static String jsonQuery(String queryString) {
         ObjectNode objectNode = Utils.OBJECT_MAPPER.createObjectNode();
         objectNode.put("query", queryString);
-        try {
-            return Utils.OBJECT_MAPPER.writeValueAsString(objectNode);
-        } catch (JsonProcessingException e) {
-            throw new UnableToBuildJsonQueryException(e);
-        }
+        return objectMapperWriteValueAsString(objectNode);
     }
 
     public static String getEntry(Object input) {
+        return getEntry(input, false);
+    }
+
+    public static String getEntry(Object input, boolean useObjectMapper) {
         if (input == null) {
             return null;
         }
         if (input instanceof Collection<?>) {
-            Collection<?> inputCollection = (Collection<?>) input;
-            return inputCollection.stream()
-                    .map(GraphQLRequestSerializer::getEntry)
-                    .collect(Collectors.joining(", ", "[ ", " ]"));
+            StringJoiner joiner = new StringJoiner(", ", "[ ", " ]");
+            for (Object collectionEntry : (Collection<?>) input) {
+                joiner.add(getEntry(collectionEntry, useObjectMapper));
+            }
+            return joiner.toString();
+        }
+        if (useObjectMapper) {
+            return objectMapperWriteValueAsString(input);
         }
         if (input instanceof Enum<?>) {
             return input.toString();
@@ -134,6 +141,14 @@ public class GraphQLRequestSerializer {
             return escapeJsonString(input.toString());
         } else {
             return input.toString();
+        }
+    }
+
+    public static String objectMapperWriteValueAsString(Object input) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(input);
+        } catch (JsonProcessingException e) {
+            throw new UnableToBuildJsonQueryException(e);
         }
     }
 

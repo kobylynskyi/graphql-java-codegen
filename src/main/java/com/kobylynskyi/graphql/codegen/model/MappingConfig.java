@@ -70,18 +70,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
     private Integer responseProjectionMaxDepth;
+    private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
     private GeneratedLanguage generatedLanguage;
-
-    @Override
-    public Integer getResponseProjectionMaxDepth() {
-        return responseProjectionMaxDepth;
-    }
-
-    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
-        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
-    }
-
 
     @Override
     public void combine(MappingConfig source) {
@@ -127,11 +118,12 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         parametrizedInputSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getParametrizedInputSuffix);
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
-        generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
+        useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization, source.useObjectMapperForRequestSerialization);
+        generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
@@ -559,6 +551,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
+    public Integer getResponseProjectionMaxDepth() {
+        return responseProjectionMaxDepth;
+    }
+
+    public void setResponseProjectionMaxDepth(Integer responseProjectionMaxDepth) {
+        this.responseProjectionMaxDepth = responseProjectionMaxDepth;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForRequestSerialization() {
+        return useObjectMapperForRequestSerialization;
+    }
+
+    public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
+        this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
+    }
+
+    @Override
     public GeneratedLanguage getGeneratedLanguage() {
         return generatedLanguage;
     }
@@ -566,4 +576,5 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
         this.generatedLanguage = generatedLanguage;
     }
+
 }

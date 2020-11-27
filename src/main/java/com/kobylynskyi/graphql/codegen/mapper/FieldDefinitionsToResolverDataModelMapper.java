@@ -163,7 +163,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, new TypeName(parentTypeName));
             String parentObjectParamName = MapperUtils.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated()));
+            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated(), false));
         }
 
         // 2. Next parameters are input values

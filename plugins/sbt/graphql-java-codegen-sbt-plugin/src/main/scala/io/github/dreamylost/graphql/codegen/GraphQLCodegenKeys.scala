@@ -77,6 +77,8 @@ trait GraphQLCodegenKeys {
 
   val parametrizedInputSuffix = settingKey[String]("parametrizedInputSuffix")
 
+  val useObjectMapperForRequestSerialization = settingKey[util.Set[String]]("useObjectMapperForRequestSerialization")
+
   val jsonConfigurationFile = settingKey[Option[String]]("jsonConfigurationFile")
 
   val parentInterfaces = settingKey[ParentInterfacesConfig]("parentInterfaces")

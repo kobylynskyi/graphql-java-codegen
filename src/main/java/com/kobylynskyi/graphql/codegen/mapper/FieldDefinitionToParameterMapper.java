@@ -65,14 +65,16 @@ public class FieldDefinitionToParameterMapper {
      */
     private static ParameterDefinition mapField(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
                                                 String parentTypeName) {
+        NamedDefinition namedDefinition = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(MapperUtils.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
         parameter.setOriginalName(fieldDef.getName());
-        NamedDefinition type = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
-        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, type));
+        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition));
         parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(fieldDef.isDeprecated());
+        parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
     }
 
