@@ -1,0 +1,83 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+
+/**
+ * Response projection for Event
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class EventResponseProjection extends GraphQLResponseProjection {
+
+    override def all$(): EventResponseProjection = all$(3)
+
+    override def all$(maxDepth: Int): EventResponseProjection = {
+        this.status()
+        this.createdDateTime()
+        if (projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0) <= maxDepth) {
+            projectionDepthOnFields.put("EventResponseProjection.AssetResponseProjection.assets", projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0) + 1)
+            this.assets(new AssetResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0)))
+        }
+        this.id()
+        this.createdBy()
+        this.typename()
+        this
+    }
+
+    def status(): EventResponseProjection = {
+        status(null.asInstanceOf[String])
+    }
+
+    def status(alias: String): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("status").alias(alias))
+        this
+    }
+
+    def createdDateTime(): EventResponseProjection = {
+        createdDateTime(null.asInstanceOf[String])
+    }
+
+    def createdDateTime(alias: String): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("createdDateTime").alias(alias))
+        this
+    }
+
+    def assets(subProjection: AssetResponseProjection ): EventResponseProjection = {
+        assets(null.asInstanceOf[String], subProjection)
+    }
+
+    def assets(alias: String, subProjection: AssetResponseProjection): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("assets").alias(alias).projection(subProjection))
+        this
+    }
+
+    def id(): EventResponseProjection = {
+        id(null.asInstanceOf[String])
+    }
+
+    def id(alias: String): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("id").alias(alias))
+        this
+    }
+
+    def createdBy(): EventResponseProjection = {
+        createdBy(null.asInstanceOf[String])
+    }
+
+    def createdBy(alias: String): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("createdBy").alias(alias))
+        this
+    }
+
+    def typename(): EventResponseProjection = {
+        typename(null.asInstanceOf[String])
+    }
+
+    def typename(alias: String): EventResponseProjection = {
+        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        this
+    }
+
+
+}

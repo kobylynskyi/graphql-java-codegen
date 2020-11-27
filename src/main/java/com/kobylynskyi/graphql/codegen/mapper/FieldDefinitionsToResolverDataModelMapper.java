@@ -22,13 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPORTS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 import static com.kobylynskyi.graphql.codegen.model.MappingConfigConstants.PARENT_INTERFACE_TYPE_PLACEHOLDER;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -111,6 +105,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         dataModel.put(JAVA_DOC, javaDoc);
         dataModel.put(IMPLEMENTS, parentInterface != null ? singletonList(parentInterface) : null);
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
+        dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         return dataModel;
     }
 
@@ -141,7 +136,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
      */
     private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
                                            String parentTypeName) {
-        String name = MapperUtils.capitalizeIfRestricted(fieldDef.getName());
+        String name = MapperUtils.capitalizeIfRestricted(mappingContext, fieldDef.getName());
         NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
         String returnType = getReturnType(mappingContext, fieldDef, javaType, parentTypeName);
         List<String> annotations = GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false);
@@ -167,7 +162,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         // 1. First parameter is the parent object for which we are resolving fields (unless it's the root Query)
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, new TypeName(parentTypeName));
-            String parentObjectParamName = MapperUtils.capitalizeIfRestricted(Utils.uncapitalize(parentObjectParamType));
+            String parentObjectParamName = MapperUtils.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
             parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated(), false));
         }
 
@@ -216,7 +211,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
                     String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
                     String javaTypeName = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext,
                             new TypeName(graphqlTypeName), graphqlTypeName, parentTypeName, false, false).getJavaName();
-                    return GraphqlTypeToJavaTypeMapper.getGenericsString(relayConfig.getConnectionType(), javaTypeName);
+                    return GraphqlTypeToJavaTypeMapper.getGenericsString(mappingContext, relayConfig.getConnectionType(), javaTypeName);
                 }
             }
         }

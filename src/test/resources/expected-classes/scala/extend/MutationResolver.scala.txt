@@ -1,0 +1,16 @@
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait MutationResolver {
+
+    @javax.validation.constraints.NotNull
+    @throws[Exception]
+    def createEvent(input: EventInput): Event
+
+    @javax.validation.constraints.NotNull
+    @throws[Exception]
+    def createAsset(input: AssetInput): Asset
+
+}

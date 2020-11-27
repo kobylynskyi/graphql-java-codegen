@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -15,10 +18,17 @@ public class ValueFormatter {
     private ValueFormatter() {
     }
 
-    public static String formatList(List<String> values, String formatter) {
+    public static String formatList(MappingContext mappingContext, List<String> values, String formatter) {
         if (values == null) {
             return format("null", formatter);
         }
+        if (mappingContext.getGeneratedLanguage() == GeneratedLanguage.SCALA) {
+            return formatListScala(values, formatter);
+        }
+        return formatListJava(values, formatter);
+    }
+
+    private static String formatListJava(List<String> values, String formatter) {
         if (formatter == null) {
             if (values.isEmpty()) {
                 return "java.util.Collections.emptyList()";
@@ -38,6 +48,29 @@ public class ValueFormatter {
             default:
                 // samples: ``, `"1", "2"`
                 StringJoiner listValuesJoiner = new StringJoiner(", ", "{", "}");
+                values.forEach(listValuesJoiner::add);
+                return listValuesJoiner.toString();
+        }
+    }
+
+    private static String formatListScala(List<String> values, String formatter) {
+        if (formatter == null) {
+            if (values.isEmpty()) {
+                return "Seq.empty";
+            } else {
+                StringJoiner listJoiner = new StringJoiner(", ", "Seq(", ")");
+                values.forEach(listJoiner::add);
+                return listJoiner.toString();
+            }
+        }
+        switch (formatter) {
+            case FORMATTER_TO_ARRAY_OF_STRINGS:
+                StringJoiner arrayOfStringsJoiner = new StringJoiner(", ", "Array(", ")");
+                values.forEach(newElement -> arrayOfStringsJoiner.add(format(newElement, FORMATTER_TO_STRING)));
+                return arrayOfStringsJoiner.toString();
+            case FORMATTER_TO_ARRAY:
+            default:
+                StringJoiner listValuesJoiner = new StringJoiner(", ", "Array(", ")");
                 values.forEach(listValuesJoiner::add);
                 return listValuesJoiner.toString();
         }

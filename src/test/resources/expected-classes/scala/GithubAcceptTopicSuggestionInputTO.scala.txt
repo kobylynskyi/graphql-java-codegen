@@ -1,0 +1,63 @@
+package com.github.graphql
+
+import scala.beans.BeanProperty
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.Objects
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class GithubAcceptTopicSuggestionInputTO(
+    @BeanProperty clientMutationId: String,
+    @javax.validation.constraints.NotNull
+    @BeanProperty name: String,
+    @javax.validation.constraints.NotNull
+    @BeanProperty repositoryId: String
+) {
+
+    override def toString(): String = {
+        val joiner = new StringJoiner(", ", "{ ", " }")
+        if (clientMutationId != null) {
+            joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
+        }
+        if (name != null) {
+            joiner.add("name: " + GraphQLRequestSerializer.getEntry(name))
+        }
+        if (repositoryId != null) {
+            joiner.add("repositoryId: " + GraphQLRequestSerializer.getEntry(repositoryId))
+        }
+        joiner.toString
+    }
+}
+
+object GithubAcceptTopicSuggestionInputTO {
+
+    def builder(): GithubAcceptTopicSuggestionInputTO.Builder = new Builder()
+
+    class Builder {
+
+        private var clientMutationId: String = _
+        private var name: String = _
+        private var repositoryId: String = _
+
+        def setClientMutationId(clientMutationId: String): Builder = {
+            this.clientMutationId = clientMutationId
+            this
+        }
+
+        def setName(name: String): Builder = {
+            this.name = name
+            this
+        }
+
+        def setRepositoryId(repositoryId: String): Builder = {
+            this.repositoryId = repositoryId
+            this
+        }
+
+        def build(): GithubAcceptTopicSuggestionInputTO = GithubAcceptTopicSuggestionInputTO(clientMutationId, name, repositoryId)
+
+    }
+}

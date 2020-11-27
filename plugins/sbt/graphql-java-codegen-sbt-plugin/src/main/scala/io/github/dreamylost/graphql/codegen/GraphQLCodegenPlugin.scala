@@ -59,6 +59,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
   //With the implementation of some other plugins, initialization is not necessary,
   //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
   override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
+    generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     graphqlQueryIntrospectionResultPath := None,
     graphqlSchemas := schemaFinderConfig,
     jsonConfigurationFile := None,
@@ -162,8 +163,9 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateApisWithThrowsException((generateApisWithThrowsException in GraphQLCodegenConfig).value)
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
+    mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
 
-    sLog.value.debug(s"Current mapping config is <$mappingConfig>")
+    //    sLog.value.debug(s"Current mapping config is <$mappingConfig>") // NO toString
     mappingConfig
   }
 

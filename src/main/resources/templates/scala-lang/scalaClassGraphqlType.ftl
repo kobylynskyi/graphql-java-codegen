@@ -1,0 +1,136 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper"]>
+<#if package?has_content>
+package ${package}
+
+</#if>
+import scala.beans.BeanProperty
+<#if imports??>
+<#list imports as import>
+import ${import}.*
+</#list>
+</#if>
+<#if toStringForRequest>
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+</#if>
+<#if equalsAndHashCode>
+import java.util.Objects
+</#if>
+<#if toString>
+import java.util.StringJoiner
+</#if>
+<#if fields?has_content>
+    <#if enumImportItSelfInScala?has_content>
+        <#list fields as field>
+            <#list enumImportItSelfInScala as enum>
+                <#if field.type?contains("Seq[")>
+                    <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
+import ${field.type?replace("Seq[", "")?replace("]", "")}._
+                    </#if>
+                <#else >
+                    <#if enum == field.type>
+import ${field.type}._
+                    </#if>
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
+
+<#if javaDoc?has_content>
+/**
+<#list javaDoc as javaDocLine>
+ * ${javaDocLine}
+</#list>
+ */
+</#if>
+<#if generatedInfo.getGeneratedType()?has_content>
+@${generatedInfo.getGeneratedType()}(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "${generatedInfo.getDateTime()}"
+)
+</#if>
+<#list annotations as annotation>
+@${annotation}
+</#list>
+case class ${className}(
+<#if fields?has_content>
+<#list fields as field>
+  <#if field.deprecated>
+    @Deprecated
+  </#if>
+<#list field.annotations as annotation>
+    @${annotation}
+</#list>
+    @BeanProperty <#if !immutableModels>var <#else></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+</#list>
+</#if>
+)<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {
+
+<#if toString>
+    override def toString(): String = {
+        val joiner = new StringJoiner(", ", "{ ", " }")
+<#if fields?has_content>
+<#list fields as field>
+  <#if MapperUtil.isScalaPrimitive(field.type)>
+    <#if toStringForRequest>
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+    <#else>
+        joiner.add("${field.originalName}: " + ${field.name})
+    </#if>
+  <#else>
+        if (${field.name} != null) {
+    <#if toStringForRequest>
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+    <#else>
+      <#if field.type == "String">
+            joiner.add("${field.originalName}: \"${field.name}\"")
+      <#else>
+            joiner.add(${field.originalName}: ${field.name}")
+      </#if>
+    </#if>
+        }
+  </#if>
+</#list>
+</#if>
+        joiner.toString
+    }
+</#if>
+}
+
+<#if builder>
+object ${className} {
+
+    def builder(): ${className}.Builder = new Builder()
+
+    class Builder {
+
+<#if fields?has_content>
+    <#list fields as field>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
+    </#list>
+</#if>
+
+<#if fields?has_content>
+    <#list fields as field>
+        <#if field.javaDoc?has_content>
+       /**
+        <#list field.javaDoc as javaDocLine>
+        * ${javaDocLine}
+        </#list>
+        */
+         </#if>
+        <#if field.deprecated>
+        @Deprecated
+        </#if>
+        def set${field.name?cap_first}(${field.name}: ${field.type}): Builder = {
+            this.${field.name} = ${field.name}
+            this
+        }
+
+    </#list>
+</#if>
+        def build(): ${className} = ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+
+    }
+}
+</#if>

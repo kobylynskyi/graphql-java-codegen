@@ -1,12 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.*;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -90,6 +85,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
+    private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -145,6 +141,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+
+        mappingConfig.setGeneratedLanguage(generatedLanguage);
 
         new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
     }
@@ -715,6 +713,13 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setJsonConfigurationFile(String jsonConfigurationFile) {
         this.jsonConfigurationFile = jsonConfigurationFile;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
     }
 
 }

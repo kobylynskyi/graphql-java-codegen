@@ -1,0 +1,20 @@
+
+/**
+ * Queries related to events
+ * Queries related to assets
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait QueryResolver {
+
+    @javax.validation.constraints.NotNull
+    @throws[Exception]
+    def events(): Seq[Event]
+
+    @javax.validation.constraints.NotNull
+    @throws[Exception]
+    def assets(): Seq[Asset]
+
+}

@@ -72,6 +72,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Integer responseProjectionMaxDepth;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
+    private GeneratedLanguage generatedLanguage;
+
     @Override
     public void combine(MappingConfig source) {
         if (source == null) {
@@ -121,6 +123,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization, source.useObjectMapperForRequestSerialization);
+        generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
     }
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
@@ -564,4 +567,14 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
         this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
     }
+
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
+    }
+
+    public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
+        this.generatedLanguage = generatedLanguage;
+    }
+
 }

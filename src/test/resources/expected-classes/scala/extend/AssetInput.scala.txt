@@ -1,0 +1,30 @@
+import scala.beans.BeanProperty
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class AssetInput(
+    @javax.validation.constraints.NotNull
+    @BeanProperty name: String
+) {
+
+}
+
+object AssetInput {
+
+    def builder(): AssetInput.Builder = new Builder()
+
+    class Builder {
+
+        private var name: String = _
+
+        def setName(name: String): Builder = {
+            this.name = name
+            this
+        }
+
+        def build(): AssetInput = AssetInput(name)
+
+    }
+}

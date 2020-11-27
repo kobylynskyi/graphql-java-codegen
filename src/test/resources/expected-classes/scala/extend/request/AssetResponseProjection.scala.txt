@@ -1,0 +1,70 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+
+/**
+ * Response projection for Asset
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class AssetResponseProjection extends GraphQLResponseProjection {
+
+    override def all$(): AssetResponseProjection = all$(3)
+
+    override def all$(maxDepth: Int): AssetResponseProjection = {
+        this.name()
+        this.status()
+        this.id()
+        this.createdBy()
+        this.typename()
+        this
+    }
+
+    def name(): AssetResponseProjection = {
+        name(null.asInstanceOf[String])
+    }
+
+    def name(alias: String): AssetResponseProjection = {
+        fields.add(new GraphQLResponseField("name").alias(alias))
+        this
+    }
+
+    def status(): AssetResponseProjection = {
+        status(null.asInstanceOf[String])
+    }
+
+    def status(alias: String): AssetResponseProjection = {
+        fields.add(new GraphQLResponseField("status").alias(alias))
+        this
+    }
+
+    def id(): AssetResponseProjection = {
+        id(null.asInstanceOf[String])
+    }
+
+    def id(alias: String): AssetResponseProjection = {
+        fields.add(new GraphQLResponseField("id").alias(alias))
+        this
+    }
+
+    def createdBy(): AssetResponseProjection = {
+        createdBy(null.asInstanceOf[String])
+    }
+
+    def createdBy(alias: String): AssetResponseProjection = {
+        fields.add(new GraphQLResponseField("createdBy").alias(alias))
+        this
+    }
+
+    def typename(): AssetResponseProjection = {
+        typename(null.asInstanceOf[String])
+    }
+
+    def typename(alias: String): AssetResponseProjection = {
+        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        this
+    }
+
+
+}

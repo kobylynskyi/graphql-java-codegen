@@ -1,0 +1,66 @@
+import scala.beans.BeanProperty
+import Status._
+import Asset._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class Event(
+    @javax.validation.constraints.NotNull
+    @BeanProperty status: Status,
+    @javax.validation.constraints.NotNull
+    @BeanProperty createdDateTime: String,
+    @javax.validation.constraints.NotNull
+    @BeanProperty assets: Seq[Asset],
+    @javax.validation.constraints.NotNull
+    @BeanProperty id: String,
+    @BeanProperty createdBy: String
+) extends PinnableItem with Node {
+
+}
+
+object Event {
+
+    def builder(): Event.Builder = new Builder()
+
+    class Builder {
+
+        private var status: Status = _
+        private var createdDateTime: String = _
+        private var assets: Seq[Asset] = _
+        private var id: String = _
+        private var createdBy: String = _
+
+        def setStatus(status: Status): Builder = {
+            this.status = status
+            this
+        }
+
+        def setCreatedDateTime(createdDateTime: String): Builder = {
+            this.createdDateTime = createdDateTime
+            this
+        }
+
+       /**
+        * Optional list of assets
+        */
+        def setAssets(assets: Seq[Asset]): Builder = {
+            this.assets = assets
+            this
+        }
+
+        def setId(id: String): Builder = {
+            this.id = id
+            this
+        }
+
+        def setCreatedBy(createdBy: String): Builder = {
+            this.createdBy = createdBy
+            this
+        }
+
+        def build(): Event = Event(status, createdDateTime, assets, id, createdBy)
+
+    }
+}

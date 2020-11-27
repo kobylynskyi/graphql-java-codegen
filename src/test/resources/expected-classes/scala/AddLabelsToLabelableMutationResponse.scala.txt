@@ -1,0 +1,23 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+import java.util.{ Map => JMap }
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class AddLabelsToLabelableMutationResponse extends GraphQLResult[JMap[String, AddLabelsToLabelablePayload]] {
+
+    def addLabelsToLabelable(): AddLabelsToLabelablePayload = {
+        val data: JMap[String, AddLabelsToLabelablePayload] = getData
+        if (data != null) data.get(AddLabelsToLabelableMutationResponse.OPERATION_NAME) else null
+    }
+
+}
+
+object AddLabelsToLabelableMutationResponse {
+
+    private final val OPERATION_NAME: String = "addLabelsToLabelable"
+
+}

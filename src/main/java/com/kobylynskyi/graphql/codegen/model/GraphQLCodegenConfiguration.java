@@ -392,4 +392,11 @@ public interface GraphQLCodegenConfiguration {
      */
     Set<String> getUseObjectMapperForRequestSerialization();
 
+    /**
+     * Generate code with lang
+     *
+     * @return GeneratedLanguage.SCALA or GeneratedLanguage.JAVA
+     */
+    GeneratedLanguage getGeneratedLanguage();
+
 }

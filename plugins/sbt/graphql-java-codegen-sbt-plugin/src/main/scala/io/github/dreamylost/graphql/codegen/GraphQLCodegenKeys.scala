@@ -4,6 +4,7 @@ import java.util
 
 import com.kobylynskyi.graphql.codegen.model.{ ApiInterfaceStrategy, ApiNamePrefixStrategy, ApiRootInterfaceStrategy, RelayConfig }
 import sbt._
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
 
 /**
  *
@@ -112,6 +113,8 @@ trait GraphQLCodegenKeys {
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
   val relayConfig = settingKey[RelayConfig]("Can be used to supply a custom configuration for Relay support.")
+
+  val generatedLanguage = settingKey[GeneratedLanguage]("Generate code with language, like java/scala.")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

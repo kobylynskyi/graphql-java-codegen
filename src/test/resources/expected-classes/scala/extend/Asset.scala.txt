@@ -1,0 +1,54 @@
+import scala.beans.BeanProperty
+import Status._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class Asset(
+    @javax.validation.constraints.NotNull
+    @BeanProperty name: String,
+    @javax.validation.constraints.NotNull
+    @BeanProperty status: Status,
+    @javax.validation.constraints.NotNull
+    @BeanProperty id: String,
+    @BeanProperty createdBy: String
+) extends PinnableItem with Node {
+
+}
+
+object Asset {
+
+    def builder(): Asset.Builder = new Builder()
+
+    class Builder {
+
+        private var name: String = _
+        private var status: Status = _
+        private var id: String = _
+        private var createdBy: String = _
+
+        def setName(name: String): Builder = {
+            this.name = name
+            this
+        }
+
+        def setStatus(status: Status): Builder = {
+            this.status = status
+            this
+        }
+
+        def setId(id: String): Builder = {
+            this.id = id
+            this
+        }
+
+        def setCreatedBy(createdBy: String): Builder = {
+            this.createdBy = createdBy
+            this
+        }
+
+        def build(): Asset = Asset(name, status, id, createdBy)
+
+    }
+}

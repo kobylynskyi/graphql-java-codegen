@@ -17,22 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.DEPRECATED;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.METHOD_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_TYPE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.RESPONSE_PROJECTION_MAX_DEPTH;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.RETURN_TYPE_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
 /**
  * Map request and response definition to a Freemarker data model
@@ -93,6 +78,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
+        dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }
@@ -121,7 +107,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(DEPRECATED, operationDef.isDeprecated());
         dataModel.put(OPERATION_NAME, operationDef.getName());
-        dataModel.put(METHOD_NAME, MapperUtils.capitalizeMethodNameIfRestricted(operationDef.getName()));
+        dataModel.put(METHOD_NAME, MapperUtils.capitalizeMethodNameIfRestricted(mappingContext, operationDef.getName()));
         dataModel.put(RETURN_TYPE_NAME, javaType);
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
@@ -156,6 +142,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(TO_STRING, mappingContext.getGenerateToString());
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
+        dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         return dataModel;
     }
 

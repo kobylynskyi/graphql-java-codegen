@@ -68,7 +68,7 @@ public class FieldDefinitionToParameterMapper {
         NamedDefinition namedDefinition = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
 
         ParameterDefinition parameter = new ParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(fieldDef.getName()));
+        parameter.setName(MapperUtils.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
         parameter.setOriginalName(fieldDef.getName());
         parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition));
         parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
@@ -91,7 +91,7 @@ public class FieldDefinitionToParameterMapper {
                                                                     ExtendedDefinition<?, ?> parentTypeDef) {
         ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
         parameter.setName(fieldDef.getName());
-        parameter.setMethodName(MapperUtils.capitalizeMethodNameIfRestricted(parameter.getName()));
+        parameter.setMethodName(MapperUtils.capitalizeMethodNameIfRestricted(mappingContext, parameter.getName()));
         String nestedType = GraphqlTypeToJavaTypeMapper.getNestedTypeName(fieldDef.getType());
         if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
             parameter.setType(Utils.capitalize(nestedType + mappingContext.getResponseProjectionSuffix()));

@@ -1,13 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
-import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
-import com.kobylynskyi.graphql.codegen.model.RelayConfig;
+import com.kobylynskyi.graphql.codegen.model.*;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -173,6 +167,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE_STRING)
+    private GeneratedLanguage generatedLanguage;
+
     @Parameter
     private String jsonConfigurationFile;
 
@@ -233,6 +230,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
+
+        mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
 
         MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
 
@@ -516,6 +515,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public String getResolverParentInterface() {
         return parentInterfaces.getResolver();
+    }
+
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
     }
 
     public ParentInterfacesConfig getParentInterfaces() {

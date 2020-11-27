@@ -28,6 +28,7 @@ public final class DataModelFields {
     public static final String RETURN_TYPE_NAME = "returnTypeName";
     public static final String GENERATED_INFO = "generatedInfo";
     public static final String RESPONSE_PROJECTION_MAX_DEPTH = "responseProjectionMaxDepth";
+    public static final String ENUM_IMPORT_IT_SELF_IN_SCALA = "enumImportItSelfInScala";
 
     private DataModelFields() {
     }

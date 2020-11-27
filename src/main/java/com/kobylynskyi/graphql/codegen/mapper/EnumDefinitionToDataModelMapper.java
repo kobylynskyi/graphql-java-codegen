@@ -49,7 +49,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(IMPLEMENTS, getUnionInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
-        dataModel.put(FIELDS, map(definition.getValueDefinitions()));
+        dataModel.put(FIELDS, map(mappingContext, definition.getValueDefinitions()));
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
     }
@@ -66,14 +66,14 @@ public class EnumDefinitionToDataModelMapper {
 
     /**
      * Mapper from GraphQL's EnumValueDefinition to a Freemarker-understandable format
-     *
+     * @param mappingContext Global mapping context
      * @param enumValueDefinitions list of GraphQL EnumValueDefinition types
      * @return list of strings
      */
-    private static List<EnumValueDefinition> map(List<graphql.language.EnumValueDefinition> enumValueDefinitions) {
+    private static List<EnumValueDefinition> map(MappingContext mappingContext,List<graphql.language.EnumValueDefinition> enumValueDefinitions) {
         return enumValueDefinitions.stream()
                 .map(f -> new EnumValueDefinition(
-                        MapperUtils.capitalizeIfRestricted(f.getName()),
+                        MapperUtils.capitalizeIfRestricted(mappingContext, f.getName()),
                         f.getName(),
                         getJavaDoc(f),
                         isDeprecated(f)))
