@@ -93,17 +93,20 @@ class ${className} extends GraphQLParametrizedInput {
             return false
         }
         val that = obj.asInstanceOf[${className}]
-<#if fields?has_content>
-        return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next> &&
-        </#if></#list>
-<#else>
+        <#if fields?has_content>
+        Seq(
+            <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
+            , </#if></#list>
+        ).forall(o => o)
+        <#else>
         true
-</#if>
+        </#if>
+
     }
 
     override def hashCode(): Int = {
 <#if fields?has_content>
-        return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+        Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
 <#else>
         0
 </#if>
