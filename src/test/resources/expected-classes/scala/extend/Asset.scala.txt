@@ -16,39 +16,3 @@ case class Asset(
 ) extends PinnableItem with Node {
 
 }
-
-object Asset {
-
-    def builder(): Asset.Builder = new Builder()
-
-    class Builder {
-
-        private var name: String = _
-        private var status: Status = _
-        private var id: String = _
-        private var createdBy: String = _
-
-        def setName(name: String): Builder = {
-            this.name = name
-            this
-        }
-
-        def setStatus(status: Status): Builder = {
-            this.status = status
-            this
-        }
-
-        def setId(id: String): Builder = {
-            this.id = id
-            this
-        }
-
-        def setCreatedBy(createdBy: String): Builder = {
-            this.createdBy = createdBy
-            this
-        }
-
-        def build(): Asset = Asset(name, status, id, createdBy)
-
-    }
-}

@@ -106,7 +106,12 @@ public class GraphQLCodegen {
             mappingConfig.setModelValidationAnnotation(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION);
         }
         if (mappingConfig.getGenerateBuilder() == null) {
-            mappingConfig.setGenerateBuilder(MappingConfigConstants.DEFAULT_BUILDER);
+            if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
+                // functional expression
+                mappingConfig.setGenerateBuilder(false);
+            } else {
+                mappingConfig.setGenerateBuilder(MappingConfigConstants.DEFAULT_BUILDER);
+            }
         }
         if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
             mappingConfig.setGenerateEqualsAndHashCode(MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE);

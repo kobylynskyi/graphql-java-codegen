@@ -93,17 +93,20 @@ class ${className} extends GraphQLParametrizedInput {
             return false
         }
         val that = obj.asInstanceOf[${className}]
-<#if fields?has_content>
-        return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next> &&
-        </#if></#list>
-<#else>
+        <#if fields?has_content>
+        Seq(
+            <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
+            , </#if></#list>
+        ).forall(o => o)
+        <#else>
         true
-</#if>
+        </#if>
+
     }
 
     override def hashCode(): Int = {
 <#if fields?has_content>
-        return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+        Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
 <#else>
         0
 </#if>
@@ -111,15 +114,14 @@ class ${className} extends GraphQLParametrizedInput {
 </#if>
 
     override def toString(): String = {
-        val joiner = new StringJoiner(", ", "(", ")")
-<#if fields?has_content>
-<#list fields as field>
-        if (${field.name} != null) {
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
-        }
-</#list>
-</#if>
-        joiner.toString
+    <#if fields?has_content>
+        Seq(
+            <#list fields as field>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>
+            , </#if></#list>
+        ).filter(_ != "").mkString("(", ",", ")")
+    <#else>
+        "()"
+    </#if>
     }
 
 }

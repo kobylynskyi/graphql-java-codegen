@@ -10,21 +10,3 @@ case class AssetInput(
 ) {
 
 }
-
-object AssetInput {
-
-    def builder(): AssetInput.Builder = new Builder()
-
-    class Builder {
-
-        private var name: String = _
-
-        def setName(name: String): Builder = {
-            this.name = name
-            this
-        }
-
-        def build(): AssetInput = AssetInput(name)
-
-    }
-}

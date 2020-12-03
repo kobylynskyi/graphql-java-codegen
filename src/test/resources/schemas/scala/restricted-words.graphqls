@@ -1,0 +1,35 @@
+schema {
+    query: Query
+}
+
+type Query {
+    native: String
+    private(int: Int, new: String, enum: TestEnum = long): Synchronized
+    case(final: [char]): ID
+    int(final: Int): char
+    super: String
+    this: String
+}
+
+type Synchronized {
+    void: String
+    wait: char
+    this: char
+    super: char
+    private: char
+    native: char
+    that: char
+    enum: TestEnum
+    Synchronized: Synchronized
+    date: DateTime
+}
+
+enum TestEnum {
+    long,
+    short
+}
+
+interface char {
+}
+
+scalar DateTime

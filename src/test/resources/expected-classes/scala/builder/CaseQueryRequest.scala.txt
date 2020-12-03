@@ -1,4 +1,4 @@
-package com.github.graphql
+package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest
@@ -10,7 +10,7 @@ import java.util.Objects
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
+class CaseQueryRequest extends GraphQLOperationRequest {
 
     private var alias: String = _
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
@@ -20,15 +20,15 @@ class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
         this.alias = alias
     }
 
-    def setInput(input: AddLabelsToLabelableInput ): Unit = {
-        this.input.put("input", input)
+    def setFinal(Final: Seq[Char] ): Unit = {
+        this.input.put("final", Final)
     }
 
-    override def getOperationType(): GraphQLOperation = AddLabelsToLabelableMutationRequest.OPERATION_TYPE
+    override def getOperationType(): GraphQLOperation = CaseQueryRequest.OPERATION_TYPE
 
-    override def getOperationName(): String = AddLabelsToLabelableMutationRequest.OPERATION_NAME
+    override def getOperationName(): String = CaseQueryRequest.OPERATION_NAME
 
-    override def getAlias(): String = if (alias != null) alias else AddLabelsToLabelableMutationRequest.OPERATION_NAME
+    override def getAlias(): String = if (alias != null) alias else CaseQueryRequest.OPERATION_NAME
 
     override def getInput(): JMap[String, java.lang.Object] = input
 
@@ -39,7 +39,7 @@ class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
         if (obj == null || getClass != obj.getClass) {
             return false
         }
-        val that = obj.asInstanceOf[AddLabelsToLabelableMutationRequest]
+        val that = obj.asInstanceOf[CaseQueryRequest]
         Objects.equals(getOperationType(), that.getOperationType()) &&
                    Objects.equals(getOperationName(), that.getOperationName()) &&
                    Objects.equals(input, that.input)
@@ -50,9 +50,9 @@ class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
     override def toString(): String = Objects.toString(input)
 }
 
-object AddLabelsToLabelableMutationRequest {
+object CaseQueryRequest {
 
-    final val OPERATION_NAME: String = "addLabelsToLabelable"
-    final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.MUTATION
+    final val OPERATION_NAME: String = "case"
+    final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.QUERY
 
 }

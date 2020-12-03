@@ -14,27 +14,3 @@ case class EventInput(
 ) {
 
 }
-
-object EventInput {
-
-    def builder(): EventInput.Builder = new Builder()
-
-    class Builder {
-
-        private var status: Status = _
-        private var assets: Seq[AssetInput] = _
-
-        def setStatus(status: Status): Builder = {
-            this.status = status
-            this
-        }
-
-        def setAssets(assets: Seq[AssetInput]): Builder = {
-            this.assets = assets
-            this
-        }
-
-        def build(): EventInput = EventInput(status, assets)
-
-    }
-}
