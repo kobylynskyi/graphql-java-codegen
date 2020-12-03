@@ -345,6 +345,23 @@ class GraphQLRequestSerializerTest {
     }
 
     @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_AllInputsNull(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
+                .setContextId(null)
+                .setIds(null)
+                .setTranslated(null)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { eventsByIds{ id } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
     void serialize_multipleRequests(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request1 = new EventsByCategoryAndStatusQueryRequest.Builder().alias("req1").setStatus(Status.OPEN).build();
