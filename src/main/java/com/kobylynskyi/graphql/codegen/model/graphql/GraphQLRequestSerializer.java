@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class GraphQLRequestSerializer {
@@ -87,7 +88,7 @@ public class GraphQLRequestSerializer {
         }
         builder.append(graphQLRequest.getRequest().getOperationName());
         Map<String, Object> input = graphQLRequest.getRequest().getInput();
-        if (input != null && !input.isEmpty()) {
+        if (requestHasInput(input)) {
             builder.append("(");
             Iterator<Map.Entry<String, Object>> inputEntryIterator = input.entrySet().iterator();
             boolean valueAdded = false;
@@ -109,6 +110,11 @@ public class GraphQLRequestSerializer {
             builder.append(graphQLRequest.getResponseProjection().toString());
         }
         return builder.toString();
+    }
+
+    private static boolean requestHasInput(Map<String, Object> input) {
+        return input != null && !input.isEmpty() &&
+                input.values().stream().anyMatch(Objects::nonNull);
     }
 
     private static String jsonQuery(String queryString) {
