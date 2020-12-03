@@ -15,37 +15,9 @@ case class AddLabelsToLabelablePayload(
 ) {
 
     override def toString(): String = {
-        val joiner = new StringJoiner(", ", "{ ", " }")
-        if (clientMutationId != null) {
-            joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
-        }
-        if (labelable != null) {
-            joiner.add("labelable: " + GraphQLRequestSerializer.getEntry(labelable))
-        }
-        joiner.toString
-    }
-}
-
-object AddLabelsToLabelablePayload {
-
-    def builder(): AddLabelsToLabelablePayload.Builder = new Builder()
-
-    class Builder {
-
-        private var clientMutationId: String = _
-        private var labelable: Labelable = _
-
-        def setClientMutationId(clientMutationId: String): Builder = {
-            this.clientMutationId = clientMutationId
-            this
-        }
-
-        def setLabelable(labelable: Labelable): Builder = {
-            this.labelable = labelable
-            this
-        }
-
-        def build(): AddLabelsToLabelablePayload = AddLabelsToLabelablePayload(clientMutationId, labelable)
-
+        Seq(
+            if (clientMutationId != null) "clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId) else "",
+            if (labelable != null) "labelable: " + GraphQLRequestSerializer.getEntry(labelable) else ""
+        ).filter(_ != "").mkString("{", ",", "}")
     }
 }

@@ -114,15 +114,14 @@ class ${className} extends GraphQLParametrizedInput {
 </#if>
 
     override def toString(): String = {
-        val joiner = new StringJoiner(", ", "(", ")")
-<#if fields?has_content>
-<#list fields as field>
-        if (${field.name} != null) {
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
-        }
-</#list>
-</#if>
-        joiner.toString
+    <#if fields?has_content>
+        Seq(
+            <#list fields as field>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>
+            , </#if></#list>
+        ).filter(_ != "").mkString("(", ",", ")")
+    <#else>
+        "()"
+    </#if>
     }
 
 }

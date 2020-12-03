@@ -101,11 +101,12 @@ class ${className} extends GraphQLOperationRequest {
 </#if>
 }
 
-<#if builder>
 object ${className} {
 
     final val OPERATION_NAME: String = "${operationName}"
     final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.${operationType}
+
+    <#if builder>
 
     def builder(): Builder = new Builder()
 
@@ -153,5 +154,5 @@ object ${className} {
         }
 
     }
+    </#if>
 }
-</#if>

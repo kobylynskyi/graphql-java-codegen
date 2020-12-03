@@ -68,31 +68,13 @@ case class ${className}(
 
 <#if toString>
     override def toString(): String = {
-        val joiner = new StringJoiner(", ", "{ ", " }")
-<#if fields?has_content>
-<#list fields as field>
-  <#if MapperUtil.isScalaPrimitive(field.type)>
-    <#if toStringForRequest>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
-    <#else>
-        joiner.add("${field.originalName}: " + ${field.name})
+    <#if fields?has_content>
+        Seq(<#list fields as field>
+            <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else>if (${field.name} != null) <#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
+        ).filter(_ != "").mkString("{", ",", "}")
+        <#else>
+        "{}"
     </#if>
-  <#else>
-        if (${field.name} != null) {
-    <#if toStringForRequest>
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
-    <#else>
-      <#if field.type == "String">
-            joiner.add("${field.originalName}: \"${field.name}\"")
-      <#else>
-            joiner.add(${field.originalName}: ${field.name}")
-      </#if>
-    </#if>
-        }
-  </#if>
-</#list>
-</#if>
-        joiner.toString
     }
 </#if>
 }
