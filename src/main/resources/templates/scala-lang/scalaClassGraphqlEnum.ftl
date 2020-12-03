@@ -18,7 +18,7 @@ package ${package}
 <#list annotations as annotation>
 @${annotation}
 </#list>
-object ${className} extends Enumeration<#if implements?has_content> with<#if fields?has_content><#list implements as interface> ${interface}<#if interface_has_next> with </#if></#list></#if></#if> {
+object ${className} extends Enumeration<#if implements?has_content> with<#list implements as interface> ${interface}<#if interface_has_next> with </#if></#list></#if> {
 
     type ${className} = Value
 
