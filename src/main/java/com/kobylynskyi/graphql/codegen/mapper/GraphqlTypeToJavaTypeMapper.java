@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
@@ -296,67 +295,68 @@ public class GraphqlTypeToJavaTypeMapper {
      * @return Java/Scala type wrapped into the subscriptionReturnType
      */
     static String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
-                                              ExtendedFieldDefinition fieldDef,
                                               NamedDefinition namedDefinition,
                                               String parentTypeName) {
-        String javaTypeName = namedDefinition.getJavaName();
-        if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name())) {
-            if (Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
-                // in case it is subscription and subscriptionReturnType is set
-                return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), javaTypeName);
+        String computedTypeName = namedDefinition.getJavaName();
+        if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
+                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+            // in case it is subscription and subscriptionReturnType is set
+            return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
+        }
+
+        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes()) && !namedDefinition.isMandatory()) {
+            if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage()) &&
+                    !computedTypeName.startsWith(SCALA_UTIL_LIST) && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                // wrap the type into java.util.Optional (except java list and scala list)
+                computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
+            } else if (!computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                // wrap the type into java.util.Optional (except lists)
+                computedTypeName = getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
             }
-        } else if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())) {
-            // wrap the type into java.util.Optional (except lists)
-            if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
-                return getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, javaTypeName);
-            }
-            // wrap the type into java.util.Optional (except java list and scala list)
-            if (!namedDefinition.isMandatory() && !javaTypeName.startsWith(SCALA_UTIL_LIST) && !javaTypeName.startsWith(JAVA_UTIL_LIST)) {
-                return getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, javaTypeName);
-            }
-        } else {
-            // scala
-            if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
-                if (javaTypeName.startsWith(SCALA_UTIL_LIST) &&
-                        Utils.isNotBlank(mappingContext.getApiReturnListType())) {
-                    // in case it is query/mutation, return type is list and apiReturnListType is set
-                    return javaTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
-                }
-                if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
-                    // in case it is query/mutation and apiReturnType is set
-                    return getGenericsString(mappingContext, mappingContext.getApiReturnType(), javaTypeName);
-                }
-            }
-            if (javaTypeName.startsWith(JAVA_UTIL_LIST) &&
+        }
+        // scala
+        if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
+            if (computedTypeName.startsWith(SCALA_UTIL_LIST) &&
                     Utils.isNotBlank(mappingContext.getApiReturnListType())) {
                 // in case it is query/mutation, return type is list and apiReturnListType is set
-                return javaTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
+                return computedTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
             }
             if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
                 // in case it is query/mutation and apiReturnType is set
-                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), javaTypeName);
+                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
+            }
+        } else {
+            if (computedTypeName.startsWith(JAVA_UTIL_LIST) &&
+                    Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                // in case it is query/mutation, return type is list and apiReturnListType is set
+                return computedTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
+            }
+            if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
+                // in case it is query/mutation and apiReturnType is set
+                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
             }
         }
-        return GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition);
+        return GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
 
     public static String getTypeConsideringPrimitive(MappingContext mappingContext,
-                                                     NamedDefinition namedDefinition) {
+                                                     NamedDefinition namedDefinition,
+                                                     String computedTypeName) {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphqlTypeName));
-            if (GeneratedLanguage.JAVA.equals(mappingContext.getGeneratedLanguage())) {
-                if (isJavaPrimitive(possiblyPrimitiveType)) {
-                    return possiblyPrimitiveType;
-                }
-            } else if (GeneratedLanguage.SCALA.equals(mappingContext.getGeneratedLanguage())) {
-                if (isScalaPrimitive(possiblyPrimitiveType)) {
-                    return possiblyPrimitiveType;
-                }
+            if (isPrimitive(mappingContext, possiblyPrimitiveType)) {
+                return possiblyPrimitiveType;
             }
-            //TODO kotlin
         }
-        return namedDefinition.getJavaName();
+        return computedTypeName;
+    }
+
+    private static boolean isPrimitive(MappingContext mappingContext, String possiblyPrimitiveType) {
+        GeneratedLanguage generatedLanguage = mappingContext.getGeneratedLanguage();
+        // TODO kotlin
+        return GeneratedLanguage.JAVA.equals(generatedLanguage) && isJavaPrimitive(possiblyPrimitiveType)
+                || GeneratedLanguage.SCALA.equals(generatedLanguage) && isScalaPrimitive(possiblyPrimitiveType);
     }
 
     public static boolean isJavaPrimitive(String javaType) {

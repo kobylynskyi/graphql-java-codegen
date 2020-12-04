@@ -1,0 +1,10 @@
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface NodeQueryResolver {
+
+    reactor.core.publisher.Mono<java.util.Optional<Node>> node(String id) throws Exception;
+
+}
