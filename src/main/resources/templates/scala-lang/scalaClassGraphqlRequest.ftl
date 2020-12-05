@@ -65,7 +65,7 @@ class ${className} extends GraphQLOperationRequest {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    def set${field.name?cap_first}(${field.name}: ${field.type} ): Unit = {
+    def set${field.name?cap_first}(${field.name}: ${field.type}): Unit = {
         this.input.put("${field.originalName}", ${field.name})
     }
 
@@ -115,7 +115,7 @@ object ${className} {
         private var $alias: String = _
         <#if fields?has_content>
             <#list fields as field>
-        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content> ${field.defaultValue} <#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
             </#list>
         </#if>
 
@@ -127,16 +127,16 @@ object ${className} {
         <#if fields?has_content>
     <#list fields as field>
         <#if field.javaDoc?has_content>
-       /**
+        /**
         <#list field.javaDoc as javaDocLine>
-        * ${javaDocLine}
+         * ${javaDocLine}
         </#list>
-        */
+         */
         </#if>
         <#if field.deprecated>
         @Deprecated
         </#if>
-        def set${field.name?cap_first}(${field.name}: ${field.type} ): Builder = {
+        def set${field.name?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}
             this
         }

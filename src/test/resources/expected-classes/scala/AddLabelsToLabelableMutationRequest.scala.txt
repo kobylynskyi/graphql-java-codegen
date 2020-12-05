@@ -20,7 +20,7 @@ class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
         this.alias = alias
     }
 
-    def setInput(input: AddLabelsToLabelableInput ): Unit = {
+    def setInput(input: AddLabelsToLabelableInput): Unit = {
         this.input.put("input", input)
     }
 

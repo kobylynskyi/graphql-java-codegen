@@ -58,7 +58,7 @@ class ${className} extends GraphQLResponseProjection {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    def ${field.methodName}(<#if field.type?has_content>subProjection: ${field.type} </#if>): ${className} = {
+    def ${field.methodName}(<#if field.type?has_content>subProjection: ${field.type}</#if>): ${className} = {
         ${field.methodName}(<#if field.parametrizedInputClassName?has_content></#if>null.asInstanceOf[String]<#if field.type?has_content>, subProjection</#if>)
     }
 
@@ -68,7 +68,7 @@ class ${className} extends GraphQLResponseProjection {
     }
 
 <#if field.parametrizedInputClassName?has_content>
-    def ${field.methodName}(input: ${field.parametrizedInputClassName}<#if field.type?has_content>,subProjection: ${field.type} </#if>): ${className} = {
+    def ${field.methodName}(input: ${field.parametrizedInputClassName}<#if field.type?has_content>,subProjection: ${field.type}</#if>): ${className} = {
         ${field.methodName}(null.asInstanceOf[String], input<#if field.type?has_content>, subProjection</#if>)
     }
 
