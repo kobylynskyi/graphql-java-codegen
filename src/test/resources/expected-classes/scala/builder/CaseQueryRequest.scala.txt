@@ -20,7 +20,7 @@ class CaseQueryRequest extends GraphQLOperationRequest {
         this.alias = alias
     }
 
-    def setFinal(Final: Seq[Char] ): Unit = {
+    def setFinal(Final: Seq[Char]): Unit = {
         this.input.put("final", Final)
     }
 

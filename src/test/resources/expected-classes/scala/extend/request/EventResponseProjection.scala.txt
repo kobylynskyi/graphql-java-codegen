@@ -43,7 +43,7 @@ class EventResponseProjection extends GraphQLResponseProjection {
         this
     }
 
-    def assets(subProjection: AssetResponseProjection ): EventResponseProjection = {
+    def assets(subProjection: AssetResponseProjection): EventResponseProjection = {
         assets(null.asInstanceOf[String], subProjection)
     }
 

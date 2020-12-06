@@ -46,7 +46,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
         this
     }
 
-    def edges(subProjection: SearchResultItemEdgeResponseProjection ): SearchResultItemConnectionResponseProjection = {
+    def edges(subProjection: SearchResultItemEdgeResponseProjection): SearchResultItemConnectionResponseProjection = {
         edges(null.asInstanceOf[String], subProjection)
     }
 
@@ -64,7 +64,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
         this
     }
 
-    def nodes(subProjection: SearchResultItemResponseProjection ): SearchResultItemConnectionResponseProjection = {
+    def nodes(subProjection: SearchResultItemResponseProjection): SearchResultItemConnectionResponseProjection = {
         nodes(null.asInstanceOf[String], subProjection)
     }
 
@@ -73,7 +73,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
         this
     }
 
-    def pageInfo(subProjection: PageInfoResponseProjection ): SearchResultItemConnectionResponseProjection = {
+    def pageInfo(subProjection: PageInfoResponseProjection): SearchResultItemConnectionResponseProjection = {
         pageInfo(null.asInstanceOf[String], subProjection)
     }
 

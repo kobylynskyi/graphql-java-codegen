@@ -95,11 +95,11 @@ object ${className} {
 <#if fields?has_content>
     <#list fields as field>
         <#if field.javaDoc?has_content>
-       /**
+        /**
         <#list field.javaDoc as javaDocLine>
-        * ${javaDocLine}
+         * ${javaDocLine}
         </#list>
-        */
+         */
          </#if>
         <#if field.deprecated>
         @Deprecated
