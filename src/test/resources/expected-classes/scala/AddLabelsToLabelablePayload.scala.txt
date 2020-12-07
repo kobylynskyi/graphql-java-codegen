@@ -1,6 +1,5 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 
 @javax.annotation.Generated(
@@ -8,8 +7,8 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class AddLabelsToLabelablePayload(
-    @BeanProperty clientMutationId: String,
-    @BeanProperty labelable: Labelable
+    val clientMutationId: String,
+    val labelable: Labelable
 ) {
 
     override def toString(): String = {

@@ -58,7 +58,7 @@ trait ${className}<#if implements?has_content> extends<#list implements as inter
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    def get${field.name?cap_first}(): ${field.type}
+    val ${field.name}: ${field.type}
 
 </#list>
 </#if>

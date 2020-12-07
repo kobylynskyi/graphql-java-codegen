@@ -1,6 +1,5 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import PullRequestConnection._
 import GitActor._
@@ -21,73 +20,73 @@ import SubscriptionState._
 )
 case class Commit(
     @javax.validation.constraints.NotNull
-    @BeanProperty var abbreviatedOid: String,
+    var abbreviatedOid: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var additions: Int,
-    @BeanProperty var associatedPullRequests: PullRequestConnection,
-    @BeanProperty var author: GitActor,
+    var additions: Int,
+    var associatedPullRequests: PullRequestConnection,
+    var author: GitActor,
     @javax.validation.constraints.NotNull
-    @BeanProperty var authoredByCommitter: Boolean,
+    var authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
-    @BeanProperty var authoredDate: String,
+    var authoredDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var blame: Blame,
+    var blame: Blame,
     @javax.validation.constraints.NotNull
-    @BeanProperty var changedFiles: Int,
+    var changedFiles: Int,
     @javax.validation.constraints.NotNull
-    @BeanProperty var comments: CommitCommentConnection,
+    var comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
-    @BeanProperty var commitResourcePath: String,
+    var commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var commitUrl: String,
+    var commitUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var committedDate: String,
+    var committedDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var committedViaWeb: Boolean,
-    @BeanProperty var committer: GitActor,
+    var committedViaWeb: Boolean,
+    var committer: GitActor,
     @javax.validation.constraints.NotNull
-    @BeanProperty var deletions: Int,
-    @BeanProperty var deployments: DeploymentConnection,
+    var deletions: Int,
+    var deployments: DeploymentConnection,
     @javax.validation.constraints.NotNull
-    @BeanProperty var history: CommitHistoryConnection,
+    var history: CommitHistoryConnection,
     @javax.validation.constraints.NotNull
-    @BeanProperty var id: String,
+    var id: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var message: String,
+    var message: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var messageBody: String,
+    var messageBody: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var messageBodyHTML: String,
+    var messageBodyHTML: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var messageHeadline: String,
+    var messageHeadline: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var messageHeadlineHTML: String,
+    var messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var oid: String,
+    var oid: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var parents: CommitConnection,
-    @BeanProperty var pushedDate: String,
+    var parents: CommitConnection,
+    var pushedDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var repository: Repository,
+    var repository: Repository,
     @javax.validation.constraints.NotNull
-    @BeanProperty var resourcePath: String,
-    @BeanProperty var signature: GitSignature,
-    @BeanProperty var status: Status,
+    var resourcePath: String,
+    var signature: GitSignature,
+    var status: Status,
     @javax.validation.constraints.NotNull
-    @BeanProperty var tarballUrl: String,
+    var tarballUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var tree: Tree,
+    var tree: Tree,
     @javax.validation.constraints.NotNull
-    @BeanProperty var treeResourcePath: String,
+    var treeResourcePath: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var treeUrl: String,
+    var treeUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var url: String,
+    var url: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty var viewerCanSubscribe: Boolean,
-    @BeanProperty var viewerSubscription: SubscriptionState,
+    var viewerCanSubscribe: Boolean,
+    var viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
-    @BeanProperty var zipballUrl: String
+    var zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
 
     override def toString(): String = {

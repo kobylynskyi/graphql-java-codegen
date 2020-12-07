@@ -6,8 +6,8 @@
 trait Node {
 
     @javax.validation.constraints.NotNull
-    def getId(): String
+    val id: String
 
-    def getCreatedBy(): String
+    val createdBy: String
 
 }

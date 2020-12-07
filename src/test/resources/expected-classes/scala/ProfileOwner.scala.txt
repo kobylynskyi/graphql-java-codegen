@@ -11,35 +11,35 @@ import PinnableItemConnection._
 trait ProfileOwner {
 
     @javax.validation.constraints.NotNull
-    def getAnyPinnableItems(): Boolean
+    val anyPinnableItems: Boolean
 
-    def getEmail(): String
-
-    @javax.validation.constraints.NotNull
-    def getId(): String
+    val email: String
 
     @javax.validation.constraints.NotNull
-    def getItemShowcase(): ProfileItemShowcase
-
-    def getLocation(): String
+    val id: String
 
     @javax.validation.constraints.NotNull
-    def getLogin(): String
+    val itemShowcase: ProfileItemShowcase
 
-    def getName(): String
-
-    @javax.validation.constraints.NotNull
-    def getPinnableItems(): PinnableItemConnection
+    val location: String
 
     @javax.validation.constraints.NotNull
-    def getPinnedItems(): PinnableItemConnection
+    val login: String
+
+    val name: String
 
     @javax.validation.constraints.NotNull
-    def getPinnedItemsRemaining(): Int
+    val pinnableItems: PinnableItemConnection
 
     @javax.validation.constraints.NotNull
-    def getViewerCanChangePinnedItems(): Boolean
+    val pinnedItems: PinnableItemConnection
 
-    def getWebsiteUrl(): String
+    @javax.validation.constraints.NotNull
+    val pinnedItemsRemaining: Int
+
+    @javax.validation.constraints.NotNull
+    val viewerCanChangePinnedItems: Boolean
+
+    val websiteUrl: String
 
 }

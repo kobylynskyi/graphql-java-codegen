@@ -1,6 +1,5 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 
 @javax.annotation.Generated(
@@ -8,11 +7,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class GithubAcceptTopicSuggestionInputTO(
-    @BeanProperty clientMutationId: String,
+    val clientMutationId: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty name: String,
+    val name: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty repositoryId: String
+    val repositoryId: String
 ) {
 
     override def toString(): String = {

@@ -1,6 +1,5 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import GithubPullRequestConnectionTO._
 import GithubGitActorTO._
@@ -21,73 +20,73 @@ import GithubSubscriptionStateTO._
 )
 case class GithubCommitTO(
     @javax.validation.constraints.NotNull
-    @BeanProperty abbreviatedOid: String,
+    val abbreviatedOid: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty additions: Int,
-    @BeanProperty associatedPullRequests: GithubPullRequestConnectionTO,
-    @BeanProperty author: GithubGitActorTO,
+    val additions: Int,
+    val associatedPullRequests: GithubPullRequestConnectionTO,
+    val author: GithubGitActorTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty authoredByCommitter: Boolean,
+    val authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
-    @BeanProperty authoredDate: String,
+    val authoredDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty blame: GithubBlameTO,
+    val blame: GithubBlameTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty changedFiles: Int,
+    val changedFiles: Int,
     @javax.validation.constraints.NotNull
-    @BeanProperty comments: GithubCommitCommentConnectionTO,
+    val comments: GithubCommitCommentConnectionTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty commitResourcePath: String,
+    val commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty commitUrl: String,
+    val commitUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty committedDate: String,
+    val committedDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty committedViaWeb: Boolean,
-    @BeanProperty committer: GithubGitActorTO,
+    val committedViaWeb: Boolean,
+    val committer: GithubGitActorTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty deletions: Int,
-    @BeanProperty deployments: GithubDeploymentConnectionTO,
+    val deletions: Int,
+    val deployments: GithubDeploymentConnectionTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty history: GithubCommitHistoryConnectionTO,
+    val history: GithubCommitHistoryConnectionTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty id: String,
+    val id: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty message: String,
+    val message: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty messageBody: String,
+    val messageBody: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty messageBodyHTML: String,
+    val messageBodyHTML: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty messageHeadline: String,
+    val messageHeadline: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty messageHeadlineHTML: String,
+    val messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty oid: String,
+    val oid: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty parents: GithubCommitConnectionTO,
-    @BeanProperty pushedDate: String,
+    val parents: GithubCommitConnectionTO,
+    val pushedDate: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty repository: GithubRepositoryTO,
+    val repository: GithubRepositoryTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty resourcePath: String,
-    @BeanProperty signature: GithubGitSignatureTO,
-    @BeanProperty status: GithubStatusTO,
+    val resourcePath: String,
+    val signature: GithubGitSignatureTO,
+    val status: GithubStatusTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty tarballUrl: String,
+    val tarballUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty tree: GithubTreeTO,
+    val tree: GithubTreeTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty treeResourcePath: String,
+    val treeResourcePath: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty treeUrl: String,
+    val treeUrl: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty url: String,
+    val url: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty viewerCanSubscribe: Boolean,
-    @BeanProperty viewerSubscription: GithubSubscriptionStateTO,
+    val viewerCanSubscribe: Boolean,
+    val viewerSubscription: GithubSubscriptionStateTO,
     @javax.validation.constraints.NotNull
-    @BeanProperty zipballUrl: String
+    val zipballUrl: String
 ) extends GithubCloserTO with GithubIssueTimelineItemTO with GithubPullRequestTimelineItemTO with GithubGitObjectTO with GithubNodeTO with GithubSubscribableTO with GithubUniformResourceLocatableTO {
 
     override def toString(): String = {
