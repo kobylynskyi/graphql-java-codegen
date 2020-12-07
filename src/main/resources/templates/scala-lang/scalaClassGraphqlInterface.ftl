@@ -58,7 +58,7 @@ trait ${className}<#if implements?has_content> extends<#list implements as inter
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    val ${field.name}: ${field.type}
+    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}
 
 </#list>
 </#if>

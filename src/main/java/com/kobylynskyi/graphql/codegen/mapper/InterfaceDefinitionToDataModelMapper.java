@@ -36,6 +36,7 @@ public class InterfaceDefinitionToDataModelMapper {
                 mappingContext, definition.getFieldDefinitions(), definition));
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
+        dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());
         return dataModel;
     }
 
