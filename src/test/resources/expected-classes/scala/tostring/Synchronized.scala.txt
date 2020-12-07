@@ -2,8 +2,6 @@ package com.kobylynskyi.graphql.codegen.prot
 
 import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.Objects
-import java.util.StringJoiner
 import TestEnum._
 import Synchronized._
 

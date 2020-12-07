@@ -10,15 +10,9 @@ import java.util.Objects
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class AddLabelsToLabelableMutationRequest extends GraphQLOperationRequest {
+class AddLabelsToLabelableMutationRequest(alias: String) extends GraphQLOperationRequest {
 
-    private var alias: String = _
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
-
-    def this(alias: String) {
-        this()
-        this.alias = alias
-    }
 
     def setInput(input: AddLabelsToLabelableInput): Unit = {
         this.input.put("input", input)
@@ -54,5 +48,9 @@ object AddLabelsToLabelableMutationRequest {
 
     final val OPERATION_NAME: String = "addLabelsToLabelable"
     final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.MUTATION
+
+    def apply(alias: String) = new AddLabelsToLabelableMutationRequest(alias)
+
+    def apply() = new AddLabelsToLabelableMutationRequest(null)
 
 }

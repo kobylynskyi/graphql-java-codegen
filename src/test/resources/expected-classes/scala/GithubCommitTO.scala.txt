@@ -2,8 +2,6 @@ package com.github.graphql
 
 import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.Objects
-import java.util.StringJoiner
 import GithubPullRequestConnectionTO._
 import GithubGitActorTO._
 import GithubBlameTO._
