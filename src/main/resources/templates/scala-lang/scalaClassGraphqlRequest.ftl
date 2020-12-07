@@ -43,15 +43,10 @@ import ${field.type}._
 <#list annotations as annotation>
 @${annotation}
 </#list>
-class ${className} extends GraphQLOperationRequest {
+class ${className}(alias: String) extends GraphQLOperationRequest {
 
-    private var alias: String = _
+    <#--use Any be prepared for any contingency-->
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
-
-    def this(alias: String) {
-        this()
-        this.alias = alias
-    }
 
 <#if fields?has_content>
 <#list fields as field>
@@ -105,6 +100,11 @@ object ${className} {
 
     final val OPERATION_NAME: String = "${operationName}"
     final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.${operationType}
+
+    <#--  use apply create instance  -->
+    def apply(alias: String) = new ${className}(alias)
+
+    def apply() = new ${className}(null)
 
     <#if builder>
 

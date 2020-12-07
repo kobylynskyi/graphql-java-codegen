@@ -20,7 +20,7 @@ class QueryResolverImpl extends QueryResolver {
 
   @throws[Exception]
   def hero(episode: EpisodeDO): CharacterDO = {
-    val heroQueryRequest = new HeroQueryRequest
+    val heroQueryRequest = HeroQueryRequest()
     heroQueryRequest.setEpisode(episode)
     val characterResponseProjection = new CharacterResponseProjection().all$(1)
     val graphQLRequest = new GraphQLRequest(heroQueryRequest, characterResponseProjection)
@@ -31,7 +31,7 @@ class QueryResolverImpl extends QueryResolver {
 
   @throws[Exception]
   def human(id: String): HumanDO = {
-    val humanQueryRequest = new HumanQueryRequest
+    val humanQueryRequest = HumanQueryRequest()
     humanQueryRequest.setId(id)
     val humanResponseProjection = new HumanResponseProjection().all$(1)
     val graphQLRequest = new GraphQLRequest(humanQueryRequest, humanResponseProjection)
@@ -42,7 +42,7 @@ class QueryResolverImpl extends QueryResolver {
 
   @throws[Exception]
   def humans: Seq[HumanDO] = {
-    val humanQueryRequest = new HumansQueryRequest
+    val humanQueryRequest = HumansQueryRequest()
     val humanResponseProjection = new HumanResponseProjection().all$(1)
     val graphQLRequest = new GraphQLRequest(humanQueryRequest, humanResponseProjection)
     val retFuture = OkHttp.executeRequest[HumansQueryResponse](graphQLRequest)
@@ -52,7 +52,7 @@ class QueryResolverImpl extends QueryResolver {
 
   @throws[Exception]
   def droid(id: String): DroidDO = {
-    val productByIdQueryRequest = new DroidQueryRequest
+    val productByIdQueryRequest = DroidQueryRequest()
     productByIdQueryRequest.setId(id)
     val droidResponseProjection = new DroidResponseProjection().all$(1)
     val graphQLRequest = new GraphQLRequest(productByIdQueryRequest, droidResponseProjection)

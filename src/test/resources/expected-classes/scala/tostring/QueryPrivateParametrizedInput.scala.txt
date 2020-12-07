@@ -2,8 +2,6 @@ package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.StringJoiner
-import java.util.Objects
 import TestEnum._
 
 /**
@@ -13,53 +11,11 @@ import TestEnum._
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class QueryPrivateParametrizedInput extends GraphQLParametrizedInput {
-
-    private var int: java.lang.Integer = _
-    private var New: String = _
-    private var enum: TestEnum = TestEnum.long
-
-    def this(int: java.lang.Integer, New: String, enum: TestEnum) {
-        this()
-        this.int = int
-        this.New = New
-        this.enum = enum
-    }
-
-    def int(int: java.lang.Integer): QueryPrivateParametrizedInput = {
-        this.int = int
-        this
-    }
-
-    def New(New: String): QueryPrivateParametrizedInput = {
-        this.New = New
-        this
-    }
-
-    def enum(enum: TestEnum): QueryPrivateParametrizedInput = {
-        this.enum = enum
-        this
-    }
-
-    override def equals(obj: Any): Boolean = {
-        if (this == obj) {
-            return true
-        }
-        if (obj == null || getClass != obj.getClass) {
-            return false
-        }
-        val that = obj.asInstanceOf[QueryPrivateParametrizedInput]
-        Seq(
-            Objects.equals(int, that.int)
-            , Objects.equals(New, that.New)
-            , Objects.equals(enum, that.enum)
-        ).forall(o => o)
-
-    }
-
-    override def hashCode(): Int = {
-        Objects.hash(int, New, enum)
-    }
+case class QueryPrivateParametrizedInput(
+    int: java.lang.Integer,
+    New: String,
+    enum: TestEnum = TestEnum.long
+) extends GraphQLParametrizedInput {
 
     override def toString(): String = {
         Seq(

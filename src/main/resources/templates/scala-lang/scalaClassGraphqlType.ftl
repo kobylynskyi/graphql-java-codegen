@@ -12,12 +12,6 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
-<#if equalsAndHashCode>
-import java.util.Objects
-</#if>
-<#if toString>
-import java.util.StringJoiner
-</#if>
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
