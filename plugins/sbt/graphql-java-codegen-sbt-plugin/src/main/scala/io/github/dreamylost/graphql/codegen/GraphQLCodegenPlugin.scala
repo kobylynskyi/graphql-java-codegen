@@ -13,7 +13,6 @@ import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, Sch
 import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
-import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier
 
 import scala.collection.JavaConverters._
 
@@ -209,17 +208,19 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in GraphQLCodegenConfig).value.orNull)
         var result: Seq[File] = Seq.empty
         try {
-          lazy val instantiateCodegen = (mappingConfig: MappingConfig, mappingConfigSupplier: MappingConfigSupplier) => {
+          val _outputDir = (outputDir in GraphQLCodegenConfig).value
+          val _introspectionResult = (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull
+          lazy val instantiateCodegen = (mappingConfig: MappingConfig) => {
             (generatedLanguage in GraphQLCodegenConfig).value match {
               case JAVA =>
-                new JavaGraphQLCodegen(getSchemas, (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull, (outputDir in GraphQLCodegenConfig).value, mappingConfig, mappingConfigSupplier)
+                new JavaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
               case SCALA =>
-                new ScalaGraphQLCodegen(getSchemas, (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull, (outputDir in GraphQLCodegenConfig).value, mappingConfig, mappingConfigSupplier)
+                new ScalaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
               case _ =>
                 throw new LanguageNotSupportedException((generatedLanguage in GraphQLCodegenConfig).value)
             }
           }
-          result = instantiateCodegen(getMappingConfig().value, mappingConfigSupplier).generate.asScala
+          result = instantiateCodegen(getMappingConfig().value).generate.asScala
           for (file ← result) {
             sLog.value.success(s"${file.getName}")
           }
