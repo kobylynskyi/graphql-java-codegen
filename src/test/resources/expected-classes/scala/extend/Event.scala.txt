@@ -1,4 +1,3 @@
-import scala.beans.BeanProperty
 import Status._
 import Asset._
 
@@ -8,14 +7,14 @@ import Asset._
 )
 case class Event(
     @javax.validation.constraints.NotNull
-    @BeanProperty status: Status,
+    val status: Status,
     @javax.validation.constraints.NotNull
-    @BeanProperty createdDateTime: String,
+    val createdDateTime: String,
     @javax.validation.constraints.NotNull
-    @BeanProperty assets: Seq[Asset],
+    val assets: Seq[Asset],
     @javax.validation.constraints.NotNull
-    @BeanProperty id: String,
-    @BeanProperty createdBy: String
+    val id: String,
+    val createdBy: String
 ) extends PinnableItem with Node {
 
 }

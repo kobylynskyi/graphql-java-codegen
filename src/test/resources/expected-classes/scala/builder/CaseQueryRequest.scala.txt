@@ -10,15 +10,9 @@ import java.util.Objects
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class CaseQueryRequest extends GraphQLOperationRequest {
+class CaseQueryRequest(alias: String) extends GraphQLOperationRequest {
 
-    private var alias: String = _
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
-
-    def this(alias: String) {
-        this()
-        this.alias = alias
-    }
 
     def setFinal(Final: Seq[Char]): Unit = {
         this.input.put("final", Final)
@@ -54,5 +48,9 @@ object CaseQueryRequest {
 
     final val OPERATION_NAME: String = "case"
     final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.QUERY
+
+    def apply(alias: String) = new CaseQueryRequest(alias)
+
+    def apply() = new CaseQueryRequest(null)
 
 }

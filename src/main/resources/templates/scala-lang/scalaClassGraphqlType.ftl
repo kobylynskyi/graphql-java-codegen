@@ -3,7 +3,6 @@
 package ${package}
 
 </#if>
-import scala.beans.BeanProperty
 <#if imports??>
 <#list imports as import>
 import ${import}.*
@@ -11,12 +10,6 @@ import ${import}.*
 </#if>
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-</#if>
-<#if equalsAndHashCode>
-import java.util.Objects
-</#if>
-<#if toString>
-import java.util.StringJoiner
 </#if>
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
@@ -61,7 +54,7 @@ case class ${className}(
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    @BeanProperty <#if !immutableModels>var <#else></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {

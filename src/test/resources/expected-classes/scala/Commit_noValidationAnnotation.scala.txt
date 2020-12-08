@@ -1,9 +1,6 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.Objects
-import java.util.StringJoiner
 import PullRequestConnection._
 import GitActor._
 import Blame._
@@ -22,44 +19,44 @@ import SubscriptionState._
     date = "2020-12-31T23:59:59-0500"
 )
 case class Commit(
-    @BeanProperty abbreviatedOid: String,
-    @BeanProperty additions: Int,
-    @BeanProperty associatedPullRequests: PullRequestConnection,
-    @BeanProperty author: GitActor,
-    @BeanProperty authoredByCommitter: Boolean,
-    @BeanProperty authoredDate: String,
-    @BeanProperty blame: Blame,
-    @BeanProperty changedFiles: Int,
-    @BeanProperty comments: CommitCommentConnection,
-    @BeanProperty commitResourcePath: String,
-    @BeanProperty commitUrl: String,
-    @BeanProperty committedDate: String,
-    @BeanProperty committedViaWeb: Boolean,
-    @BeanProperty committer: GitActor,
-    @BeanProperty deletions: Int,
-    @BeanProperty deployments: DeploymentConnection,
-    @BeanProperty history: CommitHistoryConnection,
-    @BeanProperty id: String,
-    @BeanProperty message: String,
-    @BeanProperty messageBody: String,
-    @BeanProperty messageBodyHTML: String,
-    @BeanProperty messageHeadline: String,
-    @BeanProperty messageHeadlineHTML: String,
-    @BeanProperty oid: String,
-    @BeanProperty parents: CommitConnection,
-    @BeanProperty pushedDate: String,
-    @BeanProperty repository: Repository,
-    @BeanProperty resourcePath: String,
-    @BeanProperty signature: GitSignature,
-    @BeanProperty status: Status,
-    @BeanProperty tarballUrl: String,
-    @BeanProperty tree: Tree,
-    @BeanProperty treeResourcePath: String,
-    @BeanProperty treeUrl: String,
-    @BeanProperty url: String,
-    @BeanProperty viewerCanSubscribe: Boolean,
-    @BeanProperty viewerSubscription: SubscriptionState,
-    @BeanProperty zipballUrl: String
+    val abbreviatedOid: String,
+    val additions: Int,
+    val associatedPullRequests: PullRequestConnection,
+    val author: GitActor,
+    val authoredByCommitter: Boolean,
+    val authoredDate: String,
+    val blame: Blame,
+    val changedFiles: Int,
+    val comments: CommitCommentConnection,
+    val commitResourcePath: String,
+    val commitUrl: String,
+    val committedDate: String,
+    val committedViaWeb: Boolean,
+    val committer: GitActor,
+    val deletions: Int,
+    val deployments: DeploymentConnection,
+    val history: CommitHistoryConnection,
+    val id: String,
+    val message: String,
+    val messageBody: String,
+    val messageBodyHTML: String,
+    val messageHeadline: String,
+    val messageHeadlineHTML: String,
+    val oid: String,
+    val parents: CommitConnection,
+    val pushedDate: String,
+    val repository: Repository,
+    val resourcePath: String,
+    val signature: GitSignature,
+    val status: Status,
+    val tarballUrl: String,
+    val tree: Tree,
+    val treeResourcePath: String,
+    val treeUrl: String,
+    val url: String,
+    val viewerCanSubscribe: Boolean,
+    val viewerSubscription: SubscriptionState,
+    val zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
 
     override def toString(): String = {

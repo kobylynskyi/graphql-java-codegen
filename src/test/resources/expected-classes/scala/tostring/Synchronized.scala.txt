@@ -1,9 +1,6 @@
 package com.kobylynskyi.graphql.codegen.prot
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.Objects
-import java.util.StringJoiner
 import TestEnum._
 import Synchronized._
 
@@ -12,16 +9,16 @@ import Synchronized._
     date = "2020-12-31T23:59:59-0500"
 )
 case class Synchronized(
-    @BeanProperty void: String,
-    @BeanProperty wait: Char,
-    @BeanProperty This: Char,
-    @BeanProperty Super: Char,
-    @BeanProperty Private: Char,
-    @BeanProperty native: Char,
-    @BeanProperty that: Char,
-    @BeanProperty enum: TestEnum,
-    @BeanProperty Synchronized: Synchronized,
-    @BeanProperty date: java.time.ZonedDateTime
+    val void: String,
+    val wait: Char,
+    val This: Char,
+    val Super: Char,
+    val Private: Char,
+    val native: Char,
+    val that: Char,
+    val enum: TestEnum,
+    val Synchronized: Synchronized,
+    val date: java.time.ZonedDateTime
 ) {
 
     override def toString(): String = {

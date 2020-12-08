@@ -1,17 +1,14 @@
 package com.github.graphql
 
-import scala.beans.BeanProperty
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import java.util.Objects
-import java.util.StringJoiner
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
 case class AddLabelsToLabelablePayload(
-    @BeanProperty clientMutationId: String,
-    @BeanProperty labelable: Labelable
+    val clientMutationId: String,
+    val labelable: Labelable
 ) {
 
     override def toString(): String = {

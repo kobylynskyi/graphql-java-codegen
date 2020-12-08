@@ -1,4 +1,3 @@
-import scala.beans.BeanProperty
 import Status._
 import AssetInput._
 
@@ -8,9 +7,9 @@ import AssetInput._
 )
 case class EventInput(
     @javax.validation.constraints.NotNull
-    @BeanProperty status: Status,
+    val status: Status,
     @javax.validation.constraints.NotNull
-    @BeanProperty assets: Seq[AssetInput]
+    val assets: Seq[AssetInput]
 ) {
 
 }
