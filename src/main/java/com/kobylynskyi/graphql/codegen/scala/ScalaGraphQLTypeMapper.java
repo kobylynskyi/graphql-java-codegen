@@ -40,9 +40,9 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
      * Wrap Scala type into {@link List}.
      * E.g.: {@code String} becomes {@code Seq[String]} in Scala
      *
-     * @param type           The name of a type that will be wrapped into {@code List<>} or {@code Seq[]} in Scala
+     * @param type           The name of a type that will be wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
      * @param mappingContext Global mapping context
-     * @return String The name of the given type, wrapped into {@code List<>} or {@code Seq[]} in Scala
+     * @return String The name of the given type, wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
      */
     @Override
     public String wrapIntoList(MappingContext mappingContext, String type) {
@@ -78,7 +78,7 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes()) && !namedDefinition.isMandatory()) {
             if (!computedTypeName.startsWith(SCALA_UTIL_LIST) && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
-                // wrap the type into java.util.Optional (except java list and scala list)
+                // wrap the type into scala.Option (except java list and scala list)
                 computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
             }
         }

@@ -3,8 +3,12 @@ package io.github.dreamylost.graphql.codegen
 import java.nio.file.{ Path, Paths }
 import java.util
 
-import com.kobylynskyi.graphql.codegen.{ GraphQLCodegen, GraphQLCodegenValidate }
+import com.kobylynskyi.graphql.codegen.GraphQLCodegenValidate
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.model._
+import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
+import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
 import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
@@ -204,12 +208,19 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in GraphQLCodegenConfig).value.orNull)
         var result: Seq[File] = Seq.empty
         try {
-          result = new GraphQLCodegen(
-            getSchemas,
-            (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull,
-            (outputDir in GraphQLCodegenConfig).value,
-            getMappingConfig().value,
-            mappingConfigSupplier).generate.asScala
+          val _outputDir = (outputDir in GraphQLCodegenConfig).value
+          val _introspectionResult = (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull
+          lazy val instantiateCodegen = (mappingConfig: MappingConfig) => {
+            (generatedLanguage in GraphQLCodegenConfig).value match {
+              case JAVA =>
+                new JavaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+              case SCALA =>
+                new ScalaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+              case _ =>
+                throw new LanguageNotSupportedException((generatedLanguage in GraphQLCodegenConfig).value)
+            }
+          }
+          result = instantiateCodegen(getMappingConfig().value).generate.asScala
           for (file ← result) {
             sLog.value.success(s"${file.getName}")
           }
