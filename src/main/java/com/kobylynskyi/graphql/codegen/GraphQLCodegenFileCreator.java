@@ -27,7 +27,7 @@ class GraphQLCodegenFileCreator {
 
     static File generateFile(MappingContext mappingContext, FreeMarkerTemplateType templateType, Map<String, Object> dataModel, File outputDir) {
         GeneratedLanguage language = mappingContext.getGeneratedLanguage();
-        String fileName = getGeneratedFileName(dataModel, language);
+        String fileName = dataModel.get(DataModelFields.CLASS_NAME) + language.getFileExtension();
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
         File javaSourceFile = new File(fileOutputDir, fileName);
         try {
@@ -40,16 +40,6 @@ class GraphQLCodegenFileCreator {
             throw new UnableToCreateFileException(e);
         }
         return javaSourceFile;
-    }
-
-    private static String getGeneratedFileName(Map<String, Object> dataModel, GeneratedLanguage language) {
-        String fileName;
-        if (language.equals(GeneratedLanguage.SCALA)) {
-            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION_SCALA;
-        } else {
-            fileName = dataModel.get(DataModelFields.CLASS_NAME) + EXTENSION;
-        }
-        return fileName;
     }
 
     static void prepareOutputDir(File outputDir) {

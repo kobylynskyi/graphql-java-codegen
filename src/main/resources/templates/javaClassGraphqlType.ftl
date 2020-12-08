@@ -1,4 +1,4 @@
-<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.mapper.GraphqlTypeToJavaTypeMapper"]>
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package};
 

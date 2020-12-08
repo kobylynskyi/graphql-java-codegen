@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -230,12 +231,12 @@ class GraphQLCodegenTest {
         GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
         List<String> schemas = emptyList();
         assertThrows(IllegalArgumentException.class, () ->
-                new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, staticGeneratedInfo));
+                new JavaGraphQLCodegen(schemas, outputBuildDir, mappingConfig, staticGeneratedInfo));
     }
 
     @Test
     void generate_WrongSchema() {
-        GraphQLCodegen graphQLCodegen = new GraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
+        GraphQLCodegen graphQLCodegen = new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
 
         assertThrows(NoSuchFileException.class, graphQLCodegen::generate);
@@ -370,7 +371,7 @@ class GraphQLCodegenTest {
     }
 
     private List<File> generate(String s) throws IOException {
-        return new GraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
+        return new JavaGraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
                 TestUtils.getStaticGeneratedInfo()).generate();
     }
 

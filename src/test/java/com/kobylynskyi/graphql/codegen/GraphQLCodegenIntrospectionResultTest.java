@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -39,7 +40,7 @@ class GraphQLCodegenIntrospectionResultTest {
 
     @Test
     void generateClientFromIntrospectionResult() throws Exception {
-        new GraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
+        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         checkGeneratedFiles();
@@ -47,7 +48,7 @@ class GraphQLCodegenIntrospectionResultTest {
 
     @Test
     void generateClientFromIntrospectionResultWrappedInData() throws Exception {
-        new GraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result-wrapped.json",
+        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result-wrapped.json",
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         checkGeneratedFiles();
@@ -58,7 +59,7 @@ class GraphQLCodegenIntrospectionResultTest {
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
 
-        new GraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
+        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         checkGeneratedFiles();

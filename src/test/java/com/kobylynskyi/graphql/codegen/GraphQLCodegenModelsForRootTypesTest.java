@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -44,7 +45,7 @@ class GraphQLCodegenModelsForRootTypesTest {
         mappingConfig.setModelNamePrefix("");
 
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
+                () -> new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and model classes",
@@ -55,7 +56,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_sameResolverSuffixes() {
         // by default apiNamePrefix is same as typeResolverSuffix
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
+                () -> new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
 
         assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes",
@@ -66,7 +67,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_CheckFiles_generateApisFalse() throws Exception {
         mappingConfig.setGenerateApis(false);
 
-        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+        new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -79,7 +80,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_CheckFiles_generateApisTrue_CustomTypeResolverSuffix() throws Exception {
         mappingConfig.setTypeResolverSuffix("TypeResolver");
 
-        new GraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+        new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());

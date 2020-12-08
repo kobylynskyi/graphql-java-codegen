@@ -23,42 +23,13 @@ public class ValueMapper {
 
     private static final String NULL_STRING = "null";
 
-    private ValueMapper() {
-    }
+    private final ValueFormatter valueFormatter;
+    private final DataModelMapper dataModelMapper;
 
-    public static String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType) {
-        return map(mappingContext, value, graphQLType, null);
-    }
-
-    public static String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType,
-                             String formatter) {
-        if (value instanceof NullValue) {
-            return ValueFormatter.format(NULL_STRING, formatter);
-        }
-        if (value instanceof BooleanValue) {
-            return ValueFormatter.format(mapBoolean((BooleanValue) value), formatter);
-        }
-        if (value instanceof IntValue) {
-            return ValueFormatter.format(mapInt(mappingContext, (IntValue) value, graphQLType), formatter);
-        }
-        if (value instanceof FloatValue) {
-            return ValueFormatter.format(mapFloat((FloatValue) value), formatter);
-        }
-        if (value instanceof StringValue) {
-            return ValueFormatter.format(mapString((StringValue) value), formatter);
-        }
-        if (value instanceof EnumValue) {
-            return ValueFormatter.format(mapEnum(mappingContext, (EnumValue) value, graphQLType), formatter);
-        }
-        if (value instanceof ObjectValue) {
-            // default object values are not supported yet, same behaviour as before for those
-            return null;
-        }
-        if (value instanceof ArrayValue) {
-            return mapArray(mappingContext, (ArrayValue) value, graphQLType, formatter);
-        }
-        // no value, or not a known type
-        return null;
+    public ValueMapper(ValueFormatter valueFormatter,
+                       DataModelMapper dataModelMapper) {
+        this.valueFormatter = valueFormatter;
+        this.dataModelMapper = dataModelMapper;
     }
 
     private static String mapBoolean(BooleanValue value) {
@@ -91,11 +62,46 @@ public class ValueMapper {
         return "\"" + value.getValue() + "\"";
     }
 
-    private static String mapEnum(MappingContext mappingContext, EnumValue value, Type<?> graphQLType) {
+    public String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType) {
+        return map(mappingContext, value, graphQLType, null);
+    }
+
+    public String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType,
+                      String formatter) {
+        if (value instanceof NullValue) {
+            return ValueFormatter.format(NULL_STRING, formatter);
+        }
+        if (value instanceof BooleanValue) {
+            return ValueFormatter.format(mapBoolean((BooleanValue) value), formatter);
+        }
+        if (value instanceof IntValue) {
+            return ValueFormatter.format(mapInt(mappingContext, (IntValue) value, graphQLType), formatter);
+        }
+        if (value instanceof FloatValue) {
+            return ValueFormatter.format(mapFloat((FloatValue) value), formatter);
+        }
+        if (value instanceof StringValue) {
+            return ValueFormatter.format(mapString((StringValue) value), formatter);
+        }
+        if (value instanceof EnumValue) {
+            return ValueFormatter.format(mapEnum(mappingContext, (EnumValue) value, graphQLType), formatter);
+        }
+        if (value instanceof ObjectValue) {
+            // default object values are not supported yet, same behaviour as before for those
+            return null;
+        }
+        if (value instanceof ArrayValue) {
+            return mapArray(mappingContext, (ArrayValue) value, graphQLType, formatter);
+        }
+        // no value, or not a known type
+        return null;
+    }
+
+    private String mapEnum(MappingContext mappingContext, EnumValue value, Type<?> graphQLType) {
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
-            typeName = MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);
-            return typeName + "." + MapperUtils.capitalizeIfRestricted(mappingContext, value.getName());
+            typeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);
+            return typeName + "." + dataModelMapper.capitalizeIfRestricted(mappingContext, value.getName());
         }
         if (graphQLType instanceof NonNullType) {
             return mapEnum(mappingContext, value, ((NonNullType) graphQLType).getType());
@@ -104,19 +110,19 @@ public class ValueMapper {
     }
 
     @SuppressWarnings({"rawtypes", "java:S3740"})
-    private static String mapArray(MappingContext mappingContext, ArrayValue value, Type<?> graphQLType,
-                                   String formatter) {
+    private String mapArray(MappingContext mappingContext, ArrayValue value, Type<?> graphQLType,
+                            String formatter) {
         if (graphQLType == null || graphQLType instanceof ListType) {
             List<Value> values = value.getValues();
             if (values.isEmpty()) {
-                return ValueFormatter.formatList(mappingContext, Collections.emptyList(), formatter);
+                return valueFormatter.formatList(Collections.emptyList(), formatter);
             }
             Type<?> elementType = null;
             if (graphQLType != null) {
                 elementType = ((ListType) graphQLType).getType();
             }
             Type<?> listElementType = elementType;
-            return ValueFormatter.formatList(mappingContext, values.stream()
+            return valueFormatter.formatList(values.stream()
                     .map(v -> map(mappingContext, v, listElementType, formatter))
                     .collect(Collectors.toList()), formatter);
         }

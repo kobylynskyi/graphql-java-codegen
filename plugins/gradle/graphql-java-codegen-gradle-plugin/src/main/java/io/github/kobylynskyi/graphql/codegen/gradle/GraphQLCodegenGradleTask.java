@@ -1,7 +1,16 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
+import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -144,7 +153,18 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
 
-        new GraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier()).generate();
+        instantiateCodegen(mappingConfig).generate();
+    }
+
+    private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
+        switch (generatedLanguage) {
+            case JAVA:
+                return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier());
+            case SCALA:
+                return new ScalaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier());
+            default:
+                throw new LanguageNotSupportedException(generatedLanguage);
+        }
     }
 
     // This is only public so that it can be part of the inputs.

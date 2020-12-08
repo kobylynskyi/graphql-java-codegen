@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Commit.blame",
                 singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -55,7 +56,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -70,7 +71,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -85,7 +86,7 @@ class GraphQLCodegenFieldsResolversTest {
     void generate_ResolverForWholeType() throws Exception {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("CommentDeletedEvent"));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -101,7 +102,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("@customResolver"));
         mappingConfig.setFieldsWithoutResolvers(Collections.singleton("@noResolver"));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

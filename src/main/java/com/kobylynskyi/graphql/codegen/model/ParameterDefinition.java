@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class ParameterDefinition {
 
     private String type;
     /**
-     * Normalized name using {@link com.kobylynskyi.graphql.codegen.mapper.MapperUtils#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
      */
     private String name;
     /**

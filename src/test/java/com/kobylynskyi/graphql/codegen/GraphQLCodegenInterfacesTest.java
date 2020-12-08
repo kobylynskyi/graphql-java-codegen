@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +28,7 @@ class GraphQLCodegenInterfacesTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
-        generator = new GraphQLCodegen(Collections.singletonList("src/test/resources/schemas/interfaces.graphqls"),
+        generator = new JavaGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 

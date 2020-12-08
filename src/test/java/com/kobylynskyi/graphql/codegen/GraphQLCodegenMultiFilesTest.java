@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +31,7 @@ class GraphQLCodegenMultiFilesTest {
                 "src/test/resources/schemas/multi1.graphqls",
                 "src/test/resources/schemas/multi2.graphqls"
         );
-        generator = new GraphQLCodegen(schemas, outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
+        generator = new JavaGraphQLCodegen(schemas, outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 
     @AfterEach

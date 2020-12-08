@@ -39,7 +39,39 @@ import static java.util.Collections.singletonList;
  */
 public class FieldDefinitionsToResolverDataModelMapper {
 
-    private FieldDefinitionsToResolverDataModelMapper() {
+    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final DataModelMapper dataModelMapper;
+    private final InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper;
+
+    public FieldDefinitionsToResolverDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
+                                                     DataModelMapper dataModelMapper,
+                                                     InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper) {
+        this.graphQLTypeMapper = graphQLTypeMapper;
+        this.dataModelMapper = dataModelMapper;
+        this.inputValueDefinitionToParameterMapper = inputValueDefinitionToParameterMapper;
+    }
+
+    public static String getParentInterface(MappingContext mappingContext, String typeName) {
+        // 1. check if provided type name is GraphQL root type
+        try {
+            switch (GraphQLOperation.valueOf(typeName.toUpperCase())) {
+                case QUERY:
+                    return mappingContext.getQueryResolverParentInterface();
+                case MUTATION:
+                    return mappingContext.getMutationResolverParentInterface();
+                case SUBSCRIPTION:
+                    return mappingContext.getSubscriptionResolverParentInterface();
+            }
+        } catch (Exception ignored) {
+        }
+
+        // 2. if provided type name is GraphQL root type then assume that it is GraphQL type
+        if (mappingContext.getResolverParentInterface() == null) {
+            return null;
+        }
+        return mappingContext.getResolverParentInterface()
+                .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
+                        DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName));
     }
 
     /**
@@ -50,11 +82,11 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName Name of the type for which Resolver will be generated
      * @return Freemarker data model of the GraphQL parametrized field
      */
-    public static Map<String, Object> mapToTypeResolver(MappingContext mappingContext,
-                                                        List<ExtendedFieldDefinition> fieldDefs,
-                                                        String parentTypeName) {
+    public Map<String, Object> mapToTypeResolver(MappingContext mappingContext,
+                                                 List<ExtendedFieldDefinition> fieldDefs,
+                                                 String parentTypeName) {
         // Example: PersonResolver
-        String className = MapperUtils.getTypeResolverClassNameWithPrefixAndSuffix(mappingContext, parentTypeName);
+        String className = DataModelMapper.getTypeResolverClassNameWithPrefixAndSuffix(mappingContext, parentTypeName);
         return mapToResolverModel(mappingContext, parentTypeName, className, fieldDefs,
                 singletonList("Resolver for " + parentTypeName),
                 getParentInterface(mappingContext, parentTypeName));
@@ -69,11 +101,11 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param fieldNames      Names of all fields inside the rootType. Used to detect duplicate
      * @return Freemarker data model of the GraphQL field
      */
-    public static Map<String, Object> mapRootTypeField(MappingContext mappingContext,
-                                                       ExtendedFieldDefinition fieldDefinition,
-                                                       String rootTypeName,
-                                                       List<String> fieldNames) {
-        String className = MapperUtils.getApiClassNameWithPrefixAndSuffix(mappingContext, fieldDefinition, rootTypeName, fieldNames);
+    public Map<String, Object> mapRootTypeField(MappingContext mappingContext,
+                                                ExtendedFieldDefinition fieldDefinition,
+                                                String rootTypeName,
+                                                List<String> fieldNames) {
+        String className = DataModelMapper.getApiClassNameWithPrefixAndSuffix(mappingContext, fieldDefinition, rootTypeName, fieldNames);
         List<ExtendedFieldDefinition> fieldDefs = Collections.singletonList(fieldDefinition);
         return mapToResolverModel(mappingContext, rootTypeName, className, fieldDefs, fieldDefinition.getJavaDoc(),
                 getParentInterface(mappingContext, rootTypeName));
@@ -86,22 +118,22 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param definition     GraphQL object definition of a root type like Query
      * @return Freemarker data model of the GraphQL object
      */
-    public static Map<String, Object> mapRootTypeFields(MappingContext mappingContext,
-                                                        ExtendedObjectTypeDefinition definition) {
-        String className = MapperUtils.getApiClassNameWithPrefixAndSuffix(mappingContext, definition);
+    public Map<String, Object> mapRootTypeFields(MappingContext mappingContext,
+                                                 ExtendedObjectTypeDefinition definition) {
+        String className = DataModelMapper.getApiClassNameWithPrefixAndSuffix(mappingContext, definition);
         // For root types like "Query", we create resolvers for all fields
         return mapToResolverModel(mappingContext, definition.getName(), className,
                 definition.getFieldDefinitions(), definition.getJavaDoc(),
                 getParentInterface(mappingContext, definition.getName()));
     }
 
-    private static Map<String, Object> mapToResolverModel(MappingContext mappingContext, String parentTypeName,
-                                                          String className,
-                                                          List<ExtendedFieldDefinition> fieldDefinitions,
-                                                          List<String> javaDoc,
-                                                          String parentInterface) {
-        String packageName = MapperUtils.getApiPackageName(mappingContext);
-        Set<String> imports = MapperUtils.getImports(mappingContext, packageName);
+    private Map<String, Object> mapToResolverModel(MappingContext mappingContext, String parentTypeName,
+                                                   String className,
+                                                   List<ExtendedFieldDefinition> fieldDefinitions,
+                                                   List<String> javaDoc,
+                                                   String parentInterface) {
+        String packageName = DataModelMapper.getApiPackageName(mappingContext);
+        Set<String> imports = DataModelMapper.getImports(mappingContext, packageName);
         List<OperationDefinition> operations = mapToOperations(mappingContext, fieldDefinitions, parentTypeName);
 
         Map<String, Object> dataModel = new HashMap<>();
@@ -125,9 +157,9 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName   Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operations
      */
-    private static List<OperationDefinition> mapToOperations(MappingContext mappingContext,
-                                                             List<ExtendedFieldDefinition> fieldDefinitions,
-                                                             String parentTypeName) {
+    private List<OperationDefinition> mapToOperations(MappingContext mappingContext,
+                                                      List<ExtendedFieldDefinition> fieldDefinitions,
+                                                      String parentTypeName) {
         return fieldDefinitions.stream()
                 .map(fieldDef -> map(mappingContext, fieldDef, parentTypeName))
                 .collect(Collectors.toList());
@@ -141,12 +173,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
      * @param parentTypeName Name of the parent type which the field belongs to
      * @return Freemarker-understandable format of operation
      */
-    private static OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
-                                           String parentTypeName) {
-        String name = MapperUtils.capitalizeIfRestricted(mappingContext, fieldDef.getName());
-        NamedDefinition javaType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+    private OperationDefinition map(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
+                                    String parentTypeName) {
+        String name = dataModelMapper.capitalizeIfRestricted(mappingContext, fieldDef.getName());
+        NamedDefinition javaType = graphQLTypeMapper.getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
         String returnType = getReturnType(mappingContext, fieldDef, javaType, parentTypeName);
-        List<String> annotations = GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false);
+        List<String> annotations = graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false);
         List<ParameterDefinition> parameters = getOperationParameters(mappingContext, fieldDef, parentTypeName);
 
         OperationDefinition operation = new OperationDefinition();
@@ -161,20 +193,20 @@ public class FieldDefinitionsToResolverDataModelMapper {
         return operation;
     }
 
-    private static List<ParameterDefinition> getOperationParameters(MappingContext mappingContext,
-                                                                    ExtendedFieldDefinition resolvedField,
-                                                                    String parentTypeName) {
+    private List<ParameterDefinition> getOperationParameters(MappingContext mappingContext,
+                                                             ExtendedFieldDefinition resolvedField,
+                                                             String parentTypeName) {
         List<ParameterDefinition> parameters = new ArrayList<>();
 
         // 1. First parameter is the parent object for which we are resolving fields (unless it's the root Query)
         if (!Utils.isGraphqlOperation(parentTypeName)) {
-            String parentObjectParamType = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, new TypeName(parentTypeName));
-            String parentObjectParamName = MapperUtils.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
+            String parentObjectParamType = graphQLTypeMapper.getLanguageType(mappingContext, new TypeName(parentTypeName));
+            String parentObjectParamName = dataModelMapper.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
             parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated(), false));
         }
 
         // 2. Next parameters are input values
-        parameters.addAll(InputValueDefinitionToParameterMapper.map(mappingContext, resolvedField.getInputValueDefinitions(), resolvedField.getName()));
+        parameters.addAll(inputValueDefinitionToParameterMapper.map(mappingContext, resolvedField.getInputValueDefinitions(), resolvedField.getName()));
 
         // 3. Last parameter (optional) is the DataFetchingEnvironment
         if (Boolean.TRUE.equals(mappingContext.getGenerateDataFetchingEnvironmentArgumentInApis())) {
@@ -183,31 +215,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
         return parameters;
     }
 
-    public static String getParentInterface(MappingContext mappingContext, String typeName) {
-        // 1. check if provided type name is GraphQL root type
-        try {
-            switch (GraphQLOperation.valueOf(typeName.toUpperCase())) {
-                case QUERY:
-                    return mappingContext.getQueryResolverParentInterface();
-                case MUTATION:
-                    return mappingContext.getMutationResolverParentInterface();
-                case SUBSCRIPTION:
-                    return mappingContext.getSubscriptionResolverParentInterface();
-            }
-        } catch (Exception ignored) {
-        }
-
-        // 2. if provided type name is GraphQL root type then assume that it is GraphQL type
-        if (mappingContext.getResolverParentInterface() == null) {
-            return null;
-        }
-        return mappingContext.getResolverParentInterface()
-                .replace(PARENT_INTERFACE_TYPE_PLACEHOLDER,
-                        MapperUtils.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName));
-    }
-
-    private static String getReturnType(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
-                                        NamedDefinition namedDefinition, String parentTypeName) {
+    private String getReturnType(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
+                                 NamedDefinition namedDefinition, String parentTypeName) {
         RelayConfig relayConfig = mappingContext.getRelayConfig();
         if (relayConfig != null && relayConfig.getDirectiveName() != null) {
             Directive connectionDirective = fieldDef.getDirective(relayConfig.getDirectiveName());
@@ -216,13 +225,13 @@ public class FieldDefinitionsToResolverDataModelMapper {
                 // as of now supporting only string value of directive argument
                 if (argument != null && argument.getValue() instanceof StringValue) {
                     String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
-                    String javaTypeName = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext,
+                    String javaTypeName = graphQLTypeMapper.getLanguageType(mappingContext,
                             new TypeName(graphqlTypeName), graphqlTypeName, parentTypeName, false, false).getJavaName();
-                    return GraphqlTypeToJavaTypeMapper.getGenericsString(mappingContext, relayConfig.getConnectionType(), javaTypeName);
+                    return graphQLTypeMapper.getGenericsString(mappingContext, relayConfig.getConnectionType(), javaTypeName);
                 }
             }
         }
-        return GraphqlTypeToJavaTypeMapper.wrapApiReturnTypeIfRequired(mappingContext, namedDefinition, parentTypeName);
+        return graphQLTypeMapper.wrapApiReturnTypeIfRequired(mappingContext, namedDefinition, parentTypeName);
     }
 
 }

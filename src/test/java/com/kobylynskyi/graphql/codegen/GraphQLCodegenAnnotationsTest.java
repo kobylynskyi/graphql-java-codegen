@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -44,7 +45,7 @@ class GraphQLCodegenAnnotationsTest {
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
                 singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -59,7 +60,7 @@ class GraphQLCodegenAnnotationsTest {
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
                 singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -74,7 +75,7 @@ class GraphQLCodegenAnnotationsTest {
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
                 singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -98,7 +99,7 @@ class GraphQLCodegenAnnotationsTest {
         customAnnotationsMapping.put("DeploymentOrderField", singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = DeploymentOrderFieldDeserializer.class)"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -128,7 +129,7 @@ class GraphQLCodegenAnnotationsTest {
                 "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver.class)"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -150,7 +151,7 @@ class GraphQLCodegenAnnotationsTest {
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
         mappingConfig.setGenerateClient(true);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -169,7 +170,7 @@ class GraphQLCodegenAnnotationsTest {
                 singletonList("@com.example.CustomAnnotation(roles={{roles?toArray}}, boo={{boo?toArray}}, float={{float?toArrayOfStrings}}, int={{int}}, n={{n?toString}})"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

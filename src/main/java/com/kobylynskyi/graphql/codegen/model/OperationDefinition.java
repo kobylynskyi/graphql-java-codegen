@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 public class OperationDefinition {
 
     /**
-     * Normalized name using {@link com.kobylynskyi.graphql.codegen.mapper.MapperUtils#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
      */
     private String name;
     /**

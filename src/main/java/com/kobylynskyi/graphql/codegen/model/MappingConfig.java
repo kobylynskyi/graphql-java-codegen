@@ -74,6 +74,32 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     private GeneratedLanguage generatedLanguage;
 
+    private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
+        if (thisMap != null && otherMap != null) {
+            Map<String, T> resultMap = new HashMap<>();
+            resultMap.putAll(thisMap);
+            resultMap.putAll(otherMap);
+            return resultMap;
+        } else if (thisMap == null) {
+            return otherMap;
+        } else {
+            return thisMap;
+        }
+    }
+
+    private static Set<String> combineSet(Set<String> thisSet, Set<String> otherSet) {
+        if (thisSet != null && otherSet != null) {
+            Set<String> resultSet = new HashSet<>();
+            resultSet.addAll(thisSet);
+            resultSet.addAll(otherSet);
+            return resultSet;
+        } else if (thisSet == null) {
+            return otherSet;
+        } else {
+            return thisSet;
+        }
+    }
+
     @Override
     public void combine(MappingConfig source) {
         if (source == null) {
@@ -124,32 +150,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization, source.useObjectMapperForRequestSerialization);
         generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
-    }
-
-    private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
-        if (thisMap != null && otherMap != null) {
-            Map<String, T> resultMap = new HashMap<>();
-            resultMap.putAll(thisMap);
-            resultMap.putAll(otherMap);
-            return resultMap;
-        } else if (thisMap == null) {
-            return otherMap;
-        } else {
-            return thisMap;
-        }
-    }
-
-    private static Set<String> combineSet(Set<String> thisSet, Set<String> otherSet) {
-        if (thisSet != null && otherSet != null) {
-            Set<String> resultSet = new HashSet<>();
-            resultSet.addAll(thisSet);
-            resultSet.addAll(otherSet);
-            return resultSet;
-        } else if (thisSet == null) {
-            return otherSet;
-        } else {
-            return thisSet;
-        }
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {

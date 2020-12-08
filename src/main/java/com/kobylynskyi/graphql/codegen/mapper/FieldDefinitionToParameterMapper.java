@@ -19,89 +19,13 @@ import static java.util.stream.Collectors.toList;
  */
 public class FieldDefinitionToParameterMapper {
 
-    private FieldDefinitionToParameterMapper() {
-    }
+    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final DataModelMapper dataModelMapper;
 
-    /**
-     * Map field definition to a Freemarker-understandable data model type
-     *
-     * @param mappingContext   Global mapping context
-     * @param fieldDefinitions List of GraphQL field definitions
-     * @param parentDefinition Parent GraphQL definition
-     * @return Freemarker data model of the GraphQL field definition
-     */
-    public static List<ParameterDefinition> mapFields(MappingContext mappingContext,
-                                                      List<ExtendedFieldDefinition> fieldDefinitions,
-                                                      ExtendedDefinition<?, ?> parentDefinition) {
-        return fieldDefinitions.stream()
-                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
-                .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition.getName()))
-                .collect(toList());
-    }
-
-    /**
-     * Map field definition to a Freemarker-understandable data model type
-     *
-     * @param mappingContext       Global mapping context
-     * @param fieldDefinitions     List of GraphQL field definitions
-     * @param parentTypeDefinition Parent GraphQL type definition
-     * @return Freemarker data model of the GraphQL field definition
-     */
-    public static List<ProjectionParameterDefinition> mapProjectionFields(MappingContext mappingContext,
-                                                                          List<ExtendedFieldDefinition> fieldDefinitions,
-                                                                          ExtendedDefinition<?, ?> parentTypeDefinition) {
-        return fieldDefinitions.stream()
-                .map(fieldDef -> mapProjectionField(mappingContext, fieldDef, parentTypeDefinition))
-                .collect(toList());
-    }
-
-    /**
-     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
-     *
-     * @param mappingContext Global mapping context
-     * @param fieldDef       GraphQL field definition
-     * @param parentTypeName Name of the parent type
-     * @return Freemarker-understandable format of parameter (field)
-     */
-    private static ParameterDefinition mapField(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
-                                                String parentTypeName) {
-        NamedDefinition namedDefinition = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
-
-        ParameterDefinition parameter = new ParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
-        parameter.setOriginalName(fieldDef.getName());
-        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
-        parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
-        parameter.setJavaDoc(fieldDef.getJavaDoc());
-        parameter.setDeprecated(fieldDef.isDeprecated());
-        parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
-        return parameter;
-    }
-
-    /**
-     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
-     *
-     * @param mappingContext Global mapping context
-     * @param fieldDef       GraphQL field definition
-     * @param parentTypeDef  GraphQL definition which is a parent to provided field definition
-     * @return Freemarker-understandable format of parameter (field)
-     */
-    private static ProjectionParameterDefinition mapProjectionField(MappingContext mappingContext,
-                                                                    ExtendedFieldDefinition fieldDef,
-                                                                    ExtendedDefinition<?, ?> parentTypeDef) {
-        ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
-        parameter.setName(fieldDef.getName());
-        parameter.setMethodName(MapperUtils.capitalizeMethodNameIfRestricted(mappingContext, parameter.getName()));
-        String nestedType = GraphqlTypeToJavaTypeMapper.getNestedTypeName(fieldDef.getType());
-        if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
-            parameter.setType(Utils.capitalize(nestedType + mappingContext.getResponseProjectionSuffix()));
-        }
-        if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {
-            parameter.setParametrizedInputClassName(
-                    MapperUtils.getParametrizedInputClassName(mappingContext, fieldDef, parentTypeDef));
-        }
-        parameter.setDeprecated(fieldDef.isDeprecated());
-        return parameter;
+    public FieldDefinitionToParameterMapper(GraphQLTypeMapper graphQLTypeMapper,
+                                            DataModelMapper dataModelMapper) {
+        this.graphQLTypeMapper = graphQLTypeMapper;
+        this.dataModelMapper = dataModelMapper;
     }
 
     /**
@@ -143,6 +67,88 @@ public class FieldDefinitionToParameterMapper {
             }
         }
         return false;
+    }
+
+    /**
+     * Map field definition to a Freemarker-understandable data model type
+     *
+     * @param mappingContext   Global mapping context
+     * @param fieldDefinitions List of GraphQL field definitions
+     * @param parentDefinition Parent GraphQL definition
+     * @return Freemarker data model of the GraphQL field definition
+     */
+    public List<ParameterDefinition> mapFields(MappingContext mappingContext,
+                                               List<ExtendedFieldDefinition> fieldDefinitions,
+                                               ExtendedDefinition<?, ?> parentDefinition) {
+        return fieldDefinitions.stream()
+                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
+                .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition.getName()))
+                .collect(toList());
+    }
+
+    /**
+     * Map field definition to a Freemarker-understandable data model type
+     *
+     * @param mappingContext       Global mapping context
+     * @param fieldDefinitions     List of GraphQL field definitions
+     * @param parentTypeDefinition Parent GraphQL type definition
+     * @return Freemarker data model of the GraphQL field definition
+     */
+    public List<ProjectionParameterDefinition> mapProjectionFields(MappingContext mappingContext,
+                                                                   List<ExtendedFieldDefinition> fieldDefinitions,
+                                                                   ExtendedDefinition<?, ?> parentTypeDefinition) {
+        return fieldDefinitions.stream()
+                .map(fieldDef -> mapProjectionField(mappingContext, fieldDef, parentTypeDefinition))
+                .collect(toList());
+    }
+
+    /**
+     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
+     *
+     * @param mappingContext Global mapping context
+     * @param fieldDef       GraphQL field definition
+     * @param parentTypeName Name of the parent type
+     * @return Freemarker-understandable format of parameter (field)
+     */
+    private ParameterDefinition mapField(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
+                                         String parentTypeName) {
+        NamedDefinition namedDefinition = graphQLTypeMapper.getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+
+        ParameterDefinition parameter = new ParameterDefinition();
+        parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
+        parameter.setOriginalName(fieldDef.getName());
+        parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
+        parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
+        parameter.setJavaDoc(fieldDef.getJavaDoc());
+        parameter.setDeprecated(fieldDef.isDeprecated());
+        parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
+        return parameter;
+    }
+
+    /**
+     * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
+     *
+     * @param mappingContext Global mapping context
+     * @param fieldDef       GraphQL field definition
+     * @param parentTypeDef  GraphQL definition which is a parent to provided field definition
+     * @return Freemarker-understandable format of parameter (field)
+     */
+    private ProjectionParameterDefinition mapProjectionField(MappingContext mappingContext,
+                                                             ExtendedFieldDefinition fieldDef,
+                                                             ExtendedDefinition<?, ?> parentTypeDef) {
+        ProjectionParameterDefinition parameter = new ProjectionParameterDefinition();
+        parameter.setName(fieldDef.getName());
+        parameter.setMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext, parameter.getName()));
+        String nestedType = GraphQLTypeMapper.getNestedTypeName(fieldDef.getType());
+        if (mappingContext.getTypesUnionsInterfacesNames().contains(nestedType)) {
+            parameter.setType(Utils.capitalize(nestedType + mappingContext.getResponseProjectionSuffix()));
+        }
+        if (!Utils.isEmpty(fieldDef.getInputValueDefinitions())) {
+            parameter.setParametrizedInputClassName(
+                    DataModelMapper.getParametrizedInputClassName(mappingContext, fieldDef, parentTypeDef));
+        }
+        parameter.setDeprecated(fieldDef.isDeprecated());
+        return parameter;
     }
 
 }

@@ -1,6 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * The implementation class should basically contain the fields of the particular type which
@@ -15,13 +19,13 @@ public abstract class GraphQLResponseProjection {
      * such as
      * {{@code
      * type Human implements Character {
-     *     id: ID!
-     *     friends: [Character] # if you response this field on Human projection , Character has itself,
-     *     # so, we need know depth of subquery.
+     * id: ID!
+     * friends: [Character] # if you response this field on Human projection , Character has itself,
+     * # so, we need know depth of subquery.
      * }
      * interface Character {
-     *     id: ID!
-     *     friends: [Character]
+     * id: ID!
+     * friends: [Character]
      * }
      * }}
      * Map Notes:
