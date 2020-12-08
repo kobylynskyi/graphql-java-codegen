@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -31,16 +32,20 @@ class GraphQLCodegenReactorToStringTest {
         Utils.deleteDir(outputBuildDir);
     }
 
+    @BeforeEach
+    public void setup() {
+        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
+    }
+
     @Test
     void generate_SetGenerateBuilder_FALSE() throws Exception {
-        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         mappingConfig.setGenerateBuilder(false);// fix bug when, set generate builder = false, can not use object.OPERATION_NAME,
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateModelsForRootTypes(true);
         mappingConfig.setApiNameSuffix("API");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -57,14 +62,13 @@ class GraphQLCodegenReactorToStringTest {
 
     @Test
     void generate_SetGenerateClient_TRUE_WithoutUseObjectMapperForRequestSerialization() throws Exception {
-        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateModelsForRootTypes(true);
         mappingConfig.setApiNameSuffix("API");
         mappingConfig.setGenerateBuilder(false);// fix bug when, set generate builder = false, can not use object.OPERATION_NAME,
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -82,7 +86,6 @@ class GraphQLCodegenReactorToStringTest {
 
     @Test
     void generate_SetGenerateClient_TRUE() throws Exception {
-        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
@@ -93,7 +96,7 @@ class GraphQLCodegenReactorToStringTest {
         mappingConfig.setGenerateModelsForRootTypes(true);
         mappingConfig.setApiNameSuffix("API");
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

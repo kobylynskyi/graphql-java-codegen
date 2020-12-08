@@ -1,113 +1,28 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.*;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedImplementingTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
 import graphql.language.SourceLocation;
 import graphql.language.TypeName;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class MapperUtils {
-
-    private static final Set<String> JAVA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
-            "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",
-            "default", "do", "double", "else", "enum", "extends", "false", "final", "finally", "float", "for", "goto",
-            "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "null", "package",
-            "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
-            "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
-
-    private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
-            "package", "import", "class", "object", "trait", "extends", "with", "type", "forSome",
-            "private", "protected", "abstract", "sealed", "final", "implicit", "lazy", "override"
-            , "try", "catch", "finally", "throw", "if", "else", "match", "case", "do", "while", "for", "return", "yield",
-            "def", "val", "var", "this", "super", "new", "true", "false", "null"
-    ));
-
-    private static final Set<String> JAVA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
-            "getClass", "notify", "notifyAll", "wait"));
-
-    //TODO maybe have others
-    private static final Set<String> SCALA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
-            "getClass", "notify", "notifyAll", "wait", "clone", "finalize"));
-
-    private MapperUtils() {
-    }
-
-    /**
-     * Capitalize field name if it is Java-restricted.
-     * Examples:
-     * * 'class' becomes 'Class'
-     * * 'int' becomes 'Int'
-     *
-     * @param fieldName any string
-     * @param mappingContext  Global mapping context
-     * @return capitalized value if it is restricted in Java, same value as parameter otherwise
-     */
-    public static String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
-        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)) {
-            if (JAVA_RESTRICTED_KEYWORDS.contains(fieldName)) {
-                return Utils.capitalize(fieldName);
-            }
-        } else if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.SCALA)) {
-            if (SCALA_RESTRICTED_KEYWORDS.contains(fieldName)) {
-                return Utils.capitalize(fieldName);
-            }
-        }
-        //TODO kotlin
-        return fieldName;
-    }
-
-    /**
-     * Capitalize method name if it is Java-restricted.
-     * Examples:
-     * * 'getClass' becomes 'GetClass'
-     * * 'wait' becomes 'Wait'
-     * * 'this' becomes 'This'
-     *
-     * @param methodName any string
-     * @param mappingContext  Global mapping context
-     * @return capitalized value if it is restricted in Java, same value as parameter otherwise
-     */
-    public static String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
-        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)) {
-            if (JAVA_RESTRICTED_KEYWORDS.contains(methodName)) {
-                return Utils.capitalize(methodName);
-            }
-            if (JAVA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-                return Utils.capitalize(methodName);
-            }
-        } else if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.SCALA)) {
-            if (SCALA_RESTRICTED_KEYWORDS.contains(methodName)) {
-                return Utils.capitalize(methodName);
-            }
-            if (SCALA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-                return Utils.capitalize(methodName);
-            }
-            //TODO kotlin
-        }
-        return methodName;
-    }
-
-    /**
-     * Generates a model class name including prefix and suffix (if any)
-     *
-     * @param mappingContext     Global mapping context, record enum type
-     * @param extendedDefinition GraphQL extended definition
-     * @return Class name of GraphQL model node
-     */
-    static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
-                                                       ExtendedDefinition<?, ?> extendedDefinition) {
-        String modelName = getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
-        mappingContext.getEnumImportItSelfInScala().add(modelName);
-        return modelName;
-    }
+public interface DataModelMapper {
 
     /**
      * Generates a model class name including prefix and suffix (if any)
@@ -166,7 +81,7 @@ public class MapperUtils {
         classNameBuilder.append(Utils.capitalize(fieldDefinition.getName()));
         if (Collections.frequency(fieldNames, fieldDefinition.getName()) > 1) {
             // Examples: EventsByIdsQuery, EventsByCategoryAndStatusQuery
-            classNameBuilder.append(MapperUtils.getClassNameSuffixWithInputValues(fieldDefinition));
+            classNameBuilder.append(DataModelMapper.getClassNameSuffixWithInputValues(fieldDefinition));
         }
         if (Utils.isNotBlank(rootTypeName)) {
             classNameBuilder.append(rootTypeName);
@@ -210,8 +125,8 @@ public class MapperUtils {
      * @param sourceLocation GraphQL node SourceLocation
      * @return prefix for the api class
      */
-    private static String getApiPrefix(MappingContext mappingContext,
-                                       SourceLocation sourceLocation) {
+    static String getApiPrefix(MappingContext mappingContext,
+                               SourceLocation sourceLocation) {
         switch (mappingContext.getApiNamePrefixStrategy()) {
             case FILE_NAME_AS_PREFIX:
                 return getPrefixFromSourceLocation(sourceLocation, File::getName);
@@ -228,17 +143,17 @@ public class MapperUtils {
 
     /**
      * Get the prefix (used as a prefix for class names) from GraphQL source location (file) using the supplied
-     * function {@param fileStringFunction}.
+     * function <b>fileStringFunction</b>.
      * Examples:
-     * ("src/test/resources/order-service/schema.graphql", File::getParent) => "OrderService"
-     * ("src/test/resources/product-service/ProductApis.graphql", File::getName) => "ProductApis"
+     * ("src/test/resources/order-service/schema.graphql", File::getParent) becomes "OrderService"
+     * ("src/test/resources/product-service/ProductApis.graphql", File::getName) becomes "ProductApis"
      *
      * @param sourceLocation     source location of GraphQL definition
      * @param fileStringFunction function to fetch File's attribute (name, parent, etc)
      * @return prefix of the file.
      */
-    private static String getPrefixFromSourceLocation(SourceLocation sourceLocation,
-                                                      Function<File, String> fileStringFunction) {
+    static String getPrefixFromSourceLocation(SourceLocation sourceLocation,
+                                              Function<File, String> fileStringFunction) {
         if (sourceLocation == null || sourceLocation.getSourceName() == null) {
             return "";
         }
@@ -323,8 +238,8 @@ public class MapperUtils {
      * Builds a className suffix based on the input values.
      * Examples:
      * 1. fieldDefinition has some input values:
-     * "ids" => "ByIds"
-     * "category", "status" => "ByCategoryAndStatus"
+     * "ids" becomes "ByIds"
+     * "category", "status" becomes "ByCategoryAndStatus"
      *
      * @param fieldDefinition field definition that has some InputValueDefinitions
      * @return className suffix based on the input values
@@ -365,8 +280,45 @@ public class MapperUtils {
                 .collect(Collectors.toList());
     }
 
-    private static Function<File, String> getParentFileNameFunction() {
+    static Function<File, String> getParentFileNameFunction() {
         return file -> file != null && file.getParentFile() != null ? file.getParentFile().getName() : null;
+    }
+
+    /**
+     * Capitalize field name if it is language-restricted.
+     * Examples:
+     * * 'class' becomes 'Class'
+     * * 'int' becomes 'Int'
+     *
+     * @param fieldName      any string
+     * @param mappingContext Global mapping context
+     * @return capitalized value if it is restricted in java/scala/kotlin/etc, same value as parameter otherwise
+     */
+    String capitalizeIfRestricted(MappingContext mappingContext, String fieldName);
+
+    /**
+     * Capitalize method name if it is language-restricted.
+     * Examples:
+     * * 'getClass' becomes 'GetClass'
+     * * 'wait' becomes 'Wait'
+     * * 'this' becomes 'This'
+     *
+     * @param methodName     any string
+     * @param mappingContext Global mapping context
+     * @return capitalized value if it is restricted in java/scala/kotlin/etc, same value as parameter otherwise
+     */
+    String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName);
+
+    /**
+     * Generates a model class name including prefix and suffix (if any)
+     *
+     * @param mappingContext     Global mapping context, record enum type
+     * @param extendedDefinition GraphQL extended definition
+     * @return Class name of GraphQL model node
+     */
+    default String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
+                                                        ExtendedDefinition<?, ?> extendedDefinition) {
+        return getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
 }

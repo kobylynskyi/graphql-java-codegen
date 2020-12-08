@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +31,7 @@ class GraphQLCodegenUnionWithEnumTest {
     @Test
     void generate_CheckFiles() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.enumunion");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/union-with-enum.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/union-with-enum.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
 

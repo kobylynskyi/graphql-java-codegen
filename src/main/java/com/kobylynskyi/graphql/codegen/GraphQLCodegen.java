@@ -1,18 +1,11 @@
 package com.kobylynskyi.graphql.codegen;
 
-import com.kobylynskyi.graphql.codegen.mapper.EnumDefinitionToDataModelMapper;
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
-import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionsToResolverDataModelMapper;
-import com.kobylynskyi.graphql.codegen.mapper.InputDefinitionToDataModelMapper;
-import com.kobylynskyi.graphql.codegen.mapper.InterfaceDefinitionToDataModelMapper;
-import com.kobylynskyi.graphql.codegen.mapper.RequestResponseDefinitionToDataModelMapper;
-import com.kobylynskyi.graphql.codegen.mapper.TypeDefinitionToDataModelMapper;
-import com.kobylynskyi.graphql.codegen.mapper.UnionDefinitionToDataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -42,36 +35,38 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Generator of:
- * - Interface for each GraphQL query, mutation, subscription, union and field resolvers
- * - POJO Class for each GraphQL type and input
- * - Enum Class for each GraphQL enum
+ * Generates classes based on GraphQL schema.
+ * Extendable for customizing code generation for other JVM languages
  *
  * @author kobylynskyi
  * @author valinhadev
  */
-public class GraphQLCodegen {
+public abstract class GraphQLCodegen {
+
+    protected final MappingConfig mappingConfig;
 
     private final List<String> schemas;
     private final String introspectionResult;
     private final File outputDir;
-    private final MappingConfig mappingConfig;
     private final GeneratedInformation generatedInformation;
+    private final DataModelMapperFactory dataModelMapperFactory;
 
     // used in tests
     public GraphQLCodegen(List<String> schemas,
                           File outputDir,
                           MappingConfig mappingConfig,
-                          GeneratedInformation generatedInformation) {
-        this(schemas, null, outputDir, mappingConfig, null, generatedInformation);
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
+        this(schemas, null, outputDir, mappingConfig, null, generatedInformation, mapperFactory);
     }
 
     // used in tests
     public GraphQLCodegen(String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
-                          GeneratedInformation generatedInformation) {
-        this(null, introspectionResult, outputDir, mappingConfig, null, generatedInformation);
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
+        this(null, introspectionResult, outputDir, mappingConfig, null, generatedInformation, mapperFactory);
     }
 
     // used in plugins
@@ -79,8 +74,9 @@ public class GraphQLCodegen {
                           String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
-                          MappingConfigSupplier externalMappingConfigSupplier) {
-        this(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation());
+                          MappingConfigSupplier externalMappingConfigSupplier,
+                          MapperFactory mapperFactory) {
+        this(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation(), mapperFactory);
     }
 
     // used by other constructors
@@ -89,29 +85,49 @@ public class GraphQLCodegen {
                           File outputDir,
                           MappingConfig mappingConfig,
                           MappingConfigSupplier externalMappingConfigSupplier,
-                          GeneratedInformation generatedInformation) {
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
         this.schemas = schemas;
         this.introspectionResult = introspectionResult;
         this.outputDir = outputDir;
         this.mappingConfig = mappingConfig;
         this.mappingConfig.combine(externalMappingConfigSupplier != null ? externalMappingConfigSupplier.get() : null);
+        this.generatedInformation = generatedInformation;
+        this.dataModelMapperFactory = new DataModelMapperFactory(mapperFactory);
+
         initDefaultValues(mappingConfig);
         validateConfigs(mappingConfig);
         sanitizeValues(mappingConfig);
-        this.generatedInformation = generatedInformation;
     }
 
-    private static void initDefaultValues(MappingConfig mappingConfig) {
+    private static void sanitizeValues(MappingConfig mappingConfig) {
+        mappingConfig.setModelValidationAnnotation(
+                Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
+
+        Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
+        if (customAnnotationsMapping != null) {
+            for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
+            }
+        }
+        Map<String, List<String>> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
+        if (directiveAnnotationsMapping != null) {
+            for (Map.Entry<String, List<String>> entry : directiveAnnotationsMapping.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
+                }
+            }
+        }
+    }
+
+    protected void initDefaultValues(MappingConfig mappingConfig) {
         if (mappingConfig.getModelValidationAnnotation() == null) {
             mappingConfig.setModelValidationAnnotation(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION);
         }
         if (mappingConfig.getGenerateBuilder() == null) {
-            if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
-                // functional expression
-                mappingConfig.setGenerateBuilder(false);
-            } else {
-                mappingConfig.setGenerateBuilder(MappingConfigConstants.DEFAULT_BUILDER);
-            }
+            mappingConfig.setGenerateBuilder(MappingConfigConstants.DEFAULT_BUILDER);
         }
         if (mappingConfig.getGenerateEqualsAndHashCode() == null) {
             mappingConfig.setGenerateEqualsAndHashCode(MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE);
@@ -132,12 +148,7 @@ public class GraphQLCodegen {
             mappingConfig.setParametrizedInputSuffix(MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX);
         }
         if (mappingConfig.getGenerateImmutableModels() == null) {
-            if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
-                // functional expression
-                mappingConfig.setGenerateImmutableModels(true);
-            } else {
-                mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
-            }
+            mappingConfig.setGenerateImmutableModels(MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS);
         }
         if (mappingConfig.getGenerateToString() == null) {
             mappingConfig.setGenerateToString(MappingConfigConstants.DEFAULT_TO_STRING);
@@ -219,28 +230,6 @@ public class GraphQLCodegen {
         }
     }
 
-    private static void sanitizeValues(MappingConfig mappingConfig) {
-        mappingConfig.setModelValidationAnnotation(
-                Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
-
-        Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
-        if (customAnnotationsMapping != null) {
-            for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
-                if (entry.getValue() != null) {
-                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
-                }
-            }
-        }
-        Map<String, List<String>> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
-        if (directiveAnnotationsMapping != null) {
-            for (Map.Entry<String, List<String>> entry : directiveAnnotationsMapping.entrySet()) {
-                if (entry.getValue() != null) {
-                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
-                }
-            }
-        }
-    }
-
     public List<File> generate() throws IOException {
         GraphQLCodegenFileCreator.prepareOutputDir(outputDir);
         long startTime = System.currentTimeMillis();
@@ -302,11 +291,11 @@ public class GraphQLCodegen {
 
     private List<File> generateUnion(MappingContext mappingContext, ExtendedUnionTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
-        Map<String, Object> dataModel = UnionDefinitionToDataModelMapper.map(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getUnionDefinitionMapper().map(mappingContext, definition);
         generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.UNION, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
-            Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
+            Map<String, Object> responseProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
         }
         return generatedFiles;
@@ -314,16 +303,16 @@ public class GraphQLCodegen {
 
     private List<File> generateInterface(MappingContext mappingContext, ExtendedInterfaceTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
-        Map<String, Object> dataModel = InterfaceDefinitionToDataModelMapper.map(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getInterfaceDefinitionMapper().map(mappingContext, definition);
         generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.INTERFACE, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
-            Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
+            Map<String, Object> responseProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
-                    Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
+                    Map<String, Object> fieldProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapParametrizedInput(mappingContext, fieldDefinition, definition);
                     generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, fieldProjDataModel, outputDir));
                 }
             }
@@ -376,10 +365,10 @@ public class GraphQLCodegen {
         List<File> generatedFiles = new ArrayList<>();
         List<String> fieldNames = definition.getFieldDefinitions().stream().map(FieldDefinition::getName).collect(toList());
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-            Map<String, Object> requestDataModel = RequestResponseDefinitionToDataModelMapper.mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
+            Map<String, Object> requestDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapRequest(mappingContext, operationDef, definition.getName(), fieldNames);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.REQUEST, requestDataModel, outputDir));
 
-            Map<String, Object> responseDataModel = RequestResponseDefinitionToDataModelMapper.mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
+            Map<String, Object> responseDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapResponse(mappingContext, operationDef, definition.getName(), fieldNames);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE, responseDataModel, outputDir));
         }
         return generatedFiles;
@@ -388,29 +377,29 @@ public class GraphQLCodegen {
     private List<File> generateApis(MappingContext mappingContext, ExtendedObjectTypeDefinition definition, List<String> fieldNames) {
         List<File> generatedFiles = new ArrayList<>();
         for (ExtendedFieldDefinition operationDef : definition.getFieldDefinitions()) {
-            Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
+            Map<String, Object> dataModel = dataModelMapperFactory.getFieldDefinitionsToResolverMapper().mapRootTypeField(mappingContext, operationDef, definition.getName(), fieldNames);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir));
         }
         return generatedFiles;
     }
 
     private File generateRootApi(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
-        Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapRootTypeFields(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getFieldDefinitionsToResolverMapper().mapRootTypeFields(mappingContext, definition);
         return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir);
     }
 
     private List<File> generateType(MappingContext mappingContext, ExtendedObjectTypeDefinition definition) {
         List<File> generatedFiles = new ArrayList<>();
-        Map<String, Object> dataModel = TypeDefinitionToDataModelMapper.map(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getTypeDefinitionMapper().map(mappingContext, definition);
         generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.TYPE, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
-            Map<String, Object> responseProjDataModel = RequestResponseDefinitionToDataModelMapper.mapResponseProjection(mappingContext, definition);
+            Map<String, Object> responseProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapResponseProjection(mappingContext, definition);
             generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.RESPONSE_PROJECTION, responseProjDataModel, outputDir));
 
             for (ExtendedFieldDefinition fieldDefinition : definition.getFieldDefinitions()) {
                 if (!Utils.isEmpty(fieldDefinition.getInputValueDefinitions())) {
-                    Map<String, Object> fieldProjDataModel = RequestResponseDefinitionToDataModelMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
+                    Map<String, Object> fieldProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper().mapParametrizedInput(mappingContext, fieldDefinition, definition);
                     generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, fieldProjDataModel, outputDir));
                 }
             }
@@ -426,7 +415,7 @@ public class GraphQLCodegen {
                     .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(mappingContext, fieldDef, parentDefinition))
                     .collect(toList());
             if (!fieldDefsWithResolvers.isEmpty()) {
-                Map<String, Object> dataModel = FieldDefinitionsToResolverDataModelMapper.mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
+                Map<String, Object> dataModel = dataModelMapperFactory.getFieldDefinitionsToResolverMapper().mapToTypeResolver(mappingContext, fieldDefsWithResolvers, parentDefinition.getName());
                 return Optional.of(GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.OPERATIONS, dataModel, outputDir));
             }
         }
@@ -434,16 +423,16 @@ public class GraphQLCodegen {
     }
 
     private File generateInput(MappingContext mappingContext, ExtendedInputObjectTypeDefinition definition) {
-        Map<String, Object> dataModel = InputDefinitionToDataModelMapper.map(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getInputDefinitionMapper().map(mappingContext, definition);
         return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.TYPE, dataModel, outputDir);
     }
 
     private File generateEnum(MappingContext mappingContext, ExtendedEnumTypeDefinition definition) {
-        Map<String, Object> dataModel = EnumDefinitionToDataModelMapper.map(mappingContext, definition);
+        Map<String, Object> dataModel = dataModelMapperFactory.getEnumDefinitionMapper().map(mappingContext, definition);
         return GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, outputDir);
     }
 
-    private void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
+    protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         for (ExtendedScalarTypeDefinition definition : scalarTypeDefinitions) {
             if (definition.getDefinition() != null) {
                 mappingConfig.putCustomTypeMappingIfAbsent(definition.getDefinition().getName(), "String");
@@ -451,24 +440,6 @@ public class GraphQLCodegen {
             for (ScalarTypeExtensionDefinition extension : definition.getExtensions()) {
                 mappingConfig.putCustomTypeMappingIfAbsent(extension.getName(), "String");
             }
-        }
-        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
-        if (GeneratedLanguage.JAVA.equals(mappingConfig.getGeneratedLanguage())) {
-            mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
-            mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
-            mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
-            mappingConfig.putCustomTypeMappingIfAbsent("Float!", "double");
-            mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
-            mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
-        } else if (GeneratedLanguage.SCALA.equals(mappingConfig.getGeneratedLanguage())) {
-            // scala primitive cannot be null, so use not null primitive type as java type
-            mappingConfig.putCustomTypeMappingIfAbsent("Int", "java.lang.Integer");
-            mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-            mappingConfig.putCustomTypeMappingIfAbsent("Float", "java.lang.Double");
-            mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
-            mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "java.lang.Boolean");
-            mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
         }
     }
 

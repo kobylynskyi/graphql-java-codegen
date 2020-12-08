@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +38,7 @@ class GraphQLCodegenDefaultsTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -55,7 +56,7 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_WithPrefixSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -73,7 +74,7 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_OnLongDefault() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Long", "java.lang.Long")));
         mappingConfig.setModelNameSuffix("DTO");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/defaults-with-Long.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults-with-Long.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());

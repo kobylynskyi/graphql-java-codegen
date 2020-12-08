@@ -1,7 +1,17 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
+import com.kobylynskyi.graphql.codegen.model.RelayConfig;
+import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
+import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
@@ -231,15 +241,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setMutationResolverParentInterface(getMutationResolverParentInterface());
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
-        mappingConfig.setGeneratedLanguage(getGeneratedLanguage());
-
-        MappingConfigSupplier mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
+        mappingConfig.setGeneratedLanguage(generatedLanguage);
 
         try {
-            new GraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier).generate();
+            instantiateCodegen(mappingConfig).generate();
         } catch (Exception e) {
             getLog().error(e);
             throw new MojoExecutionException("Code generation failed. See above for the full exception.");
+        }
+    }
+
+    private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
+        switch (generatedLanguage) {
+            case JAVA:
+                return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+            case SCALA:
+                return new ScalaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+            default:
+                throw new LanguageNotSupportedException(generatedLanguage);
         }
     }
 

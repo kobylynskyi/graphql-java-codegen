@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +36,7 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_RequestAndResponseProjections() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -51,7 +52,7 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_RequestAndResponseProjections_Interfaces() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -65,7 +66,7 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_projections_with_selectAll() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -78,7 +79,7 @@ class GraphQLCodegenResponseTest {
 
     @Test
     void generate_ResponseWithPrimitiveType() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

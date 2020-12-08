@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.core.StringContains;
@@ -35,7 +36,7 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -52,7 +53,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -83,7 +84,7 @@ class GraphQLCodegenGitHubTest {
     void generate_NoValidationAnnotation() throws Exception {
         mappingConfig.setModelValidationAnnotation("");
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
@@ -96,7 +97,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -113,7 +114,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

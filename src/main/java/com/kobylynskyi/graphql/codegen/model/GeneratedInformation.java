@@ -7,9 +7,8 @@ import java.util.function.Supplier;
 public class GeneratedInformation {
 
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-
-    private Supplier<ZonedDateTime> dateTimeSupplier;
     private final String generatedType;
+    private Supplier<ZonedDateTime> dateTimeSupplier;
 
     public GeneratedInformation() {
         this(ZonedDateTime::now);
@@ -18,18 +17,6 @@ public class GeneratedInformation {
     public GeneratedInformation(Supplier<ZonedDateTime> dateTimeSupplier) {
         this.dateTimeSupplier = dateTimeSupplier;
         this.generatedType = initGeneratedType();
-    }
-
-    public void setDateTimeSupplier(Supplier<ZonedDateTime> dateTimeSupplier) {
-        this.dateTimeSupplier = dateTimeSupplier;
-    }
-
-    public String getGeneratedType() {
-        return generatedType;
-    }
-
-    public String getDateTime() {
-        return DATE_TIME_FORMAT.format(dateTimeSupplier.get());
     }
 
     private static String initGeneratedType() {
@@ -43,6 +30,18 @@ public class GeneratedInformation {
             }
         }
         return null;
+    }
+
+    public void setDateTimeSupplier(Supplier<ZonedDateTime> dateTimeSupplier) {
+        this.dateTimeSupplier = dateTimeSupplier;
+    }
+
+    public String getGeneratedType() {
+        return generatedType;
+    }
+
+    public String getDateTime() {
+        return DATE_TIME_FORMAT.format(dateTimeSupplier.get());
     }
 
 }

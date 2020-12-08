@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,7 @@ class GraphQLCodegenCustomScalarMappingTest {
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -56,7 +57,7 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

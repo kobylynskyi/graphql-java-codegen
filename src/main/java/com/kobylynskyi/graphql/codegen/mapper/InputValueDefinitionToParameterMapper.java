@@ -18,7 +18,22 @@ import static java.util.stream.Collectors.toList;
  */
 public class InputValueDefinitionToParameterMapper {
 
-    private InputValueDefinitionToParameterMapper() {
+    private final ValueMapper valueMapper;
+    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final DataModelMapper dataModelMapper;
+
+    public InputValueDefinitionToParameterMapper(ValueMapper valueMapper,
+                                                 GraphQLTypeMapper graphQLTypeMapper,
+                                                 DataModelMapper dataModelMapper) {
+        this.valueMapper = valueMapper;
+        this.graphQLTypeMapper = graphQLTypeMapper;
+        this.dataModelMapper = dataModelMapper;
+    }
+
+    private static boolean isDeprecated(DirectivesContainer<?> node) {
+        return node.getDirectives().stream()
+                .map(Directive::getName)
+                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
     /**
@@ -29,7 +44,7 @@ public class InputValueDefinitionToParameterMapper {
      * @param parentTypeName   Name of the parent GraphQL type
      * @return Freemarker data model of the GraphQL input value definition
      */
-    public static List<ParameterDefinition> map(MappingContext mappingContext, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
+    public List<ParameterDefinition> map(MappingContext mappingContext, List<InputValueDefinition> valueDefinitions, String parentTypeName) {
         return valueDefinitions.stream()
                 .map(inputValueDef -> map(mappingContext, inputValueDef, parentTypeName))
                 .collect(toList());
@@ -43,24 +58,18 @@ public class InputValueDefinitionToParameterMapper {
      * @param parentTypeName       Name of the parent type
      * @return Freemarker-understandable format of parameter (field)
      */
-    private static ParameterDefinition map(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName) {
-        NamedDefinition namedDefinition = GraphqlTypeToJavaTypeMapper.getJavaType(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName);
+    private ParameterDefinition map(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName) {
+        NamedDefinition namedDefinition = graphQLTypeMapper.getLanguageType(mappingContext, inputValueDefinition.getType(), inputValueDefinition.getName(), parentTypeName);
 
         ParameterDefinition parameter = new ParameterDefinition();
-        parameter.setName(MapperUtils.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
+        parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        parameter.setType(GraphqlTypeToJavaTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
-        parameter.setDefaultValue(ValueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(GraphqlTypeToJavaTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
+        parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
+        parameter.setDefaultValue(valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(isDeprecated(inputValueDefinition));
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
-    }
-
-    private static boolean isDeprecated(DirectivesContainer<?> node) {
-        return node.getDirectives().stream()
-                .map(Directive::getName)
-                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
 }

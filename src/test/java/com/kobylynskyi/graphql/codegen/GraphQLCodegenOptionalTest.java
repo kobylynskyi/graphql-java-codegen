@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -34,7 +35,7 @@ class GraphQLCodegenOptionalTest {
 
     @Test
     void generate_Optional() throws Exception {
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -61,7 +62,7 @@ class GraphQLCodegenOptionalTest {
         mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
         mappingConfig.setApiReturnListType("reactor.core.publisher.Flux");
 
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

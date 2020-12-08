@@ -14,6 +14,16 @@ import java.util.function.Function;
 
 public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
 
+    /**
+     * Get source location of the node.
+     * In some cases Node does not have a source location defined, so returning "unknown"
+     *
+     * @return source location if present or "unknown" otherwise
+     */
+    private static String getSourceLocationName(Node<?> node) {
+        return node.getSourceLocation() != null ? node.getSourceLocation().getSourceName() : "unknown";
+    }
+
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         if (definition != null) {
@@ -56,16 +66,6 @@ public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefini
                     .getExtensions().add(extension);
         }
         return definitionMap;
-    }
-
-    /**
-     * Get source location of the node.
-     * In some cases Node does not have a source location defined, so returning "unknown"
-     *
-     * @return source location if present or "unknown" otherwise
-     */
-    private static String getSourceLocationName(Node<?> node) {
-        return node.getSourceLocation() != null ? node.getSourceLocation().getSourceName() : "unknown";
     }
 
 }

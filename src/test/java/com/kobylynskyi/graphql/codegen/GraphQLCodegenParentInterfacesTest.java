@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +36,7 @@ class GraphQLCodegenParentInterfacesTest {
         mappingConfig.setSubscriptionResolverParentInterface("graphql.kickstart.tools.GraphQLSubscriptionResolver");
         mappingConfig.setResolverParentInterface("graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>");
 
-        new GraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -43,7 +42,7 @@ class GraphQLCodegenExtendTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -64,7 +63,7 @@ class GraphQLCodegenExtendTest {
     void generateServerSideClasses_ExtensionFieldsResolvers_WithExclusions() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
         mappingConfig.setFieldsWithoutResolvers(new HashSet<>(asList("Node", "Event.assets")));
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -85,7 +84,7 @@ class GraphQLCodegenExtendTest {
     @Test
     void generateServerSideClasses_EmptyTypes() throws Exception {
         schemaFinder.setIncludePattern("empty-types-with-extend\\.graphqls");
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -106,7 +105,7 @@ class GraphQLCodegenExtendTest {
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateClient(true);
-        new GraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

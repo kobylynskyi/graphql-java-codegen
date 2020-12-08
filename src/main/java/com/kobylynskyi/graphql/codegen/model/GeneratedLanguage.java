@@ -2,14 +2,20 @@ package com.kobylynskyi.graphql.codegen.model;
 
 public enum GeneratedLanguage {
 
-    /**
-     * Generate scala code
-     */
-    SCALA,
+    JAVA(".java"),
 
-    /**
-     * Generate java code
-     */
-    JAVA
+    SCALA(".scala"),
+
+    KOTLIN(".kt");
+
+    private final String fileExtension;
+
+    GeneratedLanguage(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
 
 }
