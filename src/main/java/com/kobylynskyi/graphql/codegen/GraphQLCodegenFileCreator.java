@@ -19,9 +19,6 @@ import java.util.Map;
  */
 class GraphQLCodegenFileCreator {
 
-    private static final String EXTENSION = ".java";
-    private static final String EXTENSION_SCALA = ".scala";
-
     private GraphQLCodegenFileCreator() {
     }
 

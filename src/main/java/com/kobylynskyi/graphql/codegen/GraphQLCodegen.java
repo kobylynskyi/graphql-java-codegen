@@ -255,8 +255,12 @@ public abstract class GraphQLCodegen {
         MappingContext context = new MappingContext(mappingConfig, document, generatedInformation);
 
         List<File> generatedFiles = new ArrayList<>();
+        // Enumeration must be first for scala, interface must before type for kotlin/scala!!!
         for (ExtendedEnumTypeDefinition extendedEnumTypeDefinition : document.getEnumDefinitions()) {
             generatedFiles.add(generateEnum(context, extendedEnumTypeDefinition));
+        }
+        for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : document.getInterfaceDefinitions()) {
+            generatedFiles.addAll(generateInterface(context, extendedInterfaceTypeDefinition));
         }
         for (ExtendedObjectTypeDefinition extendedObjectTypeDefinition : document.getTypeDefinitions()) {
             generatedFiles.addAll(generateType(context, extendedObjectTypeDefinition));
@@ -278,9 +282,6 @@ public abstract class GraphQLCodegen {
         }
         for (ExtendedUnionTypeDefinition extendedUnionTypeDefinition : document.getUnionDefinitions()) {
             generatedFiles.addAll(generateUnion(context, extendedUnionTypeDefinition));
-        }
-        for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : document.getInterfaceDefinitions()) {
-            generatedFiles.addAll(generateInterface(context, extendedInterfaceTypeDefinition));
         }
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
             generateFieldResolver(context, definition.getFieldDefinitions(), definition).ifPresent(generatedFiles::add);

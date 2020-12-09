@@ -61,6 +61,18 @@ class FreeMarkerTemplatesRegistry {
             scalaTemplates.put(RESPONSE_PROJECTION, configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponseProjection.ftl"));
             templateMap.put(GeneratedLanguage.SCALA, scalaTemplates);
 
+            EnumMap<FreeMarkerTemplateType, Template> kotlinTemplates = new EnumMap<>(FreeMarkerTemplateType.class);
+            kotlinTemplates.put(TYPE, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlType.ftl"));
+            kotlinTemplates.put(ENUM, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlEnum.ftl"));
+            kotlinTemplates.put(UNION, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlUnion.ftl"));
+            kotlinTemplates.put(REQUEST, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlRequest.ftl"));
+            kotlinTemplates.put(RESPONSE, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlResponse.ftl"));
+            kotlinTemplates.put(INTERFACE, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlInterface.ftl"));
+            kotlinTemplates.put(OPERATIONS, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlOperations.ftl"));
+            kotlinTemplates.put(PARAMETRIZED_INPUT, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlParametrizedInput.ftl"));
+            kotlinTemplates.put(RESPONSE_PROJECTION, configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlResponseProjection.ftl"));
+            templateMap.put(GeneratedLanguage.KOTLIN, kotlinTemplates);
+
 
         } catch (IOException e) {
             throw new UnableToLoadFreeMarkerTemplateException(e);

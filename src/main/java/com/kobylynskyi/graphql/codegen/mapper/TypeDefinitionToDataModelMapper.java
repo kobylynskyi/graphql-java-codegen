@@ -16,19 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
 /**
  * Map type definition to a Freemarker data model
@@ -93,6 +81,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
+        dataModel.put(PARENT_INTERFACE_PROPERTIES, mappingContext.getParentInterfacePropertiesInKotlin());
         return dataModel;
     }
 

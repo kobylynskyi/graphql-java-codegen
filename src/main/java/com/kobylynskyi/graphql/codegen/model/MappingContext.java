@@ -2,10 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MappingContext implements GraphQLCodegenConfiguration {
 
@@ -16,6 +13,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
     private final Set<String> enumImportItSelfInScala;
+    private final Map<String, Set<String>> parentInterfacePropertiesInKotlin;
 
     public MappingContext(MappingConfig mappingConfig,
                           ExtendedDocument document,
@@ -27,6 +25,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
         this.enumImportItSelfInScala = new HashSet<>();
+        this.parentInterfacePropertiesInKotlin = new HashMap<>();
     }
 
     @Override
@@ -276,6 +275,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
 
     public Set<String> getEnumImportItSelfInScala() {
         return enumImportItSelfInScala;
+    }
+
+    public Map<String, Set<String>> getParentInterfacePropertiesInKotlin() {
+        return parentInterfacePropertiesInKotlin;
     }
 
 }
