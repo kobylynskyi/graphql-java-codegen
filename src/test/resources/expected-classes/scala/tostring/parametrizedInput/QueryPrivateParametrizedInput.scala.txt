@@ -1,0 +1,27 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+
+/**
+ * Parametrized input for field private in type Query
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class QueryPrivateParametrizedInput(
+    @javax.validation.constraints.NotNull
+    int: Int,
+    @javax.validation.constraints.NotNull
+    New: String
+) extends GraphQLParametrizedInput {
+
+    override def toString(): String = {
+        Seq(
+            "int: " + int
+            , if (New != null) "new: " + GraphQLRequestSerializer.getEntry(New) else ""
+        ).filter(_ != "").mkString("(", ",", ")")
+    }
+
+}

@@ -112,4 +112,28 @@ class GraphQLCodegenReactorToStringTest {
         }
     }
 
+    @Test
+    void parametrizedInput_To_String() throws Exception {
+        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        mappingConfig.setGenerateModelsForRootTypes(true);
+        mappingConfig.setApiNameSuffix("API");
+        mappingConfig.setGenerateBuilder(false);
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/parametrized-input.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Arrays.asList("QueryPrivateParametrizedInput.scala").contains(f)).sorted().collect(toList());
+        assertEquals(Arrays.asList("QueryPrivateParametrizedInput.scala"), generatedFileNames);
+
+        for (File file : files) {
+            if (Arrays.asList("QueryPrivateParametrizedInput.scala").contains(file.getName())) {
+                assertSameTrimmedContent(
+                        new File(String.format("src/test/resources/expected-classes/scala/tostring/parametrizedInput/%s.txt", file.getName())),
+                        file);
+            }
+        }
+    }
+
 }

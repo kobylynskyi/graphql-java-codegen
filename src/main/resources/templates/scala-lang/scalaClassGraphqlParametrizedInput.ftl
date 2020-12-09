@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
@@ -10,11 +11,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
             <#list enumImportItSelfInScala as enum>
                 <#if field.type?contains("Seq[")>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
-import ${field.type?replace("Seq[", "")?replace("]", "")}._
+import ${enum}._
                     </#if>
                 <#else >
                     <#if enum == field.type>
-import ${field.type}._
+import ${enum}._
                     </#if>
                 </#if>
             </#list>
@@ -55,7 +56,7 @@ case class ${className}(
     override def toString(): String = {
     <#if fields?has_content>
         Seq(
-            <#list fields as field>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>
+            <#list fields as field><#if MapperUtil.isScalaPrimitive(field.type)>"${field.originalName}: " + ${field.name}<#else>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""</#if><#if field_has_next>
             , </#if></#list>
         ).filter(_ != "").mkString("(", ",", ")")
     <#else>
