@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.kotlin;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public class KotlinDataModelMapper implements DataModelMapper {
             return wrapperFieldName(methodName);
         }
         if (KOTLIN_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-            return wrapperFieldName(methodName);
+            return Utils.capitalize(methodName);
         }
         return methodName;
     }

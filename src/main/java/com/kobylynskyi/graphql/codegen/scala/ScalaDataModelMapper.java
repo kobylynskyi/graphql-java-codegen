@@ -50,7 +50,7 @@ public class ScalaDataModelMapper implements DataModelMapper {
             return wrapperFieldName(methodName);
         }
         if (SCALA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-            return wrapperFieldName(methodName);
+            return Utils.capitalize(methodName);
         }
         return methodName;
     }
