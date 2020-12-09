@@ -1,17 +1,6 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import PullRequestConnection._
-import GitActor._
-import Blame._
-import CommitCommentConnection._
-import GitActor._
-import DeploymentConnection._
-import CommitHistoryConnection._
-import CommitConnection._
-import Repository._
-import Status._
-import Tree._
 import SubscriptionState._
 
 @javax.annotation.Generated(

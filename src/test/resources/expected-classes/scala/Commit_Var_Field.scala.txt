@@ -1,17 +1,6 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import PullRequestConnection._
-import GitActor._
-import Blame._
-import CommitCommentConnection._
-import GitActor._
-import DeploymentConnection._
-import CommitHistoryConnection._
-import CommitConnection._
-import Repository._
-import Status._
-import Tree._
 import SubscriptionState._
 
 @javax.annotation.Generated(
@@ -21,17 +10,14 @@ import SubscriptionState._
 case class Commit(
     @javax.validation.constraints.NotNull
     var abbreviatedOid: String,
-    @javax.validation.constraints.NotNull
     var additions: Int,
     var associatedPullRequests: PullRequestConnection,
     var author: GitActor,
-    @javax.validation.constraints.NotNull
     var authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
     var authoredDate: String,
     @javax.validation.constraints.NotNull
     var blame: Blame,
-    @javax.validation.constraints.NotNull
     var changedFiles: Int,
     @javax.validation.constraints.NotNull
     var comments: CommitCommentConnection,
@@ -41,10 +27,8 @@ case class Commit(
     var commitUrl: String,
     @javax.validation.constraints.NotNull
     var committedDate: String,
-    @javax.validation.constraints.NotNull
     var committedViaWeb: Boolean,
     var committer: GitActor,
-    @javax.validation.constraints.NotNull
     var deletions: Int,
     var deployments: DeploymentConnection,
     @javax.validation.constraints.NotNull
@@ -82,7 +66,6 @@ case class Commit(
     var treeUrl: String,
     @javax.validation.constraints.NotNull
     var url: String,
-    @javax.validation.constraints.NotNull
     var viewerCanSubscribe: Boolean,
     var viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull

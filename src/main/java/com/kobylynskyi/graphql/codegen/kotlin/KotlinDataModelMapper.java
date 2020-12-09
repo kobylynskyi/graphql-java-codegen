@@ -55,9 +55,7 @@ public class KotlinDataModelMapper implements DataModelMapper {
     @Override
     public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                        ExtendedDefinition<?, ?> extendedDefinition) {
-        String classNameWithPrefixAndSuffix = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
-        mappingContext.getEnumImportItSelfInScala().add(classNameWithPrefixAndSuffix);
-        return classNameWithPrefixAndSuffix;
+        return DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
 }

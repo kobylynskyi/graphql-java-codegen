@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import TestEnum._
-import Synchronized._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
@@ -36,4 +35,3 @@ case class Synchronized(
         ).filter(_ != "").mkString("{", ",", "}")
     }
 }
-

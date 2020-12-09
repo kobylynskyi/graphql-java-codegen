@@ -121,7 +121,7 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     @Override
     public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
-        return !JavaGraphQLTypeMapper.isJavaPrimitive(possiblyPrimitiveType); // reconsider
+        return !ScalaGraphQLTypeMapper.isScalaPrimitive(possiblyPrimitiveType);
     }
 
 }

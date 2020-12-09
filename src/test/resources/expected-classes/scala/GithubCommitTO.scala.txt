@@ -1,17 +1,6 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
-import GithubPullRequestConnectionTO._
-import GithubGitActorTO._
-import GithubBlameTO._
-import GithubCommitCommentConnectionTO._
-import GithubGitActorTO._
-import GithubDeploymentConnectionTO._
-import GithubCommitHistoryConnectionTO._
-import GithubCommitConnectionTO._
-import GithubRepositoryTO._
-import GithubStatusTO._
-import GithubTreeTO._
 import GithubSubscriptionStateTO._
 
 @javax.annotation.Generated(
@@ -21,17 +10,14 @@ import GithubSubscriptionStateTO._
 case class GithubCommitTO(
     @javax.validation.constraints.NotNull
     val abbreviatedOid: String,
-    @javax.validation.constraints.NotNull
     val additions: Int,
     val associatedPullRequests: GithubPullRequestConnectionTO,
     val author: GithubGitActorTO,
-    @javax.validation.constraints.NotNull
     val authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
     val authoredDate: String,
     @javax.validation.constraints.NotNull
     val blame: GithubBlameTO,
-    @javax.validation.constraints.NotNull
     val changedFiles: Int,
     @javax.validation.constraints.NotNull
     val comments: GithubCommitCommentConnectionTO,
@@ -41,10 +27,8 @@ case class GithubCommitTO(
     val commitUrl: String,
     @javax.validation.constraints.NotNull
     val committedDate: String,
-    @javax.validation.constraints.NotNull
     val committedViaWeb: Boolean,
     val committer: GithubGitActorTO,
-    @javax.validation.constraints.NotNull
     val deletions: Int,
     val deployments: GithubDeploymentConnectionTO,
     @javax.validation.constraints.NotNull
@@ -82,7 +66,6 @@ case class GithubCommitTO(
     val treeUrl: String,
     @javax.validation.constraints.NotNull
     val url: String,
-    @javax.validation.constraints.NotNull
     val viewerCanSubscribe: Boolean,
     val viewerSubscription: GithubSubscriptionStateTO,
     @javax.validation.constraints.NotNull

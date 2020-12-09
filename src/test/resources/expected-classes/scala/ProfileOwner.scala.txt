@@ -1,8 +1,5 @@
 package com.github.graphql
 
-import ProfileItemShowcase._
-import PinnableItemConnection._
-import PinnableItemConnection._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
@@ -10,7 +7,6 @@ import PinnableItemConnection._
 )
 trait ProfileOwner {
 
-    @javax.validation.constraints.NotNull
     val anyPinnableItems: Boolean
 
     val email: String
@@ -34,10 +30,8 @@ trait ProfileOwner {
     @javax.validation.constraints.NotNull
     val pinnedItems: PinnableItemConnection
 
-    @javax.validation.constraints.NotNull
     val pinnedItemsRemaining: Int
 
-    @javax.validation.constraints.NotNull
     val viewerCanChangePinnedItems: Boolean
 
     val websiteUrl: String
