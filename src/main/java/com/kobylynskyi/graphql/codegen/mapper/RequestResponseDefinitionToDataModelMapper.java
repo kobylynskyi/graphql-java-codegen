@@ -2,12 +2,14 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
@@ -155,13 +157,19 @@ public class RequestResponseDefinitionToDataModelMapper {
         String className = DataModelMapper.getParametrizedInputClassName(mappingContext, fieldDefinition, parentTypeDefinition);
         Map<String, Object> dataModel = new HashMap<>();
         // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed
+        List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper.map(
+                mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName());
+        //kotlin not support empty
+        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN) &&
+                fields.isEmpty()) {
+            throw new UnableToCreateFileException(new Exception("ParameterizedInput requires at least one field to use in Kotlin."));
+        }
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
         dataModel.put(JAVA_DOC, Collections.singletonList(String.format("Parametrized input for field %s in type %s",
                 fieldDefinition.getName(), parentTypeDefinition.getName())));
-        dataModel.put(FIELDS, inputValueDefinitionToParameterMapper.map(
-                mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName()));
+        dataModel.put(FIELDS, fields);
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
