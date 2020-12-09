@@ -19,7 +19,7 @@ case class QueryPrivateParametrizedInput(
 
     override def toString(): String = {
         Seq(
-            "int: " + int
+            "int: " + GraphQLRequestSerializer.getEntry(int)
             , if (New != null) "new: " + GraphQLRequestSerializer.getEntry(New) else ""
         ).filter(_ != "").mkString("(", ",", ")")
     }

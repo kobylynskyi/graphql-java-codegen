@@ -56,7 +56,7 @@ case class ${className}(
     override def toString(): String = {
     <#if fields?has_content>
         Seq(
-            <#list fields as field><#if MapperUtil.isScalaPrimitive(field.type)>"${field.originalName}: " + ${field.name}<#else>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""</#if><#if field_has_next>
+            <#list fields as field><#if MapperUtil.isScalaPrimitive(field.type)>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name})<#else>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""</#if><#if field_has_next>
             , </#if></#list>
         ).filter(_ != "").mkString("(", ",", ")")
     <#else>
