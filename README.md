@@ -1,7 +1,7 @@
 # GraphQL Codegen #
 
 ![Build](https://github.com/kobylynskyi/graphql-java-codegen/workflows/Build/badge.svg)
-[![Gitter](https://badges.gitter.im/graphql-java-codegen/community.svg)](https://gitter.im/graphql-java-codegen/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Discussions](https://img.shields.io/badge/github-discussions-green)](https://github.com/kobylynskyi/graphql-java-codegen/discussions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=kobylynskyi_graphql-java-codegen&metric=alert_status)](https://sonarcloud.io/dashboard?id=kobylynskyi_graphql-java-codegen) 

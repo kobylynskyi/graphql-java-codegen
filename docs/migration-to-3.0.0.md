@@ -156,4 +156,4 @@ Run project build so that GraphQL classes are regenerated.
 
 ---
 
-Feel free to ask any questions in [Gitter community](https://gitter.im/graphql-java-codegen/community) or [create an issue](https://github.com/kobylynskyi/graphql-java-codegen/issues) if you discover some problems.
+Feel free to ask any questions in [GitHub Discussions](https://github.com/kobylynskyi/graphql-java-codegen/discussions) or [create an issue](https://github.com/kobylynskyi/graphql-java-codegen/issues) if you discover some problems.
