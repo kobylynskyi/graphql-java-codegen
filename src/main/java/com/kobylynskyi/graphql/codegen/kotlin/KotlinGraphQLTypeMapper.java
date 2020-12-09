@@ -63,9 +63,6 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
@@ -96,25 +93,16 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPrimitive(String scalaType) {
         return isKotlinPrimitive(scalaType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
         return String.format("%s<%s>", genericType, typeParameter);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
         return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);
@@ -134,7 +122,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             case "Double":
                 return "0D";
             case "Char":
-                return "''";
+                return "0.toChar()";
             case "Boolean":
                 return "false";
             case "Int":

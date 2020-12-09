@@ -60,7 +60,7 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
 <#if field.deprecated>
     @Deprecated
 </#if>
-    def set${field.name?cap_first}(${field.name}: ${field.type}): Unit = {
+    def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Unit = {
         this.input.put("${field.originalName}", ${field.name})
     }
 

@@ -3,11 +3,12 @@ package com.kobylynskyi.graphql.codegen.kotlin;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapperFieldName;
 
 /**
  * @author 梦境迷离
@@ -23,35 +24,26 @@ public class KotlinDataModelMapper implements DataModelMapper {
     //TODO maybe have others
     private static final Set<String> KOTLIN_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList("notify", "notifyAll", "wait"));
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
 
         if (KOTLIN_RESTRICTED_KEYWORDS.contains(fieldName)) {
-            return Utils.capitalize(fieldName);
+            return wrapperFieldName(fieldName);
         }
         return fieldName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
         if (KOTLIN_RESTRICTED_KEYWORDS.contains(methodName)) {
-            return Utils.capitalize(methodName);
+            return wrapperFieldName(methodName);
         }
         if (KOTLIN_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-            return Utils.capitalize(methodName);
+            return wrapperFieldName(methodName);
         }
         return methodName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                        ExtendedDefinition<?, ?> extendedDefinition) {

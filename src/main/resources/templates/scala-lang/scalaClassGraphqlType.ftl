@@ -97,7 +97,7 @@ object ${className} {
         <#if field.deprecated>
         @Deprecated
         </#if>
-        def set${field.name?cap_first}(${field.name}: ${field.type}): Builder = {
+        def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}
             this
         }

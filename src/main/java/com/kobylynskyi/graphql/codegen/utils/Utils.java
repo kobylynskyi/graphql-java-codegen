@@ -231,4 +231,13 @@ public final class Utils {
         return null;
     }
 
+    /**
+     * for scala/kotlin
+     * @param fieldName field name in RESTRICTED_KEYWORDS  or RESTRICTED_METHOD_NAMES
+     * @return new field name
+     */
+    public static String wrapperFieldName(String fieldName){
+        return "`" + fieldName + "`";
+    }
+
 }

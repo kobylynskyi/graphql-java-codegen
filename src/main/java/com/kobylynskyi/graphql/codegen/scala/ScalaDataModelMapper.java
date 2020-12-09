@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapperFieldName;
+
 /**
  * {@inheritDoc}
  */
@@ -34,7 +36,7 @@ public class ScalaDataModelMapper implements DataModelMapper {
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
 
         if (SCALA_RESTRICTED_KEYWORDS.contains(fieldName)) {
-            return Utils.capitalize(fieldName);
+            return wrapperFieldName(fieldName);
         }
         return fieldName;
     }
@@ -45,10 +47,10 @@ public class ScalaDataModelMapper implements DataModelMapper {
     @Override
     public String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
         if (SCALA_RESTRICTED_KEYWORDS.contains(methodName)) {
-            return Utils.capitalize(methodName);
+            return wrapperFieldName(methodName);
         }
         if (SCALA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
-            return Utils.capitalize(methodName);
+            return wrapperFieldName(methodName);
         }
         return methodName;
     }

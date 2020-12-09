@@ -26,6 +26,9 @@ import java.util.Objects
 <#list annotations as annotation>
 @${annotation}
 </#list>
+<#if !fields?has_content>
+class ${className}() : GraphQLParametrizedInput
+<#else>
 data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
@@ -57,3 +60,4 @@ data class ${className}(
     }
 
 }
+</#if>

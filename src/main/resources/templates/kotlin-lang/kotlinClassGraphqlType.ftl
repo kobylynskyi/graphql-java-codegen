@@ -53,6 +53,9 @@ import java.util.StringJoiner
 <#list annotations as annotation>
 @${annotation}
 </#list>
+<#if !fields?has_content>
+class ${className}()<#if implements?has_content> : <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>
+<#else>
 data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
@@ -163,3 +166,4 @@ data class ${className}(
     }
 </#if>
 }
+</#if>

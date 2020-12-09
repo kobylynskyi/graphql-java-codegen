@@ -70,11 +70,6 @@ public class TypeDefinitionToDataModelMapper {
 
         Map<String, Object> dataModel = new HashMap<>();
         Collection<ParameterDefinition> fields = getFields(mappingContext, definition, document);
-        //kotlin not support empty
-        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN) &&
-                fields.isEmpty()) {
-            throw new UnableToCreateFileException(new Exception("Type requires at least one field to use in Kotlin."));
-        }
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));

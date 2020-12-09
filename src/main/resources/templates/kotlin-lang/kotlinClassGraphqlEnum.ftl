@@ -36,5 +36,4 @@ enum class ${className}(val graphqlName: String)<#if implements?has_content> : <
 <#else></#if>
 </#list>
 </#if>
-
 }

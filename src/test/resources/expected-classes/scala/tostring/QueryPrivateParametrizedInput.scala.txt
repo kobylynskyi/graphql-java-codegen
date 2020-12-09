@@ -13,14 +13,14 @@ import TestEnum._
 )
 case class QueryPrivateParametrizedInput(
     int: java.lang.Integer,
-    New: String,
+    `new`: String,
     enum: TestEnum = TestEnum.long
 ) extends GraphQLParametrizedInput {
 
     override def toString(): String = {
         Seq(
             if (int != null) "int: " + GraphQLRequestSerializer.getEntry(int) else ""
-            , if (New != null) "new: " + GraphQLRequestSerializer.getEntry(New) else ""
+            , if (`new` != null) "new: " + GraphQLRequestSerializer.getEntry(`new`) else ""
             , if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum) else ""
         ).filter(_ != "").mkString("(", ",", ")")
     }

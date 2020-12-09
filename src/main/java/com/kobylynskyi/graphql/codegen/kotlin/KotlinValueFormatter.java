@@ -11,9 +11,6 @@ import java.util.StringJoiner;
  */
 public class KotlinValueFormatter implements ValueFormatter {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String formatList(List<String> values, String formatter) {
         // TODO null can not assign to List<T>

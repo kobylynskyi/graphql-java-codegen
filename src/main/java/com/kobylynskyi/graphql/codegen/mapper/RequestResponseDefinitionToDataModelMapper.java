@@ -159,11 +159,6 @@ public class RequestResponseDefinitionToDataModelMapper {
         // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed
         List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper.map(
                 mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName());
-        //kotlin not support empty
-        if (mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN) &&
-                fields.isEmpty()) {
-            throw new UnableToCreateFileException(new Exception("ParameterizedInput requires at least one field to use in Kotlin."));
-        }
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));

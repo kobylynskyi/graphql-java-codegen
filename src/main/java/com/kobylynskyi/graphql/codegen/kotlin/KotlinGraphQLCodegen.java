@@ -20,37 +20,22 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new KotlinMapperFactoryImpl();
 
-    /**
-     * {@inheritDoc}
-     */
     public KotlinGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
         super(schemas, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public KotlinGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
         super(introspectionResult, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier, GeneratedInformation generatedInformation) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void initDefaultValues(MappingConfig mappingConfig) {
         if (mappingConfig.getGenerateBuilder() == null) {
@@ -69,9 +54,6 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         super.initCustomTypeMappings(scalarTypeDefinitions);
