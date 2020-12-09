@@ -2,6 +2,8 @@ type Query {
     product(
         companyId: ID!
     ): Product!
+
+    clients: [Client!]!
 }
 
 interface Product {
@@ -13,3 +15,9 @@ interface Product {
 type LinkCode {
     html: String
 }
+
+type Client {
+    data(ID: Int!): Data!
+}
+
+enum Data { A B C }
