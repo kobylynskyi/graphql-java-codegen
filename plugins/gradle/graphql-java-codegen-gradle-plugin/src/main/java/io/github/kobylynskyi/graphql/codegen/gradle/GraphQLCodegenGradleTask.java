@@ -2,6 +2,7 @@ package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
@@ -162,6 +163,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier());
             case SCALA:
                 return new ScalaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier());
+            case KOTLIN:
+                return new KotlinGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier());
             default:
                 throw new LanguageNotSupportedException(generatedLanguage);
         }

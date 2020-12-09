@@ -52,7 +52,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
 
     /**
      * Return upper bounded wildcard for the given interface type:
-     * {@code "Foo"} becomes {@code "List<out Foo]"> in Kotlin.
+     * {@code "Foo"} becomes {@code "List<out Foo>"} in Kotlin.
      *
      * @param type           The name of a type whose upper bound wildcard will be wrapped into a list.
      * @param mappingContext Global mapping context
