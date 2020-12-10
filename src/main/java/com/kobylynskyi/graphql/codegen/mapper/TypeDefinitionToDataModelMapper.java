@@ -1,12 +1,10 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
@@ -69,14 +67,13 @@ public class TypeDefinitionToDataModelMapper {
         ExtendedDocument document = mappingContext.getDocument();
 
         Map<String, Object> dataModel = new HashMap<>();
-        Collection<ParameterDefinition> fields = getFields(mappingContext, definition, document);
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
-        dataModel.put(FIELDS, fields);
+        dataModel.put(FIELDS, getFields(mappingContext, definition, document));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());

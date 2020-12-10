@@ -1,0 +1,28 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+
+/**
+ * Response projection for Event
+ */
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class EventResponseProjection : GraphQLResponseProjection() {
+
+    override fun `all$`(): EventResponseProjection = `all$`(3)
+
+    override fun `all$`(maxDepth: Int): EventResponseProjection {
+        this.typename()
+        return this
+    }
+
+    fun typename(): EventResponseProjection = typename(null)
+
+    fun typename(alias: String?): EventResponseProjection {
+        fields.add(GraphQLResponseField("__typename").alias(alias))
+        return this
+    }
+
+
+}

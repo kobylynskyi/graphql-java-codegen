@@ -50,9 +50,9 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
      */
 </#if>
 <#if field.deprecated>
-    @java.lang.Deprecated
+    @Deprecated("this is deprecated in GraphQL")
 </#if>
-    fun set${field.name?cap_first}(${field.name}: ${field.type}) {
+    fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}) {
         this.input["${field.originalName}"] = ${field.name}
     }
 
@@ -125,9 +125,9 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
          */
     </#if>
     <#if field.deprecated>
-        @java.lang.Deprecated
+        @Deprecated("this is deprecated in GraphQL")
         </#if>
-        fun set${field.name?cap_first}(${field.name}: ${field.type}): Builder {
+        fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder {
             this.${field.name} = ${field.name}
             return this
         }
@@ -138,7 +138,7 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
             val obj = ${className}(`$alias`)
         <#if fields?has_content>
             <#list fields as field>
-            obj.set${field.name?cap_first}(${field.name})
+            obj.set${field.name?replace("`", "")?cap_first}(${field.name})
             </#list>
         </#if>
             return obj

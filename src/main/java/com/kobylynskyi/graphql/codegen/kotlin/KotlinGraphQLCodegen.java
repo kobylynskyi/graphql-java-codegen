@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 
@@ -47,11 +46,6 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
             mappingConfig.setGenerateImmutableModels(true);
         }
         super.initDefaultValues(mappingConfig);
-        // a type does not have `?`, then it cannot be null any more.So the annotation is invalid.
-        // TODO If it is not the default, we assume that the user forces use the annotation(It doesn't help, though).
-        if(mappingConfig.getModelValidationAnnotation().equals(MappingConfigConstants.DEFAULT_VALIDATION_ANNOTATION)){
-            mappingConfig.setModelValidationAnnotation(null);
-        }
     }
 
     @Override

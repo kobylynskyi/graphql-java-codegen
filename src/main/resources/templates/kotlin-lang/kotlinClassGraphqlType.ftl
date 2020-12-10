@@ -60,7 +60,7 @@ data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
     <#if field.deprecated>
-        @java.lang.Deprecated
+        @Deprecated("this is deprecated in GraphQL")
     </#if><#-- Properties of multiple interfaces should not have duplicate names  -->
     <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override
     </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@get:${annotation}
@@ -82,13 +82,6 @@ data class ${className}(
         val joiner = StringJoiner(", ", "{ ", " }")
     <#if fields?has_content>
         <#list fields as field>
-<#if MapperUtil.isKotlinPrimitive(field.type)>
-    <#if toStringForRequest>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
-    <#else>
-        joiner.add("${field.originalName}: " + ${field.name})
-    </#if>
-<#else>
     <#if field.type?ends_with("?")>
         if (${field.name} != null) {
         <#if toStringForRequest>
@@ -111,7 +104,6 @@ data class ${className}(
         joiner.add(${field.originalName}: ${field.name}")
     </#if>
         </#if>
-    </#if>
     </#if>
         </#list>
     </#if>
@@ -151,9 +143,9 @@ data class ${className}(
          */
         </#if>
         <#if field.deprecated>
-        @java.lang.Deprecated
+        @Deprecated("this is deprecated in GraphQL")
         </#if>
-        fun set${field.name?cap_first}(${field.name}: ${field.type}): Builder {
+        fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder {
             this.${field.name} = ${field.name}
             return this
         }

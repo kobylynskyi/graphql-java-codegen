@@ -136,7 +136,7 @@ object ${className} {
         <#if field.deprecated>
         @Deprecated
         </#if>
-        def set${field.name?cap_first}(${field.name}: ${field.type}): Builder = {
+        def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}
             this
         }
@@ -147,7 +147,7 @@ object ${className} {
             val obj = new ${className}($alias)
         <#if fields?has_content>
             <#list fields as field>
-            obj.set${field.name?cap_first}(${field.name})
+            obj.set${field.name?replace("`", "")?cap_first}(${field.name})
             </#list>
         </#if>
             obj

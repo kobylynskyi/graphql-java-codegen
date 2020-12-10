@@ -30,7 +30,7 @@ interface ${className}<#if implements?has_content> : <#list implements as interf
      */
 </#if>
 <#if operation.deprecated>
-    @java.lang.Deprecated
+    @Deprecated("this is deprecated in GraphQL")
 </#if>
 <#list operation.annotations as annotation>
     @${annotation}

@@ -35,3 +35,75 @@ case class Synchronized(
         ).filter(_ != "").mkString("{", ",", "}")
     }
 }
+
+object Synchronized {
+
+    def builder(): Synchronized.Builder = new Builder()
+
+    class Builder {
+
+        private var void: String = _
+        private var wait: Char = _
+        private var `this`: Char = _
+        private var `super`: Char = _
+        private var `private`: Char = _
+        private var native: Char = _
+        private var that: Char = _
+        private var enum: TestEnum = _
+        private var Synchronized: Synchronized = _
+        private var date: java.time.ZonedDateTime = _
+
+        def setVoid(void: String): Builder = {
+            this.void = void
+            this
+        }
+
+        def setWait(wait: Char): Builder = {
+            this.wait = wait
+            this
+        }
+
+        def setThis(`this`: Char): Builder = {
+            this.`this` = `this`
+            this
+        }
+
+        def setSuper(`super`: Char): Builder = {
+            this.`super` = `super`
+            this
+        }
+
+        def setPrivate(`private`: Char): Builder = {
+            this.`private` = `private`
+            this
+        }
+
+        def setNative(native: Char): Builder = {
+            this.native = native
+            this
+        }
+
+        def setThat(that: Char): Builder = {
+            this.that = that
+            this
+        }
+
+        def setEnum(enum: TestEnum): Builder = {
+            this.enum = enum
+            this
+        }
+
+        def setSynchronized(Synchronized: Synchronized): Builder = {
+            this.Synchronized = Synchronized
+            this
+        }
+
+        def setDate(date: java.time.ZonedDateTime): Builder = {
+            this.date = date
+            this
+        }
+
+        def build(): Synchronized = Synchronized(void, wait, `this`, `super`, `private`, native, that, enum, Synchronized, date)
+
+    }
+}

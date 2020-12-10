@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -61,35 +60,11 @@ class GraphQLCodegenReactorToStringTest {
     }
 
     @Test
-    void generate_SetGenerateClient_TRUE_WithoutUseObjectMapperForRequestSerialization() throws Exception {
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
-        mappingConfig.setGenerateClient(true);
-        mappingConfig.setGenerateEqualsAndHashCode(true);
-        mappingConfig.setGenerateModelsForRootTypes(true);
-        mappingConfig.setApiNameSuffix("API");
-        mappingConfig.setGenerateBuilder(false);// fix bug when, set generate builder = false, can not use object.OPERATION_NAME,
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
-
-        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(f)).sorted().collect(toList());
-        assertEquals(Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala"), generatedFileNames);
-
-        for (File file : files) {
-            if (Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(file.getName())) {
-                assertSameTrimmedContent(
-                        new File(String.format("src/test/resources/expected-classes/scala/tostring/without-mapper/%s.txt", file.getName())),
-                        file);
-            }
-        }
-    }
-
-    @Test
     void generate_SetGenerateClient_TRUE() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
-        mappingConfig.setGenerateBuilder(false);// fix bug when, set generate builder = false, can not use object.OPERATION_NAME,
+        mappingConfig.setGenerateBuilder(true);
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("TestEnum"));
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
         mappingConfig.setGenerateApis(true);

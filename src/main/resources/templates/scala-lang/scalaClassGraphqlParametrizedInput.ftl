@@ -3,7 +3,6 @@ package ${package}
 
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
@@ -50,17 +49,4 @@ case class ${className}(
     ${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
 </#list>
 </#if>
-) extends GraphQLParametrizedInput {
-
-    override def toString(): String = {
-    <#if fields?has_content>
-        Seq(
-            <#list fields as field>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>
-            , </#if></#list>
-        ).filter(_ != "").mkString("(", ",", ")")
-    <#else>
-        "()"
-    </#if>
-    }
-
-}
+) extends GraphQLParametrizedInput

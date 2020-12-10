@@ -27,7 +27,6 @@ public class KotlinDataModelMapper implements DataModelMapper {
 
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
-
         if (KOTLIN_RESTRICTED_KEYWORDS.contains(fieldName)) {
             return wrapperFieldName(fieldName);
         }

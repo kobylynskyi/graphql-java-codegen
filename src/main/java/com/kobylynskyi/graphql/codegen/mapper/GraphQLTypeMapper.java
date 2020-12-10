@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -262,7 +263,10 @@ public interface GraphQLTypeMapper {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphQLTypeName));
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
             if (Utils.isNotBlank(modelValidationAnnotation) && addModelValidationAnnotationForType(possiblyPrimitiveType)) {
-                annotations.add(modelValidationAnnotation);
+                // For kotlin, this is invalid and is not added
+                if (!mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN)){
+                    annotations.add(modelValidationAnnotation);
+                }
             }
         }
 
