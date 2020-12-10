@@ -1,4 +1,3 @@
-<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
