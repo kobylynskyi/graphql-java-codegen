@@ -110,7 +110,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
 
     @Override
     public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
-        return !KotlinGraphQLTypeMapper.isKotlinPrimitive(possiblyPrimitiveType);
+        return false;
     }
 
     public static String defaultValueKotlinPrimitive(String kotlinType) {

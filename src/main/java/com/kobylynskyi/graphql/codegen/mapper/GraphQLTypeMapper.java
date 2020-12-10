@@ -263,10 +263,7 @@ public interface GraphQLTypeMapper {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(getMandatoryType(graphQLTypeName));
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
             if (Utils.isNotBlank(modelValidationAnnotation) && addModelValidationAnnotationForType(possiblyPrimitiveType)) {
-                // For kotlin, this is invalid and is not added
-                if (!mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN)){
-                    annotations.add(modelValidationAnnotation);
-                }
+                annotations.add(modelValidationAnnotation);
             }
         }
 
