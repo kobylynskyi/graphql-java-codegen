@@ -13,11 +13,11 @@ import ${import}._
             <#list enumImportItSelfInScala as enum>
                 <#if field.type?contains("Seq[")>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
-import ${field.type?replace("Seq[", "")?replace("]", "")}._
+import ${enum}._
                     </#if>
                 <#else >
                     <#if enum == field.type>
-import ${field.type}._
+import ${enum}._
                     </#if>
                 </#if>
             </#list>
