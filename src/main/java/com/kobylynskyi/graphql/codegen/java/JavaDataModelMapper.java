@@ -8,9 +8,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * {@inheritDoc}
- */
 public class JavaDataModelMapper implements DataModelMapper {
 
     private static final Set<String> JAVA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
@@ -23,9 +20,6 @@ public class JavaDataModelMapper implements DataModelMapper {
     private static final Set<String> JAVA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
             "getClass", "notify", "notifyAll", "wait"));
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
         if (JAVA_RESTRICTED_KEYWORDS.contains(fieldName)) {
@@ -34,9 +28,6 @@ public class JavaDataModelMapper implements DataModelMapper {
         return fieldName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
         if (JAVA_RESTRICTED_KEYWORDS.contains(methodName)) {

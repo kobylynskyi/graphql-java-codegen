@@ -9,9 +9,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * {@inheritDoc}
- */
 public class ScalaDataModelMapper implements DataModelMapper {
 
     private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
@@ -26,9 +23,6 @@ public class ScalaDataModelMapper implements DataModelMapper {
             "getClass", "notify", "notifyAll", "wait", "clone", "finalize"));
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
 
@@ -38,9 +32,6 @@ public class ScalaDataModelMapper implements DataModelMapper {
         return fieldName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
         if (SCALA_RESTRICTED_KEYWORDS.contains(methodName)) {
@@ -52,9 +43,6 @@ public class ScalaDataModelMapper implements DataModelMapper {
         return methodName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
                                                        ExtendedDefinition<?, ?> extendedDefinition) {

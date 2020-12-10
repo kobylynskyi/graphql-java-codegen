@@ -11,44 +11,26 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * {@inheritDoc}
- */
 public class ScalaGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new ScalaMapperFactoryImpl();
 
-    /**
-     * {@inheritDoc}
-     */
     public ScalaGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
         super(schemas, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ScalaGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
         super(introspectionResult, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier, GeneratedInformation generatedInformation) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, generatedInformation, MAPPER_FACTORY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void initDefaultValues(MappingConfig mappingConfig) {
         if (mappingConfig.getGenerateBuilder() == null) {
@@ -62,9 +44,6 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
         super.initDefaultValues(mappingConfig);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         super.initCustomTypeMappings(scalarTypeDefinitions);

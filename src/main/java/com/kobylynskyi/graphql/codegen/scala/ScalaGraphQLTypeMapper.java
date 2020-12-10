@@ -16,9 +16,6 @@ import java.util.Set;
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
 import static java.util.Arrays.asList;
 
-/**
- * {@inheritDoc}
- */
 public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     private static final String SCALA_UTIL_LIST = "Seq";
@@ -62,9 +59,6 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         return getGenericsString(mappingContext, SCALA_UTIL_LIST, "_ <: " + type);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
@@ -76,11 +70,12 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
 
-        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes()) && !namedDefinition.isMandatory()) {
-            if (!computedTypeName.startsWith(SCALA_UTIL_LIST) && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
-                // wrap the type into scala.Option (except java list and scala list)
-                computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
-            }
+        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
+                && !namedDefinition.isMandatory()
+                && !computedTypeName.startsWith(SCALA_UTIL_LIST)
+                && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+            // wrap the type into scala.Option (except java list and scala list)
+            computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }
 
         if (computedTypeName.startsWith(SCALA_UTIL_LIST) &&
@@ -95,25 +90,16 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPrimitive(String scalaType) {
         return isScalaPrimitive(scalaType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
         return String.format("%s[%s]", genericType, typeParameter);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
         return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);

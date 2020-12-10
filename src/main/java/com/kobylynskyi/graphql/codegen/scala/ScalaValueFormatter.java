@@ -5,14 +5,8 @@ import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 import java.util.List;
 import java.util.StringJoiner;
 
-/**
- * {@inheritDoc}
- */
 public class ScalaValueFormatter implements ValueFormatter {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String formatList(List<String> values, String formatter) {
         if (values == null) {
