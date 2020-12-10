@@ -232,12 +232,17 @@ public final class Utils {
     }
 
     /**
-     * for scala/kotlin
-     * @param fieldName field name in RESTRICTED_KEYWORDS  or RESTRICTED_METHOD_NAMES
-     * @return new field name
+     * String merging
+     *
+     * @param str      the String
+     * @param wrapWith String to be appended
+     * @return string
      */
-    public static String wrapperFieldName(String fieldName){
-        return "`" + fieldName + "`";
+    public static String wrapString(String str, String wrapWith) {
+        if (str == null || wrapWith == null) {
+            return str;
+        }
+        return wrapWith + str + wrapWith;
     }
 
 }

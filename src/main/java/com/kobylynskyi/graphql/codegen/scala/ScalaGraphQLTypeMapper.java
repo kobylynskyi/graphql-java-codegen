@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;

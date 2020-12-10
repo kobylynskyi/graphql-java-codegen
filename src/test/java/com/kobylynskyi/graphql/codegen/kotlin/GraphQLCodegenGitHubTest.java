@@ -55,6 +55,9 @@ class GraphQLCodegenGitHubTest {
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/ProfileOwner.kt.txt"),
                 getFileByName(files, "ProfileOwner.kt"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AcceptTopicSuggestionMutationResponse.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionMutationResponse.kt"));
     }
 
     @Test

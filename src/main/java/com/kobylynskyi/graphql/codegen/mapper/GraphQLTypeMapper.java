@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -157,6 +156,19 @@ public interface GraphQLTypeMapper {
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
     default NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
+        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false);
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding language-specific type (java/scala/kotlin/etc)
+     *
+     * @param mappingContext Global mapping context
+     * @param graphqlType    GraphQL type
+     * @param name           GraphQL type name
+     * @param parentTypeName Name of the parent type
+     * @return Corresponding language-specific type (java/scala/kotlin/etc)
+     */
+    default NamedDefinition getResponseLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
         return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false);
     }
 

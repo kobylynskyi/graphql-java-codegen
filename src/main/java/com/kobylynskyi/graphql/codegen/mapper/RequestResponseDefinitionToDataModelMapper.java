@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -184,7 +183,7 @@ public class RequestResponseDefinitionToDataModelMapper {
                                            String objectTypeName,
                                            List<String> fieldNames) {
         String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix());
-        String javaType = graphQLTypeMapper.getLanguageType(
+        String javaType = graphQLTypeMapper.getResponseLanguageType(
                 mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getJavaName();
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed
@@ -197,12 +196,6 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(METHOD_NAME, dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext, operationDef.getName()));
         dataModel.put(RETURN_TYPE_NAME, javaType);
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
-        // if getUseOptionalForNullableReturnTypes == true, append `?` for kotlin
-        if(mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.KOTLIN) && mappingContext.getUseOptionalForNullableReturnTypes().equals(Boolean.TRUE)){
-            dataModel.put(RETURN_TYPE_NAME, javaType+"?");
-        }else {
-            dataModel.put(RETURN_TYPE_NAME, javaType);
-        }
         return dataModel;
     }
 

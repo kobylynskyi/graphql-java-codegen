@@ -1,0 +1,19 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class AcceptTopicSuggestionMutationResponse : GraphQLResult<MutableMap<String, AcceptTopicSuggestionPayload?>>() {
+
+    companion object {
+        const val OPERATION_NAME: String = "acceptTopicSuggestion"
+    }
+
+    fun acceptTopicSuggestion(): AcceptTopicSuggestionPayload? {
+        val data: MutableMap<String, AcceptTopicSuggestionPayload?> = super.getData()
+        return data[OPERATION_NAME]
+    }
+}

@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -8,6 +7,7 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
+import graphql.language.Type;
 
 import java.util.HashSet;
 import java.util.List;
@@ -135,5 +135,16 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
 
     private String getOptionString(MappingContext mappingContext, String typeParameter) {
         return typeParameter + KotlinGraphQLTypeMapper.KOTLIN_UTIL_OPTIONAL;
+    }
+
+    @Override
+    public NamedDefinition getResponseLanguageType(MappingContext mappingContext, Type<?> graphQLType, String name, String parentTypeName) {
+        NamedDefinition languageType = GraphQLTypeMapper.super.getLanguageType(mappingContext, graphQLType, name, parentTypeName);
+        if (mappingContext.getUseOptionalForNullableReturnTypes().equals(Boolean.TRUE)) {
+            if (!languageType.getJavaName().endsWith("?")) {
+                languageType.setJavaName(languageType.getJavaName() + "?");
+            }
+        }
+        return languageType;
     }
 }

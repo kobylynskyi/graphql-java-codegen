@@ -10,10 +10,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapperFieldName;
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 
 public class ScalaDataModelMapper implements DataModelMapper {
 
+    private static final String wrapWith = "`";
     private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
             "package", "import", "class", "object", "trait", "extends", "with", "type", "forSome",
             "private", "protected", "abstract", "sealed", "final", "implicit", "lazy", "override", "try",
@@ -30,7 +31,7 @@ public class ScalaDataModelMapper implements DataModelMapper {
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {
 
         if (SCALA_RESTRICTED_KEYWORDS.contains(fieldName)) {
-            return wrapperFieldName(fieldName);
+            return wrapString(fieldName, wrapWith);
         }
         return fieldName;
     }
@@ -38,7 +39,7 @@ public class ScalaDataModelMapper implements DataModelMapper {
     @Override
     public String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName) {
         if (SCALA_RESTRICTED_KEYWORDS.contains(methodName)) {
-            return wrapperFieldName(methodName);
+            return wrapString(methodName, wrapWith);
         }
         if (SCALA_RESTRICTED_METHOD_NAMES.contains(methodName)) {
             return Utils.capitalize(methodName);
