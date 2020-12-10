@@ -2,9 +2,7 @@ package com.kobylynskyi.graphql.codegen.scala;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.EnumTypeDefinition;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,16 +43,6 @@ public class ScalaDataModelMapper implements DataModelMapper {
             return Utils.capitalize(methodName);
         }
         return methodName;
-    }
-
-    @Override
-    public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
-                                                       ExtendedDefinition<?, ?> extendedDefinition) {
-        String classNameWithPrefixAndSuffix = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
-        if (extendedDefinition.getDefinition() instanceof EnumTypeDefinition){
-            mappingContext.getEnumImportItSelfInScala().add(classNameWithPrefixAndSuffix);
-        }
-        return classNameWithPrefixAndSuffix;
     }
 
 }

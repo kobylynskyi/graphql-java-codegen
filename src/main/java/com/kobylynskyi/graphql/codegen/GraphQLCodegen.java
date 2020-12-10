@@ -252,10 +252,8 @@ public abstract class GraphQLCodegen {
     }
 
     private List<File> processDefinitions(ExtendedDocument document) {
-        MappingContext context = new MappingContext(mappingConfig, document, generatedInformation);
-
+        MappingContext context = new MappingContext(mappingConfig, document, generatedInformation, dataModelMapperFactory);
         List<File> generatedFiles = new ArrayList<>();
-        // Enumeration must be first for scala, interface must before type for kotlin/scala!!!
         for (ExtendedEnumTypeDefinition extendedEnumTypeDefinition : document.getEnumDefinitions()) {
             generatedFiles.add(generateEnum(context, extendedEnumTypeDefinition));
         }

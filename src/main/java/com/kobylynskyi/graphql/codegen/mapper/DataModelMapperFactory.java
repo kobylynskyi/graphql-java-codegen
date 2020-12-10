@@ -12,15 +12,16 @@ public class DataModelMapperFactory {
     private final TypeDefinitionToDataModelMapper typeDefinitionToDataModelMapper;
     private final UnionDefinitionToDataModelMapper unionDefinitionToDataModelMapper;
 
+    private final DataModelMapper dataModelMapper;
+    private final FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper;
+
     public DataModelMapperFactory(MapperFactory generatedLanguageMapperFactory) {
         ValueFormatter valueFormatter = generatedLanguageMapperFactory.createValueFormatter();
-        DataModelMapper dataModelMapper = generatedLanguageMapperFactory.createDataModelMapper();
+        dataModelMapper = generatedLanguageMapperFactory.createDataModelMapper();
         ValueMapper valueMapper = new ValueMapper(valueFormatter, dataModelMapper);
         GraphQLTypeMapper graphQLTypeMapper = generatedLanguageMapperFactory.createGraphQLTypeMapper(valueMapper);
-
-        FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper = new FieldDefinitionToParameterMapper(graphQLTypeMapper, dataModelMapper);
+        fieldDefinitionToParameterMapper = new FieldDefinitionToParameterMapper(graphQLTypeMapper, dataModelMapper);
         InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper = new InputValueDefinitionToParameterMapper(valueMapper, graphQLTypeMapper, dataModelMapper);
-
         enumDefinitionToDataModelMapper = new EnumDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
         unionDefinitionToDataModelMapper = new UnionDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
         typeDefinitionToDataModelMapper = new TypeDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper);
@@ -58,4 +59,11 @@ public class DataModelMapperFactory {
         return typeDefinitionToDataModelMapper;
     }
 
+    public DataModelMapper getDataModelMapper() {
+        return dataModelMapper;
+    }
+
+    public FieldDefinitionToParameterMapper getFieldDefinitionToParameterMapper() {
+        return fieldDefinitionToParameterMapper;
+    }
 }

@@ -81,7 +81,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(TO_STRING_FOR_REQUEST, mappingContext.getGenerateClient());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
-        dataModel.put(PARENT_INTERFACE_PROPERTIES, mappingContext.getParentInterfacePropertiesInKotlin());
+        dataModel.put(PARENT_INTERFACE_PROPERTIES, mappingContext.getParentInterfaceProperties());
         return dataModel;
     }
 
