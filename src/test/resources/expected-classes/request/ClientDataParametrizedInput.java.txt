@@ -1,0 +1,55 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+import java.util.Objects;
+
+/**
+ * Parametrized input for field data in type Client
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class ClientDataParametrizedInput implements GraphQLParametrizedInput {
+
+    private int ID;
+
+    public ClientDataParametrizedInput() {
+    }
+
+    public ClientDataParametrizedInput(int ID) {
+        this.ID = ID;
+    }
+
+    public ClientDataParametrizedInput ID(int ID) {
+        this.ID = ID;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ClientDataParametrizedInput that = (ClientDataParametrizedInput) obj;
+        return Objects.equals(ID, that.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "(", ")");
+        joiner.add("ID: " + GraphQLRequestSerializer.getEntry(ID));
+        return joiner.toString();
+    }
+
+}

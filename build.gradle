@@ -9,7 +9,7 @@ plugins {
     id "org.sonarqube" version "3.0"
 }
 
-version = "4.0.1-SNAPSHOT"
+version = "4.0.2-SNAPSHOT"
 group = "io.github.kobylynskyi"
 
 repositories {
@@ -20,7 +20,7 @@ repositories {
 dependencies {
     implementation "org.freemarker:freemarker:2.3.30"
     implementation "com.graphql-java:graphql-java:15.0"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.11.3"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.12.0"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.0"

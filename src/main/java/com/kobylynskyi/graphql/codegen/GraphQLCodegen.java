@@ -52,7 +52,7 @@ public abstract class GraphQLCodegen {
     private final DataModelMapperFactory dataModelMapperFactory;
 
     // used in tests
-    public GraphQLCodegen(List<String> schemas,
+    protected GraphQLCodegen(List<String> schemas,
                           File outputDir,
                           MappingConfig mappingConfig,
                           GeneratedInformation generatedInformation,
@@ -61,7 +61,7 @@ public abstract class GraphQLCodegen {
     }
 
     // used in tests
-    public GraphQLCodegen(String introspectionResult,
+    protected GraphQLCodegen(String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
                           GeneratedInformation generatedInformation,
@@ -70,7 +70,7 @@ public abstract class GraphQLCodegen {
     }
 
     // used in plugins
-    public GraphQLCodegen(List<String> schemas,
+    protected GraphQLCodegen(List<String> schemas,
                           String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
@@ -80,7 +80,7 @@ public abstract class GraphQLCodegen {
     }
 
     // used by other constructors
-    public GraphQLCodegen(List<String> schemas,
+    protected GraphQLCodegen(List<String> schemas,
                           String introspectionResult,
                           File outputDir,
                           MappingConfig mappingConfig,
@@ -212,9 +212,9 @@ public abstract class GraphQLCodegen {
             // we will have a conflict in case there is "type Query" in multiple graphql schema files
             throw new IllegalArgumentException("API prefix should not be CONSTANT for INTERFACE_PER_SCHEMA option");
         }
-        if (Boolean.TRUE.equals(mappingConfig.getGenerateApis()) &&
-                mappingConfig.getGenerateModelsForRootTypes() &&
-                mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateApis())
+                && Boolean.TRUE.equals(mappingConfig.getGenerateModelsForRootTypes())
+                && mappingConfig.getApiNamePrefixStrategy() == ApiNamePrefixStrategy.CONSTANT) {
             // checking for conflict between root type model classes and api interfaces
             if (Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNamePrefix(), mappingConfig.getModelNamePrefix()) &&
                     Utils.stringsEqualIgnoreSpaces(mappingConfig.getApiNameSuffix(), mappingConfig.getModelNameSuffix())) {
