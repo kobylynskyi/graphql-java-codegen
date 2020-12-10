@@ -60,7 +60,7 @@ data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
     <#if field.deprecated>
-        @Deprecated("this is deprecated in GraphQL")
+    @Deprecated("this is deprecated in GraphQL")<#-- Custom messages should be supported in the future  -->
     </#if><#-- Properties of multiple interfaces should not have duplicate names  -->
     <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override
     </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@get:${annotation}
@@ -124,7 +124,7 @@ data class ${className}(
     <#else>
     <#if MapperUtil.isKotlinPrimitive(field.type)>
         <#assign default = MapperUtil.defaultValueKotlinPrimitive(field.type)/>
-        private var ${field.name}: ${field.type} = default
+        private var ${field.name}: ${field.type} = ${default}
     <#else>
         private lateinit var ${field.name}: ${field.type}
     </#if>

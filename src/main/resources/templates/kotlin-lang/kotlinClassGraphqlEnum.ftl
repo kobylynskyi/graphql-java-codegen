@@ -18,7 +18,7 @@ package ${package}
 <#list annotations as annotation>
 @${annotation}
 </#list>
-enum class ${className}(val graphqlName: String)<#if implements?has_content> : <#list implements as interface> ${interface}<#if interface_has_next>, </#if></#list></#if> {
+enum class ${className}(val graphqlName: String)<#if implements?has_content> : <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
 
 <#if fields?has_content>
 <#list fields as field>
@@ -35,5 +35,6 @@ enum class ${className}(val graphqlName: String)<#if implements?has_content> : <
     ${field.javaName}("${field.graphqlName}")<#if field_has_next>,
 <#else></#if>
 </#list>
+
 </#if>
 }
