@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package};
 
@@ -102,9 +103,13 @@ public class ${className} implements GraphQLParametrizedInput {
         StringJoiner joiner = new StringJoiner(", ", "(", ")");
 <#if fields?has_content>
 <#list fields as field>
+<#if MapperUtil.isJavaPrimitive(field.type)>
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+<#else>
         if (${field.name} != null) {
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
         }
+</#if>
 </#list>
 </#if>
         return joiner.toString();

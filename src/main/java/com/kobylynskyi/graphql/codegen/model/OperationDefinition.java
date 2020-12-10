@@ -13,7 +13,7 @@ import java.util.List;
 public class OperationDefinition {
 
     /**
-     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(MappingContext, String)} }
      */
     private String name;
     /**
