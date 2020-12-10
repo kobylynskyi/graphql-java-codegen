@@ -20,7 +20,7 @@ public class ParameterDefinition {
 
     private String type;
     /**
-     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(String) MapperUtils.capitalizeIfRestricted() }
+     * Normalized name using {@link DataModelMapper#capitalizeIfRestricted(MappingContext, String)} }
      */
     private String name;
     /**

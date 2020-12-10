@@ -78,6 +78,17 @@ class GraphQLCodegenRequestTest {
     }
 
     @Test
+    void generate_PrimitivesInsideParametrizedInput() throws Exception {
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ClientDataParametrizedInput.java.txt"),
+                getFileByName(files, "ClientDataParametrizedInput.java"));
+    }
+
+    @Test
     void generate_RequestAndResponseProjections_github() throws Exception {
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
