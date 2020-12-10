@@ -90,7 +90,7 @@ libraryDependencies ++= Seq(
   "org.json" % "json" % "20190722")
 
 enablePlugins(GraphQLCodegenPlugin)
-graphqlJavaCodegenVersion := Some("4.0.1-SNAPSHOT")
+graphqlJavaCodegenVersion := Some("4.0.1")
 GraphQLCodegenPluginDependencies
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
