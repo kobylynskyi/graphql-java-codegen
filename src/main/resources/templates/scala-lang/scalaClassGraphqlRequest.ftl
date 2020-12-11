@@ -62,7 +62,7 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
     @Deprecated
 </#if>
     def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Unit = {
-        <#if MapperUtil.isScalaPrimitive(returnTypeName)>
+        <#if MapperUtil.isScalaPrimitive(field.type)>
         this.input.put("${field.originalName}", ${field.type}.box(${field.name}))
         <#else>
         this.input.put("${field.originalName}", ${field.name})
