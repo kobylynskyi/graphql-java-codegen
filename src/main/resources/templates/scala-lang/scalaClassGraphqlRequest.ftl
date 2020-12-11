@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
@@ -61,7 +62,11 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
     @Deprecated
 </#if>
     def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Unit = {
+        <#if MapperUtil.isScalaPrimitive(returnTypeName)>
+        this.input.put("${field.originalName}", ${field.type}.box(${field.name}))
+        <#else>
         this.input.put("${field.originalName}", ${field.name})
+        </#if>
     }
 
 </#list>
@@ -115,7 +120,7 @@ object ${className} {
         private var $alias: String = _
         <#if fields?has_content>
             <#list fields as field>
-        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
             </#list>
         </#if>
 

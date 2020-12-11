@@ -1,5 +1,3 @@
-package com.github.graphql
-
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
 import java.util.{ Map => JMap }
 
@@ -7,17 +5,17 @@ import java.util.{ Map => JMap }
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class VersionQueryResponse extends GraphQLResult[JMap[String, Int]] {
+class SimpleEventCountQueryResponse extends GraphQLResult[JMap[String, Int]] {
 
-    def version(): Int = {
+    def simpleEventCount(): Int = {
         val data: JMap[String, Int] = getData
-        data.get(VersionQueryResponse.OPERATION_NAME)
+        data.get(SimpleEventCountQueryResponse.OPERATION_NAME)
     }
 
 }
 
-object VersionQueryResponse {
+object SimpleEventCountQueryResponse {
 
-    private final val OPERATION_NAME: String = "version"
+    private final val OPERATION_NAME: String = "simpleEventCount"
 
 }

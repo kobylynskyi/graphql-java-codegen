@@ -46,7 +46,7 @@ case class ${className}(
     <#list field.annotations as annotation>
     @${annotation}
     </#list>
-    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 ) extends GraphQLParametrizedInput

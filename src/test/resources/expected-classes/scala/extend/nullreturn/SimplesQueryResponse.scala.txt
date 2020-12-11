@@ -1,0 +1,21 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+import java.util.{ Map => JMap }
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class SimplesQueryResponse extends GraphQLResult[JMap[String, Event]] {
+
+    def simples(): Event = {
+        val data: JMap[String, Event] = getData
+        if (data != null) data.get(SimplesQueryResponse.OPERATION_NAME) else null
+    }
+
+}
+
+object SimplesQueryResponse {
+
+    private final val OPERATION_NAME: String = "simples"
+
+}

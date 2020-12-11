@@ -54,7 +54,7 @@ case class ${className}(
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {
@@ -62,8 +62,8 @@ case class ${className}(
 <#if toString>
     override def toString(): String = {
     <#if fields?has_content>
-        Seq(<#list fields as field>
-            <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else>if (${field.name} != null) <#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
+        Seq(<#list fields as field><#assign realField = ""><#if field.type?starts_with("Option[") ><#assign realField = ".get"></#if>
+            <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else><#if field.type?starts_with("Option[")>if (${field.name}.isDefined) <#else>if (${field.name} != null) </#if><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${realField}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
         ).filter(_ != "").mkString("{", ",", "}")
         <#else>
         "{}"
@@ -81,7 +81,7 @@ object ${className} {
 
 <#if fields?has_content>
     <#list fields as field>
-        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content>${field.defaultValue}<#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
     </#list>
 </#if>
 

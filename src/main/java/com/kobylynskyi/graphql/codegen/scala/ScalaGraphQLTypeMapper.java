@@ -55,7 +55,8 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
                 && !namedDefinition.isMandatory()
                 && !computedTypeName.startsWith(SCALA_UTIL_LIST)
-                && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                && !computedTypeName.startsWith(JAVA_UTIL_LIST)
+                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {// The primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }

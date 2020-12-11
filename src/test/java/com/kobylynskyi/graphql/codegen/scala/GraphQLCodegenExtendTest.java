@@ -117,4 +117,49 @@ class GraphQLCodegenExtendTest {
                 new File("src/test/resources/expected-classes/scala/extend/request/AssetResponseProjection.scala.txt"),
                 getFileByName(files, "AssetResponseProjection.scala"));
     }
+
+    @Test
+    void generatePrimitiveTypesResponseResolverClasses() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateClient(true);
+        schemaFinder.setIncludePattern("null-extend1.graphqls");
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/resolver/SimpleEventCountsQueryResponse.scala.txt"),
+                getFileByName(files, "SimpleEventCountsQueryResponse.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/resolver/SimpleEventCountsQueryResolver.scala.txt"),
+                getFileByName(files, "SimpleEventCountsQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/resolver/SimpleEventCountQueryResolver.scala.txt"),
+                getFileByName(files, "SimpleEventCountQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/resolver/SimpleEventCountQueryResponse.scala.txt"),
+                getFileByName(files, "SimpleEventCountQueryResponse.scala"));
+    }
+
+    @Test
+    void generatePrimitiveTypesResponseResolverClasses_With_SetUseOptionalForNullableReturnTypes() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setUseOptionalForNullableReturnTypes(true);
+        schemaFinder.setIncludePattern("null-extend2.graphqls");
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimplesQueryResolver.scala.txt"),
+                getFileByName(files, "SimplesQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimplesQueryResponse.scala.txt"),
+                getFileByName(files, "SimplesQueryResponse.scala"));
+    }
 }

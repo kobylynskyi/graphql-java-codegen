@@ -11,7 +11,7 @@ import TestEnum._
     date = "2020-12-31T23:59:59-0500"
 )
 case class QueryPrivateParametrizedInput(
-    int: java.lang.Integer,
+    int: Option[Int],
     `new`: String,
     enum: TestEnum = TestEnum.long
 ) extends GraphQLParametrizedInput

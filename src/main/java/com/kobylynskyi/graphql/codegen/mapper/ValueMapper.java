@@ -36,6 +36,7 @@ public class ValueMapper {
         return value.isValue() ? "true" : "false";
     }
 
+    //TODO It should also be abstracted. Different languages have different default values(It is now implemented in templates (templates are extremely complex))
     private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
         //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
         //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
