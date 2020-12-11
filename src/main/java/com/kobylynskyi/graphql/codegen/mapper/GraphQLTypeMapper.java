@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -64,9 +65,10 @@ public interface GraphQLTypeMapper {
      *
      * @param type           The name of a type that will be wrapped into {@code List<>}
      * @param mappingContext Global mapping context
+     * @param mandatory      Type is it mandatory
      * @return String The name of the given type, wrapped into {@code List<>}
      */
-    String wrapIntoList(MappingContext mappingContext, String type);
+    String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory);
 
     /**
      * Return upper bounded wildcard for the given interface type:
@@ -74,9 +76,10 @@ public interface GraphQLTypeMapper {
      *
      * @param type           The name of a type whose upper bound wildcard will be wrapped into a list.
      * @param mappingContext Global mapping context
+     * @param mandatory      Type is it mandatory
      * @return String The name of the the wrapped type.
      */
-    String wrapSuperTypeIntoList(MappingContext mappingContext, String type);
+    String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory);
 
     /**
      * Wraps type into apiReturnType or subscriptionReturnType (defined in the mapping configuration).
@@ -166,19 +169,6 @@ public interface GraphQLTypeMapper {
      * @param graphqlType    GraphQL type
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
-     * @return Corresponding language-specific type (java/scala/kotlin/etc)
-     */
-    default NamedDefinition getResponseLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name, String parentTypeName) {
-        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false);
-    }
-
-    /**
-     * Convert GraphQL type to a corresponding language-specific type (java/scala/kotlin/etc)
-     *
-     * @param mappingContext Global mapping context
-     * @param graphqlType    GraphQL type
-     * @param name           GraphQL type name
-     * @param parentTypeName Name of the parent type
      * @param mandatory      GraphQL type is non-null
      * @param collection     GraphQL type is collection
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
@@ -191,9 +181,9 @@ public interface GraphQLTypeMapper {
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(), name, parentTypeName, false, true);
             if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
-                mappedCollectionType.setJavaName(wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName()));
+                mappedCollectionType.setJavaName(wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             } else {
-                mappedCollectionType.setJavaName(wrapIntoList(mappingContext, mappedCollectionType.getJavaName()));
+                mappedCollectionType.setJavaName(wrapIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
@@ -223,6 +213,10 @@ public interface GraphQLTypeMapper {
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
+        } else if (mandatory && customTypesMapping.containsKey(getMandatoryType(graphQLType)) &&
+                !mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)){
+            //Java primitive types can't be used as generic parameters this, but Scala/Kotlin can
+            langTypeName = customTypesMapping.get(getMandatoryType(graphQLType));
         } else if (customTypesMapping.containsKey(graphQLType)) {
             langTypeName = customTypesMapping.get(graphQLType);
         } else {

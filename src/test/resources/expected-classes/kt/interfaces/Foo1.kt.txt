@@ -7,9 +7,9 @@ package com.kobylynskyi.graphql.interfaces
 )
 data class Foo1(
     override
-    val id: String?,
+    val id: String,
     override
-    val bars: List<Bar1>
+    val bars: List<Bar1?>?
 ) : Foo {
 
 }

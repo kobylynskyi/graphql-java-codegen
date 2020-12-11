@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.interfaces
 )
 interface Bar {
 
-    val id: String?
+    val id: String
 
 }

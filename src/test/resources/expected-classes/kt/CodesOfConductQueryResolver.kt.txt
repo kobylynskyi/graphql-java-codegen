@@ -8,6 +8,6 @@ package com.github.graphql
 interface CodesOfConductQueryResolver {
 
     @Throws(Exception::class)
-    fun codesOfConduct(): List<CodeOfConduct>
+    fun codesOfConduct(): List<CodeOfConduct?>?
 
 }

@@ -9,7 +9,7 @@ import java.util.StringJoiner
 )
 data class AddLabelsToLabelablePayload(
     val clientMutationId: String?,
-    val labelable: Labelable
+    val labelable: Labelable?
 ) {
 
     // In the future, it maybe change.
@@ -18,7 +18,9 @@ data class AddLabelsToLabelablePayload(
         if (clientMutationId != null) {
             joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
         }
-        joiner.add("labelable: " + GraphQLRequestSerializer.getEntry(labelable))
+        if (labelable != null) {
+            joiner.add("labelable: " + GraphQLRequestSerializer.getEntry(labelable))
+        }
         return joiner.toString()
     }
 }

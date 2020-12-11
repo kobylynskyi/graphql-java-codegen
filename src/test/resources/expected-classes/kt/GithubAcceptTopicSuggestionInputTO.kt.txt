@@ -9,8 +9,8 @@ import java.util.StringJoiner
 )
 data class GithubAcceptTopicSuggestionInputTO(
     var clientMutationId: String?,
-    var name: String?,
-    var repositoryId: String?
+    var name: String,
+    var repositoryId: String
 ) {
 
     // In the future, it maybe change.
@@ -19,12 +19,8 @@ data class GithubAcceptTopicSuggestionInputTO(
         if (clientMutationId != null) {
             joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
         }
-        if (name != null) {
-            joiner.add("name: " + GraphQLRequestSerializer.getEntry(name))
-        }
-        if (repositoryId != null) {
-            joiner.add("repositoryId: " + GraphQLRequestSerializer.getEntry(repositoryId))
-        }
+        joiner.add("name: " + GraphQLRequestSerializer.getEntry(name))
+        joiner.add("repositoryId: " + GraphQLRequestSerializer.getEntry(repositoryId))
         return joiner.toString()
     }
 }

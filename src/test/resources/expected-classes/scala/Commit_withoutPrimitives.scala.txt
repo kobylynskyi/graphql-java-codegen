@@ -11,7 +11,7 @@ case class Commit(
     @javax.validation.constraints.NotNull
     val abbreviatedOid: String,
     @javax.validation.constraints.NotNull
-    val additions: java.lang.Integer,
+    val additions: Integer,
     val associatedPullRequests: PullRequestConnection,
     val author: GitActor,
     @javax.validation.constraints.NotNull
@@ -21,7 +21,7 @@ case class Commit(
     @javax.validation.constraints.NotNull
     val blame: Blame,
     @javax.validation.constraints.NotNull
-    val changedFiles: java.lang.Integer,
+    val changedFiles: Integer,
     @javax.validation.constraints.NotNull
     val comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
@@ -34,7 +34,7 @@ case class Commit(
     val committedViaWeb: java.lang.Boolean,
     val committer: GitActor,
     @javax.validation.constraints.NotNull
-    val deletions: java.lang.Integer,
+    val deletions: Integer,
     val deployments: DeploymentConnection,
     @javax.validation.constraints.NotNull
     val history: CommitHistoryConnection,

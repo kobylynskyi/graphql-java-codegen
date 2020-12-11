@@ -183,7 +183,7 @@ public class RequestResponseDefinitionToDataModelMapper {
                                            String objectTypeName,
                                            List<String> fieldNames) {
         String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix());
-        String javaType = graphQLTypeMapper.getResponseLanguageType(
+        String javaType = graphQLTypeMapper.getLanguageType(
                 mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getJavaName();
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed

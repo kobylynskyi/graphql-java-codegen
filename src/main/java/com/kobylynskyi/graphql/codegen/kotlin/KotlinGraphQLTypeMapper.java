@@ -7,10 +7,8 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
-import graphql.language.Type;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
@@ -37,29 +35,19 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         return KOTLIN_PRIMITIVE_TYPES.contains(scalaType);
     }
 
-    /**
-     * Wrap Kotlin type into {@link List}.
-     * E.g.: {@code String} becomes {@code List<String>} in Kotlin
-     *
-     * @param type           The name of a type that will be wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
-     * @param mappingContext Global mapping context
-     * @return String The name of the given type, wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
-     */
     @Override
-    public String wrapIntoList(MappingContext mappingContext, String type) {
+    public String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory) {
+        if (!mandatory && !type.endsWith("?")) {
+            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, type + "?");
+        }
         return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, type);
     }
 
-    /**
-     * Return upper bounded wildcard for the given interface type:
-     * {@code "Foo"} becomes {@code "List<out Foo>"} in Kotlin.
-     *
-     * @param type           The name of a type whose upper bound wildcard will be wrapped into a list.
-     * @param mappingContext Global mapping context
-     * @return String The name of the the wrapped type.
-     */
     @Override
-    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type) {
+    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory) {
+        if (!mandatory && !type.endsWith("?")) {
+            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type + "?");
+        }
         return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type);
     }
 
@@ -138,13 +126,20 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public NamedDefinition getResponseLanguageType(MappingContext mappingContext, Type<?> graphQLType, String name, String parentTypeName) {
-        NamedDefinition languageType = GraphQLTypeMapper.super.getLanguageType(mappingContext, graphQLType, name, parentTypeName);
-        if (mappingContext.getUseOptionalForNullableReturnTypes().equals(Boolean.TRUE)) {
-            if (!languageType.getJavaName().endsWith("?")) {
-                languageType.setJavaName(languageType.getJavaName() + "?");
+    public String getTypeConsideringPrimitive(MappingContext mappingContext,
+                                              NamedDefinition namedDefinition,
+                                              String computedTypeName) {
+        String graphqlTypeName = namedDefinition.getGraphqlTypeName();
+        if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
+            String possiblyPrimitiveType = mappingContext.getCustomTypesMapping().get(GraphQLTypeMapper.getMandatoryType(graphqlTypeName));
+            if (isPrimitive(possiblyPrimitiveType)) {
+                return possiblyPrimitiveType;
             }
         }
-        return languageType;
+        // It is possible that the user has already used `useOptionalForNullableReturnTypes`
+        if (!namedDefinition.isMandatory() && !computedTypeName.endsWith("?")) {
+            return computedTypeName + "?";
+        }
+        return computedTypeName;
     }
 }

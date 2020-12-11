@@ -8,6 +8,6 @@ package com.github.graphql
 interface AddLabelsToLabelableMutationResolver {
 
     @Throws(Exception::class)
-    fun addLabelsToLabelable(input: AddLabelsToLabelableInput): AddLabelsToLabelablePayload
+    fun addLabelsToLabelable(input: AddLabelsToLabelableInput): AddLabelsToLabelablePayload?
 
 }

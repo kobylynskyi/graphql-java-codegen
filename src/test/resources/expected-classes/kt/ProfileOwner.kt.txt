@@ -11,13 +11,13 @@ interface ProfileOwner {
 
     val email: String?
 
-    val id: String?
+    val id: String
 
     val itemShowcase: ProfileItemShowcase
 
     val location: String?
 
-    val login: String?
+    val login: String
 
     val name: String?
 
@@ -29,6 +29,6 @@ interface ProfileOwner {
 
     val viewerCanChangePinnedItems: Boolean
 
-    val websiteUrl: String
+    val websiteUrl: String?
 
 }

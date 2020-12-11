@@ -31,12 +31,12 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public String wrapIntoList(MappingContext mappingContext, String type) {
+    public String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory) {
         return getGenericsString(mappingContext, JAVA_UTIL_LIST, type);
     }
 
     @Override
-    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type) {
+    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory) {
         return getGenericsString(mappingContext, JAVA_UTIL_LIST, "? extends " + type);
     }
 
