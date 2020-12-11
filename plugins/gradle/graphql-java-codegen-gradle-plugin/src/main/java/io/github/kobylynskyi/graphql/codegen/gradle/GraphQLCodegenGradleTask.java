@@ -745,4 +745,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return generatedLanguage;
     }
 
+    public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
+        this.generatedLanguage = generatedLanguage;
+    }
 }
