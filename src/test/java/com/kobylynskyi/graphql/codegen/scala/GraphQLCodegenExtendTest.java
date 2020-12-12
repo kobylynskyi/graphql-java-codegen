@@ -162,4 +162,35 @@ class GraphQLCodegenExtendTest {
                 new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimplesQueryResponse.scala.txt"),
                 getFileByName(files, "SimplesQueryResponse.scala"));
     }
+
+    @Test
+    void generatePrimitiveTypesResponseResolverClasses_nullable() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setUseOptionalForNullableReturnTypes(true);
+        schemaFinder.setIncludePattern("null-extend3.graphqls");
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullable/Event.scala.txt"),
+                getFileByName(files, "Event.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullable/Null1QueryQueryResolver.scala.txt"),
+                getFileByName(files, "Null1QueryQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullable/Null2QueryQueryResolver.scala.txt"),
+                getFileByName(files, "Null2QueryQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullable/Null3QueryQueryResolver.scala.txt"),
+                getFileByName(files, "Null3QueryQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullable/QueryResolver.scala.txt"),
+                getFileByName(files, "QueryResolver.scala"));
+    }
 }

@@ -1,0 +1,24 @@
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait QueryResolver {
+
+    @javax.validation.constraints.NotNull
+    @throws[Exception]
+    def events(): Seq[Event]
+
+    @throws[Exception]
+    def event(): Option[Event]
+
+    @throws[Exception]
+    def null1Query(): Option[Int]
+
+    @throws[Exception]
+    def null2Query(): Seq[Option[Int]]
+
+    @throws[Exception]
+    def null3Query(): Seq[Int]
+
+}
