@@ -21,7 +21,7 @@ import static java.util.Arrays.asList;
 public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
 
     private static final String KOTLIN_UTIL_LIST = "List";
-    private static final String KOTLIN_UTIL_OPTIONAL = "?";
+    private static final String KOTLIN_UTIL_NULLABLE = "?";
     // Char Boolean are not primitive type, but non null equivalent jvm primitive types.
     private static final Set<String> KOTLIN_PRIMITIVE_TYPES = new HashSet<>(asList("Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
 
@@ -65,7 +65,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes()) && !namedDefinition.isMandatory()) {
             if (!computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
                 // append `?` (except java list and kotlin list)
-                computedTypeName = getOptionString(mappingContext, computedTypeName);
+                computedTypeName = getNullableString(mappingContext, computedTypeName);
             }
         }
 
@@ -82,8 +82,8 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public boolean isPrimitive(String scalaType) {
-        return isKotlinPrimitive(scalaType);
+    public boolean isPrimitive(String kotlinType) {
+        return isKotlinPrimitive(kotlinType);
     }
 
     @Override
@@ -121,8 +121,8 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         }
     }
 
-    private String getOptionString(MappingContext mappingContext, String typeParameter) {
-        return typeParameter + KotlinGraphQLTypeMapper.KOTLIN_UTIL_OPTIONAL;
+    private String getNullableString(MappingContext mappingContext, String typeParameter) {
+        return typeParameter + KotlinGraphQLTypeMapper.KOTLIN_UTIL_NULLABLE;
     }
 
     @Override
