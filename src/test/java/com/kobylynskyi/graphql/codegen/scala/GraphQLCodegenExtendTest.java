@@ -37,7 +37,7 @@ class GraphQLCodegenExtendTest {
 
     @AfterEach
     void cleanup() {
-        Utils.deleteDir(outputBuildDir);
+//        Utils.deleteDir(outputBuildDir);
     }
 
     @Test
@@ -148,6 +148,7 @@ class GraphQLCodegenExtendTest {
     void generatePrimitiveTypesResponseResolverClasses_With_SetUseOptionalForNullableReturnTypes() throws Exception {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
+        //Therefore, when the return type is a primitive type, the return option is automatically turned on, and this is mandatory.
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
         schemaFinder.setIncludePattern("null-extend2.graphqls");
         new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -161,6 +162,29 @@ class GraphQLCodegenExtendTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimplesQueryResponse.scala.txt"),
                 getFileByName(files, "SimplesQueryResponse.scala"));
+    }
+
+    @Test
+    void generatePrimitiveTypesResponseResolverClasses_Without_SetUseOptionalForNullableReturnTypes() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setUseOptionalForNullableReturnTypes(false);
+        schemaFinder.setIncludePattern("null-extend2.graphqls");
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        //Therefore, when the return type is a primitive type, the return option is automatically turned on, and this is mandatory.
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimpleEventCountQueryResolver.scala.txt"),
+                getFileByName(files, "SimpleEventCountQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimpleEventCountsQueryResolver.scala.txt"),
+                getFileByName(files, "SimpleEventCountsQueryResolver.scala"));
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/extend/nullreturn/SimplesQueryResolver_without_option.scala.txt"),
+                getFileByName(files, "SimplesQueryResolver.scala"));
     }
 
     @Test
