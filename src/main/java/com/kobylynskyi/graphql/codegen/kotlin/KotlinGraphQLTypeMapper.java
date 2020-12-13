@@ -37,16 +37,21 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
 
     @Override
     public String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory) {
-        if (!mandatory && !type.endsWith("?")) {
-            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, type + "?");
+        //null2Query: [Int], mandatory=false
+        //null3Query: [Int!], mandatory=false
+        //null4Query: [Int!]!, mandatory=true
+        //null5Query: [Int]!, mandatory=true
+        //So the coercion depends on the outer type, where the inner type is already handled. (due to recursion)
+        if (!mandatory) {
+            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, type) + "?";
         }
         return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, type);
     }
 
     @Override
     public String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory) {
-        if (!mandatory && !type.endsWith("?")) {
-            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type + "?");
+        if (!mandatory) {
+            return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type) + "?";
         }
         return getGenericsString(mappingContext, KOTLIN_UTIL_LIST, "out " + type);
     }
@@ -61,14 +66,6 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
-        // Consider only Java-kotlin OR Java-Scala cross language calls
-        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes()) && !namedDefinition.isMandatory()) {
-            if (!computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
-                // append `?` (except java list and kotlin list)
-                computedTypeName = getNullableString(mappingContext, computedTypeName);
-            }
-        }
-
         if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) &&
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
@@ -136,10 +133,19 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
                 return possiblyPrimitiveType;
             }
         }
-        // It is possible that the user has already used `useOptionalForNullableReturnTypes`
-        if (!namedDefinition.isMandatory() && !computedTypeName.endsWith("?")) {
-            return computedTypeName + "?";
+        if (!namedDefinition.isMandatory()) {
+            //All `ListType` samples have been processed by `wrapIntoList` and `wrapSuperTypeIntoList`
+            if (!computedTypeName.endsWith("?") && !computedTypeName.startsWith(KOTLIN_UTIL_LIST)) {
+                return computedTypeName + "?";
+            }
+            // If it is not processed by 'wrapSuperTypeIntoList' and 'wrapIntoList', the nullable type may be missing here
+            // Such as return a query type: ```codesOfConduct: [CodeOfConduct]```
+            if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !graphqlTypeName.endsWith("?")
+                    && !computedTypeName.contains(graphqlTypeName + "?")) {
+                return computedTypeName.replace(graphqlTypeName, graphqlTypeName + "?");
+            }
         }
+
         return computedTypeName;
     }
 }
