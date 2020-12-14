@@ -1,0 +1,26 @@
+schema {
+    query: Query
+}
+
+type Query {
+    events: [Event!]
+    event: Event
+    events1: [Event!]!
+    events2: [Event]!
+    events3: [Event]
+    events4: [[Event]!]
+    events5: [[Event]!]!
+    events6: [[Event!]!]!
+    events7: [[Event]]!
+    null1Query: Int
+    null2Query: [Int]
+    null3Query: [Int!]
+    null4Query: [Int!]!
+    null5Query: [Int]!
+}
+
+type Event implements Node {
+    nullableStatus: [Int]
+    nonullStatus: [Int!]
+    nullablePrimitive: Int
+}

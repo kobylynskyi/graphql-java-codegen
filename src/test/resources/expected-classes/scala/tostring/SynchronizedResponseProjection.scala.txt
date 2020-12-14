@@ -1,0 +1,166 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+import java.util.Objects
+
+/**
+ * Response projection for Synchronized
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class SynchronizedResponseProjection extends GraphQLResponseProjection {
+
+    override def all$(): SynchronizedResponseProjection = all$(3)
+
+    override def all$(maxDepth: Int): SynchronizedResponseProjection = {
+        this.void()
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.Wait", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) + 1)
+            this.Wait(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0)))
+        }
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`this`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) + 1)
+            this.`this`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0)))
+        }
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`super`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) + 1)
+            this.`super`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0)))
+        }
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`private`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) + 1)
+            this.`private`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0)))
+        }
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.native", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0) + 1)
+            this.native(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0)))
+        }
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.that", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0) + 1)
+            this.that(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0)))
+        }
+        this.enum()
+        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) + 1)
+            this.Synchronized(new SynchronizedResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0)))
+        }
+        this.date()
+        this.typename()
+        this
+    }
+
+    def void(): SynchronizedResponseProjection = {
+        void(null.asInstanceOf[String])
+    }
+
+    def void(alias: String): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("void").alias(alias))
+        this
+    }
+
+    def Wait(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        Wait(null.asInstanceOf[String], subProjection)
+    }
+
+    def Wait(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("wait").alias(alias).projection(subProjection))
+        this
+    }
+
+    def `this`(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        `this`(null.asInstanceOf[String], subProjection)
+    }
+
+    def `this`(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("this").alias(alias).projection(subProjection))
+        this
+    }
+
+    def `super`(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        `super`(null.asInstanceOf[String], subProjection)
+    }
+
+    def `super`(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("super").alias(alias).projection(subProjection))
+        this
+    }
+
+    def `private`(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        `private`(null.asInstanceOf[String], subProjection)
+    }
+
+    def `private`(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("private").alias(alias).projection(subProjection))
+        this
+    }
+
+    def native(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        native(null.asInstanceOf[String], subProjection)
+    }
+
+    def native(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("native").alias(alias).projection(subProjection))
+        this
+    }
+
+    def that(subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        that(null.asInstanceOf[String], subProjection)
+    }
+
+    def that(alias: String, subProjection: CharResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("that").alias(alias).projection(subProjection))
+        this
+    }
+
+    def enum(): SynchronizedResponseProjection = {
+        enum(null.asInstanceOf[String])
+    }
+
+    def enum(alias: String): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("enum").alias(alias))
+        this
+    }
+
+    def Synchronized(subProjection: SynchronizedResponseProjection): SynchronizedResponseProjection = {
+        Synchronized(null.asInstanceOf[String], subProjection)
+    }
+
+    def Synchronized(alias: String, subProjection: SynchronizedResponseProjection): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("Synchronized").alias(alias).projection(subProjection))
+        this
+    }
+
+    def date(): SynchronizedResponseProjection = {
+        date(null.asInstanceOf[String])
+    }
+
+    def date(alias: String): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("date").alias(alias))
+        this
+    }
+
+    def typename(): SynchronizedResponseProjection = {
+        typename(null.asInstanceOf[String])
+    }
+
+    def typename(alias: String): SynchronizedResponseProjection = {
+        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        this
+    }
+
+    override def equals(obj: Any): Boolean = {
+        if (this == obj) {
+            return true
+        }
+        if (obj == null || getClass != obj.getClass) {
+            return false
+        }
+        val that = obj.asInstanceOf[SynchronizedResponseProjection]
+        Objects.equals(fields, that.fields)
+    }
+
+    override def hashCode(): Int = Objects.hash(fields)
+
+}

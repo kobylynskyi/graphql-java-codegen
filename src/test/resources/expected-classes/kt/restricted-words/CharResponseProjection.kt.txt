@@ -1,0 +1,43 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+import java.util.Objects
+
+/**
+ * Response projection for char
+ */
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class CharResponseProjection : GraphQLResponseProjection() {
+
+    override fun `all$`(): CharResponseProjection = `all$`(3)
+
+    override fun `all$`(maxDepth: Int): CharResponseProjection {
+        this.typename()
+        return this
+    }
+
+    fun typename(): CharResponseProjection = typename(null)
+
+    fun typename(alias: String?): CharResponseProjection {
+        fields.add(GraphQLResponseField("__typename").alias(alias))
+        return this
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other == null || javaClass != other.javaClass) {
+            return false
+        }
+        val that = other as CharResponseProjection
+        return Objects.equals(fields, that.fields)
+    }
+
+    override fun hashCode(): Int = Objects.hash(fields)
+
+}

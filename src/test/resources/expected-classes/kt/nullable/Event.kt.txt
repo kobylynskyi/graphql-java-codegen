@@ -1,0 +1,28 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class Event(
+    val nullableStatus: List<Int?>?,
+    val nonullStatus: List<Int>?,
+    val nullablePrimitive: Int?
+) : Node {
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        if (nullableStatus != null) {
+            joiner.add("nullableStatus: " + GraphQLRequestSerializer.getEntry(nullableStatus))
+        }
+        if (nonullStatus != null) {
+            joiner.add("nonullStatus: " + GraphQLRequestSerializer.getEntry(nonullStatus))
+        }
+        if (nullablePrimitive != null) {
+            joiner.add("nullablePrimitive: " + GraphQLRequestSerializer.getEntry(nullablePrimitive))
+        }
+        return joiner.toString()
+    }
+}

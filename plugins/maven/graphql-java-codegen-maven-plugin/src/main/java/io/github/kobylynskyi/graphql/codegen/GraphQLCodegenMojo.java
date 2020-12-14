@@ -2,6 +2,7 @@ package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
@@ -257,6 +258,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
                 return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
             case SCALA:
                 return new ScalaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+            case KOTLIN:
+                return new KotlinGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
             default:
                 throw new LanguageNotSupportedException(generatedLanguage);
         }

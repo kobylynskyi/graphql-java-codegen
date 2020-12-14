@@ -1,0 +1,13 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+/**
+ * Parametrized input for field fun in type Query
+ */
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class QueryFunParametrizedInput(
+    val final: Int?
+) : GraphQLParametrizedInput

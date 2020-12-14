@@ -74,7 +74,6 @@ task graphqlCodegenOrderService(type: GraphQLCodegenGradleTask) {
     modelNameSuffix = "TO"
 }
 
-
 /**
  * Generate requests and model from another external service
  */

@@ -1,0 +1,66 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class Super(
+    @Deprecated("this is deprecated in GraphQL")
+    val `is`: String?,
+    val `in`: Char,
+    val Int: Super,
+    val date: String
+) {
+
+    companion object {
+        fun builder(): Builder = Builder()
+    }
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        if (`is` != null) {
+            joiner.add("is: " + GraphQLRequestSerializer.getEntry(`is`))
+        }
+        joiner.add("in: " + GraphQLRequestSerializer.getEntry(`in`))
+        joiner.add("Int: " + GraphQLRequestSerializer.getEntry(Int))
+        joiner.add("date: " + GraphQLRequestSerializer.getEntry(date))
+        return joiner.toString()
+    }
+
+    class Builder {
+
+        private var `is`: String? = null
+        private var `in`: Char = 0.toChar()
+        private lateinit var Int: Super
+        private lateinit var date: String
+
+        @Deprecated("this is deprecated in GraphQL")
+        fun setIs(`is`: String?): Builder {
+            this.`is` = `is`
+            return this
+        }
+
+        fun setIn(`in`: Char): Builder {
+            this.`in` = `in`
+            return this
+        }
+
+        fun setInt(Int: Super): Builder {
+            this.Int = Int
+            return this
+        }
+
+        fun setDate(date: String): Builder {
+            this.date = date
+            return this
+        }
+
+        fun build(): Super {
+            return Super(`is`, `in`, Int, date)
+        }
+    }
+}

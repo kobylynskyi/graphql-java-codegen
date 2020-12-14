@@ -1,0 +1,34 @@
+package com.github.graphql
+
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface ProfileOwner {
+
+    val anyPinnableItems: Boolean
+
+    val email: String?
+
+    val id: String
+
+    val itemShowcase: ProfileItemShowcase
+
+    val location: String?
+
+    val login: String
+
+    val name: String?
+
+    val pinnableItems: PinnableItemConnection
+
+    val pinnedItems: PinnableItemConnection
+
+    val pinnedItemsRemaining: Int
+
+    val viewerCanChangePinnedItems: Boolean
+
+    val websiteUrl: String?
+
+}

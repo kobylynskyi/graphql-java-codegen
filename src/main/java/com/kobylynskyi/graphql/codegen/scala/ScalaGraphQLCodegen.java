@@ -46,14 +46,16 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
 
     @Override
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
+        //Although Scala doesn't work like kotlin`?`, But for primitive types that allow nulls, we can use Option.
         super.initCustomTypeMappings(scalarTypeDefinitions);
         mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
         mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("Int", "java.lang.Integer");
+
+        mappingConfig.putCustomTypeMappingIfAbsent("Int", "Option[Int]");
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", "java.lang.Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Option[Double]");
         mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "java.lang.Boolean");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Option[Boolean]");
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
     }
 

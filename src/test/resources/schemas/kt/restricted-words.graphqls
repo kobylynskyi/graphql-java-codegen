@@ -1,0 +1,29 @@
+schema {
+    query: Query
+}
+
+type Query {
+    open: String
+    private(int: Int, new: String, enum: TestEnum = long): super
+    when(final: [char]): ID
+    fun(final: Int): char
+    super: String
+    this: String
+}
+
+type super {
+    is: String @deprecated(reason : "We have decided that this is not canon")
+    in: char
+    Int: super
+    date: DateTime
+}
+
+enum TestEnum {
+    long,
+    short
+}
+
+interface char {
+}
+
+scalar DateTime

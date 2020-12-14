@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.java.JavaMapperFactoryImpl;
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class GraphQLCodegenFileCreatorTest {
 
     public static final File OUTPUT_DIR = new File("build/dir");
+    private static final MapperFactory MAPPER_FACTORY = new JavaMapperFactoryImpl();
 
     @AfterEach
     void cleanup() {
@@ -34,7 +37,7 @@ class GraphQLCodegenFileCreatorTest {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setGeneratedLanguage(GeneratedLanguage.JAVA);
         ExtendedDocument extendedDocument = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, singletonList("src/test/resources/schemas/test.graphqls"));
-        MappingContext mappingContext = new MappingContext(mappingConfig, extendedDocument, new GeneratedInformation());
+        MappingContext mappingContext = new MappingContext(mappingConfig, extendedDocument, new GeneratedInformation(), new DataModelMapperFactory(MAPPER_FACTORY));
 
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");

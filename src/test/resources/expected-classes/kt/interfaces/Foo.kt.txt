@@ -1,0 +1,14 @@
+package com.kobylynskyi.graphql.interfaces
+
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface Foo {
+
+    val id: String
+
+    val bars: List<out Bar?>?
+
+}

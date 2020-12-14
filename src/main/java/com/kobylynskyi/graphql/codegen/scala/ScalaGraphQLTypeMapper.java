@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -10,7 +9,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
@@ -33,29 +31,13 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         return SCALA_PRIMITIVE_TYPES.contains(scalaType);
     }
 
-    /**
-     * Wrap Scala type into {@link List}.
-     * E.g.: {@code String} becomes {@code Seq[String]} in Scala
-     *
-     * @param type           The name of a type that will be wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
-     * @param mappingContext Global mapping context
-     * @return String The name of the given type, wrapped into {@code List<>} in Java/Kotlin or {@code Seq[]} in Scala
-     */
     @Override
-    public String wrapIntoList(MappingContext mappingContext, String type) {
+    public String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory) {
         return getGenericsString(mappingContext, SCALA_UTIL_LIST, type);
     }
 
-    /**
-     * Return upper bounded wildcard for the given interface type:
-     * {@code "Foo"} becomes {@code "Seq[_ <: Foo]"} in Scala.
-     *
-     * @param type           The name of a type whose upper bound wildcard will be wrapped into a list.
-     * @param mappingContext Global mapping context
-     * @return String The name of the the wrapped type.
-     */
     @Override
-    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type) {
+    public String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory) {
         return getGenericsString(mappingContext, SCALA_UTIL_LIST, "_ <: " + type);
     }
 
@@ -73,7 +55,8 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
                 && !namedDefinition.isMandatory()
                 && !computedTypeName.startsWith(SCALA_UTIL_LIST)
-                && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                && !computedTypeName.startsWith(JAVA_UTIL_LIST)
+                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {// The primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }
@@ -107,7 +90,7 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     @Override
     public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
-        return !JavaGraphQLTypeMapper.isJavaPrimitive(possiblyPrimitiveType); // reconsider
+        return !ScalaGraphQLTypeMapper.isScalaPrimitive(possiblyPrimitiveType);
     }
 
 }

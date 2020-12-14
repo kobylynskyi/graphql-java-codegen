@@ -14,8 +14,8 @@ class CaseQueryRequest(alias: String) extends GraphQLOperationRequest {
 
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
 
-    def setFinal(Final: Seq[Char]): Unit = {
-        this.input.put("final", Final)
+    def setFinal(`final`: Seq[Char]): Unit = {
+        this.input.put("final", `final`)
     }
 
     override def getOperationType(): GraphQLOperation = CaseQueryRequest.OPERATION_TYPE

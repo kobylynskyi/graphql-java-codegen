@@ -1,0 +1,120 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class Commit(
+    override
+    var abbreviatedOid: String,
+    var additions: Int,
+    var associatedPullRequests: PullRequestConnection?,
+    var author: GitActor?,
+    var authoredByCommitter: Boolean,
+    var authoredDate: String,
+    var blame: Blame,
+    var changedFiles: Int,
+    var comments: CommitCommentConnection,
+    override
+    var commitResourcePath: String,
+    override
+    var commitUrl: String,
+    var committedDate: String,
+    var committedViaWeb: Boolean,
+    var committer: GitActor?,
+    var deletions: Int,
+    var deployments: DeploymentConnection?,
+    var history: CommitHistoryConnection,
+    override
+    var id: String,
+    var message: String,
+    var messageBody: String,
+    var messageBodyHTML: String,
+    var messageHeadline: String,
+    var messageHeadlineHTML: String,
+    override
+    var oid: String,
+    var parents: CommitConnection,
+    var pushedDate: String?,
+    override
+    var repository: Repository,
+    override
+    var resourcePath: String,
+    var signature: GitSignature?,
+    var status: Status?,
+    var tarballUrl: String,
+    var tree: Tree,
+    var treeResourcePath: String,
+    var treeUrl: String,
+    override
+    var url: String,
+    override
+    var viewerCanSubscribe: Boolean,
+    override
+    var viewerSubscription: SubscriptionState?,
+    var zipballUrl: String
+) : Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        joiner.add("abbreviatedOid: " + GraphQLRequestSerializer.getEntry(abbreviatedOid))
+        joiner.add("additions: " + GraphQLRequestSerializer.getEntry(additions))
+        if (associatedPullRequests != null) {
+            joiner.add("associatedPullRequests: " + GraphQLRequestSerializer.getEntry(associatedPullRequests))
+        }
+        if (author != null) {
+            joiner.add("author: " + GraphQLRequestSerializer.getEntry(author))
+        }
+        joiner.add("authoredByCommitter: " + GraphQLRequestSerializer.getEntry(authoredByCommitter))
+        joiner.add("authoredDate: " + GraphQLRequestSerializer.getEntry(authoredDate))
+        joiner.add("blame: " + GraphQLRequestSerializer.getEntry(blame))
+        joiner.add("changedFiles: " + GraphQLRequestSerializer.getEntry(changedFiles))
+        joiner.add("comments: " + GraphQLRequestSerializer.getEntry(comments))
+        joiner.add("commitResourcePath: " + GraphQLRequestSerializer.getEntry(commitResourcePath))
+        joiner.add("commitUrl: " + GraphQLRequestSerializer.getEntry(commitUrl))
+        joiner.add("committedDate: " + GraphQLRequestSerializer.getEntry(committedDate))
+        joiner.add("committedViaWeb: " + GraphQLRequestSerializer.getEntry(committedViaWeb))
+        if (committer != null) {
+            joiner.add("committer: " + GraphQLRequestSerializer.getEntry(committer))
+        }
+        joiner.add("deletions: " + GraphQLRequestSerializer.getEntry(deletions))
+        if (deployments != null) {
+            joiner.add("deployments: " + GraphQLRequestSerializer.getEntry(deployments))
+        }
+        joiner.add("history: " + GraphQLRequestSerializer.getEntry(history))
+        joiner.add("id: " + GraphQLRequestSerializer.getEntry(id))
+        joiner.add("message: " + GraphQLRequestSerializer.getEntry(message))
+        joiner.add("messageBody: " + GraphQLRequestSerializer.getEntry(messageBody))
+        joiner.add("messageBodyHTML: " + GraphQLRequestSerializer.getEntry(messageBodyHTML))
+        joiner.add("messageHeadline: " + GraphQLRequestSerializer.getEntry(messageHeadline))
+        joiner.add("messageHeadlineHTML: " + GraphQLRequestSerializer.getEntry(messageHeadlineHTML))
+        joiner.add("oid: " + GraphQLRequestSerializer.getEntry(oid))
+        joiner.add("parents: " + GraphQLRequestSerializer.getEntry(parents))
+        if (pushedDate != null) {
+            joiner.add("pushedDate: " + GraphQLRequestSerializer.getEntry(pushedDate))
+        }
+        joiner.add("repository: " + GraphQLRequestSerializer.getEntry(repository))
+        joiner.add("resourcePath: " + GraphQLRequestSerializer.getEntry(resourcePath))
+        if (signature != null) {
+            joiner.add("signature: " + GraphQLRequestSerializer.getEntry(signature))
+        }
+        if (status != null) {
+            joiner.add("status: " + GraphQLRequestSerializer.getEntry(status))
+        }
+        joiner.add("tarballUrl: " + GraphQLRequestSerializer.getEntry(tarballUrl))
+        joiner.add("tree: " + GraphQLRequestSerializer.getEntry(tree))
+        joiner.add("treeResourcePath: " + GraphQLRequestSerializer.getEntry(treeResourcePath))
+        joiner.add("treeUrl: " + GraphQLRequestSerializer.getEntry(treeUrl))
+        joiner.add("url: " + GraphQLRequestSerializer.getEntry(url))
+        joiner.add("viewerCanSubscribe: " + GraphQLRequestSerializer.getEntry(viewerCanSubscribe))
+        if (viewerSubscription != null) {
+            joiner.add("viewerSubscription: " + GraphQLRequestSerializer.getEntry(viewerSubscription))
+        }
+        joiner.add("zipballUrl: " + GraphQLRequestSerializer.getEntry(zipballUrl))
+        return joiner.toString()
+    }
+}

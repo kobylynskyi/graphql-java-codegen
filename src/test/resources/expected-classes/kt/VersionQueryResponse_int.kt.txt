@@ -1,0 +1,19 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class VersionQueryResponse : GraphQLResult<MutableMap<String, Int>>() {
+
+    companion object {
+        const val OPERATION_NAME: String = "version"
+    }
+
+    fun version(): Int {
+        val data: MutableMap<String, Int> = super.getData()
+        return data.getValue(OPERATION_NAME)
+    }
+}

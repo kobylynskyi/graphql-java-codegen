@@ -11,7 +11,7 @@ class VersionQueryResponse extends GraphQLResult[JMap[String, Int]] {
 
     def version(): Int = {
         val data: JMap[String, Int] = getData
-        if (data != null) data.get(VersionQueryResponse.OPERATION_NAME) else null
+        data.get(VersionQueryResponse.OPERATION_NAME)
     }
 
 }

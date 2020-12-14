@@ -1,0 +1,26 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class AddLabelsToLabelableInput(
+    val clientMutationId: String?,
+    val labelIds: List<String>,
+    val labelableId: String
+) {
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        if (clientMutationId != null) {
+            joiner.add("clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId))
+        }
+        joiner.add("labelIds: " + GraphQLRequestSerializer.getEntry(labelIds))
+        joiner.add("labelableId: " + GraphQLRequestSerializer.getEntry(labelableId))
+        return joiner.toString()
+    }
+}

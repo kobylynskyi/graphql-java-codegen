@@ -1,0 +1,13 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface WhenQueryAPI {
+
+    @Throws(Exception::class)
+    fun `when`(final: List<Char>): String?
+
+}

@@ -1,5 +1,4 @@
 import Status._
-import Asset._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),

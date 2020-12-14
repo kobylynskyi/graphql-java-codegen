@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
@@ -35,7 +36,15 @@ class ${className} extends GraphQLResult[JMap[String, ${returnTypeName}]] {
 </#if>
     def ${methodName}(): ${returnTypeName} = {
         val data: JMap[String, ${returnTypeName}] = getData
+    <#if returnTypeName?starts_with("Option[")>
+        if (data != null) data.get(${className}.OPERATION_NAME) else None
+    <#else>
+        <#if MapperUtil.isScalaPrimitive(returnTypeName)>
+        data.get(${className}.OPERATION_NAME)
+        <#else>
         if (data != null) data.get(${className}.OPERATION_NAME) else null
+        </#if>
+    </#if>
     }
 
 }

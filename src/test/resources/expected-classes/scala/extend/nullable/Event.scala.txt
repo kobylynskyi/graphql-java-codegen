@@ -1,0 +1,20 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class Event(
+    val nullableStatus: Seq[Option[Int]],
+    val nonullStatus: Seq[Int],
+    val nullablePrimitive: Option[Int]
+) extends Node {
+
+    override def toString(): String = {
+        Seq(
+            if (nullableStatus != null) "nullableStatus: " + GraphQLRequestSerializer.getEntry(nullableStatus) else "",
+            if (nonullStatus != null) "nonullStatus: " + GraphQLRequestSerializer.getEntry(nonullStatus) else "",
+            if (nullablePrimitive.isDefined) "nullablePrimitive: " + GraphQLRequestSerializer.getEntry(nullablePrimitive.get) else ""
+        ).filter(_ != "").mkString("{", ",", "}")
+    }
+}

@@ -3,18 +3,17 @@ package ${package}
 
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
                 <#if field.type?contains("Seq[")>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
-import ${field.type?replace("Seq[", "")?replace("]", "")}._
+import ${enum}._
                     </#if>
                 <#else >
                     <#if enum == field.type>
-import ${field.type}._
+import ${enum}._
                     </#if>
                 </#if>
             </#list>
@@ -47,20 +46,7 @@ case class ${className}(
     <#list field.annotations as annotation>
     @${annotation}
     </#list>
-    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
-) extends GraphQLParametrizedInput {
-
-    override def toString(): String = {
-    <#if fields?has_content>
-        Seq(
-            <#list fields as field>if (${field.name} != null) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>
-            , </#if></#list>
-        ).filter(_ != "").mkString("(", ",", ")")
-    <#else>
-        "()"
-    </#if>
-    }
-
-}
+) extends GraphQLParametrizedInput

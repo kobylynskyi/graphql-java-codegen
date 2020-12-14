@@ -1,0 +1,23 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
+import java.util.{ Map => JMap }
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class SuperQueryResponse extends GraphQLResult[JMap[String, String]] {
+
+    def `super`(): String = {
+        val data: JMap[String, String] = getData
+        if (data != null) data.get(SuperQueryResponse.OPERATION_NAME) else null
+    }
+
+}
+
+object SuperQueryResponse {
+
+    private final val OPERATION_NAME: String = "super"
+
+}

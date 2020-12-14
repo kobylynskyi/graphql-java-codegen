@@ -1,0 +1,49 @@
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface QueryResolver {
+
+    @Throws(Exception::class)
+    fun events(): List<Event>?
+
+    @Throws(Exception::class)
+    fun event(): Event?
+
+    @Throws(Exception::class)
+    fun events1(): List<Event>
+
+    @Throws(Exception::class)
+    fun events2(): List<Event?>
+
+    @Throws(Exception::class)
+    fun events3(): List<Event?>?
+
+    @Throws(Exception::class)
+    fun events4(): List<List<Event?>>?
+
+    @Throws(Exception::class)
+    fun events5(): List<List<Event?>>
+
+    @Throws(Exception::class)
+    fun events6(): List<List<Event>>
+
+    @Throws(Exception::class)
+    fun events7(): List<List<Event?>?>
+
+    @Throws(Exception::class)
+    fun null1Query(): Int?
+
+    @Throws(Exception::class)
+    fun null2Query(): List<Int?>?
+
+    @Throws(Exception::class)
+    fun null3Query(): List<Int>?
+
+    @Throws(Exception::class)
+    fun null4Query(): List<Int>
+
+    @Throws(Exception::class)
+    fun null5Query(): List<Int?>
+
+}
