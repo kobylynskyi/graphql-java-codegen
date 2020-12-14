@@ -11,6 +11,27 @@ interface QueryResolver {
     fun event(): Event?
 
     @Throws(Exception::class)
+    fun events1(): List<Event>
+
+    @Throws(Exception::class)
+    fun events2(): List<Event?>
+
+    @Throws(Exception::class)
+    fun events3(): List<Event?>?
+
+    @Throws(Exception::class)
+    fun events4(): List<List<Event?>>?
+
+    @Throws(Exception::class)
+    fun events5(): List<List<Event?>>
+
+    @Throws(Exception::class)
+    fun events6(): List<List<Event>>
+
+    @Throws(Exception::class)
+    fun events7(): List<List<Event?>?>
+
+    @Throws(Exception::class)
     fun null1Query(): Int?
 
     @Throws(Exception::class)
