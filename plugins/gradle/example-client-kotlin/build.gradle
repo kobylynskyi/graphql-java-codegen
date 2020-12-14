@@ -41,7 +41,7 @@ dependencies {
 /**
  * Generate apis and models in Kotlin
  */
-compileJava.dependsOn "graphqlCodegenKotlinService"
+compileKotlin.dependsOn "graphqlCodegenKotlinService"
 sourceSets.main.java.srcDir "$buildDir/generated-server"
 task graphqlCodegenKotlinService(type: GraphQLCodegenGradleTask) {
     graphqlSchemas.includePattern = "schema\\.graphqls"
