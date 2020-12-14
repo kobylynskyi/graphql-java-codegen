@@ -68,6 +68,9 @@ jobs:
       - name: Build gradle example-client
         run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
 
+      - name: Build gradle example-client-kotlin
+        run: ./gradlew -p plugins/gradle/example-client-kotlin build --warning-mode all
+
       - name: Build maven example-server
         working-directory: plugins/maven/example-server
         run: mvn package

@@ -1,0 +1,63 @@
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
+import io.github.kobylynskyi.graphql.codegen.gradle.GraphQLCodegenGradleTask
+
+plugins {
+    id 'java'
+    id "org.jetbrains.kotlin.jvm" version "1.3.71"
+    id "io.github.kobylynskyi.graphql.codegen" version "4.0.2-SNAPSHOT"
+}
+
+group 'io.github.dreamylost'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main.kotlin.srcDirs += "$buildDir/generated-server"
+}
+
+repositories {
+    maven {
+        url 'https://repo.gradle.org/gradle/libs-releases-local'
+    }
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+
+dependencies {
+    implementation "io.github.kobylynskyi:graphql-java-codegen:4.0.2-SNAPSHOT"
+    implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation("com.squareup.okhttp3:okhttp:4.2.2")
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.0'
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.12.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+/**
+ * Generate apis and models in Kotlin
+ */
+compileJava.dependsOn "graphqlCodegenKotlinService"
+sourceSets.main.java.srcDir "$buildDir/generated-server"
+task graphqlCodegenKotlinService(type: GraphQLCodegenGradleTask) {
+    graphqlSchemas.includePattern = "schema\\.graphqls"
+    outputDir = new File("$buildDir/generated-server")
+    generateClient = true
+    generateApis = true
+    generatedLanguage = GeneratedLanguage.KOTLIN
+    generateBuilder = false
+    generateImmutableModels = true
+    apiPackageName = "io.github.dreamylost.api"
+    modelPackageName = "io.github.dreamylost.model"
+    customAnnotationsMapping = [
+            "Character": ["@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")",
+                          "@com.fasterxml.jackson.annotation.JsonSubTypes(value = arrayOf(" + System.lineSeparator() +
+                                  "       com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanTO::class, name = \"Human\"), " + System.lineSeparator() +
+                                  "       com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidTO::class, name = \"Droid\")))"],
+    ]
+    modelNameSuffix = "TO"
+}

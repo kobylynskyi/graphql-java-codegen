@@ -39,7 +39,7 @@ interface ${className} <#if implements?has_content> : <#list implements as inter
     @Deprecated("this is deprecated in GraphQL")
     </#if>
     <#list field.annotations as annotation>
-    @${annotation}
+    @get:${annotation}
     </#list>
     <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}
 
