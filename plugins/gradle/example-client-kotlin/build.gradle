@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'io.github.dreamylost'
-version '1.0-SNAPSHOT'
+version '4.0.2-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -29,13 +29,14 @@ repositories {
 dependencies {
     implementation "io.github.kobylynskyi:graphql-java-codegen:4.0.2-SNAPSHOT"
     implementation "javax.validation:validation-api:2.0.1.Final"
-    implementation("com.squareup.okhttp3:okhttp:4.2.2")
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.0'
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.12.0'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.12.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.12.0"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.12.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
 }
 
 /**
