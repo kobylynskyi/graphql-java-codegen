@@ -70,4 +70,19 @@ class GraphQLCodegenNullableTest {
                 new File("src/test/resources/expected-classes/kt/nullable/QueryResolver.kt.txt"),
                 getFileByName(files, "QueryResolver.kt"));
     }
+
+    @Test
+    void generatePrimitiveTypesResponseResolverClasses_nullable_WITH_Prefix_Suffix() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setModelNamePrefix("Test");
+        mappingConfig.setModelNameSuffix("DTO");
+        schemaFinder.setIncludePattern("nullable-extend.graphqls");
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/nullable/QueryResolver_WITH_Prefix_Suffix.kt.txt"),
+                getFileByName(files, "QueryResolver.kt"));
+    }
 }

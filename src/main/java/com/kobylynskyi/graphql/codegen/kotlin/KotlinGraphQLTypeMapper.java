@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -9,6 +10,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
@@ -135,14 +137,23 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         }
         if (!namedDefinition.isMandatory()) {
             //All `ListType` samples have been processed by `wrapIntoList` and `wrapSuperTypeIntoList`
-            if (!computedTypeName.endsWith("?") && !computedTypeName.startsWith(KOTLIN_UTIL_LIST)) {
-                return computedTypeName + "?";
+            if (!computedTypeName.endsWith(KOTLIN_UTIL_NULLABLE) && !computedTypeName.startsWith(KOTLIN_UTIL_LIST)) {
+                return computedTypeName + KOTLIN_UTIL_NULLABLE;
             }
             // If it is not processed by 'wrapSuperTypeIntoList' and 'wrapIntoList', the nullable type may be missing here
             // Such as return a query type: ```codesOfConduct: [CodeOfConduct]```
-            if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !graphqlTypeName.endsWith("?")
-                    && !computedTypeName.contains(graphqlTypeName + "?")) {
-                return computedTypeName.replace(graphqlTypeName, graphqlTypeName + "?");
+            if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !graphqlTypeName.endsWith(KOTLIN_UTIL_NULLABLE)) {
+                String modelClassNameWithPrefixAndSuffix = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphqlTypeName);
+                if (computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) ||
+                        computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)){
+                    return computedTypeName;
+                }
+                if (!computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) && computedTypeName.contains(modelClassNameWithPrefixAndSuffix)) {
+                    return computedTypeName.replace(modelClassNameWithPrefixAndSuffix, modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE);
+                }
+                if (!computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE) && computedTypeName.contains(graphqlTypeName)) {
+                    return computedTypeName.replace(graphqlTypeName, graphqlTypeName + KOTLIN_UTIL_NULLABLE);
+                }
             }
         }
 
