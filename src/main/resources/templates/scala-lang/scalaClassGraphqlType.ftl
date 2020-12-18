@@ -28,6 +28,28 @@ import ${enum}._
         </#list>
     </#if>
 </#if>
+<#assign duplicateParentInterfaces = [] />
+<#assign parentInterfaces = [] />
+<#if fields?has_content>
+    <#if parentInterfaceProperties?has_content>
+        <#list implements as implement>
+            <#list parentInterfaceProperties?keys as parentInterface>
+                <#if implement == parentInterface>
+                    <#assign duplicateParentInterfaces = duplicateParentInterfaces + parentInterfaceProperties["${parentInterface}"] />
+                <#else >
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
+<#--duplicate removal-->
+<#if duplicateParentInterfaces?has_content>
+    <#list duplicateParentInterfaces as duplicateParentInterface>
+        <#if !parentInterfaces?seq_contains(duplicateParentInterface)>
+            <#assign parentInterfaces = parentInterfaces + [duplicateParentInterface]>
+        </#if>
+    </#list>
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -54,7 +76,7 @@ case class ${className}(
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
+    <#if !immutableModels>var <#else><#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>val </#if></#list></#if></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {

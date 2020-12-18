@@ -5,9 +5,9 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class Event(
-    val nullableStatus: Seq[Option[Int]],
-    val nonullStatus: Seq[Int],
-    val nullablePrimitive: Option[Int]
+    nullableStatus: Seq[Option[Int]],
+    nonullStatus: Seq[Int],
+    nullablePrimitive: Option[Int]
 ) extends Node {
 
     override def toString(): String = {

@@ -7,8 +7,8 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class AddLabelsToLabelablePayload(
-    val clientMutationId: String,
-    val labelable: Labelable
+    clientMutationId: String,
+    labelable: Labelable
 ) {
 
     override def toString(): String = {

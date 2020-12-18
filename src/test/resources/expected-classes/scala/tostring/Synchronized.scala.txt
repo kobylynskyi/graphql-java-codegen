@@ -8,16 +8,16 @@ import TestEnum._
     date = "2020-12-31T23:59:59-0500"
 )
 case class Synchronized(
-    val void: String,
-    val wait: Char,
-    val `this`: Char,
-    val `super`: Char,
-    val `private`: Char,
-    val native: Char,
-    val that: Char,
-    val enum: TestEnum,
-    val Synchronized: Synchronized,
-    val date: java.time.ZonedDateTime
+    void: String,
+    wait: Char,
+    `this`: Char,
+    `super`: Char,
+    `private`: Char,
+    native: Char,
+    that: Char,
+    enum: TestEnum,
+    Synchronized: Synchronized,
+    date: java.time.ZonedDateTime
 ) {
 
     override def toString(): String = {

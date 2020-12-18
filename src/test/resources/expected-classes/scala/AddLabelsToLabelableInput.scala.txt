@@ -7,11 +7,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class AddLabelsToLabelableInput(
-    val clientMutationId: String,
+    clientMutationId: String,
     @javax.validation.constraints.NotNull
-    val labelIds: Seq[String],
+    labelIds: Seq[String],
     @javax.validation.constraints.NotNull
-    val labelableId: String
+    labelableId: String
 ) {
 
     override def toString(): String = {

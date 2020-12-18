@@ -7,11 +7,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
     date = "2020-12-31T23:59:59-0500"
 )
 case class GithubAcceptTopicSuggestionInputTO(
-    val clientMutationId: String,
+    clientMutationId: String,
     @javax.validation.constraints.NotNull
-    val name: String,
+    name: String,
     @javax.validation.constraints.NotNull
-    val repositoryId: String
+    repositoryId: String
 ) {
 
     override def toString(): String = {

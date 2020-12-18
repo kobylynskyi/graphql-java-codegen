@@ -6,11 +6,11 @@ import Status._
 )
 case class Event(
     @javax.validation.constraints.NotNull
-    val status: Status,
+    status: Status,
     @javax.validation.constraints.NotNull
-    val createdDateTime: String,
+    createdDateTime: String,
     @javax.validation.constraints.NotNull
-    val assets: Seq[Asset],
+    assets: Seq[Asset],
     @javax.validation.constraints.NotNull
     val id: String,
     val createdBy: String
