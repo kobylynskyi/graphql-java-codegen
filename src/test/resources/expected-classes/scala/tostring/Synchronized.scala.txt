@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
 import TestEnum._
 
 @javax.annotation.Generated(

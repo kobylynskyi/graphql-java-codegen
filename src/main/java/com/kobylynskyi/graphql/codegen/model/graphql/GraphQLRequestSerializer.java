@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class GraphQLRequestSerializer {
 
@@ -146,9 +142,16 @@ public class GraphQLRequestSerializer {
         } else if (input instanceof String) {
             return escapeJsonString(input.toString());
         } else {
+            // TODO Currently, option only supports primitive types, so that's fine.Now, this kind of case will appear if and only if Seq[Option[Int]] is
+            if (input.getClass().getName().equals("scala.Some")) {
+                return input.toString().replace("Some(", "").replace(")", "");
+            } else if (input.getClass().getName().equals("scala.None$")) {
+                return null;
+            }
             return input.toString();
         }
     }
+
 
     public static String objectMapperWriteValueAsString(Object input) {
         try {

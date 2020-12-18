@@ -11,11 +11,12 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
+import scala.collection.JavaConverters._
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
-                <#if field.type?contains("Seq[")>
+                <#if MapperUtil.isScalaCollection(field.type)>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
 import ${enum}._
                     </#if>
@@ -84,8 +85,8 @@ case class ${className}(
 <#if toString>
     override def toString(): String = {
     <#if fields?has_content>
-        Seq(<#list fields as field><#assign realField = ""><#if field.type?starts_with("Option[") ><#assign realField = ".get"></#if>
-            <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else><#if field.type?starts_with("Option[")>if (${field.name}.isDefined) <#else>if (${field.name} != null) </#if><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${realField}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
+        Seq(<#list fields as field><#assign getMethod = ""><#assign asJava = ""><#if MapperUtil.isScalaOption(field.type)><#assign getMethod = ".get"></#if><#if MapperUtil.isScalaCollection(field.type)><#assign asJava = ".asJava"></#if>
+            <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else><#if MapperUtil.isScalaOption(field.type)>if (${field.name}.isDefined) <#else>if (${field.name} != null) </#if><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${getMethod}${asJava}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
         ).filter(_ != "").mkString("{", ",", "}")
         <#else>
         "{}"
@@ -103,7 +104,7 @@ object ${className} {
 
 <#if fields?has_content>
     <#list fields as field>
-        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if MapperUtil.isScalaOption(field.type)><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
     </#list>
 </#if>
 

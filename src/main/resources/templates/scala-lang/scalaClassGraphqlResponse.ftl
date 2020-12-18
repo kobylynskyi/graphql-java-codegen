@@ -36,7 +36,7 @@ class ${className} extends GraphQLResult[JMap[String, ${returnTypeName}]] {
 </#if>
     def ${methodName}(): ${returnTypeName} = {
         val data: JMap[String, ${returnTypeName}] = getData
-    <#if returnTypeName?starts_with("Option[")>
+    <#if MapperUtil.isScalaOption(returnTypeName)>
         if (data != null) data.get(${className}.OPERATION_NAME) else None
     <#else>
         <#if MapperUtil.isScalaPrimitive(returnTypeName)>

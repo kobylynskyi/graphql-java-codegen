@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
@@ -11,7 +12,7 @@ import ${import}._
         <#if enumImportItSelfInScala?has_content>
             <#list operation.parameters as param>
                 <#list enumImportItSelfInScala as enum>
-                    <#if param.type?contains("Seq[")>
+                    <#if MapperUtil.isScalaCollection(param.type)>
                         <#if enum == param.type?replace("Seq[", "")?replace("]", "")>
                             <#if waitImports?seq_contains(enum)>
                             <#else >

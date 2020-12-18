@@ -1,6 +1,7 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
@@ -17,7 +18,7 @@ case class AddLabelsToLabelableInput(
     override def toString(): String = {
         Seq(
             if (clientMutationId != null) "clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId) else "",
-            if (labelIds != null) "labelIds: " + GraphQLRequestSerializer.getEntry(labelIds) else "",
+            if (labelIds != null) "labelIds: " + GraphQLRequestSerializer.getEntry(labelIds.asJava) else "",
             if (labelableId != null) "labelableId: " + GraphQLRequestSerializer.getEntry(labelableId) else ""
         ).filter(_ != "").mkString("{", ",", "}")
     }

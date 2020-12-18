@@ -1,3 +1,4 @@
+<#assign MapperUtil=statics["com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLTypeMapper"]>
 <#if package?has_content>
 package ${package}
 
@@ -7,7 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
-                <#if field.type?contains("Seq[")>
+                <#if MapperUtil.isScalaCollection(field.type)>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
 import ${enum}._
                     </#if>
@@ -46,7 +47,7 @@ case class ${className}(
     <#list field.annotations as annotation>
     @${annotation}
     </#list>
-    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
+    ${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if MapperUtil.isScalaOption(field.type)><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 ) extends GraphQLParametrizedInput

@@ -1,3 +1,4 @@
+import scala.collection.JavaConverters._
 import Status._
 
 @javax.annotation.Generated(
