@@ -9,7 +9,7 @@ import SubscriptionState._
 )
 case class Commit(
     @javax.validation.constraints.NotNull
-    var abbreviatedOid: String,
+    override var abbreviatedOid: String,
     var additions: Int,
     var associatedPullRequests: PullRequestConnection,
     var author: GitActor,
@@ -22,9 +22,9 @@ case class Commit(
     @javax.validation.constraints.NotNull
     var comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
-    var commitResourcePath: String,
+    override var commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    var commitUrl: String,
+    override var commitUrl: String,
     @javax.validation.constraints.NotNull
     var committedDate: String,
     var committedViaWeb: Boolean,
@@ -34,7 +34,7 @@ case class Commit(
     @javax.validation.constraints.NotNull
     var history: CommitHistoryConnection,
     @javax.validation.constraints.NotNull
-    var id: String,
+    override var id: String,
     @javax.validation.constraints.NotNull
     var message: String,
     @javax.validation.constraints.NotNull
@@ -46,14 +46,14 @@ case class Commit(
     @javax.validation.constraints.NotNull
     var messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    var oid: String,
+    override var oid: String,
     @javax.validation.constraints.NotNull
     var parents: CommitConnection,
     var pushedDate: String,
     @javax.validation.constraints.NotNull
-    var repository: Repository,
+    override var repository: Repository,
     @javax.validation.constraints.NotNull
-    var resourcePath: String,
+    override var resourcePath: String,
     var signature: GitSignature,
     var status: Status,
     @javax.validation.constraints.NotNull
@@ -65,9 +65,9 @@ case class Commit(
     @javax.validation.constraints.NotNull
     var treeUrl: String,
     @javax.validation.constraints.NotNull
-    var url: String,
-    var viewerCanSubscribe: Boolean,
-    var viewerSubscription: SubscriptionState,
+    override var url: String,
+    override var viewerCanSubscribe: Boolean,
+    override var viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
     var zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {

@@ -76,7 +76,7 @@ case class ${className}(
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    <#if !immutableModels>var <#else><#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>val </#if></#list></#if></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
+    <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override </#if></#list></#if><#if !immutableModels>var <#else><#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>val </#if></#list></#if></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {

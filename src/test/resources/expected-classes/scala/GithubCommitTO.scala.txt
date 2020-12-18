@@ -9,7 +9,7 @@ import GithubSubscriptionStateTO._
 )
 case class GithubCommitTO(
     @javax.validation.constraints.NotNull
-    val abbreviatedOid: String,
+    override val abbreviatedOid: String,
     additions: Int,
     associatedPullRequests: GithubPullRequestConnectionTO,
     author: GithubGitActorTO,
@@ -22,9 +22,9 @@ case class GithubCommitTO(
     @javax.validation.constraints.NotNull
     comments: GithubCommitCommentConnectionTO,
     @javax.validation.constraints.NotNull
-    val commitResourcePath: String,
+    override val commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    val commitUrl: String,
+    override val commitUrl: String,
     @javax.validation.constraints.NotNull
     committedDate: String,
     committedViaWeb: Boolean,
@@ -34,7 +34,7 @@ case class GithubCommitTO(
     @javax.validation.constraints.NotNull
     history: GithubCommitHistoryConnectionTO,
     @javax.validation.constraints.NotNull
-    val id: String,
+    override val id: String,
     @javax.validation.constraints.NotNull
     message: String,
     @javax.validation.constraints.NotNull
@@ -46,14 +46,14 @@ case class GithubCommitTO(
     @javax.validation.constraints.NotNull
     messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    val oid: String,
+    override val oid: String,
     @javax.validation.constraints.NotNull
     parents: GithubCommitConnectionTO,
     pushedDate: String,
     @javax.validation.constraints.NotNull
-    val repository: GithubRepositoryTO,
+    override val repository: GithubRepositoryTO,
     @javax.validation.constraints.NotNull
-    val resourcePath: String,
+    override val resourcePath: String,
     signature: GithubGitSignatureTO,
     status: GithubStatusTO,
     @javax.validation.constraints.NotNull
@@ -65,9 +65,9 @@ case class GithubCommitTO(
     @javax.validation.constraints.NotNull
     treeUrl: String,
     @javax.validation.constraints.NotNull
-    val url: String,
-    val viewerCanSubscribe: Boolean,
-    val viewerSubscription: GithubSubscriptionStateTO,
+    override val url: String,
+    override val viewerCanSubscribe: Boolean,
+    override val viewerSubscription: GithubSubscriptionStateTO,
     @javax.validation.constraints.NotNull
     zipballUrl: String
 ) extends GithubCloserTO with GithubIssueTimelineItemTO with GithubPullRequestTimelineItemTO with GithubGitObjectTO with GithubNodeTO with GithubSubscribableTO with GithubUniformResourceLocatableTO {

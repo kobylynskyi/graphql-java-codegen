@@ -9,7 +9,7 @@ import SubscriptionState._
 )
 case class Commit(
     @javax.validation.constraints.NotNull
-    val abbreviatedOid: String,
+    override val abbreviatedOid: String,
     @javax.validation.constraints.NotNull
     additions: Integer,
     associatedPullRequests: PullRequestConnection,
@@ -25,9 +25,9 @@ case class Commit(
     @javax.validation.constraints.NotNull
     comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
-    val commitResourcePath: String,
+    override val commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    val commitUrl: String,
+    override val commitUrl: String,
     @javax.validation.constraints.NotNull
     committedDate: String,
     @javax.validation.constraints.NotNull
@@ -39,7 +39,7 @@ case class Commit(
     @javax.validation.constraints.NotNull
     history: CommitHistoryConnection,
     @javax.validation.constraints.NotNull
-    val id: String,
+    override val id: String,
     @javax.validation.constraints.NotNull
     message: String,
     @javax.validation.constraints.NotNull
@@ -51,14 +51,14 @@ case class Commit(
     @javax.validation.constraints.NotNull
     messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    val oid: String,
+    override val oid: String,
     @javax.validation.constraints.NotNull
     parents: CommitConnection,
     pushedDate: String,
     @javax.validation.constraints.NotNull
-    val repository: Repository,
+    override val repository: Repository,
     @javax.validation.constraints.NotNull
-    val resourcePath: String,
+    override val resourcePath: String,
     signature: GitSignature,
     status: Status,
     @javax.validation.constraints.NotNull
@@ -70,10 +70,10 @@ case class Commit(
     @javax.validation.constraints.NotNull
     treeUrl: String,
     @javax.validation.constraints.NotNull
-    val url: String,
+    override val url: String,
     @javax.validation.constraints.NotNull
-    val viewerCanSubscribe: java.lang.Boolean,
-    val viewerSubscription: SubscriptionState,
+    override val viewerCanSubscribe: java.lang.Boolean,
+    override val viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
     zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
