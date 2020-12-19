@@ -53,14 +53,14 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
         super.initCustomTypeMappings(scalarTypeDefinitions);
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Int?");
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double?");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean?");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
-        mappingConfig.putCustomTypeMappingIfAbsent("String!", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("String", "String?");
-        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String?");
-        mappingConfig.putCustomTypeMappingIfAbsent("ID!", "String");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float", Double.class.getSimpleName() + "?");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float!", Double.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", Boolean.class.getSimpleName() + "?");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", Boolean.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("String!", String.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("String", String.class.getSimpleName() + "?");
+        mappingConfig.putCustomTypeMappingIfAbsent("ID", String.class.getSimpleName() + "?");
+        mappingConfig.putCustomTypeMappingIfAbsent("ID!", String.class.getSimpleName());
     }
 
 }

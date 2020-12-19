@@ -167,9 +167,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         if (customTypesMapping == null) {
             customTypesMapping = new HashMap<>();
         }
-        if (!customTypesMapping.containsKey(from)) {
-            customTypesMapping.put(from, to);
-        }
+        customTypesMapping.computeIfAbsent(from, k -> to);
     }
 
     @Override

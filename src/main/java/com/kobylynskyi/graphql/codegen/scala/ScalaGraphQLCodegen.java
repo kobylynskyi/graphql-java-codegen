@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.io.File;
 import java.util.Collection;
@@ -48,15 +49,14 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         //Although Scala doesn't work like kotlin`?`, But for primitive types that allow nulls, we can use Option.
         super.initCustomTypeMappings(scalarTypeDefinitions);
-        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
-
+        mappingConfig.putCustomTypeMappingIfAbsent("ID", String.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("String", String.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Option[Int]");
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Option[Double]");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float!", "Double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Option[Boolean]");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float", Utils.wrapString(Double.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Float!", Double.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", Utils.wrapString(Boolean.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", Boolean.class.getSimpleName());
     }
 
 }

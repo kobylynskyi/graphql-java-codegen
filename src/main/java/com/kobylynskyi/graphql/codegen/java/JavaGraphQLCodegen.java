@@ -34,13 +34,14 @@ public class JavaGraphQLCodegen extends GraphQLCodegen {
     @Override
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
         super.initCustomTypeMappings(scalarTypeDefinitions);
-        mappingConfig.putCustomTypeMappingIfAbsent("ID", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("String", "String");
-        mappingConfig.putCustomTypeMappingIfAbsent("Int", "Integer");
+        mappingConfig.putCustomTypeMappingIfAbsent("ID", String.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("String", String.class.getSimpleName());
+        mappingConfig.putCustomTypeMappingIfAbsent("Int", Integer.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", "Double");
+        mappingConfig.putCustomTypeMappingIfAbsent("Float", Double.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("Float!", "double");
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", "Boolean");
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", Boolean.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "boolean");
     }
+
 }
