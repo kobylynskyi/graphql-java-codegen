@@ -10,10 +10,8 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
 import static java.util.Arrays.asList;
 
 /**
@@ -118,10 +116,6 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             default:
                 return "0";
         }
-    }
-
-    private String getNullableString(MappingContext mappingContext, String typeParameter) {
-        return typeParameter + KotlinGraphQLTypeMapper.KOTLIN_UTIL_NULLABLE;
     }
 
     @Override

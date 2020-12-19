@@ -1,8 +1,23 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.kobylynskyi.graphql.codegen.model.graphql.data.*;
-import org.junit.jupiter.api.Test;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.DateInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyChildParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyParentParametrizedInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByCategoryAndStatusQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByIdsQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.IssueResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.OrganizationResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.Status;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateDateMutationRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueMutationRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssuePayloadResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateNodeUnionResponseProjection;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.VersionQueryRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.ZonedDateTimeSerializer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +27,9 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GraphQLRequestSerializerTest {
 
@@ -407,40 +424,4 @@ class GraphQLRequestSerializerTest {
         return String.format("{\"query\":\"%s\"}", expectedQueryDecorator.replace("\\", "\\\\").replace("\"", "\\\""));
     }
 
-
-    @Test
-    void scalaOptionToString() {
-        String optionSome = getEntry(new Some());
-        String optionNone = getEntry(new None$());
-        assertEquals(optionSome, "1");
-        assertEquals(optionNone, null);
-
-    }
-
-    //Original method cannot test in Java
-    public static String getEntry(Object input) {
-        if (input.getClass().getSimpleName().equals("Some")) {
-            return input.toString().replace("Some(", "").replace(")", "");
-        } else if (input.getClass().getSimpleName().equals("None$")) {
-            return null;
-        }
-        return input.toString();
-    }
-
-    interface Option {
-    }
-
-    static class Some implements Option {
-        @Override
-        public String toString() {
-            return "Some(1)";
-        }
-    }
-
-    class None$ implements Option {
-        @Override
-        public String toString() {
-            return "None";
-        }
-    }
 }

@@ -232,17 +232,29 @@ public final class Utils {
     }
 
     /**
-     * String merging
+     * Wrap string
      *
      * @param str      the String
-     * @param wrapWith String to be appended
+     * @param wrapWith String to be appended to the beginning and the end of <b>str</b>
      * @return string
      */
     public static String wrapString(String str, String wrapWith) {
-        if (str == null || wrapWith == null) {
+        return wrapString(str, wrapWith, wrapWith);
+    }
+
+    /**
+     * Wrap string
+     *
+     * @param str       the String
+     * @param wrapStart String to be appended to the beginning of <b>str</b>
+     * @param wrapEnd   String to be appended to the end of <b>str</b>
+     * @return wrapped string
+     */
+    public static String wrapString(String str, String wrapStart, String wrapEnd) {
+        if (str == null || wrapStart == null || wrapEnd == null) {
             return str;
         }
-        return wrapWith + str + wrapWith;
+        return wrapStart + str + wrapEnd;
     }
 
 }
