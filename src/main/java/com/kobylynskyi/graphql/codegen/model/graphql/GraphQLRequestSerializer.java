@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 public class GraphQLRequestSerializer {
 
@@ -123,6 +127,7 @@ public class GraphQLRequestSerializer {
         return getEntry(input, false);
     }
 
+    @SuppressWarnings("java:S1872")
     public static String getEntry(Object input, boolean useObjectMapper) {
         if (input == null) {
             return null;
@@ -141,13 +146,13 @@ public class GraphQLRequestSerializer {
             return input.toString();
         } else if (input instanceof String) {
             return escapeJsonString(input.toString());
+        } else if (input.getClass().getName().equals("scala.Some")) { // TODO: move to Scala Serializer
+            // Currently, option only supports primitive types, so that's fine.
+            // Now, this kind of case will appear if and only if Seq[Option[Int]] is
+            return input.toString().replace("Some(", "").replace(")", "");
+        } else if (input.getClass().getName().equals("scala.None$")) {
+            return null;
         } else {
-            // TODO Currently, option only supports primitive types, so that's fine.Now, this kind of case will appear if and only if Seq[Option[Int]] is
-            if (input.getClass().getName().equals("scala.Some")) {
-                return input.toString().replace("Some(", "").replace(")", "");
-            } else if (input.getClass().getName().equals("scala.None$")) {
-                return null;
-            }
             return input.toString();
         }
     }
