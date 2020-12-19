@@ -1,3 +1,4 @@
+import scala.collection.JavaConverters._
 import Status._
 
 @javax.annotation.Generated(
@@ -6,9 +7,9 @@ import Status._
 )
 case class EventInput(
     @javax.validation.constraints.NotNull
-    val status: Status,
+    status: Status,
     @javax.validation.constraints.NotNull
-    val assets: Seq[AssetInput]
+    assets: Seq[AssetInput]
 ) {
 
 }

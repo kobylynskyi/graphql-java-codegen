@@ -1,6 +1,7 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
 import SubscriptionState._
 
 @javax.annotation.Generated(
@@ -9,73 +10,73 @@ import SubscriptionState._
 )
 case class Commit(
     @javax.validation.constraints.NotNull
-    val abbreviatedOid: String,
+    override val abbreviatedOid: String,
     @javax.validation.constraints.NotNull
-    val additions: Integer,
-    val associatedPullRequests: PullRequestConnection,
-    val author: GitActor,
+    additions: Integer,
+    associatedPullRequests: PullRequestConnection,
+    author: GitActor,
     @javax.validation.constraints.NotNull
-    val authoredByCommitter: java.lang.Boolean,
+    authoredByCommitter: java.lang.Boolean,
     @javax.validation.constraints.NotNull
-    val authoredDate: String,
+    authoredDate: String,
     @javax.validation.constraints.NotNull
-    val blame: Blame,
+    blame: Blame,
     @javax.validation.constraints.NotNull
-    val changedFiles: Integer,
+    changedFiles: Integer,
     @javax.validation.constraints.NotNull
-    val comments: CommitCommentConnection,
+    comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
-    val commitResourcePath: String,
+    override val commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    val commitUrl: String,
+    override val commitUrl: String,
     @javax.validation.constraints.NotNull
-    val committedDate: String,
+    committedDate: String,
     @javax.validation.constraints.NotNull
-    val committedViaWeb: java.lang.Boolean,
-    val committer: GitActor,
+    committedViaWeb: java.lang.Boolean,
+    committer: GitActor,
     @javax.validation.constraints.NotNull
-    val deletions: Integer,
-    val deployments: DeploymentConnection,
+    deletions: Integer,
+    deployments: DeploymentConnection,
     @javax.validation.constraints.NotNull
-    val history: CommitHistoryConnection,
+    history: CommitHistoryConnection,
     @javax.validation.constraints.NotNull
-    val id: String,
+    override val id: String,
     @javax.validation.constraints.NotNull
-    val message: String,
+    message: String,
     @javax.validation.constraints.NotNull
-    val messageBody: String,
+    messageBody: String,
     @javax.validation.constraints.NotNull
-    val messageBodyHTML: String,
+    messageBodyHTML: String,
     @javax.validation.constraints.NotNull
-    val messageHeadline: String,
+    messageHeadline: String,
     @javax.validation.constraints.NotNull
-    val messageHeadlineHTML: String,
+    messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    val oid: String,
+    override val oid: String,
     @javax.validation.constraints.NotNull
-    val parents: CommitConnection,
-    val pushedDate: String,
+    parents: CommitConnection,
+    pushedDate: String,
     @javax.validation.constraints.NotNull
-    val repository: Repository,
+    override val repository: Repository,
     @javax.validation.constraints.NotNull
-    val resourcePath: String,
-    val signature: GitSignature,
-    val status: Status,
+    override val resourcePath: String,
+    signature: GitSignature,
+    status: Status,
     @javax.validation.constraints.NotNull
-    val tarballUrl: String,
+    tarballUrl: String,
     @javax.validation.constraints.NotNull
-    val tree: Tree,
+    tree: Tree,
     @javax.validation.constraints.NotNull
-    val treeResourcePath: String,
+    treeResourcePath: String,
     @javax.validation.constraints.NotNull
-    val treeUrl: String,
+    treeUrl: String,
     @javax.validation.constraints.NotNull
-    val url: String,
+    override val url: String,
     @javax.validation.constraints.NotNull
-    val viewerCanSubscribe: java.lang.Boolean,
-    val viewerSubscription: SubscriptionState,
+    override val viewerCanSubscribe: java.lang.Boolean,
+    override val viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
-    val zipballUrl: String
+    zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
 
     override def toString(): String = {

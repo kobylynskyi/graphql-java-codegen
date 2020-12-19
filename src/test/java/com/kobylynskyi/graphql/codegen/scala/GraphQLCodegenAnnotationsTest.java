@@ -53,7 +53,7 @@ class GraphQLCodegenAnnotationsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.scala",
                 "    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = classOf[com.example.json.DateTimeScalarDeserializer])\n" +
-                        "    val createdDateTime: org.joda.time.DateTime,");
+                        "    createdDateTime: org.joda.time.DateTime,");
     }
 
     @Test

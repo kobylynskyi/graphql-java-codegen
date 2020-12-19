@@ -1,3 +1,4 @@
+import scala.collection.JavaConverters._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
@@ -5,7 +6,7 @@
 )
 case class AssetInput(
     @javax.validation.constraints.NotNull
-    val name: String
+    name: String
 ) {
 
 }

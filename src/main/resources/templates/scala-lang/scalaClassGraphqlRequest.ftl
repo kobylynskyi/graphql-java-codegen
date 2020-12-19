@@ -14,7 +14,7 @@ import java.util.Objects
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
-                <#if field.type?contains("Seq[")>
+                <#if MapperUtil.isScalaCollection(field.type)>
                     <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
 import ${enum}._
                     </#if>
@@ -120,7 +120,7 @@ object ${className} {
         private var $alias: String = _
         <#if fields?has_content>
             <#list fields as field>
-        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
+        private var ${field.name}: ${field.type} = <#if field.defaultValue?has_content><#if MapperUtil.isScalaOption(field.type)><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if><#else>_</#if>
             </#list>
         </#if>
 

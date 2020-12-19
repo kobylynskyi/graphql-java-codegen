@@ -1,6 +1,7 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
 import GithubSubscriptionStateTO._
 
 @javax.annotation.Generated(
@@ -9,67 +10,67 @@ import GithubSubscriptionStateTO._
 )
 case class GithubCommitTO(
     @javax.validation.constraints.NotNull
-    val abbreviatedOid: String,
-    val additions: Int,
-    val associatedPullRequests: GithubPullRequestConnectionTO,
-    val author: GithubGitActorTO,
-    val authoredByCommitter: Boolean,
+    override val abbreviatedOid: String,
+    additions: Int,
+    associatedPullRequests: GithubPullRequestConnectionTO,
+    author: GithubGitActorTO,
+    authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
-    val authoredDate: String,
+    authoredDate: String,
     @javax.validation.constraints.NotNull
-    val blame: GithubBlameTO,
-    val changedFiles: Int,
+    blame: GithubBlameTO,
+    changedFiles: Int,
     @javax.validation.constraints.NotNull
-    val comments: GithubCommitCommentConnectionTO,
+    comments: GithubCommitCommentConnectionTO,
     @javax.validation.constraints.NotNull
-    val commitResourcePath: String,
+    override val commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    val commitUrl: String,
+    override val commitUrl: String,
     @javax.validation.constraints.NotNull
-    val committedDate: String,
-    val committedViaWeb: Boolean,
-    val committer: GithubGitActorTO,
-    val deletions: Int,
-    val deployments: GithubDeploymentConnectionTO,
+    committedDate: String,
+    committedViaWeb: Boolean,
+    committer: GithubGitActorTO,
+    deletions: Int,
+    deployments: GithubDeploymentConnectionTO,
     @javax.validation.constraints.NotNull
-    val history: GithubCommitHistoryConnectionTO,
+    history: GithubCommitHistoryConnectionTO,
     @javax.validation.constraints.NotNull
-    val id: String,
+    override val id: String,
     @javax.validation.constraints.NotNull
-    val message: String,
+    message: String,
     @javax.validation.constraints.NotNull
-    val messageBody: String,
+    messageBody: String,
     @javax.validation.constraints.NotNull
-    val messageBodyHTML: String,
+    messageBodyHTML: String,
     @javax.validation.constraints.NotNull
-    val messageHeadline: String,
+    messageHeadline: String,
     @javax.validation.constraints.NotNull
-    val messageHeadlineHTML: String,
+    messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    val oid: String,
+    override val oid: String,
     @javax.validation.constraints.NotNull
-    val parents: GithubCommitConnectionTO,
-    val pushedDate: String,
+    parents: GithubCommitConnectionTO,
+    pushedDate: String,
     @javax.validation.constraints.NotNull
-    val repository: GithubRepositoryTO,
+    override val repository: GithubRepositoryTO,
     @javax.validation.constraints.NotNull
-    val resourcePath: String,
-    val signature: GithubGitSignatureTO,
-    val status: GithubStatusTO,
+    override val resourcePath: String,
+    signature: GithubGitSignatureTO,
+    status: GithubStatusTO,
     @javax.validation.constraints.NotNull
-    val tarballUrl: String,
+    tarballUrl: String,
     @javax.validation.constraints.NotNull
-    val tree: GithubTreeTO,
+    tree: GithubTreeTO,
     @javax.validation.constraints.NotNull
-    val treeResourcePath: String,
+    treeResourcePath: String,
     @javax.validation.constraints.NotNull
-    val treeUrl: String,
+    treeUrl: String,
     @javax.validation.constraints.NotNull
-    val url: String,
-    val viewerCanSubscribe: Boolean,
-    val viewerSubscription: GithubSubscriptionStateTO,
+    override val url: String,
+    override val viewerCanSubscribe: Boolean,
+    override val viewerSubscription: GithubSubscriptionStateTO,
     @javax.validation.constraints.NotNull
-    val zipballUrl: String
+    zipballUrl: String
 ) extends GithubCloserTO with GithubIssueTimelineItemTO with GithubPullRequestTimelineItemTO with GithubGitObjectTO with GithubNodeTO with GithubSubscribableTO with GithubUniformResourceLocatableTO {
 
     override def toString(): String = {

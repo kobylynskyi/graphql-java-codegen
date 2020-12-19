@@ -31,6 +31,14 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         return SCALA_PRIMITIVE_TYPES.contains(scalaType);
     }
 
+    public static boolean isScalaOption(String scalaType) {
+        return scalaType.startsWith(SCALA_UTIL_OPTIONAL + "[") && scalaType.endsWith("]");
+    }
+
+    public static boolean isScalaCollection(String scalaType) {
+        return scalaType.startsWith(SCALA_UTIL_LIST + "[") && scalaType.endsWith("]");
+    }
+
     @Override
     public String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory) {
         return getGenericsString(mappingContext, SCALA_UTIL_LIST, type);

@@ -1,17 +1,18 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
 case class GithubAcceptTopicSuggestionInputTO(
-    val clientMutationId: String,
+    clientMutationId: String,
     @javax.validation.constraints.NotNull
-    val name: String,
+    name: String,
     @javax.validation.constraints.NotNull
-    val repositoryId: String
+    repositoryId: String
 ) {
 
     override def toString(): String = {
