@@ -165,7 +165,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
-    sLog.value.info(s"Version is <${BuildInfo.toString}>") // NO toString
+    sLog.value.info(s"Version is <${BuildInfo.toString}>")
     mappingConfig
   }
 
