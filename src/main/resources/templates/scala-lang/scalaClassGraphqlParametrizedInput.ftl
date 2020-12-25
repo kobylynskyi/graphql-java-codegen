@@ -54,9 +54,13 @@ case class ${className}(
 ) extends GraphQLParametrizedInput {
 
     override def toString(): String = {<#--There is no Option[Seq[T]]-->
+    <#if fields?has_content>
         Seq(<#list fields as field><#assign getMethod = ".get"><#assign asJava = ".asJava">
             <#if MapperUtil.isScalaPrimitive(field.type)>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name})<#if field_has_next>,</#if><#elseif MapperUtil.isScalaOption(field.type)>if (${field.name}.isDefined) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${getMethod}) else ""<#if field_has_next>,</#if><#else>if (${field.name} != null)<#if MapperUtil.isScalaCollection(field.type)> "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${asJava}) else ""<#if field_has_next>,</#if><#else> "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>,</#if></#if></#if></#list>
         ).filter(_ != "").mkString("(", ",", ")")
+    <#else>
+        "()"
+    </#if>
     }
 
 }
