@@ -29,11 +29,9 @@ object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile, configurationP
 class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val configurationPostfix: String = "") extends AutoPlugin with Compat {
   self =>
 
-  //TODO if impl GraphQLCodegenConfiguration, can not use settingKey in override method
-
   //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
-  private val jValidation = "2.0.1.Final"
-  private val codegen = "4.0.2-SNAPSHOT"
+  private val jValidation = BuildInfo.jValidationVersion
+  private val codegen = BuildInfo.version
 
   object GlobalImport extends GraphQLCodegenKeys {
 
@@ -121,7 +119,6 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
 
-    //TODO use builder
     val mappingConfig = new MappingConfig
     mappingConfig.setPackageName((generatePackageName in GraphQLCodegenConfig).value.orNull)
     mappingConfig.setCustomTypesMapping((customTypesMapping in GraphQLCodegenConfig).value)
@@ -168,8 +165,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
-
-    //    sLog.value.debug(s"Current mapping config is <$mappingConfig>") // NO toString
+    sLog.value.info(s"Version is <${BuildInfo.toString}>")
     mappingConfig
   }
 

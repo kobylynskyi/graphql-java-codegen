@@ -1,21 +1,19 @@
-import Dependencies._
 import sbtrelease.ReleaseStateTransformations._
 
 name := "graphql-codegen-sbt-plugin"
 // must be equals to oss Group Id
 organization := "io.github.jxnu-liguobin"
+val jValidationVersion = settingKey[String]("default java Validation api")
+jValidationVersion := "2.0.1.Final"
 
-// publish only root project
-//publish / skip := true
-
-//keep version is equals with parent project `graphql-java-codegen`
+// keep version is equals with parent project `graphql-java-codegen`.
+// Plugin don't need to care about the scala version, just the SBT version.
 lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin", base = file(".")).
-  enablePlugins(SbtPlugin).
+  enablePlugins(SbtPlugin, BuildInfoPlugin).
   settings(Publishing.publishSettings).
   settings(
     sbtPlugin := true,
-    scalaVersion := Versions.scala212,
-    crossScalaVersions := List(Versions.scala212, Versions.scala211),
+    scalaVersion := "2.12.12",
     scriptedBufferLog := false,
     scriptedLaunchOpts += s"-Dplugin.version=${version.value}",
     scalacOptions += "-target:jvm-1.8",
@@ -32,5 +30,10 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
       setNextVersion,
       commitNextVersion,
       pushChanges
-    )).
-  settings(Compiles.selfDependencies)
+    ),
+    libraryDependencies ++= Seq(
+      "io.github.kobylynskyi" % "graphql-java-codegen" % (version in ThisBuild).value
+    ),
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, jValidationVersion),
+    buildInfoPackage := "io.github.dreamylost.graphql.codegen"
+  )
