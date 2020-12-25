@@ -10,9 +10,9 @@ import java.util.StringJoiner
 data class Super(
     @Deprecated("this is deprecated in GraphQL")
     val `is`: String?,
-    val `in`: Char,
-    val Int: Super,
-    val date: String
+    val `in`: Char?,
+    val Int: Super?,
+    val date: String?
 ) {
 
     companion object {
@@ -25,18 +25,24 @@ data class Super(
         if (`is` != null) {
             joiner.add("is: " + GraphQLRequestSerializer.getEntry(`is`))
         }
-        joiner.add("in: " + GraphQLRequestSerializer.getEntry(`in`))
-        joiner.add("Int: " + GraphQLRequestSerializer.getEntry(Int))
-        joiner.add("date: " + GraphQLRequestSerializer.getEntry(date))
+        if (`in` != null) {
+            joiner.add("in: " + GraphQLRequestSerializer.getEntry(`in`))
+        }
+        if (Int != null) {
+            joiner.add("Int: " + GraphQLRequestSerializer.getEntry(Int))
+        }
+        if (date != null) {
+            joiner.add("date: " + GraphQLRequestSerializer.getEntry(date))
+        }
         return joiner.toString()
     }
 
     class Builder {
 
         private var `is`: String? = null
-        private var `in`: Char = 0.toChar()
-        private lateinit var Int: Super
-        private lateinit var date: String
+        private var `in`: Char? = null
+        private var Int: Super? = null
+        private var date: String? = null
 
         @Deprecated("this is deprecated in GraphQL")
         fun setIs(`is`: String?): Builder {
@@ -44,17 +50,17 @@ data class Super(
             return this
         }
 
-        fun setIn(`in`: Char): Builder {
+        fun setIn(`in`: Char?): Builder {
             this.`in` = `in`
             return this
         }
 
-        fun setInt(Int: Super): Builder {
+        fun setInt(Int: Super?): Builder {
             this.Int = Int
             return this
         }
 
-        fun setDate(date: String): Builder {
+        fun setDate(date: String?): Builder {
             this.date = date
             return this
         }

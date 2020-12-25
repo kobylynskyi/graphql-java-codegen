@@ -77,18 +77,18 @@ case class ${className}(
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override </#if></#list></#if><#if !immutableModels>var <#else><#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>val </#if></#list></#if></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if field.type?starts_with("Option[")><#if field.defaultValue!= "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
+    <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override </#if></#list></#if><#if !immutableModels>var <#else><#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>val </#if></#list></#if></#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = <#if MapperUtil.isScalaOption(field.type)><#if field.defaultValue != "null">Some(${field.defaultValue})<#else>None</#if><#else>${field.defaultValue}</#if></#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {
 
 <#if toString>
     override def toString(): String = {
-    <#if fields?has_content>
+    <#if fields?has_content><#-- When you modify it, copy it out and make sure it is one line after modification, There is no Option[Seq[T]]. -->
         Seq(<#list fields as field><#assign getMethod = ""><#assign asJava = ""><#if MapperUtil.isScalaOption(field.type)><#assign getMethod = ".get"></#if><#if MapperUtil.isScalaCollection(field.type)><#assign asJava = ".asJava"></#if>
             <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else><#if MapperUtil.isScalaOption(field.type)>if (${field.name}.isDefined) <#else>if (${field.name} != null) </#if><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${getMethod}${asJava}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
         ).filter(_ != "").mkString("{", ",", "}")
-        <#else>
+        <#else><#--Keep it on one line to make sure the code style remains the same-->
         "{}"
     </#if>
     }
