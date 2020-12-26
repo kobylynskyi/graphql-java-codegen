@@ -1,0 +1,13 @@
+package com.kobylynskyi.graphql.interfaces;
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface BarBar extends Bar{
+
+    @javax.validation.constraints.NotNull
+    String getId();
+
+}

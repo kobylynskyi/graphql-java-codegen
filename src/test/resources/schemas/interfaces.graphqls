@@ -7,11 +7,15 @@ interface Bar {
     id: ID!
 }
 
-type Foo1 implements Foo{
+type Foo1 implements Foo {
     id: ID!
     bars: [Bar1]
 }
 
-type Bar1 implements Bar{
+type Bar1 implements Bar {
+    id: ID!
+}
+
+interface BarBar implements Bar {
     id: ID!
 }

@@ -5,6 +5,8 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDe
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
@@ -40,12 +42,21 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, fieldDefinitionToParameterMapper.mapFields(mappingContext, definition.getFieldDefinitions(), definition));
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());
         return dataModel;
+    }
+
+    private Set<String> getInterfaces(MappingContext mappingContext,
+                                      ExtendedInterfaceTypeDefinition definition) {
+        return definition.getImplements()
+                .stream()
+                .map(anImplement -> graphQLTypeMapper.getLanguageType(mappingContext, anImplement))
+                .collect(Collectors.toSet());
     }
 
 }
