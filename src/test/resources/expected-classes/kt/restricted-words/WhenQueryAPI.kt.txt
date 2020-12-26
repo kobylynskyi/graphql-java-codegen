@@ -8,6 +8,6 @@ package com.kobylynskyi.graphql.codegen.prot
 interface WhenQueryAPI {
 
     @Throws(Exception::class)
-    fun `when`(final: List<Char>): String?
+    fun `when`(final: List<Char?>?): String?
 
 }

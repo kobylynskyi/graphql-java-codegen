@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import java.util.StringJoiner
 /**
  * Parametrized input for field fun in type Query
  */
@@ -10,4 +11,13 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
 )
 data class QueryFunParametrizedInput(
     val final: Int?
-) : GraphQLParametrizedInput
+) : GraphQLParametrizedInput {
+
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "( ", " )")
+        if (final != null) {
+            joiner.add("final: " + GraphQLRequestSerializer.getEntry(final))
+        }
+        return joiner.toString()
+    }
+}

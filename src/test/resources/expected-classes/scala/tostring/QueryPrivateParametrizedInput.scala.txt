@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import scala.collection.JavaConverters._
 import TestEnum._
 
 /**
@@ -11,7 +12,23 @@ import TestEnum._
     date = "2020-12-31T23:59:59-0500"
 )
 case class QueryPrivateParametrizedInput(
-    int: Option[Int],
+    int: Int,
+    intOpt: Option[Int],
+    seq1: Seq[Option[Int]],
+    seq2: Seq[Int],
     `new`: String,
     enum: TestEnum = TestEnum.long
-) extends GraphQLParametrizedInput
+) extends GraphQLParametrizedInput {
+
+    override def toString(): String = {
+        Seq(
+            "int: " + GraphQLRequestSerializer.getEntry(int),
+            if (intOpt.isDefined) "intOpt: " + GraphQLRequestSerializer.getEntry(intOpt.get) else "",
+            if (seq1 != null) "seq1: " + GraphQLRequestSerializer.getEntry(seq1.asJava) else "",
+            if (seq2 != null) "seq2: " + GraphQLRequestSerializer.getEntry(seq2.asJava) else "",
+            if (`new` != null) "new: " + GraphQLRequestSerializer.getEntry(`new`) else "",
+            if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum) else ""
+        ).filter(_ != "").mkString("(", ",", ")")
+    }
+
+}

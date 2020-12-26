@@ -4,7 +4,7 @@ schema {
 
 type Query {
     native: String
-    private(int: Int, new: String, enum: TestEnum = long): Synchronized
+    private(int: Int!, intOpt:Int, seq1:[Int], seq2:[Int!], new: String, enum: TestEnum = long): Synchronized
     case(final: [char]): ID
     int(final: Int): char
     super: String

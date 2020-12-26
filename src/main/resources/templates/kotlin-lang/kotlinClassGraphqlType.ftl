@@ -87,7 +87,7 @@ data class ${className}(
         <#if toStringForRequest>
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
         <#else>
-        <#if field.type == "String">
+        <#if field.type == "String?">
             joiner.add("${field.originalName}: \"${field.name}\"")
         <#else>
             joiner.add(${field.originalName}: ${field.name}")
