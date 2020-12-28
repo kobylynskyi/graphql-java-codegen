@@ -38,8 +38,8 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
 <#if fields?has_content>
 <#list fields as field>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
 <#list field.annotations as annotation>
     @${annotation}
@@ -68,8 +68,8 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
     public ${field.type} get${field.name?cap_first}() {
         return ${field.name};
@@ -82,8 +82,8 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
@@ -176,8 +176,8 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 </#list>
          */
 </#if>
-<#if field.deprecated>
-        @Deprecated
+<#if field.deprecated?has_content>
+        @${field.deprecated.annotation}
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};

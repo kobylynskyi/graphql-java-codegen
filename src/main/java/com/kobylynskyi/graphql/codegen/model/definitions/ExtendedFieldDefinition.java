@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
+import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
 import graphql.language.Description;
@@ -8,6 +11,7 @@ import graphql.language.FieldDefinition;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -24,10 +28,10 @@ public class ExtendedFieldDefinition extends FieldDefinition {
         this.fromExtension = fromExtension;
     }
 
-    public boolean isDeprecated() {
-        return getDirectives().stream()
-                .map(Directive::getName)
-                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
+    public DeprecatedDefinition getDeprecated(MappingContext mappingContext) {
+        Optional<Directive> deprecatedDirective = getDirectives().parallelStream().
+                filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName())).findFirst();
+        return deprecatedDirective.map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive)).orElse(null);
     }
 
     public List<String> getJavaDoc() {

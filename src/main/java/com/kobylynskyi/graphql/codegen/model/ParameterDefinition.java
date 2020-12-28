@@ -16,7 +16,7 @@ import static java.util.Collections.emptyList;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), false, false);
+            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), null, false);
 
     private String type;
     /**
@@ -30,7 +30,7 @@ public class ParameterDefinition {
     private String defaultValue;
     private List<String> annotations = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
-    private boolean deprecated;
+    private DeprecatedDefinition deprecated;
     private boolean serializeUsingObjectMapper;
 
     public ParameterDefinition() {
@@ -38,7 +38,7 @@ public class ParameterDefinition {
 
     public ParameterDefinition(String type, String name, String originalName, String defaultValue,
                                List<String> annotations, List<String> javaDoc,
-                               boolean deprecated, boolean serializeUsingObjectMapper) {
+                               DeprecatedDefinition deprecated, boolean serializeUsingObjectMapper) {
         this.type = type;
         this.name = name;
         this.originalName = originalName;
@@ -97,11 +97,11 @@ public class ParameterDefinition {
         this.javaDoc = javaDoc;
     }
 
-    public boolean isDeprecated() {
+    public DeprecatedDefinition getDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(DeprecatedDefinition deprecated) {
         this.deprecated = deprecated;
     }
 

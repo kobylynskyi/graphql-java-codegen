@@ -31,8 +31,8 @@ class ${className} extends GraphQLResult[JMap[String, ${returnTypeName}]] {
 </#list>
      */
 </#if>
-<#if deprecated>
-    @Deprecated
+<#if deprecated?has_content>
+    @${deprecated.annotation}(message = "${deprecated.reason}")
 </#if>
     def ${methodName}(): ${returnTypeName} = {
         val data: JMap[String, ${returnTypeName}] = getData

@@ -1,12 +1,12 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
-import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
 
 import java.util.Collections;
@@ -50,10 +50,8 @@ public class EnumDefinitionToDataModelMapper {
                 .collect(Collectors.toSet());
     }
 
-    private static boolean isDeprecated(DirectivesContainer<?> directivesContainer) {
-        return directivesContainer.getDirectives().stream()
-                .map(Directive::getName)
-                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
+    public DeprecatedDefinition getDeprecated(MappingContext mappingContext, DirectivesContainer<?> directivesContainer) {
+        return graphQLTypeMapper.getDeprecated(mappingContext, directivesContainer);
     }
 
     private static List<String> getJavaDoc(graphql.language.EnumValueDefinition def) {
@@ -101,7 +99,7 @@ public class EnumDefinitionToDataModelMapper {
                         dataModelMapper.capitalizeIfRestricted(mappingContext, f.getName()),
                         f.getName(),
                         getJavaDoc(f),
-                        isDeprecated(f)))
+                        getDeprecated(mappingContext, f)))
                 .collect(Collectors.toList());
     }
 

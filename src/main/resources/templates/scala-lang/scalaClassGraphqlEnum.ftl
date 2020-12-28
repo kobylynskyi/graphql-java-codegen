@@ -31,8 +31,8 @@ object ${className} extends Enumeration<#if implements?has_content> with<#list i
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
     val ${field.javaName}: Value = Value("${field.graphqlName}")
 </#list>

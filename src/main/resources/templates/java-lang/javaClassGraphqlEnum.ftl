@@ -29,8 +29,8 @@ public enum ${className}<#if implements?has_content> implements <#list implement
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
     ${field.javaName}("${field.graphqlName}")<#if field_has_next>,<#else>;</#if>
 </#list>

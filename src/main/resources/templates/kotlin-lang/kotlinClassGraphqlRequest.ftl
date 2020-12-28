@@ -49,8 +49,8 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated("this is deprecated in GraphQL")
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
     fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}) {
         this.input["${field.originalName}"] = ${field.name}
@@ -124,9 +124,9 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
         </#list>
          */
     </#if>
-    <#if field.deprecated>
-        @Deprecated("this is deprecated in GraphQL")
-        </#if>
+    <#if field.deprecated?has_content>
+        @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
+    </#if>
         fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder {
             this.${field.name} = ${field.name}
             return this

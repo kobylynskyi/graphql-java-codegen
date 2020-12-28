@@ -1,0 +1,14 @@
+package com.github.graphql
+
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+trait Node {
+
+    @deprecated(message = "test deprecated with msg")
+    @javax.validation.constraints.NotNull
+    val id: String
+
+}

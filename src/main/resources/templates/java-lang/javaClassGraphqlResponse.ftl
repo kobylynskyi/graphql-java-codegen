@@ -35,8 +35,8 @@ public class ${className} extends GraphQLResult<Map<String, ${returnTypeName}>> 
 </#list>
      */
 </#if>
-<#if deprecated>
-    @Deprecated
+<#if deprecated?has_content>
+    @${deprecated.annotation}
 </#if>
     public ${returnTypeName} ${methodName}() {
         Map<String, ${returnTypeName}> data = getData();

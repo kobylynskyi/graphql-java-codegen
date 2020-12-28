@@ -188,7 +188,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setAnnotations(annotations);
         operation.setParameters(parameters);
         operation.setJavaDoc(fieldDef.getJavaDoc());
-        operation.setDeprecated(fieldDef.isDeprecated());
+        operation.setDeprecated(fieldDef.getDeprecated(mappingContext));
         operation.setThrowsException(mappingContext.getGenerateApisWithThrowsException());
         return operation;
     }
@@ -202,7 +202,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = graphQLTypeMapper.getLanguageType(mappingContext, new TypeName(parentTypeName));
             String parentObjectParamName = dataModelMapper.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.isDeprecated(), false));
+            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.getDeprecated(mappingContext), false));
         }
 
         // 2. Next parameters are input values

@@ -10,7 +10,7 @@ public class ProjectionParameterDefinition {
     private String type;
     private String name;
     private String methodName;
-    private boolean deprecated;
+    private DeprecatedDefinition deprecated;
     private String parametrizedInputClassName;
 
     public String getType() {
@@ -37,11 +37,11 @@ public class ProjectionParameterDefinition {
         this.methodName = methodName;
     }
 
-    public boolean isDeprecated() {
+    public DeprecatedDefinition getDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(DeprecatedDefinition deprecated) {
         this.deprecated = deprecated;
     }
 

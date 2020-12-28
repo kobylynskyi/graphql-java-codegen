@@ -35,8 +35,8 @@ public interface ${className} <#if implements?has_content>extends <#list impleme
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
 <#list field.annotations as annotation>
     @${annotation}

@@ -30,8 +30,8 @@ public class ${className} implements GraphQLParametrizedInput {
 
 <#if fields?has_content>
 <#list fields as field>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
 <#list field.annotations as annotation>
     @${annotation}
@@ -60,8 +60,8 @@ public class ${className} implements GraphQLParametrizedInput {
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
     public ${className} ${field.name}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};

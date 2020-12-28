@@ -58,8 +58,8 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
     def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Unit = {
         <#if MapperUtil.isScalaPrimitive(field.type)>
@@ -138,8 +138,8 @@ object ${className} {
         </#list>
          */
         </#if>
-        <#if field.deprecated>
-        @Deprecated
+        <#if field.deprecated?has_content>
+        @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
         </#if>
         def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}

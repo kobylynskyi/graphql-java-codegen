@@ -55,8 +55,8 @@ class ${className} extends GraphQLResponseProjection {
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
     def ${field.methodName}(<#if field.type?has_content>subProjection: ${field.type}</#if>): ${className} = {
         ${field.methodName}(<#if field.parametrizedInputClassName?has_content></#if>null.asInstanceOf[String]<#if field.type?has_content>, subProjection</#if>)

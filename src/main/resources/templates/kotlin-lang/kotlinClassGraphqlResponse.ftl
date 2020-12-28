@@ -33,8 +33,8 @@ open class ${className} : GraphQLResult<MutableMap<String, ${returnTypeName}>>()
 </#list>
      */
 </#if>
-<#if deprecated>
-    @Deprecated("this is deprecated in GraphQL")
+<#if deprecated?has_content>
+    @${deprecated.annotation}(message = "${deprecated.reason}")
 </#if>
     fun ${methodName}(): ${returnTypeName} {
         val data: MutableMap<String, ${returnTypeName}> = super.getData()

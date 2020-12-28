@@ -67,7 +67,7 @@ public class InputValueDefinitionToParameterMapper {
         parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
         parameter.setDefaultValue(valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
         parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
-        parameter.setDeprecated(isDeprecated(inputValueDefinition));
+        parameter.setDeprecated(graphQLTypeMapper.getDeprecated(mappingContext, inputValueDefinition));
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
     }
