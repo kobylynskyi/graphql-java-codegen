@@ -46,7 +46,7 @@ class GraphQLCodegenInterfacesTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("Bar.kt", "Bar1.kt", "Foo.kt", "Foo1.kt"), generatedFileNames);
+        assertEquals(Arrays.asList("Bar.kt", "Bar1.kt", "BarBar.kt", "Foo.kt", "Foo1.kt"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/kt/interfaces/%s.txt",
