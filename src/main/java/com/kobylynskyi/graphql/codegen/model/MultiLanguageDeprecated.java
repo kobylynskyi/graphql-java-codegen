@@ -9,10 +9,13 @@ import graphql.language.StringValue;
  */
 public class MultiLanguageDeprecated {
 
-    private final static String REASON = "reason";
-    private final static String SCALA_ANNOTATION = "deprecated";
-    private final static String JAVA_ANNOTATION = "Deprecated";
-    private final static String KOTLIN_ANNOTATION = "Deprecated";
+    private static final String REASON = "reason";
+    private static final String SCALA_ANNOTATION = "deprecated";
+    private static final String JAVA_ANNOTATION = "Deprecated";
+    private static final String KOTLIN_ANNOTATION = "Deprecated";
+
+    private MultiLanguageDeprecated() {
+    }
 
     public static DeprecatedDefinition getLanguageDeprecated(GeneratedLanguage generatedLanguage, Directive directive) {
         String msg = null;

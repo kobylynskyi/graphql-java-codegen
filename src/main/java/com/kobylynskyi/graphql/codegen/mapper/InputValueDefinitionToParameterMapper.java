@@ -3,8 +3,6 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
-import graphql.language.Directive;
-import graphql.language.DirectivesContainer;
 import graphql.language.InputValueDefinition;
 
 import java.util.List;
@@ -28,12 +26,6 @@ public class InputValueDefinitionToParameterMapper {
         this.valueMapper = valueMapper;
         this.graphQLTypeMapper = graphQLTypeMapper;
         this.dataModelMapper = dataModelMapper;
-    }
-
-    private static boolean isDeprecated(DirectivesContainer<?> node) {
-        return node.getDirectives().stream()
-                .map(Directive::getName)
-                .anyMatch(Deprecated.class.getSimpleName()::equalsIgnoreCase);
     }
 
     /**

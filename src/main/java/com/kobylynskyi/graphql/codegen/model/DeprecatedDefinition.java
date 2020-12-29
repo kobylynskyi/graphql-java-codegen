@@ -6,7 +6,7 @@ package com.kobylynskyi.graphql.codegen.model;
  */
 public class DeprecatedDefinition {
 
-    private final static String DEFAULT_MSG = "No longer supported";
+    private static final String DEFAULT_MSG = "No longer supported";
 
     // For different languages, real implementation.
     private final String annotation;
