@@ -319,11 +319,11 @@ public interface GraphQLTypeMapper {
     }
 
     default DeprecatedDefinition getDeprecated(MappingContext mappingContext, DirectivesContainer<?> directivesContainer) {
-        return directivesContainer.getDirectives().
-                stream().
-                filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName())).
-                findFirst().
-                map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
+        return directivesContainer.getDirectives()
+                .stream()
+                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
+                .findFirst()
+                .map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
                 .orElse(null);
     }
 
