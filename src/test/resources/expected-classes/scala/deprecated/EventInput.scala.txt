@@ -1,0 +1,16 @@
+package com.github.graphql
+
+import scala.collection.JavaConverters._
+import Status._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class EventInput(
+    @deprecated(message = "test deprecated with msg")
+    @javax.validation.constraints.NotNull
+    status: Status
+) {
+
+}

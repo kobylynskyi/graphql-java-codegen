@@ -50,8 +50,8 @@ public class ${className} implements GraphQLOperationRequest {
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.input.put("${field.originalName}", ${field.name});
@@ -137,8 +137,8 @@ public class ${className} implements GraphQLOperationRequest {
 </#list>
          */
 </#if>
-<#if field.deprecated>
-        @Deprecated
+<#if field.deprecated?has_content>
+        @${field.deprecated.annotation}
 </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};

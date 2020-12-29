@@ -29,8 +29,8 @@ enum class ${className}(val graphqlName: String)<#if implements?has_content> : <
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated("this is deprecated in GraphQL")
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
     ${field.javaName}("${field.graphqlName}")<#if field_has_next>,
 <#else></#if>

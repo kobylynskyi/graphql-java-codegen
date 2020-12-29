@@ -8,7 +8,7 @@ import java.util.StringJoiner
     date = "2020-12-31T23:59:59-0500"
 )
 data class Super(
-    @Deprecated("this is deprecated in GraphQL")
+    @Deprecated(message = "We have decided that this is not canon")
     val `is`: String?,
     val `in`: Char?,
     val Int: Super?,
@@ -44,7 +44,7 @@ data class Super(
         private var Int: Super? = null
         private var date: String? = null
 
-        @Deprecated("this is deprecated in GraphQL")
+        @Deprecated(message = "We have decided that this is not canon")
         fun setIs(`is`: String?): Builder {
             this.`is` = `is`
             return this

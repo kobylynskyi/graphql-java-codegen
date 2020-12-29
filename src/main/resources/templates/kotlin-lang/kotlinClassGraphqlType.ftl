@@ -59,8 +59,8 @@ class ${className}()<#if implements?has_content> : <#list implements as interfac
 data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
-    <#if field.deprecated>
-    @Deprecated("this is deprecated in GraphQL")<#-- Custom messages should be supported in the future  -->
+    <#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
     </#if><#-- Properties of multiple interfaces should not have duplicate names  -->
     <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override
     </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@get:${annotation}
@@ -142,8 +142,8 @@ data class ${className}(
         </#list>
          */
         </#if>
-        <#if field.deprecated>
-        @Deprecated("this is deprecated in GraphQL")
+        <#if field.deprecated?has_content>
+        @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
         </#if>
         fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder {
             this.${field.name} = ${field.name}

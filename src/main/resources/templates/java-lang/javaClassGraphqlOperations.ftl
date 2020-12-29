@@ -29,8 +29,8 @@ public interface ${className}<#if implements?has_content> extends <#list impleme
 </#list>
      */
 </#if>
-<#if operation.deprecated>
-    @Deprecated
+<#if operation.deprecated?has_content>
+    @${operation.deprecated.annotation}
 </#if>
 <#list operation.annotations as annotation>
     @${annotation}

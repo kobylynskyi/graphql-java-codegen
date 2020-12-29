@@ -52,8 +52,8 @@ trait ${className}<#if implements?has_content> extends<#list implements as inter
 </#list>
      */
 </#if>
-<#if field.deprecated>
-    @Deprecated
+<#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
 </#if>
 <#list field.annotations as annotation>
     @${annotation}

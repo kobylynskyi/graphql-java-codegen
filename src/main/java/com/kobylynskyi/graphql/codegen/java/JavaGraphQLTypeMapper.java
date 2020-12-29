@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.java;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -9,6 +10,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
@@ -85,6 +87,32 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
     @Override
     public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
         return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);
+    }
+
+    @Override
+    public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
+                                           String parentTypeName, boolean mandatory, boolean collection) {
+        Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
+        Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
+        String langTypeName;
+        boolean primitiveCanBeUsed = !collection;
+        boolean serializeUsingObjectMapper = false;
+        if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
+            langTypeName = customTypesMapping.get(parentTypeName + "." + name);
+            primitiveCanBeUsed = false;
+        } else if (customTypesMapping.containsKey(graphQLType)) {
+            langTypeName = customTypesMapping.get(graphQLType);
+        } else {
+            langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
+        }
+        if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
+            serializeUsingObjectMapper = true;
+        }
+
+        return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
 }

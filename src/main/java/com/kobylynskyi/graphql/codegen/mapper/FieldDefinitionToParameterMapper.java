@@ -120,7 +120,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
         parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
-        parameter.setDeprecated(fieldDef.isDeprecated());
+        parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
     }
@@ -147,7 +147,7 @@ public class FieldDefinitionToParameterMapper {
             parameter.setParametrizedInputClassName(
                     DataModelMapper.getParametrizedInputClassName(mappingContext, fieldDef, parentTypeDef));
         }
-        parameter.setDeprecated(fieldDef.isDeprecated());
+        parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
         return parameter;
     }
 

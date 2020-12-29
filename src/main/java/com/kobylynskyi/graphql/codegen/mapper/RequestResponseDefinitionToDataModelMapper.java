@@ -191,7 +191,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
-        dataModel.put(DEPRECATED, operationDef.isDeprecated());
+        dataModel.put(DEPRECATED, operationDef.getDeprecated(mappingContext));
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(METHOD_NAME, dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext, operationDef.getName()));
         dataModel.put(RETURN_TYPE_NAME, javaType);

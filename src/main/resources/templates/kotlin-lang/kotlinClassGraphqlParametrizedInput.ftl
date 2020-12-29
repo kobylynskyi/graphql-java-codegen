@@ -28,8 +28,8 @@ class ${className}() : GraphQLParametrizedInput {
 data class ${className}(
 <#if fields?has_content>
 <#list fields as field>
-    <#if field.deprecated>
-        @Deprecated("this is deprecated in GraphQL")
+    <#if field.deprecated?has_content>
+        @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
     </#if>
     <#list field.annotations as annotation>@get:${annotation}
     </#list>val ${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>

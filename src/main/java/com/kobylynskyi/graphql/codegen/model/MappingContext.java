@@ -282,7 +282,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     public Set<String> getEnumImportItSelfInScala() {
         // Only for scala
         if (GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) && enumImportItSelfInScala == null) {
-            enumImportItSelfInScala = this.document.getEnumDefinitions().parallelStream().map(this::getModelClassNameWithPrefixAndSuffix).collect(Collectors.toSet());
+            enumImportItSelfInScala = this.document.getEnumDefinitions().stream().map(this::getModelClassNameWithPrefixAndSuffix).collect(Collectors.toSet());
         }
         return enumImportItSelfInScala;
     }

@@ -61,8 +61,8 @@ trait ${className}<#if implements?has_content> extends <#list implements as inte
 </#list>
      */
 </#if>
-<#if operation.deprecated>
-    @Deprecated
+<#if operation.deprecated?has_content>
+    @${operation.deprecated.annotation}(message = "${operation.deprecated.reason}")
 </#if>
 <#list operation.annotations as annotation>
     @${annotation}

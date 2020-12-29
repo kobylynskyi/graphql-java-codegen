@@ -71,8 +71,8 @@ import ${enum}._
 case class ${className}(
 <#if fields?has_content>
 <#list fields as field>
-  <#if field.deprecated>
-    @Deprecated
+  <#if field.deprecated?has_content>
+    @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
   </#if>
 <#list field.annotations as annotation>
     @${annotation}
@@ -117,8 +117,8 @@ object ${className} {
         </#list>
          */
          </#if>
-        <#if field.deprecated>
-        @Deprecated
+        <#if field.deprecated?has_content>
+        @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
         </#if>
         def set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}): Builder = {
             this.${field.name} = ${field.name}

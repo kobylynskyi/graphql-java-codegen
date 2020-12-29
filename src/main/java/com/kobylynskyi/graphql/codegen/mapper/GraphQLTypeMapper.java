@@ -1,24 +1,14 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
-import graphql.language.Directive;
-import graphql.language.DirectivesContainer;
-import graphql.language.ListType;
-import graphql.language.NamedNode;
-import graphql.language.NonNullType;
-import graphql.language.Type;
-import graphql.language.TypeName;
+import graphql.language.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Map GraphQL type to language-specific type (java/scala/kotlin/etc)
@@ -213,9 +203,7 @@ public interface GraphQLTypeMapper {
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
-        } else if (mandatory && customTypesMapping.containsKey(getMandatoryType(graphQLType)) &&
-                !mappingContext.getGeneratedLanguage().equals(GeneratedLanguage.JAVA)){
-            //Java primitive types can't be used as generic parameters this, but Scala/Kotlin can
+        } else if (mandatory && customTypesMapping.containsKey(getMandatoryType(graphQLType))) {
             langTypeName = customTypesMapping.get(getMandatoryType(graphQLType));
         } else if (customTypesMapping.containsKey(graphQLType)) {
             langTypeName = customTypesMapping.get(graphQLType);
@@ -328,6 +316,15 @@ public interface GraphQLTypeMapper {
             }
         }
         return computedTypeName;
+    }
+
+    default DeprecatedDefinition getDeprecated(MappingContext mappingContext, DirectivesContainer<?> directivesContainer) {
+        return directivesContainer.getDirectives()
+                .stream()
+                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
+                .findFirst()
+                .map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
+                .orElse(null);
     }
 
 

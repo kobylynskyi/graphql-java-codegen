@@ -12,9 +12,9 @@ public class EnumValueDefinition {
     private final String javaName;
     private final String graphqlName;
     private final List<String> javaDoc;
-    private final boolean deprecated;
+    private final DeprecatedDefinition deprecated;
 
-    public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc, boolean deprecated) {
+    public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc, DeprecatedDefinition deprecated) {
         this.javaName = javaName;
         this.graphqlName = graphqlName;
         this.javaDoc = javaDoc;
@@ -33,7 +33,7 @@ public class EnumValueDefinition {
         return javaDoc;
     }
 
-    public boolean isDeprecated() {
+    public DeprecatedDefinition getDeprecated() {
         return deprecated;
     }
 }

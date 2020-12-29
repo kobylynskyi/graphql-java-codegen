@@ -24,7 +24,7 @@ public class OperationDefinition {
     private List<String> annotations = new ArrayList<>();
     private List<ParameterDefinition> parameters = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
-    private boolean deprecated;
+    private DeprecatedDefinition deprecated;
     private boolean throwsException;
 
     public String getName() {
@@ -75,11 +75,11 @@ public class OperationDefinition {
         this.javaDoc = javaDoc;
     }
 
-    public boolean isDeprecated() {
+    public DeprecatedDefinition getDeprecated() {
         return deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(DeprecatedDefinition deprecated) {
         this.deprecated = deprecated;
     }
 
