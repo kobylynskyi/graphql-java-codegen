@@ -27,12 +27,12 @@ public class ExtendedFieldDefinition extends FieldDefinition {
     }
 
     public DeprecatedDefinition getDeprecated(MappingContext mappingContext) {
-        return getDirectives().
-                stream().
-                filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName())).
-                findFirst().
-                map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive)).
-                orElse(null);
+        return getDirectives()
+                .stream()
+                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
+                .findFirst()
+                .map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
+                .orElse(null);
     }
 
     public List<String> getJavaDoc() {
