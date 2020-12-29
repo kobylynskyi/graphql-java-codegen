@@ -9,7 +9,7 @@ public class DeprecatedDefinition {
     // For different languages, real implementation.
     private final String annotation;
     private final String reason;
-    private String DEFAULT_MSG = "this is deprecated in GraphQL";
+    private final static String DEFAULT_MSG = "No longer supported";
 
     public DeprecatedDefinition(String annotation) {
         this.annotation = annotation;

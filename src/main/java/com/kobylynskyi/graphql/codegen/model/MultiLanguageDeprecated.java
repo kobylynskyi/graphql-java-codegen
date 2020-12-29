@@ -9,23 +9,25 @@ import graphql.language.StringValue;
  */
 public class MultiLanguageDeprecated {
 
+    private final static String REASON = "reason";
+    private final static String SCALA_ANNOTATION = "deprecated";
+    private final static String JAVA_ANNOTATION = "Deprecated";
+    private final static String KOTLIN_ANNOTATION = "Deprecated";
+
     public static DeprecatedDefinition getLanguageDeprecated(GeneratedLanguage generatedLanguage, Directive directive) {
-        String JAVA = "Deprecated";
-        String SCALA = "deprecated";
-        String KOTLIN = "Deprecated";
         String msg = null;
-        if (directive.getArguments().parallelStream().anyMatch(argument -> argument.getName().equals("reason"))) {
-            msg = ((StringValue) directive.getArgument("reason").getValue()).getValue();
+        if (directive.getArguments().stream().anyMatch(argument -> argument.getName().equals(REASON))) {
+            msg = ((StringValue) directive.getArgument(REASON).getValue()).getValue();
         }
         switch (generatedLanguage) {
             case KOTLIN:
-                return new DeprecatedDefinition(KOTLIN, msg);
+                return new DeprecatedDefinition(KOTLIN_ANNOTATION, msg);
             case SCALA:
-                return new DeprecatedDefinition(SCALA, msg);
+                return new DeprecatedDefinition(SCALA_ANNOTATION, msg);
             //ignore msg
             case JAVA:
             default:
-                return new DeprecatedDefinition(JAVA);
+                return new DeprecatedDefinition(JAVA_ANNOTATION);
         }
     }
 }
