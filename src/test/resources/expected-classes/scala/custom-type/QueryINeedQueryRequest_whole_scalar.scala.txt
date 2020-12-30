@@ -1,0 +1,46 @@
+package com.kobylynskyi.graphql.test1
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest
+import java.util.{ LinkedHashMap => JLinkedHashMap }
+import java.util.{ Map => JMap }
+import java.util.Objects
+import scala.collection.mutable
+import scala.collection.JavaConverters._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+class QueryINeedQueryRequest(alias: String) extends GraphQLOperationRequest {
+
+    private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
+    private final lazy val useObjectMapperForInputSerialization: mutable.Set[String] = mutable.Set()
+
+    def setInput(input: String): Unit = {
+        this.input.put("input", input)
+    }
+
+    override def getOperationType(): GraphQLOperation = QueryINeedQueryRequest.OPERATION_TYPE
+
+    override def getOperationName(): String = QueryINeedQueryRequest.OPERATION_NAME
+
+    override def getAlias(): String = if (alias != null) alias else QueryINeedQueryRequest.OPERATION_NAME
+
+    override def getInput(): JMap[String, java.lang.Object] = input
+
+    override def getUseObjectMapperForInputSerialization(): java.util.Set[String] = useObjectMapperForInputSerialization.asJava
+
+    override def toString(): String = Objects.toString(input)
+}
+
+object QueryINeedQueryRequest {
+
+    final val OPERATION_NAME: String = "queryINeed"
+    final val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.QUERY
+
+    def apply(alias: String) = new QueryINeedQueryRequest(alias)
+
+    def apply() = new QueryINeedQueryRequest(null)
+
+}

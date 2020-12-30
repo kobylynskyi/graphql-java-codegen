@@ -1,0 +1,22 @@
+package com.kobylynskyi.graphql.test1
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class ResponseContainingDate(
+    val a: java.time.ZonedDateTime?
+) {
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        if (a != null) {
+            joiner.add("a: " + GraphQLRequestSerializer.getEntry(a))
+        }
+        return joiner.toString()
+    }
+}

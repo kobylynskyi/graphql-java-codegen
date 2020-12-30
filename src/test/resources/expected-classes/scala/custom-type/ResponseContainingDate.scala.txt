@@ -1,0 +1,19 @@
+package com.kobylynskyi.graphql.test1
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import scala.collection.JavaConverters._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class ResponseContainingDate(
+    a: java.time.ZonedDateTime
+) {
+
+    override def toString(): String = {
+        Seq(
+            if (a != null) "a: " + GraphQLRequestSerializer.getEntry(a) else ""
+        ).filter(_ != "").mkString("{", ",", "}")
+    }
+}
