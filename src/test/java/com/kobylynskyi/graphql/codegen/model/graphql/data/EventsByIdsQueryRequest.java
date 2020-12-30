@@ -4,9 +4,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
@@ -14,7 +16,8 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     private static final String OPERATION_NAME = "eventsByIds";
 
     private String alias;
-    private Map<String, Object> input = new LinkedHashMap<>();
+    private final Map<String, Object> input = new LinkedHashMap<>();
+    private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
 
     public EventsByIdsQueryRequest() {
     }
@@ -53,6 +56,11 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForInputSerialization() {
+        return useObjectMapperForInputSerialization;
     }
 
     @Override

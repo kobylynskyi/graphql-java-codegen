@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
 
 public class GraphQLRequestSerializer {
@@ -83,11 +84,13 @@ public class GraphQLRequestSerializer {
 
     private static String buildQuery(GraphQLRequest graphQLRequest) {
         StringBuilder builder = new StringBuilder();
-        if (graphQLRequest.getRequest().getAlias() != null) {
-            builder.append(graphQLRequest.getRequest().getAlias()).append(": ");
+        GraphQLOperationRequest request = graphQLRequest.getRequest();
+        if (request.getAlias() != null) {
+            builder.append(request.getAlias()).append(": ");
         }
-        builder.append(graphQLRequest.getRequest().getOperationName());
-        Map<String, Object> input = graphQLRequest.getRequest().getInput();
+        builder.append(request.getOperationName());
+        Map<String, Object> input = request.getInput();
+        Set<String> useObjectMapperForInputSerialization = request.getUseObjectMapperForInputSerialization();
         if (requestHasInput(input)) {
             builder.append("(");
             Iterator<Map.Entry<String, Object>> inputEntryIterator = input.entrySet().iterator();
@@ -100,7 +103,8 @@ public class GraphQLRequestSerializer {
                     }
                     builder.append(inputEntry.getKey());
                     builder.append(": ");
-                    builder.append(getEntry(inputEntry.getValue()));
+                    boolean useObjectMapper = useObjectMapperForInputSerialization.contains(inputEntry.getKey());
+                    builder.append(getEntry(inputEntry.getValue(), useObjectMapper));
                     valueAdded = true;
                 }
             }

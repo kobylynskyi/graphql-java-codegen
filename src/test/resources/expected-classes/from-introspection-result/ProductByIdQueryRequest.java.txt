@@ -2,9 +2,11 @@ package com.kobylynskyi.graphql.test1;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 @javax.annotation.Generated(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
@@ -16,7 +18,8 @@ public class ProductByIdQueryRequest implements GraphQLOperationRequest {
     public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
 
     private String alias;
-    private Map<String, Object> input = new LinkedHashMap<>();
+    private final Map<String, Object> input = new LinkedHashMap<>();
+    private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
 
     public ProductByIdQueryRequest() {
     }
@@ -47,6 +50,11 @@ public class ProductByIdQueryRequest implements GraphQLOperationRequest {
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForInputSerialization() {
+        return useObjectMapperForInputSerialization;
     }
 
     @Override
