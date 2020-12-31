@@ -37,6 +37,7 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
     }
 
     private val input: MutableMap<String, Any?> = LinkedHashMap()
+    private val useObjectMapperForInputSerialization: MutableSet<String> = HashSet()
 
     constructor(): this(null)
 
@@ -54,6 +55,9 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
 </#if>
     fun set${field.name?replace("`", "")?cap_first}(${field.name}: ${field.type}) {
         this.input["${field.originalName}"] = ${field.name}
+        <#if field.serializeUsingObjectMapper>
+        this.useObjectMapperForInputSerialization.add("${field.originalName}");
+        </#if>
     }
 
 </#list>
@@ -66,7 +70,9 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
 
     override fun getInput(): MutableMap<String, Any?> = input
 
+    override fun getUseObjectMapperForInputSerialization(): MutableSet<String> = useObjectMapperForInputSerialization
 <#if equalsAndHashCode>
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true

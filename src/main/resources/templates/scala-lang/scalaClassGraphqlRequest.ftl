@@ -10,6 +10,8 @@ import java.util.{ Map => JMap }
 <#if toString || equalsAndHashCode>
 import java.util.Objects
 </#if>
+import scala.collection.mutable
+import scala.collection.JavaConverters._
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
@@ -48,6 +50,7 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
 
     <#--use Any be prepared for any contingency-->
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
+    private final lazy val useObjectMapperForInputSerialization: mutable.Set[String] = mutable.Set()
 
 <#if fields?has_content>
 <#list fields as field>
@@ -67,6 +70,9 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
         <#else>
         this.input.put("${field.originalName}", ${field.name})
         </#if>
+        <#if field.serializeUsingObjectMapper>
+        this.useObjectMapperForInputSerialization.add("${field.originalName}");
+        </#if>
     }
 
 </#list>
@@ -78,6 +84,8 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
     override def getAlias(): String = if (alias != null) alias else ${className}.OPERATION_NAME
 
     override def getInput(): JMap[String, java.lang.Object] = input
+
+    override def getUseObjectMapperForInputSerialization(): java.util.Set[String] = useObjectMapperForInputSerialization.asJava
 <#if equalsAndHashCode>
 
     override def equals(obj: Any): Boolean = {
