@@ -4,11 +4,13 @@ package ${package};
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 <#if toString || equalsAndHashCode>
 import java.util.Objects;
 </#if>
+import java.util.Set;
 
 <#if javaDoc?has_content>
 /**
@@ -32,7 +34,8 @@ public class ${className} implements GraphQLOperationRequest {
     public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.${operationType};
 
     private String alias;
-    private Map<String, Object> input = new LinkedHashMap<>();
+    private final Map<String, Object> input = new LinkedHashMap<>();
+    private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
 
     public ${className}() {
     }
@@ -55,6 +58,9 @@ public class ${className} implements GraphQLOperationRequest {
 </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.input.put("${field.originalName}", ${field.name});
+        <#if field.serializeUsingObjectMapper>
+        this.useObjectMapperForInputSerialization.add("${field.originalName}");
+        </#if>
     }
 
 </#list>
@@ -77,6 +83,11 @@ public class ${className} implements GraphQLOperationRequest {
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForInputSerialization() {
+        return useObjectMapperForInputSerialization;
     }
 
 <#if equalsAndHashCode>

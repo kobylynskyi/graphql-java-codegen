@@ -9,7 +9,8 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
 
     private String alias;
-    private Map<String, Object> input = new LinkedHashMap<>();
+    private final Map<String, Object> input = new LinkedHashMap<>();
+    private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
 
     public EventsByCategoryAndStatusQueryRequest() {
     }
@@ -44,6 +45,11 @@ public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRe
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForInputSerialization() {
+        return useObjectMapperForInputSerialization;
     }
 
     @Override

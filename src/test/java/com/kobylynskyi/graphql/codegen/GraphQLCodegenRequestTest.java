@@ -216,4 +216,16 @@ class GraphQLCodegenRequestTest {
                 getFileByName(files, "Event.java"));
     }
 
+    @Test
+    void generate_UseObjectMapperToSerializeFields_Parameter() throws Exception {
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("ZonedDateTime"));
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/QueryINeedQueryRequest_custom_serializer.java.txt"),
+                getFileByName(files, "QueryINeedQueryRequest.java"));
+    }
+
 }

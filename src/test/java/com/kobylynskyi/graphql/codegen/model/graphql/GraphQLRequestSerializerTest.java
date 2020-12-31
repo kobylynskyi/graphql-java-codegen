@@ -11,6 +11,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.data.EventsByIdsQueryReques
 import com.kobylynskyi.graphql.codegen.model.graphql.data.IssueResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.OrganizationResponseProjection;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.Status;
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateDate2MutationRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateDateMutationRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueMutationRequest;
@@ -262,6 +263,21 @@ class GraphQLRequestSerializerTest {
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "mutation { updateDate(input: { " +
                 "dateTime: \"2020-07-31T03:17:17.884Z\" }) }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_UseObjectMapperForQueryParameter(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
+                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+
+        UpdateDate2MutationRequest updateDateMutationRequest = new UpdateDate2MutationRequest();
+        updateDateMutationRequest.setInput(ZonedDateTime.parse("2020-07-30T22:17:17.884-05:00[America/Chicago]"));
+        GraphQLRequest graphQLRequest = new GraphQLRequest(updateDateMutationRequest);
+
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "mutation { updateDate(input: \"2020-07-31T03:17:17.884Z\") }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
