@@ -30,7 +30,7 @@ public class GraphQLRequestSerializer {
         if (graphQLRequests.getRequests().isEmpty()) {
             throw new IllegalArgumentException("At least one GraphQL request should be supplied");
         }
-        GraphQLOperation operation = GraphQLOperation.QUERY;
+        GraphQLOperation operation = graphQLRequests.getRequests().get(0).getRequest().getOperationType();
         StringBuilder queryBuilder = new StringBuilder();
         for (GraphQLRequest request : graphQLRequests.getRequests()) {
             if (request == null || request.getRequest() == null) {
@@ -40,7 +40,6 @@ public class GraphQLRequestSerializer {
                 throw new IllegalArgumentException("Only operations of the same type (query/mutation/subscription) can be executed at once");
             }
             queryBuilder.append(buildQuery(request)).append(" ");
-            operation = request.getRequest().getOperationType();
         }
         return jsonQuery(operationWrapper(queryBuilder.toString(), operation));
     }
