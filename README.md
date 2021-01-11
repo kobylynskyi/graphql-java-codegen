@@ -25,12 +25,13 @@ Following classes can be generated based on your GraphQL schema:
 * Generate classes in Java, Kotlin or Scala.
 * Recursive schemas lookup by file name pattern.
 * Generate code based on GraphQL schema or GraphQL Query Introspection Result.
-* Generate POJOs with: Builder pattern, immutable fields, `toString()`, `equals()` and `hashCode()`, etc.
-* Flexible API interfaces naming conventions (based on schema file name, folder name, etc)
-* Ability to define custom java package names for model and API classes.
-* Ability to define custom prefix/suffix for model, API, type resolver, request, response classes.
-* Ability to define custom annotations (e.g.: validation annotations for your model classes or based on GraphQL directives)
-* Ability to define custom configuration for Relay support.
+* Generate POJOs with or without: Builder pattern, immutable fields, `toString()`, `equals()` and `hashCode()`, etc.
+* Flexible API interfaces naming conventions (based on schema file name, folder name, etc.)
+* Custom java package names for model and API classes.
+* Custom prefix/suffix for model, API, type resolver, request, response classes.
+* Custom annotations for generated classes (e.g.: validation annotations for generated model classes or specific type fields, annotations for GraphQL directives, etc.)
+* Relay support.
+* Ability to define codegen configuration via external json file.
 
 
 **For the full list of codegen configs please refer to: [Codegen Options](docs/codegen-options.md)**
