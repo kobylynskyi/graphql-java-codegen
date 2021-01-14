@@ -2,6 +2,8 @@
 package ${package}
 
 </#if>
+import com.fasterxml.jackson.core.`type`.TypeReference
+
 <#if javaDoc?has_content>
 /**
 <#list javaDoc as javaDocLine>
@@ -39,3 +41,7 @@ object ${className} extends Enumeration<#if implements?has_content> with<#list i
 </#if>
 
 }
+<#if serializationLibrary == 'JACKSON'>
+
+class ${className}TypeRefer extends TypeReference[${className}.type]
+</#if>
