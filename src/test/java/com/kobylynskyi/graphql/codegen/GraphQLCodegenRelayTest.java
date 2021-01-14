@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,6 +53,19 @@ class GraphQLCodegenRelayTest {
                     new File(String.format("src/test/resources/expected-classes/relay/%s.txt", file.getName())),
                     file);
         }
+    }
+
+    @Test
+    void generateServerSideRelayClasses_CustomGenericsConnectionType() throws Exception {
+        mappingConfig.getRelayConfig()
+                .setConnectionType("reactor.core.publisher.Mono<graphql.relay.Connection<%s>>");
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/relay/UsersQueryResolver_reactive.java.txt"),
+                getFileByName(files, "UsersQueryResolver.java"));
+
     }
 
 }
