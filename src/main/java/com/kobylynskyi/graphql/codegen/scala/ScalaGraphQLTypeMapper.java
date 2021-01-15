@@ -88,7 +88,11 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     @Override
     public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
-        return String.format("%s[%s]", genericType, typeParameter);
+        if (genericType.contains("%s")) {
+            return String.format(genericType, typeParameter);
+        } else {
+            return String.format("%s[%s]", genericType, typeParameter);
+        }
     }
 
     @Override
