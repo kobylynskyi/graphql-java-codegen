@@ -47,6 +47,10 @@ public class MappingConfigConstants {
     public static final GeneratedLanguage DEFAULT_GENERATED_LANGUAGE = GeneratedLanguage.JAVA;
     public static final String DEFAULT_GENERATED_LANGUAGE_STRING = "JAVA";
 
+    // This library is the only one that supports Scala well and is generally used.
+    // There is no need to consider the possibility of switching.
+    public static final String DEFAULT_SERIALIZATION_LIBRARY = "JACKSON";
+
     private MappingConfigConstants() {
     }
 }

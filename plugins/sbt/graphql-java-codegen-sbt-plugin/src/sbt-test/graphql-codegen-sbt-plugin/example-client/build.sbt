@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
 
 enablePlugins(GraphQLCodegenPlugin)
 
-graphqlJavaCodegenVersion := Some("4.1.2-SNAPSHOT")
+graphqlJavaCodegenVersion := Some((version in Scope.ThisScope).value)
 
 GraphQLCodegenPluginDependencies
 

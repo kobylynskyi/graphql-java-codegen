@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.core.`type`.TypeReference
+
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
@@ -8,3 +10,5 @@ object Status extends Enumeration {
 
 
 }
+
+class StatusTypeRefer extends TypeReference[Status.type]
