@@ -22,7 +22,7 @@ graphqlJavaCodegenVersion := Some((version in Scope.ThisScope).value)
 GraphQLCodegenPluginDependencies
 
 //default graphqlJavaCodegen is release
-//graphqlJavaCodegenVersion := Some("4.1.2-SNAPSHOT")
+//graphqlJavaCodegenVersion := Some("4.1.2")
 graphqlSchemaPaths := List("src/main/resources/schema.graphqls")
 modelPackageName := Some("io.github.dreamylost.model")
 apiPackageName := Some("io.github.dreamylost.api")
