@@ -7,6 +7,28 @@ package ${package}
 import ${import}.*
     </#list>
 </#if>
+<#assign duplicateParentInterfaces = [] />
+<#assign parentInterfaces = [] />
+<#if fields?has_content>
+    <#if parentInterfaceProperties?has_content>
+        <#list implements as implement>
+            <#list parentInterfaceProperties?keys as parentInterface>
+                <#if implement == parentInterface>
+                    <#assign duplicateParentInterfaces = duplicateParentInterfaces + parentInterfaceProperties["${parentInterface}"] />
+                <#else >
+                </#if>
+            </#list>
+        </#list>
+    </#if>
+</#if>
+<#--duplicate removal-->
+<#if duplicateParentInterfaces?has_content>
+    <#list duplicateParentInterfaces as duplicateParentInterface>
+        <#if !parentInterfaces?seq_contains(duplicateParentInterface)>
+            <#assign parentInterfaces = parentInterfaces + [duplicateParentInterface]>
+        </#if>
+    </#list>
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -41,7 +63,7 @@ interface ${className}<#if implements?has_content> : <#list implements as interf
     <#list field.annotations as annotation>
     @get:${annotation}
     </#list>
-    <#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}
+    <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override </#if></#list></#if><#if !immutableModels>var <#else>val </#if>${field.name}: ${field.type}
 
     </#list>
 </#if>

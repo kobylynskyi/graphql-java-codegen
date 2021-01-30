@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.interfaces
 )
 interface BarBar : Bar {
 
-    val id: String
+    override val id: String
 
 }
