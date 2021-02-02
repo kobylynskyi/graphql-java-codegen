@@ -1,0 +1,10 @@
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface OrganizationsQueryResolver {
+
+    @Throws(Exception::class)
+    fun organizations(first: Int?, after: String?, env: graphql.schema.DataFetchingEnvironment): graphql.relay.Connection<Organization>
+
+}

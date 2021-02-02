@@ -1,0 +1,13 @@
+import scala.collection.JavaConverters._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class User(
+    @javax.validation.constraints.NotNull
+    id: String,
+    name: String
+) {
+
+}

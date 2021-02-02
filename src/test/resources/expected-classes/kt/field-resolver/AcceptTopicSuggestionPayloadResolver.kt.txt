@@ -1,0 +1,16 @@
+package com.github.graphql
+
+
+/**
+ * Resolver for AcceptTopicSuggestionPayload
+ */
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface AcceptTopicSuggestionPayloadResolver {
+
+    @Throws(Exception::class)
+    fun topic(githubAcceptTopicSuggestionPayloadTO: GithubAcceptTopicSuggestionPayloadTO, env: graphql.schema.DataFetchingEnvironment): GithubTopicTO?
+
+}
