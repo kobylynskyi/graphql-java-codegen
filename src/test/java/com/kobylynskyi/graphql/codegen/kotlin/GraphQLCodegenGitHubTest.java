@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -159,5 +160,22 @@ class GraphQLCodegenGitHubTest {
                 getFileByName(files, "Commit.kt"));
     }
 
+    @Test
+    void generate_CustomFieldsResolvers() throws Exception {
+        mappingConfig.setModelNamePrefix("Github");
+        mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
+
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/field-resolver/GithubAcceptTopicSuggestionPayloadTO.kt.txt"),
+                getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/field-resolver/AcceptTopicSuggestionPayloadResolver.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
+    }
 
 }
