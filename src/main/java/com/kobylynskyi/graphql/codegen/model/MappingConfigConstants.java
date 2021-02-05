@@ -24,6 +24,8 @@ public class MappingConfigConstants {
     public static final String DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES_STRING = "false";
     public static final boolean DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION = true;
     public static final String DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING = "true";
+    public static final boolean DEFAULT_ADD_GENERATED_ANNOTATION = true;
+    public static final String DEFAULT_ADD_GENERATED_ANNOTATION_STRING = "true";
     public static final boolean DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES = false;
     public static final String DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING = "false";
     public static final ApiNamePrefixStrategy DEFAULT_API_NAME_PREFIX_STRATEGY = ApiNamePrefixStrategy.CONSTANT;

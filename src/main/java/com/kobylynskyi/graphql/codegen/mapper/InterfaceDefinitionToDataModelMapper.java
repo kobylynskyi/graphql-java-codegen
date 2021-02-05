@@ -45,6 +45,7 @@ public class InterfaceDefinitionToDataModelMapper {
         dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, fieldDefinitionToParameterMapper.mapFields(mappingContext, definition.getFieldDefinitions(), definition));
+        dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());

@@ -6,12 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefini
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
 /**
  * Map union definition to a Freemarker data model
@@ -43,6 +38,7 @@ public class UnionDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         return dataModel;

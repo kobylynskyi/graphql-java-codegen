@@ -52,6 +52,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateModelsForRootTypes;
     private Boolean useOptionalForNullableReturnTypes;
     private Boolean generateApisWithThrowsException;
+    private Boolean addGeneratedAnnotation;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -132,6 +133,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generateModelsForRootTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
         generateApisWithThrowsException = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
+        addGeneratedAnnotation = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getAddGeneratedAnnotation);
         relayConfig = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRelayConfig);
         queryResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getMutationResolverParentInterface);
@@ -420,6 +422,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateApisWithThrowsException(Boolean generateApisWithThrowsException) {
         this.generateApisWithThrowsException = generateApisWithThrowsException;
+    }
+
+    @Override
+    public Boolean getAddGeneratedAnnotation() {
+        return addGeneratedAnnotation;
+    }
+
+    public void setAddGeneratedAnnotation(Boolean addGeneratedAnnotation) {
+        this.addGeneratedAnnotation = addGeneratedAnnotation;
     }
 
     @Override
