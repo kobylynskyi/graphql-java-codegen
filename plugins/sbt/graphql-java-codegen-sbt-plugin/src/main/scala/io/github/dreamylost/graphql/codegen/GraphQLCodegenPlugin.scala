@@ -105,6 +105,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT,
     generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
     generateExtensionFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_EXTENSION_FIELDS_RESOLVERS,
+    addGeneratedAnnotation := MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION,
     generateDataFetchingEnvironmentArgumentInApis := MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV,
     generateModelsForRootTypes := MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES,
     generatePackageName := None,
