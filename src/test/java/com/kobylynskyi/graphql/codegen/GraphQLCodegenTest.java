@@ -227,6 +227,20 @@ class GraphQLCodegenTest {
     }
 
     @Test
+    void generate_GeneratedAnnotation() throws Exception {
+        mappingConfig.setAddGeneratedAnnotation(false);
+        mappingConfig.setModelNameSuffix("TO");
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertNotEquals(0, files.length);
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/EventPropertyTO_withoutGeneratedAnnotation.java.txt"),
+                getFileByName(files, "EventPropertyTO.java"));
+    }
+
+    @Test
     void generate_NoSchemas() {
         GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
         List<String> schemas = emptyList();

@@ -1,0 +1,187 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * An event property have all possible types
+ */
+public class EventPropertyTO implements java.io.Serializable {
+
+    private Double floatVal;
+    private Boolean booleanVal;
+    private int intVal;
+    private java.util.List<Integer> intVals;
+    private String stringVal;
+    private java.util.List<EventPropertyTO> child;
+    private EventTO parent;
+
+    public EventPropertyTO() {
+    }
+
+    public EventPropertyTO(Double floatVal, Boolean booleanVal, int intVal, java.util.List<Integer> intVals, String stringVal, java.util.List<EventPropertyTO> child, EventTO parent) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.intVals = intVals;
+        this.stringVal = stringVal;
+        this.child = child;
+        this.parent = parent;
+    }
+
+    /**
+     * Float property
+     * with multiline comment
+     */
+    public Double getFloatVal() {
+        return floatVal;
+    }
+    /**
+     * Float property
+     * with multiline comment
+     */
+    public void setFloatVal(Double floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public int getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(int intVal) {
+        this.intVal = intVal;
+    }
+
+    /**
+     * primitive should not be generated
+     */
+    public java.util.List<Integer> getIntVals() {
+        return intVals;
+    }
+    /**
+     * primitive should not be generated
+     */
+    public void setIntVals(java.util.List<Integer> intVals) {
+        this.intVals = intVals;
+    }
+
+    /**
+     * String comment
+     */
+    public String getStringVal() {
+        return stringVal;
+    }
+    /**
+     * String comment
+     */
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    /**
+     * Properties
+     */
+    public java.util.List<EventPropertyTO> getChild() {
+        return child;
+    }
+    /**
+     * Properties
+     */
+    public void setChild(java.util.List<EventPropertyTO> child) {
+        this.child = child;
+    }
+
+    /**
+     * Parent event of the property
+     */
+    public EventTO getParent() {
+        return parent;
+    }
+    /**
+     * Parent event of the property
+     */
+    public void setParent(EventTO parent) {
+        this.parent = parent;
+    }
+
+
+
+    public static EventPropertyTO.Builder builder() {
+        return new EventPropertyTO.Builder();
+    }
+
+    public static class Builder {
+
+        private Double floatVal;
+        private Boolean booleanVal;
+        private int intVal;
+        private java.util.List<Integer> intVals;
+        private String stringVal;
+        private java.util.List<EventPropertyTO> child;
+        private EventTO parent;
+
+        public Builder() {
+        }
+
+        /**
+         * Float property
+         * with multiline comment
+         */
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(int intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        /**
+         * primitive should not be generated
+         */
+        public Builder setIntVals(java.util.List<Integer> intVals) {
+            this.intVals = intVals;
+            return this;
+        }
+
+        /**
+         * String comment
+         */
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        /**
+         * Properties
+         */
+        public Builder setChild(java.util.List<EventPropertyTO> child) {
+            this.child = child;
+            return this;
+        }
+
+        /**
+         * Parent event of the property
+         */
+        public Builder setParent(EventTO parent) {
+            this.parent = parent;
+            return this;
+        }
+
+
+        public EventPropertyTO build() {
+            return new EventPropertyTO(floatVal, booleanVal, intVal, intVals, stringVal, child, parent);
+        }
+
+    }
+}
