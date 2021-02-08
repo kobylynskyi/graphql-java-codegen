@@ -145,6 +145,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING)
     private boolean generateApisWithThrowsException;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
+    private boolean addGeneratedAnnotation;
+
     @Parameter
     private String[] fieldsWithResolvers;
 
@@ -225,6 +228,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
+        mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -457,6 +461,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Boolean getGenerateApisWithThrowsException() {
         return generateApisWithThrowsException;
+    }
+
+    @Override
+    public Boolean getAddGeneratedAnnotation() {
+        return addGeneratedAnnotation;
     }
 
     @Override

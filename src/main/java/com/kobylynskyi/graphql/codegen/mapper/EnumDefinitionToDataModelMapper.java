@@ -77,6 +77,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(FIELDS, map(mappingContext, definition.getValueDefinitions()));
+        dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(SERIALIZATION_LIBRARY, MappingConfigConstants.DEFAULT_SERIALIZATION_LIBRARY);
         return dataModel;

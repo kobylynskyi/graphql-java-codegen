@@ -42,6 +42,7 @@ class GraphQLCodegenFileCreatorTest {
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");
         dataModel.put(DataModelFields.ANNOTATIONS, Collections.emptyList());
+        dataModel.put(DataModelFields.GENERATED_ANNOTATION, false);
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
 
         GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR);

@@ -185,6 +185,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getAddGeneratedAnnotation() {
+        return config.getAddGeneratedAnnotation();
+    }
+
+    @Override
     public RelayConfig getRelayConfig() {
         return config.getRelayConfig();
     }

@@ -13,7 +13,7 @@ import java.util.{ Map => JMap }
 </#list>
  */
 </#if>
-<#if generatedInfo.getGeneratedType()?has_content>
+<#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"

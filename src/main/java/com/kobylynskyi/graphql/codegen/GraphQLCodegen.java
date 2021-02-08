@@ -177,6 +177,9 @@ public abstract class GraphQLCodegen {
         if (mappingConfig.getGenerateApisWithThrowsException() == null) {
             mappingConfig.setGenerateApisWithThrowsException(MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION);
         }
+        if (mappingConfig.getAddGeneratedAnnotation() == null) {
+            mappingConfig.setAddGeneratedAnnotation(MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION);
+        }
         if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
             mappingConfig.setUseOptionalForNullableReturnTypes(MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
         }

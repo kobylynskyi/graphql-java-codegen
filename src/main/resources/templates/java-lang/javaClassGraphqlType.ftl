@@ -25,7 +25,7 @@ import java.util.StringJoiner;
 </#list>
  */
 </#if>
-<#if generatedInfo.getGeneratedType()?has_content>
+<#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "${generatedInfo.getDateTime()}"

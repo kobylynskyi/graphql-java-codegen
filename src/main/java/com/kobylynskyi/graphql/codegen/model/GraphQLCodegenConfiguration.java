@@ -251,6 +251,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateApisWithThrowsException();
 
     /**
+     * Specifies whether generated classes should be annotated with @Generated
+     *
+     * @return <b>true</b> if classes should be annotated with @Generated
+     */
+    Boolean getAddGeneratedAnnotation();
+
+    /**
      * Relay-related configurations.
      *
      * @return Relay-related configurations.
