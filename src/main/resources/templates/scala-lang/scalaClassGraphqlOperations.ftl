@@ -45,13 +45,11 @@ import ${import}._
 </#list>
  */
 </#if>
-<#if generatedAnnotation>
-<#if generatedInfo.getGeneratedType()?has_content>
+<#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
 @${generatedInfo.getGeneratedType()}(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "${generatedInfo.getDateTime()}"
 )
-</#if>
 </#if>
 trait ${className}<#if implements?has_content> extends <#list implements as interface>${interface}<#if interface_has_next> with </#if></#list></#if> {
 
