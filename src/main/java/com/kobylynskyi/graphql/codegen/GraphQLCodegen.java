@@ -53,40 +53,40 @@ public abstract class GraphQLCodegen {
 
     // used in tests
     protected GraphQLCodegen(List<String> schemas,
-                             File outputDir,
-                             MappingConfig mappingConfig,
-                             GeneratedInformation generatedInformation,
-                             MapperFactory mapperFactory) {
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
         this(schemas, null, outputDir, mappingConfig, null, generatedInformation, mapperFactory);
     }
 
     // used in tests
     protected GraphQLCodegen(String introspectionResult,
-                             File outputDir,
-                             MappingConfig mappingConfig,
-                             GeneratedInformation generatedInformation,
-                             MapperFactory mapperFactory) {
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
         this(null, introspectionResult, outputDir, mappingConfig, null, generatedInformation, mapperFactory);
     }
 
     // used in plugins
     protected GraphQLCodegen(List<String> schemas,
-                             String introspectionResult,
-                             File outputDir,
-                             MappingConfig mappingConfig,
-                             MappingConfigSupplier externalMappingConfigSupplier,
-                             MapperFactory mapperFactory) {
+                          String introspectionResult,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          MappingConfigSupplier externalMappingConfigSupplier,
+                          MapperFactory mapperFactory) {
         this(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, new GeneratedInformation(), mapperFactory);
     }
 
     // used by other constructors
     protected GraphQLCodegen(List<String> schemas,
-                             String introspectionResult,
-                             File outputDir,
-                             MappingConfig mappingConfig,
-                             MappingConfigSupplier externalMappingConfigSupplier,
-                             GeneratedInformation generatedInformation,
-                             MapperFactory mapperFactory) {
+                          String introspectionResult,
+                          File outputDir,
+                          MappingConfig mappingConfig,
+                          MappingConfigSupplier externalMappingConfigSupplier,
+                          GeneratedInformation generatedInformation,
+                          MapperFactory mapperFactory) {
         this.schemas = schemas;
         this.introspectionResult = introspectionResult;
         this.outputDir = outputDir;
