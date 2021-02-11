@@ -6,7 +6,6 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -96,13 +95,13 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
-        return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);
+    public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
+        return !ScalaGraphQLTypeMapper.isScalaPrimitive(possiblyPrimitiveType);
     }
 
     @Override
-    public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
-        return !ScalaGraphQLTypeMapper.isScalaPrimitive(possiblyPrimitiveType);
+    public ValueMapper getValueMapper() {
+        return valueMapper;
     }
 
 }

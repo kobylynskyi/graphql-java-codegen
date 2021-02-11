@@ -7,7 +7,6 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -84,42 +83,8 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
-        if (genericType.contains("%s")) {
-            return String.format(genericType, typeParameter);
-        } else {
-            return String.format("%s<%s>", genericType, typeParameter);
-        }
-    }
-
-    @Override
-    public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
-        return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);
-    }
-
-    @Override
     public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
         return false;
-    }
-
-    public static String defaultValueKotlinPrimitive(String kotlinType) {
-        switch (kotlinType) {
-            case "Long":
-                return "0L";
-            case "Float":
-                return "0F";
-            case "Double":
-                return "0D";
-            case "Char":
-                return "0.toChar()";
-            case "Boolean":
-                return "false";
-            case "Int":
-            case "Byte":
-            case "Short":
-            default:
-                return "0";
-        }
     }
 
     @Override
@@ -143,7 +108,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !graphqlTypeName.endsWith(KOTLIN_UTIL_NULLABLE)) {
                 String modelClassNameWithPrefixAndSuffix = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphqlTypeName);
                 if (computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) ||
-                        computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)){
+                        computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)) {
                     return computedTypeName;
                 }
                 if (!computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) && computedTypeName.contains(modelClassNameWithPrefixAndSuffix)) {
@@ -156,5 +121,10 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         }
 
         return computedTypeName;
+    }
+
+    @Override
+    public ValueMapper getValueMapper() {
+        return valueMapper;
     }
 }

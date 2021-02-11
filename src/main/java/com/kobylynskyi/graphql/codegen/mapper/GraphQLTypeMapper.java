@@ -6,9 +6,20 @@ import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.*;
+import graphql.language.Argument;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
+import graphql.language.ListType;
+import graphql.language.NamedNode;
+import graphql.language.NonNullType;
+import graphql.language.Type;
+import graphql.language.TypeName;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Map GraphQL type to language-specific type (java/scala/kotlin/etc)
@@ -116,17 +127,13 @@ public interface GraphQLTypeMapper {
      * @param typeParameter  Parameter of generics type
      * @return type wrapped into generics
      */
-    String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter);
-
-    /**
-     * Map value of the directive argument
-     *
-     * @param mappingContext         Global mapping context
-     * @param dirArg                 Directive argument
-     * @param argumentValueFormatter Formatter of the directive argument
-     * @return formatted value
-     */
-    String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter);
+    default String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
+        if (genericType.contains("%s")) {
+            return String.format(genericType, typeParameter);
+        } else {
+            return String.format("%s<%s>", genericType, typeParameter);
+        }
+    }
 
     /**
      * Convert GraphQL type to a corresponding language-specific type
@@ -297,7 +304,7 @@ public interface GraphQLTypeMapper {
                 if (argumentValueFormatter != null) {
                     directiveAnnotationMapped = directiveAnnotationMapped.replace(
                             String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
-                            mapDirectiveArgumentValue(mappingContext, dirArg, argumentValueFormatter));
+                            getValueMapper().map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
                 }
             }
             directiveAnnotationsMapped.add(directiveAnnotationMapped);
@@ -327,5 +334,6 @@ public interface GraphQLTypeMapper {
                 .orElse(null);
     }
 
+    ValueMapper getValueMapper();
 
 }

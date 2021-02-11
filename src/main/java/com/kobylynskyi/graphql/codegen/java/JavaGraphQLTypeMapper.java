@@ -7,7 +7,6 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -80,20 +79,6 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
-        if (genericType.contains("%s")) {
-            return String.format(genericType, typeParameter);
-        } else {
-            return String.format("%s<%s>", genericType, typeParameter);
-        }
-    }
-
-    @Override
-    public String mapDirectiveArgumentValue(MappingContext mappingContext, Argument dirArg, String argumentValueFormatter) {
-        return valueMapper.map(mappingContext, dirArg.getValue(), null, argumentValueFormatter);
-    }
-
-    @Override
     public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
                                            String parentTypeName, boolean mandatory, boolean collection) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
@@ -117,6 +102,11 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+    }
+
+    @Override
+    public ValueMapper getValueMapper() {
+        return valueMapper;
     }
 
 }
