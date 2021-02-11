@@ -228,8 +228,14 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         }
 
         def getSchemas: util.List[String] = {
-          if ((graphqlSchemaPaths in GraphQLCodegenConfig).value != null && (graphqlSchemaPaths in GraphQLCodegenConfig).value.nonEmpty)
+          if ((graphqlSchemaPaths in GraphQLCodegenConfig).value != null &&
+                (graphqlSchemaPaths in GraphQLCodegenConfig).value.nonEmpty) {
             return (graphqlSchemaPaths in GraphQLCodegenConfig).value.asJava
+          }
+          if ((graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value != null &&
+                !(graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.isEmpty) {
+            return List[String]().asJava
+          }
           val schemasRootDir: Path = getSchemasRootDir
           val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
           finder.setRecursive((graphqlSchemas in GraphQLCodegenConfig).value.recursive)

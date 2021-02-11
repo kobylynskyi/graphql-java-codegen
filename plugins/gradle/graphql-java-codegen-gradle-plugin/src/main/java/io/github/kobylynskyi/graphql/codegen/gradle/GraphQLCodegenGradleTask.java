@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -179,6 +180,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     public List<String> getActualSchemaPaths() throws IOException {
         if (graphqlSchemaPaths != null) {
             return graphqlSchemaPaths;
+        }
+        if (graphqlQueryIntrospectionResultPath != null) {
+            return Collections.emptyList();
         }
         Path rootDir = getSchemasRootDir();
         SchemaFinder finder = new SchemaFinder(rootDir);

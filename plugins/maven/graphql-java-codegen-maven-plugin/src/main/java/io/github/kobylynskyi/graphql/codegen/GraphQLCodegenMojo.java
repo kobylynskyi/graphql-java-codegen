@@ -273,6 +273,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         if (graphqlSchemaPaths != null) {
             return Arrays.asList(graphqlSchemaPaths);
         }
+        if (graphqlQueryIntrospectionResultPath != null) {
+            return Collections.emptyList();
+        }
         Path schemasRootDir = getSchemasRootDir();
         SchemaFinder finder = new SchemaFinder(schemasRootDir);
         finder.setRecursive(graphqlSchemas.isRecursive());
