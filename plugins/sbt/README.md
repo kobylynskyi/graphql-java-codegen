@@ -48,7 +48,7 @@ customAnnotationsMapping := {
       |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
   mapping.put("Character", annotations)
   // Note: only for Scala, please pay attention here, codegen have not generated `EpisodeDOTypeRefer.scala` class, so you should create it.
-  // Since, 4.1.2, support to generate it.
+  // Since, 4.1.3, support to generate it.
   mapping.put("Droid.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
   mapping.put("Human.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
   mapping
