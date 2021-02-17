@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.freemarker:freemarker:2.3.30"
+    implementation "org.freemarker:freemarker:2.3.31"
     implementation "com.graphql-java:graphql-java:15.0"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.12.1"
 
