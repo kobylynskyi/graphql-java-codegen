@@ -11,6 +11,11 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
+<#if generateModelOpenClasses>
+<#if equalsAndHashCode>
+import java.util.Objects
+</#if>
+</#if>
 <#if toString>
 import java.util.StringJoiner
 </#if>

@@ -1,6 +1,7 @@
 package com.github.graphql
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.Objects
 import scala.collection.JavaConverters._
 import SubscriptionState._
 

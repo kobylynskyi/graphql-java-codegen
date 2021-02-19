@@ -11,6 +11,11 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
+<#if generateModelOpenClasses>
+<#if equalsAndHashCode>
+import java.util.Objects
+</#if>
+</#if>
 import scala.collection.JavaConverters._
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
