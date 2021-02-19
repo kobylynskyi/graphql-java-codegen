@@ -40,6 +40,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean isGenerateModelOpenClasses() {
+        return config.isGenerateModelOpenClasses();
+    }
+
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }

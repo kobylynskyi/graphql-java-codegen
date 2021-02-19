@@ -73,6 +73,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Integer responseProjectionMaxDepth;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
+    private boolean generateModelOpenClasses;
+
     private GeneratedLanguage generatedLanguage;
 
     private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
@@ -152,6 +154,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         responseProjectionMaxDepth = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization, source.useObjectMapperForRequestSerialization);
         generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
+        generateModelOpenClasses = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -584,6 +587,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
         this.generatedLanguage = generatedLanguage;
+    }
+
+
+    public Boolean isGenerateModelOpenClasses() {
+        return generateModelOpenClasses;
+    }
+
+    public void setGenerateModelOpenClasses(boolean generateModelOpenClasses) {
+        this.generateModelOpenClasses = generateModelOpenClasses;
     }
 
 }

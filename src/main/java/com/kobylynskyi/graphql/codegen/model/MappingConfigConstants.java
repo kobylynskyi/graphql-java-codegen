@@ -53,6 +53,11 @@ public class MappingConfigConstants {
     // There is no need to consider the possibility of switching.
     public static final String DEFAULT_SERIALIZATION_LIBRARY = "JACKSON";
 
+    //It only support in kotlin and scala.
+    public static final boolean DEFAULT_GENERATE_MODEL_OPEN_CLASSES = false;
+    public static final String DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING = "false";
+
+
     private MappingConfigConstants() {
     }
 }

@@ -98,6 +98,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
     private String jsonConfigurationFile;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
+    private Boolean generateModelOpenClasses = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -156,6 +157,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
+        mappingConfig.setGenerateModelOpenClasses(generateModelOpenClasses);
 
         instantiateCodegen(mappingConfig).generate();
     }
@@ -760,6 +762,13 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Override
     public GeneratedLanguage getGeneratedLanguage() {
         return generatedLanguage;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean isGenerateModelOpenClasses() {
+        return generateModelOpenClasses;
     }
 
     public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {

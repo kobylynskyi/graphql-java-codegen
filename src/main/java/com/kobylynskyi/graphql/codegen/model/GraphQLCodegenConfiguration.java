@@ -406,4 +406,11 @@ public interface GraphQLCodegenConfiguration {
      */
     GeneratedLanguage getGeneratedLanguage();
 
+    /**
+     * Specifies whether generate public model classes.
+     *
+     * @return <b>false</b> generate data class in kotlin and case class in scala
+     */
+    Boolean isGenerateModelOpenClasses();
+
 }

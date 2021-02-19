@@ -61,6 +61,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
   //With the implementation of some other plugins, initialization is not necessary,
   //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
   override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
+    generateModelOpenClasses := MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES,
     generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     graphqlQueryIntrospectionResultPath := None,
     graphqlSchemas := schemaFinderConfig,
@@ -111,7 +112,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateBuilder := MappingConfigConstants.DEFAULT_BUILDER,
     generateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS,
     generateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
-    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS,
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS,// TODO change default value
     generateToString := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
     parentInterfaces := parentInterfacesConfig,
@@ -167,6 +168,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateModelOpenClasses((generateModelOpenClasses in GraphQLCodegenConfig).value)
     sLog.value.info(s"Version is <${BuildInfo.toString}>")
     mappingConfig
   }

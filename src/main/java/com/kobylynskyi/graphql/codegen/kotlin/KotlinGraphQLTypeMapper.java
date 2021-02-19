@@ -127,4 +127,29 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     public ValueMapper getValueMapper() {
         return valueMapper;
     }
+
+    /**
+     * Thi method was used in kotlin template, do not remove it.
+     * @param kotlinType type get from Type template
+     * @return default value
+     */
+    public static String defaultValueKotlinPrimitive(String kotlinType) {
+        switch (kotlinType) {
+            case "Long":
+                return "0L";
+            case "Float":
+                return "0F";
+            case "Double":
+                return "0D";
+            case "Char":
+                return "0.toChar()";
+            case "Boolean":
+                return "false";
+            case "Int":
+            case "Byte":
+            case "Short":
+            default:
+                return "0";
+        }
+    }
 }

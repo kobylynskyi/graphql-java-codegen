@@ -68,7 +68,7 @@ import ${enum}._
 <#list annotations as annotation>
 @${annotation}
 </#list>
-case class ${className}(
+<#if !generateModelOpenClasses>case class<#else>class</#if> ${className}(
 <#if fields?has_content>
 <#list fields as field>
   <#if field.deprecated?has_content>
@@ -92,6 +92,34 @@ case class ${className}(
         "{}"
     </#if>
     }
+</#if>
+<#if generateModelOpenClasses>
+    <#if equalsAndHashCode>
+
+    override def equals(obj: Any): Boolean = {
+        if (this == obj) {
+            return true
+        }
+        if (obj == null || getClass != obj.getClass) {
+            return false
+        }
+        val that = obj.asInstanceOf[${className}]
+    <#if fields?has_content>
+        <#list fields as field>
+        Objects.equals(${field.name}, that.${field.name})<#if field_has_next> &&
+        </#if></#list>
+    <#else>
+        true</#if>
+    }
+
+    override def hashCode(): Int = {
+    <#if fields?has_content>
+        Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+    <#else>
+        0
+    </#if>
+    }
+    </#if>
 </#if>
 }
 
@@ -127,7 +155,7 @@ object ${className} {
 
     </#list>
 </#if>
-        def build(): ${className} = ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+        def build(): ${className} = <#if generateModelOpenClasses>new ${className}<#else>${className}</#if>(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
 
     }
 }
