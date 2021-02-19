@@ -764,6 +764,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return generatedLanguage;
     }
 
+    public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
+        this.generatedLanguage = generatedLanguage;
+    }
+
     @Input
     @Optional
     @Override
@@ -771,7 +775,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return generateModelOpenClasses;
     }
 
-    public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
-        this.generatedLanguage = generatedLanguage;
+    public void setGenerateModelOpenClasses(Boolean generateModelOpenClasses) {
+        this.generateModelOpenClasses = generateModelOpenClasses;
     }
 }
