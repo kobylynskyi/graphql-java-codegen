@@ -51,6 +51,23 @@ class QueryResolverImpl : QueryResolver {
         val graphQLRequest = GraphQLRequest(productByIdQueryRequest, droidResponseProjection)
         return getResponse<DroidQueryResponse>(graphQLRequest).droid()
     }
+
+    // The following methods is to test whether the ReturnType in the response is correct, so there is no need to implement specific logic.
+    override fun test1(id: Int?): List<DroidTO>? {
+        TODO("Not yet implemented")
+    }
+
+    override fun test2(id: Int?): List<DroidTO> {
+        TODO("Not yet implemented")
+    }
+
+    override fun test3(id: Int?): List<DroidTO?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun test4(id: Int?): List<DroidTO?>? {
+        TODO("Not yet implemented")
+    }
 }
 
 inline fun <reified T> getResponse(request: GraphQLRequest, url: String = "http://localhost:8080/graphql"): T {
