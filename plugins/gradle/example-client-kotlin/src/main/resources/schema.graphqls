@@ -6,7 +6,11 @@ type Query {
     hero(episode: Episode) : Character
     human(id : String) : Human
     humans: [Human]
-    droid(id: ID!) : Droid
+    droid(id: ID!) : Droid!
+    test1(id: Int): [Droid!]
+    test2(id: Int): [Droid!]!
+    test3(id: Int): [Droid]!
+    test4(id: Int): [Droid]
 }
 enum Episode {
     NEWHOPE

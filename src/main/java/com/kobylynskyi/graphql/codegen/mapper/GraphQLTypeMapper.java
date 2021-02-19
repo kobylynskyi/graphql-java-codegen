@@ -325,6 +325,12 @@ public interface GraphQLTypeMapper {
         return computedTypeName;
     }
 
+    default String getResponseReturnType(MappingContext mappingContext,
+                                         NamedDefinition namedDefinition,
+                                         String computedTypeName) {
+        return computedTypeName;
+    }
+
     default DeprecatedDefinition getDeprecated(MappingContext mappingContext, DirectivesContainer<?> directivesContainer) {
         return directivesContainer.getDirectives()
                 .stream()

@@ -6,14 +6,14 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
     value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
     date = "2020-12-31T23:59:59-0500"
 )
-open class FunQueryResponse : GraphQLResult<MutableMap<String, Char>>() {
+open class FunQueryResponse : GraphQLResult<MutableMap<String, Char?>>() {
 
     companion object {
         const val OPERATION_NAME: String = "fun"
     }
 
-    fun `fun`(): Char {
-        val data: MutableMap<String, Char> = super.getData()
-        return data.getValue(OPERATION_NAME)
+    fun `fun`(): Char? {
+        val data: MutableMap<String, Char?> = super.getData()
+        return data[OPERATION_NAME]
     }
 }

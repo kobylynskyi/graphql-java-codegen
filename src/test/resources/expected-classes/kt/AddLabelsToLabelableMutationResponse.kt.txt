@@ -6,14 +6,14 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult
     value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
     date = "2020-12-31T23:59:59-0500"
 )
-open class AddLabelsToLabelableMutationResponse : GraphQLResult<MutableMap<String, AddLabelsToLabelablePayload>>() {
+open class AddLabelsToLabelableMutationResponse : GraphQLResult<MutableMap<String, AddLabelsToLabelablePayload?>>() {
 
     companion object {
         const val OPERATION_NAME: String = "addLabelsToLabelable"
     }
 
-    fun addLabelsToLabelable(): AddLabelsToLabelablePayload {
-        val data: MutableMap<String, AddLabelsToLabelablePayload> = super.getData()
-        return data.getValue(OPERATION_NAME)
+    fun addLabelsToLabelable(): AddLabelsToLabelablePayload? {
+        val data: MutableMap<String, AddLabelsToLabelablePayload?> = super.getData()
+        return data[OPERATION_NAME]
     }
 }
