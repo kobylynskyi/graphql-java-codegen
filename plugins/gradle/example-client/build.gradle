@@ -13,7 +13,7 @@ plugins {
 mainClassName = "io.github.kobylynskyi.order.Application"
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:2.4.2"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.4.3"
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.4.2"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0"
