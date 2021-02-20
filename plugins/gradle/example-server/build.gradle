@@ -17,7 +17,7 @@ dependencies {
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0"
-    implementation "com.graphql-java:graphql-java-extended-scalars:15.0.0"
+    implementation "com.graphql-java:graphql-java-extended-scalars:16.0.0"
 
     implementation "javax.validation:validation-api:2.0.1.Final"
 
