@@ -17,7 +17,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.4.3"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0"
-    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0"
+    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0"
     implementation "com.graphql-java:graphql-java-extended-scalars:15.0.0"
 
     // use the latest available version:
