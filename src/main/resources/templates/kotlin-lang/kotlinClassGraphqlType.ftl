@@ -11,10 +11,8 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
-<#if generateModelOpenClasses>
-<#if equalsAndHashCode>
+<#if generateModelOpenClasses && equalsAndHashCode>
 import java.util.Objects
-</#if>
 </#if>
 <#if toString>
 import java.util.StringJoiner
@@ -115,8 +113,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
         return joiner.toString()
     }
 </#if>
-<#if generateModelOpenClasses>
-<#if equalsAndHashCode>
+<#if generateModelOpenClasses && equalsAndHashCode>
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -140,7 +137,6 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
         return 0
     </#if>
     }
-</#if>
 </#if>
 <#if builder>
 

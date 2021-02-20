@@ -11,10 +11,8 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
-<#if generateModelOpenClasses>
-<#if equalsAndHashCode>
+<#if generateModelOpenClasses && equalsAndHashCode>
 import java.util.Objects
-</#if>
 </#if>
 import scala.collection.JavaConverters._
 <#if fields?has_content>
@@ -98,8 +96,7 @@ import ${enum}._
     </#if>
     }
 </#if>
-<#if generateModelOpenClasses>
-    <#if equalsAndHashCode>
+<#if generateModelOpenClasses && equalsAndHashCode>
 
     override def equals(obj: Any): Boolean = {
         if (this == obj) {
@@ -124,7 +121,6 @@ import ${enum}._
         0
     </#if>
     }
-    </#if>
 </#if>
 }
 
