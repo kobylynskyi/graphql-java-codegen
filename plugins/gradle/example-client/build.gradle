@@ -18,7 +18,7 @@ dependencies {
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0"
-    implementation "com.graphql-java:graphql-java-extended-scalars:15.0.0"
+    implementation "com.graphql-java:graphql-java-extended-scalars:16.0.0"
 
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
