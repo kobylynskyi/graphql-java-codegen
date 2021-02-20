@@ -127,4 +127,37 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     public ValueMapper getValueMapper() {
         return valueMapper;
     }
+
+    /**
+     * Thi method was used in kotlin template, do not remove it.
+     *
+     * @param kotlinType type get from Type template
+     * @return default value
+     */
+    public static String defaultValueKotlinPrimitive(String kotlinType) {
+        switch (kotlinType) {
+            case "Long":
+                return "0L";
+            case "Float":
+                return "0F";
+            case "Double":
+                return "0D";
+            case "Char":
+                return "0.toChar()";
+            case "Boolean":
+                return "false";
+            case "Int":
+            case "Byte":
+            case "Short":
+            default:
+                return "0";
+        }
+    }
+
+    @Override
+    public String getResponseReturnType(MappingContext mappingContext, NamedDefinition namedDefinition, String computedTypeName) {
+        // Delegate to getTypeConsideringPrimitive.
+        // For kotlin such as XXXXXXResponse do not implement the mandatory function of graphql correctly when returnType is not List. Should fix it when generate response class.
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
 }

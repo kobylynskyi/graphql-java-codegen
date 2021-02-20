@@ -26,8 +26,7 @@ class QueryResolverImpl : QueryResolver {
         heroQueryRequest.setEpisode(episode)
         val characterResponseProjection = CharacterResponseProjection().`all$`(3)
         val graphQLRequest = GraphQLRequest(heroQueryRequest, characterResponseProjection)
-        val ret = getResponse<HeroQueryResponse>(graphQLRequest)
-        return ret.hero()
+        return getResponse<HeroQueryResponse>(graphQLRequest).hero()
     }
 
     override fun human(id: String?): HumanTO? {
@@ -35,25 +34,39 @@ class QueryResolverImpl : QueryResolver {
         humanQueryRequest.setId(id)
         val humanResponseProjection = HumanResponseProjection().`all$`(1)
         val graphQLRequest = GraphQLRequest(humanQueryRequest, humanResponseProjection)
-        val ret = getResponse<HumanQueryResponse>(graphQLRequest)
-        return ret.human()
+        return getResponse<HumanQueryResponse>(graphQLRequest).human()
     }
 
     override fun humans(): List<HumanTO?>? {
         val humanQueryRequest = HumansQueryRequest()
         val humanResponseProjection = HumanResponseProjection().`all$`(1)
         val graphQLRequest = GraphQLRequest(humanQueryRequest, humanResponseProjection)
-        val ret = getResponse<HumansQueryResponse>(graphQLRequest)
-        return ret.humans()
+        return getResponse<HumansQueryResponse>(graphQLRequest).humans()
     }
 
-    override fun droid(id: String): DroidTO? {
+    override fun droid(id: String): DroidTO {
         val productByIdQueryRequest = DroidQueryRequest()
         productByIdQueryRequest.setId(id)
         val droidResponseProjection = DroidResponseProjection().`all$`(1)
         val graphQLRequest = GraphQLRequest(productByIdQueryRequest, droidResponseProjection)
-        val ret = getResponse<DroidQueryResponse>(graphQLRequest)
-        return ret.droid()
+        return getResponse<DroidQueryResponse>(graphQLRequest).droid()
+    }
+
+    // The following methods is to test whether the ReturnType in the response is correct, so there is no need to implement specific logic.
+    override fun test1(id: Int?): List<DroidTO>? {
+        TODO("Not yet implemented")
+    }
+
+    override fun test2(id: Int?): List<DroidTO> {
+        TODO("Not yet implemented")
+    }
+
+    override fun test3(id: Int?): List<DroidTO?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun test4(id: Int?): List<DroidTO?>? {
+        TODO("Not yet implemented")
     }
 }
 

@@ -1,0 +1,414 @@
+package com.github.graphql
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.Objects
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class Commit(
+    override
+    val abbreviatedOid: String,
+    val additions: Int,
+    val associatedPullRequests: PullRequestConnection?,
+    val author: GitActor?,
+    val authoredByCommitter: Boolean,
+    val authoredDate: String,
+    val blame: Blame,
+    val changedFiles: Int,
+    val comments: CommitCommentConnection,
+    override
+    val commitResourcePath: String,
+    override
+    val commitUrl: String,
+    val committedDate: String,
+    val committedViaWeb: Boolean,
+    val committer: GitActor?,
+    val deletions: Int,
+    val deployments: DeploymentConnection?,
+    val history: CommitHistoryConnection,
+    override
+    val id: String,
+    val message: String,
+    val messageBody: String,
+    val messageBodyHTML: String,
+    val messageHeadline: String,
+    val messageHeadlineHTML: String,
+    override
+    val oid: String,
+    val parents: CommitConnection,
+    val pushedDate: String?,
+    override
+    val repository: Repository,
+    override
+    val resourcePath: String,
+    val signature: GitSignature?,
+    val status: Status?,
+    val tarballUrl: String,
+    val tree: Tree,
+    val treeResourcePath: String,
+    val treeUrl: String,
+    override
+    val url: String,
+    override
+    val viewerCanSubscribe: Boolean,
+    override
+    val viewerSubscription: SubscriptionState?,
+    val zipballUrl: String
+) : Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
+
+    companion object {
+        fun builder(): Builder = Builder()
+    }
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        joiner.add("abbreviatedOid: " + GraphQLRequestSerializer.getEntry(abbreviatedOid))
+        joiner.add("additions: " + GraphQLRequestSerializer.getEntry(additions))
+        if (associatedPullRequests != null) {
+            joiner.add("associatedPullRequests: " + GraphQLRequestSerializer.getEntry(associatedPullRequests))
+        }
+        if (author != null) {
+            joiner.add("author: " + GraphQLRequestSerializer.getEntry(author))
+        }
+        joiner.add("authoredByCommitter: " + GraphQLRequestSerializer.getEntry(authoredByCommitter))
+        joiner.add("authoredDate: " + GraphQLRequestSerializer.getEntry(authoredDate))
+        joiner.add("blame: " + GraphQLRequestSerializer.getEntry(blame))
+        joiner.add("changedFiles: " + GraphQLRequestSerializer.getEntry(changedFiles))
+        joiner.add("comments: " + GraphQLRequestSerializer.getEntry(comments))
+        joiner.add("commitResourcePath: " + GraphQLRequestSerializer.getEntry(commitResourcePath))
+        joiner.add("commitUrl: " + GraphQLRequestSerializer.getEntry(commitUrl))
+        joiner.add("committedDate: " + GraphQLRequestSerializer.getEntry(committedDate))
+        joiner.add("committedViaWeb: " + GraphQLRequestSerializer.getEntry(committedViaWeb))
+        if (committer != null) {
+            joiner.add("committer: " + GraphQLRequestSerializer.getEntry(committer))
+        }
+        joiner.add("deletions: " + GraphQLRequestSerializer.getEntry(deletions))
+        if (deployments != null) {
+            joiner.add("deployments: " + GraphQLRequestSerializer.getEntry(deployments))
+        }
+        joiner.add("history: " + GraphQLRequestSerializer.getEntry(history))
+        joiner.add("id: " + GraphQLRequestSerializer.getEntry(id))
+        joiner.add("message: " + GraphQLRequestSerializer.getEntry(message))
+        joiner.add("messageBody: " + GraphQLRequestSerializer.getEntry(messageBody))
+        joiner.add("messageBodyHTML: " + GraphQLRequestSerializer.getEntry(messageBodyHTML))
+        joiner.add("messageHeadline: " + GraphQLRequestSerializer.getEntry(messageHeadline))
+        joiner.add("messageHeadlineHTML: " + GraphQLRequestSerializer.getEntry(messageHeadlineHTML))
+        joiner.add("oid: " + GraphQLRequestSerializer.getEntry(oid))
+        joiner.add("parents: " + GraphQLRequestSerializer.getEntry(parents))
+        if (pushedDate != null) {
+            joiner.add("pushedDate: " + GraphQLRequestSerializer.getEntry(pushedDate))
+        }
+        joiner.add("repository: " + GraphQLRequestSerializer.getEntry(repository))
+        joiner.add("resourcePath: " + GraphQLRequestSerializer.getEntry(resourcePath))
+        if (signature != null) {
+            joiner.add("signature: " + GraphQLRequestSerializer.getEntry(signature))
+        }
+        if (status != null) {
+            joiner.add("status: " + GraphQLRequestSerializer.getEntry(status))
+        }
+        joiner.add("tarballUrl: " + GraphQLRequestSerializer.getEntry(tarballUrl))
+        joiner.add("tree: " + GraphQLRequestSerializer.getEntry(tree))
+        joiner.add("treeResourcePath: " + GraphQLRequestSerializer.getEntry(treeResourcePath))
+        joiner.add("treeUrl: " + GraphQLRequestSerializer.getEntry(treeUrl))
+        joiner.add("url: " + GraphQLRequestSerializer.getEntry(url))
+        joiner.add("viewerCanSubscribe: " + GraphQLRequestSerializer.getEntry(viewerCanSubscribe))
+        if (viewerSubscription != null) {
+            joiner.add("viewerSubscription: " + GraphQLRequestSerializer.getEntry(viewerSubscription))
+        }
+        joiner.add("zipballUrl: " + GraphQLRequestSerializer.getEntry(zipballUrl))
+        return joiner.toString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other == null || javaClass != other.javaClass) {
+            return false
+        }
+        val that = other as Commit
+        return Objects.equals(abbreviatedOid, that.abbreviatedOid)
+                && Objects.equals(additions, that.additions)
+                && Objects.equals(associatedPullRequests, that.associatedPullRequests)
+                && Objects.equals(author, that.author)
+                && Objects.equals(authoredByCommitter, that.authoredByCommitter)
+                && Objects.equals(authoredDate, that.authoredDate)
+                && Objects.equals(blame, that.blame)
+                && Objects.equals(changedFiles, that.changedFiles)
+                && Objects.equals(comments, that.comments)
+                && Objects.equals(commitResourcePath, that.commitResourcePath)
+                && Objects.equals(commitUrl, that.commitUrl)
+                && Objects.equals(committedDate, that.committedDate)
+                && Objects.equals(committedViaWeb, that.committedViaWeb)
+                && Objects.equals(committer, that.committer)
+                && Objects.equals(deletions, that.deletions)
+                && Objects.equals(deployments, that.deployments)
+                && Objects.equals(history, that.history)
+                && Objects.equals(id, that.id)
+                && Objects.equals(message, that.message)
+                && Objects.equals(messageBody, that.messageBody)
+                && Objects.equals(messageBodyHTML, that.messageBodyHTML)
+                && Objects.equals(messageHeadline, that.messageHeadline)
+                && Objects.equals(messageHeadlineHTML, that.messageHeadlineHTML)
+                && Objects.equals(oid, that.oid)
+                && Objects.equals(parents, that.parents)
+                && Objects.equals(pushedDate, that.pushedDate)
+                && Objects.equals(repository, that.repository)
+                && Objects.equals(resourcePath, that.resourcePath)
+                && Objects.equals(signature, that.signature)
+                && Objects.equals(status, that.status)
+                && Objects.equals(tarballUrl, that.tarballUrl)
+                && Objects.equals(tree, that.tree)
+                && Objects.equals(treeResourcePath, that.treeResourcePath)
+                && Objects.equals(treeUrl, that.treeUrl)
+                && Objects.equals(url, that.url)
+                && Objects.equals(viewerCanSubscribe, that.viewerCanSubscribe)
+                && Objects.equals(viewerSubscription, that.viewerSubscription)
+                && Objects.equals(zipballUrl, that.zipballUrl)
+
+    }
+
+    override fun hashCode(): Int = {
+        return Objects.hash(abbreviatedOid, additions, associatedPullRequests, author, authoredByCommitter, authoredDate, blame, changedFiles, comments, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, deployments, history, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, parents, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl)
+    }
+
+    class Builder {
+
+        private lateinit var abbreviatedOid: String
+        private var additions: Int = 0
+        private var associatedPullRequests: PullRequestConnection? = null
+        private var author: GitActor? = null
+        private var authoredByCommitter: Boolean = false
+        private lateinit var authoredDate: String
+        private lateinit var blame: Blame
+        private var changedFiles: Int = 0
+        private lateinit var comments: CommitCommentConnection
+        private lateinit var commitResourcePath: String
+        private lateinit var commitUrl: String
+        private lateinit var committedDate: String
+        private var committedViaWeb: Boolean = false
+        private var committer: GitActor? = null
+        private var deletions: Int = 0
+        private var deployments: DeploymentConnection? = null
+        private lateinit var history: CommitHistoryConnection
+        private lateinit var id: String
+        private lateinit var message: String
+        private lateinit var messageBody: String
+        private lateinit var messageBodyHTML: String
+        private lateinit var messageHeadline: String
+        private lateinit var messageHeadlineHTML: String
+        private lateinit var oid: String
+        private lateinit var parents: CommitConnection
+        private var pushedDate: String? = null
+        private lateinit var repository: Repository
+        private lateinit var resourcePath: String
+        private var signature: GitSignature? = null
+        private var status: Status? = null
+        private lateinit var tarballUrl: String
+        private lateinit var tree: Tree
+        private lateinit var treeResourcePath: String
+        private lateinit var treeUrl: String
+        private lateinit var url: String
+        private var viewerCanSubscribe: Boolean = false
+        private var viewerSubscription: SubscriptionState? = null
+        private lateinit var zipballUrl: String
+
+        fun setAbbreviatedOid(abbreviatedOid: String): Builder {
+            this.abbreviatedOid = abbreviatedOid
+            return this
+        }
+
+        fun setAdditions(additions: Int): Builder {
+            this.additions = additions
+            return this
+        }
+
+        fun setAssociatedPullRequests(associatedPullRequests: PullRequestConnection?): Builder {
+            this.associatedPullRequests = associatedPullRequests
+            return this
+        }
+
+        fun setAuthor(author: GitActor?): Builder {
+            this.author = author
+            return this
+        }
+
+        fun setAuthoredByCommitter(authoredByCommitter: Boolean): Builder {
+            this.authoredByCommitter = authoredByCommitter
+            return this
+        }
+
+        fun setAuthoredDate(authoredDate: String): Builder {
+            this.authoredDate = authoredDate
+            return this
+        }
+
+        fun setBlame(blame: Blame): Builder {
+            this.blame = blame
+            return this
+        }
+
+        fun setChangedFiles(changedFiles: Int): Builder {
+            this.changedFiles = changedFiles
+            return this
+        }
+
+        fun setComments(comments: CommitCommentConnection): Builder {
+            this.comments = comments
+            return this
+        }
+
+        fun setCommitResourcePath(commitResourcePath: String): Builder {
+            this.commitResourcePath = commitResourcePath
+            return this
+        }
+
+        fun setCommitUrl(commitUrl: String): Builder {
+            this.commitUrl = commitUrl
+            return this
+        }
+
+        fun setCommittedDate(committedDate: String): Builder {
+            this.committedDate = committedDate
+            return this
+        }
+
+        fun setCommittedViaWeb(committedViaWeb: Boolean): Builder {
+            this.committedViaWeb = committedViaWeb
+            return this
+        }
+
+        fun setCommitter(committer: GitActor?): Builder {
+            this.committer = committer
+            return this
+        }
+
+        fun setDeletions(deletions: Int): Builder {
+            this.deletions = deletions
+            return this
+        }
+
+        fun setDeployments(deployments: DeploymentConnection?): Builder {
+            this.deployments = deployments
+            return this
+        }
+
+        fun setHistory(history: CommitHistoryConnection): Builder {
+            this.history = history
+            return this
+        }
+
+        fun setId(id: String): Builder {
+            this.id = id
+            return this
+        }
+
+        fun setMessage(message: String): Builder {
+            this.message = message
+            return this
+        }
+
+        fun setMessageBody(messageBody: String): Builder {
+            this.messageBody = messageBody
+            return this
+        }
+
+        fun setMessageBodyHTML(messageBodyHTML: String): Builder {
+            this.messageBodyHTML = messageBodyHTML
+            return this
+        }
+
+        fun setMessageHeadline(messageHeadline: String): Builder {
+            this.messageHeadline = messageHeadline
+            return this
+        }
+
+        fun setMessageHeadlineHTML(messageHeadlineHTML: String): Builder {
+            this.messageHeadlineHTML = messageHeadlineHTML
+            return this
+        }
+
+        fun setOid(oid: String): Builder {
+            this.oid = oid
+            return this
+        }
+
+        fun setParents(parents: CommitConnection): Builder {
+            this.parents = parents
+            return this
+        }
+
+        fun setPushedDate(pushedDate: String?): Builder {
+            this.pushedDate = pushedDate
+            return this
+        }
+
+        fun setRepository(repository: Repository): Builder {
+            this.repository = repository
+            return this
+        }
+
+        fun setResourcePath(resourcePath: String): Builder {
+            this.resourcePath = resourcePath
+            return this
+        }
+
+        fun setSignature(signature: GitSignature?): Builder {
+            this.signature = signature
+            return this
+        }
+
+        fun setStatus(status: Status?): Builder {
+            this.status = status
+            return this
+        }
+
+        fun setTarballUrl(tarballUrl: String): Builder {
+            this.tarballUrl = tarballUrl
+            return this
+        }
+
+        fun setTree(tree: Tree): Builder {
+            this.tree = tree
+            return this
+        }
+
+        fun setTreeResourcePath(treeResourcePath: String): Builder {
+            this.treeResourcePath = treeResourcePath
+            return this
+        }
+
+        fun setTreeUrl(treeUrl: String): Builder {
+            this.treeUrl = treeUrl
+            return this
+        }
+
+        fun setUrl(url: String): Builder {
+            this.url = url
+            return this
+        }
+
+        fun setViewerCanSubscribe(viewerCanSubscribe: Boolean): Builder {
+            this.viewerCanSubscribe = viewerCanSubscribe
+            return this
+        }
+
+        fun setViewerSubscription(viewerSubscription: SubscriptionState?): Builder {
+            this.viewerSubscription = viewerSubscription
+            return this
+        }
+
+        fun setZipballUrl(zipballUrl: String): Builder {
+            this.zipballUrl = zipballUrl
+            return this
+        }
+
+        fun build(): Commit {
+            return Commit(abbreviatedOid, additions, associatedPullRequests, author, authoredByCommitter, authoredDate, blame, changedFiles, comments, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, deployments, history, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, parents, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl)
+        }
+    }
+}

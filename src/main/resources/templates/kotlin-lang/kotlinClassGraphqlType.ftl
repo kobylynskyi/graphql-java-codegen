@@ -11,6 +11,9 @@ import ${import}.*
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 </#if>
+<#if generateModelOpenClasses && equalsAndHashCode>
+import java.util.Objects
+</#if>
 <#if toString>
 import java.util.StringJoiner
 </#if>
@@ -54,9 +57,9 @@ import java.util.StringJoiner
 @${annotation}
 </#list>
 <#if !fields?has_content>
-class ${className}()<#if implements?has_content> : <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>
+open class ${className}()<#if implements?has_content> : <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if>
 <#else>
-data class ${className}(
+<#if generateModelOpenClasses>open class<#else>data class</#if> ${className}(
 <#if fields?has_content>
 <#list fields as field>
     <#if field.deprecated?has_content>
@@ -108,6 +111,31 @@ data class ${className}(
         </#list>
     </#if>
         return joiner.toString()
+    }
+</#if>
+<#if generateModelOpenClasses && equalsAndHashCode>
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other == null || javaClass != other.javaClass) {
+            return false
+        }
+        val that = other as ${className}
+        <#if fields?has_content>
+        return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
+                && </#if></#list>
+        <#else>
+        return true</#if>
+    }
+
+    override fun hashCode(): Int = {
+    <#if fields?has_content>
+        return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
+    <#else>
+        return 0
+    </#if>
     }
 </#if>
 <#if builder>

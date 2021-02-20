@@ -118,6 +118,8 @@ trait GraphQLCodegenKeys {
 
   val generatedLanguage = settingKey[GeneratedLanguage]("Generate code with language, like java/scala.")
 
+  val generateModelOpenClasses = settingKey[Boolean]("The class type of the generated model. If true, generate normal classes, else generate case class.")
+
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")

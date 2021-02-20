@@ -193,6 +193,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(readonly = true, required = true, defaultValue = "${project}")
     private MavenProject project;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING)
+    private boolean generateModelOpenClasses;
+
     @Override
     public void execute() throws MojoExecutionException {
         addCompileSourceRootIfConfigured();
@@ -247,6 +250,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setSubscriptionResolverParentInterface(getSubscriptionResolverParentInterface());
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
+        mappingConfig.setGenerateModelOpenClasses(isGenerateModelOpenClasses());
 
         try {
             instantiateCodegen(mappingConfig).generate();
@@ -554,6 +558,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public GeneratedLanguage getGeneratedLanguage() {
         return generatedLanguage;
+    }
+
+    @Override
+    public Boolean isGenerateModelOpenClasses() {
+        return generateModelOpenClasses;
     }
 
     public ParentInterfacesConfig getParentInterfaces() {

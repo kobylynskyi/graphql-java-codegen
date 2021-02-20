@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -186,8 +187,9 @@ public class RequestResponseDefinitionToDataModelMapper {
                                            String objectTypeName,
                                            List<String> fieldNames) {
         String className = getClassName(operationDef, fieldNames, objectTypeName, mappingContext.getResponseSuffix());
-        String javaType = graphQLTypeMapper.getLanguageType(
-                mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName).getJavaName();
+        NamedDefinition namedDefinition = graphQLTypeMapper.getLanguageType(
+                mappingContext, operationDef.getType(), operationDef.getName(), objectTypeName);
+        String returnType = graphQLTypeMapper.getResponseReturnType(mappingContext, namedDefinition, namedDefinition.getJavaName());
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
@@ -197,7 +199,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(DEPRECATED, operationDef.getDeprecated(mappingContext));
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(METHOD_NAME, dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext, operationDef.getName()));
-        dataModel.put(RETURN_TYPE_NAME, javaType);
+        dataModel.put(RETURN_TYPE_NAME, returnType);
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         return dataModel;
