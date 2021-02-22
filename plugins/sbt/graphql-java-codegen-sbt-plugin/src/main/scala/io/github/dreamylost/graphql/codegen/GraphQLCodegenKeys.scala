@@ -87,7 +87,7 @@ trait GraphQLCodegenKeys {
 
   val graphqlSchemas = settingKey[SchemaFinderConfig]("graphqlSchemas")
 
-  val outputDir = settingKey[File]("outputDir")
+  val outputDir = settingKey[File]("Where to store generated files")
 
   val graphqlSchemaPaths = settingKey[Seq[String]]("Locations of GraphQL schemas.")
 
@@ -124,6 +124,7 @@ trait GraphQLCodegenKeys {
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")
 
-  val generateCodegenTargetPath = settingKey[File]("The path for graphqlCodegen to save code which generate by plugin")
+  //some others for sbt
+  val generateCodegenTargetPath = settingKey[File]("Where to store generated files and add the generated code to the classpath, so that they can be referenced.")
 
 }
