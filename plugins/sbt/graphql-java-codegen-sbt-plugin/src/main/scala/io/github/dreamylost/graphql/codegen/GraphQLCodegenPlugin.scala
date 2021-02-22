@@ -1,8 +1,5 @@
 package io.github.dreamylost.graphql.codegen
 
-import java.nio.file.{ Path, Paths }
-import java.util
-
 import com.kobylynskyi.graphql.codegen.GraphQLCodegenValidate
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.model._
@@ -10,11 +7,14 @@ import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedExcep
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
-import sbt.{ AutoPlugin, Def, PluginTrigger, _ }
+import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
 
+import java.nio.file.{ Path, Paths }
+import java.util.{ HashMap => JHashMap, HashSet => JHashSet, List => JList }
 import scala.collection.JavaConverters._
+import sbt.Def
 
 /**
  *
@@ -29,13 +29,11 @@ object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile, configurationP
 class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val configurationPostfix: String = "") extends AutoPlugin with Compat {
   self =>
 
-  //override this by graphqlJavaCodegenVersion and javaxValidationApiVersion
   private val jValidation = BuildInfo.jValidationVersion
   private val codegen = BuildInfo.version
 
   object GlobalImport extends GraphQLCodegenKeys {
 
-    //should look for a way to automatically add to the classpath
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
       "javax.validation" % "validation-api" % javaxValidationApiVersion.value.getOrElse(jValidation),
       "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen)
@@ -48,8 +46,6 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
 
   }
 
-  //no Auto trigger
-  //Eventually I decided not to use auto trigger
   override def trigger: PluginTrigger = noTrigger
 
   override def requires = sbt.plugins.JvmPlugin
@@ -59,21 +55,21 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
   import GlobalImport._
 
   //With the implementation of some other plugins, initialization is not necessary,
-  //but maybe should be related to the dependency of key. For convenience, this is a conservative operation
+  //but maybe should be related to the dependency of key. For convenience, this is a conservative operation.
   override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
-    generateModelOpenClasses := MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES,
-    generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     graphqlQueryIntrospectionResultPath := None,
     graphqlSchemas := schemaFinderConfig,
     jsonConfigurationFile := None,
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
-    customTypesMapping := new util.HashMap[String, String](), //TODO use scala Map, convert to java Map
-    customAnnotationsMapping := new util.HashMap[String, util.List[String]](),
-    directiveAnnotationsMapping := new util.HashMap[String, util.List[String]](),
+    customTypesMapping := new JHashMap[String, String](), //TODO use scala Map, convert to java Map
+    customAnnotationsMapping := new JHashMap[String, JList[String]](),
+    directiveAnnotationsMapping := new JHashMap[String, JList[String]](),
     javaxValidationApiVersion := None,
     graphqlJavaCodegenVersion := None,
     // suffix/prefix/strategies:
+    generateModelOpenClasses := MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES,
+    generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     apiNamePrefix := None,
     apiNameSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
     apiRootInterfaceStrategy := ApiRootInterfaceStrategy.valueOf(MappingConfigConstants.DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING),
@@ -84,7 +80,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     responseSuffix := MappingConfigConstants.DEFAULT_RESPONSE_SUFFIX,
     responseProjectionSuffix := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_SUFFIX,
     parametrizedInputSuffix := MappingConfigConstants.DEFAULT_PARAMETRIZED_INPUT_SUFFIX,
-    useObjectMapperForRequestSerialization := new util.HashSet[String](),
+    useObjectMapperForRequestSerialization := new JHashSet[String](),
     typeResolverPrefix := None,
     typeResolverSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
     subscriptionReturnType := None,
@@ -100,8 +96,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     apiPackageName := None,
     modelPackageName := None,
     // field resolvers configs:
-    fieldsWithResolvers := new util.HashSet[String](),
-    fieldsWithoutResolvers := new util.HashSet[String](),
+    fieldsWithResolvers := new JHashSet[String](),
+    fieldsWithoutResolvers := new JHashSet[String](),
     // various toggles:
     generateClient := MappingConfigConstants.DEFAULT_GENERATE_CLIENT,
     generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
@@ -112,15 +108,14 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateBuilder := MappingConfigConstants.DEFAULT_BUILDER,
     generateApis := MappingConfigConstants.DEFAULT_GENERATE_APIS,
     generateEqualsAndHashCode := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
-    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS,// TODO change default value
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS, // TODO change default value
     generateToString := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
     parentInterfaces := parentInterfacesConfig,
     responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH
   )
 
-  private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting[MappingConfig] {
-
+  private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
     val mappingConfig = new MappingConfig
     mappingConfig.setPackageName((generatePackageName in GraphQLCodegenConfig).value.orNull)
     mappingConfig.setCustomTypesMapping((customTypesMapping in GraphQLCodegenConfig).value)
@@ -169,14 +164,15 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateModelOpenClasses((generateModelOpenClasses in GraphQLCodegenConfig).value)
-    sLog.value.info(s"Version is <${BuildInfo.toString}>")
     mappingConfig
   }
 
   override lazy val projectSettings: Seq[Def.Setting[_]] = inConfig(GraphQLCodegenConfig) {
     Seq(
+      // `generateCodegenTargetPath` not support playframework, https://github.com/kobylynskyi/graphql-java-codegen/issues/551
+      // There may be some problems that have not been found at present :)
       generateCodegenTargetPath := crossTarget.value / "src_managed_graphql",
-      sourceManaged := (generateCodegenTargetPath in GraphQLCodegenConfig).value,
+      sourceManaged := generateCodegenTargetPath.value,
       javaSource in configuration := (sourceManaged in GraphQLCodegenConfig).value,
       managedSourceDirectories in configuration ++= Seq((sourceManaged in GraphQLCodegenConfig).value),
       managedClasspath := {
@@ -187,93 +183,100 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         if (!file.exists()) {
           file.mkdirs()
         }
-        sLog.value.info(s"Default outputDir is <${file.getAbsolutePath}>")
+        sLog.value.info(s"current outputDir: ${file.getAbsolutePath}")
         file
-      }, //use validate that config in build.sbt
+      },
       graphqlCodegenValidate := {
-        val schemas = if ((graphqlSchemaPaths in GraphQLCodegenConfig).value.isEmpty) {
+        val schemas = if (graphqlSchemaPaths.value.isEmpty) {
           Seq(((resourceDirectory in configuration).value / "schema.graphql").getCanonicalPath).asJava
         } else {
-          (graphqlSchemaPaths in GraphQLCodegenConfig).value.asJava
+          graphqlSchemaPaths.value.asJava
         }
-        new GraphQLCodegenValidate(schemas).validate() //use validate at terminal by user
+        new GraphQLCodegenValidate(schemas).validate()
       },
       graphqlSchemaValidate := {
-        //use by user
         val args: Seq[String] = spaceDelimited("<arg>").parsed
         new GraphQLCodegenValidate(args.asJava).validate()
-        args.foreach(a ⇒ sLog.value.info(s"Obtain args <$a>"))
+        args.foreach(a ⇒ sLog.value.info(s"obtain args: $a"))
         args
       }, graphqlCodegen := {
-        val mappingConfigSupplier: JsonMappingConfigSupplier = buildJsonSupplier((jsonConfigurationFile in GraphQLCodegenConfig).value.orNull)
-        var result: Seq[File] = Seq.empty
+        sLog.value.info(s"Generating files: ${BuildInfo.toString}")
+        val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        var result = Seq.empty[File]
         try {
-          val _outputDir = (outputDir in GraphQLCodegenConfig).value
-          val _introspectionResult = (graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.orNull
+          val _outputDir = outputDir.value
+          val _introspectionResult = graphqlQueryIntrospectionResultPath.value.orNull
           lazy val instantiateCodegen = (mappingConfig: MappingConfig) => {
-            (generatedLanguage in GraphQLCodegenConfig).value match {
+            generatedLanguage.value match {
               case JAVA =>
-                new JavaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+                new JavaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
               case SCALA =>
-                new ScalaGraphQLCodegen(getSchemas, _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+                new ScalaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
               case _ =>
-                throw new LanguageNotSupportedException((generatedLanguage in GraphQLCodegenConfig).value)
+                throw new LanguageNotSupportedException(generatedLanguage.value)
             }
           }
           result = instantiateCodegen(getMappingConfig().value).generate.asScala
           for (file ← result) {
-            sLog.value.success(s"${file.getName}")
+            sLog.value.info(s"${file.getName}")
           }
+          sLog.value.success(s"Total files: ${result.length}")
         } catch {
           case e: Exception ⇒
-            throw new Exception(s"${e.getLocalizedMessage}")
+            (logLevel in configuration).?.value.orElse(state.value.get(logLevel.key)) match {
+              case Some(Level.Debug) => e.printStackTrace()
+              case _                 => throw new Exception(s"${e.getLocalizedMessage}")
+            }
         }
 
-        def getSchemas: util.List[String] = {
-          if ((graphqlSchemaPaths in GraphQLCodegenConfig).value != null &&
-                (graphqlSchemaPaths in GraphQLCodegenConfig).value.nonEmpty) {
-            return (graphqlSchemaPaths in GraphQLCodegenConfig).value.asJava
+        def getSchemas(): JList[String] = {
+          if (graphqlSchemaPaths.value != null &&
+            graphqlSchemaPaths.value.nonEmpty) {
+            graphqlSchemaPaths.value.asJava
+          } else if (graphqlQueryIntrospectionResultPath.value != null &&
+            graphqlQueryIntrospectionResultPath.value.isDefined) {
+            Seq.empty[String].asJava
+          } else {
+            val schemasRootDir = getSchemasRootDir
+            val finder = new SchemaFinder(schemasRootDir)
+            finder.setRecursive(graphqlSchemas.value.recursive)
+            finder.setIncludePattern(graphqlSchemas.value.includePattern)
+            finder.setExcludedFiles(graphqlSchemas.value.excludedFiles.asJava)
+            finder.findSchemas
           }
-          if ((graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value != null &&
-                !(graphqlQueryIntrospectionResultPath in GraphQLCodegenConfig).value.isEmpty) {
-            return List[String]().asJava
-          }
-          val schemasRootDir: Path = getSchemasRootDir
-          val finder: SchemaFinder = new SchemaFinder(schemasRootDir)
-          finder.setRecursive((graphqlSchemas in GraphQLCodegenConfig).value.recursive)
-          finder.setIncludePattern((graphqlSchemas in GraphQLCodegenConfig).value.includePattern)
-          finder.setExcludedFiles((graphqlSchemas in GraphQLCodegenConfig).value.excludedFiles.asJava)
-          finder.findSchemas
         }
 
         def getSchemasRootDir: Path = {
-          val rootDir = (graphqlSchemas in GraphQLCodegenConfig).value.rootDir
+          val rootDir = graphqlSchemas.value.rootDir
           if (rootDir == null) {
-            val default = getDefaultResourcesDirectory
-            if (default == null) throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
-            else return default
+            val default = getDefaultResourcesDirectory()
+            if (default == null)
+              throw new IllegalStateException("Default resource folder not found, please provide <rootDir> in <graphqlSchemas>")
+            else default
+          } else {
+            Paths.get(rootDir)
           }
-          Paths.get(rootDir)
         }
 
-        def getDefaultResourcesDirectory: Path = {
+        def getDefaultResourcesDirectory(): Path = {
           val file = (resourceDirectory in configuration).value
           if (!file.exists()) {
             file.mkdirs()
           }
           val path = Paths.get(file.getPath)
-          sLog.value.info(s"Default resources path <$path>")
+          sLog.value.info(s"default resources path: $path")
           path
         }
 
         result
       }
-    //watch graphql schema source
-    ) ++ watchSourcesSetting ++ Seq(cleanFiles += (generateCodegenTargetPath in GraphQLCodegenConfig).value)
+    //watch graphql schema source, I'm not sure if this will be mutually exclusive with the deletion of codegen.
+    ) ++ watchSourcesSetting ++ Seq(cleanFiles += generateCodegenTargetPath.value)
   }
 
-  private def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = {
-    if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty) new JsonMappingConfigSupplier(jsonConfigurationFile) else null
+  protected def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = {
+    if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty)
+      new JsonMappingConfigSupplier(jsonConfigurationFile) else null
   }
 
 }
