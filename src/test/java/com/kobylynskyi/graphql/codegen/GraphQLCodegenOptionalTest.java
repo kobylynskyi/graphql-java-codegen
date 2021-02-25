@@ -24,7 +24,6 @@ class GraphQLCodegenOptionalTest {
 
     @BeforeEach
     void before() {
-        schemaFinder.setIncludePattern("github.*\\.graphqls");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
     }
 
@@ -35,6 +34,7 @@ class GraphQLCodegenOptionalTest {
 
     @Test
     void generate_Optional() throws Exception {
+        schemaFinder.setIncludePattern("github.*\\.graphqls");
         new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
                 .generate();
 
@@ -59,6 +59,7 @@ class GraphQLCodegenOptionalTest {
 
     @Test
     void generate_OptionalWithCustomApiReturnType() throws Exception {
+        schemaFinder.setIncludePattern("github.*\\.graphqls");
         mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
         mappingConfig.setApiReturnListType("reactor.core.publisher.Flux");
 
@@ -70,6 +71,27 @@ class GraphQLCodegenOptionalTest {
         // node(id: ID!): Node
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/NodeQueryResolver_mono.java.txt"),
                 getFileByName(files, "NodeQueryResolver.java"));
+    }
+
+    /**
+     * @see <a href="https://github.com/kobylynskyi/graphql-java-codegen/issues/556">Related issue in GitHub</a>
+     */
+    @Test
+    void generate_OptionalFieldInInterfaceAndMandatoryInType() throws Exception {
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
+
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/InterfaceWithOptionalField.java.txt"),
+                getFileByName(files, "InterfaceWithOptionalField.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/TypeWithMandatoryField.java.txt"),
+                getFileByName(files, "TypeWithMandatoryField.java"));
     }
 
 }

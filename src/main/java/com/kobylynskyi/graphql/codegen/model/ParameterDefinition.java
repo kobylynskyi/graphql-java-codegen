@@ -6,8 +6,6 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-
 /**
  * Freemarker-understandable format of method parameter and field definition
  *
@@ -16,7 +14,7 @@ import static java.util.Collections.emptyList;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-            DataFetchingEnvironment.class.getName(), "env", "env", null, emptyList(), emptyList(), null, false);
+            DataFetchingEnvironment.class.getName(), "env");
 
     private String type;
     /**
@@ -28,25 +26,23 @@ public class ParameterDefinition {
      */
     private String originalName;
     private String defaultValue;
+    private boolean isMandatory;
     private List<String> annotations = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
     private DeprecatedDefinition deprecated;
     private boolean serializeUsingObjectMapper;
+    /**
+     * Definition of the same type, but defined in the parent
+     */
+    private ParameterDefinition definitionInParentType;
 
     public ParameterDefinition() {
     }
 
-    public ParameterDefinition(String type, String name, String originalName, String defaultValue,
-                               List<String> annotations, List<String> javaDoc,
-                               DeprecatedDefinition deprecated, boolean serializeUsingObjectMapper) {
+    private ParameterDefinition(String type, String name) {
         this.type = type;
         this.name = name;
-        this.originalName = originalName;
-        this.defaultValue = defaultValue;
-        this.annotations = annotations;
-        this.javaDoc = javaDoc;
-        this.deprecated = deprecated;
-        this.serializeUsingObjectMapper = serializeUsingObjectMapper;
+        this.originalName = name;
     }
 
     public String getType() {
@@ -81,6 +77,14 @@ public class ParameterDefinition {
         this.defaultValue = defaultValue;
     }
 
+    public boolean isMandatory() {
+        return isMandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        isMandatory = mandatory;
+    }
+
     public List<String> getAnnotations() {
         return annotations;
     }
@@ -113,4 +117,11 @@ public class ParameterDefinition {
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
     }
 
+    public void setDefinitionInParentType(ParameterDefinition definitionInParentType) {
+        this.definitionInParentType = definitionInParentType;
+    }
+
+    public ParameterDefinition getDefinitionInParentType() {
+        return definitionInParentType;
+    }
 }

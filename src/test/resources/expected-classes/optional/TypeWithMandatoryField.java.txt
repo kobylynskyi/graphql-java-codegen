@@ -1,0 +1,72 @@
+import java.util.Objects;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class TypeWithMandatoryField implements java.io.Serializable, InterfaceWithOptionalField {
+
+    private int test;
+
+    public TypeWithMandatoryField() {
+    }
+
+    public TypeWithMandatoryField(int test) {
+        this.test = test;
+    }
+
+    public Integer getTest() {
+        return test;
+    }
+    public void setTest(int test) {
+        this.test = test;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final TypeWithMandatoryField that = (TypeWithMandatoryField) obj;
+        return Objects.equals(test, that.test);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(test);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        joiner.add("test: " + test);
+        return joiner.toString();
+    }
+
+    public static TypeWithMandatoryField.Builder builder() {
+        return new TypeWithMandatoryField.Builder();
+    }
+
+    public static class Builder {
+
+        private int test;
+
+        public Builder() {
+        }
+
+        public Builder setTest(int test) {
+            this.test = test;
+            return this;
+        }
+
+
+        public TypeWithMandatoryField build() {
+            return new TypeWithMandatoryField(test);
+        }
+
+    }
+}
