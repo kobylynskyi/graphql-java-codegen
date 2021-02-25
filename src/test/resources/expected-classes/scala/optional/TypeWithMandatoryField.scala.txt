@@ -1,0 +1,34 @@
+import scala.collection.JavaConverters._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class TypeWithMandatoryField(
+    override val test: Int
+) extends InterfaceWithOptionalField {
+
+    override def toString(): String = {
+        Seq(
+            "test: " + test
+        ).filter(_ != "").mkString("{", ",", "}")
+    }
+}
+
+object TypeWithMandatoryField {
+
+    def builder(): TypeWithMandatoryField.Builder = new Builder()
+
+    class Builder {
+
+        private var test: Int = _
+
+        def setTest(test: Int): Builder = {
+            this.test = test
+            this
+        }
+
+        def build(): TypeWithMandatoryField = TypeWithMandatoryField(test)
+
+    }
+}

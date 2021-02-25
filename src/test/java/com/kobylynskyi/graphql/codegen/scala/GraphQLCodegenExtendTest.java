@@ -11,10 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
@@ -216,5 +213,30 @@ class GraphQLCodegenExtendTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/extend/nullable/QueryResolver.scala.txt"),
                 getFileByName(files, "QueryResolver.scala"));
+    }
+
+    /**
+     * Verify Int! to override Int in graphql.
+     * In scala, Int type cannot be null, So, option Int is Option[Int]. Can not override from Option[Int] to Int.
+     */
+    @Test
+    void generate_OptionalFieldInInterfaceAndMandatoryInType() throws Exception {
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        Map<String, String> maps = new HashMap<>();
+        maps.put("Int", "Int");// Now, That's the only way to do it.
+        mappingConfig.setCustomTypesMapping(maps);
+        schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
+
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/optional/InterfaceWithOptionalField.scala.txt"),
+                getFileByName(files, "InterfaceWithOptionalField.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/optional/TypeWithMandatoryField.scala.txt"),
+                getFileByName(files, "TypeWithMandatoryField.scala"));
     }
 }
