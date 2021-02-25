@@ -85,4 +85,25 @@ class GraphQLCodegenNullableTest {
                 new File("src/test/resources/expected-classes/kt/nullable/QueryResolver_WITH_Prefix_Suffix.kt.txt"),
                 getFileByName(files, "QueryResolver.kt"));
     }
+
+    /**
+     * Verify Int to override Int?
+     */
+    @Test
+    void generate_OptionalFieldInInterfaceAndMandatoryInType() throws Exception {
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
+
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/optional/InterfaceWithOptionalField.kt.txt"),
+                getFileByName(files, "InterfaceWithOptionalField.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/optional/TypeWithMandatoryField.kt.txt"),
+                getFileByName(files, "TypeWithMandatoryField.kt"));
+    }
 }

@@ -1,0 +1,37 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import scala.collection.JavaConverters._
+import TestEnum._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class Synchronized(
+    void: String,
+    Wait: Char,
+    `this`: Char,
+    `super`: Char,
+    `private`: Char,
+    native: Char,
+    that: Char,
+    enum: TestEnum,
+    Synchronized: Synchronized,
+    date: java.time.ZonedDateTime
+) {
+
+    override def toString(): String = {
+        Seq(
+            if (void != null)  "void: \"void\""  else "",
+            "wait: " + Wait,
+            "this: " + `this`,
+            "super: " + `super`,
+            "private: " + `private`,
+            "native: " + native,
+            "that: " + that,
+            if (enum != null)  "enum: enum" else "",
+            if (Synchronized != null)  "Synchronized: Synchronized" else "",
+            if (date != null)  "date: date" else ""
+        ).filter(_ != "").mkString("{", ",", "}")
+    }
+}

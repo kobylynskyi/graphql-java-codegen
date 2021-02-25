@@ -87,4 +87,32 @@ class GraphQLCodegenReactorToStringTest {
         }
     }
 
+    @Test
+    void generate_SetGenerateClient_False() throws Exception {
+        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        mappingConfig.setGenerateClient(false);
+        mappingConfig.setGenerateToString(true);
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("TestEnum"));
+        mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setGenerateModelsForRootTypes(true);
+        mappingConfig.setApiNameSuffix("API");
+
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Objects.equals("Synchronized.scala", f)).sorted().collect(toList());
+        assertEquals(singletonList("Synchronized.scala"), generatedFileNames);
+
+        for (File file : files) {
+            if (Objects.equals("Synchronized.scala", file.getName())) {
+                assertSameTrimmedContent(
+                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt", "TOSTRING_Synchronized.scala")),
+                        file);
+            }
+        }
+    }
+
 }

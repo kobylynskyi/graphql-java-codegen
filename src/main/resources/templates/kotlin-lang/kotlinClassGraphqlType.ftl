@@ -91,9 +91,9 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
         <#else>
         <#if field.type == "String?">
-            joiner.add("${field.originalName}: \"${field.name}\"")
+            joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
         <#else>
-            joiner.add(${field.originalName}: ${field.name}")
+            joiner.add("${field.originalName}: " + ${field.name});
         </#if>
         </#if>
         }
@@ -102,9 +102,9 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
         joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
         <#else>
     <#if field.type == "String">
-        joiner.add("${field.originalName}: \"${field.name}\"")
+        joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
     <#else>
-        joiner.add(${field.originalName}: ${field.name}")
+        joiner.add("${field.originalName}: " + ${field.name});
     </#if>
         </#if>
     </#if>

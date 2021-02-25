@@ -31,6 +31,12 @@ public class ScalaDataModelMapper implements DataModelMapper {
         if (SCALA_RESTRICTED_KEYWORDS.contains(fieldName)) {
             return wrapString(fieldName, RESTRICTED_WORDS_WRAP_WITH);
         }
+
+        // Scala case class's Fields cannot also use the names of these methods.
+        if (SCALA_RESTRICTED_METHOD_NAMES.contains(fieldName)) {
+            return Utils.capitalize(fieldName);
+        }
+
         return fieldName;
     }
 

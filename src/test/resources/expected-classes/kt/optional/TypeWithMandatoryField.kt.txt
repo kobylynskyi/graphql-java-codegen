@@ -1,0 +1,36 @@
+import java.util.StringJoiner
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class TypeWithMandatoryField(
+    override
+    val test: Int
+) : InterfaceWithOptionalField {
+
+    companion object {
+        fun builder(): Builder = Builder()
+    }
+
+    // In the future, it maybe change.
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "{ ", " }")
+        joiner.add("test: " + test);
+        return joiner.toString()
+    }
+
+    class Builder {
+
+        private var test: Int = 0
+
+        fun setTest(test: Int): Builder {
+            this.test = test
+            return this
+        }
+
+        fun build(): TypeWithMandatoryField {
+            return TypeWithMandatoryField(test)
+        }
+    }
+}

@@ -10,7 +10,7 @@ import TestEnum._
 )
 case class Synchronized(
     void: String,
-    wait: Char,
+    Wait: Char,
     `this`: Char,
     `super`: Char,
     `private`: Char,
@@ -24,7 +24,7 @@ case class Synchronized(
     override def toString(): String = {
         Seq(
             if (void != null) "void: " + GraphQLRequestSerializer.getEntry(void) else "",
-            "wait: " + GraphQLRequestSerializer.getEntry(wait),
+            "wait: " + GraphQLRequestSerializer.getEntry(Wait),
             "this: " + GraphQLRequestSerializer.getEntry(`this`),
             "super: " + GraphQLRequestSerializer.getEntry(`super`),
             "private: " + GraphQLRequestSerializer.getEntry(`private`),
@@ -44,7 +44,7 @@ object Synchronized {
     class Builder {
 
         private var void: String = _
-        private var wait: Char = _
+        private var Wait: Char = _
         private var `this`: Char = _
         private var `super`: Char = _
         private var `private`: Char = _
@@ -59,8 +59,8 @@ object Synchronized {
             this
         }
 
-        def setWait(wait: Char): Builder = {
-            this.wait = wait
+        def setWait(Wait: Char): Builder = {
+            this.Wait = Wait
             this
         }
 
@@ -104,7 +104,7 @@ object Synchronized {
             this
         }
 
-        def build(): Synchronized = Synchronized(void, wait, `this`, `super`, `private`, native, that, enum, Synchronized, date)
+        def build(): Synchronized = Synchronized(void, Wait, `this`, `super`, `private`, native, that, enum, Synchronized, date)
 
     }
 }
