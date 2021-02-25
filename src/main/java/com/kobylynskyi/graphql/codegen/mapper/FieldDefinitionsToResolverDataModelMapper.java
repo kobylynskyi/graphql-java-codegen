@@ -22,9 +22,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPORTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.MappingConfigConstants.PARENT_INTERFACE_TYPE_PLACEHOLDER;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
@@ -197,7 +205,12 @@ public class FieldDefinitionsToResolverDataModelMapper {
         if (!Utils.isGraphqlOperation(parentTypeName)) {
             String parentObjectParamType = graphQLTypeMapper.getLanguageType(mappingContext, new TypeName(parentTypeName));
             String parentObjectParamName = dataModelMapper.capitalizeIfRestricted(mappingContext, Utils.uncapitalize(parentObjectParamType));
-            parameters.add(new ParameterDefinition(parentObjectParamType, parentObjectParamName, parentObjectParamName, null, emptyList(), emptyList(), resolvedField.getDeprecated(mappingContext), false));
+            ParameterDefinition parameterDefinition = new ParameterDefinition();
+            parameterDefinition.setType(parentObjectParamType);
+            parameterDefinition.setName(parentObjectParamName);
+            parameterDefinition.setOriginalName(parentObjectParamName);
+            parameterDefinition.setDeprecated(resolvedField.getDeprecated(mappingContext));
+            parameters.add(parameterDefinition);
         }
 
         // 2. Next parameters are input values

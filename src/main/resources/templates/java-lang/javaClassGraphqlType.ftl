@@ -4,9 +4,9 @@ package ${package};
 
 </#if>
 <#if imports??>
-<#list imports as import>
+    <#list imports as import>
 import ${import}.*;
-</#list>
+    </#list>
 </#if>
 <#if toStringForRequest>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
@@ -20,9 +20,9 @@ import java.util.StringJoiner;
 
 <#if javaDoc?has_content>
 /**
-<#list javaDoc as javaDocLine>
+    <#list javaDoc as javaDocLine>
  * ${javaDocLine}
-</#list>
+    </#list>
  */
 </#if>
 <#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
@@ -37,15 +37,15 @@ import java.util.StringJoiner;
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
 <#if fields?has_content>
-<#list fields as field>
-<#if field.deprecated?has_content>
+    <#list fields as field>
+        <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
-</#if>
-<#list field.annotations as annotation>
+        </#if>
+        <#list field.annotations as annotation>
     @${annotation}
-</#list>
+        </#list>
     private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
-</#list>
+    </#list>
 </#if>
 
     public ${className}() {
@@ -53,44 +53,44 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
 <#if fields?has_content>
     public ${className}(<#list fields as field>${field.type} ${field.name}<#if field_has_next>, </#if></#list>) {
-<#list fields as field>
+    <#list fields as field>
         this.${field.name} = ${field.name};
-</#list>
+    </#list>
     }
 </#if>
 
 <#if fields?has_content>
-<#list fields as field>
-<#if field.javaDoc?has_content>
+    <#list fields as field>
+        <#if field.javaDoc?has_content>
     /**
-<#list field.javaDoc as javaDocLine>
+        <#list field.javaDoc as javaDocLine>
      * ${javaDocLine}
-</#list>
+        </#list>
      */
-</#if>
-<#if field.deprecated?has_content>
+        </#if>
+        <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
-</#if>
-    public ${field.type} get${field.name?cap_first}() {
+        </#if>
+    public <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>${field.definitionInParentType.type}<#else>${field.type}</#if> get${field.name?cap_first}() {
         return ${field.name};
     }
-<#if !immutableModels>
-<#if field.javaDoc?has_content>
+        <#if !immutableModels>
+            <#if field.javaDoc?has_content>
     /**
-<#list field.javaDoc as javaDocLine>
+                <#list field.javaDoc as javaDocLine>
      * ${javaDocLine}
-</#list>
+                </#list>
      */
-</#if>
-<#if field.deprecated?has_content>
+            </#if>
+            <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
-</#if>
+            </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
     }
-</#if>
+        </#if>
 
-</#list>
+    </#list>
 </#if>
 <#if equalsAndHashCode>
     @Override
@@ -102,21 +102,21 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
             return false;
         }
         final ${className} that = (${className}) obj;
-<#if fields?has_content>
+    <#if fields?has_content>
         return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
             && </#if></#list>;
-<#else>
+    <#else>
         return true;
-</#if>
+    </#if>
     }
 
     @Override
     public int hashCode() {
-<#if fields?has_content>
+    <#if fields?has_content>
         return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);
-<#else>
+    <#else>
         return 0;
-</#if>
+    </#if>
     }
 </#if>
 
@@ -124,29 +124,29 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     @Override
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
-<#if fields?has_content>
-<#list fields as field>
-  <#if MapperUtil.isJavaPrimitive(field.type)>
-    <#if toStringForRequest>
+    <#if fields?has_content>
+        <#list fields as field>
+            <#if MapperUtil.isJavaPrimitive(field.type)>
+                <#if toStringForRequest>
         joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
-    <#else>
+                <#else>
         joiner.add("${field.originalName}: " + ${field.name});
-    </#if>
-  <#else>
+                </#if>
+            <#else>
         if (${field.name} != null) {
-    <#if toStringForRequest>
+                <#if toStringForRequest>
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
-    <#else>
-      <#if field.type == "String">
+                <#else>
+                    <#if field.type == "String">
             joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
-      <#else>
+                    <#else>
             joiner.add("${field.originalName}: " + ${field.name});
-      </#if>
-    </#if>
+                    </#if>
+                </#if>
         }
-  </#if>
-</#list>
-</#if>
+            </#if>
+        </#list>
+    </#if>
         return joiner.toString();
     }
 </#if>
@@ -158,34 +158,34 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
     public static class Builder {
 
-<#if fields?has_content>
-<#list fields as field>
+    <#if fields?has_content>
+        <#list fields as field>
         private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
-</#list>
-</#if>
+        </#list>
+    </#if>
 
         public Builder() {
         }
 
-<#if fields?has_content>
-<#list fields as field>
-<#if field.javaDoc?has_content>
+    <#if fields?has_content>
+        <#list fields as field>
+            <#if field.javaDoc?has_content>
         /**
-<#list field.javaDoc as javaDocLine>
+                <#list field.javaDoc as javaDocLine>
          * ${javaDocLine}
-</#list>
+                </#list>
          */
-</#if>
-<#if field.deprecated?has_content>
+            </#if>
+            <#if field.deprecated?has_content>
         @${field.deprecated.annotation}
-</#if>
+            </#if>
         public Builder set${field.name?cap_first}(${field.type} ${field.name}) {
             this.${field.name} = ${field.name};
             return this;
         }
 
-</#list>
-</#if>
+        </#list>
+    </#if>
 
         public ${className} build() {
             return new ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);

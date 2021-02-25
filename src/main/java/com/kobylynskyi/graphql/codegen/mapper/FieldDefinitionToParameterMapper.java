@@ -121,6 +121,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
+        parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
     }
