@@ -32,6 +32,6 @@ public interface EventPropertyResolver {
     /**
      * Parent event of the property
      */
-    Event parent(EventProperty eventProperty, EventStatus withStatus) throws Exception;
+    Event parent(EventProperty eventProperty, EventStatus withStatus, String createdAfter) throws Exception;
 
 }

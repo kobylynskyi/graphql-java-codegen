@@ -2,9 +2,8 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
-
-import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.Objects;
 
 /**
  * Parametrized input for field parent in type EventProperty
@@ -12,16 +11,23 @@ import java.util.StringJoiner;
 public class EventPropertyParentParametrizedInput implements GraphQLParametrizedInput {
 
     private Status withStatus;
+    private java.time.ZonedDateTime createdAfter;
 
     public EventPropertyParentParametrizedInput() {
     }
 
-    public EventPropertyParentParametrizedInput(Status withStatus) {
+    public EventPropertyParentParametrizedInput(Status withStatus, java.time.ZonedDateTime createdAfter) {
         this.withStatus = withStatus;
+        this.createdAfter = createdAfter;
     }
 
     public EventPropertyParentParametrizedInput withStatus(Status withStatus) {
         this.withStatus = withStatus;
+        return this;
+    }
+
+    public EventPropertyParentParametrizedInput createdAfter(java.time.ZonedDateTime createdAfter) {
+        this.createdAfter = createdAfter;
         return this;
     }
 
@@ -34,12 +40,13 @@ public class EventPropertyParentParametrizedInput implements GraphQLParametrized
             return false;
         }
         final EventPropertyParentParametrizedInput that = (EventPropertyParentParametrizedInput) obj;
-        return Objects.equals(withStatus, that.withStatus);
+        return Objects.equals(withStatus, that.withStatus)
+                && Objects.equals(createdAfter, that.createdAfter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(withStatus);
+        return Objects.hash(withStatus, createdAfter);
     }
 
     @Override
@@ -47,6 +54,9 @@ public class EventPropertyParentParametrizedInput implements GraphQLParametrized
         StringJoiner joiner = new StringJoiner(", ", "(", ")");
         if (withStatus != null) {
             joiner.add("withStatus: " + GraphQLRequestSerializer.getEntry(withStatus));
+        }
+        if (createdAfter != null) {
+            joiner.add("createdAfter: " + GraphQLRequestSerializer.getEntry(createdAfter, true));
         }
         return joiner.toString();
     }

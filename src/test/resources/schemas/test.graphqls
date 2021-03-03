@@ -77,7 +77,7 @@ type EventProperty @customResolver{
     # Properties
     child(first: Int, last: Int): [EventProperty]
     # Parent event of the property
-    parent(withStatus: EventStatus): Event
+    parent(withStatus: EventStatus, createdAfter: DateTime): Event
 }
 
 # Custom DateTime scalar
