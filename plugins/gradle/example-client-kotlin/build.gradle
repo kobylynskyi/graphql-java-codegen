@@ -7,7 +7,7 @@ plugins {
     id "io.github.kobylynskyi.graphql.codegen" version "4.1.4-SNAPSHOT"
 }
 
-var graphqlCodegenClientKotlinVersion = '4.1.4-SNAPSHOT' // Variable used in the automatic release process
+def graphqlCodegenClientKotlinVersion = '4.1.4-SNAPSHOT' // Variable used in the automatic release process
 
 group = 'io.github.dreamylost'
 version = graphqlCodegenClientKotlinVersion

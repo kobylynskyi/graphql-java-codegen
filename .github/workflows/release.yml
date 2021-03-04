@@ -1,0 +1,118 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Gradle cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle
+          key: gradle
+
+      - name: Maven cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: m2
+
+      - name: Loading ivy cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
+          restore-keys: |
+            ${{ runner.os }}-ivy-
+
+      - name: Update version of Maven plugin to SNAPSHOT
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}-SNAPSHOT" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example client sub-project
+        working-directory: plugins/maven/example-client
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example server sub-project
+        working-directory: plugins/maven/example-server
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}" -DgenerateBackupPoms=false
+
+      - name: Update versions of all Gradle/SBT sub-projects
+        run: scripts/update-release-version-in-build-files.sh ${{ github.event.inputs.release_type }}
+
+      - name: Update versions in all README files
+        run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_type }}
+
+      - name: Build library
+        run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
+
+      - name: Build gradle plugin
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
+
+      - name: Build maven plugin
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn install
+
+      - name: Build sbt plugin
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt compile publishLocal --debug
+
+      - name: Build sbt test
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt scripted
+
+      - name: Build gradle example-server --warning-mode all
+        run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
+
+      - name: Build gradle example-client
+        run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
+
+      - name: Build gradle example-client-kotlin
+        run: ./gradlew -p plugins/gradle/example-client-kotlin build --warning-mode all
+
+      - name: Build maven example-server
+        working-directory: plugins/maven/example-server
+        run: mvn package
+
+      - name: Build maven example-client
+        working-directory: plugins/maven/example-client
+        run: mvn package
+
+      #
+      # RELEASE STEPS
+      #
+
+      - name: Release library
+        run: ./gradlew publish -Dorg.gradle.internal.publish.checksums.insecure=true
+
+      - name: Release Gradle plugin
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin publishPlugins -Dorg.gradle.internal.publish.checksums.insecure=true
+
+      - name: Release Maven plugin
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn clean release:clean release:prepare release:perform
+
+      - name: Release SBT plugin
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt release with-defaults default-tag-exists-answer k
+
+
+      - name: Commit and push the new version
+        run: |
+          git config --global user.name 'Bogdan Kobylynskyi'
+          git config --global user.email 'kobylynskyi@users.noreply.github.com'
+          git commit -am "Bump version to ${{ github.event.inputs.release_type }}"
+          git push --tags

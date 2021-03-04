@@ -2,22 +2,11 @@
 
 RELEASE_VERSION=$1
 RELEASE_VERSION_ESCAPED=${RELEASE_VERSION//./\\.}
-WORKING_DIR=$PWD
 
 set_version_in_file() {
   sed -i '' "s/$2[A-Z0-9.\-]*/$2$RELEASE_VERSION_ESCAPED/" "$1"
   echo "Updated version in $1"
 }
-
-#set_version_in_file_after_matching_line() {
-#  #sed -i '' "/$2/{n;s/\S.*/$3}" "$1"
-#  sed "/$2/{N;s/word1/word2/;}" $1
-#  #sed -i '' "/$2/!b;n;c$3" "$1"
-#  echo "Updated version in $1"
-#}
-
-#set_version_in_file_after_matching_line "plugins/maven/example-server/pom.xml" "\<artifactId\>graphql-codegen-maven-plugin-example-server\<\/artifactId\>" "    \<version\>$RELEASE_VERSION\<\/version\>"
-
 
 set_version_in_file "build.gradle" "var graphqlCodegenVersion = '"
 
@@ -42,21 +31,6 @@ set_version_in_file "plugins/sbt/graphql-java-codegen-sbt-plugin/src/sbt-test/gr
 
 set_version_in_file "plugins/sbt/graphql-java-codegen-sbt-plugin/src/sbt-test/graphql-codegen-sbt-plugin/simple/version.sbt" "version in ThisBuild := \""
 set_version_in_file "plugins/sbt/graphql-java-codegen-sbt-plugin/src/sbt-test/graphql-codegen-sbt-plugin/simple/project/plugins.sbt" "plugin.version\").orElse(Some(\""
-
-
-cd "plugins/maven/graphql-java-codegen-maven-plugin/" || exit
-mvn versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
-cd "$WORKING_DIR" || exit
-
-cd "plugins/maven/example-client" || exit
-mvn versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
-cd "$WORKING_DIR" || exit
-
-cd "plugins/maven/example-server" || exit
-mvn versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
-cd "$WORKING_DIR" || exit
-
-
 
 # Exit clean
 exit 0
