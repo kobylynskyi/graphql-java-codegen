@@ -40,21 +40,21 @@ jobs:
 
       - name: Update version of Maven plugin to SNAPSHOT
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
-        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}-SNAPSHOT" -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
 
       - name: Update version of Maven example client sub-project
         working-directory: plugins/maven/example-client
-        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}" -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
 
       - name: Update version of Maven example server sub-project
         working-directory: plugins/maven/example-server
-        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_type }}" -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
 
       - name: Update versions of all Gradle/SBT sub-projects
-        run: scripts/update-release-version-in-build-files.sh ${{ github.event.inputs.release_type }}
+        run: scripts/update-release-version-in-build-files.sh ${{ github.event.inputs.release_version }}
 
       - name: Update versions in all README files
-        run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_type }}
+        run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_version }}
 
       - name: Build library
         run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
@@ -99,10 +99,30 @@ jobs:
       #
 
       - name: Release library
-        run: ./gradlew publish -Dorg.gradle.internal.publish.checksums.insecure=true
+        run: |
+          ./gradlew publish \
+              -Dorg.gradle.internal.publish.checksums.insecure=true \
+              -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
+              -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
 
       - name: Release Gradle plugin
-        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin publishPlugins -Dorg.gradle.internal.publish.checksums.insecure=true
+        run: |
+          ./gradlew \
+              -p plugins/gradle/graphql-java-codegen-gradle-plugin \
+              publishPlugins \
+              -Dorg.gradle.internal.publish.checksums.insecure=true \
+              -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
+              -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
+        env:
+          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
 
       - name: Release Maven plugin
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
@@ -122,5 +142,5 @@ jobs:
         run: |
           git config --global user.name 'Bogdan Kobylynskyi'
           git config --global user.email 'kobylynskyi@users.noreply.github.com'
-          git commit -am "Bump version to ${{ github.event.inputs.release_type }}"
+          git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
           git push --tags
