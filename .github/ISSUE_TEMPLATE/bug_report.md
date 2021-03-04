@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: Create a report to help us improve graphql-java-codegen
-title: "[Short Description] (Version: [graphql-java-codegen version])"
+title: "[Short Description]"
 labels: bug
 assignees: ''
 
@@ -22,9 +22,8 @@ assignees: ''
 
 ## Your Environment and Setup
 
-* **graphql-java-codegen**: *E.g.: 4.1.3*
-* **Build tool**: *E.g.: Maven*
-* **Java tool**: *E.g.: Oracle 8u241*
+* **graphql-java-codegen version**: *X.X.X*
+* **Build tool**: *E.g.: Maven/Gradle/SBT*
 * **Mapping Config**: *E.g.:* 
 
 ```xml
@@ -33,6 +32,3 @@ assignees: ''
     <packageName>io.github.kobylynskyi.graphql.model</packageName>
 </configuration>
 ```
-
-## Additional context
-Add any other context about the problem here.

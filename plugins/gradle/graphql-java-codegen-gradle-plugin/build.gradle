@@ -16,8 +16,10 @@ apply plugin: "java"
 apply plugin: "idea"
 apply plugin: "maven-publish"
 
+var graphqlCodegenGradlePluginVersion = '4.1.4-SNAPSHOT' // This variable used in the automatic release process
+
 group = "io.github.kobylynskyi"
-version = "4.1.4-SNAPSHOT"
+version = graphqlCodegenGradlePluginVersion
 description = "Provides a task for generating Java code based on GraphQL schema"
 
 dependencies {
