@@ -6,12 +6,18 @@ on:
       release_version:
         description: 'Release version'
         required: true
+      release_branch:
+        description: 'Release branch'
+        default: 'master'
+        required: true
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.release_branch }}
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -38,9 +44,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ivy-
 
-      - name: Update version of Maven plugin to SNAPSHOT
+      - name: Update version of Maven plugin sub-project
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
-        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
 
       - name: Update version of Maven example client sub-project
         working-directory: plugins/maven/example-client
@@ -56,11 +62,29 @@ jobs:
       - name: Update versions in all README files
         run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_version }}
 
+      #
+      # VERSIONS ARE IN THE RELEASE STATE, SO WE CAN COMMIT THEM
+      #
+
+      - name: Commit release version so that iw will be pus
+        run: |
+          git config --global user.name 'Bogdan Kobylynskyi'
+          git config --global user.email 'kobylynskyi@users.noreply.github.com'
+          git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
+
+      #
+      # VERSIONS UPDATED. NOW WE ARE READY FOR THE RELEASE
+      #
+
       - name: Build library
         run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
 
       - name: Build gradle plugin
         run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
+
+      - name: Update version of Maven plugin to SNAPSHOT (required by publish-plugin)
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
 
       - name: Build maven plugin
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
@@ -95,7 +119,8 @@ jobs:
         run: cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
 
       #
-      # RELEASE STEPS
+      # BUILD OF RELEASE VERSION COMPLETED
+      # NOW PERFORMING THE PUBLISH
       #
 
       - name: Release library
@@ -137,10 +162,10 @@ jobs:
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt release with-defaults default-tag-exists-answer k
 
+      #
+      # PUBLISH OF RELEASE VERSION COMPLETED
+      # NOW PUSHING THE RELEASE VERSION BACK TO THE REPOSITORY
+      #
 
-      - name: Commit and push the new version
-        run: |
-          git config --global user.name 'Bogdan Kobylynskyi'
-          git config --global user.email 'kobylynskyi@users.noreply.github.com'
-          git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
-          git push --tags
+      - name: Push release version
+        run: git push --tags
