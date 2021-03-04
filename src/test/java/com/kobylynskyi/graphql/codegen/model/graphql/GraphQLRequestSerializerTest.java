@@ -23,14 +23,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GraphQLRequestSerializerTest {
 
@@ -278,6 +277,35 @@ class GraphQLRequestSerializerTest {
 
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "mutation { updateDate(input: \"2020-07-31T03:17:17.884Z\") }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_UseObjectMapperForParameterizedInput(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
+                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+
+        EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .setCategoryId("categoryIdValue1")
+                .setStatus(Status.OPEN)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .properties(new EventPropertyResponseProjection()
+                                .child(new EventPropertyResponseProjection()
+                                                .parent(new EventPropertyParentParametrizedInput()
+                                                                .createdAfter(ZonedDateTime.of(2007, 1, 9, 9, 41, 0, 0, ZoneOffset.UTC)),
+                                                        new EventResponseProjection()
+                                                                .id())))
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query { " +
+                "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
+                "properties { " +
+                "child { parent (createdAfter: \"2007-01-09T09:41:00Z\") { id } } } " +
+                "} " +
+                "}";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 

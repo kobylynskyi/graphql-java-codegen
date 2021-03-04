@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -31,6 +32,8 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateToString(false); // should be overridden to true
         mappingConfig.setGenerateApis(false);
+        mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
     }
 
     @AfterEach

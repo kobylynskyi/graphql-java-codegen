@@ -104,10 +104,10 @@ public class ${className} implements GraphQLParametrizedInput {
 <#if fields?has_content>
 <#list fields as field>
 <#if MapperUtil.isJavaPrimitive(field.type)>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
 <#else>
         if (${field.name} != null) {
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}));
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
         }
 </#if>
 </#list>
