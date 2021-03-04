@@ -240,9 +240,8 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${version.maven-release-plugin}</version>
                 <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <!--suppress UnresolvedMavenProperty -->
                     <developmentVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.patchVersion}</developmentVersion>
                     <dryRun>true</dryRun>
                 </configuration>
