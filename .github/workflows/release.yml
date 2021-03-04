@@ -91,6 +91,9 @@ jobs:
         working-directory: plugins/maven/example-client
         run: mvn package
 
+      - name: Install gpg secret key
+        run: cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+
       #
       # RELEASE STEPS
       #
@@ -103,7 +106,12 @@ jobs:
 
       - name: Release Maven plugin
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
-        run: mvn clean release:clean release:prepare release:perform
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            release:clean release:prepare release:perform
 
       - name: Release SBT plugin
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
