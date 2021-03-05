@@ -212,4 +212,6 @@ jobs:
       #
 
       - name: Push release version
-        run: git push --tags
+        run: |
+          git push
+          git push --tags

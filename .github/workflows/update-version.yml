@@ -33,4 +33,5 @@ jobs:
           git config --global user.name 'Bogdan Kobylynskyi'
           git config --global user.email 'kobylynskyi@users.noreply.github.com'
           git commit -am "Bump version to ${{ github.event.inputs.new_version }}"
+          git push
           git push --tags
