@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'New version'
+        required: true
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update version of Maven plugin sub-project
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.new_version }}" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example client sub-project
+        working-directory: plugins/maven/example-client
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.new_version }}" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example server sub-project
+        working-directory: plugins/maven/example-server
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.new_version }}" -DgenerateBackupPoms=false
+
+      - name: Update versions of all Gradle/SBT sub-projects
+        run: scripts/update-release-version-in-build-files.sh ${{ github.event.inputs.new_version }}
+
+      - name: Commit and push a new version
+        run: |
+          git config --global user.name 'Bogdan Kobylynskyi'
+          git config --global user.email 'kobylynskyi@users.noreply.github.com'
+          git commit -am "Bump version to ${{ github.event.inputs.new_version }}"
+          git push --tags

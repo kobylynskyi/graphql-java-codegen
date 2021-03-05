@@ -1,0 +1,193 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version'
+        default: 'X.X.X'
+        required: true
+      release_branch:
+        description: 'Release branch'
+        default: 'master'
+        required: true
+      publish_library:
+        description: 'Publish library'
+        default: 'true'
+        required: true
+      publish_gradle_plugin:
+        description: 'Publish Gradle Plugin'
+        default: 'true'
+        required: true
+      publish_maven_plugin:
+        description: 'Publish Maven Plugin'
+        default: 'true'
+        required: true
+      publish_sbt_plugin:
+        description: 'Publish SBT Plugin'
+        default: 'true'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.release_branch }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Gradle cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle
+          key: gradle
+
+      - name: Maven cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: m2
+
+      - name: Loading ivy cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
+          restore-keys: |
+            ${{ runner.os }}-ivy-
+
+      - name: Update version of Maven plugin sub-project
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example client sub-project
+        working-directory: plugins/maven/example-client
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
+
+      - name: Update version of Maven example server sub-project
+        working-directory: plugins/maven/example-server
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
+
+      - name: Update versions of all Gradle/SBT sub-projects
+        run: scripts/update-release-version-in-build-files.sh ${{ github.event.inputs.release_version }}
+
+      - name: Update versions in all README files
+        run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_version }}
+
+      #
+      # VERSIONS ARE IN THE RELEASE STATE, SO WE CAN COMMIT THEM
+      #
+
+      - name: Commit release version so that iw will be pus
+        run: |
+          git config --global user.name 'Bogdan Kobylynskyi'
+          git config --global user.email 'kobylynskyi@users.noreply.github.com'
+          git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
+
+      #
+      # VERSIONS UPDATED
+      # NOW WE ARE READY FOR THE FINAL BUILD
+      #
+
+      - name: Build library
+        run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
+
+      - name: Build gradle plugin
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
+
+      - name: Update version of Maven plugin to SNAPSHOT (required by publish-plugin)
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
+
+      - name: Build maven plugin
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn install
+
+      - name: Build sbt plugin
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt compile publishLocal --debug
+
+      - name: Build sbt test
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt scripted
+
+      - name: Build gradle example-server --warning-mode all
+        run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
+
+      - name: Build gradle example-client
+        run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
+
+      - name: Build gradle example-client-kotlin
+        run: ./gradlew -p plugins/gradle/example-client-kotlin build --warning-mode all
+
+      - name: Build maven example-server
+        working-directory: plugins/maven/example-server
+        run: mvn package
+
+      - name: Build maven example-client
+        working-directory: plugins/maven/example-client
+        run: mvn package
+
+      - name: Install gpg secret key
+        run: cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+
+      #
+      # BUILD OF RELEASE VERSION COMPLETED
+      # NOW PERFORMING THE PUBLISH
+      #
+
+      - name: Release library
+        if: ${{ github.event.inputs.publish_library }} == "true"
+        run: |
+          ./gradlew publish \
+              -Dorg.gradle.internal.publish.checksums.insecure=true \
+              -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
+              -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+
+      - name: Release Gradle plugin
+        if: ${{ github.event.inputs.publish_gradle_plugin }} == "true"
+        run: |
+          ./gradlew \
+              -p plugins/gradle/graphql-java-codegen-gradle-plugin \
+              publishPlugins \
+              -Dorg.gradle.internal.publish.checksums.insecure=true \
+              -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
+              -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
+        env:
+          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+
+      - name: Release Maven plugin
+        if: ${{ github.event.inputs.publish_maven_plugin }} == "true"
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            release:clean release:prepare release:perform
+
+      - name: Release SBT plugin
+        if: ${{ github.event.inputs.publish_sbt_plugin }} == "true"
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt release with-defaults default-tag-exists-answer k
+
+      #
+      # PUBLISH OF RELEASE VERSION COMPLETED
+      # NOW PUSHING THE RELEASE VERSION BACK TO THE REPOSITORY
+      #
+
+      - name: Push release version
+        run: git push --tags
