@@ -103,13 +103,15 @@ class GraphQLCodegenReactorToStringTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Objects.equals("Synchronized.scala", f)).sorted().collect(toList());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Objects.equals("Synchronized.scala", f)
+                || Objects.equals("QueryCaseParametrizedInput.scala", f)).sorted().collect(toList());
         assertEquals(singletonList("Synchronized.scala"), generatedFileNames);
 
         for (File file : files) {
-            if (Objects.equals("Synchronized.scala", file.getName())) {
+            if (Arrays.asList("QueryCaseParametrizedInput.scala", "Synchronized.scala").contains(file.getName())) {
                 assertSameTrimmedContent(
-                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt", "TOSTRING_Synchronized.scala")),
+                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt", "TOSTRING_Synchronized.scala",
+                                "QueryCaseParametrizedInput")),
                         file);
             }
         }

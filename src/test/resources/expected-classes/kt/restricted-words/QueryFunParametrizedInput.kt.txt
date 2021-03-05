@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.prot
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import java.util.StringJoiner
 /**
  * Parametrized input for field fun in type Query
