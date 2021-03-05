@@ -5,10 +5,27 @@ on:
     inputs:
       release_version:
         description: 'Release version'
+        default: 'X.X.X'
         required: true
       release_branch:
         description: 'Release branch'
         default: 'master'
+        required: true
+      publish_library:
+        description: 'Publish library'
+        default: 'true'
+        required: true
+      publish_gradle_plugin:
+        description: 'Publish Gradle Plugin'
+        default: 'true'
+        required: true
+      publish_maven_plugin:
+        description: 'Publish Maven Plugin'
+        default: 'true'
+        required: true
+      publish_sbt_plugin:
+        description: 'Publish SBT Plugin'
+        default: 'true'
         required: true
 
 jobs:
@@ -73,7 +90,8 @@ jobs:
           git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
 
       #
-      # VERSIONS UPDATED. NOW WE ARE READY FOR THE RELEASE
+      # VERSIONS UPDATED
+      # NOW WE ARE READY FOR THE FINAL BUILD
       #
 
       - name: Build library
@@ -124,6 +142,7 @@ jobs:
       #
 
       - name: Release library
+        if: ${{ github.event.inputs.publish_library }} == "true"
         run: |
           ./gradlew publish \
               -Dorg.gradle.internal.publish.checksums.insecure=true \
@@ -137,6 +156,7 @@ jobs:
           RELEASE_VERSION: ${{ github.event.inputs.release_version }}
 
       - name: Release Gradle plugin
+        if: ${{ github.event.inputs.publish_gradle_plugin }} == "true"
         run: |
           ./gradlew \
               -p plugins/gradle/graphql-java-codegen-gradle-plugin \
@@ -150,6 +170,7 @@ jobs:
           RELEASE_VERSION: ${{ github.event.inputs.release_version }}
 
       - name: Release Maven plugin
+        if: ${{ github.event.inputs.publish_maven_plugin }} == "true"
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
         run: |
           mvn \
@@ -159,6 +180,7 @@ jobs:
             release:clean release:prepare release:perform
 
       - name: Release SBT plugin
+        if: ${{ github.event.inputs.publish_sbt_plugin }} == "true"
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt release with-defaults default-tag-exists-answer k
 
