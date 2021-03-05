@@ -72,7 +72,7 @@
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.3.3</version.maven-shared-utils>
 
-        <version.graphql-java-codegen>4.1.4-SNAPSHOT</version.graphql-java-codegen>
+        <version.graphql-java-codegen>4.1.4</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
