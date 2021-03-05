@@ -13,19 +13,19 @@ on:
         required: true
       publish_library:
         description: 'Publish library'
-        default: 'true'
+        default: 'Y'
         required: true
       publish_gradle_plugin:
         description: 'Publish Gradle Plugin'
-        default: 'true'
+        default: 'Y'
         required: true
       publish_maven_plugin:
         description: 'Publish Maven Plugin'
-        default: 'true'
+        default: 'Y'
         required: true
       publish_sbt_plugin:
         description: 'Publish SBT Plugin'
-        default: 'true'
+        default: 'Y'
         required: true
 
 jobs:
@@ -61,6 +61,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ivy-
 
+      - name: Set up GPG
+        run: |
+          echo ${{ github.workspace }}
+          # gpg init
+          mkdir ~/.gnupg && echo use-agent >> ~/.gnupg/gpg.conf
+          echo pinentry-mode loopback >> ~/.gnupg/gpg.conf
+          echo allow-loopback-pinentry >> ~/.gnupg/gpg-agent.conf
+          echo RELOADAGENT | gpg-connect-agent
+          echo ${SIGNING_KEY} | awk '{gsub(/\\n/,"\n")}1'| gpg --dearmor > ${{ github.workspace }}/secretKeyRingFile.gpg
+          gpg --import  --pinentry-mode loopback --batch --passphrase '${SIGNING_PASSWORD}' ${{ github.workspace }}/secretKeyRingFile.gpg
+          ls -al ${{ github.workspace }}
+          ls -al ~/.gnupg/
+        env:
+          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'Bogdan Kobylynskyi'
+          git config --global user.email 'kobylynskyi@users.noreply.github.com'
+
       - name: Update version of Maven plugin sub-project
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
         run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}" -DgenerateBackupPoms=false
@@ -80,16 +101,6 @@ jobs:
         run: scripts/update-release-version-in-readme.sh ${{ github.event.inputs.release_version }}
 
       #
-      # VERSIONS ARE IN THE RELEASE STATE, SO WE CAN COMMIT THEM
-      #
-
-      - name: Commit release version so that iw will be pus
-        run: |
-          git config --global user.name 'Bogdan Kobylynskyi'
-          git config --global user.email 'kobylynskyi@users.noreply.github.com'
-          git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
-
-      #
       # VERSIONS UPDATED
       # NOW WE ARE READY FOR THE FINAL BUILD
       #
@@ -97,90 +108,101 @@ jobs:
       - name: Build library
         run: ./gradlew build publishToMavenLocal publishAllPublicationsToIvyRepository --warning-mode all
 
-      - name: Build gradle plugin
-        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
-
-      - name: Update version of Maven plugin to SNAPSHOT (required by publish-plugin)
-        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
-        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
-
       - name: Build maven plugin
+        if: github.event.inputs.publish_maven_plugin == 'Y'
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
         run: mvn install
 
-      - name: Build sbt plugin
-        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
-        run: sbt compile publishLocal --debug
-
-      - name: Build sbt test
-        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
-        run: sbt scripted
-
-      - name: Build gradle example-server --warning-mode all
-        run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
-
-      - name: Build gradle example-client
-        run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
-
-      - name: Build gradle example-client-kotlin
-        run: ./gradlew -p plugins/gradle/example-client-kotlin build --warning-mode all
-
       - name: Build maven example-server
+        if: github.event.inputs.publish_maven_plugin == 'Y'
         working-directory: plugins/maven/example-server
         run: mvn package
 
       - name: Build maven example-client
+        if: github.event.inputs.publish_maven_plugin == 'Y'
         working-directory: plugins/maven/example-client
         run: mvn package
 
-      - name: Install gpg secret key
-        run: cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+      - name: Build gradle plugin
+        run: ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin build publishToMavenLocal --warning-mode all
+
+      - name: Build gradle example-server
+        if: github.event.inputs.publish_gradle_plugin == 'Y'
+        run: ./gradlew -p plugins/gradle/example-server test --warning-mode all
+
+      - name: Build gradle example-client
+        if: github.event.inputs.publish_gradle_plugin == 'Y'
+        run: ./gradlew -p plugins/gradle/example-client test --warning-mode all
+
+      - name: Build gradle example-client-kotlin
+        if: github.event.inputs.publish_gradle_plugin == 'Y'
+        run: ./gradlew -p plugins/gradle/example-client-kotlin build --warning-mode all
+
+      - name: Build sbt plugin
+        if: github.event.inputs.publish_sbt_plugin == 'Y'
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt compile publishLocal --debug
+
+      - name: Build sbt test
+        if: github.event.inputs.publish_sbt_plugin == 'Y'
+        working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
+        run: sbt scripted
 
       #
       # BUILD OF RELEASE VERSION COMPLETED
-      # NOW PERFORMING THE PUBLISH
+      # SO WE CAN COMMIT THEM
+      #
+
+      - name: Update version of Maven plugin to SNAPSHOT (required by publish-plugin)
+        if: github.event.inputs.publish_maven_plugin == 'Y'
+        working-directory: plugins/maven/graphql-java-codegen-maven-plugin
+        run: mvn versions:set -DnewVersion="${{ github.event.inputs.release_version }}-SNAPSHOT" -DgenerateBackupPoms=false
+
+      - name: Commit release version
+        run: git commit -am "Bump version to ${{ github.event.inputs.release_version }}"
+
+      #
+      # VERSIONS ARE IN THE RELEASE STATE AND READY TO PUBLISH
       #
 
       - name: Release library
-        if: ${{ github.event.inputs.publish_library }} == "true"
+        if: github.event.inputs.publish_library == 'Y'
         run: |
           ./gradlew publish \
-              -Dorg.gradle.internal.publish.checksums.insecure=true \
-              -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
-              -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+                -Dorg.gradle.internal.publish.checksums.insecure=true \
+                -PsonatypeUsername=${{ secrets.OSSRH_USERNAME }} \
+                -PsonatypePassword=${{ secrets.OSSRH_PASSWORD }} \
+                -Psigning.keyId=${{ secrets.OSSRH_GPG_SECRET_KEY_ID }} \
+                -Psigning.password=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+                -Psigning.secretKeyRingFile=${{ github.workspace }}/secretKeyRingFile.gpg
 
       - name: Release Gradle plugin
-        if: ${{ github.event.inputs.publish_gradle_plugin }} == "true"
+        if: github.event.inputs.publish_gradle_plugin == 'Y'
         run: |
-          ./gradlew \
-              -p plugins/gradle/graphql-java-codegen-gradle-plugin \
-              publishPlugins \
+          ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin publishPlugins \
               -Dorg.gradle.internal.publish.checksums.insecure=true \
               -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY}} \
               -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
-        env:
-          SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
 
       - name: Release Maven plugin
-        if: ${{ github.event.inputs.publish_maven_plugin }} == "true"
+        if: github.event.inputs.publish_maven_plugin == 'Y'
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
         run: |
           mvn \
+            --settings .maven.xml
             --no-transfer-progress \
             --batch-mode \
             -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
             release:clean release:prepare release:perform
+        env:
+          GPG_EXECUTABLE: gpg
+          GPG_SECRET_KEYS: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          SONATYPE_USER: ${{ secrets.OSSRH_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Release SBT plugin
-        if: ${{ github.event.inputs.publish_sbt_plugin }} == "true"
+        if: github.event.inputs.publish_sbt_plugin == 'Y'
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt release with-defaults default-tag-exists-answer k
 
