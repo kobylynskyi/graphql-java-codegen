@@ -189,7 +189,7 @@ jobs:
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
         run: |
           mvn \
-            --settings .maven.xml
+            --settings .maven.xml \
             --no-transfer-progress \
             --batch-mode \
             -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
