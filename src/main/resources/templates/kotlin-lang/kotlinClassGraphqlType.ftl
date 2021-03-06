@@ -130,7 +130,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
         return true</#if>
     }
 
-    override fun hashCode(): Int = {
+    override fun hashCode(): Int {
     <#if fields?has_content>
         return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>)
     <#else>

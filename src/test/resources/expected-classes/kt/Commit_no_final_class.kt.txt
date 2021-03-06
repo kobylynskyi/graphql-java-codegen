@@ -172,7 +172,7 @@ open class Commit(
 
     }
 
-    override fun hashCode(): Int = {
+    override fun hashCode(): Int {
         return Objects.hash(abbreviatedOid, additions, associatedPullRequests, author, authoredByCommitter, authoredDate, blame, changedFiles, comments, commitResourcePath, commitUrl, committedDate, committedViaWeb, committer, deletions, deployments, history, id, message, messageBody, messageBodyHTML, messageHeadline, messageHeadlineHTML, oid, parents, pushedDate, repository, resourcePath, signature, status, tarballUrl, tree, treeResourcePath, treeUrl, url, viewerCanSubscribe, viewerSubscription, zipballUrl)
     }
 

@@ -4,6 +4,7 @@ package ${package}
 
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import scala.collection.JavaConverters._
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>

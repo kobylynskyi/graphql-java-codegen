@@ -3,6 +3,7 @@ package ${package}
 
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import java.util.StringJoiner
 <#if javaDoc?has_content>
 /**
