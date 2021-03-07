@@ -14,16 +14,14 @@ import ${import}._
                 <#list enumImportItSelfInScala as enum>
                     <#if MapperUtil.isScalaCollection(param.type)>
                         <#if enum == param.type?replace("Seq[", "")?replace("]", "")>
-                            <#if waitImports?seq_contains(enum)>
-                            <#else >
-                                <#assign waitImports = waitImports + [param.type] />
+                            <#if !waitImports?seq_contains(enum)>
+                                <#assign waitImports = waitImports + [enum] />
                             </#if>
                         </#if>
                     <#else >
                         <#if enum == param.type>
-                            <#if waitImports?seq_contains(enum)>
-                            <#else >
-                                <#assign waitImports = waitImports + [param.type] />
+                            <#if !waitImports?seq_contains(enum)>
+                                <#assign waitImports = waitImports + [enum] />
                             </#if>
                         </#if>
                     </#if>
