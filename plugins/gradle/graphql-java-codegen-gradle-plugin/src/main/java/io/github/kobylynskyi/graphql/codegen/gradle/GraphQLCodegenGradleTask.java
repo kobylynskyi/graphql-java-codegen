@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Gradle task for GraphQL code generation
@@ -146,8 +147,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
         java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier();
-        GeneratedLanguage language = mappingConfigSupplier.map(c -> c.get().getGeneratedLanguage() == null ? GeneratedLanguage.JAVA
-                : c.get().getGeneratedLanguage()).orElse(generatedLanguage);
+        GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get).map(MappingConfig::getGeneratedLanguage).orElse(generatedLanguage);
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));

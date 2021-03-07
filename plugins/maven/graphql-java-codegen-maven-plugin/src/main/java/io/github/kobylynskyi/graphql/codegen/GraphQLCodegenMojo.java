@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Supplier;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenConfiguration {
@@ -245,8 +246,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
         java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
-        GeneratedLanguage language = mappingConfigSupplier.map(c -> c.get().getGeneratedLanguage() == null ?
-                GeneratedLanguage.JAVA : c.get().getGeneratedLanguage()).orElse(generatedLanguage);
+        GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get).map(MappingConfig::getGeneratedLanguage).orElse(generatedLanguage);
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
