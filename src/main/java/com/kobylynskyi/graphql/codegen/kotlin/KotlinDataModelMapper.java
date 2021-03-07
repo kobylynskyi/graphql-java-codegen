@@ -1,15 +1,15 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 /**
  * @author 梦境迷离
@@ -18,13 +18,14 @@ import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 public class KotlinDataModelMapper implements DataModelMapper {
 
     private static final String RESTRICTED_KEYWORDS_WRAP_WITH = "`";
-    private static final Set<String> KOTLIN_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList("package", "interface", "class",
-            "object", "super", "null", "this", "typealias", "as", "as?", "if", "else", "true", "false", "while", "do",
-            "for", "when", "break", "continue", "return", "fun", "in", "!in", "is", "!is", "throw", "try", "val", "var",
-            "typeof"));
+    private static final Set<String> KOTLIN_RESTRICTED_KEYWORDS = new HashSet<>(
+        Arrays.asList("package", "interface", "class", "object", "super", "null", "this", "typealias", "as", "as?",
+                      "if", "else", "true", "false", "while", "do", "for", "when", "break", "continue", "return",
+                      "fun", "in", "!in", "is", "!is", "throw", "try", "val", "var", "typeof"));
 
     //TODO maybe have others
-    private static final Set<String> KOTLIN_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList("notify", "notifyAll", "wait"));
+    private static final Set<String> KOTLIN_RESTRICTED_METHOD_NAMES = new HashSet<>(
+        Arrays.asList("notify", "notifyAll", "wait"));
 
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {

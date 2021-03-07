@@ -66,14 +66,18 @@ public class GraphQLError {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GraphQLError that = (GraphQLError) o;
         return Objects.equals(message, that.message) &&
-                Objects.equals(locations, that.locations) &&
-                errorType == that.errorType &&
-                Objects.equals(path, that.path) &&
-                Objects.equals(extensions, that.extensions);
+               Objects.equals(locations, that.locations) &&
+               errorType == that.errorType &&
+               Objects.equals(path, that.path) &&
+               Objects.equals(extensions, that.extensions);
     }
 
     @Override

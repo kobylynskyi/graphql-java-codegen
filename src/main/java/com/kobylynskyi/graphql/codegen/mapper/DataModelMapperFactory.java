@@ -21,14 +21,25 @@ public class DataModelMapperFactory {
         ValueMapper valueMapper = new ValueMapper(valueFormatter, dataModelMapper);
         GraphQLTypeMapper graphQLTypeMapper = generatedLanguageMapperFactory.createGraphQLTypeMapper(valueMapper);
         fieldDefinitionToParameterMapper = new FieldDefinitionToParameterMapper(graphQLTypeMapper, dataModelMapper);
-        InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper = new InputValueDefinitionToParameterMapper(valueMapper, graphQLTypeMapper, dataModelMapper);
+        InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper =
+            new InputValueDefinitionToParameterMapper(
+            valueMapper, graphQLTypeMapper, dataModelMapper);
         enumDefinitionToDataModelMapper = new EnumDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
         unionDefinitionToDataModelMapper = new UnionDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
-        typeDefinitionToDataModelMapper = new TypeDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper);
-        interfaceDefinitionToDataModelMapper = new InterfaceDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper);
-        inputDefinitionToDataModelMapper = new InputDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, inputValueDefinitionToParameterMapper);
-        fieldDefinitionsToResolverDataModelMapper = new FieldDefinitionsToResolverDataModelMapper(graphQLTypeMapper, dataModelMapper, inputValueDefinitionToParameterMapper);
-        requestResponseDefinitionToDataModelMapper = new RequestResponseDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper, inputValueDefinitionToParameterMapper);
+        typeDefinitionToDataModelMapper = new TypeDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper,
+                                                                              fieldDefinitionToParameterMapper);
+        interfaceDefinitionToDataModelMapper = new InterfaceDefinitionToDataModelMapper(graphQLTypeMapper,
+                                                                                        dataModelMapper,
+                                                                                        fieldDefinitionToParameterMapper);
+        inputDefinitionToDataModelMapper = new InputDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper,
+                                                                                inputValueDefinitionToParameterMapper);
+        fieldDefinitionsToResolverDataModelMapper = new FieldDefinitionsToResolverDataModelMapper(graphQLTypeMapper,
+                                                                                                  dataModelMapper,
+                                                                                                  inputValueDefinitionToParameterMapper);
+        requestResponseDefinitionToDataModelMapper = new RequestResponseDefinitionToDataModelMapper(graphQLTypeMapper,
+                                                                                                    dataModelMapper,
+                                                                                                    fieldDefinitionToParameterMapper,
+                                                                                                    inputValueDefinitionToParameterMapper);
     }
 
     public EnumDefinitionToDataModelMapper getEnumDefinitionMapper() {

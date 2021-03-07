@@ -1,5 +1,22 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SERIALIZATION_LIBRARY;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
@@ -9,15 +26,6 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefini
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
 import graphql.language.DirectivesContainer;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
 
 /**
  * Map enum definition to a Freemarker data model
@@ -37,16 +45,12 @@ public class EnumDefinitionToDataModelMapper {
 
     private static Set<String> getUnionInterfaces(MappingContext mappingContext,
                                                   ExtendedEnumTypeDefinition definition) {
-        return mappingContext.getDocument().getUnionDefinitions()
-                .stream()
-                .filter(union -> union.isDefinitionPartOfUnion(definition))
-                .map(ExtendedUnionTypeDefinition::getName)
-                .map(unionName -> DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
-                .collect(Collectors.toSet());
-    }
-
-    public DeprecatedDefinition getDeprecated(MappingContext mappingContext, DirectivesContainer<?> directivesContainer) {
-        return graphQLTypeMapper.getDeprecated(mappingContext, directivesContainer);
+        return mappingContext.getDocument().getUnionDefinitions().stream()
+                             .filter(union -> union.isDefinitionPartOfUnion(definition))
+                             .map(ExtendedUnionTypeDefinition::getName)
+                             .map(unionName -> DataModelMapper
+                                 .getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
+                             .collect(Collectors.toSet());
     }
 
     private static List<String> getJavaDoc(graphql.language.EnumValueDefinition def) {
@@ -57,8 +61,13 @@ public class EnumDefinitionToDataModelMapper {
             return Collections.emptyList();
         }
         return def.getComments().stream()
-                .map(Comment::getContent).filter(Utils::isNotBlank)
-                .map(String::trim).collect(Collectors.toList());
+                  .map(Comment::getContent).filter(Utils::isNotBlank)
+                  .map(String::trim).collect(Collectors.toList());
+    }
+
+    public DeprecatedDefinition getDeprecated(MappingContext mappingContext,
+                                              DirectivesContainer<?> directivesContainer) {
+        return graphQLTypeMapper.getDeprecated(mappingContext, directivesContainer);
     }
 
     /**
@@ -90,14 +99,15 @@ public class EnumDefinitionToDataModelMapper {
      * @param enumValueDefinitions list of GraphQL EnumValueDefinition types
      * @return list of strings
      */
-    private List<EnumValueDefinition> map(MappingContext mappingContext, List<graphql.language.EnumValueDefinition> enumValueDefinitions) {
+    private List<EnumValueDefinition> map(MappingContext mappingContext,
+                                          List<graphql.language.EnumValueDefinition> enumValueDefinitions) {
         return enumValueDefinitions.stream()
-                .map(f -> new EnumValueDefinition(
-                        dataModelMapper.capitalizeIfRestricted(mappingContext, f.getName()),
-                        f.getName(),
-                        getJavaDoc(f),
-                        getDeprecated(mappingContext, f)))
-                .collect(Collectors.toList());
+                                   .map(f -> new EnumValueDefinition(
+                                       dataModelMapper.capitalizeIfRestricted(mappingContext, f.getName()),
+                                       f.getName(),
+                                       getJavaDoc(f),
+                                       getDeprecated(mappingContext, f)))
+                                   .collect(Collectors.toList());
     }
 
 }

@@ -1,5 +1,14 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
@@ -12,15 +21,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
 import graphql.language.SourceLocation;
 import graphql.language.TypeName;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public interface DataModelMapper {
 
@@ -64,7 +64,8 @@ public interface DataModelMapper {
 
     /**
      * Generates an api class name including prefix and suffix (if any)
-     * Examples: CreateEventMutationResolver, EventsQueryResolver, EventsByIdsQueryResolver (rootTypeName is "Query" or the likes)
+     * Examples: CreateEventMutationResolver, EventsQueryResolver, EventsByIdsQueryResolver (rootTypeName is "Query"
+     * or the likes)
      *
      * @param mappingContext  Global mapping context
      * @param fieldDefinition GraphQL field definition
@@ -179,8 +180,8 @@ public interface DataModelMapper {
                                                 ExtendedFieldDefinition fieldDefinition,
                                                 ExtendedDefinition<?, ?> parentTypeDefinition) {
         return Utils.capitalize(parentTypeDefinition.getName()) +
-                Utils.capitalize(fieldDefinition.getName()) +
-                mappingContext.getParametrizedInputSuffix();
+               Utils.capitalize(fieldDefinition.getName()) +
+               mappingContext.getParametrizedInputSuffix();
     }
 
     /**
@@ -247,8 +248,8 @@ public interface DataModelMapper {
     static String getClassNameSuffixWithInputValues(ExtendedFieldDefinition fieldDefinition) {
         StringJoiner inputValueNamesJoiner = new StringJoiner("And");
         fieldDefinition.getInputValueDefinitions().stream()
-                .map(InputValueDefinition::getName).map(Utils::capitalize)
-                .forEach(inputValueNamesJoiner::add);
+                       .map(InputValueDefinition::getName).map(Utils::capitalize)
+                       .forEach(inputValueNamesJoiner::add);
         String inputValueNames = inputValueNamesJoiner.toString();
         if (inputValueNames.isEmpty()) {
             return inputValueNames;
@@ -263,21 +264,20 @@ public interface DataModelMapper {
      * @param document   GraphQL document
      * @return all interfaces that given type implements.
      */
-    static List<ExtendedInterfaceTypeDefinition> getInterfacesOfType(ExtendedImplementingTypeDefinition<?, ?> definition,
-                                                                     ExtendedDocument document) {
+    static List<ExtendedInterfaceTypeDefinition> getInterfacesOfType(
+        ExtendedImplementingTypeDefinition<?, ?> definition,
+        ExtendedDocument document) {
         if (definition.getImplements().isEmpty()) {
             return Collections.emptyList();
         }
-        Set<String> typeImplements = definition.getImplements()
-                .stream()
-                .filter(type -> TypeName.class.isAssignableFrom(type.getClass()))
-                .map(TypeName.class::cast)
-                .map(TypeName::getName)
-                .collect(Collectors.toSet());
-        return document.getInterfaceDefinitions()
-                .stream()
-                .filter(def -> typeImplements.contains(def.getName()))
-                .collect(Collectors.toList());
+        Set<String> typeImplements = definition.getImplements().stream()
+                                               .filter(type -> TypeName.class.isAssignableFrom(type.getClass()))
+                                               .map(TypeName.class::cast)
+                                               .map(TypeName::getName)
+                                               .collect(Collectors.toSet());
+        return document.getInterfaceDefinitions().stream()
+                       .filter(def -> typeImplements.contains(def.getName()))
+                       .collect(Collectors.toList());
     }
 
     static Function<File, String> getParentFileNameFunction() {

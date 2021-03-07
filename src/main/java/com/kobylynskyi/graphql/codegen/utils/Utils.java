@@ -1,16 +1,16 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
-import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Objects;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 
 /**
  * Various utilities
@@ -33,8 +33,8 @@ public final class Utils {
     public static boolean isGraphqlOperation(String typeDef) {
         String typeDefNormalized = typeDef.toUpperCase();
         return typeDefNormalized.equals(GraphQLOperation.QUERY.name()) ||
-                typeDefNormalized.equals(GraphQLOperation.MUTATION.name()) ||
-                typeDefNormalized.equals(GraphQLOperation.SUBSCRIPTION.name());
+               typeDefNormalized.equals(GraphQLOperation.MUTATION.name()) ||
+               typeDefNormalized.equals(GraphQLOperation.SUBSCRIPTION.name());
     }
 
     /**

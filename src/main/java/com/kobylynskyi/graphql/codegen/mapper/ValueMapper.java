@@ -1,5 +1,9 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import graphql.language.ArrayValue;
 import graphql.language.BooleanValue;
@@ -14,10 +18,6 @@ import graphql.language.StringValue;
 import graphql.language.Type;
 import graphql.language.TypeName;
 import graphql.language.Value;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ValueMapper {
 
@@ -36,10 +36,13 @@ public class ValueMapper {
         return value.isValue() ? "true" : "false";
     }
 
-    //TODO It should also be abstracted. Different languages have different default values(It is now implemented in templates (templates are extremely complex))
+    //TODO It should also be abstracted. Different languages have different default values(It is now implemented in
+    // templates (templates are extremely complex))
     private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
-        //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
-        //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
+        //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be
+        // defined as `int` in graphql schema.
+        //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is
+        // Double in java, so, not modify `mapFloat`.
         if (graphQLType instanceof TypeName) {
             String customType = mappingContext.getCustomTypesMapping().get("Long");
             String typeName = ((TypeName) graphQLType).getName();
@@ -124,8 +127,8 @@ public class ValueMapper {
             }
             Type<?> listElementType = elementType;
             return valueFormatter.formatList(values.stream()
-                    .map(v -> map(mappingContext, v, listElementType, formatter))
-                    .collect(Collectors.toList()), formatter);
+                                                   .map(v -> map(mappingContext, v, listElementType, formatter))
+                                                   .collect(Collectors.toList()), formatter);
         }
         if (graphQLType instanceof NonNullType) {
             return mapArray(mappingContext, value, ((NonNullType) graphQLType).getType(), formatter);

@@ -1,12 +1,26 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
 
 /**
  * Map input type definition to a Freemarker data model
@@ -41,7 +55,8 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, definition.getJavaDoc());
         dataModel.put(NAME, definition.getName());
-        dataModel.put(FIELDS, inputValueDefinitionToParameterMapper.map(mappingContext, definition.getValueDefinitions(), definition.getName()));
+        dataModel.put(FIELDS, inputValueDefinitionToParameterMapper
+            .map(mappingContext, definition.getValueDefinitions(), definition.getName()));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());

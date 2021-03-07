@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
-
 import java.util.StringJoiner;
+
+import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 
 /**
  * @author 梦境迷离

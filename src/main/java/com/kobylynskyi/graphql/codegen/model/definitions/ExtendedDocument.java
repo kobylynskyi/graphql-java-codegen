@@ -1,8 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import graphql.language.Type;
-import graphql.language.TypeName;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import graphql.language.Type;
+import graphql.language.TypeName;
 
 /**
  * GraphQL document that holds all extended definitions
@@ -43,14 +43,14 @@ public class ExtendedDocument {
     public Set<String> getTypesUnionsInterfacesNames() {
         Set<String> typesUnionsInterfaces = new LinkedHashSet<>();
         typeDefinitions.stream()
-                .map(ExtendedDefinition::getName)
-                .forEach(typesUnionsInterfaces::add);
+                       .map(ExtendedDefinition::getName)
+                       .forEach(typesUnionsInterfaces::add);
         unionDefinitions.stream()
-                .map(ExtendedDefinition::getName)
-                .forEach(typesUnionsInterfaces::add);
+                        .map(ExtendedDefinition::getName)
+                        .forEach(typesUnionsInterfaces::add);
         interfaceDefinitions.stream()
-                .map(ExtendedDefinition::getName)
-                .forEach(typesUnionsInterfaces::add);
+                            .map(ExtendedDefinition::getName)
+                            .forEach(typesUnionsInterfaces::add);
         return typesUnionsInterfaces;
     }
 
@@ -59,13 +59,13 @@ public class ExtendedDocument {
         for (ExtendedObjectTypeDefinition typeDefinition : typeDefinitions) {
             for (Type<?> interfaceType : typeDefinition.getImplements()) {
                 interfaceChildren.computeIfAbsent(((TypeName) interfaceType).getName(), k -> new HashSet<>())
-                        .add(typeDefinition.getName());
+                                 .add(typeDefinition.getName());
             }
         }
         for (ExtendedInterfaceTypeDefinition interfaceTypeDefinition : interfaceDefinitions) {
             for (Type<?> interfaceType : interfaceTypeDefinition.getImplements()) {
                 interfaceChildren.computeIfAbsent(((TypeName) interfaceType).getName(), k -> new HashSet<>())
-                        .add(interfaceTypeDefinition.getName());
+                                 .add(interfaceTypeDefinition.getName());
             }
         }
         return interfaceChildren;
@@ -73,8 +73,8 @@ public class ExtendedDocument {
 
     public Set<String> getInterfacesNames() {
         return interfaceDefinitions.stream()
-                .map(ExtendedDefinition::getName)
-                .collect(Collectors.toSet());
+                                   .map(ExtendedDefinition::getName)
+                                   .collect(Collectors.toSet());
     }
 
     public Collection<ExtendedObjectTypeDefinition> getOperationDefinitions() {

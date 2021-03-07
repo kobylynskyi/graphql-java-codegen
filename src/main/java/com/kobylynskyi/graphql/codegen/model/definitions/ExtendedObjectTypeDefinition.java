@@ -1,9 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import graphql.language.Node;
-import graphql.language.ObjectTypeDefinition;
-import graphql.language.ObjectTypeExtensionDefinition;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
+import graphql.language.Node;
+import graphql.language.ObjectTypeDefinition;
+import graphql.language.ObjectTypeExtensionDefinition;
+
+public class ExtendedObjectTypeDefinition
+    extends ExtendedImplementingTypeDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
 
     /**
      * Get source location of the node.
@@ -28,14 +29,14 @@ public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefini
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         if (definition != null) {
             definition.getFieldDefinitions().stream()
-                    .map(f -> new ExtendedFieldDefinition(f, false))
-                    .forEach(definitions::add);
+                      .map(f -> new ExtendedFieldDefinition(f, false))
+                      .forEach(definitions::add);
         }
         extensions.stream()
-                .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
-                .flatMap(Collection::stream)
-                .map(f -> new ExtendedFieldDefinition(f, true))
-                .forEach(definitions::add);
+                  .map(ObjectTypeExtensionDefinition::getFieldDefinitions)
+                  .flatMap(Collection::stream)
+                  .map(f -> new ExtendedFieldDefinition(f, true))
+                  .forEach(definitions::add);
         return definitions;
     }
 
@@ -58,12 +59,12 @@ public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefini
         if (definition != null) {
             File file = new File(getSourceLocationName(definition));
             definitionMap.computeIfAbsent(fileStringFunction.apply(file), d -> new ExtendedObjectTypeDefinition())
-                    .setDefinition(definition);
+                         .setDefinition(definition);
         }
         for (ObjectTypeExtensionDefinition extension : extensions) {
             File file = new File(getSourceLocationName(extension));
             definitionMap.computeIfAbsent(fileStringFunction.apply(file), d -> new ExtendedObjectTypeDefinition())
-                    .getExtensions().add(extension);
+                         .getExtensions().add(extension);
         }
         return definitionMap;
     }

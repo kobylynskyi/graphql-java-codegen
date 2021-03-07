@@ -1,5 +1,12 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonList;
+
+import java.io.File;
+import java.util.Objects;
+
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -7,13 +14,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.util.Objects;
-
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Collections.singletonList;
 
 class GraphQLCodegenOpenclassesTest {
 
@@ -42,11 +42,11 @@ class GraphQLCodegenOpenclassesTest {
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
         new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_no_final_class.scala.txt"),
-                getFileByName(files, "Commit.scala"));
+                                 getFileByName(files, "Commit.scala"));
     }
 
 }

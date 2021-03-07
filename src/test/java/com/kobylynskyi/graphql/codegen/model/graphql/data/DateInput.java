@@ -1,9 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
-
 import java.time.ZonedDateTime;
 import java.util.StringJoiner;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
 
 public class DateInput {
 

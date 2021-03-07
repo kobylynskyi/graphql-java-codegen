@@ -1,33 +1,27 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
-
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+
 public class UpdateDate2MutationRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
     private static final String OPERATION_NAME = "updateDate";
-
-    private String alias;
     private final Map<String, Object> input = new LinkedHashMap<>();
     private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+    private String alias;
 
     public UpdateDate2MutationRequest() {
     }
 
     public UpdateDate2MutationRequest(String alias) {
         this.alias = alias;
-    }
-
-    public void setInput(ZonedDateTime input) {
-        this.input.put("input", input);
-        this.useObjectMapperForInputSerialization.add("input");
     }
 
     @Override
@@ -48,6 +42,11 @@ public class UpdateDate2MutationRequest implements GraphQLOperationRequest {
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    public void setInput(ZonedDateTime input) {
+        this.input.put("input", input);
+        this.useObjectMapperForInputSerialization.add("input");
     }
 
     @Override

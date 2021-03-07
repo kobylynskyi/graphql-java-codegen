@@ -1,5 +1,18 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
@@ -9,19 +22,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toSet;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenEmptyTest {
 
@@ -43,18 +43,20 @@ class GraphQLCodegenEmptyTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
         assertEquals(new HashSet<>(asList("Node.scala", "Event.scala", "MutationResolver.scala",
-                "EventInput.scala", "QueryResolver.scala", "Status.scala", "PinnableItem.scala")),
-                generatedFileNames);
+                                          "EventInput.scala", "QueryResolver.scala", "Status.scala",
+                                          "PinnableItem.scala")),
+                     generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/scala/empty/%s.txt", file.getName())),
-                    file);
+                new File(String.format("src/test/resources/expected-classes/scala/empty/%s.txt", file.getName())),
+                file);
         }
     }
 
@@ -62,13 +64,14 @@ class GraphQLCodegenEmptyTest {
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateClient(true);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                               TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/scala/empty/EventResponseProjection.scala.txt"),
-                getFileByName(files, "EventResponseProjection.scala"));
+            new File("src/test/resources/expected-classes/scala/empty/EventResponseProjection.scala.txt"),
+            getFileByName(files, "EventResponseProjection.scala"));
     }
 
 }

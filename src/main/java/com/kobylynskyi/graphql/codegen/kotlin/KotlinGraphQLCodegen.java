@@ -1,15 +1,15 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author 梦境迷离
@@ -19,20 +19,26 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new KotlinMapperFactoryImpl();
 
-    public KotlinGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public KotlinGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig,
+                                GeneratedInformation generatedInformation) {
         super(schemas, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public KotlinGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public KotlinGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig,
+                                GeneratedInformation generatedInformation) {
         super(introspectionResult, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
+    public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                                MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, MAPPER_FACTORY);
     }
 
-    public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier, GeneratedInformation generatedInformation) {
-        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, generatedInformation, MAPPER_FACTORY);
+    public KotlinGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                                MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier,
+                                GeneratedInformation generatedInformation) {
+        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
+              generatedInformation, MAPPER_FACTORY);
     }
 
     @Override

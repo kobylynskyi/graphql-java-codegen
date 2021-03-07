@@ -1,9 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 
 /**
  * Freemarker-understandable format of operation (Query/Mutation/Subscription)

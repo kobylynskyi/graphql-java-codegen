@@ -1,10 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import graphql.language.ImplementingTypeDefinition;
-import graphql.language.Type;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import graphql.language.ImplementingTypeDefinition;
+import graphql.language.Type;
 
 /**
  * Base class for all GraphQL definition types that might implement interfaces
@@ -12,7 +12,8 @@ import java.util.List;
  * @param <T> base type
  * @param <E> extension type
  */
-public abstract class ExtendedImplementingTypeDefinition<T extends ImplementingTypeDefinition<T>, E extends T> extends ExtendedDefinition<T, E> {
+public abstract class ExtendedImplementingTypeDefinition<T extends ImplementingTypeDefinition<T>, E extends T>
+    extends ExtendedDefinition<T, E> {
 
     @SuppressWarnings({"rawtypes", "java:S3740"})
     public List<Type> getImplements() {
@@ -21,8 +22,8 @@ public abstract class ExtendedImplementingTypeDefinition<T extends ImplementingT
             definitionImplements.addAll(definition.getImplements());
         }
         extensions.stream()
-                .map(ImplementingTypeDefinition::getImplements)
-                .forEach(definitionImplements::addAll);
+                  .map(ImplementingTypeDefinition::getImplements)
+                  .forEach(definitionImplements::addAll);
         return definitionImplements;
     }
 

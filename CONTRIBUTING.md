@@ -16,17 +16,19 @@ Before sending your pull requests, make sure you followed this list:
 
 Please follow the steps below in order to make the changes:
 
-1. Clone the repository and open it in your favourite IDE.
+1. Clone the repository
 2. Checkout **develop** branch.
-3. Make code changes to the core library of `graphql-java-codegen`.
-4. If changes are required in the plugin code, then **build** and **install** `graphql-java-codegen` first.
+3. Open repository in your favourite IDE.
+4. Import [graphql-codegen-code-style.xml](graphql-codegen-code-style.xml) into your IDE.
+5. Make code changes to the core library of `graphql-java-codegen`.
+6. If changes are required in the plugin code, then **build** and **install** `graphql-java-codegen` first.
 
    ```shell script
    # This will install the library (including your recent changes) in your local maven repository.
    ./gradlew clean build publishToMavenLocal
    ```
    
-5. Build the plugin project with updated `graphql-java-codegen` library.
+7. Build the plugin project with updated `graphql-java-codegen` library.
 
    ```shell script
    # Build Gradle plugin
@@ -37,8 +39,8 @@ Please follow the steps below in order to make the changes:
    mvn clean verify 
    ```
 
-6. Make changes to the plugin code
-7. Install the plugin (copy to your local maven repository).
+8. Make changes to the plugin code
+9. Install the plugin (copy to your local maven repository).
 
    ```shell script
    # Install Gradle plugin
@@ -49,4 +51,4 @@ Please follow the steps below in order to make the changes:
    mvn clean install 
    ```
 
-8. Make sure that `example` projects are compiling and running.
+10. Make sure that `example` projects are compiling and running.

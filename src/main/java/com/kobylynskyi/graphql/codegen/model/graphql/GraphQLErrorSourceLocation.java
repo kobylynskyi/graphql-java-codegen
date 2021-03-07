@@ -43,12 +43,16 @@ public class GraphQLErrorSourceLocation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GraphQLErrorSourceLocation that = (GraphQLErrorSourceLocation) o;
         return line == that.line &&
-                column == that.column &&
-                Objects.equals(sourceName, that.sourceName);
+               column == that.column &&
+               Objects.equals(sourceName, that.sourceName);
     }
 
     @Override

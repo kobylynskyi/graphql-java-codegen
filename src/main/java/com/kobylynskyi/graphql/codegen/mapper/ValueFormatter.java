@@ -33,7 +33,7 @@ public interface ValueFormatter {
             case FORMATTER_TO_ARRAY_OF_STRINGS:
                 StringJoiner arrayOfStringsJoiner = getArrayJoiner();
                 values.forEach(newElement -> arrayOfStringsJoiner.add(
-                        format(newElement, FORMATTER_TO_STRING)));
+                    format(newElement, FORMATTER_TO_STRING)));
                 return arrayOfStringsJoiner.toString();
             case FORMATTER_TO_ARRAY:
             default:

@@ -1,16 +1,16 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 public class GraphQLRequestSerializer {
 
@@ -37,7 +37,8 @@ public class GraphQLRequestSerializer {
                 throw new IllegalArgumentException("Null GraphQL request was supplied");
             }
             if (operation != null && operation != request.getRequest().getOperationType()) {
-                throw new IllegalArgumentException("Only operations of the same type (query/mutation/subscription) can be executed at once");
+                throw new IllegalArgumentException(
+                    "Only operations of the same type (query/mutation/subscription) can be executed at once");
             }
             queryBuilder.append(buildQuery(request)).append(" ");
         }
@@ -117,7 +118,7 @@ public class GraphQLRequestSerializer {
 
     private static boolean requestHasInput(Map<String, Object> input) {
         return input != null && !input.isEmpty() &&
-                input.values().stream().anyMatch(Objects::nonNull);
+               input.values().stream().anyMatch(Objects::nonNull);
     }
 
     private static String jsonQuery(String queryString) {

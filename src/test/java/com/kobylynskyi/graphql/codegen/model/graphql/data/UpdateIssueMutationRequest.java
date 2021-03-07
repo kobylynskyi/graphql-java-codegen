@@ -1,31 +1,26 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
-
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+
 public class UpdateIssueMutationRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.MUTATION;
     private static final String OPERATION_NAME = "updateIssue";
-
-    private String alias;
     private final Map<String, Object> input = new LinkedHashMap<>();
     private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+    private String alias;
 
     public UpdateIssueMutationRequest() {
     }
 
     public UpdateIssueMutationRequest(String alias) {
         this.alias = alias;
-    }
-
-    public void setInput(UpdateIssueInput input) {
-        this.input.put("input", input);
     }
 
     @Override
@@ -46,6 +41,10 @@ public class UpdateIssueMutationRequest implements GraphQLOperationRequest {
     @Override
     public Map<String, Object> getInput() {
         return input;
+    }
+
+    public void setInput(UpdateIssueInput input) {
+        this.input.put("input", input);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen.java;
 
-import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
-
 import java.util.StringJoiner;
+
+import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 
 public class JavaValueFormatter implements ValueFormatter {
 

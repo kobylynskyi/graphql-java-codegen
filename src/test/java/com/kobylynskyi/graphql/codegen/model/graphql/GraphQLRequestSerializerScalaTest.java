@@ -1,17 +1,11 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class GraphQLRequestSerializerScalaTest {
+import org.junit.jupiter.api.Test;
 
-    @Test
-    void scalaOptionToString() {
-        assertEquals("1", getEntry(new Some()));
-        assertNull(getEntry(new None$()));
-    }
+class GraphQLRequestSerializerScalaTest {
 
     //Original method cannot test in Java
     public static String getEntry(Object input) {
@@ -21,6 +15,12 @@ class GraphQLRequestSerializerScalaTest {
             return null;
         }
         return input.toString();
+    }
+
+    @Test
+    void scalaOptionToString() {
+        assertEquals("1", getEntry(new Some()));
+        assertNull(getEntry(new None$()));
     }
 
     interface Option {

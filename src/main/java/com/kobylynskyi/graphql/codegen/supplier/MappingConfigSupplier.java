@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-
 import java.util.function.Supplier;
+
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 
 /**
  * The interface Mapping config supplier.

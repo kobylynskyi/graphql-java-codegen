@@ -38,7 +38,8 @@ public interface GraphQLCodegenConfiguration {
      * </ul>
      * <p>
      * E.g.:
-     * {@code EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)}
+     * {@code EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json
+     * .EpochMillisScalarDeserializer.class)}
      *
      * @return mappings from GraphqlType to JavaAnnotation
      */

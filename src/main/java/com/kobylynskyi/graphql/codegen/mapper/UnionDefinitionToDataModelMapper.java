@@ -1,18 +1,18 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 
 /**
  * Map union definition to a Freemarker data model

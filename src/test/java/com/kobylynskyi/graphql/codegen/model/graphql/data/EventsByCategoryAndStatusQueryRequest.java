@@ -1,16 +1,21 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import java.util.*;
-import com.kobylynskyi.graphql.codegen.model.graphql.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 
 public class EventsByCategoryAndStatusQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByCategoryAndStatus";
-
-    private String alias;
     private final Map<String, Object> input = new LinkedHashMap<>();
     private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+    private String alias;
 
     public EventsByCategoryAndStatusQueryRequest() {
     }
