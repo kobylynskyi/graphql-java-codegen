@@ -202,7 +202,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
       }, graphqlCodegen := {
         sLog.value.info(s"Generating files: ${BuildInfo.toString}")
         val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
-        val language = mappingConfigSupplier.map(_.get.getGeneratedLanguage).getOrElse(generatedLanguage.value)
+        val language = mappingConfigSupplier.map(m => if (m.get.getGeneratedLanguage == null) GeneratedLanguage.JAVA
+        else m.get().getGeneratedLanguage).getOrElse(generatedLanguage.value)
         var result = Seq.empty[File]
         try {
           val _outputDir = outputDir.value

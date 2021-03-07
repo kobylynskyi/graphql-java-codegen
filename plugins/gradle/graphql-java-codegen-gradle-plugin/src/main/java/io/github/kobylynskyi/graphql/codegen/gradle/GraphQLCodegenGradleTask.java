@@ -146,7 +146,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
         java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier();
-        GeneratedLanguage language = mappingConfigSupplier.map(c -> c.get().getGeneratedLanguage()).orElse(generatedLanguage);
+        GeneratedLanguage language = mappingConfigSupplier.map(c -> c.get().getGeneratedLanguage() == null ? GeneratedLanguage.JAVA
+                : c.get().getGeneratedLanguage()).orElse(generatedLanguage);
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
