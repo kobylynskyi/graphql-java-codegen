@@ -139,7 +139,8 @@ public class GraphQLRequestSerializer {
      * Serialize object to a string
      *
      * @param input           can be any object or collection of objects.
-     * @param useObjectMapper if true, then use Jackson's ObjectMapper to convert object->string, otherwise use toString
+     * @param useObjectMapper if true, then use Jackson's ObjectMapper to convert from object to string,
+     *                        otherwise use toString
      * @return serialized object
      */
     @SuppressWarnings("java:S1872")
