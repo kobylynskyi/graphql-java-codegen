@@ -261,15 +261,17 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
-        switch (generatedLanguage) {
+        java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
+        GeneratedLanguage language = mappingConfigSupplier.map(c -> c.get().getGeneratedLanguage()).orElse(generatedLanguage);
+        switch (language) {
             case JAVA:
-                return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+                return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             case SCALA:
-                return new ScalaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+                return new ScalaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             case KOTLIN:
-                return new KotlinGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, buildJsonSupplier(jsonConfigurationFile));
+                return new KotlinGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             default:
-                throw new LanguageNotSupportedException(generatedLanguage);
+                throw new LanguageNotSupportedException(language);
         }
     }
 
@@ -301,11 +303,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return project.getResources().stream().findFirst().map(Resource::getDirectory).map(Paths::get);
     }
 
-    private MappingConfigSupplier buildJsonSupplier(String jsonConfigurationFile) {
+    private java.util.Optional<MappingConfigSupplier> buildJsonSupplier(String jsonConfigurationFile) {
         if (jsonConfigurationFile != null && !jsonConfigurationFile.isEmpty()) {
-            return new JsonMappingConfigSupplier(jsonConfigurationFile);
+            return java.util.Optional.of(new JsonMappingConfigSupplier(jsonConfigurationFile));
         }
-        return null;
+        return java.util.Optional.empty();
     }
 
     private void addCompileSourceRootIfConfigured() {
