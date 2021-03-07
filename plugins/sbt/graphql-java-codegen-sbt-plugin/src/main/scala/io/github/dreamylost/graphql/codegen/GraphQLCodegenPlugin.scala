@@ -202,18 +202,19 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
       }, graphqlCodegen := {
         sLog.value.info(s"Generating files: ${BuildInfo.toString}")
         val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        val language = mappingConfigSupplier.map(_.get()).map(_.getGeneratedLanguage).getOrElse(generatedLanguage.value)
         var result = Seq.empty[File]
         try {
           val _outputDir = outputDir.value
           val _introspectionResult = graphqlQueryIntrospectionResultPath.value.orNull
           lazy val instantiateCodegen = (mappingConfig: MappingConfig) => {
-            generatedLanguage.value match {
+            language match {
               case JAVA =>
-                new JavaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+                new JavaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier.orNull)
               case SCALA =>
-                new ScalaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier)
+                new ScalaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier.orNull)
               case _ =>
-                throw new LanguageNotSupportedException(generatedLanguage.value)
+                throw new LanguageNotSupportedException(language)
             }
           }
           result = instantiateCodegen(getMappingConfig().value).generate.asScala
@@ -274,9 +275,9 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     ) ++ watchSourcesSetting ++ Seq(cleanFiles += generateCodegenTargetPath.value)
   }
 
-  protected def buildJsonSupplier(jsonConfigurationFile: String): JsonMappingConfigSupplier = {
+  protected def buildJsonSupplier(jsonConfigurationFile: String): Option[JsonMappingConfigSupplier] = {
     if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty)
-      new JsonMappingConfigSupplier(jsonConfigurationFile) else null
+      Some(new JsonMappingConfigSupplier(jsonConfigurationFile)) else None
   }
 
 }
