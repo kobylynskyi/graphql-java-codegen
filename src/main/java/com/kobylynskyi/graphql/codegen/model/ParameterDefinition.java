@@ -1,10 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Freemarker-understandable format of method parameter and field definition
@@ -14,7 +14,7 @@ import graphql.schema.DataFetchingEnvironment;
 public class ParameterDefinition {
 
     public static final ParameterDefinition DATA_FETCHING_ENVIRONMENT = new ParameterDefinition(
-        DataFetchingEnvironment.class.getName(), "env");
+            DataFetchingEnvironment.class.getName(), "env");
 
     private String type;
     /**

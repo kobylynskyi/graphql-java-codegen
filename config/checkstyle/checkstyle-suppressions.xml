@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <suppress checks=".*"
+              files=".*[/\\]target[/\\]"/>
+    <suppress checks=".*"
+              files=".*[/\\]build[/\\]"/>
+    <suppress checks=".*"
+              files=".*[/\\]generated.*[/\\]"/>
+
+    <suppress checks="MissingJavadocMethod"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="MissingJavadocType"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="SingleLineJavadoc"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="AvoidEscapedUnicodeCharacters"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="VariableDeclarationUsageDistance"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="TypeName"
+              files="[\\/]test[\\/]"/>
+    <suppress checks="MissingJavadocMethod"
+              files="[\\/]example.*[\\/]"/>
+    <suppress checks="MissingJavadocType"
+              files="[\\/]example.*[\\/]"/>
+
+    <suppress checks="LineLength"
+              files="GraphQLCodegenGradleTask\.java"
+              lines="0-100"/>
+
+    <suppress checks="MethodName"
+              files="GraphQLResponseProjection\.java"/>
+
+    <suppress checks="MemberName"
+              message="Member name '\$alias'.*"/>
+
+    <suppress checks="CustomImportOrder"
+              message="Wrong lexicographical order for 'java\.[^']+' import\. Should be before 'javax\.[^']+'\."/>
+</suppressions>

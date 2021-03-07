@@ -3,6 +3,9 @@ package io.github.kobylynskyi.graphql.codegen.gradle;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 
+/**
+ * Relay-relatedconfigurations
+ */
 public class RelayConfig extends com.kobylynskyi.graphql.codegen.model.RelayConfig {
 
     @Input

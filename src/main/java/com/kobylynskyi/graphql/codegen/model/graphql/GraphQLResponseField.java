@@ -77,9 +77,9 @@ public class GraphQLResponseField {
         }
         final GraphQLResponseField that = (GraphQLResponseField) obj;
         return Objects.equals(name, that.name)
-               && Objects.equals(alias, that.alias)
-               && Objects.equals(parameters, that.parameters)
-               && Objects.equals(projection, that.projection);
+                && Objects.equals(alias, that.alias)
+                && Objects.equals(parameters, that.parameters)
+                && Objects.equals(projection, that.projection);
     }
 
     @Override

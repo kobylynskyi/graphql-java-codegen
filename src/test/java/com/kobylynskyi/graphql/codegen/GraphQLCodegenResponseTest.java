@@ -41,11 +41,14 @@ class GraphQLCodegenResponseTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/EventsByCategoryAndStatusQueryResponse.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "EventsByCategoryAndStatusQueryResponse.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryResponse.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/VersionQueryResponse.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "VersionQueryResponse.java.txt"),
                 getFileByName(files, "VersionQueryResponse.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/EventsByIdsQueryResponse.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "EventsByIdsQueryResponse.java.txt"),
                 getFileByName(files, "EventsByIdsQueryResponse.java"));
     }
 
@@ -57,9 +60,11 @@ class GraphQLCodegenResponseTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/VehicleResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "VehicleResponseProjection.java.txt"),
                 getFileByName(files, "VehicleResponseProjection.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/LocationResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "LocationResponseProjection.java.txt"),
                 getFileByName(files, "LocationResponseProjection.java"));
     }
 
@@ -71,9 +76,11 @@ class GraphQLCodegenResponseTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/VehicleResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/" +
+                        "VehicleResponseProjection.java.txt"),
                 getFileByName(files, "VehicleResponseProjection.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/LocationResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/projection-with-selectAll/" +
+                        "LocationResponseProjection.java.txt"),
                 getFileByName(files, "LocationResponseProjection.java"));
     }
 
@@ -84,7 +91,8 @@ class GraphQLCodegenResponseTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/VersionQueryResponse_int.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
+                        "VersionQueryResponse_int.java.txt"),
                 getFileByName(files, "VersionQueryResponse.java"));
     }
 

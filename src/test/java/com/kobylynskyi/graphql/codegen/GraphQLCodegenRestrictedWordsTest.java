@@ -51,8 +51,8 @@ class GraphQLCodegenRestrictedWordsTest {
                 "Synchronized.java", "SynchronizedResponseProjection.java", "TestEnum.java"), generatedFileNames);
 
         for (File file : files) {
-            assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/restricted-words/%s.txt", file.getName())),
+            assertSameTrimmedContent(new File(
+                    String.format("src/test/resources/expected-classes/restricted-words/%s.txt", file.getName())),
                     file);
         }
     }

@@ -1,11 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import static java.util.Collections.singleton;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -14,14 +9,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("unchecked")
 class MappingConfigTest {
 
     private static <T> Map<String, T> hashMap(AbstractMap.SimpleEntry<String, T>... entries) {
         return Arrays.stream(entries).collect(
-            Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (a, b) -> b));
+                Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue, (a, b) -> b));
     }
 
     private static MappingConfig buildMappingConfig() {
@@ -125,12 +125,12 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getCustomTypesMapping(), mappingConfig.getCustomTypesMapping());
         assertEquals(expectedMappingConfig.getCustomAnnotationsMapping(), mappingConfig.getCustomAnnotationsMapping());
         assertEquals(expectedMappingConfig.getDirectiveAnnotationsMapping(),
-                     mappingConfig.getDirectiveAnnotationsMapping());
+                mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals(expectedMappingConfig.getApiPackageName(), mappingConfig.getApiPackageName());
         assertEquals(expectedMappingConfig.getGenerateBuilder(), mappingConfig.getGenerateBuilder());
         assertEquals(expectedMappingConfig.getGenerateApis(), mappingConfig.getGenerateApis());
         assertEquals(expectedMappingConfig.getGenerateEqualsAndHashCode(),
-                     mappingConfig.getGenerateEqualsAndHashCode());
+                mappingConfig.getGenerateEqualsAndHashCode());
         assertEquals(expectedMappingConfig.getGenerateImmutableModels(), mappingConfig.getGenerateImmutableModels());
         assertEquals(expectedMappingConfig.getGenerateToString(), mappingConfig.getGenerateToString());
         assertEquals(expectedMappingConfig.getSubscriptionReturnType(), mappingConfig.getSubscriptionReturnType());
@@ -140,12 +140,12 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getModelNameSuffix(), mappingConfig.getModelNameSuffix());
         assertEquals(expectedMappingConfig.getModelPackageName(), mappingConfig.getModelPackageName());
         assertEquals(expectedMappingConfig.getModelValidationAnnotation(),
-                     mappingConfig.getModelValidationAnnotation());
+                mappingConfig.getModelValidationAnnotation());
         assertEquals(expectedMappingConfig.getPackageName(), mappingConfig.getPackageName());
         assertEquals(expectedMappingConfig.getGenerateParameterizedFieldsResolvers(),
-                     mappingConfig.getGenerateParameterizedFieldsResolvers());
+                mappingConfig.getGenerateParameterizedFieldsResolvers());
         assertEquals(expectedMappingConfig.getGenerateExtensionFieldsResolvers(),
-                     mappingConfig.getGenerateExtensionFieldsResolvers());
+                mappingConfig.getGenerateExtensionFieldsResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithResolvers(), mappingConfig.getFieldsWithResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithoutResolvers(), mappingConfig.getFieldsWithoutResolvers());
         assertEquals(expectedMappingConfig.getRequestSuffix(), mappingConfig.getRequestSuffix());
@@ -153,13 +153,13 @@ class MappingConfigTest {
         assertEquals(expectedMappingConfig.getResponseProjectionSuffix(), mappingConfig.getResponseProjectionSuffix());
         assertEquals(expectedMappingConfig.getGenerateClient(), mappingConfig.getGenerateClient());
         assertEquals(expectedMappingConfig.getGenerateModelsForRootTypes(),
-                     mappingConfig.getGenerateModelsForRootTypes());
+                mappingConfig.getGenerateModelsForRootTypes());
         assertEquals(expectedMappingConfig.getGenerateApisWithThrowsException(),
-                     mappingConfig.getGenerateApisWithThrowsException());
+                mappingConfig.getGenerateApisWithThrowsException());
         assertEquals(expectedMappingConfig.getTypeResolverPrefix(), mappingConfig.getTypeResolverPrefix());
         assertEquals(expectedMappingConfig.getTypeResolverSuffix(), mappingConfig.getTypeResolverSuffix());
         assertEquals(expectedMappingConfig.getUseOptionalForNullableReturnTypes(),
-                     mappingConfig.getUseOptionalForNullableReturnTypes());
+                mappingConfig.getUseOptionalForNullableReturnTypes());
         assertEquals(expectedMappingConfig.getRelayConfig(), mappingConfig.getRelayConfig());
     }
 
@@ -270,13 +270,13 @@ class MappingConfigTest {
         mappingConfig.combine(buildMappingConfig2());
 
         assertEquals(hashMap(new HashMap.SimpleEntry<>("1", "2"), new HashMap.SimpleEntry<>("11", "22")),
-                     mappingConfig.getCustomTypesMapping());
+                mappingConfig.getCustomTypesMapping());
         assertEquals(hashMap(new HashMap.SimpleEntry<>("3", singletonList("4")),
-                             new HashMap.SimpleEntry<>("33", singletonList("44"))),
-                     mappingConfig.getCustomAnnotationsMapping());
+                new HashMap.SimpleEntry<>("33", singletonList("44"))),
+                mappingConfig.getCustomAnnotationsMapping());
         assertEquals(hashMap(new HashMap.SimpleEntry<>("5", singletonList("6")),
-                             new HashMap.SimpleEntry<>("55", singletonList("66"))),
-                     mappingConfig.getDirectiveAnnotationsMapping());
+                new HashMap.SimpleEntry<>("55", singletonList("66"))),
+                mappingConfig.getDirectiveAnnotationsMapping());
         assertEquals("ApiPackageName2", mappingConfig.getApiPackageName());
         assertFalse(mappingConfig.getGenerateBuilder());
         assertFalse(mappingConfig.getGenerateApis());

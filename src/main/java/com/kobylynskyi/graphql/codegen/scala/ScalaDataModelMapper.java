@@ -1,28 +1,31 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 
+/**
+ * Data model mapper for SCALA generated classes
+ */
 public class ScalaDataModelMapper implements DataModelMapper {
 
     private static final String RESTRICTED_WORDS_WRAP_WITH = "`";
     private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
-        "package", "import", "class", "object", "trait", "extends", "with", "type", "forSome",
-        "private", "protected", "abstract", "sealed", "final", "implicit", "lazy", "override", "try",
-        "catch", "finally", "throw", "if", "else", "match", "case", "do", "while", "for", "return", "yield",
-        "def", "val", "var", "this", "super", "new", "true", "false", "null"
-                                                                                            ));
+            "package", "import", "class", "object", "trait", "extends", "with", "type", "forSome",
+            "private", "protected", "abstract", "sealed", "final", "implicit", "lazy", "override", "try",
+            "catch", "finally", "throw", "if", "else", "match", "case", "do", "while", "for", "return", "yield",
+            "def", "val", "var", "this", "super", "new", "true", "false", "null"
+    ));
 
     //TODO maybe have others
     private static final Set<String> SCALA_RESTRICTED_METHOD_NAMES = new HashSet<>(Arrays.asList(
-        "getClass", "notify", "notifyAll", "wait", "clone", "finalize"));
+            "getClass", "notify", "notifyAll", "wait", "clone", "finalize"));
 
 
     @Override

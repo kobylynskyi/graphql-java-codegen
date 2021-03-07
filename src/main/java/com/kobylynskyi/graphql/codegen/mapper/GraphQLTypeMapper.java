@@ -1,11 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
@@ -20,6 +14,12 @@ import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.Type;
 import graphql.language.TypeName;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Map GraphQL type to language-specific type (java/scala/kotlin/etc)
@@ -84,23 +84,26 @@ public interface GraphQLTypeMapper {
 
     /**
      * Wraps type into apiReturnType or subscriptionReturnType (defined in the mapping configuration).
-     * Examples:
-     * <p>
-     * - Given GraphQL schema:                   {@code type Query { events: [Event!]! }}
-     * - Given config:                           {@code useOptionalForNullableReturnTypes = true}
-     * - Return:                                 {@code java.util.Optional<Event>}
-     * <p>
-     * - Given GraphQL schema:                   {@code type Subscription { eventsCreated: [Event!]! }}
-     * - Given subscriptionReturnType in config: {@code org.reactivestreams.Publisher}
-     * - Return:                                 {@code org.reactivestreams.Publisher<Event>}
-     * <p>
-     * - Given GraphQL schema:                   {@code type Mutation { createEvent(inp: Inp): Event }}
-     * - Given apiReturnType in config:          {@code reactor.core.publisher.Mono}
-     * - Return:                                 {@code reactor.core.publisher.Mono<Event>}
-     * <p>
-     * - Given GraphQL schema:                   {@code type Query { events: [Event!]! }}
-     * - Given apiReturnListType in config:      {@code reactor.core.publisher.Flux}
-     * - Return:                                 {@code reactor.core.publisher.Flux<Event>}
+     *
+     * <p>Example 1:
+     * * Given GraphQL schema:                   {@code type Query { events: [Event!]! }}
+     * * Given config:                           {@code useOptionalForNullableReturnTypes = true}
+     * * Return:                                 {@code java.util.Optional<Event>}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code type Subscription { eventsCreated: [Event!]! }}
+     * * Given subscriptionReturnType in config: {@code org.reactivestreams.Publisher}
+     * * Return:                                 {@code org.reactivestreams.Publisher<Event>}
+     *
+     * <p>Example 3:
+     * * Given GraphQL schema:                   {@code type Mutation { createEvent(inp: Inp): Event }}
+     * * Given apiReturnType in config:          {@code reactor.core.publisher.Mono}
+     * * Return:                                 {@code reactor.core.publisher.Mono<Event>}
+     *
+     * <p>Example 4:
+     * * Given GraphQL schema:                   {@code type Query { events: [Event!]! }}
+     * * Given apiReturnListType in config:      {@code reactor.core.publisher.Flux}
+     * * Return:                                 {@code reactor.core.publisher.Flux<Event>}
      *
      * @param mappingContext  Global mapping context
      * @param namedDefinition Named definition
@@ -118,6 +121,14 @@ public interface GraphQLTypeMapper {
      * @return true if the provided type is primitive, false if the provided type is not primitive
      */
     boolean isPrimitive(String possiblyPrimitiveType);
+
+    /**
+     * Whether to add model validation annotation to a type
+     *
+     * @param type GraphQL type name
+     * @return true if model validation annotation should be added to a type
+     */
+    boolean addModelValidationAnnotationForType(String type);
 
     /**
      * Wrap string into generics type
@@ -176,21 +187,21 @@ public interface GraphQLTypeMapper {
                                             boolean mandatory, boolean collection) {
         if (graphqlType instanceof TypeName) {
             return getLanguageType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory,
-                                   collection);
+                    collection);
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(),
-                                                                   name, parentTypeName, false, true);
+                    name, parentTypeName, false, true);
             if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
-                mappedCollectionType
-                    .setJavaName(wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
+                mappedCollectionType.setJavaName(
+                        wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             } else {
-                mappedCollectionType
-                    .setJavaName(wrapIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
+                mappedCollectionType.setJavaName(
+                        wrapIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
             return getLanguageType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true,
-                                   collection);
+                    collection);
         }
         throw new IllegalArgumentException("Unknown type: " + graphqlType);
     }
@@ -224,13 +235,13 @@ public interface GraphQLTypeMapper {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-            (name != null && parentTypeName != null &&
-             serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
             serializeUsingObjectMapper = true;
         }
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
-                                   mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
     /**
@@ -251,36 +262,47 @@ public interface GraphQLTypeMapper {
             return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
         } else if (type instanceof TypeName) {
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
-                                  getDirectives(def), mandatory);
+                    getDirectives(def), mandatory);
         }
         return Collections.emptyList();
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                              Collections.emptyList(), false);
+                Collections.emptyList(), false);
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
         return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false);
     }
 
+    /**
+     * Get annotations for a given GraphQL type
+     *
+     * @param mappingContext  Global mapping context
+     * @param graphQLTypeName GraphQL type
+     * @param name            Name of the GraphQL type
+     * @param parentTypeName  Name of the parent type
+     * @param directives      List of GraphQL directive
+     * @param mandatory       Type is mandatory
+     * @return list of Java annotations for a given GraphQL type
+     */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
                                         String parentTypeName, List<Directive> directives, boolean mandatory) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
-                                                         .get(getMandatoryType(graphQLTypeName));
+                    .get(getMandatoryType(graphQLTypeName));
             String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
             if (Utils.isNotBlank(modelValidationAnnotation) && addModelValidationAnnotationForType(
-                possiblyPrimitiveType)) {
+                    possiblyPrimitiveType)) {
                 annotations.add(modelValidationAnnotation);
             }
         }
 
         Map<String, List<String>> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
         if (name != null && parentTypeName != null && customAnnotationsMapping
-            .containsKey(parentTypeName + "." + name)) {
+                .containsKey(parentTypeName + "." + name)) {
             List<String> annotationsToAdd = customAnnotationsMapping.get(parentTypeName + "." + name);
             if (!Utils.isEmpty(annotationsToAdd)) {
                 annotations.addAll(annotationsToAdd);
@@ -295,19 +317,24 @@ public interface GraphQLTypeMapper {
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
             if (directiveAnnotationsMapping.containsKey(directive.getName())) {
-                annotations.addAll(
-                    getAnnotationForDirective(mappingContext, directiveAnnotationsMapping.get(directive.getName()),
-                                              directive));
+                annotations.addAll(getAnnotationsForDirective(
+                        mappingContext, directiveAnnotationsMapping.get(directive.getName()), directive));
             }
         }
         return annotations;
     }
 
-    boolean addModelValidationAnnotationForType(String possiblyPrimitiveType);
-
-    default List<String> getAnnotationForDirective(MappingContext mappingContext,
-                                                   List<String> directiveAnnotations,
-                                                   Directive directive) {
+    /**
+     * Get a list of annotations for a given directive based on mapping config
+     *
+     * @param mappingContext       Global mapping context
+     * @param directiveAnnotations List of directive annotations
+     * @param directive            GraphQL Directive
+     * @return a list of annotations to be added for all types that have given directive
+     */
+    default List<String> getAnnotationsForDirective(MappingContext mappingContext,
+                                                    List<String> directiveAnnotations,
+                                                    Directive directive) {
         List<String> directiveAnnotationsMapped = new ArrayList<>();
         for (String annotation : directiveAnnotations) {
             String directiveAnnotationMapped = annotation;
@@ -316,8 +343,8 @@ public interface GraphQLTypeMapper {
                 // if argumentValueFormatter == null then the placeholder {{dirArg.getName()}} does not exist
                 if (argumentValueFormatter != null) {
                     directiveAnnotationMapped = directiveAnnotationMapped.replace(
-                        String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
-                        getValueMapper().map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
+                            String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
+                            getValueMapper().map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
                 }
             }
             directiveAnnotationsMapped.add(directiveAnnotationMapped);
@@ -331,7 +358,7 @@ public interface GraphQLTypeMapper {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
-                                                         .get(getMandatoryType(graphqlTypeName));
+                    .get(getMandatoryType(graphqlTypeName));
             if (isPrimitive(possiblyPrimitiveType)) {
                 return possiblyPrimitiveType;
             }
@@ -348,12 +375,12 @@ public interface GraphQLTypeMapper {
     default DeprecatedDefinition getDeprecated(MappingContext mappingContext,
                                                DirectivesContainer<?> directivesContainer) {
         return directivesContainer.getDirectives()
-                                  .stream()
-                                  .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
-                                  .findFirst()
-                                  .map(directive -> MultiLanguageDeprecated
-                                      .getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
-                                  .orElse(null);
+                .stream()
+                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
+                .findFirst()
+                .map(directive -> MultiLanguageDeprecated
+                        .getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
+                .orElse(null);
     }
 
     ValueMapper getValueMapper();

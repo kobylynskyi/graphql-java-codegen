@@ -43,12 +43,12 @@ public interface GraphQLOperationRequest {
     /**
      * Fields that require serialization using
      * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
-     * <p>
-     * Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
-     * <p>
-     * If just type is specified, then all fields of this type will be serialized using ObjectMapper.
-     * <p>
-     * E.g.:
+     *
+     * <p>Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
+     *
+     * <p>If just type is specified, then all fields of this type will be serialized using ObjectMapper.
+     *
+     * <p>E.g.:
      * <ul>
      *   <li>{@code Person.createdDateTime}</li>
      *   <li>{@code ZonedDateTime}</li>

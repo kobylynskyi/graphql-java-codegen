@@ -12,8 +12,7 @@ public interface ProductMapper {
     ProductTO map(Product from);
 
     @Mapping(target = "id", ignore = true) // auto-generated
-    @Mapping(target = "addedDateTime", ignore = true)
-        // set in the service
+    @Mapping(target = "addedDateTime", ignore = true) // this property is set in the service
     Product mapInput(ProductInputTO from);
 
 }

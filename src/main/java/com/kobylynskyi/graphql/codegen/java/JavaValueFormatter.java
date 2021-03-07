@@ -1,9 +1,12 @@
 package com.kobylynskyi.graphql.codegen.java;
 
-import java.util.StringJoiner;
-
 import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 
+import java.util.StringJoiner;
+
+/**
+ * Class contains various formatting logic that is specific only for Java language
+ */
 public class JavaValueFormatter implements ValueFormatter {
 
     @Override

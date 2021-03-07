@@ -1,12 +1,15 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import graphql.language.EnumTypeDefinition;
 import graphql.language.EnumTypeExtensionDefinition;
 import graphql.language.EnumValueDefinition;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Extended definition of GraphQL enum type: based definition + its extensions
+ */
 public class ExtendedEnumTypeDefinition extends ExtendedDefinition<EnumTypeDefinition, EnumTypeExtensionDefinition> {
 
     /**
@@ -20,8 +23,8 @@ public class ExtendedEnumTypeDefinition extends ExtendedDefinition<EnumTypeDefin
             definitions.addAll(definition.getEnumValueDefinitions());
         }
         extensions.stream()
-                  .map(EnumTypeExtensionDefinition::getEnumValueDefinitions)
-                  .forEach(definitions::addAll);
+                .map(EnumTypeExtensionDefinition::getEnumValueDefinitions)
+                .forEach(definitions::addAll);
         return definitions;
     }
 }

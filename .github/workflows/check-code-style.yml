@@ -21,7 +21,7 @@ jobs:
         env:
           WORKDIR: ./
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHECKSTYLE_CONFIG: graphql-codegen-code-style.xml
+          CHECKSTYLE_CONFIG: config/checkstyle/graphql-codegen-code-style.xml
           REVIEWDOG_VERSION: v0.11.0
         run: |
           wget -O - -q https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.41/checkstyle-8.41-all.jar > /opt/checkstyle.jar

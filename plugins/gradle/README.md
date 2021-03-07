@@ -8,11 +8,10 @@
 * [Plugin Options](#plugin-options)
 * [Sample Plugin Configuration](#sample-plugin-configuration)
 * [Examples](#examples)
-  * [GraphQL **server** code generation](#graphql-server-code-generation)
-  * [GraphQL **client** code generation](#graphql-client-code-generation)
+    * [GraphQL **server** code generation](#graphql-server-code-generation)
+    * [GraphQL **client** code generation](#graphql-client-code-generation)
 * [Different configurations for graphql schemas](#different-configurations-for-graphql-schemas)
 * [Convert generated Java classes to Kotlin classes](#convert-generated-java-classes-to-kotlin-classes)
-
 
 ### Plugin Setup
 
@@ -71,7 +70,8 @@ compileJava.dependsOn 'graphqlCodegen'
 sourceSets.main.java.srcDir "$buildDir/generated"
 ```
 
-You can also refer to build.gradle files in example projects: [example-client/build.gradle](example-client/build.gradle), [example-server/build.gradle](example-server/build.gradle)
+You can also refer to build.gradle files in example projects: [example-client/build.gradle](example-client/build.gradle)
+, [example-server/build.gradle](example-server/build.gradle)
 
 #### build.gradle.kts:
 
@@ -97,26 +97,27 @@ tasks.named<JavaCompile>("compileJava") {
 }
 ```
 
-
 ### Examples
 
 #### GraphQL **server** code generation
 
 [example-server](example-server):
-  * [Plugin configuration in build.gradle](example-server/build.gradle)
-  * [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
 
-#### GraphQL **client** code generation 
+* [Plugin configuration in build.gradle](example-server/build.gradle)
+* [GraphQL Resolver classes that implement generated interfaces](example-server/src/main/java/io/github/kobylynskyi/product/graphql/resolvers)
+
+#### GraphQL **client** code generation
 
 [example-client](example-client):
-  * [Plugin configuration in build.gradle](example-client/build.gradle)
-  * [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/product/ProductServiceGraphQLClient.java)
-  * [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
 
+* [Plugin configuration in build.gradle](example-client/build.gradle)
+* [Building GraphQL request and parsing response using Spring RestTemplate](example-client/src/main/java/io/github/kobylynskyi/order/external/product/ProductServiceGraphQLClient.java)
+* [Building GraphQL request and parsing response using RestAssured](example-client/src/test/java/io/github/kobylynskyi/order/service/CreateProductIntegrationTest.java)
 
 ### Different configurations for graphql schemas
 
-If you want to have different configuration for different `.graphqls` files (e.g.: different javaPackage, outputDir, etc.), then you will need to create separate gradle tasks for each set of schemas. E.g.:
+If you want to have different configuration for different `.graphqls` files (e.g.: different javaPackage, outputDir,
+etc.), then you will need to create separate gradle tasks for each set of schemas. E.g.:
 
 ```groovy
 task graphqlCodegenService1(type: GraphqlCodegenGradleTask) {
@@ -136,12 +137,10 @@ Later on you can call each task separately or together:
 * `gradle clean graphqlCodegenService2 build`
 * `gradle clean graphqlCodegenService1 graphqlCodegenService2 build`
 
-
 ### Convert generated Java classes to Kotlin classes
 
 1. Navigate in IntelliJ IDEA to the `./build/generated/graphql/` folder and press `Cmd+Alt+Shift+K`
 2. Access generated classes as normal Kotlin classes.
-
 
 ### Inspired by
 

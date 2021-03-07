@@ -117,65 +117,65 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         apiNamePrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefix);
         apiNameSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNameSuffix);
         apiRootInterfaceStrategy = getValueOrDefaultToThis(source,
-                                                           GraphQLCodegenConfiguration::getApiRootInterfaceStrategy);
+                GraphQLCodegenConfiguration::getApiRootInterfaceStrategy);
         apiInterfaceStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiInterfaceStrategy);
         apiNamePrefixStrategy = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiNamePrefixStrategy);
         typeResolverPrefix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverPrefix);
         typeResolverSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getTypeResolverSuffix);
         modelValidationAnnotation = getValueOrDefaultToThis(source,
-                                                            GraphQLCodegenConfiguration::getModelValidationAnnotation);
+                GraphQLCodegenConfiguration::getModelValidationAnnotation);
         apiReturnType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnType);
         apiReturnListType = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getApiReturnListType);
         subscriptionReturnType = getValueOrDefaultToThis(source,
-                                                         GraphQLCodegenConfiguration::getSubscriptionReturnType);
+                GraphQLCodegenConfiguration::getSubscriptionReturnType);
         generateBuilder = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateBuilder);
         generateEqualsAndHashCode = getValueOrDefaultToThis(source,
-                                                            GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
+                GraphQLCodegenConfiguration::getGenerateEqualsAndHashCode);
         generateImmutableModels = getValueOrDefaultToThis(source,
-                                                          GraphQLCodegenConfiguration::getGenerateImmutableModels);
+                GraphQLCodegenConfiguration::getGenerateImmutableModels);
         generateToString = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateToString);
         generateParameterizedFieldsResolvers = getValueOrDefaultToThis(source,
-                                                                       GraphQLCodegenConfiguration::getGenerateParameterizedFieldsResolvers);
+                GraphQLCodegenConfiguration::getGenerateParameterizedFieldsResolvers);
         generateExtensionFieldsResolvers = getValueOrDefaultToThis(source,
-                                                                   GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
+                GraphQLCodegenConfiguration::getGenerateExtensionFieldsResolvers);
         generateDataFetchingEnvironmentArgumentInApis = getValueOrDefaultToThis(source,
-                                                                                GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
+                GraphQLCodegenConfiguration::getGenerateDataFetchingEnvironmentArgumentInApis);
         generateModelsForRootTypes = getValueOrDefaultToThis(source,
-                                                             GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
+                GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source,
-                                                                    GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
+                GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
         generateApisWithThrowsException = getValueOrDefaultToThis(source,
-                                                                  GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
+                GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
         addGeneratedAnnotation = getValueOrDefaultToThis(source,
-                                                         GraphQLCodegenConfiguration::getAddGeneratedAnnotation);
+                GraphQLCodegenConfiguration::getAddGeneratedAnnotation);
         relayConfig = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRelayConfig);
         queryResolverParentInterface = getValueOrDefaultToThis(source,
-                                                               GraphQLCodegenConfiguration::getQueryResolverParentInterface);
+                GraphQLCodegenConfiguration::getQueryResolverParentInterface);
         mutationResolverParentInterface = getValueOrDefaultToThis(source,
-                                                                  GraphQLCodegenConfiguration::getMutationResolverParentInterface);
+                GraphQLCodegenConfiguration::getMutationResolverParentInterface);
         subscriptionResolverParentInterface = getValueOrDefaultToThis(source,
-                                                                      GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
+                GraphQLCodegenConfiguration::getSubscriptionResolverParentInterface);
         resolverParentInterface = getValueOrDefaultToThis(source,
-                                                          GraphQLCodegenConfiguration::getResolverParentInterface);
+                GraphQLCodegenConfiguration::getResolverParentInterface);
         generateClient = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGenerateClient);
         requestSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRequestSuffix);
         responseSuffix = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getResponseSuffix);
         responseProjectionSuffix = getValueOrDefaultToThis(source,
-                                                           GraphQLCodegenConfiguration::getResponseProjectionSuffix);
+                GraphQLCodegenConfiguration::getResponseProjectionSuffix);
         parametrizedInputSuffix = getValueOrDefaultToThis(source,
-                                                          GraphQLCodegenConfiguration::getParametrizedInputSuffix);
+                GraphQLCodegenConfiguration::getParametrizedInputSuffix);
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source,
-                                                             GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
+                GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization,
-                                                            source.useObjectMapperForRequestSerialization);
+                source.useObjectMapperForRequestSerialization);
         generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
         generateModelOpenClasses = getValueOrDefaultToThis(source,
-                                                           GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
+                GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -436,7 +436,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     public void setGenerateDataFetchingEnvironmentArgumentInApis(
-        Boolean generateDataFetchingEnvironmentArgumentInApis) {
+            Boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
     }
 

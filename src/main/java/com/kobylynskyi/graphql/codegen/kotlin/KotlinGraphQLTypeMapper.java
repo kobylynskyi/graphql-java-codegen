@@ -1,10 +1,5 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import static java.util.Arrays.asList;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
@@ -13,7 +8,14 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
+
 /**
+ * Mapper class for converting GraphQL types to Kotlin types
+ *
  * @author 梦境迷离
  * @since 2020/12/09
  */
@@ -23,7 +25,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     private static final String KOTLIN_UTIL_NULLABLE = "?";
     // Char Boolean are not primitive type, but non null equivalent jvm primitive types.
     private static final Set<String> KOTLIN_PRIMITIVE_TYPES = new HashSet<>(
-        asList("Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
+            asList("Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
 
     private final ValueMapper valueMapper;
 
@@ -88,12 +90,12 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
                                               String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
-            Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
         if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) &&
-            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             return computedTypeName.replace(KOTLIN_UTIL_LIST, mappingContext.getApiReturnListType());
         }
@@ -121,7 +123,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
-                                                         .get(GraphQLTypeMapper.getMandatoryType(graphqlTypeName));
+                    .get(GraphQLTypeMapper.getMandatoryType(graphqlTypeName));
             if (isPrimitive(possiblyPrimitiveType)) {
                 return possiblyPrimitiveType;
             }
@@ -136,19 +138,19 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             // Such as return a query type: ```codesOfConduct: [CodeOfConduct]```
             if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) && !graphqlTypeName.endsWith(KOTLIN_UTIL_NULLABLE)) {
                 String modelClassNameWithPrefixAndSuffix = DataModelMapper
-                    .getModelClassNameWithPrefixAndSuffix(mappingContext, graphqlTypeName);
+                        .getModelClassNameWithPrefixAndSuffix(mappingContext, graphqlTypeName);
                 if (computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) ||
-                    computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)) {
+                        computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)) {
                     return computedTypeName;
                 }
                 if (!computedTypeName
-                    .contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) && computedTypeName
+                        .contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) && computedTypeName
                         .contains(modelClassNameWithPrefixAndSuffix)) {
                     return computedTypeName.replace(modelClassNameWithPrefixAndSuffix,
-                                                    modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE);
+                            modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE);
                 }
                 if (!computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE) && computedTypeName
-                    .contains(graphqlTypeName)) {
+                        .contains(graphqlTypeName)) {
                     return computedTypeName.replace(graphqlTypeName, graphqlTypeName + KOTLIN_UTIL_NULLABLE);
                 }
             }
@@ -166,7 +168,9 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     public String getResponseReturnType(MappingContext mappingContext, NamedDefinition namedDefinition,
                                         String computedTypeName) {
         // Delegate to getTypeConsideringPrimitive.
-        // For kotlin such as XXXXXXResponse do not implement the mandatory function of graphql correctly when returnType is not List. Should fix it when generate response class.
+        // For kotlin such as XXXXXXResponse do not implement the mandatory function of graphql
+        // correctly when returnType is not List.
+        // Should fix it when generate response class.
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
@@ -43,7 +44,7 @@ class GraphQLCodegenDefaultsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
+        assertEquals(asList("InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
@@ -61,7 +62,7 @@ class GraphQLCodegenDefaultsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("InputWithDefaultsTO.java", "MyEnumTO.java", "SomeObjectTO.java"), generatedFileNames);
+        assertEquals(asList("InputWithDefaultsTO.java", "MyEnumTO.java", "SomeObjectTO.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
@@ -78,7 +79,7 @@ class GraphQLCodegenDefaultsTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("InputWithDefaultsDTO.java", "MyEnumDTO.java", "SomeObjectDTO.java"), generatedFileNames);
+        assertEquals(asList("InputWithDefaultsDTO.java", "MyEnumDTO.java", "SomeObjectDTO.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",

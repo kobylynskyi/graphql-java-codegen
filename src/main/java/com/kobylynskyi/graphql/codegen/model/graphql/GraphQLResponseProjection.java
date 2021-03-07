@@ -38,7 +38,11 @@ public abstract class GraphQLResponseProjection {
      */
     protected final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
-    //Defined at the parent level to use dynamic calls, default null.
+    /**
+     * Defined at the parent level to use dynamic calls, default null.
+     *
+     * @return projection of all fields that are present in the given type
+     */
     public abstract GraphQLResponseProjection all$();
 
     public abstract GraphQLResponseProjection all$(int maxDepth);

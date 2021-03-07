@@ -1,5 +1,21 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
@@ -16,22 +32,6 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PARENT_INTERFACE_PROPERTIES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 /**
  * Map type definition to a Freemarker data model
@@ -119,30 +119,30 @@ public class TypeDefinitionToDataModelMapper {
 
         // includes parameters from the base definition and extensions
         fieldDefinitionToParameterMapper.mapFields(mappingContext, typeDefinition.getFieldDefinitions(), typeDefinition)
-                                        .forEach(p -> allParameters.put(p.getName(), p));
+                .forEach(p -> allParameters.put(p.getName(), p));
         // includes parameters from the interface
         DataModelMapper.getInterfacesOfType(typeDefinition, document).stream()
-                       .map(i -> fieldDefinitionToParameterMapper.mapFields(mappingContext, i.getFieldDefinitions(), i))
-                       .flatMap(Collection::stream)
-                       .forEach(paramDef -> allParameters
-                           .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
+                .map(i -> fieldDefinitionToParameterMapper.mapFields(mappingContext, i.getFieldDefinitions(), i))
+                .flatMap(Collection::stream)
+                .forEach(paramDef -> allParameters
+                        .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
         return allParameters.values();
     }
 
     private Set<String> getInterfaces(MappingContext mappingContext,
                                       ExtendedObjectTypeDefinition definition) {
         List<String> unionsNames = mappingContext.getDocument().getUnionDefinitions()
-                                                 .stream()
-                                                 .filter(union -> union.isDefinitionPartOfUnion(definition))
-                                                 .map(ExtendedUnionTypeDefinition::getName)
-                                                 .map(unionName -> DataModelMapper
-                                                     .getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
-                                                 .collect(Collectors.toList());
+                .stream()
+                .filter(union -> union.isDefinitionPartOfUnion(definition))
+                .map(ExtendedUnionTypeDefinition::getName)
+                .map(unionName -> DataModelMapper
+                        .getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
+                .collect(Collectors.toList());
         Set<String> interfaceNames = definition.getImplements()
-                                               .stream()
-                                               .map(anImplement -> graphQLTypeMapper
-                                                   .getLanguageType(mappingContext, anImplement))
-                                               .collect(Collectors.toSet());
+                .stream()
+                .map(anImplement -> graphQLTypeMapper
+                        .getLanguageType(mappingContext, anImplement))
+                .collect(Collectors.toSet());
 
         Set<String> allInterfaces = new LinkedHashSet<>();
         allInterfaces.addAll(unionsNames);

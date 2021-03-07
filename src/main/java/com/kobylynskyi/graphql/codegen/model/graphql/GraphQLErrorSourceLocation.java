@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import java.util.Objects;
 
+/**
+ * Source location of GraphQL error in the schema
+ */
 public class GraphQLErrorSourceLocation {
 
     private int line;
@@ -51,8 +54,8 @@ public class GraphQLErrorSourceLocation {
         }
         GraphQLErrorSourceLocation that = (GraphQLErrorSourceLocation) o;
         return line == that.line &&
-               column == that.column &&
-               Objects.equals(sourceName, that.sourceName);
+                column == that.column &&
+                Objects.equals(sourceName, that.sourceName);
     }
 
     @Override

@@ -1,9 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import graphql.language.ArrayValue;
 import graphql.language.BooleanValue;
@@ -19,6 +15,13 @@ import graphql.language.Type;
 import graphql.language.TypeName;
 import graphql.language.Value;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * A class for mapping GraphQL value to a java value
+ */
 public class ValueMapper {
 
     private static final String NULL_STRING = "null";
@@ -70,6 +73,15 @@ public class ValueMapper {
         return map(mappingContext, value, graphQLType, null);
     }
 
+    /**
+     * Map GraphQL value of a given type according to a formatter
+     *
+     * @param mappingContext Global mapping context
+     * @param value          GraphQL Value
+     * @param graphQLType    GraphQL Type
+     * @param formatter      value formatter
+     * @return formatted value
+     */
     public String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType,
                       String formatter) {
         if (value instanceof NullValue) {
@@ -127,8 +139,8 @@ public class ValueMapper {
             }
             Type<?> listElementType = elementType;
             return valueFormatter.formatList(values.stream()
-                                                   .map(v -> map(mappingContext, v, listElementType, formatter))
-                                                   .collect(Collectors.toList()), formatter);
+                    .map(v -> map(mappingContext, v, listElementType, formatter))
+                    .collect(Collectors.toList()), formatter);
         }
         if (graphQLType instanceof NonNullType) {
             return mapArray(mappingContext, value, ((NonNullType) graphQLType).getType(), formatter);

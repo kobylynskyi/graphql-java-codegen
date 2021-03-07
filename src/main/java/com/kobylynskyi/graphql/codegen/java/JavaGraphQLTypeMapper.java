@@ -1,11 +1,5 @@
 package com.kobylynskyi.graphql.codegen.java;
 
-import static java.util.Arrays.asList;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
@@ -14,12 +8,21 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
+
+/**
+ * Mapper class for converting GraphQL types to Java types
+ */
 public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     public static final String JAVA_UTIL_LIST = "java.util.List";
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
-        "byte", "short", "int", "long", "float", "double", "char", "boolean"));
+            "byte", "short", "int", "long", "float", "double", "char", "boolean"));
 
     private final ValueMapper valueMapper;
 
@@ -41,23 +44,33 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
         return getGenericsString(mappingContext, JAVA_UTIL_LIST, "? extends " + type);
     }
 
+    /**
+     * Wrap return type of the API interface with generics and/or Optional and/or apiReturnType
+     * (as specified in the mapping configuration)
+     *
+     * @param mappingContext  Global mapping context
+     * @param namedDefinition Named definition
+     * @param parentTypeName  Name of the parent type
+     * @return API interface name
+     */
+    @Override
     public String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
                                               String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
-            Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
 
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
-            && !namedDefinition.isMandatory()
-            && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                && !namedDefinition.isMandatory()
+                && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
             computedTypeName = getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
         }
         if (computedTypeName.startsWith(JAVA_UTIL_LIST) &&
-            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             return computedTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
         }
@@ -95,13 +108,13 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-            (name != null && parentTypeName != null &&
-             serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
             serializeUsingObjectMapper = true;
         }
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
-                                   mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
     @Override

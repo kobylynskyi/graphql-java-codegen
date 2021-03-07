@@ -1,10 +1,10 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Retrieve a MappingConfig fro json configuration file.

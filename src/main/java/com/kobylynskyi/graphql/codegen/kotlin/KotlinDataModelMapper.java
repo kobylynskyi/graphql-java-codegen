@@ -1,17 +1,19 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
+
 /**
+ * Data model mapper for KOTLIN generated classes
+ *
  * @author 梦境迷离
  * @since 2020/12/09
  */
@@ -19,13 +21,13 @@ public class KotlinDataModelMapper implements DataModelMapper {
 
     private static final String RESTRICTED_KEYWORDS_WRAP_WITH = "`";
     private static final Set<String> KOTLIN_RESTRICTED_KEYWORDS = new HashSet<>(
-        Arrays.asList("package", "interface", "class", "object", "super", "null", "this", "typealias", "as", "as?",
-                      "if", "else", "true", "false", "while", "do", "for", "when", "break", "continue", "return",
-                      "fun", "in", "!in", "is", "!is", "throw", "try", "val", "var", "typeof"));
+            Arrays.asList("package", "interface", "class", "object", "super", "null", "this", "typealias", "as", "as?",
+                    "if", "else", "true", "false", "while", "do", "for", "when", "break", "continue", "return",
+                    "fun", "in", "!in", "is", "!is", "throw", "try", "val", "var", "typeof"));
 
     //TODO maybe have others
     private static final Set<String> KOTLIN_RESTRICTED_METHOD_NAMES = new HashSet<>(
-        Arrays.asList("notify", "notifyAll", "wait"));
+            Arrays.asList("notify", "notifyAll", "wait"));
 
     @Override
     public String capitalizeIfRestricted(MappingContext mappingContext, String fieldName) {

@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Various constants used in code generation process
+ */
 public class MappingConfigConstants {
 
     public static final String DEFAULT_VALIDATION_ANNOTATION = "javax.validation.constraints.NotNull";
@@ -31,10 +34,10 @@ public class MappingConfigConstants {
     public static final ApiNamePrefixStrategy DEFAULT_API_NAME_PREFIX_STRATEGY = ApiNamePrefixStrategy.CONSTANT;
     public static final String DEFAULT_API_NAME_PREFIX_STRATEGY_STRING = "CONSTANT";
     public static final ApiRootInterfaceStrategy DEFAULT_API_ROOT_INTERFACE_STRATEGY =
-        ApiRootInterfaceStrategy.SINGLE_INTERFACE;
+            ApiRootInterfaceStrategy.SINGLE_INTERFACE;
     public static final String DEFAULT_API_ROOT_INTERFACE_STRATEGY_STRING = "SINGLE_INTERFACE";
     public static final ApiInterfaceStrategy DEFAULT_API_INTERFACE_STRATEGY =
-        ApiInterfaceStrategy.INTERFACE_PER_OPERATION;
+            ApiInterfaceStrategy.INTERFACE_PER_OPERATION;
     public static final String DEFAULT_API_INTERFACE_STRATEGY_STRING = "INTERFACE_PER_OPERATION";
     public static final boolean DEFAULT_GENERATE_CLIENT = false;
     public static final String DEFAULT_GENERATE_CLIENT_STRING = "false";

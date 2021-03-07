@@ -1,15 +1,5 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Objects;
-
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -18,6 +8,16 @@ import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Objects;
+
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class GraphQLCodegenGitHubTest {
 
@@ -52,18 +52,18 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/Commit.kt.txt"),
-                                 getFileByName(files, "Commit.kt"));
+                getFileByName(files, "Commit.kt"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/ProfileOwner.kt.txt"),
-                                 getFileByName(files, "ProfileOwner.kt"));
+                getFileByName(files, "ProfileOwner.kt"));
 
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/AcceptTopicSuggestionMutationResponse.kt.txt"),
-            getFileByName(files, "AcceptTopicSuggestionMutationResponse.kt"));
+                new File("src/test/resources/expected-classes/kt/AcceptTopicSuggestionMutationResponse.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionMutationResponse.kt"));
     }
 
     @Test
@@ -73,30 +73,30 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateImmutableModels(false);
 
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         // verify proper class name for GraphQL interface
         assertThat(getFileContent(files, "GithubActorTO.kt"),
-                   StringContains.containsString("interface GithubActorTO"));
+                StringContains.containsString("interface GithubActorTO"));
 
         // verify proper class name for GraphQL enum
         assertThat(getFileContent(files, "GithubIssueStateTO.kt"),
-                   StringContains.containsString("enum class GithubIssueStateTO"));
+                StringContains.containsString("enum class GithubIssueStateTO"));
 
         // verify proper class name for GraphQL union
         assertThat(getFileContent(files, "GithubAssigneeTO.kt"),
-                   StringContains.containsString("interface GithubAssigneeTO"));
+                StringContains.containsString("interface GithubAssigneeTO"));
 
         // verify proper class name for GraphQL input
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/GithubAcceptTopicSuggestionInputTO.kt.txt"),
-            getFileByName(files, "GithubAcceptTopicSuggestionInputTO.kt"));
+                new File("src/test/resources/expected-classes/kt/GithubAcceptTopicSuggestionInputTO.kt.txt"),
+                getFileByName(files, "GithubAcceptTopicSuggestionInputTO.kt"));
 
         // verify proper class name for GraphQL type and references to interfaces/types/unions for GraphQL type
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/GithubCommitTO.kt.txt"),
-                                 getFileByName(files, "GithubCommitTO.kt"));
+                getFileByName(files, "GithubCommitTO.kt"));
     }
 
     @Test
@@ -105,15 +105,15 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateApis(false);
 
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/SearchResultItemConnectionResponseProjection.kt.txt"),
-            getFileByName(files, "SearchResultItemConnectionResponseProjection.kt"));
+                new File("src/test/resources/expected-classes/kt/SearchResultItemConnectionResponseProjection.kt.txt"),
+                getFileByName(files, "SearchResultItemConnectionResponseProjection.kt"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/SearchResultItemResponseProjection.kt.txt"),
-            getFileByName(files, "SearchResultItemResponseProjection.kt"));
+                new File("src/test/resources/expected-classes/kt/SearchResultItemResponseProjection.kt.txt"),
+                getFileByName(files, "SearchResultItemResponseProjection.kt"));
     }
 
     @Test
@@ -121,36 +121,36 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Int?");
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/VersionQueryResponse_int.kt.txt"),
-                                 getFileByName(files, "VersionQueryResponse.kt"));
+                getFileByName(files, "VersionQueryResponse.kt"));
     }
 
     @Test
     void generate_ktList() throws Exception {
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableInput.kt.txt"),
-                                 getFileByName(files, "AddLabelsToLabelableInput.kt"));
+                getFileByName(files, "AddLabelsToLabelableInput.kt"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationRequest.kt.txt"),
-            getFileByName(files, "AddLabelsToLabelableMutationRequest.kt"));
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationRequest.kt.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationRequest.kt"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResolver.kt.txt"),
-            getFileByName(files, "AddLabelsToLabelableMutationResolver.kt"));
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResolver.kt.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationResolver.kt"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResponse.kt.txt"),
-            getFileByName(files, "AddLabelsToLabelableMutationResponse.kt"));
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResponse.kt.txt"),
+                getFileByName(files, "AddLabelsToLabelableMutationResponse.kt"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelablePayload.kt.txt"),
-                                 getFileByName(files, "AddLabelsToLabelablePayload.kt"));
+                getFileByName(files, "AddLabelsToLabelablePayload.kt"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/CodesOfConductQueryResolver.kt.txt"),
-                                 getFileByName(files, "CodesOfConductQueryResolver.kt"));
+                getFileByName(files, "CodesOfConductQueryResolver.kt"));
     }
 
     @Test
@@ -158,11 +158,11 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateImmutableModels(false);
 
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/Commit_Var_Field.kt.txt"),
-                                 getFileByName(files, "Commit.kt"));
+                getFileByName(files, "Commit.kt"));
     }
 
     @Test
@@ -173,16 +173,18 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         assertSameTrimmedContent(new File(
-                                     "src/test/resources/expected-classes/kt/field-resolver/GithubAcceptTopicSuggestionPayloadTO.kt.txt"),
-                                 getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.kt"));
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "GithubAcceptTopicSuggestionPayloadTO.kt.txt"),
+                getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.kt"));
         assertSameTrimmedContent(new File(
-                                     "src/test/resources/expected-classes/kt/field-resolver/AcceptTopicSuggestionPayloadResolver.kt.txt"),
-                                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "AcceptTopicSuggestionPayloadResolver.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
     }
 
 }

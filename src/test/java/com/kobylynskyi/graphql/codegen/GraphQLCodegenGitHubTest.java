@@ -23,6 +23,10 @@ class GraphQLCodegenGitHubTest {
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
     private final MappingConfig mappingConfig = new MappingConfig();
 
+    private static String getFileContent(File[] files, String fileName) throws IOException {
+        return Utils.getFileContent(getFileByName(files, fileName).getPath());
+    }
+
     @BeforeEach
     void init() {
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
@@ -37,15 +41,15 @@ class GraphQLCodegenGitHubTest {
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit.java.txt"),
-                                 getFileByName(files, "Commit.java"));
+                getFileByName(files, "Commit.java"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProfileOwner.java.txt"),
-                                 getFileByName(files, "ProfileOwner.java"));
+                getFileByName(files, "ProfileOwner.java"));
     }
 
     @Test
@@ -54,30 +58,30 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNameSuffix("TO");
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         // verify proper class name for GraphQL interface
         assertThat(getFileContent(files, "GithubActorTO.java"),
-                   StringContains.containsString("public interface GithubActorTO "));
+                StringContains.containsString("public interface GithubActorTO "));
 
         // verify proper class name for GraphQL enum
         assertThat(getFileContent(files, "GithubIssueStateTO.java"),
-                   StringContains.containsString("public enum GithubIssueStateTO "));
+                StringContains.containsString("public enum GithubIssueStateTO "));
 
         // verify proper class name for GraphQL union
         assertThat(getFileContent(files, "GithubAssigneeTO.java"),
-                   StringContains.containsString("public interface GithubAssigneeTO "));
+                StringContains.containsString("public interface GithubAssigneeTO "));
 
         // verify proper class name for GraphQL input
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt"),
-            getFileByName(files, "GithubAcceptTopicSuggestionInputTO.java"));
+                new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionInputTO.java.txt"),
+                getFileByName(files, "GithubAcceptTopicSuggestionInputTO.java"));
 
         // verify proper class name for GraphQL type and references to interfaces/types/unions for GraphQL type
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubCommitTO.java.txt"),
-                                 getFileByName(files, "GithubCommitTO.java"));
+                getFileByName(files, "GithubCommitTO.java"));
     }
 
     @Test
@@ -85,11 +89,11 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelValidationAnnotation("");
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
-                                 commitFile);
+                commitFile);
     }
 
     @Test
@@ -98,16 +102,16 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateApis(false);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File(
-                                     "src/test/resources/expected-classes/response" +
-                                     "/SearchResultItemConnectionResponseProjection.java.txt"),
-                                 getFileByName(files, "SearchResultItemConnectionResponseProjection.java"));
+                        "src/test/resources/expected-classes/response" +
+                                "/SearchResultItemConnectionResponseProjection.java.txt"),
+                getFileByName(files, "SearchResultItemConnectionResponseProjection.java"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/response/SearchResultItemResponseProjection.java.txt"),
-            getFileByName(files, "SearchResultItemResponseProjection.java"));
+                new File("src/test/resources/expected-classes/response/SearchResultItemResponseProjection.java.txt"),
+                getFileByName(files, "SearchResultItemResponseProjection.java"));
     }
 
     @Test
@@ -118,15 +122,11 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_withoutPrimitives.java.txt"),
-                                 getFileByName(files, "Commit.java"));
-    }
-
-    private static String getFileContent(File[] files, String fileName) throws IOException {
-        return Utils.getFileContent(getFileByName(files, fileName).getPath());
+                getFileByName(files, "Commit.java"));
     }
 
 }

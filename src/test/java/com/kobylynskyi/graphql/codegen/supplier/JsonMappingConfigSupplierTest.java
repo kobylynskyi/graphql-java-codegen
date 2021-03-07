@@ -1,19 +1,19 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import org.junit.jupiter.api.Test;
 
 class JsonMappingConfigSupplierTest {
 
     @Test
     void loadCorrect() {
         MappingConfig externalMappingConfig = new JsonMappingConfigSupplier(
-            "src/test/resources/json/mappingconfig.json").get();
+                "src/test/resources/json/mappingconfig.json").get();
         assertEquals("com.kobylynskyi.graphql.testconfigjson", externalMappingConfig.getPackageName());
         assertTrue(externalMappingConfig.getGenerateApis());
         assertEquals("java.math.BigDecimal", externalMappingConfig.getCustomTypesMapping().get("Price.amount"));

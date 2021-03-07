@@ -1,10 +1,12 @@
 package com.kobylynskyi.graphql.codegen;
 
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toSet;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -13,13 +15,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenRelayTest {
 
@@ -42,32 +42,32 @@ class GraphQLCodegenRelayTest {
     @Test
     void generateServerSideRelayClasses() throws Exception {
         new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                               TestUtils.getStaticGeneratedInfo()).generate();
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
         assertEquals(new HashSet<>(asList("Organization.java", "User.java", "OrganizationsQueryResolver.java",
-                                          "QueryResolver.java", "UsersQueryResolver.java")), generatedFileNames);
+                "QueryResolver.java", "UsersQueryResolver.java")), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                new File(String.format("src/test/resources/expected-classes/relay/%s.txt", file.getName())),
-                file);
+                    new File(String.format("src/test/resources/expected-classes/relay/%s.txt", file.getName())),
+                    file);
         }
     }
 
     @Test
     void generateServerSideRelayClasses_CustomGenericsConnectionType() throws Exception {
         mappingConfig.getRelayConfig()
-                     .setConnectionType("reactor.core.publisher.Mono<graphql.relay.Connection<%s>>");
+                .setConnectionType("reactor.core.publisher.Mono<graphql.relay.Connection<%s>>");
         new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                               TestUtils.getStaticGeneratedInfo()).generate();
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/relay/UsersQueryResolver_reactive.java.txt"),
-            getFileByName(files, "UsersQueryResolver.java"));
+                new File("src/test/resources/expected-classes/relay/UsersQueryResolver_reactive.java.txt"),
+                getFileByName(files, "UsersQueryResolver.java"));
 
     }
 

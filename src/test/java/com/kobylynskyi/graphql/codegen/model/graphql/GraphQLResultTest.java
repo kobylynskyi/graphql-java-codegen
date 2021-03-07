@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
+import org.junit.jupiter.api.Test;
+
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -7,9 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.kobylynskyi.graphql.codegen.model.graphql.data.UpdateIssueInput;
-import org.junit.jupiter.api.Test;
 
 class GraphQLResultTest {
 
@@ -29,10 +29,10 @@ class GraphQLResultTest {
 
     private static GraphQLError getGraphQLError1() {
         return new GraphQLError("something went very wrong",
-                                singletonList(new GraphQLErrorSourceLocation(1, 2, "3")),
-                                GraphQLErrorType.ExecutionAborted,
-                                singletonList("/order/items[1]/product"),
-                                singletonMap("extKey1", "extValue1"));
+                singletonList(new GraphQLErrorSourceLocation(1, 2, "3")),
+                GraphQLErrorType.ExecutionAborted,
+                singletonList("/order/items[1]/product"),
+                singletonMap("extKey1", "extValue1"));
     }
 
     @Test
@@ -48,7 +48,7 @@ class GraphQLResultTest {
     @Test
     void someErrors1() {
         assertTrue(new GraphQLResult<>(new UpdateIssueInput(),
-                                       singletonList(getGraphQLErrorO())).hasErrors());
+                singletonList(getGraphQLErrorO())).hasErrors());
     }
 
     @Test

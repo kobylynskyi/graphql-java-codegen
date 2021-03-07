@@ -1,15 +1,5 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
@@ -17,6 +7,16 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenUnionWithEnumTest {
 
@@ -35,8 +35,8 @@ class GraphQLCodegenUnionWithEnumTest {
         mappingConfig.setGeneratedLanguage(GeneratedLanguage.KOTLIN);
         mappingConfig.setPackageName("com.kobylynskyi.graphql.enumunion");
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/union-with-enum.graphqls"),
-                               outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
-            .generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -44,8 +44,8 @@ class GraphQLCodegenUnionWithEnumTest {
 
         for (File file : files) {
             assertSameTrimmedContent(
-                new File(String.format("src/test/resources/expected-classes/kt/enum-union/%s.txt", file.getName())),
-                file);
+                    new File(String.format("src/test/resources/expected-classes/kt/enum-union/%s.txt", file.getName())),
+                    file);
         }
     }
 }

@@ -1,16 +1,16 @@
 package com.kobylynskyi.graphql.codegen;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.FileAlreadyExistsException;
-import java.util.Map;
-
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import freemarker.template.Template;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.FileAlreadyExistsException;
+import java.util.Map;
 
 /**
  * Utility class for generating files

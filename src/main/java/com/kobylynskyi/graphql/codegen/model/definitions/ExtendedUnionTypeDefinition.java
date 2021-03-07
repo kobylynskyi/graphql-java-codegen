@@ -1,13 +1,16 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import graphql.language.NamedNode;
 import graphql.language.UnionTypeDefinition;
 import graphql.language.UnionTypeExtensionDefinition;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Extended definition of GraphQL union type: based definition + its extensions
+ */
 public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDefinition, UnionTypeExtensionDefinition> {
 
     private Set<String> memberTypeNames;
@@ -34,16 +37,16 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
         Set<String> allTypeNames = new HashSet<>();
         if (definition != null) {
             definition.getMemberTypes().stream()
-                      .map(NamedNode.class::cast)
-                      .map(NamedNode::getName)
-                      .forEach(allTypeNames::add);
+                    .map(NamedNode.class::cast)
+                    .map(NamedNode::getName)
+                    .forEach(allTypeNames::add);
         }
         extensions.stream()
-                  .map(UnionTypeDefinition::getMemberTypes)
-                  .flatMap(Collection::stream)
-                  .map(NamedNode.class::cast)
-                  .map(NamedNode::getName)
-                  .forEach(allTypeNames::add);
+                .map(UnionTypeDefinition::getMemberTypes)
+                .flatMap(Collection::stream)
+                .map(NamedNode.class::cast)
+                .map(NamedNode::getName)
+                .forEach(allTypeNames::add);
         return allTypeNames;
     }
 }

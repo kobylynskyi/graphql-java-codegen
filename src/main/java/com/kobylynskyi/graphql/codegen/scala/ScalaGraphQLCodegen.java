@@ -1,9 +1,5 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
@@ -12,6 +8,14 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefin
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * Class having only Scala-specific methods for code-generation
+ * Most of the logic is still residing in the parent class
+ */
 public class ScalaGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new ScalaMapperFactoryImpl();
@@ -35,7 +39,7 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
                                MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier,
                                GeneratedInformation generatedInformation) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
-              generatedInformation, MAPPER_FACTORY);
+                generatedInformation, MAPPER_FACTORY);
     }
 
     @Override
@@ -62,11 +66,11 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
         mappingConfig.putCustomTypeMappingIfAbsent("String", String.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Option[Int]");
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-        mappingConfig
-            .putCustomTypeMappingIfAbsent("Float", Utils.wrapString(Double.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Float",
+                Utils.wrapString(Double.class.getSimpleName(), "Option[", "]"));
         mappingConfig.putCustomTypeMappingIfAbsent("Float!", Double.class.getSimpleName());
-        mappingConfig
-            .putCustomTypeMappingIfAbsent("Boolean", Utils.wrapString(Boolean.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean",
+                Utils.wrapString(Boolean.class.getSimpleName(), "Option[", "]"));
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", Boolean.class.getSimpleName());
     }
 

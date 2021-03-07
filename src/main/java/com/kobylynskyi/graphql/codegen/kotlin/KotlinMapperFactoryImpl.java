@@ -7,6 +7,8 @@ import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 
 /**
+ * A factory of various mappers for Kotlin language
+ *
  * @author 梦境迷离
  * @since 2020/12/09
  */

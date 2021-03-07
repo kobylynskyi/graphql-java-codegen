@@ -1,5 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,11 +12,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-
+/**
+ * Serializer of GraphQL request.
+ * Provides ability to convert GraphQLRequest object to HTTP Json body, as well as to raw query string.
+ */
 public class GraphQLRequestSerializer {
 
     public static final ObjectMapper OBJECT_MAPPER = Utils.OBJECT_MAPPER;
@@ -38,7 +42,7 @@ public class GraphQLRequestSerializer {
             }
             if (operation != null && operation != request.getRequest().getOperationType()) {
                 throw new IllegalArgumentException(
-                    "Only operations of the same type (query/mutation/subscription) can be executed at once");
+                        "Only operations of the same type (query/mutation/subscription) can be executed at once");
             }
             queryBuilder.append(buildQuery(request)).append(" ");
         }
@@ -118,7 +122,7 @@ public class GraphQLRequestSerializer {
 
     private static boolean requestHasInput(Map<String, Object> input) {
         return input != null && !input.isEmpty() &&
-               input.values().stream().anyMatch(Objects::nonNull);
+                input.values().stream().anyMatch(Objects::nonNull);
     }
 
     private static String jsonQuery(String queryString) {
@@ -131,6 +135,13 @@ public class GraphQLRequestSerializer {
         return getEntry(input, false);
     }
 
+    /**
+     * Serialize object to a string
+     *
+     * @param input           can be any object or collection of objects.
+     * @param useObjectMapper if true, then use Jackson's ObjectMapper to convert object->string, otherwise use toString
+     * @return serialized object
+     */
     @SuppressWarnings("java:S1872")
     public static String getEntry(Object input, boolean useObjectMapper) {
         if (input == null) {

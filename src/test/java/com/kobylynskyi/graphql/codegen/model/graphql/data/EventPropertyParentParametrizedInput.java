@@ -1,10 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import java.util.Objects;
-import java.util.StringJoiner;
-
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+
+import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * Parametrized input for field parent in type EventProperty
@@ -42,7 +42,7 @@ public class EventPropertyParentParametrizedInput implements GraphQLParametrized
         }
         final EventPropertyParentParametrizedInput that = (EventPropertyParentParametrizedInput) obj;
         return Objects.equals(withStatus, that.withStatus)
-               && Objects.equals(createdAfter, that.createdAfter);
+                && Objects.equals(createdAfter, that.createdAfter);
     }
 
     @Override

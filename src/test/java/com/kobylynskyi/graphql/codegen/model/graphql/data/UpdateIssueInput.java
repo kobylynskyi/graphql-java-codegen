@@ -1,11 +1,11 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.StringJoiner;
-
-import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
 
 public class UpdateIssueInput {
 
@@ -185,7 +185,7 @@ public class UpdateIssueInput {
 
         public UpdateIssueInput build() {
             return new UpdateIssueInput(floatVal, booleanVal, intVal, stringVal, enumVal, objectWithNullDefault,
-                                        intList, stringListEmptyDefault);
+                    intList, stringListEmptyDefault);
         }
 
     }

@@ -1,9 +1,5 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
@@ -11,7 +7,14 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+
 /**
+ * Class having only Kotlin-specific methods for code-generation
+ * Most of the logic is still residing in the parent class
+ *
  * @author 梦境迷离
  * @since 2020/12/09
  */
@@ -38,7 +41,7 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
                                 MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier,
                                 GeneratedInformation generatedInformation) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
-              generatedInformation, MAPPER_FACTORY);
+                generatedInformation, MAPPER_FACTORY);
     }
 
     @Override

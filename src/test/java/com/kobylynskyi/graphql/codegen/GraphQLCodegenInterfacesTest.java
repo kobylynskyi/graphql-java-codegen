@@ -19,11 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenInterfacesTest {
 
-    private GraphQLCodegen generator;
     private final MappingConfig mappingConfig = new MappingConfig();
-
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/interfaces");
+    private GraphQLCodegen generator;
 
     @BeforeEach
     void init() {
@@ -43,7 +42,8 @@ class GraphQLCodegenInterfacesTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("Bar.java", "Bar1.java", "BarBar.java", "Foo.java", "Foo1.java"), generatedFileNames);
+        assertEquals(Arrays.asList("Bar.java", "Bar1.java", "BarBar.java", "Foo.java", "Foo1.java"),
+                generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/interfaces/%s.txt",

@@ -76,7 +76,8 @@ class GraphQLCodegenIntrospectionResultTest {
                 "ProductsQueryResponse.java", "QueryResolver.java", "StockStatus.java"), generatedFileNames);
 
         for (File file : files) {
-            File expected = new File(String.format("src/test/resources/expected-classes/from-introspection-result/%s.txt", file.getName()));
+            File expected = new File(String.format(
+                    "src/test/resources/expected-classes/from-introspection-result/%s.txt", file.getName()));
             assertSameTrimmedContent(expected, file);
         }
     }

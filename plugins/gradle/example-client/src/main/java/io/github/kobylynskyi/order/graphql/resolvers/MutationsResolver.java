@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MutationsResolver implements CreateMutationResolver, AddProductToOrderMutationResolver, GraphQLMutationResolver {
+public class MutationsResolver implements
+        CreateMutationResolver, AddProductToOrderMutationResolver, GraphQLMutationResolver {
 
     @Autowired
     private OrderService service;

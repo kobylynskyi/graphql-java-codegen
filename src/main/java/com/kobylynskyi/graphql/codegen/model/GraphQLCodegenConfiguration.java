@@ -11,14 +11,14 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Can be used to supply custom mappings for scalars.
-     * <p>
-     * Supports:
+     *
+     * <p>Supports:
      * <ul>
      *   <li>Map of (GraphqlObjectName.fieldName) to (JavaType)</li>
      *   <li>Map of (GraphqlType) to (JavaType)</li>
      * </ul>
-     * <p>
-     * E.g.:
+     *
+     * <p>E.g.:
      * <ul>
      *   <li>{@code DateTime --- String}</li>
      *   <li>{@code Price.amount --- java.math.BigDecimal}</li>
@@ -30,14 +30,14 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Can be used to supply custom annotations (serializers) for scalars.
-     * <p>
-     * Supports:
+     *
+     * <p>Supports:
      * <ul>
      *   <li>Map of (GraphqlObjectName.fieldName) to (JavaAnnotation)</li>
      *   <li>Map of (GraphqlType) to (JavaAnnotation)</li>
      * </ul>
-     * <p>
-     * E.g.:
+     *
+     * <p>E.g.:
      * {@code EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json
      * .EpochMillisScalarDeserializer.class)}
      *
@@ -47,14 +47,15 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Map GraphQL directives to Java annotations.
-     * <p>
-     * Directive fields can be used in annotations via: {{directiveFieldName}}
-     * <p>
-     * Example:
-     * <p>
-     * schema: directive <code>@auth (roles: [String])</code>
-     * <p>
-     * {@code directiveAnnotationsMapping: auth --- @org.springframework.security.access.annotation.Secured({{roles}})}
+     *
+     * <p>Directive fields can be used in annotations via: {{directiveFieldName}}
+     *
+     * <p>Example:
+     *
+     * <p>schema: directive <code>@auth (roles: [String])</code>
+     *
+     * <p>{@code directiveAnnotationsMapping:
+     * auth --- @org.springframework.security.access.annotation.Secured({{roles}})}
      *
      * @return mappings from GraphQL directives to Java annotations.
      */
@@ -267,12 +268,12 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Fields that require Resolvers.
-     * <p>
-     * Values should be defined here in format: TypeName, TypeName.fieldName, @directive
-     * <p>
-     * If just type is specified, then all fields of this type will have resolvers.
-     * <p>
-     * E.g.:
+     *
+     * <p>Values should be defined here in format: TypeName, TypeName.fieldName, @directive
+     *
+     * <p>If just type is specified, then all fields of this type will have resolvers.
+     *
+     * <p>E.g.:
      * <ul>
      *   <li>{@code Person}</li>
      *   <li>{@code Person.friends}</li>
@@ -285,14 +286,14 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Fields that DO NOT require Resolvers.
-     * <p>
-     * Values should be defined here in format: TypeName, TypeName.fieldName, @directive
-     * <p>
-     * If just type is specified, then all fields of this type will NOT have resolvers.
-     * <p>
-     * Can be used in conjunction with {@code generateExtensionFieldsResolvers}
-     * <p>
-     * E.g.:
+     *
+     * <p>Values should be defined here in format: TypeName, TypeName.fieldName, @directive
+     *
+     * <p>If just type is specified, then all fields of this type will NOT have resolvers.
+     *
+     * <p>Can be used in conjunction with {@code generateExtensionFieldsResolvers}
+     *
+     * <p>E.g.:
      * <ul>
      *   <li>{@code Person}</li>
      *   <li>{@code Person.friends}</li>
@@ -384,12 +385,12 @@ public interface GraphQLCodegenConfiguration {
     /**
      * Fields that require serialization using
      * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
-     * <p>
-     * Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
-     * <p>
-     * If just type is specified, then all fields of this type will be serialized using ObjectMapper.
-     * <p>
-     * E.g.:
+     *
+     * <p>Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
+     *
+     * <p>If just type is specified, then all fields of this type will be serialized using ObjectMapper.
+     *
+     * <p>E.g.:
      * <ul>
      *   <li>{@code Person.createdDateTime}</li>
      *   <li>{@code ZonedDateTime}</li>
