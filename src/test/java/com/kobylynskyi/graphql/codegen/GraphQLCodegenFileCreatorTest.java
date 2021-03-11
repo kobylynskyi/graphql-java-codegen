@@ -36,8 +36,8 @@ class GraphQLCodegenFileCreatorTest {
     void generateFile() throws IOException {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setGeneratedLanguage(GeneratedLanguage.JAVA);
-        ExtendedDocument extendedDocument = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, singletonList("src/test/resources/schemas/test.graphqls"));
-        MappingContext mappingContext = new MappingContext(mappingConfig, extendedDocument, new GeneratedInformation(), new DataModelMapperFactory(MAPPER_FACTORY));
+        ExtendedDocument extendedDocument = GraphQLDocumentParser.getDocumentFromSchemas(
+                mappingConfig, singletonList("src/test/resources/schemas/test.graphqls"));
 
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");
@@ -45,8 +45,12 @@ class GraphQLCodegenFileCreatorTest {
         dataModel.put(DataModelFields.GENERATED_ANNOTATION, false);
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
 
+        MappingContext mappingContext = new MappingContext(mappingConfig, extendedDocument,
+                new GeneratedInformation(), new DataModelMapperFactory(MAPPER_FACTORY));
+
         GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR);
         assertThrows(UnableToCreateFileException.class,
-                () -> GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR));
+                () -> GraphQLCodegenFileCreator.generateFile(
+                        mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR));
     }
 }

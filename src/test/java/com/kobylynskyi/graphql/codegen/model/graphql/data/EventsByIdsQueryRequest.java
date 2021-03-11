@@ -14,10 +14,9 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "eventsByIds";
-
-    private String alias;
     private final Map<String, Object> input = new LinkedHashMap<>();
     private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+    private String alias;
 
     public EventsByIdsQueryRequest() {
     }

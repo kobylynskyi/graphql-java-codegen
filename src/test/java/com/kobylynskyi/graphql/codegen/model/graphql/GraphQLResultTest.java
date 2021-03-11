@@ -13,6 +13,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphQLResultTest {
 
+    private static GraphQLError getGraphQLErrorO() {
+        GraphQLErrorSourceLocation sourceLocation = new GraphQLErrorSourceLocation();
+        sourceLocation.setColumn(4);
+        sourceLocation.setLine(5);
+        sourceLocation.setSourceName("6");
+        GraphQLError graphQLError = new GraphQLError();
+        graphQLError.setErrorType(GraphQLErrorType.ValidationError);
+        graphQLError.setExtensions(singletonMap("extKey", "extValue"));
+        graphQLError.setLocations(singletonList(sourceLocation));
+        graphQLError.setMessage("something went wrong");
+        graphQLError.setPath(singletonList("/order/items[0]/product"));
+        return graphQLError;
+    }
+
+    private static GraphQLError getGraphQLError1() {
+        return new GraphQLError("something went very wrong",
+                singletonList(new GraphQLErrorSourceLocation(1, 2, "3")),
+                GraphQLErrorType.ExecutionAborted,
+                singletonList("/order/items[1]/product"),
+                singletonMap("extKey1", "extValue1"));
+    }
+
     @Test
     void noErrorsEmpty() {
         assertFalse(new GraphQLResult<>(new UpdateIssueInput(), emptyList()).hasErrors());
@@ -49,28 +71,6 @@ class GraphQLResultTest {
         assertEquals("something went wrong", graphQLError.getMessage());
         assertEquals(singletonList("/order/items[0]/product"), graphQLError.getPath());
         assertEquals("extValue", graphQLError.getExtensions().get("extKey").toString());
-    }
-
-    private static GraphQLError getGraphQLErrorO() {
-        GraphQLErrorSourceLocation sourceLocation = new GraphQLErrorSourceLocation();
-        sourceLocation.setColumn(4);
-        sourceLocation.setLine(5);
-        sourceLocation.setSourceName("6");
-        GraphQLError graphQLError = new GraphQLError();
-        graphQLError.setErrorType(GraphQLErrorType.ValidationError);
-        graphQLError.setExtensions(singletonMap("extKey", "extValue"));
-        graphQLError.setLocations(singletonList(sourceLocation));
-        graphQLError.setMessage("something went wrong");
-        graphQLError.setPath(singletonList("/order/items[0]/product"));
-        return graphQLError;
-    }
-
-    private static GraphQLError getGraphQLError1() {
-        return new GraphQLError("something went very wrong",
-                singletonList(new GraphQLErrorSourceLocation(1, 2, "3")),
-                GraphQLErrorType.ExecutionAborted,
-                singletonList("/order/items[1]/product"),
-                singletonMap("extKey1", "extValue1"));
     }
 
 }

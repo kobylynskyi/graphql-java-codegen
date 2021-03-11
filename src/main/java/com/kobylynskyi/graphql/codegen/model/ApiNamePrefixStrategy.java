@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Strategy of defining the prefix for all generated API interface classes
+ */
 public enum ApiNamePrefixStrategy {
 
     /**

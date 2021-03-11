@@ -16,6 +16,13 @@ public interface ValueFormatter {
         return FORMATTER_TO_STRING.equals(formatter) ? "\"" + value + "\"" : value;
     }
 
+    /**
+     * Format a list of values to a single string according to a formatter
+     *
+     * @param values    values to be formatted
+     * @param formatter value formatter
+     * @return formatted string
+     */
     default String formatList(List<String> values, String formatter) {
         if (values == null) {
             return format(getNullValue(), formatter);

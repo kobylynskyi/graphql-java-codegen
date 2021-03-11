@@ -37,9 +37,10 @@ class GraphQLCodegenReactorToStringTest {
     }
 
     @Test
-    void generate_SetGenerateBuilder_FALSE() throws Exception {
+    void generate_SetGenerateBuilder_False() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
-        mappingConfig.setGenerateBuilder(false);// fix bug when, set generate builder = false, can not use object.OPERATION_NAME,
+        // fix an issue when generateBuilder=false => can not use object.OPERATION_NAME
+        mappingConfig.setGenerateBuilder(false);
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateModelsForRootTypes(true);
@@ -48,7 +49,9 @@ class GraphQLCodegenReactorToStringTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> f.equals("CaseQueryRequest.scala")).sorted().collect(toList());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName)
+                .filter(f -> f.equals("CaseQueryRequest.scala")).sorted()
+                .collect(toList());
         assertEquals(singletonList("CaseQueryRequest.scala"), generatedFileNames);
 
         for (File file : files) {
@@ -60,7 +63,7 @@ class GraphQLCodegenReactorToStringTest {
     }
 
     @Test
-    void generate_SetGenerateClient_TRUE() throws Exception {
+    void generate_SetGenerateClient_True() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
@@ -75,13 +78,16 @@ class GraphQLCodegenReactorToStringTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(f)).sorted().collect(toList());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(
+                f -> Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(f)).sorted()
+                .collect(toList());
         assertEquals(Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala"), generatedFileNames);
 
         for (File file : files) {
             if (Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(file.getName())) {
                 assertSameTrimmedContent(
-                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt", file.getName())),
+                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt",
+                                file.getName())),
                         file);
             }
         }
@@ -103,14 +109,17 @@ class GraphQLCodegenReactorToStringTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> Objects.equals("Synchronized.scala", f)
-                || Objects.equals("QueryCaseParametrizedInput.scala", f)).sorted().collect(toList());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName)
+                .filter(f -> Objects.equals("Synchronized.scala", f)
+                        || Objects.equals("QueryCaseParametrizedInput.scala", f))
+                .sorted().collect(toList());
         assertEquals(singletonList("Synchronized.scala"), generatedFileNames);
 
         for (File file : files) {
             if (Arrays.asList("QueryCaseParametrizedInput.scala", "Synchronized.scala").contains(file.getName())) {
                 assertSameTrimmedContent(
-                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt", "TOSTRING_Synchronized.scala",
+                        new File(String.format("src/test/resources/expected-classes/scala/tostring/%s.txt",
+                                "TOSTRING_Synchronized.scala",
                                 "QueryCaseParametrizedInput")),
                         file);
             }

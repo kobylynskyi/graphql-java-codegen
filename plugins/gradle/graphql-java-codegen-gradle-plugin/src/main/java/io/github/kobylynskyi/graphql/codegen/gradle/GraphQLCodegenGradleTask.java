@@ -3,7 +3,13 @@ package io.github.kobylynskyi.graphql.codegen.gradle;
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.model.*;
+import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiNamePrefixStrategy;
+import com.kobylynskyi.graphql.codegen.model.ApiRootInterfaceStrategy;
+import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
+import com.kobylynskyi.graphql.codegen.model.GraphQLCodegenConfiguration;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
@@ -12,14 +18,26 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.*;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -88,13 +106,22 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         setDescription("Generates Java POJOs and interfaces based on GraphQL schemas");
     }
 
+    /**
+     * Perform code generation
+     *
+     * @throws Exception in case source file is not found, there is an invalid schema or there are any problems
+     *                   with a configuration
+     */
     @TaskAction
     public void generate() throws Exception {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
-        mappingConfig.setCustomTypesMapping(customTypesMapping != null ? customTypesMapping : new HashMap<>());
-        mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
-        mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
+        mappingConfig.setCustomTypesMapping(
+                customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(
+                customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setDirectiveAnnotationsMapping(
+                directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
         mappingConfig.setApiNamePrefix(apiNamePrefix);
         mappingConfig.setApiRootInterfaceStrategy(apiRootInterfaceStrategy);
@@ -122,8 +149,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(generateDataFetchingEnvironmentArgumentInApis);
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
-        mappingConfig.setFieldsWithResolvers(fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
-        mappingConfig.setFieldsWithoutResolvers(fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithResolvers(
+                fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
+        mappingConfig.setFieldsWithoutResolvers(
+                fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -131,7 +160,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
-        mappingConfig.setUseObjectMapperForRequestSerialization(useObjectMapperForRequestSerialization != null ? useObjectMapperForRequestSerialization : new HashSet<>());
+        mappingConfig.setUseObjectMapperForRequestSerialization(useObjectMapperForRequestSerialization != null ?
+                useObjectMapperForRequestSerialization : new HashSet<>());
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
@@ -147,22 +177,32 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
         java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier();
-        GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get).map(MappingConfig::getGeneratedLanguage).orElse(generatedLanguage);
+        GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get)
+                .map(MappingConfig::getGeneratedLanguage)
+                .orElse(generatedLanguage);
         switch (language) {
             case JAVA:
-                return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
+                return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath,
+                        outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             case SCALA:
-                return new ScalaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
+                return new ScalaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath,
+                        outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             case KOTLIN:
-                return new KotlinGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath, outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
+                return new KotlinGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath,
+                        outputDir, mappingConfig, mappingConfigSupplier.orElse(null));
             default:
                 throw new LanguageNotSupportedException(language);
         }
     }
 
-    // This is only public so that it can be part of the inputs.
-    // Changes to schema contents need to invalidate this task, and require re-run.
-    // Using the SchemaFinder, we need to calculate the resulting list of paths as @InputFiles for it to work.
+    /**
+     * This is only public so that it can be part of the inputs.
+     * Changes to schema contents need to invalidate this task, and require re-run.
+     * Using the SchemaFinder, we need to calculate the resulting list of paths as @InputFiles for it to work.
+     *
+     * @return a list of schema files that will be processed.
+     * @throws IOException in case some I/O error occurred
+     */
     @InputFiles
     public List<String> getActualSchemaPaths() throws IOException {
         if (graphqlSchemaPaths != null) {
@@ -551,7 +591,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return generateDataFetchingEnvironmentArgumentInApis;
     }
 
-    public void setGenerateDataFetchingEnvironmentArgumentInApis(Boolean generateDataFetchingEnvironmentArgumentInApis) {
+    public void setGenerateDataFetchingEnvironmentArgumentInApis(
+            Boolean generateDataFetchingEnvironmentArgumentInApis) {
         this.generateDataFetchingEnvironmentArgumentInApis = generateDataFetchingEnvironmentArgumentInApis;
     }
 

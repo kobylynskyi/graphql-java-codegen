@@ -2,7 +2,11 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
-import com.kobylynskyi.graphql.codegen.model.definitions.*;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +14,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * A context of a single mapping process.
+ * Contains mapping configuration, parsed schema elements and other things used in code generation process
+ */
 public class MappingContext implements GraphQLCodegenConfiguration {
 
     private final MappingConfig config;
@@ -18,9 +26,9 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final Set<String> interfacesName;
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
+    private final DataModelMapperFactory dataModelMapperFactory;
     private Set<String> enumImportItSelfInScala = null;
     private Map<String, Set<String>> parentInterfaceProperties = null;
-    private final DataModelMapperFactory dataModelMapperFactory;
 
     public MappingContext(MappingConfig mappingConfig,
                           ExtendedDocument document,
@@ -292,22 +300,31 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     public Set<String> getEnumImportItSelfInScala() {
         // Only for scala
         if (GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) && enumImportItSelfInScala == null) {
-            enumImportItSelfInScala = this.document.getEnumDefinitions().stream().map(this::getModelClassNameWithPrefixAndSuffix).collect(Collectors.toSet());
+            enumImportItSelfInScala = this.document.getEnumDefinitions().stream()
+                    .map(this::getModelClassNameWithPrefixAndSuffix)
+                    .collect(Collectors.toSet());
         }
         return enumImportItSelfInScala;
     }
 
+    /**
+     * Get a list of fields for each interface
+     * This method is used only for Scala and Kotlin
+     *
+     * @return a map of interface name to a list of fields
+     */
     public Map<String, Set<String>> getParentInterfaceProperties() {
         // In this way, we no longer need to rely on the order in which files are created
         // Only for scala/kotlin
         if ((GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) ||
-                GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage()))
-                && parentInterfaceProperties == null) {
+                GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage())) &&
+                parentInterfaceProperties == null) {
             parentInterfaceProperties = new HashMap<>();
-            for (ExtendedInterfaceTypeDefinition extendedInterfaceTypeDefinition : this.document.getInterfaceDefinitions()) {
-                String clazzName = getModelClassNameWithPrefixAndSuffix(extendedInterfaceTypeDefinition);
-                Set<String> fields = getFields(extendedInterfaceTypeDefinition.getFieldDefinitions(),
-                        extendedInterfaceTypeDefinition).stream().map(ParameterDefinition::getName).collect(Collectors.toSet());
+            for (ExtendedInterfaceTypeDefinition interfaceDef : this.document.getInterfaceDefinitions()) {
+                String clazzName = getModelClassNameWithPrefixAndSuffix(interfaceDef);
+                Set<String> fields = getFields(interfaceDef.getFieldDefinitions(), interfaceDef).stream()
+                        .map(ParameterDefinition::getName)
+                        .collect(Collectors.toSet());
                 if (parentInterfaceProperties.containsKey(clazzName)) {
                     parentInterfaceProperties.get(clazzName).addAll(fields);
                 } else {
@@ -323,11 +340,14 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     private String getModelClassNameWithPrefixAndSuffix(ExtendedDefinition<?, ?> extendedDefinition) {
-        return this.dataModelMapperFactory.getDataModelMapper().getModelClassNameWithPrefixAndSuffix(this, extendedDefinition);
+        return this.dataModelMapperFactory.getDataModelMapper()
+                .getModelClassNameWithPrefixAndSuffix(this, extendedDefinition);
     }
 
-    private List<ParameterDefinition> getFields(List<ExtendedFieldDefinition> fieldDefinitions, ExtendedDefinition<?, ?> parentDefinition) {
-        return this.dataModelMapperFactory.getFieldDefinitionToParameterMapper().mapFields(this, fieldDefinitions, parentDefinition);
+    private List<ParameterDefinition> getFields(List<ExtendedFieldDefinition> fieldDefinitions,
+                                                ExtendedDefinition<?, ?> parentDefinition) {
+        return this.dataModelMapperFactory.getFieldDefToParamMapper()
+                .mapFields(this, fieldDefinitions, parentDefinition);
     }
 
 }

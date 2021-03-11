@@ -41,16 +41,19 @@ class GraphQLCodegenAnnotationsTest {
 
     @Test
     void generate_CustomAnnotationMappings() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
+        mappingConfig.setCustomTypesMapping(new HashMap<>(
+                singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"
                         + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
     }
 
@@ -58,14 +61,16 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Type() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("DateTime",
-                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"
                         + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
     }
 
@@ -73,14 +78,16 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
-                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"
                         + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
     }
 
@@ -88,15 +95,25 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Class() throws Exception {
         Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
         // input
-        customAnnotationsMapping.put("AcceptTopicSuggestionInput", singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionInputDeserializer.class)"));
+        customAnnotationsMapping.put("AcceptTopicSuggestionInput",
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AcceptTopicSuggestionInputDeserializer.class)"));
         // type
-        customAnnotationsMapping.put("AcceptTopicSuggestionPayload", singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionPayloadDeserializer.class)"));
+        customAnnotationsMapping.put("AcceptTopicSuggestionPayload",
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AcceptTopicSuggestionPayloadDeserializer.class)"));
         // interface
-        customAnnotationsMapping.put("Actor", singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = ActorDeserializer.class)"));
+        customAnnotationsMapping.put("Actor",
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = ActorDeserializer.class)"));
         // union
-        customAnnotationsMapping.put("Assignee", singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AssigneeDeserializer.class)"));
+        customAnnotationsMapping.put("Assignee",
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AssigneeDeserializer.class)"));
         // enum
-        customAnnotationsMapping.put("DeploymentOrderField", singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = DeploymentOrderFieldDeserializer.class)"));
+        customAnnotationsMapping.put("DeploymentOrderField",
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = DeploymentOrderFieldDeserializer.class)"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
@@ -104,19 +121,24 @@ class GraphQLCodegenAnnotationsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionInput.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionInputDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AcceptTopicSuggestionInputDeserializer.class)"
                         + System.lineSeparator() + "public class AcceptTopicSuggestionInput ");
         assertFileContainsElements(files, "AcceptTopicSuggestionPayload.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AcceptTopicSuggestionPayloadDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AcceptTopicSuggestionPayloadDeserializer.class)"
                         + System.lineSeparator() + "public class AcceptTopicSuggestionPayload ");
         assertFileContainsElements(files, "Actor.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = ActorDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = ActorDeserializer.class)"
                         + System.lineSeparator() + "public interface Actor ");
         assertFileContainsElements(files, "Assignee.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = AssigneeDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = AssigneeDeserializer.class)"
                         + System.lineSeparator() + "public interface Assignee ");
         assertFileContainsElements(files, "DeploymentOrderField.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = DeploymentOrderFieldDeserializer.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = DeploymentOrderFieldDeserializer.class)"
                         + System.lineSeparator() + "public enum DeploymentOrderField ");
     }
 
@@ -125,8 +147,11 @@ class GraphQLCodegenAnnotationsTest {
         Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
         // type
         customAnnotationsMapping.put("AcceptTopicSuggestionPayload", Arrays.asList(
-                "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
-                "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver.class)"));
+                "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                        "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
+                "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" +
+                        "io.github.kobylynskyi.order.external.starwars." +
+                        "AcceptTopicSuggestionPayloadTypeResolver.class)"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
@@ -134,9 +159,11 @@ class GraphQLCodegenAnnotationsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionPayload.java", System.lineSeparator() +
-                "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
+                "@com.fasterxml.jackson.annotation.JsonTypeInfo(" +
+                "use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
                 + System.lineSeparator() +
-                "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver.class)"
+                "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" +
+                "io.github.kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver.class)"
                 + System.lineSeparator() +
                 "public class AcceptTopicSuggestionPayload ");
     }
@@ -145,9 +172,13 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_RequestResponseClasses() throws Exception {
         Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
         // request
-        customAnnotationsMapping.put("CodeOfConductQueryRequest", singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryRequestDeserializer.class)"));
+        customAnnotationsMapping.put("CodeOfConductQueryRequest",
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = CodeOfConductQueryRequestDeserializer.class)"));
         // response
-        customAnnotationsMapping.put("CodeOfConductQueryResponse", singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryResponseDeserializer.class)"));
+        customAnnotationsMapping.put("CodeOfConductQueryResponse",
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = CodeOfConductQueryResponseDeserializer.class)"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
         mappingConfig.setGenerateClient(true);
 
@@ -156,18 +187,27 @@ class GraphQLCodegenAnnotationsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "CodeOfConductQueryRequest.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryRequestDeserializer.class)"
-                        + System.lineSeparator() + "public class CodeOfConductQueryRequest implements GraphQLOperationRequest {");
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = CodeOfConductQueryRequestDeserializer.class)"
+                        + System.lineSeparator() +
+                        "public class CodeOfConductQueryRequest implements GraphQLOperationRequest {");
         assertFileContainsElements(files, "CodeOfConductQueryResponse.java",
-                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = CodeOfConductQueryResponseDeserializer.class)"
-                        + System.lineSeparator() + "public class CodeOfConductQueryResponse extends GraphQLResult<Map<String, CodeOfConduct>> {");
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = CodeOfConductQueryResponseDeserializer.class)"
+                        + System.lineSeparator() +
+                        "public class CodeOfConductQueryResponse extends GraphQLResult<Map<String, CodeOfConduct>> {");
     }
 
     @Test
     void generate_Directives() throws Exception {
         Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
         directiveAnnotationsMapping.put("auth",
-                singletonList("@com.example.CustomAnnotation(roles={{roles?toArray}}, boo={{boo?toArray}}, float={{float?toArrayOfStrings}}, int={{int}}, n={{n?toString}})"));
+                singletonList("@com.example.CustomAnnotation(" +
+                        "roles={{roles?toArray}}, " +
+                        "boo={{boo?toArray}}, " +
+                        "float={{float?toArrayOfStrings}}, " +
+                        "int={{int}}, " +
+                        "n={{n?toString}})"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),

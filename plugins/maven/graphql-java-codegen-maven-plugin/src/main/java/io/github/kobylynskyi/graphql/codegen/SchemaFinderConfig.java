@@ -5,6 +5,9 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * Configuration of dynamic GraphQL schema finder
+ */
 public class SchemaFinderConfig {
 
     private String rootDir;

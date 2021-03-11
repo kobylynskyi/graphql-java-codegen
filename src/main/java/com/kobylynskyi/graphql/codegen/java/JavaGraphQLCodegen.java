@@ -11,24 +11,34 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class having only Java-specific methods for code-generation
+ * Most of the logic is still residing in the parent class
+ */
 public class JavaGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new JavaMapperFactoryImpl();
 
-    public JavaGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public JavaGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig,
+                              GeneratedInformation generatedInformation) {
         super(schemas, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public JavaGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public JavaGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig,
+                              GeneratedInformation generatedInformation) {
         super(introspectionResult, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public JavaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
+    public JavaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                              MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, MAPPER_FACTORY);
     }
 
-    public JavaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier, GeneratedInformation generatedInformation) {
-        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, generatedInformation, MAPPER_FACTORY);
+    public JavaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                              MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier,
+                              GeneratedInformation generatedInformation) {
+        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
+                generatedInformation, MAPPER_FACTORY);
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 import java.util.StringJoiner;
 
 /**
+ * Class contains various formatting logic that is specific only for Kotlin language
+ *
  * @author 梦境迷离
  * @since 2020/12/09
  */

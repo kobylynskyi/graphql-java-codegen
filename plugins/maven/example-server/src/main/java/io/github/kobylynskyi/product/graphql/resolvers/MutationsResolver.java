@@ -18,8 +18,8 @@ public class MutationsResolver implements CreateMutationResolver {
     private ProductMapper mapper;
 
     @Override
-    public ProductTO create(ProductInputTO ProductInputTO) {
-        Product savedProduct = service.create(mapper.mapInput(ProductInputTO));
+    public ProductTO create(ProductInputTO productInput) {
+        Product savedProduct = service.create(mapper.mapInput(productInput));
         return mapper.map(savedProduct);
     }
 }

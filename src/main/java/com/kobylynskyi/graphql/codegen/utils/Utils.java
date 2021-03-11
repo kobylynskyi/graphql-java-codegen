@@ -40,17 +40,23 @@ public final class Utils {
     /**
      * Capitalize a string. Make first letter as capital
      *
-     * @param aString string to capitalize
+     * @param stringToCapitalize string to capitalize
      * @return capitalized string
      */
-    public static String capitalize(String aString) {
-        char[] chars = aString.toCharArray();
+    public static String capitalize(String stringToCapitalize) {
+        char[] chars = stringToCapitalize.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
     }
 
-    public static String capitalizeString(String aString) {
-        char[] chars = aString.toLowerCase().toCharArray();
+    /**
+     * Make a string as CamelCase
+     *
+     * @param stringToCamelCase string to convert to CamelCase
+     * @return CamelCasedString
+     */
+    public static String camelCaseString(String stringToCamelCase) {
+        char[] chars = stringToCamelCase.toLowerCase().toCharArray();
         boolean found = false;
         for (int i = 0; i < chars.length; i++) {
             if (!found && Character.isLetter(chars[i])) {
@@ -64,13 +70,13 @@ public final class Utils {
     }
 
     /**
-     * Uncapitalize a string. Make first letter as lowercase
+     * Un-capitalize a string. Make first letter as lowercase
      *
-     * @param aString string to uncapitalize
+     * @param stringToUncapitalize string to un-capitalize
      * @return uncapitalized string
      */
-    public static String uncapitalize(String aString) {
-        char[] chars = aString.toCharArray();
+    public static String unCapitalize(String stringToUncapitalize) {
+        char[] chars = stringToUncapitalize.toCharArray();
         chars[0] = Character.toLowerCase(chars[0]);
         return new String(chars);
     }
@@ -208,8 +214,8 @@ public final class Utils {
 
     /**
      * Copy of org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
-     * <p>
-     * Gets the String that is nested in between two Strings.
+     *
+     * <p>Gets the String that is nested in between two Strings.
      * Only the first match is returned.
      *
      * @param str   the String containing the substring, may be null

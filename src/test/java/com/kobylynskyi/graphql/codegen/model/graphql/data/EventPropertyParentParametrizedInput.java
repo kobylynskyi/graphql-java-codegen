@@ -2,8 +2,9 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
-import java.util.StringJoiner;
+
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * Parametrized input for field parent in type EventProperty

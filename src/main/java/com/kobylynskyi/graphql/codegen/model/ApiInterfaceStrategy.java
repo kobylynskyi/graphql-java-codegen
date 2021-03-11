@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Strategy for creating API interface calsses
+ */
 public enum ApiInterfaceStrategy {
 
     /**

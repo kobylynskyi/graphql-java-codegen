@@ -14,6 +14,9 @@ import java.util.Set;
 
 import static java.util.Arrays.asList;
 
+/**
+ * Mapper class for converting GraphQL types to Java types
+ */
 public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     public static final String JAVA_UTIL_LIST = "java.util.List";
@@ -41,6 +44,16 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
         return getGenericsString(mappingContext, JAVA_UTIL_LIST, "? extends " + type);
     }
 
+    /**
+     * Wrap return type of the API interface with generics and/or Optional and/or apiReturnType
+     * (as specified in the mapping configuration)
+     *
+     * @param mappingContext  Global mapping context
+     * @param namedDefinition Named definition
+     * @param parentTypeName  Name of the parent type
+     * @return API interface name
+     */
+    @Override
     public String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
                                               String parentTypeName) {

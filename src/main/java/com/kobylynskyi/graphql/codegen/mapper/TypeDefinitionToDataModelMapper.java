@@ -124,7 +124,8 @@ public class TypeDefinitionToDataModelMapper {
         DataModelMapper.getInterfacesOfType(typeDefinition, document).stream()
                 .map(i -> fieldDefinitionToParameterMapper.mapFields(mappingContext, i.getFieldDefinitions(), i))
                 .flatMap(Collection::stream)
-                .forEach(paramDef -> allParameters.merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
+                .forEach(paramDef -> allParameters
+                        .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
         return allParameters.values();
     }
 
@@ -134,11 +135,13 @@ public class TypeDefinitionToDataModelMapper {
                 .stream()
                 .filter(union -> union.isDefinitionPartOfUnion(definition))
                 .map(ExtendedUnionTypeDefinition::getName)
-                .map(unionName -> DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
+                .map(unionName -> DataModelMapper
+                        .getModelClassNameWithPrefixAndSuffix(mappingContext, unionName))
                 .collect(Collectors.toList());
         Set<String> interfaceNames = definition.getImplements()
                 .stream()
-                .map(anImplement -> graphQLTypeMapper.getLanguageType(mappingContext, anImplement))
+                .map(anImplement -> graphQLTypeMapper
+                        .getLanguageType(mappingContext, anImplement))
                 .collect(Collectors.toSet());
 
         Set<String> allInterfaces = new LinkedHashSet<>();

@@ -25,6 +25,10 @@ class GraphQLCodegenGitHubTest {
     private final File outputktClassesDir = new File("build/generated/com/github/graphql");
     private final MappingConfig mappingConfig = new MappingConfig();
 
+    private static String getFileContent(File[] files, String fileName) throws IOException {
+        return Utils.getFileContent(getFileByName(files, fileName).getPath());
+    }
+
     @BeforeEach
     void init() {
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
@@ -57,7 +61,8 @@ class GraphQLCodegenGitHubTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/ProfileOwner.kt.txt"),
                 getFileByName(files, "ProfileOwner.kt"));
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AcceptTopicSuggestionMutationResponse.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/AcceptTopicSuggestionMutationResponse.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionMutationResponse.kt"));
     }
 
@@ -103,16 +108,13 @@ class GraphQLCodegenGitHubTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/SearchResultItemConnectionResponseProjection.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/SearchResultItemConnectionResponseProjection.kt.txt"),
                 getFileByName(files, "SearchResultItemConnectionResponseProjection.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/SearchResultItemResponseProjection.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/SearchResultItemResponseProjection.kt.txt"),
                 getFileByName(files, "SearchResultItemResponseProjection.kt"));
     }
-
-    private static String getFileContent(File[] files, String fileName) throws IOException {
-        return Utils.getFileContent(getFileByName(files, fileName).getPath());
-    }
-
 
     @Test
     void generate_ResponseWithPrimitiveType() throws Exception {
@@ -135,11 +137,14 @@ class GraphQLCodegenGitHubTest {
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableInput.kt.txt"),
                 getFileByName(files, "AddLabelsToLabelableInput.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationRequest.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationRequest.kt.txt"),
                 getFileByName(files, "AddLabelsToLabelableMutationRequest.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResolver.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResolver.kt.txt"),
                 getFileByName(files, "AddLabelsToLabelableMutationResolver.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResponse.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableMutationResponse.kt.txt"),
                 getFileByName(files, "AddLabelsToLabelableMutationResponse.kt"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelablePayload.kt.txt"),
                 getFileByName(files, "AddLabelsToLabelablePayload.kt"));
@@ -172,9 +177,13 @@ class GraphQLCodegenGitHubTest {
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/field-resolver/GithubAcceptTopicSuggestionPayloadTO.kt.txt"),
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "GithubAcceptTopicSuggestionPayloadTO.kt.txt"),
                 getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/field-resolver/AcceptTopicSuggestionPayloadResolver.kt.txt"),
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "AcceptTopicSuggestionPayloadResolver.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
     }
 

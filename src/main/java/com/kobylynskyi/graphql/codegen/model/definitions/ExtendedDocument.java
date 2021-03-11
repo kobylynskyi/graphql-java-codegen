@@ -40,6 +40,11 @@ public class ExtendedDocument {
         this.unionDefinitions = unionDefinitions;
     }
 
+    /**
+     * Get a joint list of names of all types, unions and interfaces
+     *
+     * @return Set containing all type names, union names, interface names
+     */
     public Set<String> getTypesUnionsInterfacesNames() {
         Set<String> typesUnionsInterfaces = new LinkedHashSet<>();
         typeDefinitions.stream()
@@ -54,6 +59,11 @@ public class ExtendedDocument {
         return typesUnionsInterfaces;
     }
 
+    /**
+     * Construct a map having interface name as a key and all children (that are extending this interface) as a value
+     *
+     * @return a map of interface name to all its children
+     */
     public Map<String, Set<String>> getInterfaceChildren() {
         Map<String, Set<String>> interfaceChildren = new HashMap<>();
         for (ExtendedObjectTypeDefinition typeDefinition : typeDefinitions) {

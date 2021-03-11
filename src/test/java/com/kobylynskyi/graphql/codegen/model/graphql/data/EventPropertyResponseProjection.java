@@ -56,11 +56,13 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
-    public EventPropertyResponseProjection child(EventPropertyChildParametrizedInput input, EventPropertyResponseProjection subProjection) {
+    public EventPropertyResponseProjection child(EventPropertyChildParametrizedInput input,
+                                                 EventPropertyResponseProjection subProjection) {
         return child(null, input, subProjection);
     }
 
-    public EventPropertyResponseProjection child(String alias, EventPropertyChildParametrizedInput input, EventPropertyResponseProjection subProjection) {
+    public EventPropertyResponseProjection child(String alias, EventPropertyChildParametrizedInput input,
+                                                 EventPropertyResponseProjection subProjection) {
         fields.add(new GraphQLResponseField("child").alias(alias).parameters(input).projection(subProjection));
         return this;
     }
@@ -74,11 +76,13 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
         return this;
     }
 
-    public EventPropertyResponseProjection parent(EventPropertyParentParametrizedInput input, EventResponseProjection subProjection) {
+    public EventPropertyResponseProjection parent(EventPropertyParentParametrizedInput input,
+                                                  EventResponseProjection subProjection) {
         return parent(null, input, subProjection);
     }
 
-    public EventPropertyResponseProjection parent(String alias, EventPropertyParentParametrizedInput input, EventResponseProjection subProjection) {
+    public EventPropertyResponseProjection parent(String alias, EventPropertyParentParametrizedInput input,
+                                                  EventResponseProjection subProjection) {
         fields.add(new GraphQLResponseField("parent").alias(alias).parameters(input).projection(subProjection));
         return this;
     }

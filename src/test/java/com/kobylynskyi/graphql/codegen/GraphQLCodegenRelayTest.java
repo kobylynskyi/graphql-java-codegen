@@ -41,7 +41,8 @@ class GraphQLCodegenRelayTest {
 
     @Test
     void generateServerSideRelayClasses() throws Exception {
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -59,11 +60,13 @@ class GraphQLCodegenRelayTest {
     void generateServerSideRelayClasses_CustomGenericsConnectionType() throws Exception {
         mappingConfig.getRelayConfig()
                 .setConnectionType("reactor.core.publisher.Mono<graphql.relay.Connection<%s>>");
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/relay/UsersQueryResolver_reactive.java.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/relay/UsersQueryResolver_reactive.java.txt"),
                 getFileByName(files, "UsersQueryResolver.java"));
 
     }

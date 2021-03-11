@@ -13,6 +13,9 @@ import java.util.Set;
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
 import static java.util.Arrays.asList;
 
+/**
+ * Mapper class for converting GraphQL types to Scala types
+ */
 public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     private static final String SCALA_UTIL_LIST = "Seq";
@@ -63,7 +66,8 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
                 && !namedDefinition.isMandatory()
                 && !computedTypeName.startsWith(SCALA_UTIL_LIST)
                 && !computedTypeName.startsWith(JAVA_UTIL_LIST)
-                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {// The primitive types is Option by default
+                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
+            // Kotlin/Scala: primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }

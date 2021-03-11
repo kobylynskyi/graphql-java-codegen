@@ -17,6 +17,13 @@ public class MultiLanguageDeprecated {
     private MultiLanguageDeprecated() {
     }
 
+    /**
+     * Get a definition of @deprecated annotation for a specified language.
+     *
+     * @param generatedLanguage Language of code generation
+     * @param directive         GraphQL @deprecated directive
+     * @return a definition of a deprecation having reason and annotation
+     */
     public static DeprecatedDefinition getLanguageDeprecated(GeneratedLanguage generatedLanguage, Directive directive) {
         String msg = null;
         if (directive.getArguments().stream().anyMatch(argument -> argument.getName().equals(REASON))) {

@@ -13,16 +13,19 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
 
     private static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
     private static final String OPERATION_NAME = "version";
-
-    private String alias;
     private final Map<String, Object> input = new LinkedHashMap<>();
     private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+    private String alias;
 
     public VersionQueryRequest() {
     }
 
     public VersionQueryRequest(String alias) {
         this.alias = alias;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -53,10 +56,6 @@ public class VersionQueryRequest implements GraphQLOperationRequest {
     @Override
     public String toString() {
         return Objects.toString(input);
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     public static class Builder {

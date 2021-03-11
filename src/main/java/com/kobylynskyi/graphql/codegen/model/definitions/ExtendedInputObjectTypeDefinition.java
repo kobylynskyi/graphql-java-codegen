@@ -7,7 +7,11 @@ import graphql.language.InputValueDefinition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExtendedInputObjectTypeDefinition extends ExtendedDefinition<InputObjectTypeDefinition, InputObjectTypeExtensionDefinition> {
+/**
+ * Extended definition of GraphQL input type: based definition + its extensions
+ */
+public class ExtendedInputObjectTypeDefinition
+        extends ExtendedDefinition<InputObjectTypeDefinition, InputObjectTypeExtensionDefinition> {
 
     public List<InputValueDefinition> getValueDefinitions() {
         List<InputValueDefinition> definitions = new ArrayList<>();

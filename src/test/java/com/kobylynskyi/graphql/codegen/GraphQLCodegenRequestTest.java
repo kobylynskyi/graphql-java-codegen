@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -48,19 +47,26 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventResponseProjection.java.txt"),
                 getFileByName(files, "EventResponseProjection.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventPropertyResponseProjection.java.txt"),
                 getFileByName(files, "EventPropertyResponseProjection.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyParentParametrizedInput.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventPropertyParentParametrizedInput.java.txt"),
                 getFileByName(files, "EventPropertyParentParametrizedInput.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyChildParametrizedInput.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventPropertyChildParametrizedInput.java.txt"),
                 getFileByName(files, "EventPropertyChildParametrizedInput.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventsByCategoryAndStatusQueryRequest.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/VersionQueryRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "VersionQueryRequest.java.txt"),
                 getFileByName(files, "VersionQueryRequest.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByIdsQueryRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventsByIdsQueryRequest.java.txt"),
                 getFileByName(files, "EventsByIdsQueryRequest.java"));
     }
 
@@ -72,11 +78,14 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventStatusTO.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventStatusTO.java.txt"),
                 getFileByName(files, "EventStatusTO.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withModelSuffix.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventsByCategoryAndStatusQueryRequest_withModelSuffix.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyParentParametrizedInput_withModelSuffix.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventPropertyParentParametrizedInput_withModelSuffix.java.txt"),
                 getFileByName(files, "EventPropertyParentParametrizedInput.java"));
     }
 
@@ -87,7 +96,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ClientDataParametrizedInput.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "ClientDataParametrizedInput.java.txt"),
                 getFileByName(files, "ClientDataParametrizedInput.java"));
     }
 
@@ -98,10 +108,12 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/CodeOfConductResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "CodeOfConductResponseProjection.java.txt"),
                 getFileByName(files, "CodeOfConductResponseProjection.java"));
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/UpdateRepositoryMutationRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "UpdateRepositoryMutationRequest.java.txt"),
                 getFileByName(files, "UpdateRepositoryMutationRequest.java"));
     }
 
@@ -112,7 +124,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/AcceptTopicSuggestionInput.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "AcceptTopicSuggestionInput.java.txt"),
                 getFileByName(files, "AcceptTopicSuggestionInput.java"));
     }
 
@@ -149,7 +162,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
@@ -163,7 +177,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventsByCategoryAndStatusQueryRequest_withApiImport.java.txt"),
                 getFileByName(files, "EventsByCategoryAndStatusQueryRequest.java"));
     }
 
@@ -174,10 +189,12 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByCategoryIdAndStatusQueryRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "ProductsByCategoryIdAndStatusQueryRequest.java.txt"),
                 getFileByName(files, "ProductsByCategoryIdAndStatusQueryRequest.java"));
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductsByIdsQueryRequest.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "ProductsByIdsQueryRequest.java.txt"),
                 getFileByName(files, "ProductsByIdsQueryRequest.java"));
     }
 
@@ -189,7 +206,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/EventPropertyChildParametrizedInput_withoutPrimitives.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "EventPropertyChildParametrizedInput_withoutPrimitives.java.txt"),
                 getFileByName(files, "EventPropertyChildParametrizedInput.java"));
     }
 
@@ -202,7 +220,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/Event_useObjectMapperForRequestSerialization.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "Event_useObjectMapperForRequestSerialization.java.txt"),
                 getFileByName(files, "Event.java"));
     }
 
@@ -215,7 +234,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/Event_useObjectMapperForRequestSerialization.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "Event_useObjectMapperForRequestSerialization.java.txt"),
                 getFileByName(files, "Event.java"));
     }
 
@@ -227,7 +247,8 @@ class GraphQLCodegenRequestTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/QueryINeedQueryRequest_custom_serializer.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "QueryINeedQueryRequest_custom_serializer.java.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.java"));
     }
 

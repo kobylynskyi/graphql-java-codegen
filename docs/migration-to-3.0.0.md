@@ -1,18 +1,22 @@
-Some breaking changes were introduced in [Release 3.0.0](https://github.com/kobylynskyi/graphql-java-codegen/releases/tag/v3.0.0).
-So if you were using version 2.x.x then please follow steps below.
-Note: if you are migrating from version 1.x.x, then please also follow [2.0.0 migration guide](migration-to-2.0.0.md) first.
+Some breaking changes were introduced
+in [Release 3.0.0](https://github.com/kobylynskyi/graphql-java-codegen/releases/tag/v3.0.0). So if you were using
+version 2.x.x then please follow steps below. Note: if you are migrating from version 1.x.x, then please also
+follow [2.0.0 migration guide](migration-to-2.0.0.md) first.
 
 ## Migration steps
 
 ### 1. Update plugin and library versions
-As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle), [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven)
 
+As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle)
+, [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven)
 
 ### 2. Remove `generateAsyncApis` and rename `apiAsyncReturnType`/`apiAsyncReturnListType`
-`generateAsyncApis` was removed because it became useless. 
-So now if you want to use async return type in your APIs, simply follow the new approach by specifying only `apiReturnType`/`apiReturnListType`:
+
+`generateAsyncApis` was removed because it became useless. So now if you want to use async return type in your APIs,
+simply follow the new approach by specifying only `apiReturnType`/`apiReturnListType`:
 
 #### Maven
+
 ```xml
 <configuration>
     <!--OLD APPROACH-->
@@ -29,6 +33,7 @@ So now if you want to use async return type in your APIs, simply follow the new 
 ```
 
 #### Gradle
+
 ```groovy
 // OLD APPROACH
 generateAsyncApis=true
@@ -43,6 +48,7 @@ apiReturnListType=reactor.core.publisher.Flux
 ```
 
 #### SBT
+
 ```sbt
 // OLD APPROACH
 generateAsyncApis := true
@@ -55,9 +61,12 @@ apiReturnType := Some("scala.concurrent.Future")
 ```
 
 ### 3. Update plugin configuration for `customAnnotationsMapping` and `directiveAnnotationsMapping`
-If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` config options, then it should be updated by providing an array of annotations in the following format:
+
+If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` config options, then it should be updated
+by providing an array of annotations in the following format:
 
 #### Maven
+
 ```xml
 <configuration>
     <!--OLD APPROACH-->
@@ -89,6 +98,7 @@ If you have used `customAnnotationsMapping` or `directiveAnnotationsMapping` con
 ```
 
 #### Gradle
+
 ```groovy
 // OLD APPROACH
 customAnnotationsMapping = [
@@ -115,6 +125,7 @@ directiveAnnotationsMapping = [
 ```
 
 #### SBT
+
 ```sbt
 // OLD APPROACH
 customAnnotationsMapping := {
@@ -147,13 +158,15 @@ customAnnotationsMapping := {
 }
 // NEW APPROACH
 ```
+
 `directiveAnnotationsMapping`, In the same way.
 
-
 ### 4. Regenerate the code
+
 Run project build so that GraphQL classes are regenerated.
 
 
 ---
 
-Feel free to ask any questions in [GitHub Discussions](https://github.com/kobylynskyi/graphql-java-codegen/discussions) or [create an issue](https://github.com/kobylynskyi/graphql-java-codegen/issues) if you discover some problems.
+Feel free to ask any questions in [GitHub Discussions](https://github.com/kobylynskyi/graphql-java-codegen/discussions)
+or [create an issue](https://github.com/kobylynskyi/graphql-java-codegen/issues) if you discover some problems.

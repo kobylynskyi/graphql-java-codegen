@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Enum containing all supported langugages for code generation
+ */
 public enum GeneratedLanguage {
 
     JAVA(".java"),

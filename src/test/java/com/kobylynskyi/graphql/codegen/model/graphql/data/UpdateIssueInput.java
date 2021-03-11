@@ -22,7 +22,8 @@ public class UpdateIssueInput {
     }
 
     public UpdateIssueInput(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, Status enumVal,
-                            UpdateIssueInput objectWithNullDefault, Collection<Integer> intList, Collection<String> stringListEmptyDefault) {
+                            UpdateIssueInput objectWithNullDefault, Collection<Integer> intList,
+                            Collection<String> stringListEmptyDefault) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -183,7 +184,8 @@ public class UpdateIssueInput {
         }
 
         public UpdateIssueInput build() {
-            return new UpdateIssueInput(floatVal, booleanVal, intVal, stringVal, enumVal, objectWithNullDefault, intList, stringListEmptyDefault);
+            return new UpdateIssueInput(floatVal, booleanVal, intVal, stringVal, enumVal, objectWithNullDefault,
+                    intList, stringListEmptyDefault);
         }
 
     }

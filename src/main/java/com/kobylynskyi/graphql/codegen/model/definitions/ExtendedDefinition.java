@@ -53,6 +53,11 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
         return javaDocFromDescription;
     }
 
+    /**
+     * Get java doc from description for this definition
+     *
+     * @return List of java docs
+     */
     public List<String> getJavaDocFromDescription() {
         List<String> descriptions = new ArrayList<>();
         if (this.definition instanceof AbstractDescribedNode) {
@@ -70,6 +75,11 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
         return descriptions;
     }
 
+    /**
+     * Get java doc from description for this definition
+     *
+     * @return List of java docs
+     */
     public List<String> getJavaDocFromComments() {
         List<String> comments = new ArrayList<>();
         if (definition != null && definition.getComments() != null) {
@@ -85,6 +95,11 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
         return comments;
     }
 
+    /**
+     * Return all directives for this definition
+     *
+     * @return list of directive names
+     */
     public List<String> getDirectiveNames() {
         List<String> directives = new ArrayList<>();
         if (this.definition instanceof DirectivesContainer) {

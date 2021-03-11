@@ -22,7 +22,8 @@ class GraphQLCodegenFileCreator {
     private GraphQLCodegenFileCreator() {
     }
 
-    static File generateFile(MappingContext mappingContext, FreeMarkerTemplateType templateType, Map<String, Object> dataModel, File outputDir) {
+    static File generateFile(MappingContext mappingContext, FreeMarkerTemplateType templateType,
+                             Map<String, Object> dataModel, File outputDir) {
         GeneratedLanguage language = mappingContext.getGeneratedLanguage();
         String fileName = dataModel.get(DataModelFields.CLASS_NAME) + language.getFileExtension();
         File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);

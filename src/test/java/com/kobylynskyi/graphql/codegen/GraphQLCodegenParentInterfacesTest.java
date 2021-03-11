@@ -42,25 +42,32 @@ class GraphQLCodegenParentInterfacesTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/QueryResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "QueryResolver.java.txt"),
                 getFileByName(files, "QueryResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/MutationResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "MutationResolver.java.txt"),
                 getFileByName(files, "MutationResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/SubscriptionResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "SubscriptionResolver.java.txt"),
                 getFileByName(files, "SubscriptionResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/VersionQueryResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "VersionQueryResolver.java.txt"),
                 getFileByName(files, "VersionQueryResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/CreateEventMutationResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "CreateEventMutationResolver.java.txt"),
                 getFileByName(files, "CreateEventMutationResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/EventsCreatedSubscriptionResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "EventsCreatedSubscriptionResolver.java.txt"),
                 getFileByName(files, "EventsCreatedSubscriptionResolver.java"));
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/parent-interfaces/EventResolver.java.txt"),
+                new File("src/test/resources/expected-classes/parent-interfaces/" +
+                        "EventResolver.java.txt"),
                 getFileByName(files, "EventResolver.java"));
     }
 }
