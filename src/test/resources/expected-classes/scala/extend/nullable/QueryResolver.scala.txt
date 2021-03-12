@@ -7,18 +7,18 @@ trait QueryResolver {
 
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def events(): Seq[Event]
+    def events(): scala.Seq[Event]
 
     @throws[Exception]
-    def event(): Option[Event]
+    def event(): scala.Option[Event]
 
     @throws[Exception]
-    def null1Query(): Option[Int]
+    def null1Query(): scala.Option[Int]
 
     @throws[Exception]
-    def null2Query(): Seq[Option[Int]]
+    def null2Query(): scala.Seq[scala.Option[Int]]
 
     @throws[Exception]
-    def null3Query(): Seq[Int]
+    def null3Query(): scala.Seq[Int]
 
 }

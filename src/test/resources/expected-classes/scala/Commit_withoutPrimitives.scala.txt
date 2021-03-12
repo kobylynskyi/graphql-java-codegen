@@ -80,7 +80,7 @@ case class Commit(
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (abbreviatedOid != null) "abbreviatedOid: " + GraphQLRequestSerializer.getEntry(abbreviatedOid) else "",
             if (additions != null) "additions: " + GraphQLRequestSerializer.getEntry(additions) else "",
             if (associatedPullRequests != null) "associatedPullRequests: " + GraphQLRequestSerializer.getEntry(associatedPullRequests) else "",

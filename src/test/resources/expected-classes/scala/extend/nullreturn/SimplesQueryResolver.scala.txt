@@ -5,6 +5,6 @@
 trait SimplesQueryResolver {
 
     @throws[Exception]
-    def simples(): Option[Event]
+    def simples(): scala.Option[Event]
 
 }

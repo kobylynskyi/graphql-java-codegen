@@ -9,7 +9,7 @@ case class TypeWithMandatoryField(
 ) extends InterfaceWithOptionalField {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             "test: " + test
         ).filter(_ != "").mkString("{", ",", "}")
     }

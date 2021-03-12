@@ -13,7 +13,7 @@ import ${import}._
             <#list operation.parameters as param>
                 <#list enumImportItSelfInScala as enum>
                     <#if MapperUtil.isScalaCollection(param.type)>
-                        <#if enum == param.type?replace("Seq[", "")?replace("]", "")>
+                        <#if enum == MapperUtil.getGenericParameter(param.type)>
                             <#if !waitImports?seq_contains(enum)>
                                 <#assign waitImports = waitImports + [enum] />
                             </#if>

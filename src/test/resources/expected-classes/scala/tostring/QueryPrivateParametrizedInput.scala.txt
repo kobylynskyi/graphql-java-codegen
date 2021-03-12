@@ -14,15 +14,15 @@ import TestEnum._
 )
 case class QueryPrivateParametrizedInput(
     int: Int,
-    intOpt: Option[Int],
-    seq1: Seq[Option[Int]],
-    seq2: Seq[Int],
+    intOpt: scala.Option[Int],
+    seq1: scala.Seq[scala.Option[Int]],
+    seq2: scala.Seq[Int],
     `new`: String,
     enum: TestEnum = TestEnum.long
 ) extends GraphQLParametrizedInput {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             "int: " + GraphQLRequestSerializer.getEntry(int),
             if (intOpt.isDefined) "intOpt: " + GraphQLRequestSerializer.getEntry(intOpt.get) else "",
             if (seq1 != null) "seq1: " + GraphQLRequestSerializer.getEntry(seq1.asJava) else "",

@@ -12,7 +12,7 @@ case class ResponseContainingDate(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (a != null) "a: " + GraphQLRequestSerializer.getEntry(a) else ""
         ).filter(_ != "").mkString("{", ",", "}")
     }

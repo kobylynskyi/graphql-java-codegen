@@ -6,6 +6,6 @@
 trait SimpleEventCountsQueryResolver {
 
     @throws[Exception]
-    def simpleEventCounts(): Option[Int]
+    def simpleEventCounts(): scala.Option[Int]
 
 }

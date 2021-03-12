@@ -5,10 +5,10 @@ import java.util.{ Map => JMap }
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class SimpleEventCountsQueryResponse extends GraphQLResult[JMap[String, Option[Int]]] {
+class SimpleEventCountsQueryResponse extends GraphQLResult[JMap[String, scala.Option[Int]]] {
 
-    def simpleEventCounts(): Option[Int] = {
-        val data: JMap[String, Option[Int]] = getData
+    def simpleEventCounts(): scala.Option[Int] = {
+        val data: JMap[String, scala.Option[Int]] = getData
         if (data != null) data.get(SimpleEventCountsQueryResponse.OPERATION_NAME) else None
     }
 

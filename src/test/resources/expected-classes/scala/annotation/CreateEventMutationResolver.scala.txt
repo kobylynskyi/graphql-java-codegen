@@ -14,7 +14,7 @@ trait CreateEventMutationResolver {
      * Create a new event.
      */
     @javax.validation.constraints.NotNull
-    @com.example.CustomAnnotation(roles=Array("admin", "moderator"), boo=Array(true, false, true), float=Array("12.0", "null"), int=42, n="null")
+    @com.example.CustomAnnotation(roles=scala.Array("admin", "moderator"), boo=scala.Array(true, false, true), float=scala.Array("12.0", "null"), int=42, n="null")
     @throws[Exception]
     def createEvent(categoryId: String, createdBy: String): Event
 
