@@ -24,6 +24,7 @@ public class MultiLanguageDeprecated {
      * @param directive         GraphQL @deprecated directive
      * @return a definition of a deprecation having reason and annotation
      */
+    @SuppressWarnings({"java:S1133", "java:S1123"}) // sonar treats this is a deprecated method
     public static DeprecatedDefinition getLanguageDeprecated(GeneratedLanguage generatedLanguage, Directive directive) {
         String msg = null;
         if (directive.getArguments().stream().anyMatch(argument -> argument.getName().equals(REASON))) {
