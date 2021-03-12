@@ -17,7 +17,7 @@ class CaseQueryRequest(alias: String) extends GraphQLOperationRequest {
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
     private final lazy val useObjectMapperForInputSerialization: mutable.Set[String] = mutable.Set()
 
-    def setFinal(`final`: Seq[Char]): Unit = {
+    def setFinal(`final`: scala.Seq[Char]): Unit = {
         this.input.put("final", `final`)
     }
 

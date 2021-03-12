@@ -10,7 +10,7 @@ import scala.collection.JavaConverters._
 case class AddLabelsToLabelableInput(
     clientMutationId: String,
     @javax.validation.constraints.NotNull
-    labelIds: Seq[String],
+    labelIds: scala.Seq[String],
     @javax.validation.constraints.NotNull
     labelableId: String
 ) {

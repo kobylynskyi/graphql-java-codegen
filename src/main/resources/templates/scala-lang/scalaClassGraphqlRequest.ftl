@@ -17,7 +17,7 @@ import scala.collection.JavaConverters._
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
                 <#if MapperUtil.isScalaCollection(field.type)>
-                    <#if enum == field.type?replace("Seq[", "")?replace("]", "")>
+                    <#if enum == MapperUtil.getGenericParameter(field.type)>
 import ${enum}._
                     </#if>
                 <#else >

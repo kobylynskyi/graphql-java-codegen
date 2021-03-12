@@ -6,9 +6,9 @@ import scala.collection.JavaConverters._
     date = "2020-12-31T23:59:59-0500"
 )
 case class Event(
-    nullableStatus: Seq[Option[Int]],
-    nonullStatus: Seq[Int],
-    nullablePrimitive: Option[Int]
+    nullableStatus: scala.Seq[scala.Option[Int]],
+    nonullStatus: scala.Seq[Int],
+    nullablePrimitive: scala.Option[Int]
 ) extends Node {
 
     override def toString(): String = {

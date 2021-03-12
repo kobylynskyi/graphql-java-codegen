@@ -10,6 +10,6 @@ trait EventsQueryResolver {
     @deprecated(message = "No longer supported")
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def events(): Seq[Event]
+    def events(): scala.Seq[Event]
 
 }

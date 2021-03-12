@@ -6,6 +6,6 @@
 trait Null2QueryQueryResolver {
 
     @throws[Exception]
-    def null2Query(): Seq[Option[Int]]
+    def null2Query(): scala.Seq[scala.Option[Int]]
 
 }

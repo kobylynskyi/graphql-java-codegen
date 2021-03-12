@@ -18,8 +18,8 @@ import static java.util.Arrays.asList;
  */
 public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
-    private static final String SCALA_UTIL_LIST = "Seq";
-    private static final String SCALA_UTIL_OPTIONAL = "Option";
+    private static final String SCALA_UTIL_LIST = "scala.Seq";
+    private static final String SCALA_UTIL_OPTIONAL = "scala.Option";
     private static final Set<String> SCALA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
 
@@ -39,6 +39,10 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     public static boolean isScalaCollection(String scalaType) {
         return scalaType.startsWith(SCALA_UTIL_LIST + "[") && scalaType.endsWith("]");
+    }
+
+    public static String getGenericParameter(String scalaType) {
+        return scalaType.substring(SCALA_UTIL_LIST.length() + 1, scalaType.length() - 1);
     }
 
     @Override

@@ -6,6 +6,6 @@
 trait Null3QueryQueryResolver {
 
     @throws[Exception]
-    def null3Query(): Seq[Int]
+    def null3Query(): scala.Seq[Int]
 
 }
