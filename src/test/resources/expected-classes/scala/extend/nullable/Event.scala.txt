@@ -12,7 +12,7 @@ case class Event(
 ) extends Node {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (nullableStatus != null) "nullableStatus: " + GraphQLRequestSerializer.getEntry(nullableStatus.asJava) else "",
             if (nonullStatus != null) "nonullStatus: " + GraphQLRequestSerializer.getEntry(nonullStatus.asJava) else "",
             if (nullablePrimitive.isDefined) "nullablePrimitive: " + GraphQLRequestSerializer.getEntry(nullablePrimitive.get) else ""

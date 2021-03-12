@@ -22,7 +22,7 @@ case class QueryPrivateParametrizedInput(
 ) extends GraphQLParametrizedInput {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             "int: " + GraphQLRequestSerializer.getEntry(int),
             if (intOpt.isDefined) "intOpt: " + GraphQLRequestSerializer.getEntry(intOpt.get) else "",
             if (seq1 != null) "seq1: " + GraphQLRequestSerializer.getEntry(seq1.asJava) else "",

@@ -88,7 +88,7 @@ import ${enum}._
 <#if toString>
     override def toString(): String = {
     <#if fields?has_content><#-- When you modify it, copy it out and make sure it is one line after modification, There is no Option[Seq[T]]. -->
-        Seq(<#list fields as field><#assign getMethod = ""><#assign asJava = ""><#if MapperUtil.isScalaOption(field.type)><#assign getMethod = ".get"></#if><#if MapperUtil.isScalaCollection(field.type)><#assign asJava = ".asJava"></#if>
+        scala.Seq(<#list fields as field><#assign getMethod = ""><#assign asJava = ""><#if MapperUtil.isScalaOption(field.type)><#assign getMethod = ".get"></#if><#if MapperUtil.isScalaCollection(field.type)><#assign asJava = ".asJava"></#if>
             <#if MapperUtil.isScalaPrimitive(field.type)><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>)<#else>"${field.originalName}: " + ${field.name}</#if><#else><#if MapperUtil.isScalaOption(field.type)>if (${field.name}.isDefined) <#else>if (${field.name} != null) </#if><#if toStringForRequest>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${getMethod}${asJava}<#if field.serializeUsingObjectMapper>, true</#if>)<#else><#if field.type == "String"> "${field.originalName}: \"${field.name}\"" <#else> "${field.originalName}: ${field.name}"</#if></#if> else ""</#if><#if field_has_next>,</#if></#list>
         ).filter(_ != "").mkString("{", ",", "}")
         <#else><#--Keep it on one line to make sure the code style remains the same-->

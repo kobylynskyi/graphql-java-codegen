@@ -22,7 +22,7 @@ case class Synchronized(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (void != null) "void: " + GraphQLRequestSerializer.getEntry(void) else "",
             "wait: " + GraphQLRequestSerializer.getEntry(Wait),
             "this: " + GraphQLRequestSerializer.getEntry(`this`),

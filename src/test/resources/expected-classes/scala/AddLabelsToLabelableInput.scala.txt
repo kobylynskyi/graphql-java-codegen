@@ -16,7 +16,7 @@ case class AddLabelsToLabelableInput(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (clientMutationId != null) "clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId) else "",
             if (labelIds != null) "labelIds: " + GraphQLRequestSerializer.getEntry(labelIds.asJava) else "",
             if (labelableId != null) "labelableId: " + GraphQLRequestSerializer.getEntry(labelableId) else ""

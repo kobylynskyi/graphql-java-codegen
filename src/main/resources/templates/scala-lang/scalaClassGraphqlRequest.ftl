@@ -6,7 +6,7 @@ package ${package}
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest
 import java.util.{ LinkedHashMap => JLinkedHashMap }
-import java.util.{ Map => JMap }
+import java.util.{ Map => JMap, Set => JSet }
 <#if toString || equalsAndHashCode>
 import java.util.Objects
 </#if>
@@ -85,7 +85,7 @@ class ${className}(alias: String) extends GraphQLOperationRequest {
 
     override def getInput(): JMap[String, java.lang.Object] = input
 
-    override def getUseObjectMapperForInputSerialization(): java.util.Set[String] = useObjectMapperForInputSerialization.asJava
+    override def getUseObjectMapperForInputSerialization(): JSet[String] = useObjectMapperForInputSerialization.asJava
 <#if equalsAndHashCode>
 
     override def equals(obj: Any): Boolean = {

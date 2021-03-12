@@ -56,7 +56,7 @@ case class ${className}(
 
     override def toString(): String = {<#--There is no Option[Seq[T]], Format is not supported in the generated code, so it is very difficult to write template for this format.-->
     <#if fields?has_content>
-        Seq(<#list fields as field><#assign getMethod = ".get"><#assign asJava = ".asJava">
+        scala.Seq(<#list fields as field><#assign getMethod = ".get"><#assign asJava = ".asJava">
             <#if MapperUtil.isScalaPrimitive(field.type)>"${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name})<#if field_has_next>,</#if><#elseif MapperUtil.isScalaOption(field.type)>if (${field.name}.isDefined) "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${getMethod}) else ""<#if field_has_next>,</#if><#else>if (${field.name} != null)<#if MapperUtil.isScalaCollection(field.type)> "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}${asJava}) else ""<#if field_has_next>,</#if><#else> "${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}) else ""<#if field_has_next>,</#if></#if></#if></#list>
         ).filter(_ != "").mkString("(", ",", ")")
     <#else>
