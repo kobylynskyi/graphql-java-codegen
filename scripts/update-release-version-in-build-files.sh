@@ -5,7 +5,7 @@ RELEASE_VERSION_ESCAPED=${RELEASE_VERSION//./\\.}
 
 set_version_in_file() {
   # for mac add '' after -i: sed -i '' "s...
-  sed -i "s/$2[A-Z0-9.\-]*/$2$RELEASE_VERSION_ESCAPED/gw /tmp/sed.done" "$1"
+  sed -i '' "s/$2[A-Z0-9.\-]*/$2$RELEASE_VERSION_ESCAPED/gw /tmp/sed.done" "$1"
   echo "Updated version in $1"
   grep --color -e "" /tmp/sed.done
 }

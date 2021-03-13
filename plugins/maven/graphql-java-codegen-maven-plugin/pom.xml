@@ -4,7 +4,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
-    <version>4.1.5-SNAPSHOT</version>
+    <version>4.1.6-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>graphql-codegen-maven-plugin</name>
@@ -73,7 +73,7 @@
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.3.3</version.maven-shared-utils>
 
-        <version.graphql-java-codegen>4.1.5-SNAPSHOT</version.graphql-java-codegen>
+        <version.graphql-java-codegen>4.1.6-SNAPSHOT</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
