@@ -6,6 +6,6 @@
 trait Null1QueryQueryResolver {
 
     @throws[Exception]
-    def null1Query(): Option[Int]
+    def null1Query(): scala.Option[Int]
 
 }

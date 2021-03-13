@@ -7,6 +7,6 @@ trait AssetsQueryResolver {
 
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def assets(): Seq[Asset]
+    def assets(): scala.Seq[Asset]
 
 }

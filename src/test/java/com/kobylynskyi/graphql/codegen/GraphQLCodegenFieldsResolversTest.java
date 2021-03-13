@@ -38,7 +38,8 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateParameterizedFieldsResolvers(true);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Commit.blame",
-                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)"))));
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -60,7 +61,8 @@ class GraphQLCodegenFieldsResolversTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/ProductLinkCodeParametrizedInput.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                        "ProductLinkCodeParametrizedInput.java.txt"),
                 getFileByName(files, "ProductLinkCodeParametrizedInput.java"));
     }
 
@@ -76,9 +78,11 @@ class GraphQLCodegenFieldsResolversTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/GithubAcceptTopicSuggestionPayloadTO.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                        "GithubAcceptTopicSuggestionPayloadTO.java.txt"),
                 getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/AcceptTopicSuggestionPayloadResolver.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                        "AcceptTopicSuggestionPayloadResolver.java.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
 
@@ -112,7 +116,8 @@ class GraphQLCodegenFieldsResolversTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/Event.java.txt"),
                 getFileByName(files, "Event.java"));
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventPropertyResolver.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
+                        "EventPropertyResolver.java.txt"),
                 getFileByName(files, "EventPropertyResolver.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventProperty.java.txt"),
                 getFileByName(files, "EventProperty.java"));

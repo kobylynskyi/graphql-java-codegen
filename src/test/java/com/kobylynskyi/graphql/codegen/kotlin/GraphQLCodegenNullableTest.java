@@ -38,7 +38,8 @@ class GraphQLCodegenNullableTest {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
         schemaFinder.setIncludePattern("nullable-extend.graphqls");
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -72,13 +73,14 @@ class GraphQLCodegenNullableTest {
     }
 
     @Test
-    void generatePrimitiveTypesResponseResolverClasses_nullable_WITH_Prefix_Suffix() throws Exception {
+    void generatePrimitiveTypesResponseResolverClasses_nullable_With_Prefix_Suffix() throws Exception {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
         mappingConfig.setModelNamePrefix("Test");
         mappingConfig.setModelNameSuffix("DTO");
         schemaFinder.setIncludePattern("nullable-extend.graphqls");
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -96,14 +98,17 @@ class GraphQLCodegenNullableTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo())
                 .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/optional/InterfaceWithOptionalField.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/optional/InterfaceWithOptionalField.kt.txt"),
                 getFileByName(files, "InterfaceWithOptionalField.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/optional/TypeWithMandatoryField.kt.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/optional/TypeWithMandatoryField.kt.txt"),
                 getFileByName(files, "TypeWithMandatoryField.kt"));
     }
 }

@@ -44,16 +44,21 @@ class GraphQLCodegenRestrictedWordsAndParameterInputTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<?> filters = Arrays.asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt", "QueryFunParametrizedInput.kt",
-                "Super.kt", "TestEnum.kt", "WhenQueryAPI.kt");
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> filters.contains(f)).sorted().collect(toList());
-        assertEquals(Arrays.asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt", "QueryFunParametrizedInput.kt",
+        List<?> filters = Arrays
+                .asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt",
+                        "QueryFunParametrizedInput.kt",
+                        "Super.kt", "TestEnum.kt", "WhenQueryAPI.kt");
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> filters.contains(f))
+                .sorted().collect(toList());
+        assertEquals(Arrays.asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt",
+                "QueryFunParametrizedInput.kt",
                 "Super.kt", "TestEnum.kt", "WhenQueryAPI.kt"), generatedFileNames);
 
         for (File file : files) {
             if (filters.contains(file.getName())) {
                 assertSameTrimmedContent(
-                        new File(String.format("src/test/resources/expected-classes/kt/restricted-words/%s.txt", file.getName())),
+                        new File(String.format("src/test/resources/expected-classes/kt/restricted-words/%s.txt",
+                                file.getName())),
                         file);
             }
         }

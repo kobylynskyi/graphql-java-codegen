@@ -3,6 +3,9 @@ package io.github.kobylynskyi.graphql.codegen.gradle;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 
+/**
+ * Configuration of parent interfaces to be used during code generation
+ */
 public class ParentInterfacesConfig {
 
     private String queryResolver;

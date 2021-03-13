@@ -12,7 +12,8 @@ import java.util.List;
  * @param <T> base type
  * @param <E> extension type
  */
-public abstract class ExtendedImplementingTypeDefinition<T extends ImplementingTypeDefinition<T>, E extends T> extends ExtendedDefinition<T, E> {
+public abstract class ExtendedImplementingTypeDefinition<T extends ImplementingTypeDefinition<T>, E extends T>
+        extends ExtendedDefinition<T, E> {
 
     @SuppressWarnings({"rawtypes", "java:S3740"})
     public List<Type> getImplements() {

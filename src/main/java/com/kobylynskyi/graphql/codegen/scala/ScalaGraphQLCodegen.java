@@ -12,24 +12,34 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class having only Scala-specific methods for code-generation
+ * Most of the logic is still residing in the parent class
+ */
 public class ScalaGraphQLCodegen extends GraphQLCodegen {
 
     private static final MapperFactory MAPPER_FACTORY = new ScalaMapperFactoryImpl();
 
-    public ScalaGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public ScalaGraphQLCodegen(List<String> schemas, File outputDir, MappingConfig mappingConfig,
+                               GeneratedInformation generatedInformation) {
         super(schemas, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public ScalaGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig, GeneratedInformation generatedInformation) {
+    public ScalaGraphQLCodegen(String introspectionResult, File outputDir, MappingConfig mappingConfig,
+                               GeneratedInformation generatedInformation) {
         super(introspectionResult, outputDir, mappingConfig, generatedInformation, MAPPER_FACTORY);
     }
 
-    public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
+    public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                               MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier) {
         super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, MAPPER_FACTORY);
     }
 
-    public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir, MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier, GeneratedInformation generatedInformation) {
-        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier, generatedInformation, MAPPER_FACTORY);
+    public ScalaGraphQLCodegen(List<String> schemas, String introspectionResult, File outputDir,
+                               MappingConfig mappingConfig, MappingConfigSupplier externalMappingConfigSupplier,
+                               GeneratedInformation generatedInformation) {
+        super(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
+                generatedInformation, MAPPER_FACTORY);
     }
 
     @Override
@@ -54,11 +64,13 @@ public class ScalaGraphQLCodegen extends GraphQLCodegen {
         super.initCustomTypeMappings(scalarTypeDefinitions);
         mappingConfig.putCustomTypeMappingIfAbsent("ID", String.class.getSimpleName());
         mappingConfig.putCustomTypeMappingIfAbsent("String", String.class.getSimpleName());
-        mappingConfig.putCustomTypeMappingIfAbsent("Int", "Option[Int]");
+        mappingConfig.putCustomTypeMappingIfAbsent("Int", "scala.Option[Int]");
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
-        mappingConfig.putCustomTypeMappingIfAbsent("Float", Utils.wrapString(Double.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Float",
+                Utils.wrapString(Double.class.getSimpleName(), "scala.Option[", "]"));
         mappingConfig.putCustomTypeMappingIfAbsent("Float!", Double.class.getSimpleName());
-        mappingConfig.putCustomTypeMappingIfAbsent("Boolean", Utils.wrapString(Boolean.class.getSimpleName(), "Option[", "]"));
+        mappingConfig.putCustomTypeMappingIfAbsent("Boolean",
+                Utils.wrapString(Boolean.class.getSimpleName(), "scala.Option[", "]"));
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", Boolean.class.getSimpleName());
     }
 

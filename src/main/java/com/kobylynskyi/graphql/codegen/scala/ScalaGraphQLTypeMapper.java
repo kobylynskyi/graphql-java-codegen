@@ -13,10 +13,13 @@ import java.util.Set;
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
 import static java.util.Arrays.asList;
 
+/**
+ * Mapper class for converting GraphQL types to Scala types
+ */
 public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
-    private static final String SCALA_UTIL_LIST = "Seq";
-    private static final String SCALA_UTIL_OPTIONAL = "Option";
+    private static final String SCALA_UTIL_LIST = "scala.Seq";
+    private static final String SCALA_UTIL_OPTIONAL = "scala.Option";
     private static final Set<String> SCALA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
 
@@ -36,6 +39,10 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
 
     public static boolean isScalaCollection(String scalaType) {
         return scalaType.startsWith(SCALA_UTIL_LIST + "[") && scalaType.endsWith("]");
+    }
+
+    public static String getGenericParameter(String scalaType) {
+        return scalaType.substring(SCALA_UTIL_LIST.length() + 1, scalaType.length() - 1);
     }
 
     @Override
@@ -63,7 +70,8 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
                 && !namedDefinition.isMandatory()
                 && !computedTypeName.startsWith(SCALA_UTIL_LIST)
                 && !computedTypeName.startsWith(JAVA_UTIL_LIST)
-                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {// The primitive types is Option by default
+                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
+            // Kotlin/Scala: primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }

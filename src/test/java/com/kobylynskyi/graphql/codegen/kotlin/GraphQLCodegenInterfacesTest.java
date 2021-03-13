@@ -21,17 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GraphQLCodegenInterfacesTest {
 
-    private GraphQLCodegen generator;
     private final MappingConfig mappingConfig = new MappingConfig();
-
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/interfaces");
+    private GraphQLCodegen generator;
 
     @BeforeEach
     void init() {
         mappingConfig.setGeneratedLanguage(GeneratedLanguage.KOTLIN);
         mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
-        generator = new KotlinGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/interfaces.graphqls"),
+        generator = new KotlinGraphQLCodegen(
+                Collections.singletonList("src/test/resources/schemas/interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
     }
 

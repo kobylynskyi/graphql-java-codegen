@@ -39,12 +39,15 @@ class GraphQLCodegenDeprecatedTest {
 
     @Test
     void generate_deprecated() throws Exception {
-        new KotlinGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/deprecated-with-msg.graphqls"), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new KotlinGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/deprecated-with-msg.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("CreateEventMutationResolver.kt", "Event.kt", "EventInput.kt", "EventsQueryResolver.kt",
-                "MutationResolver.kt", "Node.kt", "PinnableItem.kt", "QueryResolver.kt", "Status.kt"), generatedFileNames);
+        assertEquals(
+                Arrays.asList("CreateEventMutationResolver.kt", "Event.kt", "EventInput.kt", "EventsQueryResolver.kt",
+                        "MutationResolver.kt", "Node.kt", "PinnableItem.kt", "QueryResolver.kt", "Status.kt"),
+                generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(

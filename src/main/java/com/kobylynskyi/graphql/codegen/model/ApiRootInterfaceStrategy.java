@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Strategy of how root API interface (Query/Mutation/Subscription) will be generated
+ */
 public enum ApiRootInterfaceStrategy {
 
     /**

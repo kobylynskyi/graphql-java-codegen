@@ -8,6 +8,6 @@ package com.github.graphql
 trait CodesOfConductQueryResolver {
 
     @throws[Exception]
-    def codesOfConduct(): Seq[CodeOfConduct]
+    def codesOfConduct(): scala.Seq[CodeOfConduct]
 
 }

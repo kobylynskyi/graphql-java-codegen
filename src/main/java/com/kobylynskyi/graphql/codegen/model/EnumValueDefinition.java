@@ -14,7 +14,8 @@ public class EnumValueDefinition {
     private final List<String> javaDoc;
     private final DeprecatedDefinition deprecated;
 
-    public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc, DeprecatedDefinition deprecated) {
+    public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc,
+                               DeprecatedDefinition deprecated) {
         this.javaName = javaName;
         this.graphqlName = graphqlName;
         this.javaDoc = javaDoc;

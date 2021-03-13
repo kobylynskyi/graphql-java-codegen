@@ -40,7 +40,8 @@ class GraphQLCodegenExtendTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -60,18 +61,22 @@ class GraphQLCodegenExtendTest {
     @Test
     void generate_onlyExtend() throws Exception {
         schemaFinder.setIncludePattern("only-extend-queries.*\\.graphqls");
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         assertEquals(new HashSet<>(asList("SubscriptionResolver.java", "UserQueryResolver.java", "User.java",
-                "UsersCreatedSubscriptionResolver.java", "CreateUserMutationResolver.java", "MutationResolver.java", "QueryResolver.java",
-                "UserInput.java")), Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
-                .map(File::getName).collect(toSet()));
+                "UsersCreatedSubscriptionResolver.java", "CreateUserMutationResolver.java",
+                "MutationResolver.java", "QueryResolver.java",
+                "UserInput.java")),
+                Arrays.stream(Objects.requireNonNull(outputJavaClassesDir.listFiles()))
+                        .map(File::getName).collect(toSet()));
     }
 
     @Test
     void generateServerSideClasses_ExtensionFieldsResolvers() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -84,7 +89,8 @@ class GraphQLCodegenExtendTest {
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/extend-with-resolvers/%s.txt", file.getName())),
+                    new File(String.format("src/test/resources/expected-classes/extend-with-resolvers/%s.txt",
+                            file.getName())),
                     file);
         }
     }
@@ -93,7 +99,8 @@ class GraphQLCodegenExtendTest {
     void generateServerSideClasses_ExtensionFieldsResolvers_WithExclusions() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
         mappingConfig.setFieldsWithoutResolvers(new HashSet<>(asList("Node", "Event.assets")));
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -114,7 +121,8 @@ class GraphQLCodegenExtendTest {
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateClient(true);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -130,7 +138,8 @@ class GraphQLCodegenExtendTest {
     @Test
     void generateServerSideClasses_EmptyTypes() throws Exception {
         schemaFinder.setIncludePattern("empty-types-with-extend\\.graphqls");
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());

@@ -1,20 +1,22 @@
 ## Using dynamic proxy to implement client-side calls to GraphQL server
 
-This is an example of using dynamic proxy to implement client-side call server, so in addition to generating code, 
-you almost do not need to write any code, only need to write a little code to call the server directly (This is a very small part of the method call code).
+This is an example of using dynamic proxy to implement client-side call server, so in addition to generating code, you
+almost do not need to write any code, only need to write a little code to call the server directly (This is a very small
+part of the method call code).
 
-However, since we have simplified the client-side logic as much as possible, this method is more used when exposed as an SDK, 
-so that the users do not need to choose the fields on projection. 
-This will also have a bad effect, we can only use all fields of the projection on the returned structure by default. 
-Moreover, we also need set to default the depth of nested queries so that the proxy can end smoothly. 
-All in all, the scenarios used are limited. Currently, `.. on` and `alias` are not supported.
+However, since we have simplified the client-side logic as much as possible, this method is more used when exposed as an
+SDK, so that the users do not need to choose the fields on projection. This will also have a bad effect, we can only use
+all fields of the projection on the returned structure by default. Moreover, we also need set to default the depth of
+nested queries so that the proxy can end smoothly. All in all, the scenarios used are limited. Currently, `.. on`
+and `alias` are not supported.
 
 Here is only to provide a way, the specific implementation for reference only, not verified by production environment!
 
 > Because reflection is heavily used, don't consider this approach if you need high performance.
-  
-1. First of all, we need to implement dynamic proxy, and be able to automatically add parameters to request and select return fields on projection.
-   
+
+1. First of all, we need to implement dynamic proxy, and be able to automatically add parameters to request and select
+   return fields on projection.
+
 ```java
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
@@ -77,8 +79,8 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
 
     /**
      * proxy invoke
-     * <p>
-     * when handle projection, we use reflect to invoke method directly
+     * 
+     * <p>when handle projection, we use reflect to invoke method directly
      * but when handle request(need set parameters), we use reflect to get field which is a internal implementation of set method
      *
      * @param parentProjection
@@ -193,7 +195,8 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
 }
 ```
 
-2. Then we need to be able to proxy any resolver implementation and enable users to call resolver methods through proxy objects.
+2. Then we need to be able to proxy any resolver implementation and enable users to call resolver methods through proxy
+   objects.
 
 ```java
 
@@ -430,7 +433,7 @@ object HumanResolverScalaApp extends App {
 ```
 
 Here are some auxiliary codes, It depends on the different users.
-                               
+
 ```java
 public interface ExecutionGraphql {
 

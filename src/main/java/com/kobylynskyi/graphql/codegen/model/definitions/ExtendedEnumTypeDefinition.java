@@ -7,6 +7,9 @@ import graphql.language.EnumValueDefinition;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Extended definition of GraphQL enum type: based definition + its extensions
+ */
 public class ExtendedEnumTypeDefinition extends ExtendedDefinition<EnumTypeDefinition, EnumTypeExtensionDefinition> {
 
     /**

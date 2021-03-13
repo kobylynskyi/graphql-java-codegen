@@ -12,6 +12,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
+/**
+ * Serializer of GraphQL request.
+ * Provides ability to convert GraphQLRequest object to HTTP Json body, as well as to raw query string.
+ */
 public class GraphQLRequestSerializer {
 
     public static final ObjectMapper OBJECT_MAPPER = Utils.OBJECT_MAPPER;
@@ -37,7 +41,8 @@ public class GraphQLRequestSerializer {
                 throw new IllegalArgumentException("Null GraphQL request was supplied");
             }
             if (operation != null && operation != request.getRequest().getOperationType()) {
-                throw new IllegalArgumentException("Only operations of the same type (query/mutation/subscription) can be executed at once");
+                throw new IllegalArgumentException(
+                        "Only operations of the same type (query/mutation/subscription) can be executed at once");
             }
             queryBuilder.append(buildQuery(request)).append(" ");
         }
@@ -130,6 +135,14 @@ public class GraphQLRequestSerializer {
         return getEntry(input, false);
     }
 
+    /**
+     * Serialize object to a string
+     *
+     * @param input           can be any object or collection of objects.
+     * @param useObjectMapper if true, then use Jackson's ObjectMapper to convert from object to string,
+     *                        otherwise use toString
+     * @return serialized object
+     */
     @SuppressWarnings("java:S1872")
     public static String getEntry(Object input, boolean useObjectMapper) {
         if (input == null) {

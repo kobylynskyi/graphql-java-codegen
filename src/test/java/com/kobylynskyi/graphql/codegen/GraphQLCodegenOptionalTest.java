@@ -35,8 +35,8 @@ class GraphQLCodegenOptionalTest {
     @Test
     void generate_Optional() throws Exception {
         schemaFinder.setIncludePattern("github.*\\.graphqls");
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
-                .generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -63,13 +63,14 @@ class GraphQLCodegenOptionalTest {
         mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
         mappingConfig.setApiReturnListType("reactor.core.publisher.Flux");
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
-                .generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         // node(id: ID!): Node
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/NodeQueryResolver_mono.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/" +
+                        "NodeQueryResolver_mono.java.txt"),
                 getFileByName(files, "NodeQueryResolver.java"));
     }
 
@@ -83,14 +84,16 @@ class GraphQLCodegenOptionalTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
-                .generate();
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/InterfaceWithOptionalField.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/" +
+                        "InterfaceWithOptionalField.java.txt"),
                 getFileByName(files, "InterfaceWithOptionalField.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/TypeWithMandatoryField.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/" +
+                        "TypeWithMandatoryField.java.txt"),
                 getFileByName(files, "TypeWithMandatoryField.java"));
     }
 

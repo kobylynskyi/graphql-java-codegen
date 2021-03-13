@@ -5,6 +5,6 @@
 trait OrganizationsQueryResolver {
 
     @throws[Exception]
-    def organizations(first: Option[Int], after: String, env: graphql.schema.DataFetchingEnvironment): graphql.relay.Connection[Organization]
+    def organizations(first: scala.Option[Int], after: String, env: graphql.schema.DataFetchingEnvironment): graphql.relay.Connection[Organization]
 
 }

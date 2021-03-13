@@ -12,7 +12,8 @@ class JsonMappingConfigSupplierTest {
 
     @Test
     void loadCorrect() {
-        MappingConfig externalMappingConfig = new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
+        MappingConfig externalMappingConfig = new JsonMappingConfigSupplier(
+                "src/test/resources/json/mappingconfig.json").get();
         assertEquals("com.kobylynskyi.graphql.testconfigjson", externalMappingConfig.getPackageName());
         assertTrue(externalMappingConfig.getGenerateApis());
         assertEquals("java.math.BigDecimal", externalMappingConfig.getCustomTypesMapping().get("Price.amount"));

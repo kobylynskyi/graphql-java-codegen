@@ -28,9 +28,12 @@
 | `modelValidationAnnotation`                           | String                                                                | `@javax.validation.`<br>`constraints.NotNull`          | Annotation for mandatory (NonNull) fields. Can be null/empty. |
 | `typeResolverPrefix`                                  | String                                                                | Empty                                                  | Sets the prefix for GraphQL type resolver classes. |
 | `typeResolverSuffix`                                  | String                                                                | `Resolver`                                             | Sets the suffix for GraphQL type resolver classes. |
-| `customTypesMapping`                                  | Map(String,String)                                                    | Empty                                                  | *See [CustomTypesMapping](#option-customtypesmapping)*  |
-| `customAnnotationsMapping`                            | Map(String,String[])                                                  | Empty                                                  | *See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
-| `directiveAnnotationsMapping`                         | Map(String,String[])                                                  | Empty                                                  | *See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
+| `customTypesMapping`                                  | Map(String,String)                                                    | Empty                                                  | *
+See [CustomTypesMapping](#option-customtypesmapping)*  |
+| `customAnnotationsMapping`                            | Map(String,String[])                                                  | Empty                                                  | *
+See [CustomAnnotationsMapping](#option-customannotationsmapping)*  |
+| `directiveAnnotationsMapping`                         | Map(String,String[])                                                  | Empty                                                  | *
+See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
 | `fieldsWithResolvers`                                 | Set(String)                                                           | Empty                                                  | Fields that require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName` or `@directive`. E.g.: `Person`, `Person.friends`, `@customResolver`. |
 | `fieldsWithoutResolvers`                              | Set(String)                                                           | Empty                                                  | Fields that DO NOT require Resolvers should be defined here in format: `TypeName.fieldName` or `TypeName` or `@directive`. Can be used in conjunction with `generateExtensionFieldsResolvers` option. E.g.: `Person`, `Person.friends`, `@noResolver`. |
 | `generateParameterizedFieldsR`<br>`esolvers`          | Boolean                                                               | True                                                   | If true, then generate separate `Resolver` interface for parametrized fields. If false, then add field to the type definition and ignore field parameters. |
@@ -54,8 +57,8 @@
 
 ### Option `graphqlSchemas`
 
-When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `graphqlSchemas` block.
-The parameters inside that block are the following:
+When exact paths to GraphQL schemas are too cumbersome to provide in the `graphqlSchemaPaths`, use the `graphqlSchemas`
+block. The parameters inside that block are the following:
 
 | Key inside `graphqlSchemas` | Data Type    | Default value      | Description |
 | --------------------------- | ------------ | ------------------ | ----------- |
@@ -64,28 +67,29 @@ The parameters inside that block are the following:
 | `includePattern`            | String       | `.*\.graphqls?`    | A Java regex that file names must match to be included. It should be a regex as defined by the [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html) JDK class. It will be used to match only the file name without path. |
 | `excludedFiles`             | Set<String>  | (empty set)        | A set of files to exclude, even if they match the include pattern. These paths should be either absolute or relative to the provided `rootDir`. |
 
-
 ### Option `ApiInterfaceStrategy`
 
-Defines how to generate interfaces (resolvers) for each operation: `Query`/`Mutation`/`Subscription`.
-Provides ability to skip generation of separate interface class for each operation in favor of having a single "root" interface (see *[ApiRootInterfaceStrategy](#option-apirootinterfacestrategy)* and *[ApiNamePrefixStrategy](#option-apinameprefixstrategy)*)
+Defines how to generate interfaces (resolvers) for each operation: `Query`/`Mutation`/`Subscription`. Provides ability
+to skip generation of separate interface class for each operation in favor of having a single "root" interface (
+see *[ApiRootInterfaceStrategy](#option-apirootinterfacestrategy)*
+and *[ApiNamePrefixStrategy](#option-apinameprefixstrategy)*)
 
 | Value                                   | Description |
 | --------------------------------------- | ----------- |
 | `INTERFACE_PER_OPERATION` **(default)** | Generate separate interface classes for each GraphQL operation. |
 | `DO_NOT_GENERATE`                       | Do not generate separate interfaces classes for GraphQL operation. |
 
-
 ### Option `ApiRootInterfaceStrategy`
 
-Defines how root interface (`QueryResolver` / `MutationResolver` / `SubscriptionResolver` will be generated (in addition to separate interfaces for each query/mutation/subscription)
+Defines how root interface (`QueryResolver` / `MutationResolver` / `SubscriptionResolver` will be generated (in addition
+to separate interfaces for each query/mutation/subscription)
 
 | Value                            | Description |
 | -------------------------------- | ----------- |
 | `INTERFACE_PER_SCHEMA`           | Generate multiple super-interfaces for each graphql file. <br>Takes into account `apiNamePrefixStrategy`. <br>E.g.: `OrderServiceQueryResolver.java`, `ProductServiceQueryResolver.java`, etc. |
-| `SINGLE_INTERFACE` **(default)** | Generate a single `QueryResolver.java`, `MutationResolver.java`, `SubscriptionResolver.java` for all graphql schema files. |
+| `SINGLE_INTERFACE` **(
+default)** | Generate a single `QueryResolver.java`, `MutationResolver.java`, `SubscriptionResolver.java` for all graphql schema files. |
 | `DO_NOT_GENERATE`                | Do not generate super interface for GraphQL operations. |
-
 
 ### Option `ApiNamePrefixStrategy`
 
@@ -97,13 +101,23 @@ Defines which prefix to use for API interfaces.
 | `FOLDER_NAME_AS_PREFIX`  | Will take parent folder name as a prefix for all generated API interfaces + value of `apiNamePrefix` config option. E.g.:<br> * following schemas: *resources/order-service/schema1.graphql*, *resources/order-service/schema2.graphql*<br> * will result in: `OrderServiceQueryResolver.java`, `OrderServiceGetOrderByIdQueryResolver.java`, etc |
 | `CONSTANT` **(default)** | Will take only the value of `apiNamePrefix` config option. |
 
+resources/schemas/order-service.graphql*, *
+resources/schemas/product-service.graphql*<br> * will result in: `OrderServiceQueryResolver.java`
+, `ProductServiceQueryResolver.java`, etc | | `FOLDER_NAME_AS_PREFIX`  | Will take parent folder name as a prefix for
+all generated API interfaces + value of `apiNamePrefix` config option. E.g.:<br> * following schemas: *
+resources/order-service/schema1.graphql*, *
+resources/order-service/schema2.graphql*<br> * will result in: `OrderServiceQueryResolver.java`
+, `OrderServiceGetOrderByIdQueryResolver.java`, etc | | `CONSTANT` **(default)** | Will take only the value
+of `apiNamePrefix` config option. |
 
 ### Option `parentInterfaces`
 
-Following options can be defined if you want generated resolvers to extend certain interfaces.
-Can be handy if you are using [graphql-java-tools](https://github.com/graphql-java-kickstart/graphql-java-tools) and want your resolver classes to extend only interfaces generated by this plugin.
+Following options can be defined if you want generated resolvers to extend certain interfaces. Can be handy if you are
+using [graphql-java-tools](https://github.com/graphql-java-kickstart/graphql-java-tools) and want your resolver classes
+to extend only interfaces generated by this plugin.
 
-**Note:** if you want to include a GraphQL type name into the interface name, then use `{{TYPE}}` placeholder. E.g.: `graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>`
+**Note:** if you want to include a GraphQL type name into the interface name, then use `{{TYPE}}` placeholder.
+E.g.: `graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>`
 
 | Key inside `parentInterfaces` | Data Type | Default value | Description |
 | ----------------------------- | --------- | ------------- | ----------- |
@@ -112,41 +126,42 @@ Can be handy if you are using [graphql-java-tools](https://github.com/graphql-ja
 | `subscriptionResolver`        | String    | Empty         | Interface that will be added as "extend" to all generated api Subscription interfaces. |
 | `resolver`                    | String    | Empty         | Interface that will be added as "extend" to all generated TypeResolver interfaces. |
 
-
 ### Option `customTypesMapping`
 
-Can be used to supply custom mappings for scalars. 
+Can be used to supply custom mappings for scalars.
 
 Supports following formats:
-* Map of (GraphQLObjectName.fieldName) to (JavaType). E.g.: `Event.dateTime = java.util.Date` 
-* Map of (GraphQLType) to (JavaType). E.g.: `EpochMillis = java.time.LocalDateTime`
 
+* Map of (GraphQLObjectName.fieldName) to (JavaType). E.g.: `Event.dateTime = java.util.Date`
+* Map of (GraphQLType) to (JavaType). E.g.: `EpochMillis = java.time.LocalDateTime`
 
 ### Option `customAnnotationsMapping`
 
 Can be used to supply custom annotations (serializers) for scalars.
-`@` in front of the annotation class is optional. 
+`@` in front of the annotation class is optional.
 
 Supports following formats:
-* Map of (GraphQLObjectName.fieldName) to (JavaAnnotation). E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
-* Map of (GraphQLType) to (JavaAnnotation). E.g.: `EpochMillis = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
 
+* Map of (GraphQLObjectName.fieldName) to (JavaAnnotation).
+  E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
+* Map of (GraphQLType) to (JavaAnnotation).
+  E.g.: `EpochMillis = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
 
 ### Option `directiveAnnotationsMapping`
 
-Can be used to supply custom annotations for directives in a following format: 
-Map of (GraphQL.directiveName) to (JavaAnnotation). E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`.
+Can be used to supply custom annotations for directives in a following format:
+Map of (GraphQL.directiveName) to (JavaAnnotation).
+E.g.: `auth = @org.springframework.security.access.annotation.Secured({{roles}})`.
 `@` in front of the annotation class is optional.
 
-**Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. 
-You can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`, `{{val?toArrayOfStrings}}`.
-
-
+**Note:** In order to supply the value of directive argument to annotation, use placeholder `{{directiveArgument}}`. You
+can also use one of the formatters for directive argument value: `{{val?toString}}`, `{{val?toArray}}`
+, `{{val?toArrayOfStrings}}`.
 
 ### Option `relayConfig`
 
-Can be used to supply a custom configuration for Relay support.
-For reference see: https://www.graphql-java-kickstart.com/tools/relay/
+Can be used to supply a custom configuration for Relay support. For reference
+see: https://www.graphql-java-kickstart.com/tools/relay/
 
 | Key inside `relayConfig` | Data Type | Default value              | Description |
 | ------------------------ | --------- | -------------------------- | ----------- |
@@ -155,15 +170,16 @@ For reference see: https://www.graphql-java-kickstart.com/tools/relay/
 | `connectionType`         | String    | `graphql.relay.Connection` | Generic Connection type. |
 
 For example, the following schema:
+
 ```
 type Query { users(first: Int, after: String): UserConnection @connection(for: "User") }
 ```
+
 will result in generating the interface with the following method:
+
 ```
 graphql.relay.Connection<User> users(Integer first, String after) throws Exception;
 ```
-
-
 
 ### External mapping configuration
 

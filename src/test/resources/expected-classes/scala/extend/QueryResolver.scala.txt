@@ -11,10 +11,10 @@ trait QueryResolver {
 
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def events(): Seq[Event]
+    def events(): scala.Seq[Event]
 
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def assets(): Seq[Asset]
+    def assets(): scala.Seq[Asset]
 
 }

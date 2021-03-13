@@ -117,11 +117,11 @@ public class ParameterDefinition {
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
     }
 
-    public void setDefinitionInParentType(ParameterDefinition definitionInParentType) {
-        this.definitionInParentType = definitionInParentType;
-    }
-
     public ParameterDefinition getDefinitionInParentType() {
         return definitionInParentType;
+    }
+
+    public void setDefinitionInParentType(ParameterDefinition definitionInParentType) {
+        this.definitionInParentType = definitionInParentType;
     }
 }

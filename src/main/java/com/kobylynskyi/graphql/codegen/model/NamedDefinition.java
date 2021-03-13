@@ -1,5 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+/**
+ * Class describes a specific GraphQL type converted to a specific JVM language
+ */
 public class NamedDefinition {
 
     private String javaName;

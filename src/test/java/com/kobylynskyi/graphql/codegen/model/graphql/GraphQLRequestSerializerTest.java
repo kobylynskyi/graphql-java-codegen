@@ -29,7 +29,9 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GraphQLRequestSerializerTest {
 
@@ -64,21 +66,28 @@ class GraphQLRequestSerializerTest {
                 (Function<String, String>) GraphQLRequestSerializerTest::jsonQuery));
     }
 
+    private static String jsonQuery(String expectedQueryDecorator) {
+        return String.format("{\"query\":\"%s\"}", expectedQueryDecorator.replace("\\", "\\\\").replace("\"", "\\\""));
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializers")
-    void serialize_Null(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_Null(String name, Function<GraphQLRequest, String> serializer,
+                        Function<String, String> expectedQueryDecorator) {
         assertNull(serializer.apply(null));
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_Empty(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_Empty(String name, Function<GraphQLRequest, String> serializer,
+                         Function<String, String> expectedQueryDecorator) {
         assertNull(serializer.apply(new GraphQLRequest(null)));
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_noResponseProjection(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_noResponseProjection(String name, Function<GraphQLRequest, String> serializer,
+                                        Function<String, String> expectedQueryDecorator) {
         GraphQLRequest graphQLRequest = new GraphQLRequest(new VersionQueryRequest());
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "query { version }";
@@ -87,7 +96,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_withResponseProjection(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_withResponseProjection(String name, Function<GraphQLRequest, String> serializer,
+                                          Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")
                 .setStatus(Status.OPEN)
@@ -98,10 +108,12 @@ class GraphQLRequestSerializerTest {
                         .active()
                         .properties(new EventPropertyResponseProjection()
                                 .floatVal()
-                                .child(new EventPropertyResponseProjection()
-                                        .intVal()
-                                        .parent(new EventResponseProjection()
-                                                .id()))
+                                .child(
+                                        new EventPropertyResponseProjection()
+                                                .intVal()
+                                                .parent(
+                                                        new EventResponseProjection()
+                                                                .id()))
                                 .booleanVal())
                         .status()
         );
@@ -120,7 +132,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_withResponseProjectionAndAlias(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_withResponseProjectionAndAlias(String name, Function<GraphQLRequest, String> serializer,
+                                                  Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")
                 .setStatus(Status.OPEN)
@@ -129,13 +142,16 @@ class GraphQLRequestSerializerTest {
                 new EventResponseProjection()
                         .id("myId")
                         .active("myActive")
-                        .properties("myProps", new EventPropertyResponseProjection()
-                                .floatVal("myFloatVal")
-                                .child("myChild", new EventPropertyResponseProjection()
-                                        .intVal("myIntVal")
-                                        .parent("myParent", new EventResponseProjection()
-                                                .id("myId")))
-                                .booleanVal("myBooleanVal"))
+                        .properties("myProps",
+                                new EventPropertyResponseProjection()
+                                        .floatVal("myFloatVal")
+                                        .child("myChild",
+                                                new EventPropertyResponseProjection()
+                                                        .intVal("myIntVal")
+                                                        .parent("myParent",
+                                                                new EventResponseProjection()
+                                                                        .id("myId")))
+                                        .booleanVal("myBooleanVal"))
                         .status("myStatus")
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
@@ -144,7 +160,8 @@ class GraphQLRequestSerializerTest {
                 "myId : id " +
                 "myActive : active " +
                 "myProps : properties { " +
-                "myFloatVal : floatVal myChild : child { myIntVal : intVal myParent : parent { myId : id } } myBooleanVal : booleanVal } " +
+                "myFloatVal : floatVal myChild : child { myIntVal : intVal myParent : parent { myId" +
+                " : id } } myBooleanVal : booleanVal } " +
                 "myStatus : status " +
                 "} " +
                 "}";
@@ -153,7 +170,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_withResponseProjectionAndParametrizedInput(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_withResponseProjectionAndParametrizedInput(String name, Function<GraphQLRequest, String> serializer,
+                                                              Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")
                 .setStatus(Status.OPEN)
@@ -164,12 +182,14 @@ class GraphQLRequestSerializerTest {
                         .active()
                         .properties(new EventPropertyResponseProjection()
                                 .floatVal()
-                                .child(new EventPropertyChildParametrizedInput()
+                                .child(
+                                        new EventPropertyChildParametrizedInput()
                                                 .last(-10)
                                                 .first(+10),
                                         new EventPropertyResponseProjection()
                                                 .intVal()
-                                                .parent(new EventPropertyParentParametrizedInput()
+                                                .parent(
+                                                        new EventPropertyParentParametrizedInput()
                                                                 .withStatus(Status.OPEN),
                                                         new EventResponseProjection()
                                                                 .id()))
@@ -182,7 +202,8 @@ class GraphQLRequestSerializerTest {
                 "id " +
                 "active " +
                 "properties { " +
-                "floatVal child (first: 10, last: -10) { intVal parent (withStatus: OPEN) { id } } booleanVal } " +
+                "floatVal child (first: 10, last: -10) { intVal parent (withStatus: OPEN) { id } } " +
+                "booleanVal } " +
                 "status " +
                 "} " +
                 "}";
@@ -191,7 +212,9 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_withResponseProjectionAndParametrizedInputAndAlias(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_withResponseProjectionAndParametrizedInputAndAlias(String name,
+                                                                      Function<GraphQLRequest, String> serializer,
+                                                                      Function<String, String> expectedQueryDecorator) {
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")
                 .setStatus(Status.OPEN)
@@ -202,13 +225,16 @@ class GraphQLRequestSerializerTest {
                         .active()
                         .properties(new EventPropertyResponseProjection()
                                 .floatVal()
-                                .child("myChild", new EventPropertyChildParametrizedInput()
+                                .child("myChild",
+                                        new EventPropertyChildParametrizedInput()
                                                 .last(-10)
                                                 .first(+10),
                                         new EventPropertyResponseProjection()
                                                 .intVal()
-                                                .parent("myParent", new EventPropertyParentParametrizedInput()
-                                                                .withStatus(Status.OPEN),
+                                                .parent("myParent",
+                                                        new EventPropertyParentParametrizedInput()
+                                                                .withStatus(
+                                                                        Status.OPEN),
                                                         new EventResponseProjection()
                                                                 .id()))
                                 .booleanVal())
@@ -220,7 +246,8 @@ class GraphQLRequestSerializerTest {
                 "id " +
                 "active " +
                 "properties { " +
-                "floatVal myChild : child (first: 10, last: -10) { intVal myParent : parent (withStatus: OPEN) { id } } booleanVal } " +
+                "floatVal myChild : child (first: 10, last: -10) { intVal myParent : parent " +
+                "(withStatus: OPEN) { id } } booleanVal } " +
                 "status " +
                 "} " +
                 "}";
@@ -229,7 +256,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_complexRequestWithDefaultData(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_complexRequestWithDefaultData(String name, Function<GraphQLRequest, String> serializer,
+                                                 Function<String, String> expectedQueryDecorator) {
         UpdateIssueMutationRequest requestWithDefaultData = new UpdateIssueMutationRequest();
         requestWithDefaultData.setInput(new UpdateIssueInput());
         GraphQLRequest graphQLRequest = new GraphQLRequest(requestWithDefaultData,
@@ -249,7 +277,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_UseObjectMapperForSomeFields(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_UseObjectMapperForSomeFields(String name, Function<GraphQLRequest, String> serializer,
+                                                Function<String, String> expectedQueryDecorator) {
         GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
                 new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
 
@@ -267,7 +296,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_UseObjectMapperForQueryParameter(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_UseObjectMapperForQueryParameter(String name, Function<GraphQLRequest, String> serializer,
+                                                    Function<String, String> expectedQueryDecorator) {
         GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
                 new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
 
@@ -282,7 +312,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_UseObjectMapperForParameterizedInput(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_UseObjectMapperForParameterizedInput(String name, Function<GraphQLRequest, String> serializer,
+                                                        Function<String, String> expectedQueryDecorator) {
         GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
                 new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
 
@@ -293,9 +324,15 @@ class GraphQLRequestSerializerTest {
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
                         .properties(new EventPropertyResponseProjection()
-                                .child(new EventPropertyResponseProjection()
-                                                .parent(new EventPropertyParentParametrizedInput()
-                                                                .createdAfter(ZonedDateTime.of(2007, 1, 9, 9, 41, 0, 0, ZoneOffset.UTC)),
+                                .child(
+                                        new EventPropertyResponseProjection()
+                                                .parent(
+                                                        new EventPropertyParentParametrizedInput()
+                                                                .createdAfter(
+                                                                        ZonedDateTime
+                                                                                .of(2007, 1, 9,
+                                                                                        9, 41, 0, 0,
+                                                                                        ZoneOffset.UTC)),
                                                         new EventResponseProjection()
                                                                 .id())))
         );
@@ -311,7 +348,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_complexRequest(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_complexRequest(String name, Function<GraphQLRequest, String> serializer,
+                                  Function<String, String> expectedQueryDecorator) {
         UpdateIssueMutationRequest updateIssueMutationRequest = new UpdateIssueMutationRequest();
         UpdateIssueInput input = new UpdateIssueInput();
         input.setStringListEmptyDefault(Arrays.asList("", "1", null, "\""));
@@ -326,31 +364,36 @@ class GraphQLRequestSerializerTest {
         String expectedQueryStr = "mutation { updateIssue(input: { " +
                 "floatVal: 1.23, booleanVal: false, intVal: 42, " +
                 "stringVal: \"default \\\" \\\\ \\b \\f \\n \\r \\t ሴ \", " +
-                "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ \"\", \"1\", null, \"\\\"\" ] }){ " +
+                "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ \"\", \"1\", null, " +
+                "\"\\\"\" ] }){ " +
                 "clientMutationId issue { activeLockReason } } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_withConditionalFragments(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_withConditionalFragments(String name, Function<GraphQLRequest, String> serializer,
+                                            Function<String, String> expectedQueryDecorator) {
         GraphQLRequest graphQLRequest = new GraphQLRequest(new UpdateIssueMutationRequest(),
                 new UpdateIssuePayloadResponseProjection()
                         .union(new UpdateNodeUnionResponseProjection()
                                 .onIssue(new IssueResponseProjection()
                                         .activeLockReason())
-                                .onOrganization(new OrganizationResponseProjection()
-                                        .name())
+                                .onOrganization(
+                                        new OrganizationResponseProjection()
+                                                .name())
                                 .typename()));
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "mutation { updateIssue{ " +
-                "union { ...on Issue { activeLockReason } ...on Organization { name } __typename } } }";
+                "union { ...on Issue { activeLockReason } ...on Organization { name } __typename } " +
+                "} }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_collectionRequest(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_collectionRequest(String name, Function<GraphQLRequest, String> serializer,
+                                     Function<String, String> expectedQueryDecorator) {
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
                 .setIds(Arrays.asList("\"", "\\", "\b", "\f", "\n", "\r", "\t", "\u1234"))
                 .build();
@@ -373,7 +416,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_collectionRequest_Null(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_collectionRequest_Null(String name, Function<GraphQLRequest, String> serializer,
+                                          Function<String, String> expectedQueryDecorator) {
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
                 .setContextId("something")
                 .setIds(null)
@@ -390,7 +434,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
-    void serialize_AllInputsNull(String name, Function<GraphQLRequest, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_AllInputsNull(String name, Function<GraphQLRequest, String> serializer,
+                                 Function<String, String> expectedQueryDecorator) {
         EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
                 .setContextId(null)
                 .setIds(null)
@@ -407,8 +452,10 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
-    void serialize_multipleRequests(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
-        EventsByCategoryAndStatusQueryRequest request1 = new EventsByCategoryAndStatusQueryRequest.Builder().alias("req1").setStatus(Status.OPEN).build();
+    void serialize_multipleRequests(String name, Function<GraphQLRequests, String> serializer,
+                                    Function<String, String> expectedQueryDecorator) {
+        EventsByCategoryAndStatusQueryRequest request1 = new EventsByCategoryAndStatusQueryRequest.Builder()
+                .alias("req1").setStatus(Status.OPEN).build();
         GraphQLRequest graphQLRequest1 = new GraphQLRequest(request1, new EventResponseProjection().id());
 
         EventsByCategoryAndStatusQueryRequest request2 = new EventsByCategoryAndStatusQueryRequest("req2");
@@ -417,7 +464,9 @@ class GraphQLRequestSerializerTest {
         EventsByCategoryAndStatusQueryRequest request21 = new EventsByCategoryAndStatusQueryRequest();
         GraphQLRequest graphQLRequest21 = new GraphQLRequest(request21);
 
-        String serializedQuery = serializer.apply(new GraphQLRequests(graphQLRequest1, graphQLRequest2, graphQLRequest21)).replaceAll(" +", " ").trim();
+        String serializedQuery = serializer
+                .apply(new GraphQLRequests(graphQLRequest1, graphQLRequest2, graphQLRequest21)).replaceAll(" +", " ")
+                .trim();
         String expectedQueryStr = "query { " +
                 "req1: eventsByCategoryAndStatus(status: OPEN){ id } " +
                 "req2: eventsByCategoryAndStatus{ id status } " +
@@ -428,7 +477,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
-    void serialize_multipleRequests_DiffTypes(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_multipleRequests_DiffTypes(String name, Function<GraphQLRequests, String> serializer,
+                                              Function<String, String> expectedQueryDecorator) {
         GraphQLRequests graphQLRequests = new GraphQLRequests(
                 new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
                 new GraphQLRequest(new UpdateIssueMutationRequest()));
@@ -438,7 +488,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
-    void serialize_multipleRequests_NullRequest(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_multipleRequests_NullRequest(String name, Function<GraphQLRequests, String> serializer,
+                                                Function<String, String> expectedQueryDecorator) {
         GraphQLRequests graphQLRequests = new GraphQLRequests(
                 new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
                 null);
@@ -448,7 +499,8 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
-    void serialize_multipleRequests_NullRequestRequest(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_multipleRequests_NullRequestRequest(String name, Function<GraphQLRequests, String> serializer,
+                                                       Function<String, String> expectedQueryDecorator) {
         GraphQLRequests graphQLRequests = new GraphQLRequests(
                 new GraphQLRequest(new EventsByCategoryAndStatusQueryRequest()),
                 new GraphQLRequest(null));
@@ -458,14 +510,11 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideStaticSerializerForMultiRequest")
-    void serialize_multipleRequests_NoRequests(String name, Function<GraphQLRequests, String> serializer, Function<String, String> expectedQueryDecorator) {
+    void serialize_multipleRequests_NoRequests(String name, Function<GraphQLRequests, String> serializer,
+                                               Function<String, String> expectedQueryDecorator) {
         GraphQLRequests graphQLRequests = new GraphQLRequests();
 
         assertThrows(IllegalArgumentException.class, () -> serializer.apply(graphQLRequests));
-    }
-
-    private static String jsonQuery(String expectedQueryDecorator) {
-        return String.format("{\"query\":\"%s\"}", expectedQueryDecorator.replace("\\", "\\\\").replace("\"", "\\\""));
     }
 
 }

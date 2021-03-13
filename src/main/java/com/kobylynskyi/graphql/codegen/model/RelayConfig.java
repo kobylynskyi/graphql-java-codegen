@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import java.io.Serializable;
 
+/**
+ * Relay-related configurations
+ */
 public class RelayConfig implements Serializable {
 
     // Increment this when the serialization output changes

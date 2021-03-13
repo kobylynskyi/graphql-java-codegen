@@ -1,6 +1,10 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-@SuppressWarnings({"java:S115"}) // comes from graphql-java library
+/**
+ * Possible types of GraphQL errors
+ * Copied from graphql-java library
+ */
+@SuppressWarnings({"java:S115"})
 public enum GraphQLErrorType {
     InvalidSyntax,
     ValidationError,

@@ -16,7 +16,7 @@ case class GithubAcceptTopicSuggestionInputTO(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (clientMutationId != null) "clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId) else "",
             if (name != null) "name: " + GraphQLRequestSerializer.getEntry(name) else "",
             if (repositoryId != null) "repositoryId: " + GraphQLRequestSerializer.getEntry(repositoryId) else ""

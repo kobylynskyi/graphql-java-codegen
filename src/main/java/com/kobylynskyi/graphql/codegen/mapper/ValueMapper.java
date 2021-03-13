@@ -19,6 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A class for mapping GraphQL value to a java value
+ */
 public class ValueMapper {
 
     private static final String NULL_STRING = "null";
@@ -36,10 +39,20 @@ public class ValueMapper {
         return value.isValue() ? "true" : "false";
     }
 
-    //TODO It should also be abstracted. Different languages have different default values(It is now implemented in templates (templates are extremely complex))
+    /**
+     * Map value of GraphQL Int type to a value that will be present in a generated code.
+     * TODO: should also be abstracted because different languages have different default values
+     *
+     * @param mappingContext Global mapping context
+     * @param value          GraphQL Value
+     * @param graphQLType    GraphQL Type
+     * @return formatted value
+     */
     private static String mapInt(MappingContext mappingContext, IntValue value, Type<?> graphQLType) {
-        //default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be defined as `int` in graphql schema.
-        //`int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is Double in java, so, not modify `mapFloat`.
+        // default java basic type is `int`. so, default value like 123 that must wrap or append suffix `L` when it be
+        // defined as `int` in graphql schema.
+        // `int` cannot assign to `Long`, also `double` cannot assign to `Float`, but graphql Float default mapping is
+        //  Double in java, so, not modify `mapFloat`.
         if (graphQLType instanceof TypeName) {
             String customType = mappingContext.getCustomTypesMapping().get("Long");
             String typeName = ((TypeName) graphQLType).getName();
@@ -67,6 +80,15 @@ public class ValueMapper {
         return map(mappingContext, value, graphQLType, null);
     }
 
+    /**
+     * Map GraphQL value of a given type according to a formatter
+     *
+     * @param mappingContext Global mapping context
+     * @param value          GraphQL Value
+     * @param graphQLType    GraphQL Type
+     * @param formatter      value formatter
+     * @return formatted value
+     */
     public String map(MappingContext mappingContext, Value<?> value, Type<?> graphQLType,
                       String formatter) {
         if (value instanceof NullValue) {

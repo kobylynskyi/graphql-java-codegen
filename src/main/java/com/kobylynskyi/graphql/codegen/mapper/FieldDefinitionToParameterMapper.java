@@ -41,27 +41,35 @@ public class FieldDefinitionToParameterMapper {
                                                     ExtendedDefinition<?, ?> parentDefinition) {
         String parentTypeName = parentDefinition.getName();
         boolean noResolverForWholeType = mappingContext.getFieldsWithoutResolvers().contains(parentTypeName);
-        boolean noResolverForSpecificField = mappingContext.getFieldsWithoutResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        boolean noResolverForSpecificField = mappingContext.getFieldsWithoutResolvers()
+                .contains(parentTypeName + "." + fieldDef.getName());
         if (noResolverForWholeType || noResolverForSpecificField) {
             return false;
         }
         for (String fieldWithoutResolver : mappingContext.getFieldsWithoutResolvers()) {
-            boolean noResolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(fd -> fieldWithoutResolver.equals("@" + fd));
-            boolean noResolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(fd -> fieldWithoutResolver.equals("@" + fd.getName()));
+            boolean noResolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(
+                    fd -> fieldWithoutResolver.equals("@" + fd));
+            boolean noResolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(
+                    fd -> fieldWithoutResolver.equals("@" + fd.getName()));
             if (noResolverForWholeTypeViaDirective || noResolverForSpecificFieldViaDirective) {
                 return false;
             }
         }
-        boolean resolverForParamField = mappingContext.getGenerateParameterizedFieldsResolvers() && !Utils.isEmpty(fieldDef.getInputValueDefinitions());
-        boolean resolverForExtendedType = mappingContext.getGenerateExtensionFieldsResolvers() && fieldDef.isFromExtension();
+        boolean resolverForParamField = mappingContext.getGenerateParameterizedFieldsResolvers() && !Utils
+                .isEmpty(fieldDef.getInputValueDefinitions());
+        boolean resolverForExtendedType = mappingContext.getGenerateExtensionFieldsResolvers() && fieldDef
+                .isFromExtension();
         boolean resolverForWholeType = mappingContext.getFieldsWithResolvers().contains(parentTypeName);
-        boolean resolverForTypeField = mappingContext.getFieldsWithResolvers().contains(parentTypeName + "." + fieldDef.getName());
+        boolean resolverForTypeField = mappingContext.getFieldsWithResolvers()
+                .contains(parentTypeName + "." + fieldDef.getName());
         if (resolverForParamField || resolverForExtendedType || resolverForWholeType || resolverForTypeField) {
             return true;
         }
         for (String fieldWithResolver : mappingContext.getFieldsWithResolvers()) {
-            boolean resolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(fd -> fieldWithResolver.equals("@" + fd));
-            boolean resolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(fd -> fieldWithResolver.equals("@" + fd.getName()));
+            boolean resolverForWholeTypeViaDirective = parentDefinition.getDirectiveNames().stream().anyMatch(
+                    fd -> fieldWithResolver.equals("@" + fd));
+            boolean resolverForSpecificFieldViaDirective = fieldDef.getDirectives().stream().anyMatch(
+                    fd -> fieldWithResolver.equals("@" + fd.getName()));
             if (resolverForWholeTypeViaDirective || resolverForSpecificFieldViaDirective) {
                 return true;
             }
@@ -81,7 +89,8 @@ public class FieldDefinitionToParameterMapper {
                                                List<ExtendedFieldDefinition> fieldDefinitions,
                                                ExtendedDefinition<?, ?> parentDefinition) {
         return fieldDefinitions.stream()
-                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
+                .filter(
+                        fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
                 .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition.getName()))
                 .collect(toList());
     }
@@ -112,13 +121,16 @@ public class FieldDefinitionToParameterMapper {
      */
     private ParameterDefinition mapField(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
                                          String parentTypeName) {
-        NamedDefinition namedDefinition = graphQLTypeMapper.getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+        NamedDefinition namedDefinition = graphQLTypeMapper
+                .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
 
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
         parameter.setOriginalName(fieldDef.getName());
-        parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName()));
-        parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
+        parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition,
+                namedDefinition.getJavaName()));
+        parameter.setAnnotations(
+                graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
         parameter.setMandatory(namedDefinition.isMandatory());

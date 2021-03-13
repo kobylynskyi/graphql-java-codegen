@@ -6,7 +6,6 @@ import io.github.kobylynskyi.order.model.Order;
 import io.github.kobylynskyi.order.model.OrderNotFoundException;
 import io.github.kobylynskyi.order.model.Product;
 import io.github.kobylynskyi.order.model.UnableToRetrieveProductException;
-import io.github.kobylynskyi.order.model.UnableToRetrieveProductsException;
 import io.github.kobylynskyi.order.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +38,26 @@ public class OrderService {
         return saved;
     }
 
-    public Order addProduct(String orderId, String productId, int quantity) throws OrderNotFoundException, UnableToRetrieveProductException, UnableToRetrieveProductsException {
+    public Order addProduct(String orderId, String productId, int quantity)
+            throws OrderNotFoundException, UnableToRetrieveProductException {
         Order order = getOrderById(orderId);
-
-        Product product = productService.getProduct(productId);
         // for bulk use:
         // Product product = productService.getProducts(Collections.singletonList(productId)).get(0);
-        Item item = order.getItems().stream()
+        Product product = productService.getProduct(productId);
+        Item item = getItem(productId, order);
+        updateOrderItem(item, product, quantity);
+        repository.save(order);
+        log.info("Added product [id: {}] to the order [id: {}]", product.getId(), order.getId());
+        return order;
+    }
+
+    private void updateOrderItem(Item item, Product product, int quantity) {
+        item.setQuantity(item.getQuantity() + quantity);
+        item.setTotal(product.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+    }
+
+    private Item getItem(String productId, Order order) {
+        return order.getItems().stream()
                 .filter(p -> p.getProductId().equals(productId))
                 .findFirst()
                 .orElseGet(() -> {
@@ -53,11 +65,6 @@ public class OrderService {
                     order.getItems().add(newItem);
                     return newItem;
                 });
-        item.setQuantity(item.getQuantity() + quantity);
-        item.setTotal(product.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
-        repository.save(order);
-        log.info("Added product [id: {}] to the order [id: {}]", product.getId(), order.getId());
-        return order;
     }
 
 }

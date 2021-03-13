@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GraphQLCodegenModelsForRootTypesTest {
 
+    public static final List<String> SCHEMAS = singletonList("src/test/resources/schemas/test.graphqls");
     private final MappingConfig mappingConfig = new MappingConfig();
     private final GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/rootmodels");
-    public static final List<String> SCHEMAS = singletonList("src/test/resources/schemas/test.graphqls");
 
     @BeforeEach
     void init() {
@@ -59,8 +59,8 @@ class GraphQLCodegenModelsForRootTypesTest {
                 () -> new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo),
                 "Expected generate() to throw, but it didn't");
 
-        assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and type resolver classes",
-                thrown.getMessage());
+        assertEquals("Either disable APIs generation or set different Prefix/Suffix for API classes and " +
+                        "type resolver classes", thrown.getMessage());
     }
 
     @Test

@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A class describing GraphQL error
+ */
 public class GraphQLError {
 
     private String message;
@@ -66,8 +69,12 @@ public class GraphQLError {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GraphQLError that = (GraphQLError) o;
         return Objects.equals(message, that.message) &&
                 Objects.equals(locations, that.locations) &&

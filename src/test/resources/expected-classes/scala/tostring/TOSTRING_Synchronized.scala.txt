@@ -21,7 +21,7 @@ case class Synchronized(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (void != null)  "void: \"void\""  else "",
             "wait: " + Wait,
             "this: " + `this`,

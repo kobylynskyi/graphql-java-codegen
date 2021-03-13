@@ -69,7 +69,8 @@ class GraphQLCodegenTest {
         assertEquals(Arrays.asList(
                 "CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java", "EventProperty.java",
                 "EventStatus.java", "EventsByCategoryAndStatusQueryResolver.java", "EventsByIdsQueryResolver.java",
-                "EventsCreatedSubscriptionResolver.java", "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java",
+                "EventsCreatedSubscriptionResolver.java", "MutationResolver.java", "QueryResolver.java",
+                "SubscriptionResolver.java",
                 "VersionQueryResolver.java"), generatedFileNames);
 
         for (File file : files) {
@@ -101,7 +102,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_CustomMappings_Nested() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));
+        mappingConfig
+                .setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));
 
         generate("src/test/resources/schemas/test.graphqls");
 
@@ -141,7 +143,8 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
         assertFileContainsElements(files, "Event.java", System.lineSeparator() +
                 "/**" + System.lineSeparator() +
-                " * An event that describes a thing that happens" + System.lineSeparator() +
+                " * An event that describes a thing that happens" + System
+                .lineSeparator() +
                 " */" + System.lineSeparator());
     }
 
@@ -155,7 +158,9 @@ class GraphQLCodegenTest {
         File[] apiFiles = Objects.requireNonNull(new File(outputJavaClassesDir, "api").listFiles());
         List<String> generatedApiFileNames = Arrays.stream(apiFiles).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("CreateEventMutationResolver.java", "EventByIdQueryResolver.java",
-                "EventsByCategoryAndStatusQueryResolver.java", "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "MutationResolver.java", "QueryResolver.java",
+                "EventsByCategoryAndStatusQueryResolver.java", "EventsByIdsQueryResolver.java",
+                "EventsCreatedSubscriptionResolver.java", "MutationResolver.java",
+                "QueryResolver.java",
                 "SubscriptionResolver.java", "VersionQueryResolver.java"), generatedApiFileNames);
 
         for (File apiFile : apiFiles) {
@@ -197,7 +202,8 @@ class GraphQLCodegenTest {
             }
         }
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/EventPropertyTO_withEqualsAndHashCode.java.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/EventPropertyTO_withEqualsAndHashCode.java.txt"),
                 getFileByName(files, "EventPropertyTO.java"));
     }
 
@@ -236,7 +242,8 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertNotEquals(0, files.length);
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/EventPropertyTO_withoutGeneratedAnnotation.java.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/EventPropertyTO_withoutGeneratedAnnotation.java.txt"),
                 getFileByName(files, "EventPropertyTO.java"));
     }
 
@@ -250,7 +257,8 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_WrongSchema() {
-        GraphQLCodegen graphQLCodegen = new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/wrong.graphqls"),
+        GraphQLCodegen graphQLCodegen = new JavaGraphQLCodegen(
+                singletonList("src/test/resources/schemas/wrong.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
 
         assertThrows(NoSuchFileException.class, graphQLCodegen::generate);
@@ -332,7 +340,8 @@ class GraphQLCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "EventsCreatedSubscriptionResolver.java",
-                "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws Exception;");
+                "org.reactivestreams.Publisher<java.util.List<Event>> eventsCreated() throws " +
+                        "Exception;");
     }
 
     @Test
@@ -341,8 +350,10 @@ class GraphQLCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("CreateEventMutationResolver.java", "Event.java", "EventInput.java", "EventsQueryResolver.java",
-                "MutationResolver.java", "Node.java", "PinnableItem.java", "QueryResolver.java", "Status.java"), generatedFileNames);
+        assertEquals(Arrays.asList("CreateEventMutationResolver.java", "Event.java", "EventInput.java",
+                "EventsQueryResolver.java",
+                "MutationResolver.java", "Node.java", "PinnableItem.java", "QueryResolver.java",
+                "Status.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
@@ -357,7 +368,8 @@ class GraphQLCodegenTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProductsByCategoryIdAndStatusQueryResolver.java.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/ProductsByCategoryIdAndStatusQueryResolver.java.txt"),
                 getFileByName(files, "ProductsByCategoryIdAndStatusQueryResolver.java"));
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/ProductsByIdsQueryResolver.java.txt"),

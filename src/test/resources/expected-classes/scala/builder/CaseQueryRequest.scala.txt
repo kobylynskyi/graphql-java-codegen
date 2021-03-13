@@ -3,7 +3,7 @@ package com.kobylynskyi.graphql.codegen.prot
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest
 import java.util.{ LinkedHashMap => JLinkedHashMap }
-import java.util.{ Map => JMap }
+import java.util.{ Map => JMap, Set => JSet }
 import java.util.Objects
 import scala.collection.mutable
 import scala.collection.JavaConverters._
@@ -17,7 +17,7 @@ class CaseQueryRequest(alias: String) extends GraphQLOperationRequest {
     private final lazy val input = new JLinkedHashMap[String, java.lang.Object]()
     private final lazy val useObjectMapperForInputSerialization: mutable.Set[String] = mutable.Set()
 
-    def setFinal(`final`: Seq[Char]): Unit = {
+    def setFinal(`final`: scala.Seq[Char]): Unit = {
         this.input.put("final", `final`)
     }
 
@@ -29,7 +29,7 @@ class CaseQueryRequest(alias: String) extends GraphQLOperationRequest {
 
     override def getInput(): JMap[String, java.lang.Object] = input
 
-    override def getUseObjectMapperForInputSerialization(): java.util.Set[String] = useObjectMapperForInputSerialization.asJava
+    override def getUseObjectMapperForInputSerialization(): JSet[String] = useObjectMapperForInputSerialization.asJava
 
     override def equals(obj: Any): Boolean = {
         if (this == obj) {

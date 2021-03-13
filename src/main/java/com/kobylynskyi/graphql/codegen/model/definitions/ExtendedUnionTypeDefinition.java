@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Extended definition of GraphQL union type: based definition + its extensions
+ */
 public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDefinition, UnionTypeExtensionDefinition> {
 
     private Set<String> memberTypeNames;
@@ -16,7 +19,8 @@ public class ExtendedUnionTypeDefinition extends ExtendedDefinition<UnionTypeDef
      * Find out if a given definition is part of a union.
      *
      * @param definition GraphQL definition (type / interface / object / union / etc.)
-     * @return <b>true</b> if <code>definition</code> is a part of <code>union</code>. <b>false</b>if <code>definition</code> is a part of <code>union</code>.
+     * @return <b>true</b> if <code>definition</code> is a part of <code>union</code>. <b>false</b>if
+     * <code>definition</code> is a part of <code>union</code>.
      */
     public boolean isDefinitionPartOfUnion(ExtendedDefinition<?, ?> definition) {
         return getMemberTypeNames().contains(definition.getName());

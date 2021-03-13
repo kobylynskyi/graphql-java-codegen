@@ -23,6 +23,10 @@ class GraphQLCodegenGitHubTest {
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
     private final MappingConfig mappingConfig = new MappingConfig();
 
+    private static String getFileContent(File[] files, String fileName) throws IOException {
+        return Utils.getFileContent(getFileByName(files, fileName).getPath());
+    }
+
     @BeforeEach
     void init() {
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
@@ -101,9 +105,12 @@ class GraphQLCodegenGitHubTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/SearchResultItemConnectionResponseProjection.java.txt"),
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/response" +
+                                "/SearchResultItemConnectionResponseProjection.java.txt"),
                 getFileByName(files, "SearchResultItemConnectionResponseProjection.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/SearchResultItemResponseProjection.java.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/response/SearchResultItemResponseProjection.java.txt"),
                 getFileByName(files, "SearchResultItemResponseProjection.java"));
     }
 
@@ -120,10 +127,6 @@ class GraphQLCodegenGitHubTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_withoutPrimitives.java.txt"),
                 getFileByName(files, "Commit.java"));
-    }
-
-    private static String getFileContent(File[] files, String fileName) throws IOException {
-        return Utils.getFileContent(getFileByName(files, fileName).getPath());
     }
 
 }

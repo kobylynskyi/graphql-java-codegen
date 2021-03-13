@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
 import io.github.kobylynskyi.starwars.graphql.Droid;
 import io.github.kobylynskyi.starwars.graphql.Human;
 
+/**
+ * Resolver of Character type
+ */
 public class CharacterTypeResolver extends TypeIdResolverBase {
 
     private JavaType superType;

@@ -31,10 +31,16 @@ public class ExtendedFieldDefinition extends FieldDefinition {
                 .stream()
                 .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
                 .findFirst()
-                .map(directive -> MultiLanguageDeprecated.getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
+                .map(directive -> MultiLanguageDeprecated
+                        .getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
                 .orElse(null);
     }
 
+    /**
+     * Get java doc of GraphQL field
+     *
+     * @return a list of Java docs for this GraphQL field
+     */
     public List<String> getJavaDoc() {
         Description description = getDescription();
         if (description != null && Utils.isNotBlank(description.getContent())) {

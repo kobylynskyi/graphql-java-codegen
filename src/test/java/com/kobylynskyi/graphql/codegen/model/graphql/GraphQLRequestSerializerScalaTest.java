@@ -7,12 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class GraphQLRequestSerializerScalaTest {
 
-    @Test
-    void scalaOptionToString() {
-        assertEquals("1", getEntry(new Some()));
-        assertNull(getEntry(new None$()));
-    }
-
     //Original method cannot test in Java
     public static String getEntry(Object input) {
         if (input.getClass().getSimpleName().equals("Some")) {
@@ -21,6 +15,12 @@ class GraphQLRequestSerializerScalaTest {
             return null;
         }
         return input.toString();
+    }
+
+    @Test
+    void scalaOptionToString() {
+        assertEquals("1", getEntry(new Some()));
+        assertNull(getEntry(new None$()));
     }
 
     interface Option {

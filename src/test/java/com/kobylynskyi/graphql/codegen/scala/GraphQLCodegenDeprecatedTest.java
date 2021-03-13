@@ -39,16 +39,20 @@ class GraphQLCodegenDeprecatedTest {
 
     @Test
     void generate_deprecated() throws Exception {
-        new ScalaGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/deprecated-with-msg.graphqls"), outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        new ScalaGraphQLCodegen(Collections.singletonList("src/test/resources/schemas/deprecated-with-msg.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("CreateEventMutationResolver.scala", "Event.scala", "EventInput.scala", "EventsQueryResolver.scala",
-                "MutationResolver.scala", "Node.scala", "PinnableItem.scala", "QueryResolver.scala", "Status.scala"), generatedFileNames);
+        assertEquals(Arrays.asList("CreateEventMutationResolver.scala", "Event.scala", "EventInput.scala",
+                "EventsQueryResolver.scala",
+                "MutationResolver.scala", "Node.scala", "PinnableItem.scala", "QueryResolver.scala",
+                "Status.scala"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/scala/deprecated/%s.txt", file.getName())),
+                    new File(String.format("src/test/resources/expected-classes/scala/deprecated/%s.txt",
+                            file.getName())),
                     file);
         }
     }

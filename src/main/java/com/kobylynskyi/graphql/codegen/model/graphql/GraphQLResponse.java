@@ -2,6 +2,9 @@ package com.kobylynskyi.graphql.codegen.model.graphql;
 
 import java.util.Map;
 
+/**
+ * Generic class having content of GraphQL response
+ */
 public class GraphQLResponse extends GraphQLResult<Map<String, Object>> {
 
     public GraphQLResponse() {

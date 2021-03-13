@@ -2,68 +2,82 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.MapperFactory;
 
+/**
+ * Factory of data model mappers
+ */
 public class DataModelMapperFactory {
 
-    private final EnumDefinitionToDataModelMapper enumDefinitionToDataModelMapper;
-    private final FieldDefinitionsToResolverDataModelMapper fieldDefinitionsToResolverDataModelMapper;
-    private final InputDefinitionToDataModelMapper inputDefinitionToDataModelMapper;
-    private final InterfaceDefinitionToDataModelMapper interfaceDefinitionToDataModelMapper;
-    private final RequestResponseDefinitionToDataModelMapper requestResponseDefinitionToDataModelMapper;
-    private final TypeDefinitionToDataModelMapper typeDefinitionToDataModelMapper;
-    private final UnionDefinitionToDataModelMapper unionDefinitionToDataModelMapper;
+    private final EnumDefinitionToDataModelMapper enumDefToDataModelMapper;
+    private final FieldDefinitionsToResolverDataModelMapper fieldDefsToResolverDataModelMapper;
+    private final InputDefinitionToDataModelMapper inputDefToDataModelMapper;
+    private final InterfaceDefinitionToDataModelMapper interfaceDefToDataModelMapper;
+    private final RequestResponseDefinitionToDataModelMapper requestResponseDefToDataModelMapper;
+    private final TypeDefinitionToDataModelMapper typeDefToDataModelMapper;
+    private final UnionDefinitionToDataModelMapper unionDefToDataModelMapper;
 
     private final DataModelMapper dataModelMapper;
-    private final FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper;
+    private final FieldDefinitionToParameterMapper fieldDefToParamMapper;
 
+    /**
+     * Constructor for creating a new DataModelMapperFactory based on a MapperFactory
+     *
+     * @param generatedLanguageMapperFactory Mapper factory of a generated language
+     */
     public DataModelMapperFactory(MapperFactory generatedLanguageMapperFactory) {
         ValueFormatter valueFormatter = generatedLanguageMapperFactory.createValueFormatter();
         dataModelMapper = generatedLanguageMapperFactory.createDataModelMapper();
         ValueMapper valueMapper = new ValueMapper(valueFormatter, dataModelMapper);
-        GraphQLTypeMapper graphQLTypeMapper = generatedLanguageMapperFactory.createGraphQLTypeMapper(valueMapper);
-        fieldDefinitionToParameterMapper = new FieldDefinitionToParameterMapper(graphQLTypeMapper, dataModelMapper);
-        InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper = new InputValueDefinitionToParameterMapper(valueMapper, graphQLTypeMapper, dataModelMapper);
-        enumDefinitionToDataModelMapper = new EnumDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
-        unionDefinitionToDataModelMapper = new UnionDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper);
-        typeDefinitionToDataModelMapper = new TypeDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper);
-        interfaceDefinitionToDataModelMapper = new InterfaceDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper);
-        inputDefinitionToDataModelMapper = new InputDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, inputValueDefinitionToParameterMapper);
-        fieldDefinitionsToResolverDataModelMapper = new FieldDefinitionsToResolverDataModelMapper(graphQLTypeMapper, dataModelMapper, inputValueDefinitionToParameterMapper);
-        requestResponseDefinitionToDataModelMapper = new RequestResponseDefinitionToDataModelMapper(graphQLTypeMapper, dataModelMapper, fieldDefinitionToParameterMapper, inputValueDefinitionToParameterMapper);
+        GraphQLTypeMapper graphQlTypeMapper = generatedLanguageMapperFactory.createGraphQLTypeMapper(valueMapper);
+        fieldDefToParamMapper = new FieldDefinitionToParameterMapper(graphQlTypeMapper, dataModelMapper);
+        enumDefToDataModelMapper = new EnumDefinitionToDataModelMapper(graphQlTypeMapper, dataModelMapper);
+        unionDefToDataModelMapper = new UnionDefinitionToDataModelMapper(graphQlTypeMapper, dataModelMapper);
+        typeDefToDataModelMapper = new TypeDefinitionToDataModelMapper(graphQlTypeMapper, dataModelMapper,
+                fieldDefToParamMapper);
+        interfaceDefToDataModelMapper = new InterfaceDefinitionToDataModelMapper(graphQlTypeMapper, dataModelMapper,
+                fieldDefToParamMapper);
+        InputValueDefinitionToParameterMapper inputValueDefToParamMapper = new InputValueDefinitionToParameterMapper(
+                valueMapper, graphQlTypeMapper, dataModelMapper);
+        inputDefToDataModelMapper = new InputDefinitionToDataModelMapper(graphQlTypeMapper, dataModelMapper,
+                inputValueDefToParamMapper);
+        fieldDefsToResolverDataModelMapper = new FieldDefinitionsToResolverDataModelMapper(
+                graphQlTypeMapper, dataModelMapper, inputValueDefToParamMapper);
+        requestResponseDefToDataModelMapper = new RequestResponseDefinitionToDataModelMapper(
+                graphQlTypeMapper, dataModelMapper, fieldDefToParamMapper, inputValueDefToParamMapper);
     }
 
     public EnumDefinitionToDataModelMapper getEnumDefinitionMapper() {
-        return enumDefinitionToDataModelMapper;
+        return enumDefToDataModelMapper;
     }
 
     public FieldDefinitionsToResolverDataModelMapper getFieldDefinitionsToResolverMapper() {
-        return fieldDefinitionsToResolverDataModelMapper;
+        return fieldDefsToResolverDataModelMapper;
     }
 
     public InputDefinitionToDataModelMapper getInputDefinitionMapper() {
-        return inputDefinitionToDataModelMapper;
+        return inputDefToDataModelMapper;
     }
 
     public InterfaceDefinitionToDataModelMapper getInterfaceDefinitionMapper() {
-        return interfaceDefinitionToDataModelMapper;
+        return interfaceDefToDataModelMapper;
     }
 
     public UnionDefinitionToDataModelMapper getUnionDefinitionMapper() {
-        return unionDefinitionToDataModelMapper;
+        return unionDefToDataModelMapper;
     }
 
     public RequestResponseDefinitionToDataModelMapper getRequestResponseDefinitionMapper() {
-        return requestResponseDefinitionToDataModelMapper;
+        return requestResponseDefToDataModelMapper;
     }
 
     public TypeDefinitionToDataModelMapper getTypeDefinitionMapper() {
-        return typeDefinitionToDataModelMapper;
+        return typeDefToDataModelMapper;
     }
 
     public DataModelMapper getDataModelMapper() {
         return dataModelMapper;
     }
 
-    public FieldDefinitionToParameterMapper getFieldDefinitionToParameterMapper() {
-        return fieldDefinitionToParameterMapper;
+    public FieldDefinitionToParameterMapper getFieldDefToParamMapper() {
+        return fieldDefToParamMapper;
     }
 }

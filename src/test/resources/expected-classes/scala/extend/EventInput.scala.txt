@@ -9,7 +9,7 @@ case class EventInput(
     @javax.validation.constraints.NotNull
     status: Status,
     @javax.validation.constraints.NotNull
-    assets: Seq[AssetInput]
+    assets: scala.Seq[AssetInput]
 ) {
 
 }

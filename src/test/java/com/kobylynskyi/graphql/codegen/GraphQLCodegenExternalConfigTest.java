@@ -20,7 +20,8 @@ class GraphQLCodegenExternalConfigTest {
      */
     @Test
     void check_mappingConfigFromJsonFile() {
-        MappingConfig externalMappingConfig = new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
+        MappingConfig externalMappingConfig =
+                new JsonMappingConfigSupplier("src/test/resources/json/mappingconfig.json").get();
 
         assertEquals("com.kobylynskyi.graphql.testconfigjson", externalMappingConfig.getPackageName());
         assertTrue(externalMappingConfig.getGenerateApis());

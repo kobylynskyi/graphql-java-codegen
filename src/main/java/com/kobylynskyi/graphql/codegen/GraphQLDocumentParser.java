@@ -41,7 +41,8 @@ class GraphQLDocumentParser {
     private GraphQLDocumentParser() {
     }
 
-    static ExtendedDocument getDocumentFromSchemas(MappingConfig mappingConfig, List<String> schemaPaths) throws IOException {
+    static ExtendedDocument getDocumentFromSchemas(MappingConfig mappingConfig, List<String> schemaPaths)
+            throws IOException {
         Document document = readDocument(schemaPaths);
 
         ExtendedDocumentBuilder extendedDocumentBuilder = new ExtendedDocumentBuilder();
@@ -52,10 +53,12 @@ class GraphQLDocumentParser {
         return extendedDocumentBuilder.build();
     }
 
-    static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig, String introspectionResult) throws IOException {
+    static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig, String introspectionResult)
+            throws IOException {
         String introspectionResultContent = Utils.getFileContent(introspectionResult);
         Map<String, Object> introspectionResultMap = Utils.OBJECT_MAPPER.readValue(introspectionResultContent,
-                new TypeReference<Map<String, Object>>() {
+                new TypeReference<Map<String,
+                        Object>>() {
                 });
         // unwrapping "data" (in case such GraphQL response supplied)
         if (introspectionResultMap.containsKey("data")) {
@@ -71,7 +74,8 @@ class GraphQLDocumentParser {
         return extendedDocumentBuilder.build();
     }
 
-    private static void processDefinition(MappingConfig mappingConfig, ExtendedDocumentBuilder extendedDocumentBuilder, Definition<?> definition) {
+    private static void processDefinition(MappingConfig mappingConfig, ExtendedDocumentBuilder extendedDocumentBuilder,
+                                          Definition<?> definition) {
         if (!(definition instanceof NamedNode)) {
             // the only definition that does not have a name is SchemaDefinition, so skipping it
             return;

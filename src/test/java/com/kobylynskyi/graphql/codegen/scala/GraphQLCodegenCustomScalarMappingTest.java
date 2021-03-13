@@ -1,7 +1,6 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
 import com.kobylynskyi.graphql.codegen.TestUtils;
-import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -15,7 +14,9 @@ import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Collections.*;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 
 class GraphQLCodegenCustomScalarMappingTest {
 
@@ -48,7 +49,8 @@ class GraphQLCodegenCustomScalarMappingTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/scala/custom-type/QueryINeedQueryRequest_whole_scalar.scala.txt"),
+                new File("src/test/resources/expected-classes/scala/custom-type/" +
+                        "QueryINeedQueryRequest_whole_scalar.scala.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.scala"));
     }
 
@@ -84,7 +86,9 @@ class GraphQLCodegenCustomScalarMappingTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/QueryINeedQueryRequest_custom_serializer.scala.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/" +
+                        "QueryINeedQueryRequest_custom_serializer.scala.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.scala"));
     }
 }

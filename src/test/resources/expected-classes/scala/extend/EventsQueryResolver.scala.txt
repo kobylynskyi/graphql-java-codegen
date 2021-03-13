@@ -7,6 +7,6 @@ trait EventsQueryResolver {
 
     @javax.validation.constraints.NotNull
     @throws[Exception]
-    def events(): Seq[Event]
+    def events(): scala.Seq[Event]
 
 }

@@ -7,8 +7,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ExtendedInterfaceTypeDefinition extends ExtendedImplementingTypeDefinition<InterfaceTypeDefinition, InterfaceTypeExtensionDefinition> {
+/**
+ * Extended definition of GraphQL interface type: based definition + its extensions
+ */
+public class ExtendedInterfaceTypeDefinition
+        extends ExtendedImplementingTypeDefinition<InterfaceTypeDefinition, InterfaceTypeExtensionDefinition> {
 
+    /**
+     * Get fields with extended information of the given interface
+     *
+     * @return List of field definitions
+     */
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         if (definition != null) {

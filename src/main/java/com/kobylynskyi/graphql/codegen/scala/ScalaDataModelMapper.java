@@ -10,6 +10,9 @@ import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 
+/**
+ * Data model mapper for SCALA generated classes
+ */
 public class ScalaDataModelMapper implements DataModelMapper {
 
     private static final String RESTRICTED_WORDS_WRAP_WITH = "`";

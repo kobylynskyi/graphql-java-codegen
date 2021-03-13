@@ -13,7 +13,7 @@ case class AddLabelsToLabelablePayload(
 ) {
 
     override def toString(): String = {
-        Seq(
+        scala.Seq(
             if (clientMutationId != null) "clientMutationId: " + GraphQLRequestSerializer.getEntry(clientMutationId) else "",
             if (labelable != null) "labelable: " + GraphQLRequestSerializer.getEntry(labelable) else ""
         ).filter(_ != "").mkString("{", ",", "}")

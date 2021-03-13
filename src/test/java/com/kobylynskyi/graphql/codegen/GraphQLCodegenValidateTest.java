@@ -13,7 +13,8 @@ class GraphQLCodegenValidateTest {
 
     @Test
     void validate_Invalid() {
-        GraphQLCodegenValidate graphQLCodegenValidate = new GraphQLCodegenValidate(singletonList("src/test/resources/schemas/invalid.graphqls"));
+        GraphQLCodegenValidate graphQLCodegenValidate = new GraphQLCodegenValidate(singletonList(
+                "src/test/resources/schemas/invalid.graphqls"));
         assertThrows(SchemaValidationException.class, graphQLCodegenValidate::validate);
     }
 

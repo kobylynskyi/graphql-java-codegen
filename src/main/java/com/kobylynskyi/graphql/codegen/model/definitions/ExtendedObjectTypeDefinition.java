@@ -12,7 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
+/**
+ * Extended definition of GraphQL object type: based definition + its extensions
+ */
+public class ExtendedObjectTypeDefinition
+        extends ExtendedImplementingTypeDefinition<ObjectTypeDefinition, ObjectTypeExtensionDefinition> {
 
     /**
      * Get source location of the node.
@@ -24,6 +28,11 @@ public class ExtendedObjectTypeDefinition extends ExtendedImplementingTypeDefini
         return node.getSourceLocation() != null ? node.getSourceLocation().getSourceName() : "unknown";
     }
 
+    /**
+     * Get fields with extended information of the given object
+     *
+     * @return List of field definitions
+     */
     public List<ExtendedFieldDefinition> getFieldDefinitions() {
         List<ExtendedFieldDefinition> definitions = new ArrayList<>();
         if (definition != null) {

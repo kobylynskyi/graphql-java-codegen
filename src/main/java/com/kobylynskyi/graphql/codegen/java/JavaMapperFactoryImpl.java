@@ -6,6 +6,9 @@ import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 
+/**
+ * A factory of various mappers for Java language
+ */
 public class JavaMapperFactoryImpl implements MapperFactory {
 
     @Override
