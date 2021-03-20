@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.test1;
 )
 public interface ProductsByIdsQueryResolver {
 
-    java.util.List<Product> productsByIds(java.util.List<String> ids) throws Exception;
+    java.util.List<Product> productsByIds(@javax.validation.constraints.NotNull java.util.List<String> ids) throws Exception;
 
 }

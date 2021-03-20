@@ -5,138 +5,138 @@
 )
 public interface MutationResolver {
 
-    AcceptTopicSuggestionPayload acceptTopicSuggestion(AcceptTopicSuggestionInput input);
+    AcceptTopicSuggestionPayload acceptTopicSuggestion(@javax.validation.constraints.NotNull AcceptTopicSuggestionInput input);
 
-    AddAssigneesToAssignablePayload addAssigneesToAssignable(AddAssigneesToAssignableInput input);
+    AddAssigneesToAssignablePayload addAssigneesToAssignable(@javax.validation.constraints.NotNull AddAssigneesToAssignableInput input);
 
-    AddCommentPayload addComment(AddCommentInput input);
+    AddCommentPayload addComment(@javax.validation.constraints.NotNull AddCommentInput input);
 
-    AddLabelsToLabelablePayload addLabelsToLabelable(AddLabelsToLabelableInput input);
+    AddLabelsToLabelablePayload addLabelsToLabelable(@javax.validation.constraints.NotNull AddLabelsToLabelableInput input);
 
-    AddProjectCardPayload addProjectCard(AddProjectCardInput input);
+    AddProjectCardPayload addProjectCard(@javax.validation.constraints.NotNull AddProjectCardInput input);
 
-    AddProjectColumnPayload addProjectColumn(AddProjectColumnInput input);
+    AddProjectColumnPayload addProjectColumn(@javax.validation.constraints.NotNull AddProjectColumnInput input);
 
-    AddPullRequestReviewPayload addPullRequestReview(AddPullRequestReviewInput input);
+    AddPullRequestReviewPayload addPullRequestReview(@javax.validation.constraints.NotNull AddPullRequestReviewInput input);
 
-    AddPullRequestReviewCommentPayload addPullRequestReviewComment(AddPullRequestReviewCommentInput input);
+    AddPullRequestReviewCommentPayload addPullRequestReviewComment(@javax.validation.constraints.NotNull AddPullRequestReviewCommentInput input);
 
-    AddReactionPayload addReaction(AddReactionInput input);
+    AddReactionPayload addReaction(@javax.validation.constraints.NotNull AddReactionInput input);
 
-    AddStarPayload addStar(AddStarInput input);
+    AddStarPayload addStar(@javax.validation.constraints.NotNull AddStarInput input);
 
-    ChangeUserStatusPayload changeUserStatus(ChangeUserStatusInput input);
+    ChangeUserStatusPayload changeUserStatus(@javax.validation.constraints.NotNull ChangeUserStatusInput input);
 
-    ClearLabelsFromLabelablePayload clearLabelsFromLabelable(ClearLabelsFromLabelableInput input);
+    ClearLabelsFromLabelablePayload clearLabelsFromLabelable(@javax.validation.constraints.NotNull ClearLabelsFromLabelableInput input);
 
-    CloneProjectPayload cloneProject(CloneProjectInput input);
+    CloneProjectPayload cloneProject(@javax.validation.constraints.NotNull CloneProjectInput input);
 
-    CloneTemplateRepositoryPayload cloneTemplateRepository(CloneTemplateRepositoryInput input);
+    CloneTemplateRepositoryPayload cloneTemplateRepository(@javax.validation.constraints.NotNull CloneTemplateRepositoryInput input);
 
-    CloseIssuePayload closeIssue(CloseIssueInput input);
+    CloseIssuePayload closeIssue(@javax.validation.constraints.NotNull CloseIssueInput input);
 
-    ClosePullRequestPayload closePullRequest(ClosePullRequestInput input);
+    ClosePullRequestPayload closePullRequest(@javax.validation.constraints.NotNull ClosePullRequestInput input);
 
-    ConvertProjectCardNoteToIssuePayload convertProjectCardNoteToIssue(ConvertProjectCardNoteToIssueInput input);
+    ConvertProjectCardNoteToIssuePayload convertProjectCardNoteToIssue(@javax.validation.constraints.NotNull ConvertProjectCardNoteToIssueInput input);
 
-    CreateBranchProtectionRulePayload createBranchProtectionRule(CreateBranchProtectionRuleInput input);
+    CreateBranchProtectionRulePayload createBranchProtectionRule(@javax.validation.constraints.NotNull CreateBranchProtectionRuleInput input);
 
-    CreateIssuePayload createIssue(CreateIssueInput input);
+    CreateIssuePayload createIssue(@javax.validation.constraints.NotNull CreateIssueInput input);
 
-    CreateProjectPayload createProject(CreateProjectInput input);
+    CreateProjectPayload createProject(@javax.validation.constraints.NotNull CreateProjectInput input);
 
-    CreatePullRequestPayload createPullRequest(CreatePullRequestInput input);
+    CreatePullRequestPayload createPullRequest(@javax.validation.constraints.NotNull CreatePullRequestInput input);
 
-    CreateRefPayload createRef(CreateRefInput input);
+    CreateRefPayload createRef(@javax.validation.constraints.NotNull CreateRefInput input);
 
-    CreateRepositoryPayload createRepository(CreateRepositoryInput input);
+    CreateRepositoryPayload createRepository(@javax.validation.constraints.NotNull CreateRepositoryInput input);
 
-    DeclineTopicSuggestionPayload declineTopicSuggestion(DeclineTopicSuggestionInput input);
+    DeclineTopicSuggestionPayload declineTopicSuggestion(@javax.validation.constraints.NotNull DeclineTopicSuggestionInput input);
 
-    DeleteBranchProtectionRulePayload deleteBranchProtectionRule(DeleteBranchProtectionRuleInput input);
+    DeleteBranchProtectionRulePayload deleteBranchProtectionRule(@javax.validation.constraints.NotNull DeleteBranchProtectionRuleInput input);
 
-    DeleteIssuePayload deleteIssue(DeleteIssueInput input);
+    DeleteIssuePayload deleteIssue(@javax.validation.constraints.NotNull DeleteIssueInput input);
 
-    DeleteIssueCommentPayload deleteIssueComment(DeleteIssueCommentInput input);
+    DeleteIssueCommentPayload deleteIssueComment(@javax.validation.constraints.NotNull DeleteIssueCommentInput input);
 
-    DeleteProjectPayload deleteProject(DeleteProjectInput input);
+    DeleteProjectPayload deleteProject(@javax.validation.constraints.NotNull DeleteProjectInput input);
 
-    DeleteProjectCardPayload deleteProjectCard(DeleteProjectCardInput input);
+    DeleteProjectCardPayload deleteProjectCard(@javax.validation.constraints.NotNull DeleteProjectCardInput input);
 
-    DeleteProjectColumnPayload deleteProjectColumn(DeleteProjectColumnInput input);
+    DeleteProjectColumnPayload deleteProjectColumn(@javax.validation.constraints.NotNull DeleteProjectColumnInput input);
 
-    DeletePullRequestReviewPayload deletePullRequestReview(DeletePullRequestReviewInput input);
+    DeletePullRequestReviewPayload deletePullRequestReview(@javax.validation.constraints.NotNull DeletePullRequestReviewInput input);
 
-    DeletePullRequestReviewCommentPayload deletePullRequestReviewComment(DeletePullRequestReviewCommentInput input);
+    DeletePullRequestReviewCommentPayload deletePullRequestReviewComment(@javax.validation.constraints.NotNull DeletePullRequestReviewCommentInput input);
 
-    DeleteRefPayload deleteRef(DeleteRefInput input);
+    DeleteRefPayload deleteRef(@javax.validation.constraints.NotNull DeleteRefInput input);
 
-    DismissPullRequestReviewPayload dismissPullRequestReview(DismissPullRequestReviewInput input);
+    DismissPullRequestReviewPayload dismissPullRequestReview(@javax.validation.constraints.NotNull DismissPullRequestReviewInput input);
 
-    LinkRepositoryToProjectPayload linkRepositoryToProject(LinkRepositoryToProjectInput input);
+    LinkRepositoryToProjectPayload linkRepositoryToProject(@javax.validation.constraints.NotNull LinkRepositoryToProjectInput input);
 
-    LockLockablePayload lockLockable(LockLockableInput input);
+    LockLockablePayload lockLockable(@javax.validation.constraints.NotNull LockLockableInput input);
 
-    MergeBranchPayload mergeBranch(MergeBranchInput input);
+    MergeBranchPayload mergeBranch(@javax.validation.constraints.NotNull MergeBranchInput input);
 
-    MergePullRequestPayload mergePullRequest(MergePullRequestInput input);
+    MergePullRequestPayload mergePullRequest(@javax.validation.constraints.NotNull MergePullRequestInput input);
 
-    MoveProjectCardPayload moveProjectCard(MoveProjectCardInput input);
+    MoveProjectCardPayload moveProjectCard(@javax.validation.constraints.NotNull MoveProjectCardInput input);
 
-    MoveProjectColumnPayload moveProjectColumn(MoveProjectColumnInput input);
+    MoveProjectColumnPayload moveProjectColumn(@javax.validation.constraints.NotNull MoveProjectColumnInput input);
 
-    RemoveAssigneesFromAssignablePayload removeAssigneesFromAssignable(RemoveAssigneesFromAssignableInput input);
+    RemoveAssigneesFromAssignablePayload removeAssigneesFromAssignable(@javax.validation.constraints.NotNull RemoveAssigneesFromAssignableInput input);
 
-    RemoveLabelsFromLabelablePayload removeLabelsFromLabelable(RemoveLabelsFromLabelableInput input);
+    RemoveLabelsFromLabelablePayload removeLabelsFromLabelable(@javax.validation.constraints.NotNull RemoveLabelsFromLabelableInput input);
 
-    RemoveOutsideCollaboratorPayload removeOutsideCollaborator(RemoveOutsideCollaboratorInput input);
+    RemoveOutsideCollaboratorPayload removeOutsideCollaborator(@javax.validation.constraints.NotNull RemoveOutsideCollaboratorInput input);
 
-    RemoveReactionPayload removeReaction(RemoveReactionInput input);
+    RemoveReactionPayload removeReaction(@javax.validation.constraints.NotNull RemoveReactionInput input);
 
-    RemoveStarPayload removeStar(RemoveStarInput input);
+    RemoveStarPayload removeStar(@javax.validation.constraints.NotNull RemoveStarInput input);
 
-    ReopenIssuePayload reopenIssue(ReopenIssueInput input);
+    ReopenIssuePayload reopenIssue(@javax.validation.constraints.NotNull ReopenIssueInput input);
 
-    ReopenPullRequestPayload reopenPullRequest(ReopenPullRequestInput input);
+    ReopenPullRequestPayload reopenPullRequest(@javax.validation.constraints.NotNull ReopenPullRequestInput input);
 
-    RequestReviewsPayload requestReviews(RequestReviewsInput input);
+    RequestReviewsPayload requestReviews(@javax.validation.constraints.NotNull RequestReviewsInput input);
 
-    ResolveReviewThreadPayload resolveReviewThread(ResolveReviewThreadInput input);
+    ResolveReviewThreadPayload resolveReviewThread(@javax.validation.constraints.NotNull ResolveReviewThreadInput input);
 
-    SubmitPullRequestReviewPayload submitPullRequestReview(SubmitPullRequestReviewInput input);
+    SubmitPullRequestReviewPayload submitPullRequestReview(@javax.validation.constraints.NotNull SubmitPullRequestReviewInput input);
 
-    UnlinkRepositoryFromProjectPayload unlinkRepositoryFromProject(UnlinkRepositoryFromProjectInput input);
+    UnlinkRepositoryFromProjectPayload unlinkRepositoryFromProject(@javax.validation.constraints.NotNull UnlinkRepositoryFromProjectInput input);
 
-    UnlockLockablePayload unlockLockable(UnlockLockableInput input);
+    UnlockLockablePayload unlockLockable(@javax.validation.constraints.NotNull UnlockLockableInput input);
 
-    UnmarkIssueAsDuplicatePayload unmarkIssueAsDuplicate(UnmarkIssueAsDuplicateInput input);
+    UnmarkIssueAsDuplicatePayload unmarkIssueAsDuplicate(@javax.validation.constraints.NotNull UnmarkIssueAsDuplicateInput input);
 
-    UnresolveReviewThreadPayload unresolveReviewThread(UnresolveReviewThreadInput input);
+    UnresolveReviewThreadPayload unresolveReviewThread(@javax.validation.constraints.NotNull UnresolveReviewThreadInput input);
 
-    UpdateBranchProtectionRulePayload updateBranchProtectionRule(UpdateBranchProtectionRuleInput input);
+    UpdateBranchProtectionRulePayload updateBranchProtectionRule(@javax.validation.constraints.NotNull UpdateBranchProtectionRuleInput input);
 
-    UpdateIssuePayload updateIssue(UpdateIssueInput input);
+    UpdateIssuePayload updateIssue(@javax.validation.constraints.NotNull UpdateIssueInput input);
 
-    UpdateIssueCommentPayload updateIssueComment(UpdateIssueCommentInput input);
+    UpdateIssueCommentPayload updateIssueComment(@javax.validation.constraints.NotNull UpdateIssueCommentInput input);
 
-    UpdateProjectPayload updateProject(UpdateProjectInput input);
+    UpdateProjectPayload updateProject(@javax.validation.constraints.NotNull UpdateProjectInput input);
 
-    UpdateProjectCardPayload updateProjectCard(UpdateProjectCardInput input);
+    UpdateProjectCardPayload updateProjectCard(@javax.validation.constraints.NotNull UpdateProjectCardInput input);
 
-    UpdateProjectColumnPayload updateProjectColumn(UpdateProjectColumnInput input);
+    UpdateProjectColumnPayload updateProjectColumn(@javax.validation.constraints.NotNull UpdateProjectColumnInput input);
 
-    UpdatePullRequestPayload updatePullRequest(UpdatePullRequestInput input);
+    UpdatePullRequestPayload updatePullRequest(@javax.validation.constraints.NotNull UpdatePullRequestInput input);
 
-    UpdatePullRequestReviewPayload updatePullRequestReview(UpdatePullRequestReviewInput input);
+    UpdatePullRequestReviewPayload updatePullRequestReview(@javax.validation.constraints.NotNull UpdatePullRequestReviewInput input);
 
-    UpdatePullRequestReviewCommentPayload updatePullRequestReviewComment(UpdatePullRequestReviewCommentInput input);
+    UpdatePullRequestReviewCommentPayload updatePullRequestReviewComment(@javax.validation.constraints.NotNull UpdatePullRequestReviewCommentInput input);
 
-    UpdateRefPayload updateRef(UpdateRefInput input);
+    UpdateRefPayload updateRef(@javax.validation.constraints.NotNull UpdateRefInput input);
 
-    UpdateRepositoryPayload updateRepository(UpdateRepositoryInput input);
+    UpdateRepositoryPayload updateRepository(@javax.validation.constraints.NotNull UpdateRepositoryInput input);
 
-    UpdateSubscriptionPayload updateSubscription(UpdateSubscriptionInput input);
+    UpdateSubscriptionPayload updateSubscription(@javax.validation.constraints.NotNull UpdateSubscriptionInput input);
 
-    UpdateTopicsPayload updateTopics(UpdateTopicsInput input);
+    UpdateTopicsPayload updateTopics(@javax.validation.constraints.NotNull UpdateTopicsInput input);
 
 }

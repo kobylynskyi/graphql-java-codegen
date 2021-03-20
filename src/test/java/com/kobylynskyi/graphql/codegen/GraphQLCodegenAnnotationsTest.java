@@ -208,6 +208,7 @@ class GraphQLCodegenAnnotationsTest {
                         "float={{float?toArrayOfStrings}}, " +
                         "int={{int}}, " +
                         "n={{n?toString}})"));
+        directiveAnnotationsMapping.put("valid", singletonList("@javax.validation.Valid"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),

@@ -14,6 +14,6 @@ public interface EventByIdQueryResolver {
      * Single event by ID.
      */
     @javax.validation.constraints.NotNull
-    Event eventById(String id) throws Exception;
+    Event eventById(@javax.validation.constraints.NotNull String id) throws Exception;
 
 }

@@ -14,6 +14,6 @@ public interface CreateEventMutationResolver {
      * Create a new event.
      */
     @javax.validation.constraints.NotNull
-    Event createEvent(String categoryId, String createdBy) throws Exception;
+    Event createEvent(@javax.validation.constraints.NotNull String categoryId, String createdBy) throws Exception;
 
 }

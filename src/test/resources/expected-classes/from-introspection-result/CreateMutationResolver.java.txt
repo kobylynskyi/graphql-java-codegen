@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.test1;
 )
 public interface CreateMutationResolver {
 
-    Product create(ProductInput productInput) throws Exception;
+    Product create(@javax.validation.constraints.NotNull ProductInput productInput) throws Exception;
 
 }
