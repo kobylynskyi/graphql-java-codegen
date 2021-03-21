@@ -12,7 +12,7 @@ data class Super(
     val `is`: String?,
     val `in`: Char?,
     val Int: Super?,
-    val date: String?
+    val date: java.time.ZonedDateTime?
 ) {
 
     companion object {
@@ -42,7 +42,7 @@ data class Super(
         private var `is`: String? = null
         private var `in`: Char? = null
         private var Int: Super? = null
-        private var date: String? = null
+        private var date: java.time.ZonedDateTime? = null
 
         @Deprecated(message = "We have decided that this is not canon")
         fun setIs(`is`: String?): Builder {
@@ -60,7 +60,7 @@ data class Super(
             return this
         }
 
-        fun setDate(date: String?): Builder {
+        fun setDate(date: java.time.ZonedDateTime?): Builder {
             this.date = date
             return this
         }

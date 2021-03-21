@@ -1,0 +1,36 @@
+package com.kobylynskyi.graphql.codegen.prot
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLParametrizedInput
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
+import java.util.StringJoiner
+/**
+ * Parametrized input for field private in type Query
+ */
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+data class QueryPrivateParametrizedInput(
+    val int: Int?,
+    val new: String?,
+    val enum: TestEnum? = TestEnum.long,
+    val createdAfter: java.time.ZonedDateTime?
+) : GraphQLParametrizedInput {
+
+    override fun toString(): String {
+        val joiner = StringJoiner(", ", "( ", " )")
+        if (int != null) {
+            joiner.add("int: " + GraphQLRequestSerializer.getEntry(int))
+        }
+        if (new != null) {
+            joiner.add("new: " + GraphQLRequestSerializer.getEntry(new))
+        }
+        if (enum != null) {
+            joiner.add("enum: " + GraphQLRequestSerializer.getEntry(enum))
+        }
+        if (createdAfter != null) {
+            joiner.add("createdAfter: " + GraphQLRequestSerializer.getEntry(createdAfter, true))
+        }
+        return joiner.toString()
+    }
+}

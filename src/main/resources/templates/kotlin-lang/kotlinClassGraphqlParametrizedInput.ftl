@@ -43,10 +43,10 @@ data class ${className}(
         <#list fields as field>
         <#if field.type?ends_with("?")>
         if (${field.name} != null) {
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>))
         }
         <#else>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>))
         </#if>
         </#list>
         return joiner.toString()
