@@ -1,0 +1,36 @@
+version: 1
+update_configs:
+  - package_manager: java:gradle
+    directory: /
+    update_schedule: "weekly"
+    target_branch: "develop"
+
+  - package_manager: java:gradle
+    directory: /plugins/gradle/graphql-java-codegen-gradle-plugin
+    update_schedule: "weekly"
+    target_branch: "develop"
+  - package_manager: java:gradle
+    directory: /plugins/gradle/example-client
+    update_schedule: "weekly"
+    target_branch: "develop"
+  - package_manager: java:gradle
+    directory: /plugins/gradle/example-client-kotlin
+    update_schedule: "weekly"
+    target_branch: "develop"
+  - package_manager: java:gradle
+    directory: /plugins/gradle/example-server
+    update_schedule: "weekly"
+    target_branch: "develop"
+
+  - package_manager: java:maven
+    directory: /plugins/maven/graphql-java-codegen-maven-plugin
+    update_schedule: "weekly"
+    target_branch: "develop"
+  - package_manager: java:maven
+    directory: /plugins/maven/example-client
+    update_schedule: "weekly"
+    target_branch: "develop"
+  - package_manager: java:maven
+    directory: /plugins/maven/example-server
+    update_schedule: "weekly"
+    target_branch: "develop"
