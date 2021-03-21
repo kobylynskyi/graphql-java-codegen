@@ -34,19 +34,23 @@ public class GraphQLRequestSerializer {
         if (graphQLRequests.getRequests().isEmpty()) {
             throw new IllegalArgumentException("At least one GraphQL request should be supplied");
         }
-        GraphQLOperation operation = graphQLRequests.getRequests().get(0).getRequest().getOperationType();
+        GraphQLOperationRequest firstRequest = graphQLRequests.getRequests().get(0).getRequest();
         StringBuilder queryBuilder = new StringBuilder();
         for (GraphQLRequest request : graphQLRequests.getRequests()) {
             if (request == null || request.getRequest() == null) {
                 throw new IllegalArgumentException("Null GraphQL request was supplied");
             }
-            if (operation != null && operation != request.getRequest().getOperationType()) {
+            if (firstRequest.getOperationType() != null &&
+                    firstRequest.getOperationType() != request.getRequest().getOperationType()) {
                 throw new IllegalArgumentException(
                         "Only operations of the same type (query/mutation/subscription) can be executed at once");
             }
             queryBuilder.append(buildQuery(request)).append(" ");
         }
-        return jsonQuery(operationWrapper(queryBuilder.toString(), operation));
+        return jsonQuery(operationWrapper(
+                firstRequest.getOperationType(),
+                null, // combined request does not have operation name
+                queryBuilder.toString()));
     }
 
     /**
@@ -60,10 +64,7 @@ public class GraphQLRequestSerializer {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
         }
-        GraphQLOperation operationType = graphQLRequest.getRequest().getOperationType();
-        String query = buildQuery(graphQLRequest);
-        String queryString = operationWrapper(query, operationType);
-        return jsonQuery(queryString);
+        return jsonQuery(toQueryString(graphQLRequest));
     }
 
     /**
@@ -76,14 +77,20 @@ public class GraphQLRequestSerializer {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
         }
-        GraphQLOperation operationType = graphQLRequest.getRequest().getOperationType();
-        String query = buildQuery(graphQLRequest);
-        return operationWrapper(query, operationType);
+        return operationWrapper(
+                graphQLRequest.getRequest().getOperationType(),
+                graphQLRequest.getRequest().getOperationName(),
+                buildQuery(graphQLRequest));
     }
 
-    private static String operationWrapper(String query, GraphQLOperation operationType) {
+    private static String operationWrapper(GraphQLOperation operationType, String operationName, String queryValue) {
         assert operationType != null;
-        return operationType.name().toLowerCase() + " { " + query + " }";
+        String operationTypeLowerCased = operationType.name().toLowerCase();
+        if (operationName == null) {
+            return String.format("%s { %s }", operationTypeLowerCased, queryValue);
+        } else {
+            return String.format("%s %s { %s }", operationTypeLowerCased, operationName, queryValue);
+        }
     }
 
     private static String buildQuery(GraphQLRequest graphQLRequest) {
