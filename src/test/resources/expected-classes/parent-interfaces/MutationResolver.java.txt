@@ -11,6 +11,6 @@ public interface MutationResolver extends graphql.kickstart.tools.GraphQLMutatio
      * Create a new event.
      */
     @javax.validation.constraints.NotNull
-    EventTO createEvent(String categoryId, String createdBy) throws Exception;
+    EventTO createEvent(@javax.validation.constraints.NotNull String categoryId, String createdBy) throws Exception;
 
 }

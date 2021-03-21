@@ -5,6 +5,6 @@
 )
 public interface NodeQueryResolver {
 
-    java.util.Optional<Node> node(String id) throws Exception;
+    java.util.Optional<Node> node(@javax.validation.constraints.NotNull String id) throws Exception;
 
 }

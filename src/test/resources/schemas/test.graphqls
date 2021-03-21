@@ -28,7 +28,7 @@ type Query {
 
 type Mutation {
     # Create a new event.
-    createEvent(categoryId: String!, createdBy: String!): Event!
+    createEvent(categoryId: String! @valid, createdBy: String): Event!
     @auth(
         roles: ["admin", "moderator"],
         boo: [true, false, true],
@@ -105,3 +105,4 @@ directive @auth (
 
 directive @customResolver on FIELD_DEFINITION | OBJECT
 directive @noResolver on FIELD_DEFINITION | OBJECT
+directive @valid on ARGUMENT_DEFINITION

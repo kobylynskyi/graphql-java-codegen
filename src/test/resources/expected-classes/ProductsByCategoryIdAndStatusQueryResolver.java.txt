@@ -7,6 +7,6 @@ package com.kobylynskyi.graphql.test1;
 )
 public interface ProductsByCategoryIdAndStatusQueryResolver {
 
-    java.util.List<Product> products(String categoryId, String status) throws Exception;
+    java.util.List<Product> products(@javax.validation.constraints.NotNull String categoryId, @javax.validation.constraints.NotNull String status) throws Exception;
 
 }

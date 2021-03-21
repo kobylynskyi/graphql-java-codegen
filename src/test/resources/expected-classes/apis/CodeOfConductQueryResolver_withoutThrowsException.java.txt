@@ -5,6 +5,6 @@
 )
 public interface CodeOfConductQueryResolver {
 
-    CodeOfConduct codeOfConduct(String key);
+    CodeOfConduct codeOfConduct(@javax.validation.constraints.NotNull String key);
 
 }

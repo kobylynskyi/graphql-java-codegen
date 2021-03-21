@@ -14,6 +14,6 @@ public interface EventsByIdsQueryResolver {
      * Events by IDs.
      */
     @javax.validation.constraints.NotNull
-    java.util.List<Event> eventsByIds(java.util.List<String> ids) throws Exception;
+    java.util.List<Event> eventsByIds(@javax.validation.constraints.NotNull java.util.List<String> ids) throws Exception;
 
 }

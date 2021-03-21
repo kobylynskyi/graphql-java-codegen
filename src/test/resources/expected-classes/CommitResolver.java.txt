@@ -14,12 +14,12 @@ public interface CommitResolver {
 
     @javax.validation.constraints.NotNull
     @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)
-    Blame blame(Commit commit, String path, graphql.schema.DataFetchingEnvironment env) throws Exception;
+    Blame blame(Commit commit, @javax.validation.constraints.NotNull String path, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
     @javax.validation.constraints.NotNull
     CommitCommentConnection comments(Commit commit, String after, String before, Integer first, Integer last, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
-    DeploymentConnection deployments(Commit commit, String after, String before, java.util.List<String> environments, Integer first, Integer last, DeploymentOrder orderBy, graphql.schema.DataFetchingEnvironment env) throws Exception;
+    DeploymentConnection deployments(Commit commit, String after, String before, @javax.validation.constraints.NotNull java.util.List<String> environments, Integer first, Integer last, DeploymentOrder orderBy, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
     @javax.validation.constraints.NotNull
     CommitHistoryConnection history(Commit commit, String after, CommitAuthor author, String before, Integer first, Integer last, String path, String since, String until, graphql.schema.DataFetchingEnvironment env) throws Exception;

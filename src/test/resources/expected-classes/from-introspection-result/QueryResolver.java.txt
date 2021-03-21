@@ -9,8 +9,8 @@ public interface QueryResolver {
 
     java.util.List<Product> products() throws Exception;
 
-    Product productById(String id) throws Exception;
+    Product productById(@javax.validation.constraints.NotNull String id) throws Exception;
 
-    java.util.List<Product> productsByIds(java.util.List<String> ids) throws Exception;
+    java.util.List<Product> productsByIds(@javax.validation.constraints.NotNull java.util.List<String> ids) throws Exception;
 
 }
