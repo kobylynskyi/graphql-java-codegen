@@ -18,7 +18,8 @@ case class QueryPrivateParametrizedInput(
     seq1: scala.Seq[scala.Option[Int]],
     seq2: scala.Seq[Int],
     `new`: String,
-    enum: TestEnum = TestEnum.long
+    enum: TestEnum = TestEnum.long,
+    createdAfter: java.time.ZonedDateTime
 ) extends GraphQLParametrizedInput {
 
     override def toString(): String = {
@@ -28,7 +29,8 @@ case class QueryPrivateParametrizedInput(
             if (seq1 != null) "seq1: " + GraphQLRequestSerializer.getEntry(seq1.asJava) else "",
             if (seq2 != null) "seq2: " + GraphQLRequestSerializer.getEntry(seq2.asJava) else "",
             if (`new` != null) "new: " + GraphQLRequestSerializer.getEntry(`new`) else "",
-            if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum) else ""
+            if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum) else "",
+            if (createdAfter != null) "createdAfter: " + GraphQLRequestSerializer.getEntry(createdAfter, true) else ""
         ).filter(_ != "").mkString("(", ",", ")")
     }
 

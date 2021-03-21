@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,19 +40,20 @@ class GraphQLCodegenRestrictedWordsAndParameterInputTest {
         mappingConfig.setGenerateToString(true);
         mappingConfig.setGenerateModelsForRootTypes(true);
         mappingConfig.setApiNameSuffix("API");
-
+        mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/kt/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<?> filters = Arrays
                 .asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt",
-                        "QueryFunParametrizedInput.kt",
+                        "QueryFunParametrizedInput.kt", "QueryPrivateParametrizedInput.kt",
                         "Super.kt", "TestEnum.kt", "WhenQueryAPI.kt");
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(f -> filters.contains(f))
                 .sorted().collect(toList());
         assertEquals(Arrays.asList("Char.kt", "CharResponseProjection.kt", "FunQueryRequest.kt", "FunQueryResponse.kt",
-                "QueryFunParametrizedInput.kt",
+                "QueryFunParametrizedInput.kt", "QueryPrivateParametrizedInput.kt",
                 "Super.kt", "TestEnum.kt", "WhenQueryAPI.kt"), generatedFileNames);
 
         for (File file : files) {

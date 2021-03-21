@@ -30,9 +30,9 @@ case class Synchronized(
             "private: " + GraphQLRequestSerializer.getEntry(`private`),
             "native: " + GraphQLRequestSerializer.getEntry(native),
             "that: " + GraphQLRequestSerializer.getEntry(that),
-            if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum, true) else "",
+            if (enum != null) "enum: " + GraphQLRequestSerializer.getEntry(enum) else "",
             if (Synchronized != null) "Synchronized: " + GraphQLRequestSerializer.getEntry(Synchronized) else "",
-            if (date != null) "date: " + GraphQLRequestSerializer.getEntry(date) else ""
+            if (date != null) "date: " + GraphQLRequestSerializer.getEntry(date, true) else ""
         ).filter(_ != "").mkString("{", ",", "}")
     }
 }
