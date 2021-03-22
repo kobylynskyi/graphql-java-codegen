@@ -4,7 +4,7 @@ schema {
 
 type Query {
     open: String
-    private(int: Int, new: String, enum: TestEnum = long): super
+    private(int: Int, new: String, enum: TestEnum = long, createdAfter: DateTime): super
     when(final: [char]): ID
     fun(final: Int): char
     super: String

@@ -19,7 +19,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GraphQLCodegenReactorToStringTest {
+class GraphQLCodegenRestrictedWordsAndToStringTest {
 
     private final MappingConfig mappingConfig = new MappingConfig();
 
@@ -73,7 +73,7 @@ class GraphQLCodegenReactorToStringTest {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateModelsForRootTypes(true);
         mappingConfig.setApiNameSuffix("API");
-
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
         new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
