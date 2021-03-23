@@ -90,7 +90,7 @@ class GraphQLRequestSerializerTest {
                                         Function<String, String> expectedQueryDecorator) {
         GraphQLRequest graphQLRequest = new GraphQLRequest(new VersionQueryRequest());
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { version }";
+        String expectedQueryStr = "query version { version }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
@@ -118,7 +118,7 @@ class GraphQLRequestSerializerTest {
                         .status()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { " +
+        String expectedQueryStr = "query eventsByCategoryAndStatus { " +
                 "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
                 "id " +
                 "active " +
@@ -155,7 +155,7 @@ class GraphQLRequestSerializerTest {
                         .status("myStatus")
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { " +
+        String expectedQueryStr = "query eventsByCategoryAndStatus { " +
                 "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
                 "myId : id " +
                 "myActive : active " +
@@ -197,7 +197,7 @@ class GraphQLRequestSerializerTest {
                         .status()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { " +
+        String expectedQueryStr = "query eventsByCategoryAndStatus { " +
                 "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
                 "id " +
                 "active " +
@@ -241,7 +241,7 @@ class GraphQLRequestSerializerTest {
                         .status()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { " +
+        String expectedQueryStr = "query eventsByCategoryAndStatus { " +
                 "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
                 "id " +
                 "active " +
@@ -267,7 +267,7 @@ class GraphQLRequestSerializerTest {
                                 .activeLockReason())
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "mutation { updateIssue(input: { " +
+        String expectedQueryStr = "mutation updateIssue { updateIssue(input: { " +
                 "floatVal: 1.23, booleanVal: false, intVal: 42, " +
                 "stringVal: \"default \\\" \\\\ \\b \\f \\n \\r \\t ሴ \", " +
                 "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ ] }){ " +
@@ -289,7 +289,7 @@ class GraphQLRequestSerializerTest {
         GraphQLRequest graphQLRequest = new GraphQLRequest(updateDateMutationRequest);
 
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "mutation { updateDate(input: { " +
+        String expectedQueryStr = "mutation updateDate { updateDate(input: { " +
                 "dateTime: \"2020-07-31T03:17:17.884Z\" }) }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
@@ -306,7 +306,7 @@ class GraphQLRequestSerializerTest {
         GraphQLRequest graphQLRequest = new GraphQLRequest(updateDateMutationRequest);
 
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "mutation { updateDate(input: \"2020-07-31T03:17:17.884Z\") }";
+        String expectedQueryStr = "mutation updateDate { updateDate(input: \"2020-07-31T03:17:17.884Z\") }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
@@ -337,7 +337,7 @@ class GraphQLRequestSerializerTest {
                                                                 .id())))
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { " +
+        String expectedQueryStr = "query eventsByCategoryAndStatus { " +
                 "eventsByCategoryAndStatus(categoryId: \"categoryIdValue1\", status: OPEN){ " +
                 "properties { " +
                 "child { parent (createdAfter: \"2007-01-09T09:41:00Z\") { id } } } " +
@@ -361,7 +361,7 @@ class GraphQLRequestSerializerTest {
                                 .activeLockReason())
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "mutation { updateIssue(input: { " +
+        String expectedQueryStr = "mutation updateIssue { updateIssue(input: { " +
                 "floatVal: 1.23, booleanVal: false, intVal: 42, " +
                 "stringVal: \"default \\\" \\\\ \\b \\f \\n \\r \\t ሴ \", " +
                 "enumVal: OPEN, intList: [ 1, 2, 3 ], intListEmptyDefault: [ \"\", \"1\", null, " +
@@ -384,7 +384,7 @@ class GraphQLRequestSerializerTest {
                                                 .name())
                                 .typename()));
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "mutation { updateIssue{ " +
+        String expectedQueryStr = "mutation updateIssue { updateIssue{ " +
                 "union { ...on Issue { activeLockReason } ...on Organization { name } __typename } " +
                 "} }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
@@ -402,7 +402,7 @@ class GraphQLRequestSerializerTest {
                         .id()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { eventsByIds(ids: [ " +
+        String expectedQueryStr = "query eventsByIds { eventsByIds(ids: [ " +
                 "\"\\\"\", " +
                 "\"\\\\\", " +
                 "\"\\b\", " +
@@ -428,7 +428,8 @@ class GraphQLRequestSerializerTest {
                         .id()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { eventsByIds(contextId: \"something\", translated: false){ id } }";
+        String expectedQueryStr = "query eventsByIds { " +
+                "eventsByIds(contextId: \"something\", translated: false){ id } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
@@ -446,7 +447,7 @@ class GraphQLRequestSerializerTest {
                         .id()
         );
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
-        String expectedQueryStr = "query { eventsByIds{ id } }";
+        String expectedQueryStr = "query eventsByIds { eventsByIds{ id } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 
