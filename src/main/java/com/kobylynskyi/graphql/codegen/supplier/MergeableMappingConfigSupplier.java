@@ -3,9 +3,14 @@ package com.kobylynskyi.graphql.codegen.supplier;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 
+import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Retrieve a MappingConfig from JSON or HOCON configuration file.
@@ -22,7 +27,7 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
      * @param configFiles List of files, either JSON or HOCON.
      */
     public MergeableMappingConfigSupplier(List<String> configFiles) {
-        this.jsonConfig = Utils.parseConfigAndMerged(configFiles);
+        this.jsonConfig = parseConfigAndMerged(configFiles);
     }
 
     @Override
@@ -35,5 +40,26 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
             }
         }
         return null;
+    }
+
+
+    /**
+     * parser list of config files.
+     *
+     * @param confFiles List of files, either JSON or HOCON.
+     * @return The string of the configuration after merging.
+     */
+    private static String parseConfigAndMerged(List<String> confFiles) {
+        try {
+            if (confFiles == null || confFiles.isEmpty()) {
+                return null;
+            }
+            Optional<Config> config = confFiles.stream()
+                    .map(c -> ConfigFactory.parseFile(new File(c))).reduce(Config::withFallback);
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.concise();
+            return config.map(value -> value.root().render(configRenderOptions)).orElse(null);
+        } catch (ConfigException ce) {
+            return null;
+        }
     }
 }
