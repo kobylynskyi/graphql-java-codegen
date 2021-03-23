@@ -50,7 +50,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
             case "Float":
                 return "0F";
             case "Double":
-                return "0D";
+                return "0.0";
             case "Char":
                 return "0.toChar()";
             case "Boolean":
