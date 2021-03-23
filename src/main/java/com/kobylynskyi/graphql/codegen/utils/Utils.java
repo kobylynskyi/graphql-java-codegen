@@ -4,13 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigException;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Various utilities
@@ -261,6 +267,27 @@ public final class Utils {
             return str;
         }
         return wrapStart + str + wrapEnd;
+    }
+
+    /**
+     * parser list of config files.
+     *
+     * @param confFiles List of files, either JSON or HOCON.
+     * @return The string of the configuration after merging.
+     */
+    public static String parseConfigAndMerged(List<String> confFiles) {
+        try {
+            if (confFiles == null || confFiles.isEmpty()) {
+                return null;
+            }
+            Optional<Config> config = confFiles.stream()
+                    .map(c -> ConfigFactory.parseFile(new File(c))).reduce(Config::withFallback);
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.concise();
+            return config.map(value -> value.root().render(configRenderOptions)).orElse(null);
+        } catch (ConfigException ce) {
+            // 
+            return null;
+        }
     }
 
 }
