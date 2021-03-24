@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,7 +27,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
-        mappingConfig.setFieldsWithResolvers(Set.of("@customResolver"));
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("@customResolver"));
     }
 
     @AfterEach
