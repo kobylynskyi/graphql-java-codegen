@@ -773,7 +773,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return parentInterfaces.getResolver();
     }
 
-    @InputFile
+    @InputFiles
     @Optional
     public List<String> getConfigurationFiles() {
         return configurationFiles;

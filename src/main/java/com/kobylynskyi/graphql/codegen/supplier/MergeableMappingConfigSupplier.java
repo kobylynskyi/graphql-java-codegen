@@ -10,7 +10,6 @@ import com.typesafe.config.ConfigRenderOptions;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Retrieve a MappingConfig from JSON or HOCON configuration file.
@@ -18,6 +17,8 @@ import java.util.Optional;
  * @author valinha
  */
 public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
+
+    private static final ConfigRenderOptions configRenderOptions = ConfigRenderOptions.concise();
 
     private final String jsonConfig;
 
@@ -54,10 +55,12 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
             if (confFiles == null || confFiles.isEmpty()) {
                 return null;
             }
-            Optional<Config> config = confFiles.stream()
-                    .map(c -> ConfigFactory.parseFile(new File(c))).reduce(Config::withFallback);
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.concise();
-            return config.map(value -> value.root().render(configRenderOptions)).orElse(null);
+
+            return confFiles.stream()
+                    .map(c -> ConfigFactory.parseFile(new File(c)))
+                    .reduce(Config::withFallback)
+                    .map(value -> value.root().render(configRenderOptions))
+                    .orElse(null);
         } catch (ConfigException ce) {
             return null;
         }
