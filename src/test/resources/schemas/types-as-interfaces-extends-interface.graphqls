@@ -1,0 +1,26 @@
+# A GraphQL schema provides a root type for each kind of operation.
+schema {
+    # The query root.
+    query: Query
+}
+
+type Query {
+    userCurrent: User
+}
+
+type User implements Node @customInterface {
+    username: String!
+    email: String!
+    profile: Profile
+}
+
+type Profile {
+    firstName: String!
+    lastName: String!
+}
+
+interface Node {
+}
+
+directive @customResolver on FIELD_DEFINITION
+directive @customInterface on OBJECT
