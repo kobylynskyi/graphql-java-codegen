@@ -66,16 +66,18 @@ class GraphQLCodegenTypesAsInterfacesTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/types-as-interfaces-extends-interface/" +
-                "Node.scala.txt"), getFileByName(files, "Node.scala"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/types-as-interfaces-extends-interface/" +
-                "Profile.scala.txt"), getFileByName(files, "Profile.scala"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/types-as-interfaces-extends-interface/" +
-                "QueryResolver.scala.txt"), getFileByName(files, "QueryResolver.scala"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/types-as-interfaces-extends-interface/" +
-                "User.scala.txt"), getFileByName(files, "User.scala"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/types-as-interfaces-extends-interface/" +
-                "UserCurrentQueryResolver.scala.txt"), getFileByName(files, "UserCurrentQueryResolver.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
+                "types-as-interfaces-extends-interface/Node.scala.txt"), getFileByName(files, "Node.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
+                "types-as-interfaces-extends-interface/Profile.scala.txt"), getFileByName(files, "Profile.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
+                "types-as-interfaces-extends-interface/QueryResolver.scala.txt"), 
+                getFileByName(files, "QueryResolver.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
+                "types-as-interfaces-extends-interface/User.scala.txt"), getFileByName(files, "User.scala"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
+                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.scala.txt"), 
+                getFileByName(files, "UserCurrentQueryResolver.scala"));
     }
 
 }
