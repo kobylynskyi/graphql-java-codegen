@@ -12,7 +12,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
@@ -62,21 +61,24 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typesAsInterfacesExtendsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@customInterface")));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces-extends-interface.graphqls"),
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/" +
+                "types-as-interfaces-extends-interface.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/types-as-interfaces-extends-interface/" +
-                "Node.kt.txt"), getFileByName(files, "Node.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/types-as-interfaces-extends-interface/" +
-                "Profile.kt.txt"), getFileByName(files, "Profile.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/types-as-interfaces-extends-interface/" +
-                "QueryResolver.kt.txt"), getFileByName(files, "QueryResolver.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/types-as-interfaces-extends-interface/" +
-                "User.kt.txt"), getFileByName(files, "User.kt"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/types-as-interfaces-extends-interface/" +
-                "UserCurrentQueryResolver.kt.txt"), getFileByName(files, "UserCurrentQueryResolver.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                "types-as-interfaces-extends-interface/Node.kt.txt"), getFileByName(files, "Node.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                "types-as-interfaces-extends-interface/Profile.kt.txt"), getFileByName(files, "Profile.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                "types-as-interfaces-extends-interface/QueryResolver.kt.txt"),
+                getFileByName(files, "QueryResolver.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                "types-as-interfaces-extends-interface/User.kt.txt"), getFileByName(files, "User.kt"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.kt.txt"),
+                getFileByName(files, "UserCurrentQueryResolver.kt"));
     }
 
 }

@@ -12,7 +12,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
@@ -71,7 +70,8 @@ class GraphQLCodegenTypesAsInterfacesTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
                 "types-as-interfaces-extends-interface/Node.scala.txt"), getFileByName(files, "Node.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
-                "types-as-interfaces-extends-interface/Profile.scala.txt"), getFileByName(files, "Profile.scala"));
+                "types-as-interfaces-extends-interface/Profile.scala.txt"),
+                getFileByName(files, "Profile.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
                 "types-as-interfaces-extends-interface/QueryResolver.scala.txt"), 
                 getFileByName(files, "QueryResolver.scala"));

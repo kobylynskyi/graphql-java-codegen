@@ -11,7 +11,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
