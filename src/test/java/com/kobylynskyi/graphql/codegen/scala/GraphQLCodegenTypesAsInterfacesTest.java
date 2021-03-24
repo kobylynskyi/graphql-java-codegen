@@ -61,7 +61,8 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typeAsInterfaceExtendsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@customInterface")));
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces-extends-interface.graphqls"),
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/" +
+                "types-as-interfaces-extends-interface.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
