@@ -60,21 +60,25 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typesAsInterfacesExtendsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@customInterface")));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces-extends-interface.graphqls"),
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/" +
+                "types-as-interfaces-extends-interface.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/types-as-interfaces-extends-interface/" +
-                "Node.java.txt"), getFileByName(files, "Node.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/types-as-interfaces-extends-interface/" +
-                "Profile.java.txt"), getFileByName(files, "Profile.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/types-as-interfaces-extends-interface/" +
-                "QueryResolver.java.txt"), getFileByName(files, "QueryResolver.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/types-as-interfaces-extends-interface/" +
-                "User.java.txt"), getFileByName(files, "User.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/types-as-interfaces-extends-interface/" +
-                "UserCurrentQueryResolver.java.txt"), getFileByName(files, "UserCurrentQueryResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                "types-as-interfaces-extends-interface/Node.java.txt"), getFileByName(files, "Node.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                "types-as-interfaces-extends-interface/Profile.java.txt"),
+                getFileByName(files, "Profile.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                "types-as-interfaces-extends-interface/QueryResolver.java.txt"),
+                getFileByName(files, "QueryResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                "types-as-interfaces-extends-interface/User.java.txt"), getFileByName(files, "User.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.java.txt"),
+                getFileByName(files, "UserCurrentQueryResolver.java"));
     }
 
 }
