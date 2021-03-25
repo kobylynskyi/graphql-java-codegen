@@ -409,7 +409,7 @@ public interface GraphQLCodegenConfiguration {
      * <p>E.g.:
      * <ul>
      *   <li>{@code Person}</li>
-     *   <li>{@code @customInterface}</li>
+     *   <li>{@code @asInterface}</li>
      * </ul>
      *
      * @return Set of types that should generated as interfaces.

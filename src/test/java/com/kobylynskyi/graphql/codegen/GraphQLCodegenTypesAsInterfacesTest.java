@@ -36,7 +36,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
 
     @Test
     void generate_typesAsInterfaces() throws Exception {
-        mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@customInterface", "Order")));
+        mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface", "Order")));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -57,7 +57,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
 
     @Test
     void generate_typesAsInterfacesExtendsInterface() throws Exception {
-        mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@customInterface")));
+        mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface")));
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/" +
                 "types-as-interfaces-extends-interface.graphqls"),
