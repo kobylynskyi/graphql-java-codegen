@@ -81,7 +81,7 @@ trait GraphQLCodegenKeys {
 
   val useObjectMapperForRequestSerialization = settingKey[util.Set[String]]("useObjectMapperForRequestSerialization")
 
-  val jsonConfigurationFile = settingKey[Option[String]]("jsonConfigurationFile")
+  val configurationFiles = settingKey[Seq[String]]("configurationFiles, either JSON or HOCON. The same key is used in order, so the default configuration should be placed at the end.")
 
   val parentInterfaces = settingKey[ParentInterfacesConfig]("parentInterfaces")
 
