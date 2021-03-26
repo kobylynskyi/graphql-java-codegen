@@ -277,11 +277,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.getUseObjectMapperForRequestSerialization();
     }
 
-    @Override
-    public Set<String> getTypesAsInterfaces() {
-        return config.getTypesAsInterfaces();
-    }
-
     public ExtendedDocument getDocument() {
         return document;
     }

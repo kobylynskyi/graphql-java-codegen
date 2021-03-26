@@ -73,8 +73,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Integer responseProjectionMaxDepth;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
-    private Set<String> typesAsInterfaces = new HashSet<>();
-
     private boolean generateModelOpenClasses;
 
     private GeneratedLanguage generatedLanguage;
@@ -175,7 +173,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization,
                 source.useObjectMapperForRequestSerialization);
-        typesAsInterfaces = combineSet(typesAsInterfaces, source.typesAsInterfaces);
         generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
         generateModelOpenClasses = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
@@ -603,15 +600,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
         this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
-    }
-
-    @Override
-    public Set<String> getTypesAsInterfaces() {
-        return typesAsInterfaces;
-    }
-
-    public void setTypesAsInterfaces(Set<String> typesAsInterfaces) {
-        this.typesAsInterfaces = typesAsInterfaces;
     }
 
     @Override

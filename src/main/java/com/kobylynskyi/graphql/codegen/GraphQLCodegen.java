@@ -454,22 +454,8 @@ public abstract class GraphQLCodegen {
         List<File> generatedFiles = new ArrayList<>();
         Map<String, Object> dataModel = dataModelMapperFactory.getTypeDefinitionMapper()
                 .map(mappingContext, definition);
-
-        boolean typeAsInterface = mappingConfig.getTypesAsInterfaces().contains(definition.getName());
-
-        if (!typeAsInterface) {
-            typeAsInterface = definition.getDirectiveNames().stream().anyMatch(directiveName ->
-                    mappingConfig.getTypesAsInterfaces().contains("@" + directiveName)
-            );
-        }
-
-        if (typeAsInterface) {
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext,
-                    FreeMarkerTemplateType.INTERFACE, dataModel, outputDir));
-        } else {
-            generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext,
-                    FreeMarkerTemplateType.TYPE, dataModel, outputDir));
-        }
+        generatedFiles.add(GraphQLCodegenFileCreator.generateFile(mappingContext,
+                FreeMarkerTemplateType.TYPE, dataModel, outputDir));
 
         if (Boolean.TRUE.equals(mappingConfig.getGenerateClient())) {
             Map<String, Object> responseProjDataModel = dataModelMapperFactory.getRequestResponseDefinitionMapper()
