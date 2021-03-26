@@ -31,7 +31,10 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
       pushChanges
     ),
     libraryDependencies ++= Seq(
-      "io.github.kobylynskyi" % "graphql-java-codegen" % (version in ThisBuild).value
+      "io.github.kobylynskyi" % "graphql-java-codegen" % (version in ThisBuild).value,
+      "org.freemarker" % "freemarker" % "2.3.31",
+      "com.graphql-java" % "graphql-java" % "16.2",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.12.1",
     ),
     buildInfoKeys := Seq[BuildInfoKey](name, version, sbtVersion, jValidationVersion),
     buildInfoPackage := "io.github.dreamylost.graphql.codegen"
