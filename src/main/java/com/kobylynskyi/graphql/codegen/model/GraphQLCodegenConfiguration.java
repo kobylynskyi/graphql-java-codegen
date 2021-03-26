@@ -402,6 +402,21 @@ public interface GraphQLCodegenConfiguration {
     Set<String> getUseObjectMapperForRequestSerialization();
 
     /**
+     * Types that must generated as interfaces.
+     *
+     * <p>Values should be defined here in format: TypeName, @directive
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code Person}</li>
+     *   <li>{@code @asInterface}</li>
+     * </ul>
+     *
+     * @return Set of types that should generated as interfaces.
+     */
+    Set<String> getTypesAsInterfaces();
+
+    /**
      * Generate code with lang
      *
      * @return GeneratedLanguage.SCALA or GeneratedLanguage.JAVA
