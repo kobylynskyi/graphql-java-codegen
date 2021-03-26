@@ -184,9 +184,10 @@ graphql.relay.Connection<User> users(Integer first, String after) throws Excepti
 
 ### External mapping configuration
 
-Provide a path to external file via property `jsonConfigurationFile`
+Provide a path to external file via property `configurationFiles`
 Sample content of the file:
 
+JSON:
 ```json
 {
   "generateApis": true,
@@ -195,4 +196,31 @@ Sample content of the file:
     "Price.amount": "java.math.BigDecimal"
   }
 }
+```
+
+[HOCON](https://en.wikipedia.org/wiki/HOCON):
+```
+generateClient=true
+generateApis=true
+generateBuilder=true
+generateImmutableModels=true
+generateToString=true
+generateEqualsAndHashCode=true
+apiPackageName="io.github.graphql.j.resolver"
+modelPackageName="io.github.graphql.j.model"
+modelNameSuffix="TO"
+apiInterfaceStrategy="DO_NOT_GENERATE"
+apiRootInterfaceStrategy="SINGLE_INTERFACE"
+generateModelsForRootTypes=true
+apiNamePrefix="GitHub"
+addGeneratedAnnotation=false
+generatedLanguage="KOTLIN"
+customTypesMapping={
+    Long="Long",
+    Object="org.json.JSONObject"
+}
+customAnnotationsMapping={
+    "QuestionNode.metaData"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+    "QuestionNode.envInfo"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+} 
 ```
