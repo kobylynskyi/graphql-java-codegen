@@ -92,6 +92,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     useOptionalForNullableReturnTypes := MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES,
     generateApisWithThrowsException := MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION,
     addGeneratedAnnotation := MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION,
+    typesAsInterfaces := new JHashSet[String](),
     relayConfig := defaultRelayConfig,
     // package name configs:
     apiPackageName := None,
@@ -144,6 +145,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateModelsForRootTypes((generateModelsForRootTypes in GraphQLCodegenConfig).value)
     mappingConfig.setFieldsWithResolvers((fieldsWithResolvers in GraphQLCodegenConfig).value)
     mappingConfig.setFieldsWithoutResolvers((fieldsWithoutResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setTypesAsInterfaces((typesAsInterfaces in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateClient((generateClient in GraphQLCodegenConfig).value)
     mappingConfig.setRequestSuffix((requestSuffix in GraphQLCodegenConfig).value)
     mappingConfig.setResponseSuffix((responseSuffix in GraphQLCodegenConfig).value)
