@@ -12,8 +12,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
@@ -85,6 +85,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private Set<String> typesAsInterfaces = new HashSet<>();
     private RelayConfig relayConfig = new RelayConfig();
 
 
@@ -97,7 +98,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
-    private String jsonConfigurationFile;
+    private List<String> configurationFiles;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
     private Boolean generateModelOpenClasses = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES;
 
@@ -153,6 +154,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setTypesAsInterfaces(
+                typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -242,8 +245,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     }
 
     private java.util.Optional<MappingConfigSupplier> buildJsonSupplier() {
-        if (jsonConfigurationFile != null && !jsonConfigurationFile.isEmpty()) {
-            return java.util.Optional.of(new JsonMappingConfigSupplier(jsonConfigurationFile));
+        if (configurationFiles != null && !configurationFiles.isEmpty()) {
+            return java.util.Optional.of(new MergeableMappingConfigSupplier(configurationFiles));
         }
         return java.util.Optional.empty();
     }
@@ -651,6 +654,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
     }
 
+    @Input
+    @Optional
+    @Override
+    public Set<String> getTypesAsInterfaces() {
+        return typesAsInterfaces;
+    }
+
+    public void setTypesAsInterfaces(Set<String> typesAsInterfaces) {
+        this.typesAsInterfaces = typesAsInterfaces;
+    }
+
     @Nested
     @Optional
     @Override
@@ -773,14 +787,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return parentInterfaces.getResolver();
     }
 
-    @InputFile
+    @InputFiles
     @Optional
-    public String getJsonConfigurationFile() {
-        return jsonConfigurationFile;
+    public List<String> getConfigurationFiles() {
+        return configurationFiles;
     }
 
-    public void setJsonConfigurationFile(String jsonConfigurationFile) {
-        this.jsonConfigurationFile = jsonConfigurationFile;
+    public void setConfigurationFiles(List<String> configurationFiles) {
+        this.configurationFiles = configurationFiles;
     }
 
     @Input

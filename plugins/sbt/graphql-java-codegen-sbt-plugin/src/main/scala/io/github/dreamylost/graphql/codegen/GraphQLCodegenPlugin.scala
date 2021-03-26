@@ -6,10 +6,11 @@ import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
-import com.kobylynskyi.graphql.codegen.supplier.{ JsonMappingConfigSupplier, SchemaFinder }
+import com.kobylynskyi.graphql.codegen.supplier.{ MergeableMappingConfigSupplier, SchemaFinder }
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
+import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen
 
 import java.nio.file.{ Path, Paths }
 import java.util.{ HashMap => JHashMap, HashSet => JHashSet, List => JList }
@@ -59,7 +60,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
   override lazy val globalSettings: Seq[Def.Setting[_]] = Seq(
     graphqlQueryIntrospectionResultPath := None,
     graphqlSchemas := schemaFinderConfig,
-    jsonConfigurationFile := None,
+    configurationFiles := Seq.empty[String],
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
     customTypesMapping := new JHashMap[String, String](), //TODO use scala Map, convert to java Map
@@ -91,6 +92,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     useOptionalForNullableReturnTypes := MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES,
     generateApisWithThrowsException := MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION,
     addGeneratedAnnotation := MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION,
+    typesAsInterfaces := new JHashSet[String](),
     relayConfig := defaultRelayConfig,
     // package name configs:
     apiPackageName := None,
@@ -143,6 +145,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateModelsForRootTypes((generateModelsForRootTypes in GraphQLCodegenConfig).value)
     mappingConfig.setFieldsWithResolvers((fieldsWithResolvers in GraphQLCodegenConfig).value)
     mappingConfig.setFieldsWithoutResolvers((fieldsWithoutResolvers in GraphQLCodegenConfig).value)
+    mappingConfig.setTypesAsInterfaces((typesAsInterfaces in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateClient((generateClient in GraphQLCodegenConfig).value)
     mappingConfig.setRequestSuffix((requestSuffix in GraphQLCodegenConfig).value)
     mappingConfig.setResponseSuffix((responseSuffix in GraphQLCodegenConfig).value)
@@ -201,7 +204,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
         args
       }, graphqlCodegen := {
         sLog.value.info(s"Generating files: ${BuildInfo.toString}")
-        val mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile.value.orNull)
+        val mappingConfigSupplier = buildJsonSupplier(configurationFiles.value)
         val language = mappingConfigSupplier.map(_.get()).map(_.getGeneratedLanguage).getOrElse(generatedLanguage.value)
         var result = Seq.empty[File]
         try {
@@ -213,6 +216,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
                 new JavaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier.orNull)
               case SCALA =>
                 new ScalaGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier.orNull)
+              case KOTLIN =>
+                new KotlinGraphQLCodegen(getSchemas(), _introspectionResult, _outputDir, mappingConfig, mappingConfigSupplier.orNull)
               case _ =>
                 throw new LanguageNotSupportedException(language)
             }
@@ -275,9 +280,9 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     ) ++ watchSourcesSetting ++ Seq(cleanFiles += generateCodegenTargetPath.value)
   }
 
-  protected def buildJsonSupplier(jsonConfigurationFile: String): Option[JsonMappingConfigSupplier] = {
-    if (jsonConfigurationFile != null && jsonConfigurationFile.nonEmpty)
-      Some(new JsonMappingConfigSupplier(jsonConfigurationFile)) else None
+  protected def buildJsonSupplier(configurationFiles: Seq[String]): Option[MergeableMappingConfigSupplier] = {
+    if (configurationFiles != null && configurationFiles.nonEmpty)
+      Some(new MergeableMappingConfigSupplier(configurationFiles.asJava)) else None
   }
 
 }

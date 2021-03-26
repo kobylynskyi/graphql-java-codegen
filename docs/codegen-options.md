@@ -6,7 +6,7 @@
 | `graphqlSchemas`                                      | *See<br>[graphqlSchemas](#option-graphqlschemas)*                     | All<br>`.graphqls`/`.graphql`<br>files in<br>resources | Block to define the input GraphQL schemas, when exact paths are too cumbersome. See table below for a list of options. *See [graphqlSchemas](#option-graphqlschemas)* |
 | `graphqlQueryIntrospectionResu`<br>`ltPath`           | String                                                                | None                                                   | Path to GraphQL Introspection Query result in json format (with root object `__schema` or `data.__schema`). Sample: [sample-introspection-query-result.json](../src/test/resources/introspection-result/sample-introspection-query-result.json)|
 | `outputDir`                                           | String                                                                | None                                                   | The output target directory into which code will be generated. |
-| `jsonConfigurationFile`                               | String                                                                | Empty                                                  | Path to an external mapping configuration. |
+| `configurationFiles`                                   | List(String)                                                          | Empty                                                  | Paths to the files with mapping configurations. Supported formats. JSON, HOCON. Order of specified configuration files matters, so the default configuration should be placed at the end.|
 | `packageName`                                         | String                                                                | Empty                                                  | Java package for generated classes. |
 | `apiPackageName`                                      | String                                                                | Empty                                                  | Java package for generated api classes (Query, Mutation, Subscription). |
 | `modelPackageName`                                    | String                                                                | Empty                                                  | Java package for generated model classes (type, input, interface, enum, union). |
@@ -54,6 +54,7 @@ See [DirectiveAnnotationsMapping](#option-directiveannotationsmapping)* |
 | `responseProjectionMaxDepth`                          | Integer                                                               | 3                                                      | Sets max depth when use `all$()` which for facilitating the construction of projection automatically, the fields on all projections are provided when it be invoked. This is a global configuration, of course, you can use `all$(max)` to set for each method. For self recursive types, too big depth may result in a large number of returned data!|
 | `generatedLanguage`                                   | Enum                                                                  | GeneratedLanguage.JAVA                                 | Choose which language you want to generate, Java,Scala,Kotlin were supported. Note that due to language features, there are slight differences in default values between languages.|
 | `generateModelOpenClasses`                            | Boolean                                                               | false                                                  | The class type of the generated model. If true, generate normal classes, else generate data classes. It only support in kotlin(```data class```) and scala(```case class```). Maybe we will consider to support Java ```record``` in the future.|
+| `typesAsInterfaces`                                   | Set(String)                                                           | Empty                                                  | Types that must generated as interfaces should be defined here in format: `TypeName` or `@directive`. E.g.: `User`, `@asInterface`. |
 
 ### Option `graphqlSchemas`
 
@@ -183,9 +184,10 @@ graphql.relay.Connection<User> users(Integer first, String after) throws Excepti
 
 ### External mapping configuration
 
-Provide a path to external file via property `jsonConfigurationFile`
+Provide a path to external file via property `configurationFiles`
 Sample content of the file:
 
+JSON:
 ```json
 {
   "generateApis": true,
@@ -194,4 +196,31 @@ Sample content of the file:
     "Price.amount": "java.math.BigDecimal"
   }
 }
+```
+
+[HOCON](https://en.wikipedia.org/wiki/HOCON):
+```
+generateClient=true
+generateApis=true
+generateBuilder=true
+generateImmutableModels=true
+generateToString=true
+generateEqualsAndHashCode=true
+apiPackageName="io.github.graphql.j.resolver"
+modelPackageName="io.github.graphql.j.model"
+modelNameSuffix="TO"
+apiInterfaceStrategy="DO_NOT_GENERATE"
+apiRootInterfaceStrategy="SINGLE_INTERFACE"
+generateModelsForRootTypes=true
+apiNamePrefix="GitHub"
+addGeneratedAnnotation=false
+generatedLanguage="KOTLIN"
+customTypesMapping={
+    Long="Long",
+    Object="org.json.JSONObject"
+}
+customAnnotationsMapping={
+    "QuestionNode.metaData"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+    "QuestionNode.envInfo"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+} 
 ```

@@ -69,6 +69,8 @@ trait GraphQLCodegenKeys {
 
   val fieldsWithoutResolvers = settingKey[util.Set[String]]("fieldsWithoutResolvers")
 
+  val typesAsInterfaces = settingKey[util.Set[String]]("typesAsInterfaces")
+
   val generateClient = settingKey[Boolean]("generateClient")
 
   val requestSuffix = settingKey[String]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
@@ -81,7 +83,7 @@ trait GraphQLCodegenKeys {
 
   val useObjectMapperForRequestSerialization = settingKey[util.Set[String]]("useObjectMapperForRequestSerialization")
 
-  val jsonConfigurationFile = settingKey[Option[String]]("jsonConfigurationFile")
+  val configurationFiles = settingKey[Seq[String]]("configurationFiles, either JSON or HOCON. The same key is used in order, so the default configuration should be placed at the end.")
 
   val parentInterfaces = settingKey[ParentInterfacesConfig]("parentInterfaces")
 
