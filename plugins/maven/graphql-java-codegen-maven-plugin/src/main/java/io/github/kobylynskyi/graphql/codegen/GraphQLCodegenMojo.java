@@ -179,9 +179,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] useObjectMapperForRequestSerialization;
 
-    @Parameter
-    private String[] typesAsInterfaces;
-
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
 
@@ -250,7 +247,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
         mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
-        mappingConfig.setTypesAsInterfaces(mapToHashSet(typesAsInterfaces));
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
@@ -548,11 +544,6 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getUseObjectMapperForRequestSerialization() {
         return mapToHashSet(useObjectMapperForRequestSerialization);
-    }
-
-    @Override
-    public Set<String> getTypesAsInterfaces() {
-        return mapToHashSet(typesAsInterfaces);
     }
 
     @Override

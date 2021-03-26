@@ -61,7 +61,6 @@ class MappingConfigTest {
         config.setParametrizedInputSuffix("9");
         config.setTypeResolverPrefix("11");
         config.setTypeResolverSuffix("12");
-        config.setTypesAsInterfaces(new HashSet<>(singletonList("User")));
         RelayConfig relayConfig = new RelayConfig();
         relayConfig.setDirectiveArgumentName("key");
         config.setRelayConfig(relayConfig);
@@ -105,7 +104,6 @@ class MappingConfigTest {
         config.setParametrizedInputSuffix("99");
         config.setTypeResolverPrefix("1111");
         config.setTypeResolverSuffix("1212");
-        config.setTypesAsInterfaces(new HashSet<>(singletonList("User2")));
         RelayConfig relayConfig = new RelayConfig();
         relayConfig.setDirectiveArgumentName("for");
         config.setRelayConfig(relayConfig);
@@ -221,7 +219,6 @@ class MappingConfigTest {
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
         assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
-        assertEquals(singleton("User"), mappingConfig.getTypesAsInterfaces());
     }
 
     @Test
@@ -265,7 +262,6 @@ class MappingConfigTest {
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
         assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
-        assertEquals(singleton("User"), mappingConfig.getTypesAsInterfaces());
     }
 
     @Test
@@ -314,7 +310,6 @@ class MappingConfigTest {
         assertEquals("1111", mappingConfig.getTypeResolverPrefix());
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());
         assertEquals("for", mappingConfig.getRelayConfig().getDirectiveArgumentName());
-        assertEquals(new HashSet<>(Arrays.asList("User", "User2")), mappingConfig.getTypesAsInterfaces());
     }
 
 }
