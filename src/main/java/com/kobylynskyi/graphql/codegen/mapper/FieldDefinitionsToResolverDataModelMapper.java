@@ -244,9 +244,9 @@ public class FieldDefinitionsToResolverDataModelMapper {
                                  NamedDefinition namedDefinition, String parentTypeName) {
         RelayConfig relayConfig = mappingContext.getRelayConfig();
         if (relayConfig != null && relayConfig.getDirectiveName() != null) {
-            Directive connectionDirective = fieldDef.getDirective(relayConfig.getDirectiveName());
-            if (connectionDirective != null) {
-                Argument argument = connectionDirective.getArgument(relayConfig.getDirectiveArgumentName());
+            List<Directive> connectionDirective = fieldDef.getDirectives(relayConfig.getDirectiveName());
+            if (!connectionDirective.isEmpty()) {
+                Argument argument = connectionDirective.get(0).getArgument(relayConfig.getDirectiveArgumentName());
                 // as of now supporting only string value of directive argument
                 if (argument != null && argument.getValue() instanceof StringValue) {
                     String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
