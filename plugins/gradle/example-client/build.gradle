@@ -30,8 +30,8 @@ dependencies {
     implementation "org.mapstruct:mapstruct:1.4.2.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
-    compileOnly "org.projectlombok:lombok:1.18.20"
-    annotationProcessor "org.projectlombok:lombok:1.18.20"
+    compileOnly "org.projectlombok:lombok:1.18.18"
+    annotationProcessor "org.projectlombok:lombok:1.18.12"
 
     testImplementation "io.rest-assured:rest-assured:4.3.3"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
