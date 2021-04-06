@@ -17,7 +17,7 @@
 
 ```groovy
 plugins {
-  id "io.github.kobylynskyi.graphql.codegen" version "4.1.6"
+  id "io.github.kobylynskyi.graphql.codegen" version "5.0.0"
 }
 ```
 
@@ -31,7 +31,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:4.1.6"
+    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:5.0.0"
   }
 }
 
