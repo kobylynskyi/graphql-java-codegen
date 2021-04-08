@@ -53,6 +53,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean useOptionalForNullableReturnTypes;
     private Boolean generateApisWithThrowsException;
     private Boolean addGeneratedAnnotation;
+    private Boolean generateJacksonTypeIdResolver;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -459,6 +460,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setAddGeneratedAnnotation(Boolean addGeneratedAnnotation) {
         this.addGeneratedAnnotation = addGeneratedAnnotation;
+    }
+
+    @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    public void setGenerateJacksonTypeIdResolver(Boolean generateJacksonTypeIdResolver) {
+        this.generateJacksonTypeIdResolver = generateJacksonTypeIdResolver;
     }
 
     @Override
