@@ -44,11 +44,11 @@ class GraphQLCodegenUnionResolverTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("UnionMemberA.java", "UnionMemberB.java", "UnionToResolve.java"), generatedFileNames);
+        assertEquals(Arrays.asList("GraphqlJacksonTypeIdResolver.java", "UnionMemberA.java", "UnionMemberB.java", "UnionToResolve.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/%s.txt", file.getName())),
+                    new File(String.format("src/test/resources/expected-classes/jackson-resolver-union/%s.txt", file.getName())),
                     file);
         }
     }

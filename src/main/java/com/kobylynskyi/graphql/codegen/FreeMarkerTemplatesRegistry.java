@@ -13,6 +13,7 @@ import java.util.EnumMap;
 
 import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.ENUM;
 import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.INTERFACE;
+import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.JACKSON_TYPE_ID_RESOLVER;
 import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.OPERATIONS;
 import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.PARAMETRIZED_INPUT;
 import static com.kobylynskyi.graphql.codegen.FreeMarkerTemplateType.REQUEST;
@@ -58,6 +59,8 @@ class FreeMarkerTemplatesRegistry {
                     configuration.getTemplate("templates/java-lang/javaClassGraphqlParametrizedInput.ftl"));
             javaTemplates.put(RESPONSE_PROJECTION,
                     configuration.getTemplate("templates/java-lang/javaClassGraphqlResponseProjection.ftl"));
+            javaTemplates.put(JACKSON_TYPE_ID_RESOLVER,
+                    configuration.getTemplate("templates/java-lang/javaClassGraphqlJacksonTypenameIdResolver.ftl"));
             templateMap.put(GeneratedLanguage.JAVA, javaTemplates);
 
             EnumMap<FreeMarkerTemplateType, Template> scalaTemplates = new EnumMap<>(FreeMarkerTemplateType.class);
