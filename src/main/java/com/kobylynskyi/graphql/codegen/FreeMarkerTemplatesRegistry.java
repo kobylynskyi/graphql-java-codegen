@@ -60,7 +60,7 @@ class FreeMarkerTemplatesRegistry {
             javaTemplates.put(RESPONSE_PROJECTION,
                     configuration.getTemplate("templates/java-lang/javaClassGraphqlResponseProjection.ftl"));
             javaTemplates.put(JACKSON_TYPE_ID_RESOLVER,
-                    configuration.getTemplate("templates/java-lang/javaClassGraphqlJacksonTypenameIdResolver.ftl"));
+                    configuration.getTemplate("templates/java-lang/javaClassGraphqlJacksonTypeIdResolver.ftl"));
             templateMap.put(GeneratedLanguage.JAVA, javaTemplates);
 
             EnumMap<FreeMarkerTemplateType, Template> scalaTemplates = new EnumMap<>(FreeMarkerTemplateType.class);

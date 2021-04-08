@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
     date = "${generatedInfo.getDateTime()}"
 )
 </#if>
-public class GraphqlTypenameResolver extends TypeIdResolverBase {
+public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
 
     private JavaType superType;
 

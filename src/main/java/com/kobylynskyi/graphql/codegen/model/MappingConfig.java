@@ -151,6 +151,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
         addGeneratedAnnotation = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getAddGeneratedAnnotation);
+        generateJacksonTypeIdResolver = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getGenerateJacksonTypeIdResolver);
         relayConfig = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getRelayConfig);
         queryResolverParentInterface = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getQueryResolverParentInterface);

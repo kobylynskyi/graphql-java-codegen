@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
 )
-public class GraphqlTypenameResolver extends TypeIdResolverBase {
+public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
 
     private JavaType superType;
 
