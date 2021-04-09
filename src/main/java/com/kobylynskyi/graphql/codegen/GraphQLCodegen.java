@@ -192,7 +192,8 @@ public abstract class GraphQLCodegen {
             mappingConfig.setAddGeneratedAnnotation(MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION);
         }
         if (mappingConfig.getGenerateJacksonTypeIdResolver() == null) {
-            mappingConfig.setGenerateJacksonTypeIdResolver(MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER);
+            mappingConfig.setGenerateJacksonTypeIdResolver(
+                    MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER);
         }
         if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
             mappingConfig.setUseOptionalForNullableReturnTypes(

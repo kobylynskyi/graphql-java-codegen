@@ -48,11 +48,15 @@ class GraphQLCodegenUnionResolverTest {
         File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/unionresolver");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("GraphqlJacksonTypeIdResolver.java", "UnionMemberA.java", "UnionMemberB.java", "UnionToResolve.java"), generatedFileNames);
+        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.java", "UnionMemberA.java",
+                "UnionMemberB.java", "UnionToResolve.java");
+        assertEquals(expectedClasses, generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/jackson-resolver-union/%s.txt", file.getName())),
+                    new File(String.format(
+                            "src/test/resources/expected-classes/jackson-resolver-union/%s.txt",
+                            file.getName())),
                     file);
         }
     }
@@ -64,11 +68,15 @@ class GraphQLCodegenUnionResolverTest {
         File outputJavaClassesDir = new File("build/generated");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(Arrays.asList("GraphqlJacksonTypeIdResolver.java", "UnionMemberA.java", "UnionMemberB.java", "UnionToResolve.java"), generatedFileNames);
+        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.java", "UnionMemberA.java",
+                "UnionMemberB.java", "UnionToResolve.java");
+        assertEquals(expectedClasses, generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(
-                    new File(String.format("src/test/resources/expected-classes/jackson-resolver-union/without-model-package/%s.txt", file.getName())),
+                    new File(String.format(
+                            "src/test/resources/expected-classes/jackson-resolver-union/without-model-package/%s.txt",
+                            file.getName())),
                     file);
         }
     }
