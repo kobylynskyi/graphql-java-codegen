@@ -316,7 +316,13 @@ public interface GraphQLTypeMapper {
             }
         } else if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
             annotations.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
-            annotations.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + DataModelMapper.getModelPackageName(mappingContext) + ".GraphqlJacksonTypeIdResolver.class)");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            annotations.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName + "GraphqlJacksonTypeIdResolver.class)");
         }
 
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
