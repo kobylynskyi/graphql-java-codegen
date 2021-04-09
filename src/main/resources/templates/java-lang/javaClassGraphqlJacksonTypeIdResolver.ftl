@@ -2,7 +2,6 @@
 package ${package};
 
 </#if>
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
@@ -26,7 +25,12 @@ public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
     @Override
     public JavaType typeFromId(DatabindContext context, String typename) {
         try {
-            var clazz = Class.forName(<#if package?has_content>"${package}." + </#if>typename);
+            var clazz = Class.forName(
+                <#if package?has_content>"${package}." +
+                </#if><#if modelNamePrefix?has_content>"${modelNamePrefix}" +
+                </#if>typename<#if modelNamePrefix?has_content> +
+                "${modelNameSuffix}"</#if>
+            );
             return context.constructSpecializedType(superType, clazz);
         } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());

@@ -2,14 +2,14 @@
     value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
     date = "2020-12-31T23:59:59-0500"
 )
-public class UnionMemberA implements java.io.Serializable, UnionToResolve {
+public class MyUnionMemberASuffix implements java.io.Serializable, MyUnionToResolveSuffix {
 
     private Integer someField;
 
-    public UnionMemberA() {
+    public MyUnionMemberASuffix() {
     }
 
-    public UnionMemberA(Integer someField) {
+    public MyUnionMemberASuffix(Integer someField) {
         this.someField = someField;
     }
 
@@ -22,8 +22,8 @@ public class UnionMemberA implements java.io.Serializable, UnionToResolve {
 
 
 
-    public static UnionMemberA.Builder builder() {
-        return new UnionMemberA.Builder();
+    public static MyUnionMemberASuffix.Builder builder() {
+        return new MyUnionMemberASuffix.Builder();
     }
 
     public static class Builder {
@@ -39,8 +39,8 @@ public class UnionMemberA implements java.io.Serializable, UnionToResolve {
         }
 
 
-        public UnionMemberA build() {
-            return new UnionMemberA(someField);
+        public MyUnionMemberASuffix build() {
+            return new MyUnionMemberASuffix(someField);
         }
 
     }

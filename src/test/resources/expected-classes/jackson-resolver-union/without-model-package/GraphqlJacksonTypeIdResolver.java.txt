@@ -19,7 +19,11 @@ public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
     @Override
     public JavaType typeFromId(DatabindContext context, String typename) {
         try {
-            var clazz = Class.forName(typename);
+            var clazz = Class.forName(
+                "My" +
+                typename +
+                "Suffix"
+            );
             return context.constructSpecializedType(superType, clazz);
         } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());

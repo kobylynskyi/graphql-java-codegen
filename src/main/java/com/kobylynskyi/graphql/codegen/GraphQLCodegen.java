@@ -37,6 +37,8 @@ import java.util.Optional;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.MODEL_NAME_PREFIX;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.MODEL_NAME_SUFFIX;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static java.util.stream.Collectors.toList;
 
@@ -547,6 +549,8 @@ public abstract class GraphQLCodegen {
     private File generateJacksonTypeIdResolver(MappingContext context) {
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(context));
+        dataModel.put(MODEL_NAME_PREFIX, context.getModelNamePrefix());
+        dataModel.put(MODEL_NAME_SUFFIX, context.getModelNameSuffix());
         dataModel.put(CLASS_NAME, "GraphqlJacksonTypeIdResolver");
         dataModel.put(GENERATED_ANNOTATION, context.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, context.getGeneratedInformation());

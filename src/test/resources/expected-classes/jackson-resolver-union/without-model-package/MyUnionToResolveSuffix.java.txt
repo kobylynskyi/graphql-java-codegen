@@ -4,6 +4,6 @@
 )
 @com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
 @com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(GraphqlJacksonTypeIdResolver.class)
-public interface UnionToResolve {
+public interface MyUnionToResolveSuffix {
 
 }
