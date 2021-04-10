@@ -136,11 +136,13 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
     @Override
     public List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
         List<String> defaults = new ArrayList<>();
+        String typeNameWithPrefixAndSuffix = (mappingContext.getModelNamePrefix() == null ? ""
+                : mappingContext.getModelNamePrefix())
+                + typeName
+                + (mappingContext.getModelNameSuffix() == null ? "" : mappingContext.getModelNameSuffix());
         boolean exists = null != mappingContext.getEnumImportItSelfInScala()
                 && mappingContext.getEnumImportItSelfInScala()
-                .contains((mappingContext.getModelNamePrefix() == null ? "" :  mappingContext.getModelNamePrefix())
-                        + typeName
-                        + (mappingContext.getModelNameSuffix() == null ? "" : mappingContext.getModelNameSuffix()));
+                .contains(typeNameWithPrefixAndSuffix);
         // todo use switch
         // Inspired by the pr https://github.com/kobylynskyi/graphql-java-codegen/pull/637/files
         if (exists) {
@@ -151,7 +153,7 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
                 modelPackageName += ".";
             }
             defaults.add("com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[" + modelPackageName
-                    + typeName + "TypeRefer])");
+                    + typeNameWithPrefixAndSuffix + "TypeRefer])");
         }
         return defaults;
     }
