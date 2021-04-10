@@ -137,6 +137,7 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
     public List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
         List<String> defaults = new ArrayList<>();
         boolean exists = mappingContext.getEnumImportItSelfInScala() != null && mappingContext.getEnumImportItSelfInScala().contains(typeName);
+        // todo use switch
         if (exists) {
             String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
             if (modelPackageName == null) {
