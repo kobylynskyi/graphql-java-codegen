@@ -23,7 +23,7 @@ class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
         context.constructSpecializedType(superType, clazz)
     } catch {
         case e: ClassNotFoundException =>
-        System.err.println(e.getMessage)
+        Console.err.println(e.getMessage)
         null
     }
 

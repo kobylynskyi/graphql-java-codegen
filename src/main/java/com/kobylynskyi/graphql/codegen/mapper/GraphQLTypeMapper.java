@@ -8,9 +8,20 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.*;
+import graphql.language.Argument;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
+import graphql.language.ListType;
+import graphql.language.NamedNode;
+import graphql.language.NonNullType;
+import graphql.language.Type;
+import graphql.language.TypeName;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Map GraphQL type to language-specific type (java/scala/kotlin/etc)
@@ -253,7 +264,7 @@ public interface GraphQLTypeMapper {
             return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
         } else if (type instanceof TypeName) {
             String typeName = null;
-            if (def instanceof ExtendedFieldDefinition){
+            if (def instanceof ExtendedFieldDefinition) {
                 typeName = ((TypeName) type).getName();
             }
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
@@ -288,6 +299,8 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @param directives      List of GraphQL directive
      * @param mandatory       Type is mandatory
+     * @param isUnion         Is it union type
+     * @param typeName        Name of GraphQL type, but only not null when type is Enum
      * @return list of Java annotations for a given GraphQL type
      */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
@@ -318,8 +331,8 @@ public interface GraphQLTypeMapper {
             }
         }
 
-        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext,isUnion));
-        annotations.addAll(getAdditionalAnnotations(mappingContext,typeName));
+        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, isUnion));
+        annotations.addAll(getAdditionalAnnotations(mappingContext, typeName));
 
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
