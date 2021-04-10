@@ -8,9 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
@@ -120,6 +118,24 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
     @Override
     public ValueMapper getValueMapper() {
         return valueMapper;
+    }
+
+    @Override
+    public List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
+                    "GraphqlJacksonTypeIdResolver.class)");
+        }
+        return defaults;
     }
 
 }

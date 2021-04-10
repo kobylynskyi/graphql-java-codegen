@@ -82,6 +82,8 @@ class FreeMarkerTemplatesRegistry {
                     configuration.getTemplate("templates/scala-lang/scalaClassGraphqlParametrizedInput.ftl"));
             scalaTemplates.put(RESPONSE_PROJECTION,
                     configuration.getTemplate("templates/scala-lang/scalaClassGraphqlResponseProjection.ftl"));
+            scalaTemplates.put(JACKSON_TYPE_ID_RESOLVER,
+                    configuration.getTemplate("templates/scala-lang/scalaClassGraphqlJacksonTypeIdResolver.ftl"));
             templateMap.put(GeneratedLanguage.SCALA, scalaTemplates);
 
             EnumMap<FreeMarkerTemplateType, Template> kotlinTemplates = new EnumMap<>(FreeMarkerTemplateType.class);
@@ -103,6 +105,8 @@ class FreeMarkerTemplatesRegistry {
                     configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlParametrizedInput.ftl"));
             kotlinTemplates.put(RESPONSE_PROJECTION,
                     configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlResponseProjection.ftl"));
+            kotlinTemplates.put(JACKSON_TYPE_ID_RESOLVER,
+                    configuration.getTemplate("templates/kotlin-lang/kotlinClassGraphqlJacksonTypeIdResolver.ftl"));
             templateMap.put(GeneratedLanguage.KOTLIN, kotlinTemplates);
         } catch (IOException e) {
             throw new UnableToLoadFreeMarkerTemplateException(e);

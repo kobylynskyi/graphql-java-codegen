@@ -9,6 +9,7 @@ case class Asset(
     @javax.validation.constraints.NotNull
     name: String,
     @javax.validation.constraints.NotNull
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[StatusTypeRefer])
     status: Status,
     @javax.validation.constraints.NotNull
     override val id: String,

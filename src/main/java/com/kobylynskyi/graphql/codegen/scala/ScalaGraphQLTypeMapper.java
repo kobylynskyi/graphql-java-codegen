@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
@@ -7,7 +8,9 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
@@ -112,4 +115,38 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
         return valueMapper;
     }
 
+    @Override
+    public List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[" + modelPackageName +
+                    "GraphqlJacksonTypeIdResolver])");
+        }
+        return defaults;
+    }
+
+    @Override
+    public List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
+        List<String> defaults = new ArrayList<>();
+        boolean exists = mappingContext.getEnumImportItSelfInScala() != null && mappingContext.getEnumImportItSelfInScala().contains(typeName);
+        if (exists) {
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add("com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[" + modelPackageName + typeName +
+                    "TypeRefer])");
+        }
+        return defaults;
+    }
 }
