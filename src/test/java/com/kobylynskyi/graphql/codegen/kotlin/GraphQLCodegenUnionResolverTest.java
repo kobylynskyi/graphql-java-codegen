@@ -79,7 +79,8 @@ class GraphQLCodegenUnionResolverTest {
         for (File file : files) {
             assertSameTrimmedContent(
                     new File(String.format(
-                            "src/test/resources/expected-classes/kt/jackson-resolver-union/without-model-package/%s.txt",
+                            "src/test/resources/expected-classes/kt/jackson-resolver-union/without-model-package/" +
+                                    "%s.txt",
                             file.getName())),
                     file);
         }
