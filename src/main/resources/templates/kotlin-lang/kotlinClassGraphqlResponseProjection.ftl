@@ -26,7 +26,7 @@ import java.util.Objects
 </#list>
 open class ${className} : GraphQLResponseProjection() {
 
-<#if fields?has_content>
+<#if fields?has_content && generateAllMethodInProjection>
     override fun `all$`(): ${className} = `all$`(${responseProjectionMaxDepth})
 
     override fun `all$`(maxDepth: Int): ${className} {

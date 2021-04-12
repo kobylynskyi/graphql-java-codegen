@@ -376,6 +376,13 @@ public interface GraphQLCodegenConfiguration {
     String getResolverParentInterface();
 
     /**
+     * Enables the generation of the all$ method in the projection classes of the client.
+     *
+     * @return whether the generation is enabled.
+     */
+    Boolean getGenerateAllMethodInProjection();
+
+    /**
      * Limit depth when `all$` invoke which has subProjections
      *
      * @return limit depth when the projection is constructed automatically

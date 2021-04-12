@@ -28,7 +28,7 @@ public class ${className} extends GraphQLResponseProjection {
 
     public ${className}() {
     }
-<#if fields?has_content>
+<#if fields?has_content && generateAllMethodInProjection>
 
     @Override
     public ${className} all$() {

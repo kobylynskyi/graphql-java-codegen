@@ -70,6 +70,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private Boolean generateAllMethodInProjection;
     private Integer responseProjectionMaxDepth;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
@@ -171,6 +172,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
+        generateAllMethodInProjection = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getGenerateAllMethodInProjection);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getResponseProjectionMaxDepth);
         useObjectMapperForRequestSerialization = combineSet(useObjectMapperForRequestSerialization,
@@ -585,6 +588,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setParametrizedInputSuffix(String parametrizedInputSuffix) {
         this.parametrizedInputSuffix = parametrizedInputSuffix;
+    }
+
+    public void setGenerateAllMethodInProjection(Boolean generateAllMethodInProjection) {
+        this.generateAllMethodInProjection = generateAllMethodInProjection;
+    }
+
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
     }
 
     @Override
