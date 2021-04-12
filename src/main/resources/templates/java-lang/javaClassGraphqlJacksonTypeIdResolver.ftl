@@ -25,7 +25,7 @@ public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
     @Override
     public JavaType typeFromId(DatabindContext context, String typename) {
         try {
-            var clazz = Class.forName(
+            Class<?> clazz = Class.forName(
                 <#if package?has_content>"${package}." +
                 </#if><#if modelNamePrefix?has_content>"${modelNamePrefix}" +
                 </#if>typename<#if modelNamePrefix?has_content> +

@@ -8,7 +8,9 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
@@ -172,5 +174,23 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         // correctly when returnType is not List.
         // Should fix it when generate response class.
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
+
+    @Override
+    public List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
+                    "GraphqlJacksonTypeIdResolver::class)");
+        }
+        return defaults;
     }
 }

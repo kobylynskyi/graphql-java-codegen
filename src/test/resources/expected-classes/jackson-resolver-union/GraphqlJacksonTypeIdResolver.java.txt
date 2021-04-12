@@ -21,7 +21,7 @@ public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
     @Override
     public JavaType typeFromId(DatabindContext context, String typename) {
         try {
-            var clazz = Class.forName(
+            Class<?> clazz = Class.forName(
                 "com.kobylynskyi.graphql.unionresolver." +
                 typename
             );

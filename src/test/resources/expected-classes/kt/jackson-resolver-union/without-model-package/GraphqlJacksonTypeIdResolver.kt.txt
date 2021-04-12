@@ -1,0 +1,41 @@
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.databind.DatabindContext
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+open class GraphqlJacksonTypeIdResolver : TypeIdResolverBase() {
+
+    private var superType: JavaType? = null
+
+    override fun init(baseType: JavaType?) {
+        superType = baseType
+    }
+
+    override fun typeFromId(context: DatabindContext, typename: String): JavaType? {
+        return try {
+            val clazz = Class.forName("My" +
+                    typename +
+                    "Suffix")
+            context.constructSpecializedType(superType, clazz)
+        } catch (e: ClassNotFoundException) {
+                System.err.println(e.message)
+                null
+        }
+    }
+
+    override fun getMechanism(): JsonTypeInfo.Id {
+        return JsonTypeInfo.Id.NAME
+    }
+
+    override fun idFromValue(obj: Any): String {
+        return idFromValueAndType(obj, obj.javaClass)
+    }
+
+    override fun idFromValueAndType(obj: Any, subType: Class<*>): String {
+        return subType.simpleName
+    }
+}

@@ -5,6 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
@@ -262,19 +263,31 @@ public interface GraphQLTypeMapper {
         } else if (type instanceof NonNullType) {
             return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
         } else if (type instanceof TypeName) {
+            String typeName = null;
+            if (def instanceof ExtendedFieldDefinition) {
+                typeName = ((TypeName) type).getName();
+            }
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
-                    getDirectives(def), mandatory, false);
+                    getDirectives(def), mandatory, false, typeName);
         }
         return Collections.emptyList();
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                Collections.emptyList(), false, extendedDefinition instanceof ExtendedUnionTypeDefinition);
+                Collections.emptyList(), false, extendedDefinition instanceof ExtendedUnionTypeDefinition, null);
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
-        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, false);
+        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, false, null);
+    }
+
+    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
+        return new ArrayList<>();
+    }
+
+    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
+        return new ArrayList<>();
     }
 
     /**
@@ -286,11 +299,13 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @param directives      List of GraphQL directive
      * @param mandatory       Type is mandatory
+     * @param isUnion         Is it union type
+     * @param typeName        Name of GraphQL type, but only not null when type is Enum
      * @return list of Java annotations for a given GraphQL type
      */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
                                         String parentTypeName, List<Directive> directives, boolean mandatory,
-                                        boolean isUnion) {
+                                        boolean isUnion, String typeName) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
@@ -314,18 +329,10 @@ public interface GraphQLTypeMapper {
             if (!Utils.isEmpty(annotationsToAdd)) {
                 annotations.addAll(annotationsToAdd);
             }
-        } else if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
-            annotations.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
-                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
-            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
-            if (modelPackageName == null) {
-                modelPackageName = "";
-            } else if (Utils.isNotBlank(modelPackageName)) {
-                modelPackageName += ".";
-            }
-            annotations.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
-                    "GraphqlJacksonTypeIdResolver.class)");
         }
+
+        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, isUnion));
+        annotations.addAll(getAdditionalAnnotations(mappingContext, typeName));
 
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
