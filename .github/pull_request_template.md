@@ -1,12 +1,11 @@
-Pull Request
----
-
 Related to #ISSUE_NUMBER
 
+---
+
 Changes were made to the:
-- [ ] Java library
-- [ ] Kotlin resolver
-- [ ] Scala resolver
+- [ ] Codegen library - Java
+- [ ] Codegen library - Kotlin
+- [ ] Codegen library - Scala
 - [ ] Maven plugin
 - [ ] Gradle plugin
 - [ ] SBT plugin
