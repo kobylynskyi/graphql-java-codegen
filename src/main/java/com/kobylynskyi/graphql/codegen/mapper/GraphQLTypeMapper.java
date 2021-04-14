@@ -283,8 +283,22 @@ public interface GraphQLTypeMapper {
     }
 
     default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
-        return new ArrayList<>();
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add(getJacksonResolverTypeIdAnnotation(modelPackageName));
+        }
+        return defaults;
     }
+
+    String getJacksonResolverTypeIdAnnotation(String modelPackageName);
 
     default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
         return new ArrayList<>();

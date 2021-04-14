@@ -116,21 +116,9 @@ public class ScalaGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
-        List<String> defaults = new ArrayList<>();
-        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
-            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
-                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
-            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
-            if (modelPackageName == null) {
-                modelPackageName = "";
-            } else if (Utils.isNotBlank(modelPackageName)) {
-                modelPackageName += ".";
-            }
-            defaults.add("com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[" + modelPackageName +
-                    "GraphqlJacksonTypeIdResolver])");
-        }
-        return defaults;
+    public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
+        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[" + modelPackageName +
+                "GraphqlJacksonTypeIdResolver])";
     }
 
     @Override
