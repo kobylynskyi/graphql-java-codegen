@@ -282,6 +282,13 @@ public interface GraphQLTypeMapper {
         return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, false, null);
     }
 
+    /**
+     * Get Jackson type id resolver annotations
+     *
+     * @param mappingContext Global mapping context
+     * @param isUnion        Is it union type
+     * @return list of Jackson type id resolver annotations
+     */
     default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
         List<String> defaults = new ArrayList<>();
         if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
@@ -297,7 +304,13 @@ public interface GraphQLTypeMapper {
         }
         return defaults;
     }
-
+    
+    /**
+     * Get language specific Jackson type id resolver annotation
+     *
+     * @param modelPackageName Model package name property
+     * @return language specific Jackson type id resolver annotation
+     */
     String getJacksonResolverTypeIdAnnotation(String modelPackageName);
 
     default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
