@@ -7,6 +7,9 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 <#if equalsAndHashCode>
 import java.util.Objects
 </#if>
+<#if fields?has_content && generateAllMethodInProjection>
+import scala.collection.mutable.HashMap
+</#if>
 
 <#if javaDoc?has_content>
 /**
@@ -27,15 +30,17 @@ import java.util.Objects
 class ${className} extends GraphQLResponseProjection {
 
 <#if fields?has_content && generateAllMethodInProjection>
-    override def all$(): ${className} = all$(${responseProjectionMaxDepth})
+    private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
-    override def all$(maxDepth: Int): ${className} = {
+    def all$(): ${className} = all$(${responseProjectionMaxDepth})
+
+    def all$(maxDepth: Int): ${className} = {
     <#list fields as field>
         <#if field.type?has_content>
             <#if field.methodName?substring(0, 2) != "on">
-        if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) <= maxDepth) {
-            projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1)
-            this.${field.methodName}(new ${field.type}().all$(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)))
+        if (projectionDepthOnFields.getOrElse("${className}.${field.type}.${field.methodName}", 0) <= maxDepth) {
+            projectionDepthOnFields.put("${className}.${field.type}.${field.methodName}", projectionDepthOnFields.getOrElse("${className}.${field.type}.${field.methodName}", 0) + 1)
+            this.${field.methodName}(new ${field.type}().all$(maxDepth - projectionDepthOnFields.getOrElse("${className}.${field.type}.${field.methodName}", 0)))
         }
         </#if>
     <#else>

@@ -2,6 +2,8 @@ package com.kobylynskyi.graphql.codegen.prot;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -13,15 +15,15 @@ import java.util.Objects;
 )
 public class SynchronizedResponseProjection extends GraphQLResponseProjection {
 
+    private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
+
     public SynchronizedResponseProjection() {
     }
 
-    @Override
     public SynchronizedResponseProjection all$() {
         return all$(3);
     }
 
-    @Override
     public SynchronizedResponseProjection all$(int maxDepth) {
         this.Void();
         if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) <= maxDepth) {

@@ -13,9 +13,11 @@ import java.util.Objects
 )
 open class CharResponseProjection : GraphQLResponseProjection() {
 
-    override fun `all$`(): CharResponseProjection = `all$`(3)
+    private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
 
-    override fun `all$`(maxDepth: Int): CharResponseProjection {
+    fun `all$`(): CharResponseProjection = `all$`(3)
+
+    fun `all$`(maxDepth: Int): CharResponseProjection {
         this.typename()
         return this
     }
