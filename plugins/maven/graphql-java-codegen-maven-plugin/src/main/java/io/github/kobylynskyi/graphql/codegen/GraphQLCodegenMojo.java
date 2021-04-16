@@ -185,6 +185,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD_STRING)
+    private boolean generateAllMethodInProjection;
+
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
 
@@ -248,6 +251,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
+        mappingConfig.setGenerateAllMethodInProjection(generateAllMethodInProjection);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
         mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
         mappingConfig.setTypesAsInterfaces(mapToHashSet(typesAsInterfaces));
@@ -513,6 +517,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return mapToHashSet(fieldsWithoutResolvers);
+    }
+
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.github.graphql
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 import java.util.Objects
+import scala.collection.mutable.HashMap
 
 /**
  * Response projection for SearchResultItem
@@ -13,9 +14,11 @@ import java.util.Objects
 )
 class SearchResultItemResponseProjection extends GraphQLResponseProjection {
 
-    override def all$(): SearchResultItemResponseProjection = all$(3)
+    private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
-    override def all$(maxDepth: Int): SearchResultItemResponseProjection = {
+    def all$(): SearchResultItemResponseProjection = all$(3)
+
+    def all$(maxDepth: Int): SearchResultItemResponseProjection = {
         this.typename()
         this
     }

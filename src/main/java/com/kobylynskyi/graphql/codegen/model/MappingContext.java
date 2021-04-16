@@ -268,6 +268,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return config.getGenerateAllMethodInProjection();
+    }
+
+    @Override
     public Integer getResponseProjectionMaxDepth() {
         return config.getResponseProjectionMaxDepth();
     }

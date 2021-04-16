@@ -94,6 +94,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private Boolean generateAllMethodInProjection = MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD;
     private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
@@ -165,6 +166,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setUseObjectMapperForRequestSerialization(useObjectMapperForRequestSerialization != null ?
                 useObjectMapperForRequestSerialization : new HashSet<>());
+        mappingConfig.setGenerateAllMethodInProjection(generateAllMethodInProjection);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
@@ -740,6 +742,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
         this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
+    }
+
+    public void setGenerateAllMethodInProjection(boolean generateAllMethodInProjection) {
+        this.generateAllMethodInProjection = generateAllMethodInProjection;
     }
 
     @Input

@@ -1,5 +1,6 @@
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+import scala.collection.mutable.HashMap
 
 /**
  * Response projection for Event
@@ -10,14 +11,16 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 )
 class EventResponseProjection extends GraphQLResponseProjection {
 
-    override def all$(): EventResponseProjection = all$(3)
+    private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
-    override def all$(maxDepth: Int): EventResponseProjection = {
+    def all$(): EventResponseProjection = all$(3)
+
+    def all$(maxDepth: Int): EventResponseProjection = {
         this.status()
         this.createdDateTime()
-        if (projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0) <= maxDepth) {
-            projectionDepthOnFields.put("EventResponseProjection.AssetResponseProjection.assets", projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0) + 1)
-            this.assets(new AssetResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("EventResponseProjection.AssetResponseProjection.assets", 0)))
+        if (projectionDepthOnFields.getOrElse("EventResponseProjection.AssetResponseProjection.assets", 0) <= maxDepth) {
+            projectionDepthOnFields.put("EventResponseProjection.AssetResponseProjection.assets", projectionDepthOnFields.getOrElse("EventResponseProjection.AssetResponseProjection.assets", 0) + 1)
+            this.assets(new AssetResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("EventResponseProjection.AssetResponseProjection.assets", 0)))
         }
         this.id()
         this.createdBy()

@@ -2,6 +2,8 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToLoadFreeMarkerTemplateException;
+import freemarker.core.OutputFormat;
+import freemarker.core.PlainTextOutputFormat;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -33,6 +35,7 @@ class FreeMarkerTemplatesRegistry {
         Configuration configuration = new Configuration(FREEMARKER_TEMPLATE_VERSION);
         configuration.setClassLoaderForTemplateLoading(GraphQLCodegen.class.getClassLoader(), "");
         configuration.setDefaultEncoding("UTF-8");
+        configuration.setOutputFormat(PlainTextOutputFormat.INSTANCE);
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setWrapUncheckedExceptions(true);

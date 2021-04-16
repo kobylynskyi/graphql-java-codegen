@@ -1,5 +1,6 @@
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
+import scala.collection.mutable.HashMap
 
 /**
  * Response projection for Event
@@ -10,9 +11,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 )
 class EventResponseProjection extends GraphQLResponseProjection {
 
-    override def all$(): EventResponseProjection = all$(3)
+    private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
-    override def all$(maxDepth: Int): EventResponseProjection = {
+    def all$(): EventResponseProjection = all$(3)
+
+    def all$(maxDepth: Int): EventResponseProjection = {
         this.typename()
         this
     }

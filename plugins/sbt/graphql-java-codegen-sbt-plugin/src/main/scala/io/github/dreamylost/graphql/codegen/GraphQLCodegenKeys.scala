@@ -114,6 +114,8 @@ trait GraphQLCodegenKeys {
 
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
 
+  val generateAllMethodInProjection = settingKey[Boolean]("generateAllMethodInProjection")
+
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
   val relayConfig = settingKey[RelayConfig]("Can be used to supply a custom configuration for Relay support.")

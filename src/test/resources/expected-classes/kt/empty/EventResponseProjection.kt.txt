@@ -10,9 +10,11 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 )
 open class EventResponseProjection : GraphQLResponseProjection() {
 
-    override fun `all$`(): EventResponseProjection = `all$`(3)
+    private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
 
-    override fun `all$`(maxDepth: Int): EventResponseProjection {
+    fun `all$`(): EventResponseProjection = `all$`(3)
+
+    fun `all$`(maxDepth: Int): EventResponseProjection {
         this.typename()
         return this
     }

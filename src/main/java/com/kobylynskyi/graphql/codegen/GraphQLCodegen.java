@@ -208,6 +208,9 @@ public abstract class GraphQLCodegen {
         if (mappingConfig.getGeneratedLanguage() == null) {
             mappingConfig.setGeneratedLanguage(MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE);
         }
+        if (mappingConfig.getGenerateAllMethodInProjection() == null) {
+            mappingConfig.setGenerateAllMethodInProjection(MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD);
+        }
     }
 
     private void validateConfigs(MappingConfig mappingConfig) {
