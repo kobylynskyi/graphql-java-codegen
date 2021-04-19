@@ -6,7 +6,6 @@ import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 import graphql.language.Directive;
@@ -16,6 +15,7 @@ import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.Type;
 import graphql.language.TypeName;
+import graphql.language.UnionTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -263,35 +263,33 @@ public interface GraphQLTypeMapper {
         } else if (type instanceof NonNullType) {
             return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
         } else if (type instanceof TypeName) {
-            String typeName = null;
-            if (def instanceof ExtendedFieldDefinition) {
-                typeName = ((TypeName) type).getName();
-            }
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
-                    getDirectives(def), mandatory, false, typeName);
+                    getDirectives(def), mandatory, def);
         }
         return Collections.emptyList();
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
+        NamedNode def = extendedDefinition != null ? extendedDefinition.getDefinition() : null;
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                Collections.emptyList(), false, extendedDefinition instanceof ExtendedUnionTypeDefinition, null);
+                Collections.emptyList(), false, def);
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
-        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, false, null);
+        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, null);
     }
 
     /**
      * Get Jackson type id resolver annotations
      *
      * @param mappingContext Global mapping context
-     * @param isUnion        Is it union type
+     * @param def            GraphQL definition
      * @return list of Jackson type id resolver annotations
      */
-    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, boolean isUnion) {
+    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode def) {
         List<String> defaults = new ArrayList<>();
-        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver()) && isUnion) {
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
+                && def instanceof UnionTypeDefinition) {
             defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
                     "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
             String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
@@ -304,7 +302,7 @@ public interface GraphQLTypeMapper {
         }
         return defaults;
     }
-    
+
     /**
      * Get language specific Jackson type id resolver annotation
      *
@@ -326,13 +324,12 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @param directives      List of GraphQL directive
      * @param mandatory       Type is mandatory
-     * @param isUnion         Is it union type
-     * @param typeName        Name of GraphQL type, but only not null when type is Enum
+     * @param def             GraphQL definition
      * @return list of Java annotations for a given GraphQL type
      */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
                                         String parentTypeName, List<Directive> directives, boolean mandatory,
-                                        boolean isUnion, String typeName) {
+                                        NamedNode def) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
@@ -358,8 +355,10 @@ public interface GraphQLTypeMapper {
             }
         }
 
-        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, isUnion));
-        annotations.addAll(getAdditionalAnnotations(mappingContext, typeName));
+        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, def));
+        if (def instanceof ExtendedFieldDefinition) {
+            annotations.addAll(getAdditionalAnnotations(mappingContext, graphQLTypeName));
+        }
 
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
