@@ -152,6 +152,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
     private boolean addGeneratedAnnotation;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER_STRING)
+    private boolean generateJacksonTypeIdResolver;
+
     @Parameter
     private String[] fieldsWithResolvers;
 
@@ -242,6 +245,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -492,6 +496,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Boolean getAddGeneratedAnnotation() {
         return addGeneratedAnnotation;
+    }
+
+    @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
     }
 
     @Override

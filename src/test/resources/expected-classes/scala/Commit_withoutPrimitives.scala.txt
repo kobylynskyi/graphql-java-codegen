@@ -74,6 +74,7 @@ case class Commit(
     override val url: String,
     @javax.validation.constraints.NotNull
     override val viewerCanSubscribe: java.lang.Boolean,
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.SubscriptionStateTypeRefer])
     override val viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
     zipballUrl: String

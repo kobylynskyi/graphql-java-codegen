@@ -63,6 +63,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     configurationFiles := Seq.empty[String],
     graphqlSchemaPaths := Seq.empty,
     graphqlSchemaValidate := Seq.empty,
+    generateJacksonTypeIdResolver := MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER,
     customTypesMapping := new JHashMap[String, String](), //TODO use scala Map, convert to java Map
     customAnnotationsMapping := new JHashMap[String, JList[String]](),
     directiveAnnotationsMapping := new JHashMap[String, JList[String]](),
@@ -169,6 +170,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateModelOpenClasses((generateModelOpenClasses in GraphQLCodegenConfig).value)
+    mappingConfig.setGenerateJacksonTypeIdResolver((generateJacksonTypeIdResolver in GraphQLCodegenConfig).value);
     mappingConfig
   }
 

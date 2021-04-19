@@ -260,6 +260,15 @@ public interface GraphQLCodegenConfiguration {
     Boolean getAddGeneratedAnnotation();
 
     /**
+     * Specifies whether generated union interfaces should be annotated with a Jackson type id resolver generated in
+     * model package.
+     *
+     * @return <b>true</b> if union interfaces should be annotated with a Jackson type id resolver generated in model
+     * package
+     */
+    Boolean getGenerateJacksonTypeIdResolver();
+
+    /**
      * Relay-related configurations.
      *
      * @return Relay-related configurations.

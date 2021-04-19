@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
@@ -28,10 +29,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.MODEL_NAME_PREFIX;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.MODEL_NAME_SUFFIX;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -185,6 +193,10 @@ public abstract class GraphQLCodegen {
         if (mappingConfig.getAddGeneratedAnnotation() == null) {
             mappingConfig.setAddGeneratedAnnotation(MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION);
         }
+        if (mappingConfig.getGenerateJacksonTypeIdResolver() == null) {
+            mappingConfig.setGenerateJacksonTypeIdResolver(
+                    MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER);
+        }
         if (mappingConfig.getUseOptionalForNullableReturnTypes() == null) {
             mappingConfig.setUseOptionalForNullableReturnTypes(
                     MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
@@ -312,6 +324,9 @@ public abstract class GraphQLCodegen {
         }
         for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
             generateFieldResolver(context, definition.getFieldDefinitions(), definition).ifPresent(generatedFiles::add);
+        }
+        if (Boolean.TRUE.equals(mappingConfig.getGenerateJacksonTypeIdResolver())) {
+            generatedFiles.add(generateJacksonTypeIdResolver(context));
         }
         System.out.printf("Generated %d definition classes in folder %s%n", generatedFiles.size(),
                 outputDir.getAbsolutePath());
@@ -532,6 +547,18 @@ public abstract class GraphQLCodegen {
                 .map(mappingContext, definition);
         return GraphQLCodegenFileCreator
                 .generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, outputDir);
+    }
+
+    private File generateJacksonTypeIdResolver(MappingContext context) {
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(context));
+        dataModel.put(MODEL_NAME_PREFIX, context.getModelNamePrefix());
+        dataModel.put(MODEL_NAME_SUFFIX, context.getModelNameSuffix());
+        dataModel.put(CLASS_NAME, "GraphqlJacksonTypeIdResolver");
+        dataModel.put(GENERATED_ANNOTATION, context.getAddGeneratedAnnotation());
+        dataModel.put(GENERATED_INFO, context.getGeneratedInformation());
+        return GraphQLCodegenFileCreator
+                .generateFile(context, FreeMarkerTemplateType.JACKSON_TYPE_ID_RESOLVER, dataModel, outputDir);
     }
 
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {

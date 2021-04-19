@@ -203,6 +203,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return config.getGenerateJacksonTypeIdResolver();
+    }
+
+    @Override
     public RelayConfig getRelayConfig() {
         return config.getRelayConfig();
     }
