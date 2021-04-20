@@ -1,0 +1,50 @@
+package com.kobylynskyi.graphql.unionresolver;
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class UnionMemberB implements java.io.Serializable, UnionToResolve {
+
+    private String someField;
+
+    public UnionMemberB() {
+    }
+
+    public UnionMemberB(String someField) {
+        this.someField = someField;
+    }
+
+    public String getSomeField() {
+        return someField;
+    }
+    public void setSomeField(String someField) {
+        this.someField = someField;
+    }
+
+
+
+    public static UnionMemberB.Builder builder() {
+        return new UnionMemberB.Builder();
+    }
+
+    public static class Builder {
+
+        private String someField;
+
+        public Builder() {
+        }
+
+        public Builder setSomeField(String someField) {
+            this.someField = someField;
+            return this;
+        }
+
+
+        public UnionMemberB build() {
+            return new UnionMemberB(someField);
+        }
+
+    }
+}

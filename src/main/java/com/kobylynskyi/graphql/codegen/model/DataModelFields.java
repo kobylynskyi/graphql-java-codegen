@@ -10,6 +10,8 @@ public final class DataModelFields {
     public static final String PACKAGE = "package";
     public static final String IMPORTS = "imports";
     public static final String CLASS_NAME = "className";
+    public static final String MODEL_NAME_PREFIX = "modelNamePrefix";
+    public static final String MODEL_NAME_SUFFIX = "modelNameSuffix";
     public static final String NAME = "name";
     public static final String FIELDS = "fields";
     public static final String IMPLEMENTS = "implements";
@@ -28,6 +30,7 @@ public final class DataModelFields {
     public static final String RETURN_TYPE_NAME = "returnTypeName";
     public static final String GENERATED_ANNOTATION = "generatedAnnotation";
     public static final String GENERATED_INFO = "generatedInfo";
+    public static final String GENERATE_ALL_METHOD_IN_PROJECTION = "generateAllMethodInProjection";
     public static final String RESPONSE_PROJECTION_MAX_DEPTH = "responseProjectionMaxDepth";
     public static final String ENUM_IMPORT_IT_SELF_IN_SCALA = "enumImportItSelfInScala";
     public static final String PARENT_INTERFACE_PROPERTIES = "parentInterfaceProperties";

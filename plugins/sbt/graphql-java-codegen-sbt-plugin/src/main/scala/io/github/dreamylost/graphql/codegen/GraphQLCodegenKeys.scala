@@ -69,6 +69,8 @@ trait GraphQLCodegenKeys {
 
   val fieldsWithoutResolvers = settingKey[util.Set[String]]("fieldsWithoutResolvers")
 
+  val typesAsInterfaces = settingKey[util.Set[String]]("typesAsInterfaces")
+
   val generateClient = settingKey[Boolean]("generateClient")
 
   val requestSuffix = settingKey[String]("Specifies whether client-side classes should be generated for each query, mutation and subscription. This includes: Request class (contains input data) and ResponseProjection class (contains response fields).")
@@ -81,7 +83,7 @@ trait GraphQLCodegenKeys {
 
   val useObjectMapperForRequestSerialization = settingKey[util.Set[String]]("useObjectMapperForRequestSerialization")
 
-  val jsonConfigurationFile = settingKey[Option[String]]("jsonConfigurationFile")
+  val configurationFiles = settingKey[Seq[String]]("configurationFiles, either JSON or HOCON. The same key is used in order, so the default configuration should be placed at the end.")
 
   val parentInterfaces = settingKey[ParentInterfacesConfig]("parentInterfaces")
 
@@ -112,6 +114,8 @@ trait GraphQLCodegenKeys {
 
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")
 
+  val generateAllMethodInProjection = settingKey[Boolean]("generateAllMethodInProjection")
+
   val responseProjectionMaxDepth = settingKey[Int]("limit depth when the projection is constructed automatically")
 
   val relayConfig = settingKey[RelayConfig]("Can be used to supply a custom configuration for Relay support.")
@@ -119,6 +123,8 @@ trait GraphQLCodegenKeys {
   val generatedLanguage = settingKey[GeneratedLanguage]("Generate code with language, like java/scala.")
 
   val generateModelOpenClasses = settingKey[Boolean]("The class type of the generated model. If true, generate normal classes, else generate case class.")
+
+  val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")

@@ -1,0 +1,47 @@
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class MyUnionMemberBSuffix implements java.io.Serializable, MyUnionToResolveSuffix {
+
+    private String someField;
+
+    public MyUnionMemberBSuffix() {
+    }
+
+    public MyUnionMemberBSuffix(String someField) {
+        this.someField = someField;
+    }
+
+    public String getSomeField() {
+        return someField;
+    }
+    public void setSomeField(String someField) {
+        this.someField = someField;
+    }
+
+
+
+    public static MyUnionMemberBSuffix.Builder builder() {
+        return new MyUnionMemberBSuffix.Builder();
+    }
+
+    public static class Builder {
+
+        private String someField;
+
+        public Builder() {
+        }
+
+        public Builder setSomeField(String someField) {
+            this.someField = someField;
+            return this;
+        }
+
+
+        public MyUnionMemberBSuffix build() {
+            return new MyUnionMemberBSuffix(someField);
+        }
+
+    }
+}

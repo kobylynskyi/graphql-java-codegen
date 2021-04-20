@@ -1,0 +1,8 @@
+{
+  "generateApis": true,
+  "packageName": "com.kobylynskyi.graphql.testconfigjson",
+  "customTypesMapping": {
+    "Price.amount": "java.math.BigDecimal"
+  },
+  "generateToString": true
+}

@@ -16,6 +16,7 @@ case class Synchronized(
     `private`: Char,
     native: Char,
     that: Char,
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.kobylynskyi.graphql.codegen.prot.TestEnumTypeRefer])
     enum: TestEnum,
     Synchronized: Synchronized,
     date: java.time.ZonedDateTime

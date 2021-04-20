@@ -2,6 +2,8 @@ package com.github.graphql;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Response projection for Vehicle
@@ -12,15 +14,15 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 )
 public class VehicleResponseProjection extends GraphQLResponseProjection {
 
+    private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
+
     public VehicleResponseProjection() {
     }
 
-    @Override
     public VehicleResponseProjection all$() {
         return all$(3);
     }
 
-    @Override
     public VehicleResponseProjection all$(int maxDepth) {
         this.vehicleId();
         this.registrationNumber();

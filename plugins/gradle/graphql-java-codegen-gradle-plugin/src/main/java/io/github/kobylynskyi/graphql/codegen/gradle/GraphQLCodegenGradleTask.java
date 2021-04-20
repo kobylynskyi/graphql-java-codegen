@@ -12,8 +12,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
@@ -83,8 +83,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
     private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
+    private Boolean generateJacksonTypeIdResolver = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private Set<String> typesAsInterfaces = new HashSet<>();
     private RelayConfig relayConfig = new RelayConfig();
 
 
@@ -93,11 +95,12 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String responseSuffix;
     private String responseProjectionSuffix;
     private String parametrizedInputSuffix;
+    private Boolean generateAllMethodInProjection = MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD;
     private int responseProjectionMaxDepth = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
 
     private final ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
-    private String jsonConfigurationFile;
+    private List<String> configurationFiles;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
     private Boolean generateModelOpenClasses = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES;
 
@@ -142,6 +145,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setApiReturnType(apiReturnType);
         mappingConfig.setApiReturnListType(apiReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
@@ -153,6 +157,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setTypesAsInterfaces(
+                typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -162,6 +168,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
         mappingConfig.setUseObjectMapperForRequestSerialization(useObjectMapperForRequestSerialization != null ?
                 useObjectMapperForRequestSerialization : new HashSet<>());
+        mappingConfig.setGenerateAllMethodInProjection(generateAllMethodInProjection);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
@@ -242,8 +249,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     }
 
     private java.util.Optional<MappingConfigSupplier> buildJsonSupplier() {
-        if (jsonConfigurationFile != null && !jsonConfigurationFile.isEmpty()) {
-            return java.util.Optional.of(new JsonMappingConfigSupplier(jsonConfigurationFile));
+        if (configurationFiles != null && !configurationFiles.isEmpty()) {
+            return java.util.Optional.of(new MergeableMappingConfigSupplier(configurationFiles));
         }
         return java.util.Optional.empty();
     }
@@ -632,6 +639,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    public void setGenerateJacksonTypeIdResolver(Boolean generateJacksonTypeIdResolver) {
+        this.generateJacksonTypeIdResolver = generateJacksonTypeIdResolver;
+    }
+
+    @Input
+    @Optional
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return fieldsWithResolvers;
     }
@@ -649,6 +667,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getTypesAsInterfaces() {
+        return typesAsInterfaces;
+    }
+
+    public void setTypesAsInterfaces(Set<String> typesAsInterfaces) {
+        this.typesAsInterfaces = typesAsInterfaces;
     }
 
     @Nested
@@ -731,6 +760,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
+    }
+
+    public void setGenerateAllMethodInProjection(boolean generateAllMethodInProjection) {
+        this.generateAllMethodInProjection = generateAllMethodInProjection;
+    }
+
+    @Input
+    @Optional
+    @Override
     public Integer getResponseProjectionMaxDepth() {
         return responseProjectionMaxDepth;
     }
@@ -773,14 +813,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         return parentInterfaces.getResolver();
     }
 
-    @InputFile
+    @InputFiles
     @Optional
-    public String getJsonConfigurationFile() {
-        return jsonConfigurationFile;
+    public List<String> getConfigurationFiles() {
+        return configurationFiles;
     }
 
-    public void setJsonConfigurationFile(String jsonConfigurationFile) {
-        this.jsonConfigurationFile = jsonConfigurationFile;
+    public void setConfigurationFiles(List<String> configurationFiles) {
+        this.configurationFiles = configurationFiles;
     }
 
     @Input

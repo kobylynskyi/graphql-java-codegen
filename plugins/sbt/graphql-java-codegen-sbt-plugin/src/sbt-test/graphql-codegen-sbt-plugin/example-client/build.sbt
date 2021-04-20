@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   "com.squareup.okhttp3" % "okhttp" % "4.7.2",
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.1",
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.1",
-  "org.json" % "json" % "20190722")
+  "org.json" % "json" % "20190722",
+  "com.graphql-java" % "graphql-java" % "16.2")
 
 
 enablePlugins(GraphQLCodegenPlugin)

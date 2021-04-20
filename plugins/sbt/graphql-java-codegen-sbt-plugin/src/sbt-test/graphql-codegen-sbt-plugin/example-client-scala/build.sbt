@@ -34,8 +34,6 @@ customAnnotationsMapping := {
       |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[HumanDO], name = "Human"),
       |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
   mapping.put("Character", annotations)
-  mapping.put("Droid.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
-  mapping.put("Human.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
   mapping
 }
 generateCodegenTargetPath in GraphQLCodegenConfig := crossTarget.value / "src_managed_graphql_scala"

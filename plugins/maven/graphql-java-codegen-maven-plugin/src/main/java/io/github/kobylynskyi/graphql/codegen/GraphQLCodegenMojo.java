@@ -13,8 +13,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.RelayConfig;
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException;
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.supplier.JsonMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
+import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -152,6 +152,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
     private boolean addGeneratedAnnotation;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER_STRING)
+    private boolean generateJacksonTypeIdResolver;
+
     @Parameter
     private String[] fieldsWithResolvers;
 
@@ -179,8 +182,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] useObjectMapperForRequestSerialization;
 
+    @Parameter
+    private String[] typesAsInterfaces;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD_STRING)
+    private boolean generateAllMethodInProjection;
 
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
@@ -189,7 +198,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private GeneratedLanguage generatedLanguage;
 
     @Parameter
-    private String jsonConfigurationFile;
+    private String[] configurationFiles;
 
     /**
      * The project being built.
@@ -236,6 +245,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -245,8 +255,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
+        mappingConfig.setGenerateAllMethodInProjection(generateAllMethodInProjection);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
         mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
+        mappingConfig.setTypesAsInterfaces(mapToHashSet(typesAsInterfaces));
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
@@ -265,7 +277,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     private GraphQLCodegen instantiateCodegen(MappingConfig mappingConfig) throws IOException {
-        java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier(jsonConfigurationFile);
+        java.util.Optional<MappingConfigSupplier> mappingConfigSupplier = buildJsonSupplier(configurationFiles);
         GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get)
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
@@ -312,9 +324,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return project.getResources().stream().findFirst().map(Resource::getDirectory).map(Paths::get);
     }
 
-    private java.util.Optional<MappingConfigSupplier> buildJsonSupplier(String jsonConfigurationFile) {
-        if (jsonConfigurationFile != null && !jsonConfigurationFile.isEmpty()) {
-            return java.util.Optional.of(new JsonMappingConfigSupplier(jsonConfigurationFile));
+    private java.util.Optional<MappingConfigSupplier> buildJsonSupplier(String[] configurationFiles) {
+        if (configurationFiles != null && configurationFiles.length != 0) {
+            return java.util.Optional.of(new MergeableMappingConfigSupplier(Arrays.asList(configurationFiles.clone())));
         }
         return java.util.Optional.empty();
     }
@@ -487,6 +499,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    @Override
     public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
         return apiRootInterfaceStrategy;
     }
@@ -509,6 +526,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return mapToHashSet(fieldsWithoutResolvers);
+    }
+
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
     }
 
     @Override
@@ -547,6 +569,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Set<String> getTypesAsInterfaces() {
+        return mapToHashSet(typesAsInterfaces);
+    }
+
+    @Override
     public String getQueryResolverParentInterface() {
         return parentInterfaces.getQueryResolver();
     }
@@ -580,8 +607,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return parentInterfaces;
     }
 
-    public String getJsonConfigurationFile() {
-        return jsonConfigurationFile;
+    public String[] getConfigurationFiles() {
+        return configurationFiles;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, Properties> sourceMap) {

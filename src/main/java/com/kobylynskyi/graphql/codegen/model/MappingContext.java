@@ -203,6 +203,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return config.getGenerateJacksonTypeIdResolver();
+    }
+
+    @Override
     public RelayConfig getRelayConfig() {
         return config.getRelayConfig();
     }
@@ -268,6 +273,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return config.getGenerateAllMethodInProjection();
+    }
+
+    @Override
     public Integer getResponseProjectionMaxDepth() {
         return config.getResponseProjectionMaxDepth();
     }
@@ -275,6 +285,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Set<String> getUseObjectMapperForRequestSerialization() {
         return config.getUseObjectMapperForRequestSerialization();
+    }
+
+    @Override
+    public Set<String> getTypesAsInterfaces() {
+        return config.getTypesAsInterfaces();
     }
 
     public ExtendedDocument getDocument() {

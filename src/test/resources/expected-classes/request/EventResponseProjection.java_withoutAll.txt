@@ -1,0 +1,117 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.Objects;
+
+/**
+ * Response projection for Event
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class EventResponseProjection extends GraphQLResponseProjection {
+
+    public EventResponseProjection() {
+    }
+
+    public EventResponseProjection id() {
+        return id(null);
+    }
+
+    public EventResponseProjection id(String alias) {
+        fields.add(new GraphQLResponseField("id").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection categoryId() {
+        return categoryId(null);
+    }
+
+    public EventResponseProjection categoryId(String alias) {
+        fields.add(new GraphQLResponseField("categoryId").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection properties(EventPropertyResponseProjection subProjection) {
+        return properties(null, subProjection);
+    }
+
+    public EventResponseProjection properties(String alias, EventPropertyResponseProjection subProjection) {
+        fields.add(new GraphQLResponseField("properties").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public EventResponseProjection status() {
+        return status(null);
+    }
+
+    public EventResponseProjection status(String alias) {
+        fields.add(new GraphQLResponseField("status").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection createdBy() {
+        return createdBy(null);
+    }
+
+    public EventResponseProjection createdBy(String alias) {
+        fields.add(new GraphQLResponseField("createdBy").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection createdDateTime() {
+        return createdDateTime(null);
+    }
+
+    public EventResponseProjection createdDateTime(String alias) {
+        fields.add(new GraphQLResponseField("createdDateTime").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection active() {
+        return active(null);
+    }
+
+    public EventResponseProjection active(String alias) {
+        fields.add(new GraphQLResponseField("active").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection rating() {
+        return rating(null);
+    }
+
+    public EventResponseProjection rating(String alias) {
+        fields.add(new GraphQLResponseField("rating").alias(alias));
+        return this;
+    }
+
+    public EventResponseProjection typename() {
+        return typename(null);
+    }
+
+    public EventResponseProjection typename(String alias) {
+        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final EventResponseProjection that = (EventResponseProjection) obj;
+        return Objects.equals(fields, that.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields);
+    }
+
+}
