@@ -115,6 +115,26 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
         return directives;
     }
 
+    /**
+     * Return all directives for this definition
+     *
+     * @return list of directive names
+     */
+    public List<Directive> getDirectives() {
+        List<Directive> directives = new ArrayList<>();
+        if (this.definition instanceof DirectivesContainer) {
+            List<Directive> definitionDirectives = ((DirectivesContainer<?>) this.definition).getDirectives();
+            if (!Utils.isEmpty(definitionDirectives)) {
+                directives.addAll(definitionDirectives);
+            }
+            this.extensions.stream().filter(Objects::nonNull)
+                .map(DirectivesContainer.class::cast)
+                .map(DirectivesContainer::getDirectives).filter(Objects::nonNull)
+                .forEach(ds -> ds.forEach(d -> directives.add(((Directive) d))));
+        }
+        return directives;
+    }
+
     public T getDefinition() {
         return definition;
     }
