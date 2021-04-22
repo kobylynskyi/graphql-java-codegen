@@ -272,7 +272,7 @@ public interface GraphQLTypeMapper {
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
         NamedNode def = extendedDefinition != null ? extendedDefinition.getDefinition() : null;
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                Collections.emptyList(), false, def);
+                extendedDefinition.getDirectives(), false, def);
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
