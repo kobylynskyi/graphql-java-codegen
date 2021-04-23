@@ -270,7 +270,11 @@ public interface GraphQLTypeMapper {
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
-        NamedNode def = extendedDefinition != null ? extendedDefinition.getDefinition() : null;
+        if(extendedDefinition == null) {
+            return Collections.emptyList();
+        }
+
+        NamedNode<?> def = extendedDefinition.getDefinition();
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
                 extendedDefinition.getDirectives(), false, def);
     }
@@ -286,7 +290,7 @@ public interface GraphQLTypeMapper {
      * @param def            GraphQL definition
      * @return list of Jackson type id resolver annotations
      */
-    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode def) {
+    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
         List<String> defaults = new ArrayList<>();
         if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
                 && def instanceof UnionTypeDefinition) {
@@ -329,7 +333,7 @@ public interface GraphQLTypeMapper {
      */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
                                         String parentTypeName, List<Directive> directives, boolean mandatory,
-                                        NamedNode def) {
+                                        NamedNode<?> def) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
