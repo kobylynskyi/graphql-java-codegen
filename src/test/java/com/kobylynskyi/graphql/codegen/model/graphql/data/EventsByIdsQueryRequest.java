@@ -37,6 +37,10 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
         this.input.put("translated", translated);
     }
 
+    public void setEntries(Map<Object, Object> entries) {
+        this.input.put("entries", entries);
+    }
+
     @Override
     public GraphQLOperation getOperationType() {
         return OPERATION_TYPE;
@@ -72,6 +76,7 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
         private String contextId;
         private Collection<String> ids;
         private Boolean translated;
+        private Map<Object, Object> entries;
 
         public Builder() {
         }
@@ -91,12 +96,18 @@ public class EventsByIdsQueryRequest implements GraphQLOperationRequest {
             return this;
         }
 
+        public Builder setEntries(Map<Object, Object> entries) {
+            this.entries = entries;
+            return this;
+        }
+
 
         public EventsByIdsQueryRequest build() {
             EventsByIdsQueryRequest obj = new EventsByIdsQueryRequest();
             obj.setContextId(contextId);
             obj.setIds(ids);
             obj.setTranslated(translated);
+            obj.setEntries(entries);
             return obj;
         }
 
