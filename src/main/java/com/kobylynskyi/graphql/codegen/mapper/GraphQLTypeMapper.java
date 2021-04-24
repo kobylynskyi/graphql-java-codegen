@@ -270,7 +270,7 @@ public interface GraphQLTypeMapper {
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
-        if(extendedDefinition == null) {
+        if (extendedDefinition == null) {
             return Collections.emptyList();
         }
 
@@ -281,42 +281,6 @@ public interface GraphQLTypeMapper {
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
         return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, null);
-    }
-
-    /**
-     * Get Jackson type id resolver annotations
-     *
-     * @param mappingContext Global mapping context
-     * @param def            GraphQL definition
-     * @return list of Jackson type id resolver annotations
-     */
-    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
-        List<String> defaults = new ArrayList<>();
-        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
-                && def instanceof UnionTypeDefinition) {
-            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
-                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
-            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
-            if (modelPackageName == null) {
-                modelPackageName = "";
-            } else if (Utils.isNotBlank(modelPackageName)) {
-                modelPackageName += ".";
-            }
-            defaults.add(getJacksonResolverTypeIdAnnotation(modelPackageName));
-        }
-        return defaults;
-    }
-
-    /**
-     * Get language specific Jackson type id resolver annotation
-     *
-     * @param modelPackageName Model package name property
-     * @return language specific Jackson type id resolver annotation
-     */
-    String getJacksonResolverTypeIdAnnotation(String modelPackageName);
-
-    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
-        return new ArrayList<>();
     }
 
     /**
@@ -372,6 +336,42 @@ public interface GraphQLTypeMapper {
             }
         }
         return annotations;
+    }
+
+    /**
+     * Get Jackson type id resolver annotations
+     *
+     * @param mappingContext Global mapping context
+     * @param def            GraphQL definition
+     * @return list of Jackson type id resolver annotations
+     */
+    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
+                && def instanceof UnionTypeDefinition) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add(getJacksonResolverTypeIdAnnotation(modelPackageName));
+        }
+        return defaults;
+    }
+
+    /**
+     * Get language specific Jackson type id resolver annotation
+     *
+     * @param modelPackageName Model package name property
+     * @return language specific Jackson type id resolver annotation
+     */
+    String getJacksonResolverTypeIdAnnotation(String modelPackageName);
+
+    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
+        return new ArrayList<>();
     }
 
     /**
