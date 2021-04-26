@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToLoadFreeMarkerTemplateException;
-import freemarker.core.OutputFormat;
 import freemarker.core.PlainTextOutputFormat;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
