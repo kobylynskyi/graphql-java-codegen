@@ -87,7 +87,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Set<String> typesAsInterfaces = new HashSet<>();
-    private RelayConfig relayConfig = new RelayConfig();
+    private final RelayConfig relayConfig = new RelayConfig();
 
 
     private Boolean generateClient;

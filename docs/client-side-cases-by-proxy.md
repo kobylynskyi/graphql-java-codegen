@@ -42,17 +42,17 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
     /**
      * this is graphql request need that what response fields.
      */
-    private GraphQLResponseProjection projection;
+    private final GraphQLResponseProjection projection;
 
     /**
      * this graphql request that need request params. (if have)
      */
-    private GraphQLOperationRequest request;
+    private final GraphQLOperationRequest request;
 
     /**
      * should limit max depth when invoke method on projection.
      */
-    private int maxDepth;
+    private final int maxDepth;
 
     DynamicProxy(GraphQLResponseProjection projection, GraphQLOperationRequest request, int maxDepth) {
         this.projection = projection;
@@ -79,7 +79,7 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
 
     /**
      * proxy invoke
-     * 
+     *
      * <p>when handle projection, we use reflect to invoke method directly
      * but when handle request(need set parameters), we use reflect to get field which is a internal implementation of set method
      *
@@ -166,10 +166,10 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
         //if this method have no parameter, then do not need invoke on request instance
         //other wise, we need append parameters to request field which use hashmap store params
         if (!parameters.isEmpty()) {
-           for (Parameter parameter : parameters) {
-               Object argsCopy = args[i++];
-               request.getInput().put(parameter.getName(), argsCopy);
-           }
+            for (Parameter parameter : parameters) {
+                Object argsCopy = args[i++];
+                request.getInput().put(parameter.getName(), argsCopy);
+            }
         }
         try {
             field = projection.getClass().getSuperclass().getDeclaredField("fields");
@@ -191,7 +191,7 @@ final public class DynamicProxy implements InvocationHandler, ExecutionGraphql {
         }
 
         return executeByHttp(entityClazzName, request, projection);// request and projection for creating GraphQLRequest, entityClazzName for deserialize
-    } 
+    }
 }
 ```
 

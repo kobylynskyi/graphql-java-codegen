@@ -225,7 +225,6 @@ public interface GraphQLTypeMapper {
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
         boolean primitiveCanBeUsed = !collection;
-        boolean serializeUsingObjectMapper = false;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
@@ -236,11 +235,9 @@ public interface GraphQLTypeMapper {
         } else {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
-        if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-                (name != null && parentTypeName != null &&
-                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
-            serializeUsingObjectMapper = true;
-        }
+        boolean serializeUsingObjectMapper =
+                serializeFieldsUsingObjectMapper.contains(graphQLType) ||
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
@@ -370,7 +367,7 @@ public interface GraphQLTypeMapper {
      */
     String getJacksonResolverTypeIdAnnotation(String modelPackageName);
 
-    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String  typeName) {
+    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
         return new ArrayList<>();
     }
 
