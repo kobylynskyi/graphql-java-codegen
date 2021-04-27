@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.prot
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 import java.util.Objects
+import scala.collection.mutable.HashMap
 
 /**
  * Response projection for Synchronized
@@ -13,38 +14,40 @@ import java.util.Objects
 )
 class SynchronizedResponseProjection extends GraphQLResponseProjection {
 
-    override def all$(): SynchronizedResponseProjection = all$(3)
+    private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
-    override def all$(maxDepth: Int): SynchronizedResponseProjection = {
+    def all$(): SynchronizedResponseProjection = all$(3)
+
+    def all$(maxDepth: Int): SynchronizedResponseProjection = {
         this.void()
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.Wait", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) + 1)
-            this.Wait(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.Wait", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) + 1)
+            this.Wait(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.Wait", 0)))
         }
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`this`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) + 1)
-            this.`this`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`this`", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`this`", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`this`", 0) + 1)
+            this.`this`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`this`", 0)))
         }
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`super`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) + 1)
-            this.`super`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`super`", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`super`", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`super`", 0) + 1)
+            this.`super`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`super`", 0)))
         }
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`private`", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) + 1)
-            this.`private`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.`private`", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.`private`", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`private`", 0) + 1)
+            this.`private`(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.`private`", 0)))
         }
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.native", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0) + 1)
-            this.native(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.native", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.native", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.native", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.native", 0) + 1)
+            this.native(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.native", 0)))
         }
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.that", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0) + 1)
-            this.that(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.that", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.that", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.that", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.that", 0) + 1)
+            this.that(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.CharResponseProjection.that", 0)))
         }
         this.enum()
-        if (projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) <= maxDepth) {
-            projectionDepthOnFields.put("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) + 1)
-            this.Synchronized(new SynchronizedResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0)))
+        if (projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0) + 1)
+            this.Synchronized(new SynchronizedResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SynchronizedResponseProjection.SynchronizedResponseProjection.Synchronized", 0)))
         }
         this.date()
         this.typename()

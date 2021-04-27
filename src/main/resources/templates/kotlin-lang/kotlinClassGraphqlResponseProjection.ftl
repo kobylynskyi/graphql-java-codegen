@@ -26,10 +26,12 @@ import java.util.Objects
 </#list>
 open class ${className} : GraphQLResponseProjection() {
 
-<#if fields?has_content>
-    override fun `all$`(): ${className} = `all$`(${responseProjectionMaxDepth})
+<#if fields?has_content && generateAllMethodInProjection>
+    private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
 
-    override fun `all$`(maxDepth: Int): ${className} {
+    fun `all$`(): ${className} = `all$`(${responseProjectionMaxDepth})
+
+    fun `all$`(maxDepth: Int): ${className} {
     <#list fields as field>
         <#if field.type?has_content>
             <#if field.methodName?substring(0, 2) != "on">

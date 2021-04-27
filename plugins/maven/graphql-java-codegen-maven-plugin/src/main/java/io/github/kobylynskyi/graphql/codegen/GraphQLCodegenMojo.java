@@ -152,6 +152,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
     private boolean addGeneratedAnnotation;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER_STRING)
+    private boolean generateJacksonTypeIdResolver;
+
     @Parameter
     private String[] fieldsWithResolvers;
 
@@ -184,6 +187,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD_STRING)
+    private boolean generateAllMethodInProjection;
 
     @Parameter
     private ParentInterfacesConfig parentInterfaces = new ParentInterfacesConfig();
@@ -239,6 +245,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -248,6 +255,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setResponseSuffix(responseSuffix);
         mappingConfig.setResponseProjectionSuffix(responseProjectionSuffix);
         mappingConfig.setParametrizedInputSuffix(parametrizedInputSuffix);
+        mappingConfig.setGenerateAllMethodInProjection(generateAllMethodInProjection);
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
         mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
         mappingConfig.setTypesAsInterfaces(mapToHashSet(typesAsInterfaces));
@@ -491,6 +499,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    @Override
     public ApiRootInterfaceStrategy getApiRootInterfaceStrategy() {
         return apiRootInterfaceStrategy;
     }
@@ -513,6 +526,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return mapToHashSet(fieldsWithoutResolvers);
+    }
+
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return generateAllMethodInProjection;
     }
 
     @Override

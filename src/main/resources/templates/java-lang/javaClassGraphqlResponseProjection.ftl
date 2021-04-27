@@ -4,6 +4,10 @@ package ${package};
 </#if>
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+<#if fields?has_content && generateAllMethodInProjection>
+import java.util.HashMap;
+import java.util.Map;
+</#if>
 <#if equalsAndHashCode>
 import java.util.Objects;
 </#if>
@@ -25,17 +29,19 @@ import java.util.Objects;
 @${annotation}
 </#list>
 public class ${className} extends GraphQLResponseProjection {
+<#if fields?has_content && generateAllMethodInProjection>
+
+    private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
+</#if>
 
     public ${className}() {
     }
-<#if fields?has_content>
+<#if fields?has_content && generateAllMethodInProjection>
 
-    @Override
     public ${className} all$() {
         return all$(${responseProjectionMaxDepth});
     }
 
-    @Override
     public ${className} all$(int maxDepth) {
     <#list fields as field>
         <#if field.type?has_content>

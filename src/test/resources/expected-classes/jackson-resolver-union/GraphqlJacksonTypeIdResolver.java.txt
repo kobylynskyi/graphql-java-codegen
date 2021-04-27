@@ -1,0 +1,49 @@
+package com.kobylynskyi.graphql.unionresolver;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DatabindContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
+
+    private JavaType superType;
+
+    @Override
+    public void init(JavaType baseType) {
+        superType = baseType;
+    }
+
+    @Override
+    public JavaType typeFromId(DatabindContext context, String typename) {
+        try {
+            Class<?> clazz = Class.forName(
+                "com.kobylynskyi.graphql.unionresolver." +
+                typename
+            );
+            return context.constructSpecializedType(superType, clazz);
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public JsonTypeInfo.Id getMechanism() {
+        return JsonTypeInfo.Id.NAME;
+    }
+
+    @Override
+    public String idFromValue(Object obj) {
+        return idFromValueAndType(obj, obj.getClass());
+    }
+
+    @Override
+    public String idFromValueAndType(Object obj, Class<?> subType) {
+        return subType.getSimpleName();
+    }
+}
