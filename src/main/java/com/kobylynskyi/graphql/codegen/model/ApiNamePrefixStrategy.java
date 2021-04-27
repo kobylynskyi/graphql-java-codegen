@@ -24,6 +24,6 @@ public enum ApiNamePrefixStrategy {
     /**
      * Will take only the value of apiNamePrefix config option.
      */
-    CONSTANT;
+    CONSTANT
 
 }

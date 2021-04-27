@@ -260,6 +260,15 @@ public interface GraphQLCodegenConfiguration {
     Boolean getAddGeneratedAnnotation();
 
     /**
+     * Specifies whether generated union interfaces should be annotated with a Jackson type id resolver generated in
+     * model package.
+     *
+     * @return <b>true</b> if union interfaces should be annotated with a Jackson type id resolver generated in model
+     * package
+     */
+    Boolean getGenerateJacksonTypeIdResolver();
+
+    /**
      * Relay-related configurations.
      *
      * @return Relay-related configurations.
@@ -374,6 +383,13 @@ public interface GraphQLCodegenConfiguration {
      * @return Parent interface of all Resolvers of GraphQL types.
      */
     String getResolverParentInterface();
+
+    /**
+     * Enables the generation of the all$ method in the projection classes of the client.
+     *
+     * @return whether the generation is enabled.
+     */
+    Boolean getGenerateAllMethodInProjection();
 
     /**
      * Limit depth when `all$` invoke which has subProjections

@@ -173,4 +173,10 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         // Should fix it when generate response class.
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
+
+    @Override
+    public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
+        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
+                "GraphqlJacksonTypeIdResolver::class)";
+    }
 }

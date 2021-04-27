@@ -1,0 +1,9 @@
+type UnionMemberA {
+    someField: Int
+}
+
+type UnionMemberB {
+    someField: String
+}
+
+union UnionToResolve = UnionMemberA | UnionMemberB

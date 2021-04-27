@@ -122,4 +122,9 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
         return valueMapper;
     }
 
+    @Override
+    public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
+        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
+                "GraphqlJacksonTypeIdResolver.class)";
+    }
 }

@@ -203,6 +203,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return config.getGenerateJacksonTypeIdResolver();
+    }
+
+    @Override
     public RelayConfig getRelayConfig() {
         return config.getRelayConfig();
     }
@@ -265,6 +270,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public String getResolverParentInterface() {
         return config.getResolverParentInterface();
+    }
+
+    @Override
+    public Boolean getGenerateAllMethodInProjection() {
+        return config.getGenerateAllMethodInProjection();
     }
 
     @Override

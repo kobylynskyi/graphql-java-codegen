@@ -90,6 +90,19 @@ class GraphQLCodegenRequestTest {
     }
 
     @Test
+    void generate_WithOutAllMethods() throws Exception {
+        mappingConfig.setGenerateAllMethodInProjection(false);
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+            outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
+                "EventResponseProjection.java_withoutAll.txt"),
+            getFileByName(files, "EventResponseProjection.java"));
+    }
+
+    @Test
     void generate_PrimitivesInsideParametrizedInput() throws Exception {
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
