@@ -26,6 +26,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -422,6 +424,7 @@ class GraphQLRequestSerializerTest {
                 .setContextId("something")
                 .setIds(null)
                 .setTranslated(false)
+                .setEntries(null)
                 .build();
         GraphQLRequest graphQLRequest = new GraphQLRequest(request,
                 new EventResponseProjection()
@@ -430,6 +433,32 @@ class GraphQLRequestSerializerTest {
         String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
         String expectedQueryStr = "query eventsByIds { " +
                 "eventsByIds(contextId: \"something\", translated: false){ id } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
+    void serialize_requestWithMap(String name, Function<GraphQLRequest, String> serializer,
+                                  Function<String, String> expectedQueryDecorator) {
+        Map<Object, Object> entries = new HashMap<>();
+        entries.put("entryInt", 1);
+        entries.put("entryString", "2");
+        entries.put("entryFloat", 3.3);
+        entries.put("entryNull", null);
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
+                .setContextId("something")
+                .setIds(null)
+                .setTranslated(false)
+                .setEntries(entries)
+                .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(request,
+                new EventResponseProjection()
+                        .id()
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query eventsByIds { " +
+                "eventsByIds(contextId: \"something\", translated: false, entries: " +
+                "{ entryNull: null, entryInt: 1, entryFloat: 3.3, entryString: \"2\" }){ id } }";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 

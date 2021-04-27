@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Base class for all GraphQL definition types that contains base definition and its extensions
@@ -101,16 +102,29 @@ public abstract class ExtendedDefinition<T extends NamedNode<T>, E extends T> {
      * @return list of directive names
      */
     public List<String> getDirectiveNames() {
-        List<String> directives = new ArrayList<>();
+        return getDirectives().stream()
+                .map(Directive::getName)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Return all directives for this definition
+     *
+     * @return list of directive names
+     */
+    public List<Directive> getDirectives() {
+        List<Directive> directives = new ArrayList<>();
         if (this.definition instanceof DirectivesContainer) {
             List<Directive> definitionDirectives = ((DirectivesContainer<?>) this.definition).getDirectives();
             if (!Utils.isEmpty(definitionDirectives)) {
-                definitionDirectives.stream().map(Directive::getName).forEach(directives::add);
+                directives.addAll(definitionDirectives);
             }
-            this.extensions.stream().filter(Objects::nonNull)
-                    .map(DirectivesContainer.class::cast)
-                    .map(DirectivesContainer::getDirectives).filter(Objects::nonNull)
-                    .forEach(ds -> ds.forEach(d -> directives.add(((Directive) d).getName())));
+            this.extensions.stream()
+                .filter(Objects::nonNull)
+                .map(DirectivesContainer.class::cast)
+                .map(DirectivesContainer::getDirectives)
+                .filter(dc -> !Utils.isEmpty(dc))
+                .forEach(directives::addAll);
         }
         return directives;
     }
