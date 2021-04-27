@@ -3,7 +3,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
-    <version>4.1.6</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>graphql-codegen-maven-plugin</name>
@@ -58,8 +58,8 @@
     <properties>
         <version.maven-plugin-api>3.8.1</version.maven-plugin-api>
         <version.maven-core>3.6.3</version.maven-core>
-        <version.maven-plugin-annotations>3.6.0</version.maven-plugin-annotations>
-        <version.maven-plugin-plugin>3.6.0</version.maven-plugin-plugin>
+        <version.maven-plugin-annotations>3.6.1</version.maven-plugin-annotations>
+        <version.maven-plugin-plugin>3.6.1</version.maven-plugin-plugin>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
         <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
@@ -72,7 +72,7 @@
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.3.3</version.maven-shared-utils>
 
-        <version.graphql-java-codegen>4.1.6</version.graphql-java-codegen>
+        <version.graphql-java-codegen>5.1.0-SNAPSHOT</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
@@ -108,6 +108,27 @@
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-java-codegen</artifactId>
             <version>${version.graphql-java-codegen}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+            <version>16.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.4.1</version>
         </dependency>
     </dependencies>
 

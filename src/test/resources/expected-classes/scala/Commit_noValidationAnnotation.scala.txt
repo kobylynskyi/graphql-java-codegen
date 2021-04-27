@@ -45,6 +45,7 @@ case class Commit(
     treeUrl: String,
     override val url: String,
     override val viewerCanSubscribe: Boolean,
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.SubscriptionStateTypeRefer])
     override val viewerSubscription: SubscriptionState,
     zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {

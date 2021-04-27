@@ -6,7 +6,7 @@ plugins {
     //
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "4.1.6"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.1.0-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.product.Application"
@@ -15,9 +15,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:2.4.4"
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.4.4"
 
-    implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:8.0.0"
-    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:8.0.0"
-    implementation "com.graphql-java:graphql-java-extended-scalars:15.0.0"
+    implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0"
+    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0"
+    implementation "com.graphql-java:graphql-java-extended-scalars:16.0.1"
 
     implementation "javax.validation:validation-api:2.0.1.Final"
 

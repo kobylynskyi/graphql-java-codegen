@@ -260,6 +260,15 @@ public interface GraphQLCodegenConfiguration {
     Boolean getAddGeneratedAnnotation();
 
     /**
+     * Specifies whether generated union interfaces should be annotated with a Jackson type id resolver generated in
+     * model package.
+     *
+     * @return <b>true</b> if union interfaces should be annotated with a Jackson type id resolver generated in model
+     * package
+     */
+    Boolean getGenerateJacksonTypeIdResolver();
+
+    /**
      * Relay-related configurations.
      *
      * @return Relay-related configurations.
@@ -376,6 +385,13 @@ public interface GraphQLCodegenConfiguration {
     String getResolverParentInterface();
 
     /**
+     * Enables the generation of the all$ method in the projection classes of the client.
+     *
+     * @return whether the generation is enabled.
+     */
+    Boolean getGenerateAllMethodInProjection();
+
+    /**
      * Limit depth when `all$` invoke which has subProjections
      *
      * @return limit depth when the projection is constructed automatically
@@ -400,6 +416,21 @@ public interface GraphQLCodegenConfiguration {
      * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
      */
     Set<String> getUseObjectMapperForRequestSerialization();
+
+    /**
+     * Types that must generated as interfaces.
+     *
+     * <p>Values should be defined here in format: TypeName, @directive
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code Person}</li>
+     *   <li>{@code @asInterface}</li>
+     * </ul>
+     *
+     * @return Set of types that should generated as interfaces.
+     */
+    Set<String> getTypesAsInterfaces();
 
     /**
      * Generate code with lang

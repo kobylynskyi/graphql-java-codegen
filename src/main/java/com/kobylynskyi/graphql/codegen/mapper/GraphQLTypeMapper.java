@@ -5,6 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 import graphql.language.Directive;
@@ -14,6 +15,7 @@ import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.Type;
 import graphql.language.TypeName;
+import graphql.language.UnionTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -223,7 +225,6 @@ public interface GraphQLTypeMapper {
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
         boolean primitiveCanBeUsed = !collection;
-        boolean serializeUsingObjectMapper = false;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
@@ -234,11 +235,9 @@ public interface GraphQLTypeMapper {
         } else {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
-        if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-                (name != null && parentTypeName != null &&
-                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
-            serializeUsingObjectMapper = true;
-        }
+        boolean serializeUsingObjectMapper =
+                serializeFieldsUsingObjectMapper.contains(graphQLType) ||
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
@@ -262,18 +261,23 @@ public interface GraphQLTypeMapper {
             return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
         } else if (type instanceof TypeName) {
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
-                    getDirectives(def), mandatory);
+                    getDirectives(def), mandatory, def);
         }
         return Collections.emptyList();
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
+        if (extendedDefinition == null) {
+            return Collections.emptyList();
+        }
+
+        NamedNode<?> def = extendedDefinition.getDefinition();
         return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                Collections.emptyList(), false);
+                extendedDefinition.getDirectives(), false, def);
     }
 
     default List<String> getAnnotations(MappingContext mappingContext, String name) {
-        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false);
+        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, null);
     }
 
     /**
@@ -285,10 +289,12 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @param directives      List of GraphQL directive
      * @param mandatory       Type is mandatory
+     * @param def             GraphQL definition
      * @return list of Java annotations for a given GraphQL type
      */
     default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
-                                        String parentTypeName, List<Directive> directives, boolean mandatory) {
+                                        String parentTypeName, List<Directive> directives, boolean mandatory,
+                                        NamedNode<?> def) {
         List<String> annotations = new ArrayList<>();
         if (mandatory) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
@@ -314,6 +320,11 @@ public interface GraphQLTypeMapper {
             }
         }
 
+        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, def));
+        if (def instanceof ExtendedFieldDefinition) {
+            annotations.addAll(getAdditionalAnnotations(mappingContext, graphQLTypeName));
+        }
+
         Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
         for (Directive directive : directives) {
             if (directiveAnnotationsMapping.containsKey(directive.getName())) {
@@ -322,6 +333,42 @@ public interface GraphQLTypeMapper {
             }
         }
         return annotations;
+    }
+
+    /**
+     * Get Jackson type id resolver annotations
+     *
+     * @param mappingContext Global mapping context
+     * @param def            GraphQL definition
+     * @return list of Jackson type id resolver annotations
+     */
+    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
+        List<String> defaults = new ArrayList<>();
+        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
+                && def instanceof UnionTypeDefinition) {
+            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
+                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+            if (modelPackageName == null) {
+                modelPackageName = "";
+            } else if (Utils.isNotBlank(modelPackageName)) {
+                modelPackageName += ".";
+            }
+            defaults.add(getJacksonResolverTypeIdAnnotation(modelPackageName));
+        }
+        return defaults;
+    }
+
+    /**
+     * Get language specific Jackson type id resolver annotation
+     *
+     * @param modelPackageName Model package name property
+     * @return language specific Jackson type id resolver annotation
+     */
+    String getJacksonResolverTypeIdAnnotation(String modelPackageName);
+
+    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
+        return new ArrayList<>();
     }
 
     /**

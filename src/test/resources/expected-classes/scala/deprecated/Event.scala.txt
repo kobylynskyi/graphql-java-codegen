@@ -10,6 +10,7 @@ import Status._
 case class Event(
     @deprecated(message = "test deprecated with msg")
     @javax.validation.constraints.NotNull
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.StatusTypeRefer])
     status: Status,
     @deprecated(message = "test deprecated with msg")
     @javax.validation.constraints.NotNull

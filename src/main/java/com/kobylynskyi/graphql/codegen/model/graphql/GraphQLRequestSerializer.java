@@ -145,7 +145,7 @@ public class GraphQLRequestSerializer {
     /**
      * Serialize object to a string
      *
-     * @param input           can be any object or collection of objects.
+     * @param input           can be any object or collection/map of objects.
      * @param useObjectMapper if true, then use Jackson's ObjectMapper to convert from object to string,
      *                        otherwise use toString
      * @return serialized object
@@ -154,19 +154,16 @@ public class GraphQLRequestSerializer {
     public static String getEntry(Object input, boolean useObjectMapper) {
         if (input == null) {
             return null;
-        }
-        if (input instanceof Collection<?>) {
-            StringJoiner joiner = new StringJoiner(", ", "[ ", " ]");
-            for (Object collectionEntry : (Collection<?>) input) {
-                joiner.add(getEntry(collectionEntry, useObjectMapper));
-            }
-            return joiner.toString();
-        }
-        if (useObjectMapper) {
+        } else if (useObjectMapper) {
             return objectMapperWriteValueAsString(input);
-        }
-        if (input instanceof Enum<?>) {
-            return input.toString();
+        } else if (input instanceof Collection<?>) {
+            return serializeCollection((Collection<?>) input, useObjectMapper);
+        } else if (input instanceof Map<?, ?>) {
+            return serializeMap((Map<?, ?>) input, useObjectMapper);
+        } else if (input instanceof Map.Entry<?, ?>) {
+            return serializeMapEntry((Map.Entry<?, ?>) input, useObjectMapper);
+        } else if (input instanceof Enum<?>) {
+            return serializeEnum((Enum<?>) input);
         } else if (input instanceof String) {
             return escapeJsonString(input.toString());
         } else if (input.getClass().getName().equals("scala.Some")) { // TODO: move to Scala Serializer
@@ -180,13 +177,29 @@ public class GraphQLRequestSerializer {
         }
     }
 
-
-    public static String objectMapperWriteValueAsString(Object input) {
-        try {
-            return OBJECT_MAPPER.writeValueAsString(input);
-        } catch (JsonProcessingException e) {
-            throw new UnableToBuildJsonQueryException(e);
+    public static String serializeCollection(Collection<?> input, boolean useObjectMapper) {
+        StringJoiner joiner = new StringJoiner(", ", "[ ", " ]");
+        for (Object entry : input) {
+            joiner.add(getEntry(entry, useObjectMapper));
         }
+        return joiner.toString();
+    }
+
+    public static String serializeMap(Map<?, ?> input, boolean useObjectMapper) {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        for (Map.Entry<?, ?> entry : input.entrySet()) {
+            joiner.add(getEntry(entry, useObjectMapper));
+        }
+        return joiner.toString();
+    }
+
+    public static String serializeMapEntry(Map.Entry<?, ?> input, boolean useObjectMapper) {
+        // no need to quote String key
+        return input.getKey() + ": " + getEntry(input.getValue(), useObjectMapper);
+    }
+
+    public static String serializeEnum(Enum<?> input) {
+        return input.toString();
     }
 
     /**
@@ -229,6 +242,14 @@ public class GraphQLRequestSerializer {
         }
         sb.append("\"");
         return sb.toString();
+    }
+
+    public static String objectMapperWriteValueAsString(Object input) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(input);
+        } catch (JsonProcessingException e) {
+            throw new UnableToBuildJsonQueryException(e);
+        }
     }
 
 }
