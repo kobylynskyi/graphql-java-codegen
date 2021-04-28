@@ -72,7 +72,7 @@ class GraphQLCodegenModelsForRootTypesTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(Arrays.asList("Event.java", "EventProperty.java", "EventStatus.java",
-                "Mutation.java", "Query.java", "Subscription.java"),
+                "Mutation.java", "Query.java", "Subscription.java", "User.java"),
                 generatedFileNames);
     }
 
@@ -89,7 +89,8 @@ class GraphQLCodegenModelsForRootTypesTest {
                 "EventsByCategoryAndStatusQueryResolver.java", "EventsByIdsQueryResolver.java",
                 "EventsCreatedSubscriptionResolver.java", "Mutation.java", "MutationResolver.java",
                 "MutationTypeResolver.java", "Query.java", "QueryResolver.java", "QueryTypeResolver.java",
-                "Subscription.java", "SubscriptionResolver.java", "VersionQueryResolver.java"), generatedFileNames);
+                "Subscription.java", "SubscriptionResolver.java", "User.java", "VersionQueryResolver.java"),
+                generatedFileNames);
     }
 
 }

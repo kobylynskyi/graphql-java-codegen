@@ -1,0 +1,18 @@
+package com.kobylynskyi.graphql.test1
+
+import scala.collection.JavaConverters._
+
+/**
+ * type with directive using enum value
+ */
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+case class User(
+    name: String,
+    @com.example.Relationship(type = "FRIEND_WITH", direction = OUT)
+    friends: scala.Seq[User]
+) {
+
+}
