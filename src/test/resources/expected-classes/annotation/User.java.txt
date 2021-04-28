@@ -1,0 +1,69 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * type with directive using enum value
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class User implements java.io.Serializable {
+
+    private String name;
+    @com.example.Relationship(type = "FRIEND_WITH", direction = OUT)
+    private java.util.List<User> friends;
+
+    public User() {
+    }
+
+    public User(String name, java.util.List<User> friends) {
+        this.name = name;
+        this.friends = friends;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public java.util.List<User> getFriends() {
+        return friends;
+    }
+    public void setFriends(java.util.List<User> friends) {
+        this.friends = friends;
+    }
+
+
+
+    public static User.Builder builder() {
+        return new User.Builder();
+    }
+
+    public static class Builder {
+
+        private String name;
+        private java.util.List<User> friends;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setFriends(java.util.List<User> friends) {
+            this.friends = friends;
+            return this;
+        }
+
+
+        public User build() {
+            return new User(name, friends);
+        }
+
+    }
+}

@@ -129,6 +129,9 @@ public class ValueMapper {
         if (graphQLType instanceof NonNullType) {
             return mapEnum(mappingContext, value, ((NonNullType) graphQLType).getType());
         }
+        if (graphQLType == null) {
+            return value.getName();
+        }
         throw new IllegalArgumentException("Unexpected Enum value for list type");
     }
 
