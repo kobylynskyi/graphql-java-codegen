@@ -15,22 +15,36 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer
 import java.util.Objects
 </#if>
 import scala.collection.JavaConverters._
+<#assign duplicateEnumImports = [] />
+<#assign enumImports = [] />
 <#if fields?has_content>
     <#if enumImportItSelfInScala?has_content>
         <#list fields as field>
             <#list enumImportItSelfInScala as enum>
                 <#if MapperUtil.isScalaCollection(field.type)>
                     <#if enum == MapperUtil.getGenericParameter(field.type)>
-import ${enum}._
+                        <#assign duplicateEnumImports = duplicateEnumImports + [enum] />
                     </#if>
                 <#else >
                     <#if enum == field.type>
-import ${enum}._
+                        <#assign duplicateEnumImports = duplicateEnumImports + [enum] />
                     </#if>
                 </#if>
             </#list>
         </#list>
     </#if>
+</#if>
+<#if duplicateEnumImports?has_content>
+    <#list duplicateEnumImports as duplicateEnumImport>
+        <#if !enumImports?seq_contains(duplicateEnumImport)>
+            <#assign enumImports = enumImports + [duplicateEnumImport]>
+        </#if>
+    </#list>
+</#if>
+<#if enumImports?has_content>
+    <#list enumImports as enumImport>
+import ${enumImport}._
+    </#list>
 </#if>
 <#assign duplicateParentInterfaces = [] />
 <#assign parentInterfaces = [] />
