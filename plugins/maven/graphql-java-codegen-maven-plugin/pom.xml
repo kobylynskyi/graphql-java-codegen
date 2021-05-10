@@ -70,7 +70,7 @@
         <version.maven-build-helper-plugin>3.2.0</version.maven-build-helper-plugin>
         <version.maven-scm-provider-gitexe>1.11.2</version.maven-scm-provider-gitexe>
         <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
-        <version.maven-shared-utils>3.3.3</version.maven-shared-utils>
+        <version.maven-shared-utils>3.3.4</version.maven-shared-utils>
 
         <version.graphql-java-codegen>5.1.1-SNAPSHOT</version.graphql-java-codegen>
     </properties>
