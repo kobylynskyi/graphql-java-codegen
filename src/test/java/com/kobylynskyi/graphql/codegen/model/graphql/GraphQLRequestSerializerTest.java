@@ -258,6 +258,27 @@ class GraphQLRequestSerializerTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideAllSerializers")
+    void serialize_withCustomOpertionName(String name, Function<GraphQLRequest, String> serializer,
+                                          Function<String, String> expectedQueryDecorator) {
+        EventsByIdsQueryRequest request = new EventsByIdsQueryRequest.Builder()
+            .setContextId("something")
+            .setIds(null)
+            .setTranslated(false)
+            .build();
+        GraphQLRequest graphQLRequest = new GraphQLRequest(
+            "customOperationName",
+            request,
+            new EventResponseProjection()
+                .id()
+        );
+        String serializedQuery = serializer.apply(graphQLRequest).replaceAll(" +", " ").trim();
+        String expectedQueryStr = "query customOperationName { " +
+            "eventsByIds(contextId: \"something\", translated: false){ id } }";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideAllSerializers")
     void serialize_complexRequestWithDefaultData(String name, Function<GraphQLRequest, String> serializer,
                                                  Function<String, String> expectedQueryDecorator) {
         UpdateIssueMutationRequest requestWithDefaultData = new UpdateIssueMutationRequest();
@@ -502,6 +523,38 @@ class GraphQLRequestSerializerTest {
                 "req2: eventsByCategoryAndStatus{ id status } " +
                 "eventsByCategoryAndStatus " +
                 "}";
+        assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("provideStaticSerializerForMultiRequest")
+    void serialize_multipleRequestsWithCustomOperationName(String name, Function<GraphQLRequests, String> serializer,
+                                    Function<String, String> expectedQueryDecorator) {
+        EventsByCategoryAndStatusQueryRequest request1 = new EventsByCategoryAndStatusQueryRequest.Builder()
+            .alias("req1").setStatus(Status.OPEN).build();
+        GraphQLRequest graphQLRequest1 = new GraphQLRequest(request1, new EventResponseProjection().id());
+
+        EventsByCategoryAndStatusQueryRequest request2 = new EventsByCategoryAndStatusQueryRequest("req2");
+        GraphQLRequest graphQLRequest2 = new GraphQLRequest(request2, new EventResponseProjection().id().status());
+
+        EventsByCategoryAndStatusQueryRequest request21 = new EventsByCategoryAndStatusQueryRequest();
+        GraphQLRequest graphQLRequest21 = new GraphQLRequest(request21);
+
+        GraphQLRequests requests = new GraphQLRequests(
+            "customOperationName",
+            graphQLRequest1,
+            graphQLRequest2,
+            graphQLRequest21
+        );
+
+        String serializedQuery = serializer
+            .apply(requests).replaceAll(" +", " ")
+            .trim();
+        String expectedQueryStr = "query customOperationName { " +
+            "req1: eventsByCategoryAndStatus(status: OPEN){ id } " +
+            "req2: eventsByCategoryAndStatus{ id status } " +
+            "eventsByCategoryAndStatus " +
+            "}";
         assertEquals(expectedQueryDecorator.apply(expectedQueryStr), serializedQuery);
     }
 

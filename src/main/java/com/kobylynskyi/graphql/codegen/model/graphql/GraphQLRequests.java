@@ -9,9 +9,15 @@ import java.util.List;
  */
 public class GraphQLRequests {
 
+    private final String operationName;
     private final List<GraphQLRequest> requests = new ArrayList<>();
 
     public GraphQLRequests(GraphQLRequest... requests) {
+        this(null, requests);
+    }
+
+    public GraphQLRequests(String operationName, GraphQLRequest... requests) {
+        this.operationName = operationName;
         this.requests.addAll(Arrays.asList(requests));
     }
 
@@ -21,6 +27,10 @@ public class GraphQLRequests {
 
     public List<GraphQLRequest> getRequests() {
         return new ArrayList<>(requests);
+    }
+
+    public String getOperationName() {
+        return operationName;
     }
 
     /**
