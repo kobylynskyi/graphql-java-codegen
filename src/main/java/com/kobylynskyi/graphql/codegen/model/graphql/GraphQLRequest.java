@@ -21,11 +21,8 @@ public class GraphQLRequest {
         this(null, request, responseProjection);
     }
 
-    public GraphQLRequest(
-        String operationName,
-        GraphQLOperationRequest request,
-        GraphQLResponseProjection responseProjection
-    ) {
+    public GraphQLRequest(String operationName, GraphQLOperationRequest request,
+        GraphQLResponseProjection responseProjection) {
         this.operationName = operationName;
         this.request = request;
         this.responseProjection = responseProjection;
