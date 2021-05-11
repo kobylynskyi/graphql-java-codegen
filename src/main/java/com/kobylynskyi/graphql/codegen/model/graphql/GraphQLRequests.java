@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class GraphQLRequests {
 
-    private final List<GraphQLRequest> requests = new ArrayList<>();
     private final String operationName;
+    private final List<GraphQLRequest> requests = new ArrayList<>();
 
     public GraphQLRequests(GraphQLRequest... requests) {
         this(null, requests);
