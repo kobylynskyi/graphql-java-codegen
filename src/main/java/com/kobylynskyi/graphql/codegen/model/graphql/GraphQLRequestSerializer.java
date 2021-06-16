@@ -49,7 +49,7 @@ public class GraphQLRequestSerializer {
         }
         return jsonQuery(operationWrapper(
                 firstRequest.getOperationType(),
-                null, // combined request does not have operation name
+                graphQLRequests.getOperationName(),
                 queryBuilder.toString()));
     }
 
@@ -77,9 +77,13 @@ public class GraphQLRequestSerializer {
         if (graphQLRequest == null || graphQLRequest.getRequest() == null) {
             return null;
         }
+
+        String operationName = graphQLRequest.getOperationName() == null ?
+            graphQLRequest.getRequest().getOperationName() : graphQLRequest.getOperationName();
+
         return operationWrapper(
                 graphQLRequest.getRequest().getOperationType(),
-                graphQLRequest.getRequest().getOperationName(),
+                operationName,
                 buildQuery(graphQLRequest));
     }
 
