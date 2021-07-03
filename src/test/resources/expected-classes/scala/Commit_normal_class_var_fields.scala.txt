@@ -11,68 +11,68 @@ import SubscriptionState._
 )
 class Commit(
     @javax.validation.constraints.NotNull
-    override val abbreviatedOid: String,
-    val additions: Int,
-    val associatedPullRequests: PullRequestConnection,
-    val author: GitActor,
-    val authoredByCommitter: Boolean,
+    override var abbreviatedOid: String,
+    var additions: Int,
+    var associatedPullRequests: PullRequestConnection,
+    var author: GitActor,
+    var authoredByCommitter: Boolean,
     @javax.validation.constraints.NotNull
-    val authoredDate: String,
+    var authoredDate: String,
     @javax.validation.constraints.NotNull
-    val blame: Blame,
-    val changedFiles: Int,
+    var blame: Blame,
+    var changedFiles: Int,
     @javax.validation.constraints.NotNull
-    val comments: CommitCommentConnection,
+    var comments: CommitCommentConnection,
     @javax.validation.constraints.NotNull
-    override val commitResourcePath: String,
+    override var commitResourcePath: String,
     @javax.validation.constraints.NotNull
-    override val commitUrl: String,
+    override var commitUrl: String,
     @javax.validation.constraints.NotNull
-    val committedDate: String,
-    val committedViaWeb: Boolean,
-    val committer: GitActor,
-    val deletions: Int,
-    val deployments: DeploymentConnection,
+    var committedDate: String,
+    var committedViaWeb: Boolean,
+    var committer: GitActor,
+    var deletions: Int,
+    var deployments: DeploymentConnection,
     @javax.validation.constraints.NotNull
-    val history: CommitHistoryConnection,
+    var history: CommitHistoryConnection,
     @javax.validation.constraints.NotNull
-    override val id: String,
+    override var id: String,
     @javax.validation.constraints.NotNull
-    val message: String,
+    var message: String,
     @javax.validation.constraints.NotNull
-    val messageBody: String,
+    var messageBody: String,
     @javax.validation.constraints.NotNull
-    val messageBodyHTML: String,
+    var messageBodyHTML: String,
     @javax.validation.constraints.NotNull
-    val messageHeadline: String,
+    var messageHeadline: String,
     @javax.validation.constraints.NotNull
-    val messageHeadlineHTML: String,
+    var messageHeadlineHTML: String,
     @javax.validation.constraints.NotNull
-    override val oid: String,
+    override var oid: String,
     @javax.validation.constraints.NotNull
-    val parents: CommitConnection,
-    val pushedDate: String,
+    var parents: CommitConnection,
+    var pushedDate: String,
     @javax.validation.constraints.NotNull
-    override val repository: Repository,
+    override var repository: Repository,
     @javax.validation.constraints.NotNull
-    override val resourcePath: String,
-    val signature: GitSignature,
-    val status: Status,
+    override var resourcePath: String,
+    var signature: GitSignature,
+    var status: Status,
     @javax.validation.constraints.NotNull
-    val tarballUrl: String,
+    var tarballUrl: String,
     @javax.validation.constraints.NotNull
-    val tree: Tree,
+    var tree: Tree,
     @javax.validation.constraints.NotNull
-    val treeResourcePath: String,
+    var treeResourcePath: String,
     @javax.validation.constraints.NotNull
-    val treeUrl: String,
+    var treeUrl: String,
     @javax.validation.constraints.NotNull
-    override val url: String,
-    override val viewerCanSubscribe: Boolean,
+    override var url: String,
+    override var viewerCanSubscribe: Boolean,
     @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.SubscriptionStateTypeRefer])
-    override val viewerSubscription: SubscriptionState,
+    override var viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
-    val zipballUrl: String
+    var zipballUrl: String
 ) extends Closer with IssueTimelineItem with PullRequestTimelineItem with Subscribable with Node with GitObject with UniformResourceLocatable {
 
     override def toString(): String = {
