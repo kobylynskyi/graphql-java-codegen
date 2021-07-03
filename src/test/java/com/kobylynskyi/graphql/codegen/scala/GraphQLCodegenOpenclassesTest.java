@@ -59,16 +59,4 @@ class GraphQLCodegenOpenclassesTest {
         assertSameTrimmedContent(getFileByName(files, "Commit.scala"),
                 new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"));
     }
-
-    @Test
-    void generate_openclass_with_var() throws Exception {
-        mappingConfig.setGenerateImmutableModels(false);
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
-        File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
-
-        assertSameTrimmedContent(getFileByName(files, "Commit.scala"),
-                new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"));
-    }
-
 }
