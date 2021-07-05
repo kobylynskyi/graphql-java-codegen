@@ -49,4 +49,14 @@ class GraphQLCodegenOpenclassesTest {
                 getFileByName(files, "Commit.scala"));
     }
 
+    @Test
+    void generate_MultipleInterfacesPerTypeVarFields() throws Exception {
+        mappingConfig.setGenerateImmutableModels(false);
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
+
+        assertSameTrimmedContent(getFileByName(files, "Commit.scala"),
+                new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"));
+    }
 }
