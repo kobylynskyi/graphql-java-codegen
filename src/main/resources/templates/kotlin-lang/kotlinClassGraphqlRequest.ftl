@@ -32,7 +32,7 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
         val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.${operationType}
 <#if builder>
 
-        fun builder(): Builder = Builder()
+        @JvmStatic fun builder(): Builder = Builder()
 </#if>
     }
 
