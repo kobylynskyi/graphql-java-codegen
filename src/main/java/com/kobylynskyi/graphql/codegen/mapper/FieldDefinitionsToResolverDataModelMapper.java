@@ -5,6 +5,8 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.OperationDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.RelayConfig;
+import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
+import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -135,7 +137,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         String className = DataModelMapper.getApiClassNameWithPrefixAndSuffix(mappingContext, definition);
         // For root types like "Query", we create resolvers for all fields
         return mapToResolverModel(mappingContext, definition.getName(), className,
-                definition.getFieldDefinitions(), definition.getJavaDoc(),
+                definition.getFieldDefinitions(), JavaDocBuilder.build(definition),
                 getParentInterface(mappingContext, definition.getName()));
     }
 
@@ -205,7 +207,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setAnnotations(annotations);
         operation.setParameters(parameters);
         operation.setJavaDoc(fieldDef.getJavaDoc());
-        operation.setDeprecated(fieldDef.getDeprecated(mappingContext));
+        operation.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         operation.setThrowsException(mappingContext.getGenerateApisWithThrowsException());
         return operation;
     }
@@ -225,7 +227,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
             parameterDefinition.setType(parentObjectParamType);
             parameterDefinition.setName(parentObjectParamName);
             parameterDefinition.setOriginalName(parentObjectParamName);
-            parameterDefinition.setDeprecated(resolvedField.getDeprecated(mappingContext));
+            parameterDefinition.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, resolvedField));
             parameters.add(parameterDefinition);
         }
 

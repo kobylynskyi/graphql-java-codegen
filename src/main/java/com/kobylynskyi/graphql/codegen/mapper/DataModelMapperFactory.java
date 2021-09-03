@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.MapperFactory;
-
 /**
  * Factory of data model mappers
  */

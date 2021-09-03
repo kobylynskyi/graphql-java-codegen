@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.exception.SchemaValidationException;
+import com.kobylynskyi.graphql.codegen.parser.GraphQLDocumentParser;
 import graphql.GraphQLException;
 import graphql.parser.MultiSourceReader;
 import graphql.parser.Parser;

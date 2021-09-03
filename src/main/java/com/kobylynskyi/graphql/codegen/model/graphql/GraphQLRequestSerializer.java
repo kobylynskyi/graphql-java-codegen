@@ -79,7 +79,7 @@ public class GraphQLRequestSerializer {
         }
 
         String operationName = graphQLRequest.getOperationName() == null ?
-            graphQLRequest.getRequest().getOperationName() : graphQLRequest.getOperationName();
+                graphQLRequest.getRequest().getOperationName() : graphQLRequest.getOperationName();
 
         return operationWrapper(
                 graphQLRequest.getRequest().getOperationType(),

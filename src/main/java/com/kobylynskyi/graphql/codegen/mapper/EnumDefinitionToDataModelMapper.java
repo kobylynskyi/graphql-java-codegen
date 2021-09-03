@@ -1,14 +1,14 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.EnumValueDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
+import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
-import graphql.language.DirectivesContainer;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,11 +65,6 @@ public class EnumDefinitionToDataModelMapper {
                 .map(String::trim).collect(Collectors.toList());
     }
 
-    public DeprecatedDefinition getDeprecated(MappingContext mappingContext,
-                                              DirectivesContainer<?> directivesContainer) {
-        return graphQlTypeMapper.getDeprecated(mappingContext, directivesContainer);
-    }
-
     /**
      * Map field definition to a Freemarker data model
      *
@@ -84,7 +79,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(IMPLEMENTS, getUnionInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQlTypeMapper.getAnnotations(mappingContext, definition));
-        dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(FIELDS, map(mappingContext, definition.getValueDefinitions()));
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
@@ -106,7 +101,7 @@ public class EnumDefinitionToDataModelMapper {
                         dataModelMapper.capitalizeIfRestricted(mappingContext, f.getName()),
                         f.getName(),
                         getJavaDoc(f),
-                        getDeprecated(mappingContext, f)))
+                        DeprecatedDefinitionBuilder.build(mappingContext, f)))
                 .collect(Collectors.toList());
     }
 

@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen;
+package com.kobylynskyi.graphql.codegen.generators;
 
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
@@ -17,16 +17,25 @@ import java.util.Map;
  *
  * @author kobylynskyi
  */
-class GraphQLCodegenFileCreator {
+public class FreeMarkerTemplateFilesCreator {
 
-    private GraphQLCodegenFileCreator() {
+    private FreeMarkerTemplateFilesCreator() {
     }
 
-    static File generateFile(MappingContext mappingContext, FreeMarkerTemplateType templateType,
-                             Map<String, Object> dataModel, File outputDir) {
+    /**
+     * Crates a new file according to template
+     *
+     * @param mappingContext Global mapping context
+     * @param templateType   Template type
+     * @param dataModel      FreeMarker data model
+     * @return a created file
+     */
+    public static File create(MappingContext mappingContext,
+                              FreeMarkerTemplateType templateType,
+                              Map<String, Object> dataModel) {
         GeneratedLanguage language = mappingContext.getGeneratedLanguage();
         String fileName = dataModel.get(DataModelFields.CLASS_NAME) + language.getFileExtension();
-        File fileOutputDir = getFileTargetDirectory(dataModel, outputDir);
+        File fileOutputDir = getFileTargetDirectory(dataModel, mappingContext.getOutputDirectory());
         File javaSourceFile = new File(fileOutputDir, fileName);
         try {
             if (!javaSourceFile.createNewFile()) {
@@ -38,11 +47,6 @@ class GraphQLCodegenFileCreator {
             throw new UnableToCreateFileException(e);
         }
         return javaSourceFile;
-    }
-
-    static void prepareOutputDir(File outputDir) {
-        Utils.deleteDir(outputDir);
-        Utils.createDirIfAbsent(outputDir);
     }
 
     private static File getFileTargetDirectory(Map<String, Object> dataModel, File outputDir) {

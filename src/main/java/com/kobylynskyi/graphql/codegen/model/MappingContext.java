@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinit
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
  */
 public class MappingContext implements GraphQLCodegenConfiguration {
 
+    private final File outputDirectory;
     private final MappingConfig config;
     private final ExtendedDocument document;
     private final Set<String> typesUnionsInterfacesNames;
@@ -27,12 +29,15 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
     private final DataModelMapperFactory dataModelMapperFactory;
-    private Set<String> enumImportItSelfInScala = null;
-    private Map<String, Set<String>> parentInterfaceProperties = null;
+    private Set<String> enumImportItSelfInScala;
+    private Map<String, Set<String>> parentInterfaceProperties;
 
-    public MappingContext(MappingConfig mappingConfig,
-                          ExtendedDocument document,
-                          GeneratedInformation generatedInformation, DataModelMapperFactory dataModelMapperFactory) {
+    private MappingContext(File outputDirectory,
+                           MappingConfig mappingConfig,
+                           ExtendedDocument document,
+                           GeneratedInformation generatedInformation,
+                           DataModelMapperFactory dataModelMapperFactory) {
+        this.outputDirectory = outputDirectory;
         this.config = mappingConfig;
         this.document = document;
         this.typesUnionsInterfacesNames = document.getTypesUnionsInterfacesNames();
@@ -40,6 +45,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
         this.dataModelMapperFactory = dataModelMapperFactory;
+    }
+
+    public static MappingContext.Builder builder() {
+        return new MappingContext.Builder();
     }
 
     @Override
@@ -312,6 +321,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return generatedInformation;
     }
 
+    public File getOutputDirectory() {
+        return outputDirectory;
+    }
+
     public Set<String> getEnumImportItSelfInScala() {
         // Only for scala
         if (GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) && enumImportItSelfInScala == null) {
@@ -363,6 +376,52 @@ public class MappingContext implements GraphQLCodegenConfiguration {
                                                 ExtendedDefinition<?, ?> parentDefinition) {
         return this.dataModelMapperFactory.getFieldDefToParamMapper()
                 .mapFields(this, fieldDefinitions, parentDefinition);
+    }
+
+    /**
+     * Builder of the mapping context
+     */
+    public static class Builder {
+
+        private File outputDirectory;
+        private MappingConfig mappingConfig;
+        private ExtendedDocument document;
+        private GeneratedInformation generatedInformation;
+        private DataModelMapperFactory dataModelMapperFactory;
+
+        public Builder() {
+        }
+
+        public Builder setOutputDirectory(File outputDirectory) {
+            this.outputDirectory = outputDirectory;
+            return this;
+        }
+
+        public Builder setMappingConfig(MappingConfig mappingConfig) {
+            this.mappingConfig = mappingConfig;
+            return this;
+        }
+
+        public Builder setDocument(ExtendedDocument document) {
+            this.document = document;
+            return this;
+        }
+
+        public Builder setGeneratedInformation(GeneratedInformation generatedInformation) {
+            this.generatedInformation = generatedInformation;
+            return this;
+        }
+
+        public Builder setDataModelMapperFactory(DataModelMapperFactory dataModelMapperFactory) {
+            this.dataModelMapperFactory = dataModelMapperFactory;
+            return this;
+        }
+
+        public MappingContext build() {
+            return new MappingContext(
+                    outputDirectory, mappingConfig, document, generatedInformation, dataModelMapperFactory);
+        }
+
     }
 
 }

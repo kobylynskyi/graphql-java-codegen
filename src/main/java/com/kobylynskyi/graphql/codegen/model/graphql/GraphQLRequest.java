@@ -22,7 +22,7 @@ public class GraphQLRequest {
     }
 
     public GraphQLRequest(String operationName, GraphQLOperationRequest request,
-        GraphQLResponseProjection responseProjection) {
+                          GraphQLResponseProjection responseProjection) {
         this.operationName = operationName;
         this.request = request;
         this.responseProjection = responseProjection;

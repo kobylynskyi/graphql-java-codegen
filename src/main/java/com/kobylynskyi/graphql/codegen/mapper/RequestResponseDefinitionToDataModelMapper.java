@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
@@ -181,7 +182,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
-        dataModel.put(DEPRECATED, operationDef.getDeprecated(mappingContext));
+        dataModel.put(DEPRECATED, DeprecatedDefinitionBuilder.build(mappingContext, operationDef));
         dataModel.put(OPERATION_NAME, operationDef.getName());
         dataModel.put(METHOD_NAME, dataModelMapper.capitalizeMethodNameIfRestricted(
                 mappingContext, operationDef.getName()));
@@ -229,26 +230,6 @@ public class RequestResponseDefinitionToDataModelMapper {
     /**
      * Get merged attributes from the type and attributes from the interface.
      *
-     * @param mappingContext  Global mapping context
-     * @param unionDefinition GraphQL union definition
-     * @return Freemarker data model for response projection of the GraphQL union
-     */
-    private static Collection<ProjectionParameterDefinition> getProjectionFields(
-            MappingContext mappingContext, ExtendedUnionTypeDefinition unionDefinition) {
-        // using the map to exclude duplicate fields from the type and interfaces
-        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
-        for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
-            ProjectionParameterDefinition memberDef = getChildDefinition(mappingContext, memberTypeName);
-            allParameters.put(memberDef.getMethodName(), memberDef);
-        }
-        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
-        allParameters.put(typeNameProjParamDef.getMethodName(), typeNameProjParamDef);
-        return allParameters.values();
-    }
-
-    /**
-     * Get merged attributes from the type and attributes from the interface.
-     *
      * @param mappingContext Global mapping context
      * @param definition     GraphQL definition (type / union / interface)
      * @return Freemarker data model of the GraphQL type
@@ -264,6 +245,26 @@ public class RequestResponseDefinitionToDataModelMapper {
             return getProjectionFields(mappingContext, (ExtendedInterfaceTypeDefinition) definition);
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * Get merged attributes from the type and attributes from the interface.
+     *
+     * @param mappingContext  Global mapping context
+     * @param unionDefinition GraphQL union definition
+     * @return Freemarker data model for response projection of the GraphQL union
+     */
+    private static Collection<ProjectionParameterDefinition> getProjectionFields(
+            MappingContext mappingContext, ExtendedUnionTypeDefinition unionDefinition) {
+        // using the map to exclude duplicate fields from the type and interfaces
+        Map<String, ProjectionParameterDefinition> allParameters = new LinkedHashMap<>();
+        for (String memberTypeName : unionDefinition.getMemberTypeNames()) {
+            ProjectionParameterDefinition memberDef = getChildDefinition(mappingContext, memberTypeName);
+            allParameters.put(memberDef.getMethodName(), memberDef);
+        }
+        ProjectionParameterDefinition typeNameProjParamDef = getTypeNameProjectionParameterDefinition();
+        allParameters.put(typeNameProjParamDef.getMethodName(), typeNameProjParamDef);
+        return allParameters.values();
     }
 
     /**

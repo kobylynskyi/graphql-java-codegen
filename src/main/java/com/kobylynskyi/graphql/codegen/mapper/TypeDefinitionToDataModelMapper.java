@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
@@ -86,7 +87,7 @@ public class TypeDefinitionToDataModelMapper {
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
-        dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
         dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, getFields(mappingContext, definition, document));

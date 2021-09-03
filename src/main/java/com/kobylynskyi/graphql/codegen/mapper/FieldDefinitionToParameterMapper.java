@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.ProjectionParameterDefinition;
+import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -132,7 +133,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setAnnotations(
                 graphQLTypeMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
-        parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
+        parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         return parameter;
@@ -160,7 +161,7 @@ public class FieldDefinitionToParameterMapper {
             parameter.setParametrizedInputClassName(
                     DataModelMapper.getParametrizedInputClassName(mappingContext, fieldDef, parentTypeDef));
         }
-        parameter.setDeprecated(fieldDef.getDeprecated(mappingContext));
+        parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         return parameter;
     }
 

@@ -31,19 +31,6 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
         this.jsonConfig = parseConfigAndMerged(configFiles);
     }
 
-    @Override
-    public MappingConfig get() {
-        if (jsonConfig != null && !jsonConfig.isEmpty()) {
-            try {
-                return Utils.OBJECT_MAPPER.readValue(jsonConfig, MappingConfig.class);
-            } catch (ConfigException | JsonProcessingException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-        return null;
-    }
-
-
     /**
      * parser list of config files.
      *
@@ -64,5 +51,17 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
         } catch (ConfigException ce) {
             return null;
         }
+    }
+
+    @Override
+    public MappingConfig get() {
+        if (jsonConfig != null && !jsonConfig.isEmpty()) {
+            try {
+                return Utils.OBJECT_MAPPER.readValue(jsonConfig, MappingConfig.class);
+            } catch (ConfigException | JsonProcessingException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+        return null;
     }
 }
