@@ -16,19 +16,20 @@ Before sending your pull requests, make sure you followed this list:
 Please follow the steps below in order to make the changes:
 
 1. Clone the repository
-2. Checkout **develop** branch.
-3. Open repository in your favourite IDE.
-4. Enable and configure CheckStyle plugin in your IDE (for IntelliJ it is CheckStyle-IDEA).
+2. Set the local java version to 1.8
+3. Checkout **develop** branch.
+4. Open repository in your favourite IDE.
+5. Enable and configure CheckStyle plugin in your IDE (for IntelliJ it is CheckStyle-IDEA).
    Import [graphql-codegen-check-style.xml](config/checkstyle/graphql-codegen-check-style.xml) as a .
-5. Make code changes to the core library of `graphql-java-codegen`.
-6. If changes are required in the plugin code, then **build** and **install** `graphql-java-codegen` first.
+6. Make code changes to the core library of `graphql-java-codegen`.
+7. If changes are required in the plugin code, then **build** and **install** `graphql-java-codegen` first.
 
    ```shell script
    # This will install the library (including your recent changes) in your local maven repository.
    ./gradlew clean build publishToMavenLocal
    ```
 
-7. Build the plugin project with updated `graphql-java-codegen` library.
+8. Build the plugin project with updated `graphql-java-codegen` library.
 
    ```shell script
    # Build Gradle plugin
@@ -39,8 +40,8 @@ Please follow the steps below in order to make the changes:
    mvn clean verify 
    ```
 
-8. Make changes to the plugin code
-9. Install the plugin (copy to your local maven repository).
+9. Make changes to the plugin code
+10. Install the plugin (copy to your local maven repository).
 
    ```shell script
    # Install Gradle plugin
@@ -51,4 +52,4 @@ Please follow the steps below in order to make the changes:
    mvn clean install 
    ```
 
-10. Make sure that `example` projects are compiling and running.
+11. Make sure that `example` projects are compiling and running.

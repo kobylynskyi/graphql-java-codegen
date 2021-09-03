@@ -14,7 +14,7 @@ open class FunQueryRequest(private val alias: String?) : GraphQLOperationRequest
         const val OPERATION_NAME: String = "fun"
         val OPERATION_TYPE: GraphQLOperation = GraphQLOperation.QUERY
 
-        fun builder(): Builder = Builder()
+        @JvmStatic fun builder(): Builder = Builder()
     }
 
     private val input: MutableMap<String, Any?> = LinkedHashMap()
