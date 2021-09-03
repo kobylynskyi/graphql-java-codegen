@@ -1,7 +1,7 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.MapperFactory;
+import com.kobylynskyi.graphql.codegen.mapper.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedScalarTypeDefinition;

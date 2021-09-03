@@ -1,4 +1,4 @@
-package com.kobylynskyi.graphql.codegen;
+package com.kobylynskyi.graphql.codegen.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
@@ -36,12 +36,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-class GraphQLDocumentParser {
+/**
+ * Provides methods for extended document generation
+ */
+public class GraphQLDocumentParser {
 
     private GraphQLDocumentParser() {
     }
 
-    static ExtendedDocument getDocumentFromSchemas(MappingConfig mappingConfig, List<String> schemaPaths)
+    /**
+     * Generate an extended document from schema files
+     *
+     * @param mappingConfig Global mapping config
+     * @param schemaPaths   Paths to GraphQL schema files
+     * @return extended document definition
+     * @throws IOException in case unable to read the file content
+     */
+    public static ExtendedDocument getDocumentFromSchemas(MappingConfig mappingConfig, List<String> schemaPaths)
             throws IOException {
         Document document = readDocument(schemaPaths);
 
@@ -53,8 +64,16 @@ class GraphQLDocumentParser {
         return extendedDocumentBuilder.build();
     }
 
-    static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig, String introspectionResult)
-            throws IOException {
+    /**
+     * Generate an extended document from introspection result file
+     *
+     * @param mappingConfig       Global mapping config
+     * @param introspectionResult Path to introspection result file
+     * @return extended document definition
+     * @throws IOException in case unable to read the file content
+     */
+    public static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig,
+                                                                      String introspectionResult) throws IOException {
         String introspectionResultContent = Utils.getFileContent(introspectionResult);
         Map<String, Object> introspectionResultMap = Utils.OBJECT_MAPPER.readValue(introspectionResultContent,
                 new TypeReference<Map<String,
@@ -62,6 +81,7 @@ class GraphQLDocumentParser {
                 });
         // unwrapping "data" (in case such GraphQL response supplied)
         if (introspectionResultMap.containsKey("data")) {
+            //noinspection unchecked
             introspectionResultMap = (Map<String, Object>) introspectionResultMap.get("data");
         }
         Document document = new IntrospectionResultToSchema().createSchemaDefinition(introspectionResultMap);

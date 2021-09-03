@@ -1,7 +1,10 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateFilesCreator;
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.java.JavaMapperFactoryImpl;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
+import com.kobylynskyi.graphql.codegen.mapper.MapperFactory;
 import com.kobylynskyi.graphql.codegen.model.DataModelFields;
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
@@ -9,6 +12,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateFileException;
+import com.kobylynskyi.graphql.codegen.parser.GraphQLDocumentParser;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -45,12 +49,17 @@ class GraphQLCodegenFileCreatorTest {
         dataModel.put(DataModelFields.GENERATED_ANNOTATION, false);
         dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
 
-        MappingContext mappingContext = new MappingContext(mappingConfig, extendedDocument,
-                new GeneratedInformation(), new DataModelMapperFactory(MAPPER_FACTORY));
+        MappingContext mappingContext = MappingContext.builder()
+                .setMappingConfig(mappingConfig)
+                .setDocument(extendedDocument)
+                .setGeneratedInformation(new GeneratedInformation())
+                .setDataModelMapperFactory(new DataModelMapperFactory(MAPPER_FACTORY))
+                .setOutputDirectory(OUTPUT_DIR)
+                .build();
 
-        GraphQLCodegenFileCreator.generateFile(mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR);
+        FreeMarkerTemplateFilesCreator.create(mappingContext, FreeMarkerTemplateType.ENUM, dataModel);
         assertThrows(UnableToCreateFileException.class,
-                () -> GraphQLCodegenFileCreator.generateFile(
-                        mappingContext, FreeMarkerTemplateType.ENUM, dataModel, OUTPUT_DIR));
+                () -> FreeMarkerTemplateFilesCreator.create(
+                        mappingContext, FreeMarkerTemplateType.ENUM, dataModel));
     }
 }

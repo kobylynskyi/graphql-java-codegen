@@ -1,8 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
-import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Comment;
 import graphql.language.Description;
@@ -24,16 +21,6 @@ public class ExtendedFieldDefinition extends FieldDefinition {
                 f.getDescription(), f.getSourceLocation(), f.getComments(), f.getIgnoredChars(),
                 f.getAdditionalData());
         this.fromExtension = fromExtension;
-    }
-
-    public DeprecatedDefinition getDeprecated(MappingContext mappingContext) {
-        return getDirectives()
-                .stream()
-                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
-                .findFirst()
-                .map(directive -> MultiLanguageDeprecated
-                        .getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
-                .orElse(null);
     }
 
     /**

@@ -602,13 +602,13 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.parametrizedInputSuffix = parametrizedInputSuffix;
     }
 
-    public void setGenerateAllMethodInProjection(Boolean generateAllMethodInProjection) {
-        this.generateAllMethodInProjection = generateAllMethodInProjection;
-    }
-
     @Override
     public Boolean getGenerateAllMethodInProjection() {
         return generateAllMethodInProjection;
+    }
+
+    public void setGenerateAllMethodInProjection(Boolean generateAllMethodInProjection) {
+        this.generateAllMethodInProjection = generateAllMethodInProjection;
     }
 
     @Override

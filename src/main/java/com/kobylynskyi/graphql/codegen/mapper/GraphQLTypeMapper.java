@@ -1,8 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.kobylynskyi.graphql.codegen.model.DeprecatedDefinition;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.MultiLanguageDeprecated;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -417,17 +415,6 @@ public interface GraphQLTypeMapper {
                                          NamedDefinition namedDefinition,
                                          String computedTypeName) {
         return computedTypeName;
-    }
-
-    default DeprecatedDefinition getDeprecated(MappingContext mappingContext,
-                                               DirectivesContainer<?> directivesContainer) {
-        return directivesContainer.getDirectives()
-                .stream()
-                .filter(d -> d.getName().equalsIgnoreCase(Deprecated.class.getSimpleName()))
-                .findFirst()
-                .map(directive -> MultiLanguageDeprecated
-                        .getLanguageDeprecated(mappingContext.getGeneratedLanguage(), directive))
-                .orElse(null);
     }
 
     ValueMapper getValueMapper();

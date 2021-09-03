@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
 
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class InputDefinitionToDataModelMapper {
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
-        dataModel.put(JAVA_DOC, definition.getJavaDoc());
+        dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(NAME, definition.getName());
         dataModel.put(FIELDS, inputValueDefinitionToParameterMapper
                 .map(mappingContext, definition.getValueDefinitions(), definition.getName()));

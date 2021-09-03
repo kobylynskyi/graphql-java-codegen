@@ -1,6 +1,9 @@
-package com.kobylynskyi.graphql.codegen;
+package com.kobylynskyi.graphql.codegen.generators;
 
-enum FreeMarkerTemplateType {
+/**
+ * Type of the FreeMarker template
+ */
+public enum FreeMarkerTemplateType {
 
     TYPE,
     ENUM,

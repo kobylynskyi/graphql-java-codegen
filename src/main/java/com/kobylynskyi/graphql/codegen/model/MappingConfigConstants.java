@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.model;
 
 /**
  * Various constants used in code generation process
+ * Constants with "_STRING" suffix are used by plugins
  */
 public class MappingConfigConstants {
 
