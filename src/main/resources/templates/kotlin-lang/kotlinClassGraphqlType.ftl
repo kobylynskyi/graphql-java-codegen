@@ -75,7 +75,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
 
 <#if builder>
     companion object {
-        fun builder(): Builder = Builder()
+        @JvmStatic fun builder(): Builder = Builder()
     }
 
 </#if>
