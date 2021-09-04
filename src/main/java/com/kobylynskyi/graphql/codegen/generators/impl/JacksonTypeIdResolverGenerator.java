@@ -43,7 +43,8 @@ public class JacksonTypeIdResolverGenerator implements FilesGenerator {
             dataModel.put(CLASS_NAME, CLASS_NAME_GRAPHQL_JACKSON_TYPE_ID_RESOLVER);
             dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
             dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
-            File file = FreeMarkerTemplateFilesCreator.create(mappingContext, FreeMarkerTemplateType.JACKSON_TYPE_ID_RESOLVER, dataModel);
+            File file = FreeMarkerTemplateFilesCreator.create(
+                    mappingContext, FreeMarkerTemplateType.JACKSON_TYPE_ID_RESOLVER, dataModel);
             generatedFiles.add(file);
         }
         return generatedFiles;

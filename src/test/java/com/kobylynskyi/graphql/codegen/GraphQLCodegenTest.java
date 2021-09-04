@@ -251,7 +251,8 @@ class GraphQLCodegenTest {
     void generate_NoSchemas() {
         GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
         List<String> schemas = emptyList();
-        JavaGraphQLCodegen codegen = new JavaGraphQLCodegen(schemas, outputBuildDir, mappingConfig, staticGeneratedInfo);
+        JavaGraphQLCodegen codegen = new JavaGraphQLCodegen(
+                schemas, outputBuildDir, mappingConfig, staticGeneratedInfo);
         assertThrows(IllegalArgumentException.class, codegen::generate);
     }
 

@@ -24,7 +24,8 @@ public class JavaDocBuilder {
      *
      * @return List of java docs
      */
-    public static <T extends NamedNode<T>, E extends T> List<String> build(ExtendedDefinition<T, E> extendedDefinition) {
+    public static <T extends NamedNode<T>, E extends T> List<String> build(
+            ExtendedDefinition<T, E> extendedDefinition) {
         List<String> javaDocFromDescription = buildFromDescription(extendedDefinition);
         if (javaDocFromDescription.isEmpty()) {
             return buildFromComments(extendedDefinition);
@@ -63,7 +64,8 @@ public class JavaDocBuilder {
      *
      * @return List of java docs
      */
-    public static <T extends NamedNode<T>, E extends T> List<String> buildFromComments(ExtendedDefinition<T, E> extendedDefinition) {
+    public static <T extends NamedNode<T>, E extends T> List<String> buildFromComments(
+            ExtendedDefinition<T, E> extendedDefinition) {
         T definition = extendedDefinition.getDefinition();
         List<E> extensions = extendedDefinition.getExtensions();
 

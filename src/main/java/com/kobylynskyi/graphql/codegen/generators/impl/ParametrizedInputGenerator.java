@@ -62,8 +62,10 @@ public class ParametrizedInputGenerator implements FilesGenerator {
 
     private File generate(ExtendedDefinition<?, ?> definition,
                           ExtendedFieldDefinition fieldDefinition) {
-        Map<String, Object> dataModel = requestResponseDefinitionMapper.mapParametrizedInput(mappingContext, fieldDefinition, definition);
-        return FreeMarkerTemplateFilesCreator.create(mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, dataModel);
+        Map<String, Object> dataModel = requestResponseDefinitionMapper.mapParametrizedInput(
+                mappingContext, fieldDefinition, definition);
+        return FreeMarkerTemplateFilesCreator.create(
+                mappingContext, FreeMarkerTemplateType.PARAMETRIZED_INPUT, dataModel);
     }
 
 }
