@@ -45,7 +45,8 @@ class GraphQLCodegenOpenclassesTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_no_final_class.scala.txt"),
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/Commit_no_final_class.scala.txt"),
                 getFileByName(files, "Commit.scala"));
     }
 
@@ -56,7 +57,8 @@ class GraphQLCodegenOpenclassesTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
-        assertSameTrimmedContent(getFileByName(files, "Commit.scala"),
-                new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"),
+                getFileByName(files, "Commit.scala"));
     }
 }
