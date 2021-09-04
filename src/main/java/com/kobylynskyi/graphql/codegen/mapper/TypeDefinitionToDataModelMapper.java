@@ -42,14 +42,15 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FO
 public class TypeDefinitionToDataModelMapper {
 
     private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
     private final FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper;
 
-    public TypeDefinitionToDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
-                                           DataModelMapper dataModelMapper,
+    public TypeDefinitionToDataModelMapper(MapperFactory mapperFactory,
                                            FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper) {
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+        this.graphQLTypeMapper = mapperFactory.getGraphQLTypeMapper();
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.fieldDefinitionToParameterMapper = fieldDefinitionToParameterMapper;
     }
 
@@ -89,7 +90,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(IMPLEMENTS, getInterfaces(mappingContext, definition));
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(FIELDS, getFields(mappingContext, definition, document));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
@@ -141,8 +142,7 @@ public class TypeDefinitionToDataModelMapper {
                 .collect(Collectors.toList());
         Set<String> interfaceNames = definition.getImplements()
                 .stream()
-                .map(anImplement -> graphQLTypeMapper
-                        .getLanguageType(mappingContext, anImplement))
+                .map(anImplement -> graphQLTypeMapper.getLanguageType(mappingContext, anImplement))
                 .collect(Collectors.toSet());
 
         Set<String> allInterfaces = new LinkedHashSet<>();

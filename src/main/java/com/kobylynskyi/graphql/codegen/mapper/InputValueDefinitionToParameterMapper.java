@@ -19,14 +19,14 @@ public class InputValueDefinitionToParameterMapper {
 
     private final ValueMapper valueMapper;
     private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
 
-    public InputValueDefinitionToParameterMapper(ValueMapper valueMapper,
-                                                 GraphQLTypeMapper graphQLTypeMapper,
-                                                 DataModelMapper dataModelMapper) {
-        this.valueMapper = valueMapper;
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+    public InputValueDefinitionToParameterMapper(MapperFactory mapperFactory) {
+        this.valueMapper = mapperFactory.getValueMapper();
+        this.graphQLTypeMapper = mapperFactory.getGraphQLTypeMapper();
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
     }
 
     /**
@@ -65,7 +65,7 @@ public class InputValueDefinitionToParameterMapper {
                 namedDefinition.getJavaName()));
         parameter.setDefaultValue(valueMapper.map(
                 mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
-        parameter.setAnnotations(graphQLTypeMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
+        parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
                 inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, inputValueDefinition));
         parameter.setMandatory(namedDefinition.isMandatory());

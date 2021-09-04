@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * Generic mapper for all languages
  */
-public interface DataModelMapper {
+public abstract class DataModelMapper {
 
     /**
      * Generates a model class name including prefix and suffix (if any)
@@ -34,8 +34,8 @@ public interface DataModelMapper {
      * @param extendedDefinition GraphQL extended definition
      * @return Class name of GraphQL model node
      */
-    default String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
-                                                        ExtendedDefinition<?, ?> extendedDefinition) {
+    public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
+                                                       ExtendedDefinition<?, ?> extendedDefinition) {
         return getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
@@ -46,7 +46,7 @@ public interface DataModelMapper {
      * @param definitionName GraphQL node name
      * @return Class name of GraphQL model node
      */
-    static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext, String definitionName) {
+    public static String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext, String definitionName) {
         StringBuilder classNameBuilder = new StringBuilder();
         if (Utils.isNotBlank(mappingContext.getModelNamePrefix())) {
             classNameBuilder.append(mappingContext.getModelNamePrefix());
@@ -219,7 +219,7 @@ public interface DataModelMapper {
      * @param mappingContext Global mapping context
      * @return model package name if present. Generic package name otherwise
      */
-    static String getModelPackageName(MappingContext mappingContext) {
+    public static String getModelPackageName(MappingContext mappingContext) {
         if (Utils.isNotBlank(mappingContext.getModelPackageName())) {
             return mappingContext.getModelPackageName();
         } else {
@@ -309,7 +309,7 @@ public interface DataModelMapper {
      * @param mappingContext Global mapping context
      * @return capitalized value if it is restricted in java/scala/kotlin/etc, same value as parameter otherwise
      */
-    String capitalizeIfRestricted(MappingContext mappingContext, String fieldName);
+    public abstract String capitalizeIfRestricted(MappingContext mappingContext, String fieldName);
 
     /**
      * Capitalize method name if it is language-restricted.
@@ -322,6 +322,6 @@ public interface DataModelMapper {
      * @param mappingContext Global mapping context
      * @return capitalized value if it is restricted in java/scala/kotlin/etc, same value as parameter otherwise
      */
-    String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName);
+    public abstract String capitalizeMethodNameIfRestricted(MappingContext mappingContext, String methodName);
 
 }

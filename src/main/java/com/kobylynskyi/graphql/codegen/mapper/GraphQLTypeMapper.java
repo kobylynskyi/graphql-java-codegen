@@ -2,10 +2,6 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
-import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
 import graphql.language.ListType;
@@ -13,9 +9,7 @@ import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.Type;
 import graphql.language.TypeName;
-import graphql.language.UnionTypeDefinition;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +20,7 @@ import java.util.Set;
  *
  * @author kobylynskyi
  */
-public interface GraphQLTypeMapper {
+public abstract class GraphQLTypeMapper {
 
     /**
      * Get nested type of GraphQL Type. Example:
@@ -38,7 +32,7 @@ public interface GraphQLTypeMapper {
      * @param graphqlType GraphQL type
      * @return GraphQL type without List/NonNull wrapping
      */
-    static String getNestedTypeName(Type<?> graphqlType) {
+    public static String getNestedTypeName(Type<?> graphqlType) {
         if (graphqlType instanceof TypeName) {
             return ((TypeName) graphqlType).getName();
         } else if (graphqlType instanceof ListType) {
@@ -49,11 +43,11 @@ public interface GraphQLTypeMapper {
         return null;
     }
 
-    static String getMandatoryType(String typeName) {
+    public static String getMandatoryType(String typeName) {
         return typeName + "!";
     }
 
-    static List<Directive> getDirectives(NamedNode<?> def) {
+    public static List<Directive> getDirectives(NamedNode<?> def) {
         if (def instanceof DirectivesContainer) {
             return ((DirectivesContainer<?>) def).getDirectives();
         }
@@ -69,7 +63,7 @@ public interface GraphQLTypeMapper {
      * @param mandatory      Type is it mandatory
      * @return String The name of the given type, wrapped into {@code List<>}
      */
-    String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory);
+    public abstract String wrapIntoList(MappingContext mappingContext, String type, boolean mandatory);
 
     /**
      * Return upper bounded wildcard for the given interface type:
@@ -80,7 +74,7 @@ public interface GraphQLTypeMapper {
      * @param mandatory      Type is it mandatory
      * @return String The name of the the wrapped type.
      */
-    String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory);
+    public abstract String wrapSuperTypeIntoList(MappingContext mappingContext, String type, boolean mandatory);
 
     /**
      * Wraps type into apiReturnType or subscriptionReturnType (defined in the mapping configuration).
@@ -110,9 +104,9 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName  Name of the parent type
      * @return Java/Scala type wrapped into the subscriptionReturnType
      */
-    String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
-                                       NamedDefinition namedDefinition,
-                                       String parentTypeName);
+    public abstract String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
+                                                       NamedDefinition namedDefinition,
+                                                       String parentTypeName);
 
     /**
      * Check if the time is primitive.
@@ -120,15 +114,7 @@ public interface GraphQLTypeMapper {
      * @param possiblyPrimitiveType type to check
      * @return true if the provided type is primitive, false if the provided type is not primitive
      */
-    boolean isPrimitive(String possiblyPrimitiveType);
-
-    /**
-     * Whether to add model validation annotation to a type
-     *
-     * @param type GraphQL type name
-     * @return true if model validation annotation should be added to a type
-     */
-    boolean addModelValidationAnnotationForType(String type);
+    public abstract boolean isPrimitive(String possiblyPrimitiveType);
 
     /**
      * Wrap string into generics type
@@ -138,7 +124,7 @@ public interface GraphQLTypeMapper {
      * @param typeParameter  Parameter of generics type
      * @return type wrapped into generics
      */
-    default String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
+    public String getGenericsString(MappingContext mappingContext, String genericType, String typeParameter) {
         if (genericType.contains("%s")) {
             return String.format(genericType, typeParameter);
         } else {
@@ -153,7 +139,7 @@ public interface GraphQLTypeMapper {
      * @param type           GraphQL type
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
-    default String getLanguageType(MappingContext mappingContext, Type<?> type) {
+    public String getLanguageType(MappingContext mappingContext, Type<?> type) {
         return getLanguageType(mappingContext, type, null, null).getJavaName();
     }
 
@@ -166,8 +152,8 @@ public interface GraphQLTypeMapper {
      * @param parentTypeName Name of the parent type
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
-    default NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name,
-                                            String parentTypeName) {
+    public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name,
+                                           String parentTypeName) {
         return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false);
     }
 
@@ -182,9 +168,9 @@ public interface GraphQLTypeMapper {
      * @param collection     GraphQL type is collection
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
-    default NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType,
-                                            String name, String parentTypeName,
-                                            boolean mandatory, boolean collection) {
+    public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType,
+                                           String name, String parentTypeName,
+                                           boolean mandatory, boolean collection) {
         if (graphqlType instanceof TypeName) {
             return getLanguageType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory,
                     collection);
@@ -217,8 +203,8 @@ public interface GraphQLTypeMapper {
      * @param collection     GraphQL type is collection
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
-    default NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
-                                            String parentTypeName, boolean mandatory, boolean collection) {
+    public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
+                                           String parentTypeName, boolean mandatory, boolean collection) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
@@ -241,165 +227,9 @@ public interface GraphQLTypeMapper {
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
-    /**
-     * Get annotations for a given GraphQL type
-     *
-     * @param mappingContext Global mapping context
-     * @param type           GraphQL type
-     * @param def            GraphQL definition
-     * @param parentTypeName Name of the parent type
-     * @param mandatory      Type is mandatory
-     * @return list of Java annotations for a given GraphQL type
-     */
-    default List<String> getAnnotations(MappingContext mappingContext, Type<?> type,
-                                        NamedNode<?> def, String parentTypeName, boolean mandatory) {
-        if (type instanceof ListType) {
-            return getAnnotations(mappingContext, ((ListType) type).getType(), def, parentTypeName, mandatory);
-        } else if (type instanceof NonNullType) {
-            return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
-        } else if (type instanceof TypeName) {
-            return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
-                    getDirectives(def), mandatory, def);
-        }
-        return Collections.emptyList();
-    }
-
-    default List<String> getAnnotations(MappingContext mappingContext, ExtendedDefinition<?, ?> extendedDefinition) {
-        if (extendedDefinition == null) {
-            return Collections.emptyList();
-        }
-
-        NamedNode<?> def = extendedDefinition.getDefinition();
-        return getAnnotations(mappingContext, extendedDefinition.getName(), extendedDefinition.getName(), null,
-                extendedDefinition.getDirectives(), false, def);
-    }
-
-    default List<String> getAnnotations(MappingContext mappingContext, String name) {
-        return getAnnotations(mappingContext, name, name, null, Collections.emptyList(), false, null);
-    }
-
-    /**
-     * Get annotations for a given GraphQL type
-     *
-     * @param mappingContext  Global mapping context
-     * @param graphQLTypeName GraphQL type
-     * @param name            Name of the GraphQL type
-     * @param parentTypeName  Name of the parent type
-     * @param directives      List of GraphQL directive
-     * @param mandatory       Type is mandatory
-     * @param def             GraphQL definition
-     * @return list of Java annotations for a given GraphQL type
-     */
-    default List<String> getAnnotations(MappingContext mappingContext, String graphQLTypeName, String name,
-                                        String parentTypeName, List<Directive> directives, boolean mandatory,
-                                        NamedNode<?> def) {
-        List<String> annotations = new ArrayList<>();
-        if (mandatory) {
-            String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
-                    .get(getMandatoryType(graphQLTypeName));
-            String modelValidationAnnotation = mappingContext.getModelValidationAnnotation();
-            if (Utils.isNotBlank(modelValidationAnnotation) && addModelValidationAnnotationForType(
-                    possiblyPrimitiveType)) {
-                annotations.add(modelValidationAnnotation);
-            }
-        }
-
-        Map<String, List<String>> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
-        if (name != null && parentTypeName != null && customAnnotationsMapping
-                .containsKey(parentTypeName + "." + name)) {
-            List<String> annotationsToAdd = customAnnotationsMapping.get(parentTypeName + "." + name);
-            if (!Utils.isEmpty(annotationsToAdd)) {
-                annotations.addAll(annotationsToAdd);
-            }
-        } else if (customAnnotationsMapping.containsKey(graphQLTypeName)) {
-            List<String> annotationsToAdd = customAnnotationsMapping.get(graphQLTypeName);
-            if (!Utils.isEmpty(annotationsToAdd)) {
-                annotations.addAll(annotationsToAdd);
-            }
-        }
-
-        annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, def));
-        if (def instanceof ExtendedFieldDefinition) {
-            annotations.addAll(getAdditionalAnnotations(mappingContext, graphQLTypeName));
-        }
-
-        Map<String, List<String>> directiveAnnotationsMapping = mappingContext.getDirectiveAnnotationsMapping();
-        for (Directive directive : directives) {
-            if (directiveAnnotationsMapping.containsKey(directive.getName())) {
-                annotations.addAll(getAnnotationsForDirective(
-                        mappingContext, directiveAnnotationsMapping.get(directive.getName()), directive));
-            }
-        }
-        return annotations;
-    }
-
-    /**
-     * Get Jackson type id resolver annotations
-     *
-     * @param mappingContext Global mapping context
-     * @param def            GraphQL definition
-     * @return list of Jackson type id resolver annotations
-     */
-    default List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
-        List<String> defaults = new ArrayList<>();
-        if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
-                && def instanceof UnionTypeDefinition) {
-            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
-                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
-            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
-            if (modelPackageName == null) {
-                modelPackageName = "";
-            } else if (Utils.isNotBlank(modelPackageName)) {
-                modelPackageName += ".";
-            }
-            defaults.add(getJacksonResolverTypeIdAnnotation(modelPackageName));
-        }
-        return defaults;
-    }
-
-    /**
-     * Get language specific Jackson type id resolver annotation
-     *
-     * @param modelPackageName Model package name property
-     * @return language specific Jackson type id resolver annotation
-     */
-    String getJacksonResolverTypeIdAnnotation(String modelPackageName);
-
-    default List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
-        return new ArrayList<>();
-    }
-
-    /**
-     * Get a list of annotations for a given directive based on mapping config
-     *
-     * @param mappingContext       Global mapping context
-     * @param directiveAnnotations List of directive annotations
-     * @param directive            GraphQL Directive
-     * @return a list of annotations to be added for all types that have given directive
-     */
-    default List<String> getAnnotationsForDirective(MappingContext mappingContext,
-                                                    List<String> directiveAnnotations,
-                                                    Directive directive) {
-        List<String> directiveAnnotationsMapped = new ArrayList<>();
-        for (String annotation : directiveAnnotations) {
-            String directiveAnnotationMapped = annotation;
-            for (Argument dirArg : directive.getArguments()) {
-                String argumentValueFormatter = Utils.substringBetween(annotation, "{{" + dirArg.getName(), "}}");
-                // if argumentValueFormatter == null then the placeholder {{dirArg.getName()}} does not exist
-                if (argumentValueFormatter != null) {
-                    directiveAnnotationMapped = directiveAnnotationMapped.replace(
-                            String.format("{{%s%s}}", dirArg.getName(), argumentValueFormatter),
-                            getValueMapper().map(mappingContext, dirArg.getValue(), null, argumentValueFormatter));
-                }
-            }
-            directiveAnnotationsMapped.add(directiveAnnotationMapped);
-        }
-        return directiveAnnotationsMapped;
-    }
-
-    default String getTypeConsideringPrimitive(MappingContext mappingContext,
-                                               NamedDefinition namedDefinition,
-                                               String computedTypeName) {
+    public String getTypeConsideringPrimitive(MappingContext mappingContext,
+                                              NamedDefinition namedDefinition,
+                                              String computedTypeName) {
         String graphqlTypeName = namedDefinition.getGraphqlTypeName();
         if (namedDefinition.isMandatory() && namedDefinition.isPrimitiveCanBeUsed()) {
             String possiblyPrimitiveType = mappingContext.getCustomTypesMapping()
@@ -411,12 +241,10 @@ public interface GraphQLTypeMapper {
         return computedTypeName;
     }
 
-    default String getResponseReturnType(MappingContext mappingContext,
-                                         NamedDefinition namedDefinition,
-                                         String computedTypeName) {
+    public String getResponseReturnType(MappingContext mappingContext,
+                                        NamedDefinition namedDefinition,
+                                        String computedTypeName) {
         return computedTypeName;
     }
-
-    ValueMapper getValueMapper();
 
 }

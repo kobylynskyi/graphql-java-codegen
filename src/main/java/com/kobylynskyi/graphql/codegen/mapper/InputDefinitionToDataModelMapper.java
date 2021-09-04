@@ -30,15 +30,14 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FO
  */
 public class InputDefinitionToDataModelMapper {
 
-    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
     private final InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper;
 
-    public InputDefinitionToDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
-                                            DataModelMapper dataModelMapper,
+    public InputDefinitionToDataModelMapper(MapperFactory mapperFactory,
                                             InputValueDefinitionToParameterMapper inputValueDefToParamMapper) {
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.inputValueDefinitionToParameterMapper = inputValueDefToParamMapper;
     }
 
@@ -58,7 +57,7 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(NAME, definition.getName());
         dataModel.put(FIELDS, inputValueDefinitionToParameterMapper
                 .map(mappingContext, definition.getValueDefinitions(), definition.getName()));
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
         dataModel.put(IMMUTABLE_MODELS, mappingContext.getGenerateImmutableModels());

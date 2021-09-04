@@ -22,13 +22,12 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
  */
 public class UnionDefinitionToDataModelMapper {
 
-    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
 
-    public UnionDefinitionToDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
-                                            DataModelMapper dataModelMapper) {
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+    public UnionDefinitionToDataModelMapper(MapperFactory mapperFactory) {
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
     }
 
     /**
@@ -43,7 +42,7 @@ public class UnionDefinitionToDataModelMapper {
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, definition));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());

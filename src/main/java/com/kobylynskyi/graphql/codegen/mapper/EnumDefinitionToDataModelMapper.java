@@ -34,13 +34,12 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SERIALIZATIO
  */
 public class EnumDefinitionToDataModelMapper {
 
-    private final GraphQLTypeMapper graphQlTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
 
-    public EnumDefinitionToDataModelMapper(GraphQLTypeMapper graphQlTypeMapper,
-                                           DataModelMapper dataModelMapper) {
-        this.graphQlTypeMapper = graphQlTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+    public EnumDefinitionToDataModelMapper(MapperFactory mapperFactory) {
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
     }
 
     private static Set<String> getUnionInterfaces(MappingContext mappingContext,
@@ -78,7 +77,7 @@ public class EnumDefinitionToDataModelMapper {
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(IMPLEMENTS, getUnionInterfaces(mappingContext, definition));
-        dataModel.put(ANNOTATIONS, graphQlTypeMapper.getAnnotations(mappingContext, definition));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(FIELDS, map(mappingContext, definition.getValueDefinitions()));
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());

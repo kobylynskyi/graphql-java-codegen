@@ -13,7 +13,7 @@ import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
 /**
  * Data model mapper for SCALA generated classes
  */
-public class ScalaDataModelMapper implements DataModelMapper {
+public class ScalaDataModelMapper extends DataModelMapper {
 
     private static final String RESTRICTED_WORDS_WRAP_WITH = "`";
     private static final Set<String> SCALA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(

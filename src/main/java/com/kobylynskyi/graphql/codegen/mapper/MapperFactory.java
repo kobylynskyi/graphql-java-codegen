@@ -7,10 +7,12 @@ package com.kobylynskyi.graphql.codegen.mapper;
  */
 public interface MapperFactory {
 
-    DataModelMapper createDataModelMapper();
+    DataModelMapper getDataModelMapper();
 
-    GraphQLTypeMapper createGraphQLTypeMapper(ValueMapper valueMapper);
+    GraphQLTypeMapper getGraphQLTypeMapper();
 
-    ValueFormatter createValueFormatter();
+    AnnotationsMapper getAnnotationsMapper();
+
+    ValueMapper getValueMapper();
 
 }

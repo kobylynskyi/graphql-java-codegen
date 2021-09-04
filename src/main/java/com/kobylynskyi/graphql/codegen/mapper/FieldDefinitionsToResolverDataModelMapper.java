@@ -43,14 +43,15 @@ import static java.util.Collections.singletonList;
 public class FieldDefinitionsToResolverDataModelMapper {
 
     private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
     private final InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper;
 
-    public FieldDefinitionsToResolverDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
-                                                     DataModelMapper dataModelMapper,
+    public FieldDefinitionsToResolverDataModelMapper(MapperFactory mapperFactory,
                                                      InputValueDefinitionToParameterMapper inputValueDefToParamMapper) {
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+        this.graphQLTypeMapper = mapperFactory.getGraphQLTypeMapper();
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.inputValueDefinitionToParameterMapper = inputValueDefToParamMapper;
     }
 
@@ -196,7 +197,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         NamedDefinition javaType = graphQLTypeMapper
                 .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
         String returnType = getReturnType(mappingContext, fieldDef, javaType, parentTypeName);
-        List<String> annotations = graphQLTypeMapper
+        List<String> annotations = annotationsMapper
                 .getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false);
         List<ParameterDefinition> parameters = getOperationParameters(mappingContext, fieldDef, parentTypeName);
 
