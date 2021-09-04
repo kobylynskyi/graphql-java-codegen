@@ -43,7 +43,8 @@ class FreeMarkerTemplatesRegistry {
     }
 
     private static EnumMap<FreeMarkerTemplateType, Template> getTemplates(Configuration configuration,
-                                                                          GeneratedLanguage language) throws IOException {
+                                                                          GeneratedLanguage language)
+            throws IOException {
         EnumMap<FreeMarkerTemplateType, Template> templates = new EnumMap<>(FreeMarkerTemplateType.class);
         for (FreeMarkerTemplateType templateType : FreeMarkerTemplateType.values()) {
             templates.put(templateType, configuration.getTemplate(buildTemplatePath(templateType, language)));
