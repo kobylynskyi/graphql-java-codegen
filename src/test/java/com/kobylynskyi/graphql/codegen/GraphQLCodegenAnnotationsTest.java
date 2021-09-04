@@ -75,9 +75,43 @@ class GraphQLCodegenAnnotationsTest {
     }
 
     @Test
+    void generate_CustomAnnotationMappings_Regexp() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Date.*",
+                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "Event.java",
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"
+                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
+    }
+
+    @Test
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
+                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"))));
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "Event.java",
+                "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                        "using = com.example.json.DateTimeScalarDeserializer.class)"
+                        + System.lineSeparator() + "    private org.joda.time.DateTime createdDateTime;");
+    }
+
+    @Test
+    void generate_CustomAnnotationMappings_FieldType_Regexp() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event..*Date.*",
                 singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 

@@ -47,16 +47,17 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FO
 public class RequestResponseDefinitionToDataModelMapper {
 
     private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
     private final FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper;
     private final InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper;
 
-    public RequestResponseDefinitionToDataModelMapper(GraphQLTypeMapper graphQLTypeMapper,
-                                                      DataModelMapper dataModelMapper,
+    public RequestResponseDefinitionToDataModelMapper(MapperFactory mapperFactory,
                                                       FieldDefinitionToParameterMapper fieldDefinitionToParameterMapper,
                                                       InputValueDefinitionToParameterMapper inputValDefToParamMapper) {
-        this.graphQLTypeMapper = graphQLTypeMapper;
-        this.dataModelMapper = dataModelMapper;
+        this.graphQLTypeMapper = mapperFactory.getGraphQLTypeMapper();
+        this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.fieldDefinitionToParameterMapper = fieldDefinitionToParameterMapper;
         this.inputValueDefinitionToParameterMapper = inputValDefToParamMapper;
     }
@@ -113,7 +114,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         // ResponseProjection classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, className);
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, className));
         dataModel.put(JAVA_DOC, Collections.singletonList("Response projection for " + definition.getName()));
         dataModel.put(FIELDS, getProjectionFields(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
@@ -143,10 +144,9 @@ public class RequestResponseDefinitionToDataModelMapper {
         // ParametrizedInput classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, className);
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, className));
         dataModel.put(JAVA_DOC, Collections.singletonList(String.format("Parametrized input for field %s in type %s",
-                fieldDefinition.getName(),
-                parentTypeDefinition.getName())));
+                fieldDefinition.getName(), parentTypeDefinition.getName())));
         dataModel.put(FIELDS, inputValueDefinitionToParameterMapper.map(
                 mappingContext, fieldDefinition.getInputValueDefinitions(), parentTypeDefinition.getName()));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
@@ -179,7 +179,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         Map<String, Object> dataModel = new HashMap<>();
         // Response classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, className));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(DEPRECATED, DeprecatedDefinitionBuilder.build(mappingContext, operationDef));
@@ -210,7 +210,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         Map<String, Object> dataModel = new HashMap<>();
         // Request classes are sharing the package with the model classes, so no imports are needed
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
-        dataModel.put(ANNOTATIONS, graphQLTypeMapper.getAnnotations(mappingContext, className));
+        dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, className));
         dataModel.put(CLASS_NAME, className);
         dataModel.put(JAVA_DOC, operationDef.getJavaDoc());
         dataModel.put(OPERATION_NAME, operationDef.getName());

@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen.kotlin;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import static com.kobylynskyi.graphql.codegen.utils.Utils.wrapString;
  * @author 梦境迷离
  * @since 2020/12/09
  */
-public class KotlinDataModelMapper implements DataModelMapper {
+public class KotlinDataModelMapper extends DataModelMapper {
 
     private static final String RESTRICTED_KEYWORDS_WRAP_WITH = "`";
     private static final Set<String> KOTLIN_RESTRICTED_KEYWORDS = new HashSet<>(
@@ -46,12 +45,6 @@ public class KotlinDataModelMapper implements DataModelMapper {
             return Utils.capitalize(methodName);
         }
         return methodName;
-    }
-
-    @Override
-    public String getModelClassNameWithPrefixAndSuffix(MappingContext mappingContext,
-                                                       ExtendedDefinition<?, ?> extendedDefinition) {
-        return DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, extendedDefinition.getName());
     }
 
 }

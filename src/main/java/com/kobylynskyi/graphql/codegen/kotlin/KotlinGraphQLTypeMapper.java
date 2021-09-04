@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen.kotlin;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
-import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -19,19 +18,13 @@ import static java.util.Arrays.asList;
  * @author 梦境迷离
  * @since 2020/12/09
  */
-public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
+public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
 
     private static final String KOTLIN_UTIL_LIST = "List";
     private static final String KOTLIN_UTIL_NULLABLE = "?";
     // Char Boolean are not primitive type, but non null equivalent jvm primitive types.
     private static final Set<String> KOTLIN_PRIMITIVE_TYPES = new HashSet<>(
             asList("Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
-
-    private final ValueMapper valueMapper;
-
-    public KotlinGraphQLTypeMapper(ValueMapper valueMapper) {
-        this.valueMapper = valueMapper;
-    }
 
     public static boolean isKotlinPrimitive(String scalaType) {
         return KOTLIN_PRIMITIVE_TYPES.contains(scalaType);
@@ -43,6 +36,7 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
      * @param kotlinType type get from Type template
      * @return default value
      */
+    @SuppressWarnings("unused")
     public static String defaultValueKotlinPrimitive(String kotlinType) {
         switch (kotlinType) {
             case "Long":
@@ -112,11 +106,6 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public boolean addModelValidationAnnotationForType(String possiblyPrimitiveType) {
-        return false;
-    }
-
-    @Override
     public String getTypeConsideringPrimitive(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
                                               String computedTypeName) {
@@ -160,11 +149,6 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public ValueMapper getValueMapper() {
-        return valueMapper;
-    }
-
-    @Override
     public String getResponseReturnType(MappingContext mappingContext, NamedDefinition namedDefinition,
                                         String computedTypeName) {
         // Delegate to getTypeConsideringPrimitive.
@@ -172,11 +156,5 @@ public class KotlinGraphQLTypeMapper implements GraphQLTypeMapper {
         // correctly when returnType is not List.
         // Should fix it when generate response class.
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
-    }
-
-    @Override
-    public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
-        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
-                "GraphqlJacksonTypeIdResolver::class)";
     }
 }

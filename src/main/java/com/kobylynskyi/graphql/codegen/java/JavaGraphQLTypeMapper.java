@@ -2,7 +2,6 @@ package com.kobylynskyi.graphql.codegen.java;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
-import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -17,18 +16,12 @@ import static java.util.Arrays.asList;
 /**
  * Mapper class for converting GraphQL types to Java types
  */
-public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
+public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
     public static final String JAVA_UTIL_LIST = "java.util.List";
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
-
-    private final ValueMapper valueMapper;
-
-    public JavaGraphQLTypeMapper(ValueMapper valueMapper) {
-        this.valueMapper = valueMapper;
-    }
 
     public static boolean isJavaPrimitive(String possiblyPrimitiveType) {
         return JAVA_PRIMITIVE_TYPES.contains(possiblyPrimitiveType);
@@ -87,11 +80,6 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
     }
 
     @Override
-    public boolean addModelValidationAnnotationForType(String type) {
-        return !isPrimitive(type);
-    }
-
-    @Override
     public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
                                            String parentTypeName, boolean mandatory, boolean collection) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
@@ -117,14 +105,4 @@ public class JavaGraphQLTypeMapper implements GraphQLTypeMapper {
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
-    @Override
-    public ValueMapper getValueMapper() {
-        return valueMapper;
-    }
-
-    @Override
-    public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
-        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
-                "GraphqlJacksonTypeIdResolver.class)";
-    }
 }

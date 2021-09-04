@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Data model mapper for JAVA generated classes
  */
-public class JavaDataModelMapper implements DataModelMapper {
+public class JavaDataModelMapper extends DataModelMapper {
 
     private static final Set<String> JAVA_RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList(
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue",

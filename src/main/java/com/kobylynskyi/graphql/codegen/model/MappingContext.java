@@ -368,7 +368,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     private String getModelClassNameWithPrefixAndSuffix(ExtendedDefinition<?, ?> extendedDefinition) {
-        return this.dataModelMapperFactory.getDataModelMapper()
+        return this.dataModelMapperFactory.getMapperFactory().getDataModelMapper()
                 .getModelClassNameWithPrefixAndSuffix(this, extendedDefinition);
     }
 

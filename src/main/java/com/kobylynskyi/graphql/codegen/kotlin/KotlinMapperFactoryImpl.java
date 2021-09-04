@@ -1,9 +1,9 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
+import com.kobylynskyi.graphql.codegen.mapper.AnnotationsMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.mapper.MapperFactory;
-import com.kobylynskyi.graphql.codegen.mapper.ValueFormatter;
 import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 
 /**
@@ -14,19 +14,36 @@ import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
  */
 public class KotlinMapperFactoryImpl implements MapperFactory {
 
-    @Override
-    public DataModelMapper createDataModelMapper() {
-        return new KotlinDataModelMapper();
+    private final DataModelMapper dataModelMapper;
+    private final ValueMapper valueMapper;
+    private final GraphQLTypeMapper graphQLTypeMapper;
+    private final AnnotationsMapper annotationsMapper;
+
+    public KotlinMapperFactoryImpl() {
+        dataModelMapper = new KotlinDataModelMapper();
+        valueMapper = new ValueMapper(new KotlinValueFormatter(), dataModelMapper);
+        graphQLTypeMapper = new KotlinGraphQLTypeMapper();
+        annotationsMapper = new KotlinAnnotationsMapper(valueMapper);
     }
 
     @Override
-    public GraphQLTypeMapper createGraphQLTypeMapper(ValueMapper valueMapper) {
-        return new KotlinGraphQLTypeMapper(valueMapper);
+    public DataModelMapper getDataModelMapper() {
+        return dataModelMapper;
     }
 
     @Override
-    public ValueFormatter createValueFormatter() {
-        return new KotlinValueFormatter();
+    public GraphQLTypeMapper getGraphQLTypeMapper() {
+        return graphQLTypeMapper;
+    }
+
+    @Override
+    public AnnotationsMapper getAnnotationsMapper() {
+        return annotationsMapper;
+    }
+
+    @Override
+    public ValueMapper getValueMapper() {
+        return valueMapper;
     }
 
 }
