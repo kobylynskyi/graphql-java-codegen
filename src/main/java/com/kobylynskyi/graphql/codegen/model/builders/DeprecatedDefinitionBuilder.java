@@ -19,6 +19,9 @@ public class DeprecatedDefinitionBuilder {
     private static final String JAVA_ANNOTATION = "Deprecated";
     private static final String KOTLIN_ANNOTATION = "Deprecated";
 
+    private DeprecatedDefinitionBuilder() {
+    }
+
     /**
      * Get a definition of @deprecated based on a given directive
      *

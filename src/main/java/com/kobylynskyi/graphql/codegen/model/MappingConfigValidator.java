@@ -7,6 +7,9 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
  */
 public class MappingConfigValidator {
 
+    private MappingConfigValidator() {
+    }
+
     /**
      * Validator of the mapping config
      *

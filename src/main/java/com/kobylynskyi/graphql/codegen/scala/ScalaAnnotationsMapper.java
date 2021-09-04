@@ -6,8 +6,9 @@ import com.kobylynskyi.graphql.codegen.mapper.ValueMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Mapper class for converting GraphQL types to Scala types
@@ -33,27 +34,28 @@ public class ScalaAnnotationsMapper extends AnnotationsMapper {
 
     @Override
     public List<String> getAdditionalAnnotations(MappingContext mappingContext, String typeName) {
-        List<String> defaults = new ArrayList<>();
-        String typeNameWithPrefixAndSuffix = (mappingContext.getModelNamePrefix() == null ? ""
-                : mappingContext.getModelNamePrefix())
-                + typeName
-                + (mappingContext.getModelNameSuffix() == null ? "" : mappingContext.getModelNameSuffix());
-        boolean exists = null != mappingContext.getEnumImportItSelfInScala()
-                && mappingContext.getEnumImportItSelfInScala()
-                .contains(typeNameWithPrefixAndSuffix);
-        // todo use switch
-        // Inspired by the pr https://github.com/kobylynskyi/graphql-java-codegen/pull/637/files
-        if (exists) {
-            String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
-            if (modelPackageName == null) {
-                modelPackageName = "";
-            } else if (Utils.isNotBlank(modelPackageName)) {
-                modelPackageName += ".";
-            }
-            defaults.add("com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[" + modelPackageName
-                    + typeNameWithPrefixAndSuffix + "TypeRefer])");
+        StringBuilder typeNameWithPrefixAndSuffixBuilder = new StringBuilder();
+        if (mappingContext.getModelNamePrefix() != null) {
+            typeNameWithPrefixAndSuffixBuilder.append(mappingContext.getModelNamePrefix());
         }
-        return defaults;
+        typeNameWithPrefixAndSuffixBuilder.append(typeName);
+        if (mappingContext.getModelNameSuffix() != null) {
+            typeNameWithPrefixAndSuffixBuilder.append(mappingContext.getModelNameSuffix());
+        }
+        Set<String> enumImportItSelf = mappingContext.getEnumImportItSelfInScala();
+        if (enumImportItSelf == null ||
+                !enumImportItSelf.contains(typeNameWithPrefixAndSuffixBuilder.toString())) {
+            return Collections.emptyList();
+        }
+        // Inspired by the pr https://github.com/kobylynskyi/graphql-java-codegen/pull/637/files
+        String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
+        if (Utils.isNotBlank(modelPackageName)) {
+            typeNameWithPrefixAndSuffixBuilder.insert(0, modelPackageName + ".");
+        }
+        String annotation = String.format(
+                "com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[%sTypeRefer])",
+                typeNameWithPrefixAndSuffixBuilder);
+        return Collections.singletonList(annotation);
     }
 
     @Override

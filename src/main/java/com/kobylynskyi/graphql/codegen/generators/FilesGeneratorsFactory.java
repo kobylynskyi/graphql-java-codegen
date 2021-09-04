@@ -22,6 +22,9 @@ import java.util.List;
  */
 public class FilesGeneratorsFactory {
 
+    private FilesGeneratorsFactory() {
+    }
+
     /**
      * Factory method for building files generators
      *

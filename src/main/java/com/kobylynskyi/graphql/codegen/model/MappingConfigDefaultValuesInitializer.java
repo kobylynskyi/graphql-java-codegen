@@ -5,6 +5,9 @@ package com.kobylynskyi.graphql.codegen.model;
  */
 public class MappingConfigDefaultValuesInitializer {
 
+    private MappingConfigDefaultValuesInitializer() {
+    }
+
     /**
      * Initializes mapping config with default values
      *

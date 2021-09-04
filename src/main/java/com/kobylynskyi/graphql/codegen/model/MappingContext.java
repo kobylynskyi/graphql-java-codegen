@@ -47,10 +47,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.dataModelMapperFactory = dataModelMapperFactory;
     }
 
-    public static MappingContext.Builder builder() {
-        return new MappingContext.Builder();
-    }
-
     @Override
     public GeneratedLanguage getGeneratedLanguage() {
         return config.getGeneratedLanguage();
@@ -378,6 +374,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
                 .mapFields(this, fieldDefinitions, parentDefinition);
     }
 
+    public static MappingContext.Builder builder() {
+        return new MappingContext.Builder();
+    }
+
     /**
      * Builder of the mapping context
      */
@@ -389,7 +389,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         private GeneratedInformation generatedInformation;
         private DataModelMapperFactory dataModelMapperFactory;
 
-        public Builder() {
+        private Builder() {
         }
 
         public Builder setOutputDirectory(File outputDirectory) {
