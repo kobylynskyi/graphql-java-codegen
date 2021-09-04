@@ -95,6 +95,12 @@ enum EventStatus {
     LOGGED
 }
 
+# type with directive using enum value
+type User {
+    name: String,
+    friends: [User] @relationship(type: "FRIEND_WITH", direction: OUT)
+}
+
 directive @auth (
     roles: [String] = ["viewer"],
     float: [Float] = [],

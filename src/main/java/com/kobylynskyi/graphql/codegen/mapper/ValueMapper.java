@@ -121,6 +121,9 @@ public class ValueMapper {
     }
 
     private String mapEnum(MappingContext mappingContext, EnumValue value, Type<?> graphQLType) {
+        if (graphQLType == null) {
+            return value.getName();
+        }
         if (graphQLType instanceof TypeName) {
             String typeName = ((TypeName) graphQLType).getName();
             typeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, typeName);

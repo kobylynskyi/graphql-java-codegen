@@ -138,7 +138,7 @@ class GraphQLCodegenApisTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertEquals(Arrays.asList(
                 "Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
-                "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java"),
+                "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java", "User.java"),
                 Arrays.stream(files).map(File::getName).sorted().collect(toList()));
     }
 
@@ -155,7 +155,8 @@ class GraphQLCodegenApisTest {
         assertEquals(Arrays.asList(
                 "CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java", "EventProperty.java",
                 "EventPropertyResolver.java", "EventStatus.java", "EventsByCategoryAndStatusQueryResolver.java",
-                "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "VersionQueryResolver.java"),
+                "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "User.java",
+                "VersionQueryResolver.java"),
                 Arrays.stream(files).map(File::getName).sorted().collect(toList()));
     }
 
