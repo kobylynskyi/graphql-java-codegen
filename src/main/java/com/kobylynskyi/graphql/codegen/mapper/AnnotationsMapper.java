@@ -87,9 +87,10 @@ public abstract class AnnotationsMapper {
             }
         }
 
-        // 2. Add custom annotations from the configuration
-        List<String> typeAnnotations = getTypeAnnotations(mappingContext, graphQLTypeName, name, parentTypeName);
-        annotations.addAll(typeAnnotations);
+        // 2.1. Add custom annotations from the configuration for: GraphQLObjectName.fieldName
+        annotations.addAll(getTypeAnnotationsForKey(mappingContext, parentTypeName + "." + name));
+        // 2.2. Add custom annotations from the configuration for: GraphQLTypeName
+        annotations.addAll(getTypeAnnotationsForKey(mappingContext, graphQLTypeName));
 
         // 3. Add Jackson-related annotations
         annotations.addAll(getJacksonTypeIdAnnotations(mappingContext, def));
@@ -110,40 +111,22 @@ public abstract class AnnotationsMapper {
         return annotations;
     }
 
-    private List<String> getTypeAnnotations(MappingContext mappingContext,
-                                            String graphQLType,
-                                            String fieldName,
-                                            String parentTypeName) {
+    private static List<String> getTypeAnnotationsForKey(MappingContext mappingContext,
+                                                         String key) {
+        List<String> result = new ArrayList<>();
         Map<String, List<String>> customAnnotationsMapping = mappingContext.getCustomAnnotationsMapping();
-
-        List<String> typeAnnotations = new ArrayList<>();
-
-        if (parentTypeName != null) {
-            String typeNameKey = parentTypeName + "." + fieldName;
-            List<String> fullTypeAnnotations = customAnnotationsMapping.get(typeNameKey);
-            if (!Utils.isEmpty(fullTypeAnnotations)) {
-                typeAnnotations.addAll(fullTypeAnnotations);
-            } else {
-                // try finding if there's a RegEx present for this type
-                for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
-                    if (typeNameKey.matches(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
-                        typeAnnotations.addAll(entry.getValue());
-                    }
-                }
-            }
-        }
-        List<String> specificTypeAnnotations = customAnnotationsMapping.get(graphQLType);
-        if (!Utils.isEmpty(specificTypeAnnotations)) {
-            typeAnnotations.addAll(specificTypeAnnotations);
+        List<String> typeAnnotations = customAnnotationsMapping.get(key);
+        if (!Utils.isEmpty(typeAnnotations)) {
+            result.addAll(typeAnnotations);
         } else {
             // try finding if there's a RegEx present for this type
             for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
-                if (graphQLType.matches(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
-                    typeAnnotations.addAll(entry.getValue());
+                if (key.matches(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                    result.addAll(entry.getValue());
                 }
             }
         }
-        return typeAnnotations;
+        return result;
     }
 
     private String getModelValidationAnnotation(MappingContext mappingContext, String graphQLTypeName) {

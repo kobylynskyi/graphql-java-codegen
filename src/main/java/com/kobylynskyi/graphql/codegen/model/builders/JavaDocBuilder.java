@@ -18,6 +18,9 @@ import java.util.Objects;
  */
 public class JavaDocBuilder {
 
+    private JavaDocBuilder() {
+    }
+
     /**
      * Get java doc from description of the definition and it's extensions.
      * If no description is present in the definition and extension then return from comments
