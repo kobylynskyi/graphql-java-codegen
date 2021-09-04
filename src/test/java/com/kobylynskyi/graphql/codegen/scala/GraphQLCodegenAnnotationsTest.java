@@ -171,6 +171,8 @@ class GraphQLCodegenAnnotationsTest {
                         "@com.example.CustomAnnotation(roles={{roles?toArray}}, " +
                                 "boo={{boo?toArray}}, float={{float?toArrayOfStrings}}, int={{int}}, " +
                                 "n={{n?toString}})"));
+        directiveAnnotationsMapping.put("relationship",
+                singletonList("@com.example.Relationship(type = {{type}}, direction = {{direction}})"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
         new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
@@ -183,6 +185,9 @@ class GraphQLCodegenAnnotationsTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/annotation/MutationResolver.scala.txt"),
                 getFileByName(files, "MutationResolver.scala"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/annotation/User.scala.txt"),
+                getFileByName(files, "User.scala"));
     }
 
 }

@@ -244,6 +244,8 @@ class GraphQLCodegenAnnotationsTest {
                         "n={{n?toString}})"));
         directiveAnnotationsMapping.put("valid", singletonList("@javax.validation.Valid"));
         directiveAnnotationsMapping.put("customResolver", singletonList("@com.example.CustomAnnotation"));
+        directiveAnnotationsMapping.put("relationship",
+                singletonList("@com.example.Relationship(type = {{type}}, direction = {{direction}})"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
@@ -259,6 +261,9 @@ class GraphQLCodegenAnnotationsTest {
         assertSameTrimmedContent(
             new File("src/test/resources/expected-classes/annotation/EventProperty.java.txt"),
             getFileByName(files, "EventProperty.java"));
+        assertSameTrimmedContent(
+            new File("src/test/resources/expected-classes/annotation/User.java.txt"),
+            getFileByName(files, "User.java"));
     }
 
 }
