@@ -20,7 +20,7 @@
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>5.2.0</version>
+            <version>5.3.0</version>
             <executions>
                 <execution>
                     <goals>
