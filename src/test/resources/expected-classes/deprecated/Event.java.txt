@@ -7,6 +7,9 @@ package com.kobylynskyi.graphql.test1;
 )
 public class Event implements java.io.Serializable, PinnableItem, Node {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     @Deprecated
     @javax.validation.constraints.NotNull
     private Status status;

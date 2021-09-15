@@ -10,6 +10,9 @@ package com.kobylynskyi.graphql.test1;
 )
 public class EventProperty implements java.io.Serializable {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     private Double floatVal;
     private Boolean booleanVal;
     private int intVal;

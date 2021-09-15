@@ -10,6 +10,9 @@ import java.util.StringJoiner;
 )
 public class Query implements java.io.Serializable {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     private String Native;
 
     public Query() {

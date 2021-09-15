@@ -7,6 +7,9 @@ package com.kobylynskyi.graphql.testdefaults;
 )
 public class SomeObjectDTO implements java.io.Serializable {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     @javax.validation.constraints.NotNull
     private String name;
 

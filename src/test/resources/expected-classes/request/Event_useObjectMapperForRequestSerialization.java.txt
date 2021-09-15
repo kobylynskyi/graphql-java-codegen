@@ -13,6 +13,9 @@ import java.util.StringJoiner;
 )
 public class Event implements java.io.Serializable {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String categoryId;
     private java.util.List<EventProperty> properties;

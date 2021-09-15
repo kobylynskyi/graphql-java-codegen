@@ -7,6 +7,9 @@ package com.kobylynskyi.graphql.multifiles;
 )
 public class UnionMember2 implements java.io.Serializable, MyUnion {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     private String someField;
 
     public UnionMember2() {

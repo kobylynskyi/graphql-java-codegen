@@ -10,6 +10,9 @@ package com.kobylynskyi.graphql.test1;
 )
 public class User implements java.io.Serializable {
 
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+
     private String name;
     @com.example.Relationship(type = "FRIEND_WITH", direction = OUT)
     private java.util.List<User> friends;
