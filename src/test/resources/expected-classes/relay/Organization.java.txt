@@ -5,7 +5,6 @@
 )
 public class Organization implements java.io.Serializable {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     @javax.validation.constraints.NotNull

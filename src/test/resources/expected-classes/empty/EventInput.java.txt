@@ -4,7 +4,6 @@
 )
 public class EventInput implements java.io.Serializable {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
 

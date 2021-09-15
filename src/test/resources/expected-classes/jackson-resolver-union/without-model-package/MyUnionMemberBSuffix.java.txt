@@ -4,7 +4,6 @@
 )
 public class MyUnionMemberBSuffix implements java.io.Serializable, MyUnionToResolveSuffix {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     private String someField;

@@ -10,7 +10,6 @@ package com.kobylynskyi.graphql.immutable;
 )
 public class Event implements java.io.Serializable {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     private String id;

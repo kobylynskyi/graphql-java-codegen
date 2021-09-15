@@ -7,7 +7,6 @@ package com.kobylynskyi.graphql.unionresolver;
 )
 public class UnionMemberB implements java.io.Serializable, UnionToResolve {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     private String someField;

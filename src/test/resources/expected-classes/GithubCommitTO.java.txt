@@ -7,7 +7,6 @@ package com.github.graphql;
 )
 public class GithubCommitTO implements java.io.Serializable, GithubCloserTO, GithubIssueTimelineItemTO, GithubPullRequestTimelineItemTO, GithubGitObjectTO, GithubNodeTO, GithubSubscribableTO, GithubUniformResourceLocatableTO {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
     @javax.validation.constraints.NotNull

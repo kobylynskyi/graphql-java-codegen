@@ -36,7 +36,6 @@ import java.util.StringJoiner;
 </#list>
 public class ${className} implements java.io.Serializable<#if implements?has_content><#list implements as interface>, ${interface}<#if interface_has_next></#if></#list></#if> {
 
-    @java.io.Serial
     private static final long serialVersionUID = 1L;
 
 <#if fields?has_content>
