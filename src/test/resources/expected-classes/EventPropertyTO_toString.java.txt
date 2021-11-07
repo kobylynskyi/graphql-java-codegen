@@ -11,6 +11,8 @@ import java.util.StringJoiner;
 )
 public class EventPropertyTO implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Double floatVal;
     private Boolean booleanVal;
     private int intVal;

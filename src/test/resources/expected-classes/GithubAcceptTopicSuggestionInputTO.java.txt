@@ -7,6 +7,8 @@ package com.github.graphql;
 )
 public class GithubAcceptTopicSuggestionInputTO implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String clientMutationId;
     @javax.validation.constraints.NotNull
     private String name;
