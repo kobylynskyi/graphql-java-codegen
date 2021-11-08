@@ -36,6 +36,7 @@ public final class DataModelFields {
     public static final String PARENT_INTERFACE_PROPERTIES = "parentInterfaceProperties";
     public static final String SERIALIZATION_LIBRARY = "serializationLibrary";
     public static final String GENERATE_MODEL_OPEN_CLASSES = "generateModelOpenClasses";
+    public static final String AUTOMATICALLY_DEFAULT_NULLABLE = "automaticallyDefaultNullable";
 
     private DataModelFields() {
     }

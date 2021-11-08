@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.AUTOMATICALLY_DEFAULT_NULLABLE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
@@ -162,6 +163,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
+        dataModel.put(AUTOMATICALLY_DEFAULT_NULLABLE, mappingContext.isAutomaticallyDefaultNullable());
         return dataModel;
     }
 
