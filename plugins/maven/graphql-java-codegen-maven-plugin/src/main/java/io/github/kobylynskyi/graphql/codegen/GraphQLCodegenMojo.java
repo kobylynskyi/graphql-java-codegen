@@ -209,7 +209,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING)
     private boolean generateModelOpenClasses;
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_AUTOMATICALLY_DEFAULT_NULLABLE_STRING)
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING)
     private boolean initializeNullableTypes;
 
     @Override
