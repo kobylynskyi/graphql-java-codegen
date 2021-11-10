@@ -210,7 +210,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private boolean generateModelOpenClasses;
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_AUTOMATICALLY_DEFAULT_NULLABLE_STRING)
-    private boolean automaticallyDefaultNullable;
+    private boolean initializeNullableTypes;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -270,7 +270,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
         mappingConfig.setGenerateModelOpenClasses(isGenerateModelOpenClasses());
-        mappingConfig.setAutomaticallyDefaultNullable(isAutomaticallyDefaultNullable());
+        mappingConfig.setInitializeNullableTypes(isInitializeNullableTypes());
 
         try {
             instantiateCodegen(mappingConfig).generate();
@@ -608,8 +608,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
-    public Boolean isAutomaticallyDefaultNullable() {
-        return automaticallyDefaultNullable;
+    public Boolean isInitializeNullableTypes() {
+        return initializeNullableTypes;
     }
 
     public ParentInterfacesConfig getParentInterfaces() {

@@ -58,8 +58,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Boolean isAutomaticallyDefaultNullable() {
-        return config.isAutomaticallyDefaultNullable();
+    public Boolean isInitializeNullableTypes() {
+        return config.isInitializeNullableTypes();
     }
 
     @Override

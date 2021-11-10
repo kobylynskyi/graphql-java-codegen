@@ -103,7 +103,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private List<String> configurationFiles;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
     private Boolean generateModelOpenClasses = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES;
-    private Boolean automaticallyDefaultNullable = MappingConfigConstants.DEFAULT_AUTOMATICALLY_DEFAULT_NULLABLE;
+    private Boolean initializeNullableTypes = MappingConfigConstants.DEFAULT_INITIALIZE_NULLABLE_TYPES;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -179,7 +179,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
         mappingConfig.setGenerateModelOpenClasses(generateModelOpenClasses);
-        mappingConfig.setAutomaticallyDefaultNullable(automaticallyDefaultNullable);
+        mappingConfig.setInitializeNullableTypes(initializeNullableTypes);
 
         instantiateCodegen(mappingConfig).generate();
     }
@@ -847,7 +847,14 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.generateModelOpenClasses = generateModelOpenClasses;
     }
 
-    public void setAutomaticallyDefaultNullable(Boolean automaticallyDefaultNullable) {
-        this.automaticallyDefaultNullable = automaticallyDefaultNullable;
+    @Input
+    @Optional
+    @Override
+    public Boolean isInitializeNullableTypes() {
+        return initializeNullableTypes;
+    }
+
+    public void setInitializeNullableTypes(Boolean initializeNullableTypes) {
+        this.initializeNullableTypes = initializeNullableTypes;
     }
 }

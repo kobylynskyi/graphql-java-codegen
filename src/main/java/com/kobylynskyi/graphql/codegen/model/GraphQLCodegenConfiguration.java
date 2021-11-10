@@ -452,6 +452,6 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return <b>true</b> if nullable fields should be defaulted to null.
      */
-    Boolean isAutomaticallyDefaultNullable();
+    Boolean isInitializeNullableTypes();
 
 }

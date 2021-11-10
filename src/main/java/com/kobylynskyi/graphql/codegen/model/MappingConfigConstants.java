@@ -69,8 +69,8 @@ public class MappingConfigConstants {
     public static final String DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING = "false";
 
     //Only supported in kotlin.
-    public static final boolean DEFAULT_AUTOMATICALLY_DEFAULT_NULLABLE = false;
-    public static final String DEFAULT_AUTOMATICALLY_DEFAULT_NULLABLE_STRING = "false";
+    public static final boolean DEFAULT_INITIALIZE_NULLABLE_TYPES = false;
+    public static final String DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING = "false";
 
 
     private MappingConfigConstants() {

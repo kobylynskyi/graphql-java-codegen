@@ -15,7 +15,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 
-class GraphQLCodegenAutomaticallyDefaultNullableTest {
+class GraphQLCodegenInitializeNullableTypesTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputScalaClassesDir = new File("build/generated/com/github/graphql");
@@ -30,7 +30,7 @@ class GraphQLCodegenAutomaticallyDefaultNullableTest {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateEqualsAndHashCode(true);
-        mappingConfig.setAutomaticallyDefaultNullable(true);
+        mappingConfig.setInitializeNullableTypes(true);
         mappingConfig.setGenerateBuilder(true);
     }
 
@@ -40,7 +40,7 @@ class GraphQLCodegenAutomaticallyDefaultNullableTest {
     }
 
     @Test
-    void generate_AutomaticallyDefaultNullable() throws Exception {
+    void generate_InitializeNullableTypes() throws Exception {
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
