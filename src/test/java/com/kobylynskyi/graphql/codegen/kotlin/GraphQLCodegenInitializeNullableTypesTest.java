@@ -46,7 +46,7 @@ class GraphQLCodegenInitializeNullableTypesTest {
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/kt/Commit_automatically_default_nullable.kt.txt"),
+                new File("src/test/resources/expected-classes/kt/Commit_initialize_nullable_types.kt.txt"),
                 getFileByName(files, "Commit.kt"));
     }
 
