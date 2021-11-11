@@ -58,6 +58,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean isInitializeNullableTypes() {
+        return config.isInitializeNullableTypes();
+    }
+
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }

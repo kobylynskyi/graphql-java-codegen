@@ -446,4 +446,12 @@ public interface GraphQLCodegenConfiguration {
      */
     Boolean isGenerateModelOpenClasses();
 
+    /**
+     * Specifies whether classes should be generated with constructors setting the
+     * default value for nullable fields to null.
+     *
+     * @return <b>true</b> if nullable fields should be defaulted to null.
+     */
+    Boolean isInitializeNullableTypes();
+
 }

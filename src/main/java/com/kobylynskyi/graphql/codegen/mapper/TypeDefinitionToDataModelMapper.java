@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
@@ -102,6 +103,7 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(PARENT_INTERFACE_PROPERTIES, mappingContext.getParentInterfaceProperties());
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
+        dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
         return dataModel;
     }
 
