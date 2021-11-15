@@ -1,5 +1,7 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
@@ -8,32 +10,13 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefin
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.EQUALS_AND_HASH_CODE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PARENT_INTERFACE_PROPERTIES;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIELDS_PROPERTY_NAME;
 
 /**
  * Map type definition to a Freemarker data model
@@ -104,6 +87,8 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(PARENT_INTERFACE_PROPERTIES, mappingContext.getParentInterfaceProperties());
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
         dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
+        dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
+        dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
         return dataModel;
     }
 
@@ -130,6 +115,21 @@ public class TypeDefinitionToDataModelMapper {
                 .flatMap(Collection::stream)
                 .forEach(paramDef -> allParameters
                         .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
+
+
+
+        if (mappingContext.isSupportUnknownFields() ){
+            ParameterDefinition unknownFields = new ParameterDefinition();
+            unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setType("java.util.Map<String,Object>");
+            unknownFields.setAnnotations(Arrays.asList(
+                    JsonAnySetter.class.getName(),
+                    JsonAnyGetter.class.getName()
+            ));
+
+            allParameters.put(mappingContext.getUnknownFieldsPropertyName(),unknownFields);
+        }
         return allParameters.values();
     }
 

@@ -72,6 +72,9 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_INITIALIZE_NULLABLE_TYPES = false;
     public static final String DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING = "false";
 
+    public static final boolean DEFAULT_SUPPORT_UNKNOWN_FIELDS = false;
+    public static final String DEFAULT_SUPPORT_UNKNOWN_FIELDS_STRING = "false";
+    public static final String DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME = "userDefinedFields";
 
     private MappingConfigConstants() {
     }

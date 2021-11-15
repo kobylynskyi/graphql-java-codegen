@@ -37,7 +37,9 @@ public final class DataModelFields {
     public static final String SERIALIZATION_LIBRARY = "serializationLibrary";
     public static final String GENERATE_MODEL_OPEN_CLASSES = "generateModelOpenClasses";
     public static final String INITIALIZE_NULLABLE_TYPES = "initializeNullableTypes";
-
+    public static final String SUPPORT_UNKNOWN_FIELDS = "supportUnknownFields";
+    public static final String UNKNOWN_FIELDS_PROPERTY_NAME = "unknownFieldsPropertyName";
+    
     private DataModelFields() {
     }
 

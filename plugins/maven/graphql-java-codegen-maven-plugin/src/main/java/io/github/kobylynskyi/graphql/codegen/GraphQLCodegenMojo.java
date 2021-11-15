@@ -200,6 +200,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] configurationFiles;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS_STRING)
+    private boolean supportUnknownFields;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME)
+    private String unknownFieldsPropertyName;
+
     /**
      * The project being built.
      */
@@ -271,6 +277,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGeneratedLanguage(generatedLanguage);
         mappingConfig.setGenerateModelOpenClasses(isGenerateModelOpenClasses());
         mappingConfig.setInitializeNullableTypes(isInitializeNullableTypes());
+
+        mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
+        mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
 
         try {
             instantiateCodegen(mappingConfig).generate();
@@ -618,6 +627,24 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     public String[] getConfigurationFiles() {
         return configurationFiles;
+    }
+
+    @Override
+    public Boolean isSupportUnknownFields() {
+        return supportUnknownFields;
+    }
+
+    public void setSupportUnknownFields(boolean supportUnknownFields) {
+        this.supportUnknownFields = supportUnknownFields;
+    }
+
+    @Override
+    public String getUnknownFieldsPropertyName() {
+        return unknownFieldsPropertyName;
+    }
+
+    public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
+        this.unknownFieldsPropertyName = unknownFieldsPropertyName;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, Properties> sourceMap) {

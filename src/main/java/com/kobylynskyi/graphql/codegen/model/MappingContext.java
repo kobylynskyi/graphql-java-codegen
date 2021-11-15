@@ -62,6 +62,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.isInitializeNullableTypes();
     }
 
+
+
     @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
@@ -300,6 +302,16 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Set<String> getTypesAsInterfaces() {
         return config.getTypesAsInterfaces();
+    }
+
+    @Override
+    public Boolean isSupportUnknownFields() {
+        return config.isSupportUnknownFields();
+    }
+
+    @Override
+    public String getUnknownFieldsPropertyName() {
+        return config.getUnknownFieldsPropertyName();
     }
 
     public ExtendedDocument getDocument() {

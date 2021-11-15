@@ -1,0 +1,224 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+
+/**
+ * This input has all possible types
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class InputWithDefaults implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Double floatVal = 1.23;
+    private Boolean booleanVal = false;
+    private Integer intVal = 42;
+    private String stringVal = "my-default";
+    private MyEnum enumVal = MyEnum.ONE;
+    @javax.validation.constraints.NotNull
+    private MyEnum nonNullEnumVal = MyEnum.TWO;
+    private SomeObject objectWithNullDefault = null;
+    private SomeObject objectWithNonNullDefault;
+    private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+    private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+    @javax.validation.constraints.NotNull
+    private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+    @com.fasterxml.jackson.annotation.JsonAnySetter
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    private java.util.Map<String,Object> userDefinedFields;
+
+    public InputWithDefaults() {
+    }
+
+    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, java.util.List<Integer> intList, java.util.List<Integer> intListEmptyDefault, java.util.List<SomeObject> objectListEmptyDefault, java.util.Map<String,Object> userDefinedFields) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.enumVal = enumVal;
+        this.nonNullEnumVal = nonNullEnumVal;
+        this.objectWithNullDefault = objectWithNullDefault;
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+        this.intList = intList;
+        this.intListEmptyDefault = intListEmptyDefault;
+        this.objectListEmptyDefault = objectListEmptyDefault;
+        this.userDefinedFields = userDefinedFields;
+    }
+
+    public Double getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(Double floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public Boolean getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(Boolean booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public Integer getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(Integer intVal) {
+        this.intVal = intVal;
+    }
+
+    public String getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(String stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public MyEnum getEnumVal() {
+        return enumVal;
+    }
+    public void setEnumVal(MyEnum enumVal) {
+        this.enumVal = enumVal;
+    }
+
+    public MyEnum getNonNullEnumVal() {
+        return nonNullEnumVal;
+    }
+    public void setNonNullEnumVal(MyEnum nonNullEnumVal) {
+        this.nonNullEnumVal = nonNullEnumVal;
+    }
+
+    public SomeObject getObjectWithNullDefault() {
+        return objectWithNullDefault;
+    }
+    public void setObjectWithNullDefault(SomeObject objectWithNullDefault) {
+        this.objectWithNullDefault = objectWithNullDefault;
+    }
+
+    public SomeObject getObjectWithNonNullDefault() {
+        return objectWithNonNullDefault;
+    }
+    public void setObjectWithNonNullDefault(SomeObject objectWithNonNullDefault) {
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+    }
+
+    public java.util.List<Integer> getIntList() {
+        return intList;
+    }
+    public void setIntList(java.util.List<Integer> intList) {
+        this.intList = intList;
+    }
+
+    public java.util.List<Integer> getIntListEmptyDefault() {
+        return intListEmptyDefault;
+    }
+    public void setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
+        this.intListEmptyDefault = intListEmptyDefault;
+    }
+
+    public java.util.List<SomeObject> getObjectListEmptyDefault() {
+        return objectListEmptyDefault;
+    }
+    public void setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
+        this.objectListEmptyDefault = objectListEmptyDefault;
+    }
+
+    public java.util.Map<String,Object> getUserDefinedFields() {
+        return userDefinedFields;
+    }
+    public void setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+        this.userDefinedFields = userDefinedFields;
+    }
+
+
+
+    public static InputWithDefaults.Builder builder() {
+        return new InputWithDefaults.Builder();
+    }
+
+    public static class Builder {
+
+        private Double floatVal = 1.23;
+        private Boolean booleanVal = false;
+        private Integer intVal = 42;
+        private String stringVal = "my-default";
+        private MyEnum enumVal = MyEnum.ONE;
+        private MyEnum nonNullEnumVal = MyEnum.TWO;
+        private SomeObject objectWithNullDefault = null;
+        private SomeObject objectWithNonNullDefault;
+        private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+        private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+        private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+        private java.util.Map<String,Object> userDefinedFields;
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(Double floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(Boolean booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(Integer intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(String stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setEnumVal(MyEnum enumVal) {
+            this.enumVal = enumVal;
+            return this;
+        }
+
+        public Builder setNonNullEnumVal(MyEnum nonNullEnumVal) {
+            this.nonNullEnumVal = nonNullEnumVal;
+            return this;
+        }
+
+        public Builder setObjectWithNullDefault(SomeObject objectWithNullDefault) {
+            this.objectWithNullDefault = objectWithNullDefault;
+            return this;
+        }
+
+        public Builder setObjectWithNonNullDefault(SomeObject objectWithNonNullDefault) {
+            this.objectWithNonNullDefault = objectWithNonNullDefault;
+            return this;
+        }
+
+        public Builder setIntList(java.util.List<Integer> intList) {
+            this.intList = intList;
+            return this;
+        }
+
+        public Builder setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
+            this.intListEmptyDefault = intListEmptyDefault;
+            return this;
+        }
+
+        public Builder setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
+            this.objectListEmptyDefault = objectListEmptyDefault;
+            return this;
+        }
+
+        public Builder setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+            this.userDefinedFields = userDefinedFields;
+            return this;
+        }
+
+
+        public InputWithDefaults build() {
+            return new InputWithDefaults(floatVal, booleanVal, intVal, stringVal, enumVal, nonNullEnumVal, objectWithNullDefault, objectWithNonNullDefault, intList, intListEmptyDefault, objectListEmptyDefault, userDefinedFields);
+        }
+
+    }
+}

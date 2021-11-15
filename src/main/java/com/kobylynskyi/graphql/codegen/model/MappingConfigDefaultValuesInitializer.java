@@ -105,6 +105,12 @@ public class MappingConfigDefaultValuesInitializer {
         if (mappingConfig.getGenerateAllMethodInProjection() == null) {
             mappingConfig.setGenerateAllMethodInProjection(MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD);
         }
+        if (mappingConfig.isSupportUnknownFields() == null) {
+            mappingConfig.setSupportUnknownFields(MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS);
+        }
+        if (mappingConfig.getGenerateAllMethodInProjection() == null) {
+            mappingConfig.setUnknownFieldsPropertyName(MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME);
+        }
     }
 
 }

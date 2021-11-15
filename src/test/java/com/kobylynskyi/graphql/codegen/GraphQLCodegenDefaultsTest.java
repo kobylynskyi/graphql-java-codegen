@@ -54,6 +54,25 @@ class GraphQLCodegenDefaultsTest {
     }
 
     @Test
+    void generate_UnkonwnFields() throws Exception {
+        mappingConfig.setSupportUnknownFields(true);
+        mappingConfig.setUnknownFieldsPropertyName("userDefinedFields");
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(asList("InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/unknown-fields/%s.txt",
+                            file.getName())),
+                    file);
+        }
+    }
+
+    @Test
     void generate_CheckFiles_WithPrefixSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
 
