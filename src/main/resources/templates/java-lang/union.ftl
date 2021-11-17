@@ -19,6 +19,6 @@ package ${package};
 <#list annotations as annotation>
 @${annotation}
 </#list>
-public interface ${className} {
+public <#if generateSealedInterfaces>sealed </#if>interface ${className} {
 
 }
