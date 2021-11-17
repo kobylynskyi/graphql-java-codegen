@@ -15,7 +15,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 
-public class GraphQLCodegenSealedInterfacesTest {
+class GraphQLCodegenSealedInterfacesTest {
     private final File outputBuildDir = new File("build/generated");
     private final File outputScalaClassesDir = new File("build/generated/com/github/graphql");
     private final MappingConfig mappingConfig = new MappingConfig();
