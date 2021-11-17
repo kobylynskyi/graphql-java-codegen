@@ -4,6 +4,8 @@
 )
 public class MyUnionMemberASuffix implements java.io.Serializable, MyUnionToResolveSuffix {
 
+    private static final long serialVersionUID = 1L;
+
     private Integer someField;
 
     public MyUnionMemberASuffix() {

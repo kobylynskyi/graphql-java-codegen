@@ -9,6 +9,8 @@ import java.util.StringJoiner;
 )
 public class ResponseContainingDate implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private java.time.ZonedDateTime a;
 
     public ResponseContainingDate() {

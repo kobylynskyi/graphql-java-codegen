@@ -68,7 +68,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
     <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override
     </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@get:${annotation}
     </#list>var <#else><#list field.annotations as annotation>@get:${annotation}
-    </#list>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
+    </#list>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}<#elseif field.type?ends_with("?") && (initializeNullableTypes == true)> = null</#if><#if field_has_next>,</#if>
 </#list>
 </#if>
 )<#if implements?has_content> : <#list implements as interface>${interface}<#if interface_has_next>, </#if></#list></#if> {
