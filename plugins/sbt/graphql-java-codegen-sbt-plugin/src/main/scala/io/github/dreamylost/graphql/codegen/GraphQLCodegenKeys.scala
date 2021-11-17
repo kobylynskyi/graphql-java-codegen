@@ -124,7 +124,7 @@ trait GraphQLCodegenKeys {
 
   val generateModelOpenClasses = settingKey[Boolean]("The class type of the generated model. If true, generate normal classes, else generate case class.")
 
-  val generateSealedInterfaces = settingKey[Boolean]("If true, generate sealed interfaces for GraphQL unions and interface, else generate normal interfaces.")
+  val generateSealedInterfaces = settingKey[Boolean]("If true, generate sealed interfaces for GraphQL unions and interfaces, else generate normal interfaces.")
 
   val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package")
 
