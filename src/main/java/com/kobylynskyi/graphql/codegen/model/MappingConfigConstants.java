@@ -71,7 +71,7 @@ public class MappingConfigConstants {
     //Only supported in kotlin.
     public static final boolean DEFAULT_INITIALIZE_NULLABLE_TYPES = false;
     public static final String DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING = "false";
-    // Only supported in Java and Kotlin
+    // Only supported in Kotlin
     public static final boolean DEFAULT_GENERATE_SEALED_INTERFACES = false;
     public static final String DEFAULT_GENERATE_SEALED_INTERFACES_STRING = "false";
 
