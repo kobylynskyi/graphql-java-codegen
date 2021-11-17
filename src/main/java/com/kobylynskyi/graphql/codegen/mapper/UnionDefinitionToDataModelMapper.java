@@ -12,6 +12,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_SEALED_INTERFACES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
@@ -47,6 +48,7 @@ public class UnionDefinitionToDataModelMapper {
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
+        dataModel.put(GENERATE_SEALED_INTERFACES, mappingContext.isGenerateSealedInterfaces());
         return dataModel;
     }
 

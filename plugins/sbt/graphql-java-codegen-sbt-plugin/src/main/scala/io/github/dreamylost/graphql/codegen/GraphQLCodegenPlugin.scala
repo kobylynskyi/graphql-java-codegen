@@ -71,6 +71,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     graphqlJavaCodegenVersion := None,
     // suffix/prefix/strategies:
     generateModelOpenClasses := MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES,
+    generateSealedInterfaces := MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES,
     generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     apiNamePrefix := None,
     apiNameSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,

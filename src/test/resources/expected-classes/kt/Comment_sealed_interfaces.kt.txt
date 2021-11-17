@@ -1,0 +1,40 @@
+package com.github.graphql
+
+
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+sealed interface Comment {
+
+    val author: Actor?
+
+    val authorAssociation: CommentAuthorAssociation
+
+    val body: String
+
+    val bodyHTML: String
+
+    val bodyText: String
+
+    val createdAt: String
+
+    val createdViaEmail: Boolean
+
+    val editor: Actor?
+
+    val id: String
+
+    val includesCreatedEdit: Boolean
+
+    val lastEditedAt: String?
+
+    val publishedAt: String?
+
+    val updatedAt: String
+
+    val userContentEdits: UserContentEditConnection?
+
+    val viewerDidAuthor: Boolean
+
+}

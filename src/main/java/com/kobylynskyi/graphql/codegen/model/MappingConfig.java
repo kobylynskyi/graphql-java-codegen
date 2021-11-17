@@ -78,6 +78,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Set<String> typesAsInterfaces = new HashSet<>();
 
     private boolean generateModelOpenClasses;
+    private boolean generateSealedInterfaces;
 
     private GeneratedLanguage generatedLanguage;
 
@@ -185,6 +186,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generatedLanguage = getValueOrDefaultToThis(source, GraphQLCodegenConfiguration::getGeneratedLanguage);
         generateModelOpenClasses = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
+        generateSealedInterfaces = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::isGenerateSealedInterfaces);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -647,13 +650,20 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.generatedLanguage = generatedLanguage;
     }
 
-
     public Boolean isGenerateModelOpenClasses() {
         return generateModelOpenClasses;
     }
 
     public void setGenerateModelOpenClasses(boolean generateModelOpenClasses) {
         this.generateModelOpenClasses = generateModelOpenClasses;
+    }
+
+    public Boolean isGenerateSealedInterfaces() {
+        return generateSealedInterfaces;
+    }
+
+    public void setGenerateSealedInterfaces(boolean generateSealedInterfaces) {
+        this.generateSealedInterfaces = generateSealedInterfaces;
     }
 
 }

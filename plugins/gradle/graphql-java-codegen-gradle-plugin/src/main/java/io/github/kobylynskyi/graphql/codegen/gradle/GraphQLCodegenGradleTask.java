@@ -103,6 +103,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private List<String> configurationFiles;
     private GeneratedLanguage generatedLanguage = MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE;
     private Boolean generateModelOpenClasses = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES;
+    private Boolean generateSealedInterfaces = MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -843,5 +844,16 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGenerateModelOpenClasses(Boolean generateModelOpenClasses) {
         this.generateModelOpenClasses = generateModelOpenClasses;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean isGenerateSealedInterfaces() {
+        return generateModelOpenInterfaces;
+    }
+
+    public void setGenerateSealedInterfaces(Boolean generateSealedInterfaces) {
+        this.generateSealedInterfaces = generateSealedInterfaces;
     }
 }

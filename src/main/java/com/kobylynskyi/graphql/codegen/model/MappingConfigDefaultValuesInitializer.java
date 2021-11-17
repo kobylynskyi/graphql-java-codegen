@@ -105,6 +105,9 @@ public class MappingConfigDefaultValuesInitializer {
         if (mappingConfig.getGenerateAllMethodInProjection() == null) {
             mappingConfig.setGenerateAllMethodInProjection(MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD);
         }
+        if (mappingConfig.isGenerateSealedInterfaces() == null) {
+            mappingConfig.setGenerateSealedInterfaces(MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES);
+        }
     }
 
 }
