@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
@@ -30,6 +29,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MOD
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_SEALED_INTERFACES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PARENT_INTERFACE_PROPERTIES;
