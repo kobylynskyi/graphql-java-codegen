@@ -863,7 +863,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Optional
     @Override
     public Boolean isGenerateSealedInterfaces() {
-        return generateModelOpenInterfaces;
+        return generateSealedInterfaces;
     }
 
     public void setGenerateSealedInterfaces(Boolean generateSealedInterfaces) {
