@@ -1,23 +1,21 @@
 package com.kobylynskyi.graphql.codegen.kotlin;
 
 import com.kobylynskyi.graphql.codegen.TestUtils;
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import static java.util.Collections.singletonList;
+import java.util.Objects;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Objects;
-
-import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
-import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 class GraphQLCodegenGitHubTest {
 
@@ -185,6 +183,18 @@ class GraphQLCodegenGitHubTest {
                         "src/test/resources/expected-classes/kt/field-resolver/" +
                                 "AcceptTopicSuggestionPayloadResolver.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
+    }
+
+    @Test
+    void generate_RequestWithDefaultValue() throws Exception {
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateClient(true);
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/kt/default.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/default/" +
+                        "FriendsQueryRequest.kt.txt"),
+                getFileByName(files, "FriendsQueryRequest.kt"));
     }
 
 }
