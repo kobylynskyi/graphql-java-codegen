@@ -79,6 +79,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     private boolean generateModelOpenClasses;
     private boolean initializeNullableTypes;
+    private boolean generateSealedInterfaces;
 
     private GeneratedLanguage generatedLanguage;
 
@@ -188,6 +189,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::isGenerateModelOpenClasses);
         initializeNullableTypes = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isInitializeNullableTypes);
+        generateSealedInterfaces = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::isGenerateSealedInterfaces);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -664,6 +667,14 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setInitializeNullableTypes(boolean initializeNullableTypes) {
         this.initializeNullableTypes = initializeNullableTypes;
+    }
+
+    public Boolean isGenerateSealedInterfaces() {
+        return generateSealedInterfaces;
+    }
+
+    public void setGenerateSealedInterfaces(boolean generateSealedInterfaces) {
+        this.generateSealedInterfaces = generateSealedInterfaces;
     }
 
 }

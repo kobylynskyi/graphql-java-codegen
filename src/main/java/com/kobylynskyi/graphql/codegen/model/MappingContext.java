@@ -63,6 +63,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean isGenerateSealedInterfaces() {
+        return config.isGenerateSealedInterfaces();
+    }
+
+    @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }

@@ -57,6 +57,7 @@ task graphqlCodegenKotlinService(type: GraphQLCodegenGradleTask) {
     apiPackageName = "io.github.dreamylost.api"
     modelPackageName = "io.github.dreamylost.model"
     generateModelOpenClasses = true
+    generateSealedInterfaces = true
     customAnnotationsMapping = [
             "Character": ["@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")",
                           "@com.fasterxml.jackson.annotation.JsonSubTypes(value = arrayOf(" + System.lineSeparator() +

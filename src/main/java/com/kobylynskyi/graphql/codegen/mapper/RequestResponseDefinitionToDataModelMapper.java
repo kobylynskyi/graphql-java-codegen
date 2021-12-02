@@ -29,6 +29,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_ALL_METHOD_IN_PROJECTION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_SEALED_INTERFACES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.METHOD_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;

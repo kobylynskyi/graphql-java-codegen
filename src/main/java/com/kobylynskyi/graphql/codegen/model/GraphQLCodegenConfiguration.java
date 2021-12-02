@@ -454,4 +454,11 @@ public interface GraphQLCodegenConfiguration {
      */
     Boolean isInitializeNullableTypes();
 
+    /**
+     * Specifies whether generate sealed interfaces.
+     *
+     * @return <b>false</b> generate sealed interfaces class in kotlin
+     */
+    Boolean isGenerateSealedInterfaces();
+
 }
