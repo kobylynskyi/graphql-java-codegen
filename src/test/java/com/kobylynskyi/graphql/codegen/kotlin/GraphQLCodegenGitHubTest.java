@@ -19,6 +19,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+
 class GraphQLCodegenGitHubTest {
 
     private final File outputBuildDir = new File("build/generated");
@@ -185,6 +186,18 @@ class GraphQLCodegenGitHubTest {
                         "src/test/resources/expected-classes/kt/field-resolver/" +
                                 "AcceptTopicSuggestionPayloadResolver.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
+    }
+
+    @Test
+    void generate_RequestWithDefaultValue() throws Exception {
+        mappingConfig.setGenerateBuilder(true);
+        mappingConfig.setGenerateClient(true);
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/kt/default.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/default/" +
+                        "FriendsQueryRequest.kt.txt"),
+                getFileByName(files, "FriendsQueryRequest.kt"));
     }
 
 }
