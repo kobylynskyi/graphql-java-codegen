@@ -1,13 +1,10 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +33,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIEL
  *
  * @author kobylynskyi
  */
-public class InputDefinitionToDataModelMapper {
+public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport{
 
     private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
@@ -65,17 +62,9 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(NAME, definition.getName());
         List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper
                 .map(mappingContext, definition.getValueDefinitions(), definition.getName());
-        if (mappingContext.isSupportUnknownFields()){
-            ParameterDefinition unknownFields = new ParameterDefinition();
-            unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
-            unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
-            unknownFields.setType("java.util.Map<String,Object>");
-            unknownFields.setAnnotations(Arrays.asList(
-                    JsonAnySetter.class.getName(),
-                    JsonAnyGetter.class.getName()
-            ));
-            fields.add(unknownFields);
-        }
+
+        createUnknownFields(mappingContext).ifPresent(fields::add);
+
         dataModel.put(FIELDS, fields);
         dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());

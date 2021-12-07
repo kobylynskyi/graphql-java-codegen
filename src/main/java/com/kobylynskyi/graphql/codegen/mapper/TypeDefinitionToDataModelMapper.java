@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
@@ -10,7 +8,6 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefin
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedUnionTypeDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -46,7 +43,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIEL
  *
  * @author kobylynskyi
  */
-public class TypeDefinitionToDataModelMapper {
+public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport{
 
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final AnnotationsMapper annotationsMapper;
@@ -141,19 +138,10 @@ public class TypeDefinitionToDataModelMapper {
                         .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
 
 
+        createUnknownFields(mappingContext).ifPresent(
+                unknownFields->allParameters.put(mappingContext.getUnknownFieldsPropertyName(),unknownFields)
+        );
 
-        if (mappingContext.isSupportUnknownFields() ){
-            ParameterDefinition unknownFields = new ParameterDefinition();
-            unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
-            unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
-            unknownFields.setType("java.util.Map<String,Object>");
-            unknownFields.setAnnotations(Arrays.asList(
-                    JsonAnySetter.class.getName(),
-                    JsonAnyGetter.class.getName()
-            ));
-
-            allParameters.put(mappingContext.getUnknownFieldsPropertyName(),unknownFields);
-        }
         return allParameters.values();
     }
 

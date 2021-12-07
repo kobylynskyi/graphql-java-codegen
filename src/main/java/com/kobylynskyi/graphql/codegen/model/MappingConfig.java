@@ -1,9 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
