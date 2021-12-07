@@ -478,12 +478,5 @@ public interface GraphQLCodegenConfiguration {
      */
     String getUnknownFieldsPropertyName();
 
-    /*
-     * Specifies whether generate sealed interfaces.
-     *
-     * @return <b>false</b> generate sealed interfaces class in kotlin
-     */
-    Boolean isGenerateSealedInterfaces();
-
 
 }
