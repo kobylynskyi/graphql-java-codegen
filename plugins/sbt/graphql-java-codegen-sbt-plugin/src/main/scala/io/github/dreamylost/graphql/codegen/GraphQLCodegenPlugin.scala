@@ -177,7 +177,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateJacksonTypeIdResolver((generateJacksonTypeIdResolver in GraphQLCodegenConfig).value);
 
     mappingConfig.setSupportUnknownFields((supportUnknownFields in GraphQLCodegenConfig).value)
-    mappingConfig.setUnknownFieldsPropertyName(((unknownFieldsPropertyName in GraphQLCodegenConfig).value)
+    mappingConfig.setUnknownFieldsPropertyName((unknownFieldsPropertyName in GraphQLCodegenConfig).value)
 
     mappingConfig
   }

@@ -61,7 +61,7 @@ public class UnknownFieldsTest {
     }
 
     public static void main(String[] args) throws Exception{
-        Pojo pojo = new Pojo("firstField",123456l,true, null);
+        Pojo pojo = new Pojo("firstField",  123456l,    true,   null);
         pojo.add("forthField", "forthField");
         pojo.add("fifthField", 89);
         pojo.add("sixthField", true);
