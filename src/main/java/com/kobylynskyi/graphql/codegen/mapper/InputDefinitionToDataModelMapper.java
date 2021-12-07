@@ -1,10 +1,15 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
@@ -23,6 +28,8 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SUPPORT_UNKNOWN_FIELDS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIELDS_PROPERTY_NAME;
 
 /**
  * Map input type definition to a Freemarker data model
@@ -56,8 +63,20 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(NAME, definition.getName());
-        dataModel.put(FIELDS, inputValueDefinitionToParameterMapper
-                .map(mappingContext, definition.getValueDefinitions(), definition.getName()));
+        List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper
+                .map(mappingContext, definition.getValueDefinitions(), definition.getName());
+        if (mappingContext.isSupportUnknownFields()){
+            ParameterDefinition unknownFields = new ParameterDefinition();
+            unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setType("java.util.Map<String,Object>");
+            unknownFields.setAnnotations(Arrays.asList(
+                    JsonAnySetter.class.getName(),
+                    JsonAnyGetter.class.getName()
+            ));
+            fields.add(unknownFields);
+        }
+        dataModel.put(FIELDS, fields);
         dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
@@ -69,6 +88,10 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
         dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
+        dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
+        dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
+
+
         return dataModel;
     }
 

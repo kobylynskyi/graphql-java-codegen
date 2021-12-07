@@ -48,6 +48,9 @@ graphqlCodegen {
     }
     modelNameSuffix = "TO"
     generateApis = true
+    supportUnknownFields = true
+    unknownFieldsPropertyName = "additionalFields"
+
 }
 
 repositories {

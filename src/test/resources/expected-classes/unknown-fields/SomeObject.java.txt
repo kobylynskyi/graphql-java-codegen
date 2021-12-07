@@ -1,0 +1,70 @@
+package com.kobylynskyi.graphql.testdefaults;
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class SomeObject implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @javax.validation.constraints.NotNull
+    private String name;
+    @com.fasterxml.jackson.annotation.JsonAnySetter
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    private java.util.Map<String,Object> userDefinedFields;
+
+    public SomeObject() {
+    }
+
+    public SomeObject(String name, java.util.Map<String,Object> userDefinedFields) {
+        this.name = name;
+        this.userDefinedFields = userDefinedFields;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public java.util.Map<String,Object> getUserDefinedFields() {
+        return userDefinedFields;
+    }
+    public void setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+        this.userDefinedFields = userDefinedFields;
+    }
+
+
+
+    public static SomeObject.Builder builder() {
+        return new SomeObject.Builder();
+    }
+
+    public static class Builder {
+
+        private String name;
+        private java.util.Map<String,Object> userDefinedFields;
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+            this.userDefinedFields = userDefinedFields;
+            return this;
+        }
+
+
+        public SomeObject build() {
+            return new SomeObject(name, userDefinedFields);
+        }
+
+    }
+}

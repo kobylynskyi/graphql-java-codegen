@@ -1,5 +1,9 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +43,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String apiReturnListType;
     private String subscriptionReturnType;
     private RelayConfig relayConfig = new RelayConfig();
+    private String unknownFieldsPropertyName;
 
     // various toggles
     private Boolean generateApis;
@@ -54,6 +59,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateApisWithThrowsException;
     private Boolean addGeneratedAnnotation;
     private Boolean generateJacksonTypeIdResolver;
+    private Boolean supportUnknownFields;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -191,6 +197,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::isInitializeNullableTypes);
         generateSealedInterfaces = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isGenerateSealedInterfaces);
+        supportUnknownFields = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::isSupportUnknownFields);
+
+        unknownFieldsPropertyName = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getUnknownFieldsPropertyName);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -647,6 +658,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     @Override
     public GeneratedLanguage getGeneratedLanguage() {
         return generatedLanguage;
+    }
+
+    @Override
+    public String getUnknownFieldsPropertyName() {
+        return unknownFieldsPropertyName;
+    }
+
+    public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
+        this.unknownFieldsPropertyName = unknownFieldsPropertyName;
+    }
+
+    @Override
+    public Boolean isSupportUnknownFields() {
+        return supportUnknownFields;
+    }
+
+    public void setSupportUnknownFields(Boolean supportUnknownFields) {
+        this.supportUnknownFields = supportUnknownFields;
     }
 
     public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
