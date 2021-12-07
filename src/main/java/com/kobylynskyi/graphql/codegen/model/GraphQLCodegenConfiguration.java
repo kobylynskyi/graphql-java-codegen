@@ -491,7 +491,7 @@ public interface GraphQLCodegenConfiguration {
      * @see com.fasterxml.jackson.annotation.JsonAnyGetter
      * @see com.fasterxml.jackson.annotation.JsonAnySetter
      */
-    Boolean isSupportUnknownFields ();
+    Boolean isSupportUnknownFields();
 
     /**
      * Specifies the name of the property to be included in api classes to support unknown
