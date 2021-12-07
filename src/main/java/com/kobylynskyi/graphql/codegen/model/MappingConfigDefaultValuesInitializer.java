@@ -114,6 +114,9 @@ public class MappingConfigDefaultValuesInitializer {
         if (mappingConfig.getGenerateAllMethodInProjection() == null) {
             mappingConfig.setUnknownFieldsPropertyName(MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME);
         }
+        if (mappingConfig.isGenerateSealedInterfaces() == null) {
+            mappingConfig.setGenerateSealedInterfaces(MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES);
+        }
     }
 
 }

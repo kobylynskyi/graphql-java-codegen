@@ -897,4 +897,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
         this.unknownFieldsPropertyName = unknownFieldsPropertyName;
     }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean isGenerateSealedInterfaces() {
+        return generateSealedInterfaces;
+    }
+
+    public void setGenerateSealedInterfaces(Boolean generateSealedInterfaces) {
+        this.generateSealedInterfaces = generateSealedInterfaces;
+    }
 }
