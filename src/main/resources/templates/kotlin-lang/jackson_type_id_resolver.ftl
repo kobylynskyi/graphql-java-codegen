@@ -25,7 +25,7 @@ open class GraphqlJacksonTypeIdResolver : TypeIdResolverBase() {
         return try {
             val clazz = Class.forName(<#if package?has_content>"${package}." +
                     </#if><#if modelNamePrefix?has_content>"${modelNamePrefix}" +
-                    </#if>typename<#if modelNamePrefix?has_content> +
+                    </#if>typename<#if modelNameSuffix?has_content> +
                     "${modelNameSuffix}"</#if>)
             context.constructSpecializedType(superType, clazz)
         } catch (e: ClassNotFoundException) {

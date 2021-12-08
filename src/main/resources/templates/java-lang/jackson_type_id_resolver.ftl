@@ -28,7 +28,7 @@ public class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
             Class<?> clazz = Class.forName(
                 <#if package?has_content>"${package}." +
                 </#if><#if modelNamePrefix?has_content>"${modelNamePrefix}" +
-                </#if>typename<#if modelNamePrefix?has_content> +
+                </#if>typename<#if modelNameSuffix?has_content> +
                 "${modelNameSuffix}"</#if>
             );
             return context.constructSpecializedType(superType, clazz);
