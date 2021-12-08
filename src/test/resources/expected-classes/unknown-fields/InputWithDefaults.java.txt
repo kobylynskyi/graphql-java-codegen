@@ -27,12 +27,12 @@ public class InputWithDefaults implements java.io.Serializable {
     private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
     @com.fasterxml.jackson.annotation.JsonAnySetter
     @com.fasterxml.jackson.annotation.JsonAnyGetter
-    private java.util.Map<String,Object> userDefinedFields;
+    private java.util.Map<String, Object> userDefinedFields;
 
     public InputWithDefaults() {
     }
 
-    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, java.util.List<Integer> intList, java.util.List<Integer> intListEmptyDefault, java.util.List<SomeObject> objectListEmptyDefault, java.util.Map<String,Object> userDefinedFields) {
+    public InputWithDefaults(Double floatVal, Boolean booleanVal, Integer intVal, String stringVal, MyEnum enumVal, MyEnum nonNullEnumVal, SomeObject objectWithNullDefault, SomeObject objectWithNonNullDefault, java.util.List<Integer> intList, java.util.List<Integer> intListEmptyDefault, java.util.List<SomeObject> objectListEmptyDefault, java.util.Map<String, Object> userDefinedFields) {
         this.floatVal = floatVal;
         this.booleanVal = booleanVal;
         this.intVal = intVal;
@@ -124,10 +124,10 @@ public class InputWithDefaults implements java.io.Serializable {
         this.objectListEmptyDefault = objectListEmptyDefault;
     }
 
-    public java.util.Map<String,Object> getUserDefinedFields() {
+    public java.util.Map<String, Object> getUserDefinedFields() {
         return userDefinedFields;
     }
-    public void setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+    public void setUserDefinedFields(java.util.Map<String, Object> userDefinedFields) {
         this.userDefinedFields = userDefinedFields;
     }
 
@@ -150,7 +150,7 @@ public class InputWithDefaults implements java.io.Serializable {
         private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
         private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
         private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
-        private java.util.Map<String,Object> userDefinedFields;
+        private java.util.Map<String, Object> userDefinedFields;
 
         public Builder() {
         }
@@ -210,7 +210,7 @@ public class InputWithDefaults implements java.io.Serializable {
             return this;
         }
 
-        public Builder setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+        public Builder setUserDefinedFields(java.util.Map<String, Object> userDefinedFields) {
             this.userDefinedFields = userDefinedFields;
             return this;
         }

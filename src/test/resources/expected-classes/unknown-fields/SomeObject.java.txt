@@ -13,12 +13,12 @@ public class SomeObject implements java.io.Serializable {
     private String name;
     @com.fasterxml.jackson.annotation.JsonAnySetter
     @com.fasterxml.jackson.annotation.JsonAnyGetter
-    private java.util.Map<String,Object> userDefinedFields;
+    private java.util.Map<String, Object> userDefinedFields;
 
     public SomeObject() {
     }
 
-    public SomeObject(String name, java.util.Map<String,Object> userDefinedFields) {
+    public SomeObject(String name, java.util.Map<String, Object> userDefinedFields) {
         this.name = name;
         this.userDefinedFields = userDefinedFields;
     }
@@ -30,10 +30,10 @@ public class SomeObject implements java.io.Serializable {
         this.name = name;
     }
 
-    public java.util.Map<String,Object> getUserDefinedFields() {
+    public java.util.Map<String, Object> getUserDefinedFields() {
         return userDefinedFields;
     }
-    public void setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+    public void setUserDefinedFields(java.util.Map<String, Object> userDefinedFields) {
         this.userDefinedFields = userDefinedFields;
     }
 
@@ -46,7 +46,7 @@ public class SomeObject implements java.io.Serializable {
     public static class Builder {
 
         private String name;
-        private java.util.Map<String,Object> userDefinedFields;
+        private java.util.Map<String, Object> userDefinedFields;
 
         public Builder() {
         }
@@ -56,7 +56,7 @@ public class SomeObject implements java.io.Serializable {
             return this;
         }
 
-        public Builder setUserDefinedFields(java.util.Map<String,Object> userDefinedFields) {
+        public Builder setUserDefinedFields(java.util.Map<String, Object> userDefinedFields) {
             this.userDefinedFields = userDefinedFields;
             return this;
         }
