@@ -43,7 +43,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIEL
  *
  * @author kobylynskyi
  */
-public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport{
+public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport {
 
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final AnnotationsMapper annotationsMapper;
@@ -142,7 +142,7 @@ public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport{
 
 
         createUnknownFields(mappingContext).ifPresent(
-                unknownFields->allParameters.put(mappingContext.getUnknownFieldsPropertyName(),unknownFields)
+                unknownFields -> allParameters.put(mappingContext.getUnknownFieldsPropertyName(), unknownFields)
         );
 
         return allParameters.values();

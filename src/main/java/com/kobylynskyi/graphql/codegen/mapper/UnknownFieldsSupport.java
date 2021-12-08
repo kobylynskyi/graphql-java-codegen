@@ -25,12 +25,12 @@ public interface UnknownFieldsSupport {
      * @return If {@link MappingContext#isSupportUnknownFields()} is true, it returns a monad containing
      *         the instance of {@link ParameterDefinition}. {@link Optional#empty()} otherwise.
      */
-    default Optional<ParameterDefinition> createUnknownFields(MappingContext mappingContext){
-        if (mappingContext.isSupportUnknownFields()){
+    default Optional<ParameterDefinition> createUnknownFields(MappingContext mappingContext) {
+        if (mappingContext.isSupportUnknownFields()) {
             ParameterDefinition unknownFields = new ParameterDefinition();
             unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
             unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
-            unknownFields.setType("java.util.Map<String,Object>");
+            unknownFields.setType("java.util.Map<String, Object>");
             unknownFields.setAnnotations(Arrays.asList(
                     JsonAnySetter.class.getName(),
                     JsonAnyGetter.class.getName()

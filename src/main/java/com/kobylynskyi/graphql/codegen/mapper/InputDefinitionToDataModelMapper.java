@@ -33,7 +33,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIEL
  *
  * @author kobylynskyi
  */
-public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport{
+public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport {
 
     private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
