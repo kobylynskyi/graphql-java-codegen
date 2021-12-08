@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
@@ -20,12 +19,13 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_AN
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SUPPORT_UNKNOWN_FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SUPPORT_UNKNOWN_FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIELDS_PROPERTY_NAME;
 
 /**
