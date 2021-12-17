@@ -136,6 +136,6 @@ trait GraphQLCodegenKeys {
   val generateCodegenTargetPath = settingKey[File]("Where to store generated files and add the generated code to the classpath, so that they can be referenced.")
 
   val supportUnknownFields = settingKey[Boolean]("supportUnknownFields")
-  val unknownFieldsPropertyName = settingKey[Option[String]]("supportUnknownFields")
+  val unknownFieldsPropertyName = settingKey[String]("unknownFieldsPropertyName")
 
 }
