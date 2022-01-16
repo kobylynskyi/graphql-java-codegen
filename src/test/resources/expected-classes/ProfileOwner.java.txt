@@ -7,7 +7,7 @@ package com.github.graphql;
 )
 public interface ProfileOwner {
 
-    boolean getAnyPinnableItems();
+    boolean getAnyPinnableItems(PinnableItemType type);
 
     String getEmail();
 
@@ -25,10 +25,10 @@ public interface ProfileOwner {
     String getName();
 
     @javax.validation.constraints.NotNull
-    PinnableItemConnection getPinnableItems();
+    PinnableItemConnection getPinnableItems(String after, String before, Integer first, Integer last, @javax.validation.constraints.NotNull java.util.List<PinnableItemType> types);
 
     @javax.validation.constraints.NotNull
-    PinnableItemConnection getPinnedItems();
+    PinnableItemConnection getPinnedItems(String after, String before, Integer first, Integer last, @javax.validation.constraints.NotNull java.util.List<PinnableItemType> types);
 
     int getPinnedItemsRemaining();
 

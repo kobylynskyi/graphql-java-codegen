@@ -8,13 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 class GraphQLCodegenTypesAsInterfacesTest {
@@ -26,7 +26,9 @@ class GraphQLCodegenTypesAsInterfacesTest {
     @BeforeEach
     void init() {
         mappingConfig.setPackageName("com.github.graphql");
-        mappingConfig.setFieldsWithResolvers(Collections.singleton("@customResolver"));
+        mappingConfig.setFieldsWithResolvers(singleton("@customResolver"));
+        mappingConfig.setFieldsWithoutResolvers(singleton("@noResolver"));
+        mappingConfig.setTypesAsInterfaces(new HashSet<>(singleton("@asInterface")));
     }
 
     @AfterEach
@@ -36,7 +38,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
 
     @Test
     void generate_typesAsInterfaces() throws Exception {
-        mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface", "Order")));
+        mappingConfig.getTypesAsInterfaces().add("Order");
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
@@ -68,16 +70,31 @@ class GraphQLCodegenTypesAsInterfacesTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
                 "types-as-interfaces-extends-interface/Node.java.txt"), getFileByName(files, "Node.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
-                "types-as-interfaces-extends-interface/Profile.java.txt"),
+                        "types-as-interfaces-extends-interface/Profile.java.txt"),
                 getFileByName(files, "Profile.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
-                "types-as-interfaces-extends-interface/QueryResolver.java.txt"),
+                        "types-as-interfaces-extends-interface/QueryResolver.java.txt"),
                 getFileByName(files, "QueryResolver.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
                 "types-as-interfaces-extends-interface/User.java.txt"), getFileByName(files, "User.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
-                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.java.txt"),
+                        "types-as-interfaces-extends-interface/UserCurrentQueryResolver.java.txt"),
                 getFileByName(files, "UserCurrentQueryResolver.java"));
+    }
+
+    @Test
+    void generate_typeAsInterfaceParametrized() throws Exception {
+        mappingConfig.setGenerateParameterizedFieldsResolvers(true);
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/" +
+                "types-as-interfaces-parametrized.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/types-as-interfaces-parametrized/Foo.java.txt"),
+                getFileByName(files, "Foo.java"));
     }
 
 }

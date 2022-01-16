@@ -41,7 +41,7 @@ public interface ${className} <#if implements?has_content>extends <#list impleme
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    ${field.type} get${field.name?cap_first}();
+    ${field.type} get${field.name?cap_first}(<#list field.inputParameters as param><#list param.annotations as paramAnnotation>@${paramAnnotation}<#if param.annotations?has_content> </#if></#list>${param.type} ${param.name}<#if param_has_next>, </#if></#list>);
 
 </#list>
 </#if>
