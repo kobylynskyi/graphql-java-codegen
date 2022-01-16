@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 
@@ -32,8 +30,8 @@ public interface UnknownFieldsSupport {
             unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
             unknownFields.setType("java.util.Map<String, Object>");
             unknownFields.setAnnotations(Arrays.asList(
-                    JsonAnySetter.class.getName(),
-                    JsonAnyGetter.class.getName()
+                    "com.fasterxml.jackson.annotation.JsonAnyGetter",
+                    "com.fasterxml.jackson.annotation.JsonAnySetter"
             ));
             return Optional.of(unknownFields);
         }
