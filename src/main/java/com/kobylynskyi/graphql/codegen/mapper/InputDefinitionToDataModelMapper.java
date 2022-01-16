@@ -54,17 +54,16 @@ public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport {
      * @return Freemarker data model of the GraphQL type
      */
     public Map<String, Object> map(MappingContext mappingContext, ExtendedInputObjectTypeDefinition definition) {
+        List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper
+                .map(mappingContext, definition.getValueDefinitions(), definition.getName());
+        createUnknownFields(mappingContext).ifPresent(fields::add);
+
         Map<String, Object> dataModel = new HashMap<>();
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(NAME, definition.getName());
-        List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper
-                .map(mappingContext, definition.getValueDefinitions(), definition.getName());
-
-        createUnknownFields(mappingContext).ifPresent(fields::add);
-
         dataModel.put(FIELDS, fields);
         dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
@@ -79,8 +78,6 @@ public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport {
         dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
         dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
         dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
-
-
         return dataModel;
     }
 
