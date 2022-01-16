@@ -1,0 +1,14 @@
+"""
+used with typesAsInterfaces config
+"""
+directive @asInterface on OBJECT
+
+"""
+used with fieldsWithResolvers config
+"""
+directive @noResolver on FIELD_DEFINITION
+
+type Foo @asInterface {
+    simpleField: String!
+    parameterizedField(count: Int!): String! @noResolver
+}
