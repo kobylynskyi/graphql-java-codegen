@@ -195,13 +195,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::isGenerateSealedInterfaces);
         supportUnknownFields = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isSupportUnknownFields);
-
-        unknownFieldsPropertyName = getValueOrDefaultToThis(source,
-                GraphQLCodegenConfiguration::getUnknownFieldsPropertyName);
-        generateSealedInterfaces = getValueOrDefaultToThis(source,
-                GraphQLCodegenConfiguration::isGenerateSealedInterfaces);
-        supportUnknownFields = getValueOrDefaultToThis(source,
-                GraphQLCodegenConfiguration::isSupportUnknownFields);
         unknownFieldsPropertyName = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getUnknownFieldsPropertyName);
     }
