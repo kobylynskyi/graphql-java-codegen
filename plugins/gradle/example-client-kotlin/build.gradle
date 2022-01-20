@@ -65,4 +65,5 @@ task graphqlCodegenKotlinService(type: GraphQLCodegenGradleTask) {
                                   "       com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidTO::class, name = \"Droid\")))"],
     ]
     modelNameSuffix = "TO"
+    supportUnknownFields = true
 }

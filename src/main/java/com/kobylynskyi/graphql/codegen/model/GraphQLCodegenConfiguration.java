@@ -461,4 +461,22 @@ public interface GraphQLCodegenConfiguration {
      */
     Boolean isGenerateSealedInterfaces();
 
+    /*
+     * Specifies whether api classes should support unknown fields during serialization or deserialization.
+     *
+     * @return <b>true</b> classes will include a property of type {@link java.util.Map} that will store unknown fields.
+     * @see com.fasterxml.jackson.annotation.JsonAnyGetter
+     * @see com.fasterxml.jackson.annotation.JsonAnySetter
+     */
+    Boolean isSupportUnknownFields();
+
+    /**
+     * Specifies the name of the property to be included in api classes to support unknown
+     * fields during serialization or deserialization
+     *
+     * @return The name of the property to store unknown fields
+     */
+    String getUnknownFieldsPropertyName();
+
+
 }

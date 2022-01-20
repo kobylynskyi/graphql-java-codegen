@@ -1,14 +1,15 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
+import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.JavaDocBuilder;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInputObjectTypeDefinition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ANNOTATIONS;
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.BUILDER;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
@@ -18,18 +19,21 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_AN
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SUPPORT_UNKNOWN_FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIELDS_PROPERTY_NAME;
 
 /**
  * Map input type definition to a Freemarker data model
  *
  * @author kobylynskyi
  */
-public class InputDefinitionToDataModelMapper {
+public class InputDefinitionToDataModelMapper implements UnknownFieldsSupport {
 
     private final AnnotationsMapper annotationsMapper;
     private final DataModelMapper dataModelMapper;
@@ -50,14 +54,17 @@ public class InputDefinitionToDataModelMapper {
      * @return Freemarker data model of the GraphQL type
      */
     public Map<String, Object> map(MappingContext mappingContext, ExtendedInputObjectTypeDefinition definition) {
+        List<ParameterDefinition> fields = inputValueDefinitionToParameterMapper
+                .map(mappingContext, definition.getValueDefinitions(), definition.getName());
+        createUnknownFields(mappingContext).ifPresent(fields::add);
+
         Map<String, Object> dataModel = new HashMap<>();
         // type/enum/input/interface/union classes do not require any imports
         dataModel.put(PACKAGE, DataModelMapper.getModelPackageName(mappingContext));
         dataModel.put(CLASS_NAME, dataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, definition));
         dataModel.put(JAVA_DOC, JavaDocBuilder.build(definition));
         dataModel.put(NAME, definition.getName());
-        dataModel.put(FIELDS, inputValueDefinitionToParameterMapper
-                .map(mappingContext, definition.getValueDefinitions(), definition.getName()));
+        dataModel.put(FIELDS, fields);
         dataModel.put(ANNOTATIONS, annotationsMapper.getAnnotations(mappingContext, definition));
         dataModel.put(BUILDER, mappingContext.getGenerateBuilder());
         dataModel.put(EQUALS_AND_HASH_CODE, mappingContext.getGenerateEqualsAndHashCode());
@@ -69,6 +76,8 @@ public class InputDefinitionToDataModelMapper {
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
         dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
+        dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
+        dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
         return dataModel;
     }
 

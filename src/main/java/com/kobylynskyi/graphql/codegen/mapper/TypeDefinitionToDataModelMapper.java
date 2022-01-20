@@ -33,15 +33,17 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_N
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PARENT_INTERFACE_PROPERTIES;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.SUPPORT_UNKNOWN_FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.TO_STRING_FOR_REQUEST;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.UNKNOWN_FIELDS_PROPERTY_NAME;
 
 /**
  * Map type definition to a Freemarker data model
  *
  * @author kobylynskyi
  */
-public class TypeDefinitionToDataModelMapper {
+public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport {
 
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final AnnotationsMapper annotationsMapper;
@@ -106,6 +108,8 @@ public class TypeDefinitionToDataModelMapper {
         dataModel.put(GENERATE_MODEL_OPEN_CLASSES, mappingContext.isGenerateModelOpenClasses());
         dataModel.put(INITIALIZE_NULLABLE_TYPES, mappingContext.isInitializeNullableTypes());
         dataModel.put(GENERATE_SEALED_INTERFACES, mappingContext.isGenerateSealedInterfaces());
+        dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
+        dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
         return dataModel;
     }
 
@@ -132,6 +136,12 @@ public class TypeDefinitionToDataModelMapper {
                 .flatMap(Collection::stream)
                 .forEach(paramDef -> allParameters
                         .merge(paramDef.getName(), paramDef, TypeDefinitionToDataModelMapper::merge));
+
+
+        createUnknownFields(mappingContext).ifPresent(
+                unknownFields -> allParameters.put(mappingContext.getUnknownFieldsPropertyName(), unknownFields)
+        );
+
         return allParameters.values();
     }
 

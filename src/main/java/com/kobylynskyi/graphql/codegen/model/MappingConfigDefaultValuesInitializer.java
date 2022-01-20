@@ -108,6 +108,12 @@ public class MappingConfigDefaultValuesInitializer {
         if (mappingConfig.isGenerateSealedInterfaces() == null) {
             mappingConfig.setGenerateSealedInterfaces(MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES);
         }
+        if (mappingConfig.isSupportUnknownFields() == null) {
+            mappingConfig.setSupportUnknownFields(MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS);
+        }
+        if (mappingConfig.getUnknownFieldsPropertyName() == null) {
+            mappingConfig.setUnknownFieldsPropertyName(MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME);
+        }
     }
 
 }
