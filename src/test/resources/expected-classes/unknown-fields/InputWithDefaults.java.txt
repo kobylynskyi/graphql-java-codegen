@@ -25,8 +25,8 @@ public class InputWithDefaults implements java.io.Serializable {
     private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
     @javax.validation.constraints.NotNull
     private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
-    @com.fasterxml.jackson.annotation.JsonAnySetter
     @com.fasterxml.jackson.annotation.JsonAnyGetter
+    @com.fasterxml.jackson.annotation.JsonAnySetter
     private java.util.Map<String, Object> userDefinedFields;
 
     public InputWithDefaults() {
