@@ -24,7 +24,7 @@ class GraphqlJacksonTypeIdResolver extends TypeIdResolverBase {
     override def typeFromId(context: DatabindContext, typename: String): JavaType = try {
         val clazz = Class.forName(<#if package?has_content>"${package}." +
                     </#if><#if modelNamePrefix?has_content>"${modelNamePrefix}" +
-                    </#if>typename<#if modelNamePrefix?has_content> +
+                    </#if>typename<#if modelNameSuffix?has_content> +
                     "${modelNameSuffix}"</#if>)
         context.constructSpecializedType(superType, clazz)
     } catch {
