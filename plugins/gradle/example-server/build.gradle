@@ -6,7 +6,7 @@ plugins {
     //
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "5.3.0"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.4.0"
 }
 
 mainClassName = "io.github.kobylynskyi.product.Application"
@@ -48,6 +48,9 @@ graphqlCodegen {
     }
     modelNameSuffix = "TO"
     generateApis = true
+    supportUnknownFields = true
+    unknownFieldsPropertyName = "additionalFields"
+
 }
 
 repositories {

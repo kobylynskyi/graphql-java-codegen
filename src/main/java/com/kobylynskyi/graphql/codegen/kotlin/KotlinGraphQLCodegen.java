@@ -49,6 +49,12 @@ public class KotlinGraphQLCodegen extends GraphQLCodegen {
         if (mappingConfig.isGenerateModelOpenClasses() == null) {
             mappingConfig.setGenerateModelOpenClasses(false);
         }
+        if (mappingConfig.isInitializeNullableTypes() == null) {
+            mappingConfig.setInitializeNullableTypes(false);
+        }
+        if (mappingConfig.isGenerateSealedInterfaces() == null) {
+            mappingConfig.setGenerateSealedInterfaces(false);
+        }
         if (mappingConfig.getGenerateBuilder() == null) {
             // functional expression
             mappingConfig.setGenerateBuilder(false);

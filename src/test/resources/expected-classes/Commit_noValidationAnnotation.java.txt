@@ -7,6 +7,8 @@ package com.github.graphql;
 )
 public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, PullRequestTimelineItem, Subscribable, Node, GitObject, UniformResourceLocatable {
 
+    private static final long serialVersionUID = 1L;
+
     private String abbreviatedOid;
     private int additions;
     private PullRequestConnection associatedPullRequests;

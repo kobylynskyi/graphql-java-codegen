@@ -124,6 +124,8 @@ trait GraphQLCodegenKeys {
 
   val generateModelOpenClasses = settingKey[Boolean]("The class type of the generated model. If true, generate normal classes, else generate case class.")
 
+  val generateSealedInterfaces = settingKey[Boolean]("If true, generate sealed interfaces for GraphQL unions and interfaces, else generate normal interfaces.")
+
   val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package")
 
   //for version
@@ -132,5 +134,8 @@ trait GraphQLCodegenKeys {
 
   //some others for sbt
   val generateCodegenTargetPath = settingKey[File]("Where to store generated files and add the generated code to the classpath, so that they can be referenced.")
+
+  val supportUnknownFields = settingKey[Boolean]("supportUnknownFields")
+  val unknownFieldsPropertyName = settingKey[String]("unknownFieldsPropertyName")
 
 }

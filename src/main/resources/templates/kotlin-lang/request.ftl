@@ -107,7 +107,7 @@ open class ${className}(private val alias: String?) : GraphQLOperationRequest {
         <#else>
         <#if MapperUtil.isKotlinPrimitive(field.type)>
         <#assign default = MapperUtil.defaultValueKotlinPrimitive(field.type)/>
-        private var ${field.name}: ${field.type} = default
+        private var ${field.name}: ${field.type} = ${default}
         <#else>
         private lateinit var ${field.name}: ${field.type}
         </#if>

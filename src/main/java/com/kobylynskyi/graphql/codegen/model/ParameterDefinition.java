@@ -32,6 +32,10 @@ public class ParameterDefinition {
     private DeprecatedDefinition deprecated;
     private boolean serializeUsingObjectMapper;
     /**
+     * If the type is parametrized then input parameters will be defined here
+     */
+    private List<ParameterDefinition> inputParameters;
+    /**
      * Definition of the same type, but defined in the parent
      */
     private ParameterDefinition definitionInParentType;
@@ -123,5 +127,13 @@ public class ParameterDefinition {
 
     public void setDefinitionInParentType(ParameterDefinition definitionInParentType) {
         this.definitionInParentType = definitionInParentType;
+    }
+
+    public List<ParameterDefinition> getInputParameters() {
+        return inputParameters;
+    }
+
+    public void setInputParameters(List<ParameterDefinition> inputParameters) {
+        this.inputParameters = inputParameters;
     }
 }

@@ -23,14 +23,14 @@ public class DataModelMapperFactory {
     public DataModelMapperFactory(MapperFactory mapperFactory) {
         this.mapperFactory = mapperFactory;
 
-        this.fieldDefToParamMapper = new FieldDefinitionToParameterMapper(mapperFactory);
+        InputValueDefinitionToParameterMapper inputValueDefToParamMapper = new InputValueDefinitionToParameterMapper(
+                mapperFactory);
+        this.fieldDefToParamMapper = new FieldDefinitionToParameterMapper(mapperFactory, inputValueDefToParamMapper);
         this.enumDefToDataModelMapper = new EnumDefinitionToDataModelMapper(mapperFactory);
         this.unionDefToDataModelMapper = new UnionDefinitionToDataModelMapper(mapperFactory);
         this.typeDefToDataModelMapper = new TypeDefinitionToDataModelMapper(mapperFactory, fieldDefToParamMapper);
         this.interfaceDefToDataModelMapper = new InterfaceDefinitionToDataModelMapper(
                 mapperFactory, fieldDefToParamMapper);
-        InputValueDefinitionToParameterMapper inputValueDefToParamMapper = new InputValueDefinitionToParameterMapper(
-                mapperFactory);
         this.inputDefToDataModelMapper = new InputDefinitionToDataModelMapper(
                 mapperFactory, inputValueDefToParamMapper);
         this.fieldDefsToResolverDataModelMapper = new FieldDefinitionsToResolverDataModelMapper(

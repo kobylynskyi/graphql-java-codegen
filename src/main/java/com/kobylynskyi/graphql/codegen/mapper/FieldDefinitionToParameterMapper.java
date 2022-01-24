@@ -23,11 +23,14 @@ public class FieldDefinitionToParameterMapper {
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final DataModelMapper dataModelMapper;
     private final AnnotationsMapper annotationsMapper;
+    private final InputValueDefinitionToParameterMapper inputValueDefinitionToParameterMapper;
 
-    public FieldDefinitionToParameterMapper(MapperFactory mapperFactory) {
+    public FieldDefinitionToParameterMapper(MapperFactory mapperFactory,
+                                            InputValueDefinitionToParameterMapper inputValueDefToParamMapper) {
         this.graphQLTypeMapper = mapperFactory.getGraphQLTypeMapper();
         this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.annotationsMapper = mapperFactory.getAnnotationsMapper();
+        this.inputValueDefinitionToParameterMapper = inputValueDefToParamMapper;
     }
 
     /**
@@ -137,6 +140,8 @@ public class FieldDefinitionToParameterMapper {
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
+        parameter.setInputParameters(inputValueDefinitionToParameterMapper.map(
+                mappingContext, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
         return parameter;
     }
 

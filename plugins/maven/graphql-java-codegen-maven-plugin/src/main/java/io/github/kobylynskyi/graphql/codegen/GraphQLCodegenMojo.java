@@ -200,6 +200,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] configurationFiles;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS_STRING)
+    private boolean supportUnknownFields;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME)
+    private String unknownFieldsPropertyName;
+
     /**
      * The project being built.
      */
@@ -208,6 +214,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING)
     private boolean generateModelOpenClasses;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING)
+    private boolean initializeNullableTypes;
+
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES_STRING)
+    private boolean generateSealedInterfaces;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -267,6 +279,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         mappingConfig.setGeneratedLanguage(generatedLanguage);
         mappingConfig.setGenerateModelOpenClasses(isGenerateModelOpenClasses());
+        mappingConfig.setInitializeNullableTypes(isInitializeNullableTypes());
+        mappingConfig.setGenerateSealedInterfaces(isGenerateSealedInterfaces());
+
+        mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
+        mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
 
         try {
             instantiateCodegen(mappingConfig).generate();
@@ -603,12 +620,40 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateModelOpenClasses;
     }
 
+    @Override
+    public Boolean isInitializeNullableTypes() {
+        return initializeNullableTypes;
+    }
+
+    @Override
+    public Boolean isGenerateSealedInterfaces() {
+        return generateSealedInterfaces;
+    }
+
     public ParentInterfacesConfig getParentInterfaces() {
         return parentInterfaces;
     }
 
     public String[] getConfigurationFiles() {
         return configurationFiles;
+    }
+
+    @Override
+    public Boolean isSupportUnknownFields() {
+        return supportUnknownFields;
+    }
+
+    public void setSupportUnknownFields(boolean supportUnknownFields) {
+        this.supportUnknownFields = supportUnknownFields;
+    }
+
+    @Override
+    public String getUnknownFieldsPropertyName() {
+        return unknownFieldsPropertyName;
+    }
+
+    public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
+        this.unknownFieldsPropertyName = unknownFieldsPropertyName;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, Properties> sourceMap) {

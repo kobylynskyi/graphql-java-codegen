@@ -71,6 +71,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     graphqlJavaCodegenVersion := None,
     // suffix/prefix/strategies:
     generateModelOpenClasses := MappingConfigConstants.DEFAULT_GENERATE_MODEL_OPEN_CLASSES,
+    generateSealedInterfaces := MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES,
     generatedLanguage := MappingConfigConstants.DEFAULT_GENERATED_LANGUAGE,
     apiNamePrefix := None,
     apiNameSuffix := MappingConfigConstants.DEFAULT_RESOLVER_SUFFIX,
@@ -116,7 +117,10 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     // parent interfaces configs:
     parentInterfaces := parentInterfacesConfig,
     generateAllMethodInProjection := MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD,
-    responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH
+    responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
+
+    supportUnknownFields := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
+    unknownFieldsPropertyName := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
@@ -171,6 +175,10 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateModelOpenClasses((generateModelOpenClasses in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateJacksonTypeIdResolver((generateJacksonTypeIdResolver in GraphQLCodegenConfig).value);
+
+    mappingConfig.setSupportUnknownFields((supportUnknownFields in GraphQLCodegenConfig).value)
+    mappingConfig.setUnknownFieldsPropertyName((unknownFieldsPropertyName in GraphQLCodegenConfig).value)
+
     mappingConfig
   }
 

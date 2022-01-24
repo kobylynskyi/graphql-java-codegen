@@ -7,6 +7,8 @@ import java.util.StringJoiner;
 )
 public class TypeWithMandatoryField implements java.io.Serializable, InterfaceWithOptionalField {
 
+    private static final long serialVersionUID = 1L;
+
     private int test;
 
     public TypeWithMandatoryField() {
