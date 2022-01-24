@@ -24,7 +24,7 @@ public interface UnknownFieldsSupport {
      *         the instance of {@link ParameterDefinition}. {@link Optional#empty()} otherwise.
      */
     default Optional<ParameterDefinition> createUnknownFields(MappingContext mappingContext) {
-        if (mappingContext.isSupportUnknownFields()) {
+        if (Boolean.TRUE.equals(mappingContext.isSupportUnknownFields())) {
             ParameterDefinition unknownFields = new ParameterDefinition();
             unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
             unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
