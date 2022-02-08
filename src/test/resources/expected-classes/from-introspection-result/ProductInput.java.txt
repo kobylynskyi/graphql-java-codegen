@@ -31,6 +31,7 @@ public class ProductInput implements java.io.Serializable {
         this.stockStatus = stockStatus;
     }
 
+    @javax.validation.constraints.NotNull
     public String getTitle() {
         return title;
     }
@@ -45,6 +46,7 @@ public class ProductInput implements java.io.Serializable {
         this.description = description;
     }
 
+    @javax.validation.constraints.NotNull
     public String getPrice() {
         return price;
     }
@@ -52,6 +54,7 @@ public class ProductInput implements java.io.Serializable {
         this.price = price;
     }
 
+    @javax.validation.constraints.NotNull
     public String getSku() {
         return sku;
     }

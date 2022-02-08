@@ -23,6 +23,7 @@ public class SomeObject implements java.io.Serializable {
         this.userDefinedFields = userDefinedFields;
     }
 
+    @javax.validation.constraints.NotNull
     public String getName() {
         return name;
     }
@@ -30,6 +31,8 @@ public class SomeObject implements java.io.Serializable {
         this.name = name;
     }
 
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    @com.fasterxml.jackson.annotation.JsonAnySetter
     public java.util.Map<String, Object> getUserDefinedFields() {
         return userDefinedFields;
     }

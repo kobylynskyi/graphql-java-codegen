@@ -82,6 +82,7 @@ public class InputWithDefaults implements java.io.Serializable {
         this.enumVal = enumVal;
     }
 
+    @javax.validation.constraints.NotNull
     public MyEnum getNonNullEnumVal() {
         return nonNullEnumVal;
     }
@@ -117,6 +118,7 @@ public class InputWithDefaults implements java.io.Serializable {
         this.intListEmptyDefault = intListEmptyDefault;
     }
 
+    @javax.validation.constraints.NotNull
     public java.util.List<SomeObject> getObjectListEmptyDefault() {
         return objectListEmptyDefault;
     }
@@ -124,6 +126,8 @@ public class InputWithDefaults implements java.io.Serializable {
         this.objectListEmptyDefault = objectListEmptyDefault;
     }
 
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    @com.fasterxml.jackson.annotation.JsonAnySetter
     public java.util.Map<String, Object> getUserDefinedFields() {
         return userDefinedFields;
     }

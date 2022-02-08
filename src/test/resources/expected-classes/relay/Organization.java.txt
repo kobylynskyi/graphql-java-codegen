@@ -17,6 +17,7 @@ public class Organization implements java.io.Serializable {
         this.id = id;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

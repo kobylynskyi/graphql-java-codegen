@@ -21,6 +21,7 @@ public class Foo1 implements java.io.Serializable, Foo {
         this.bars = bars;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

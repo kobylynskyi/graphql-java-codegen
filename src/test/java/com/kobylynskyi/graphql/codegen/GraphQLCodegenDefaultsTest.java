@@ -54,7 +54,7 @@ class GraphQLCodegenDefaultsTest {
     }
 
     @Test
-    void generate_UnkonwnFields() throws Exception {
+    void generate_UnknownFields() throws Exception {
         mappingConfig.setSupportUnknownFields(true);
         mappingConfig.setUnknownFieldsPropertyName("userDefinedFields");
 

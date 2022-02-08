@@ -22,6 +22,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.id = id;
     }
 
+    @javax.validation.constraints.NotNull
     public Status getStatus() {
         return status;
     }
@@ -29,6 +30,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.status = status;
     }
 
+    @javax.validation.constraints.NotNull
     public String getCreatedDateTime() {
         return createdDateTime;
     }
@@ -36,6 +38,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.createdDateTime = createdDateTime;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

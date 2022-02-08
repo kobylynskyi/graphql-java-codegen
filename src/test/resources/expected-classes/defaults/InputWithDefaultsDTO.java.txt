@@ -80,6 +80,7 @@ public class InputWithDefaultsDTO implements java.io.Serializable {
         this.enumVal = enumVal;
     }
 
+    @javax.validation.constraints.NotNull
     public MyEnumDTO getNonNullEnumVal() {
         return nonNullEnumVal;
     }
@@ -115,6 +116,7 @@ public class InputWithDefaultsDTO implements java.io.Serializable {
         this.intListEmptyDefault = intListEmptyDefault;
     }
 
+    @javax.validation.constraints.NotNull
     public java.util.List<SomeObjectDTO> getObjectListEmptyDefault() {
         return objectListEmptyDefault;
     }

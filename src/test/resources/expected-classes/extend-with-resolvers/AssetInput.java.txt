@@ -16,6 +16,7 @@ public class AssetInput implements java.io.Serializable {
         this.name = name;
     }
 
+    @javax.validation.constraints.NotNull
     public String getName() {
         return name;
     }

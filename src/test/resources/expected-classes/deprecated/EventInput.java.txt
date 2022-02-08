@@ -21,6 +21,7 @@ public class EventInput implements java.io.Serializable {
     }
 
     @Deprecated
+    @javax.validation.constraints.NotNull
     public Status getStatus() {
         return status;
     }
