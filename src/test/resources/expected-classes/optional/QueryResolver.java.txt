@@ -14,7 +14,7 @@ public interface QueryResolver {
     java.util.List<License> licenses() throws Exception;
 
     @javax.validation.constraints.NotNull
-    java.util.List<MarketplaceCategory> marketplaceCategories(Boolean excludeEmpty, Boolean excludeSubcategories, @javax.validation.constraints.NotNull java.util.List<String> includeCategories) throws Exception;
+    java.util.List<MarketplaceCategory> marketplaceCategories(Boolean excludeEmpty, Boolean excludeSubcategories, java.util.List<String> includeCategories) throws Exception;
 
     java.util.Optional<MarketplaceCategory> marketplaceCategory(@javax.validation.constraints.NotNull String slug, Boolean useTopicAliases) throws Exception;
 
@@ -53,7 +53,7 @@ public interface QueryResolver {
     java.util.Optional<SecurityAdvisory> securityAdvisory(@javax.validation.constraints.NotNull String ghsaId) throws Exception;
 
     @javax.validation.constraints.NotNull
-    SecurityVulnerabilityConnection securityVulnerabilities(String after, String before, SecurityAdvisoryEcosystem ecosystem, Integer first, Integer last, SecurityVulnerabilityOrder orderBy, String Package, @javax.validation.constraints.NotNull java.util.List<SecurityAdvisorySeverity> severities) throws Exception;
+    SecurityVulnerabilityConnection securityVulnerabilities(String after, String before, SecurityAdvisoryEcosystem ecosystem, Integer first, Integer last, SecurityVulnerabilityOrder orderBy, String Package, java.util.List<SecurityAdvisorySeverity> severities) throws Exception;
 
     java.util.Optional<SponsorsListing> sponsorsListing(@javax.validation.constraints.NotNull String slug) throws Exception;
 

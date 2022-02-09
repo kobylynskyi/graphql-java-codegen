@@ -266,4 +266,20 @@ class GraphQLCodegenAnnotationsTest {
             getFileByName(files, "User.java"));
     }
 
+    @Test
+    void generate_ModelValidationAnnotationForSubType() throws Exception {
+        new JavaGraphQLCodegen(singletonList(
+                "src/test/resources/schemas/nullable-list-type-with-nullable-sub-types.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/annotation/" +
+                        "NullableListReturnTypeWithMandatoryElementsQueryResolver.java.txt"),
+                getFileByName(files, "NullableListReturnTypeWithMandatoryElementsQueryResolver.java"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/annotation/TypeWithNullableListType.java.txt"),
+                getFileByName(files, "TypeWithNullableListType.java"));
+    }
+
 }
