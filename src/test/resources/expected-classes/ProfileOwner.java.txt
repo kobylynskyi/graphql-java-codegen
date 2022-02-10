@@ -25,10 +25,10 @@ public interface ProfileOwner {
     String getName();
 
     @javax.validation.constraints.NotNull
-    PinnableItemConnection getPinnableItems(String after, String before, Integer first, Integer last, @javax.validation.constraints.NotNull java.util.List<PinnableItemType> types);
+    PinnableItemConnection getPinnableItems(String after, String before, Integer first, Integer last, java.util.List<PinnableItemType> types);
 
     @javax.validation.constraints.NotNull
-    PinnableItemConnection getPinnedItems(String after, String before, Integer first, Integer last, @javax.validation.constraints.NotNull java.util.List<PinnableItemType> types);
+    PinnableItemConnection getPinnedItems(String after, String before, Integer first, Integer last, java.util.List<PinnableItemType> types);
 
     int getPinnedItemsRemaining();
 

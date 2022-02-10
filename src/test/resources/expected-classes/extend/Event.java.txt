@@ -10,7 +10,6 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     private Status status;
     @javax.validation.constraints.NotNull
     private String createdDateTime;
-    @javax.validation.constraints.NotNull
     private java.util.List<Asset> assets;
     @javax.validation.constraints.NotNull
     private String id;
