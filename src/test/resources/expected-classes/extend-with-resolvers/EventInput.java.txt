@@ -8,7 +8,6 @@ public class EventInput implements java.io.Serializable {
 
     @javax.validation.constraints.NotNull
     private Status status;
-    @javax.validation.constraints.NotNull
     private java.util.List<AssetInput> assets;
 
     public EventInput() {

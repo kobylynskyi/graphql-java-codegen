@@ -4,7 +4,6 @@
 )
 public interface AssetsQueryResolver {
 
-    @javax.validation.constraints.NotNull
     java.util.List<Asset> assets() throws Exception;
 
 }

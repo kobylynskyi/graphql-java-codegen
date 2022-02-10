@@ -4,7 +4,6 @@
 )
 public interface EventsQueryResolver {
 
-    @javax.validation.constraints.NotNull
     java.util.List<Event> events() throws Exception;
 
 }

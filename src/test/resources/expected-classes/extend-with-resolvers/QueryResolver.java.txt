@@ -8,10 +8,8 @@
 )
 public interface QueryResolver {
 
-    @javax.validation.constraints.NotNull
     java.util.List<Event> events() throws Exception;
 
-    @javax.validation.constraints.NotNull
     java.util.List<Asset> assets() throws Exception;
 
 }

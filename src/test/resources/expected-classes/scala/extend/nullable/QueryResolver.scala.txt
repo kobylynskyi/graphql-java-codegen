@@ -5,7 +5,6 @@
 )
 trait QueryResolver {
 
-    @javax.validation.constraints.NotNull
     @throws[Exception]
     def events(): scala.Seq[Event]
 
