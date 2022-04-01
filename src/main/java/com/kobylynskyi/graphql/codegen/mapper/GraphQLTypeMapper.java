@@ -180,6 +180,8 @@ public abstract class GraphQLTypeMapper {
             if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
                 mappedCollectionType.setJavaName(
                         wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
+            } else if (mappedCollectionType.isList()) {
+                mappedCollectionType.setJavaName(mappedCollectionType.getJavaName());
             } else {
                 mappedCollectionType.setJavaName(
                         wrapIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
@@ -209,6 +211,7 @@ public abstract class GraphQLTypeMapper {
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
         boolean primitiveCanBeUsed = !collection;
+        boolean list = false;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
@@ -219,12 +222,17 @@ public abstract class GraphQLTypeMapper {
         } else {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
+        if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name + "#list"))) {
+            list = true;
+        }
         boolean serializeUsingObjectMapper =
                 serializeFieldsUsingObjectMapper.contains(graphQLType) ||
                         serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
-                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper, list);
     }
 
     public String getTypeConsideringPrimitive(MappingContext mappingContext,

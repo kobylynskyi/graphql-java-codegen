@@ -101,6 +101,18 @@ class GraphQLCodegenTest {
     }
 
     @Test
+    void generate_CustomMappingsList() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Event.properties#list",
+                "java.util.Optional<java.util.List<com.kobylynskyi.graphql.test1.EventProperty>>")));
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "Event.java",
+                "java.util.Optional<java.util.List<com.kobylynskyi.graphql.test1.EventProperty>> properties;");
+    }
+
+    @Test
     void generate_CustomMappings_Nested() throws Exception {
         mappingConfig
                 .setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));

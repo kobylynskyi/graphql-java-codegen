@@ -11,16 +11,19 @@ public class NamedDefinition {
     private boolean mandatory;
     private boolean primitiveCanBeUsed;
     private boolean serializeUsingObjectMapper;
+    private boolean list;
 
     public NamedDefinition(String javaName, String graphqlTypeName,
                            boolean isInterface, boolean mandatory,
-                           boolean primitiveCanBeUsed, boolean serializeUsingObjectMapper) {
+                           boolean primitiveCanBeUsed, boolean serializeUsingObjectMapper,
+                           boolean list) {
         this.javaName = javaName;
         this.graphqlTypeName = graphqlTypeName;
         this.isInterface = isInterface;
         this.mandatory = mandatory;
         this.primitiveCanBeUsed = primitiveCanBeUsed;
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
+        this.list = list;
     }
 
     public String getJavaName() {
@@ -69,5 +72,13 @@ public class NamedDefinition {
 
     public void setSerializeUsingObjectMapper(boolean serializeUsingObjectMapper) {
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
+    }
+
+    public boolean isList() {
+        return list;
+    }
+
+    public void setList(boolean list) {
+        this.list = list;
     }
 }

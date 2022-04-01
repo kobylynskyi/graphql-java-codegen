@@ -87,9 +87,15 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         String langTypeName;
         boolean primitiveCanBeUsed = !collection;
         boolean serializeUsingObjectMapper = false;
+        boolean list = false;
         if (name != null && parentTypeName != null && customTypesMapping.containsKey(parentTypeName + "." + name)) {
             langTypeName = customTypesMapping.get(parentTypeName + "." + name);
             primitiveCanBeUsed = false;
+        } else if (name != null && parentTypeName != null
+                && customTypesMapping.containsKey(parentTypeName + "." + name + "#list")) {
+            langTypeName = customTypesMapping.get(parentTypeName + "." + name + "#list");
+            primitiveCanBeUsed = false;
+            list = true;
         } else if (customTypesMapping.containsKey(graphQLType)) {
             langTypeName = customTypesMapping.get(graphQLType);
         } else {
@@ -102,7 +108,7 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         }
 
         return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
-                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+                mandatory, primitiveCanBeUsed, serializeUsingObjectMapper, list);
     }
 
 }
