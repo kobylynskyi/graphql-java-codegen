@@ -9,6 +9,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -94,9 +95,8 @@ public class FieldDefinitionToParameterMapper {
                                                List<ExtendedFieldDefinition> fieldDefinitions,
                                                ExtendedDefinition<?, ?> parentDefinition) {
         return fieldDefinitions.stream()
-                .filter(
-                        fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
-                .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition.getName()))
+                .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
+                .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition))
                 .collect(toList());
     }
 
@@ -119,15 +119,16 @@ public class FieldDefinitionToParameterMapper {
     /**
      * Map GraphQL's FieldDefinition to a Freemarker-understandable format of parameter
      *
-     * @param mappingContext Global mapping context
-     * @param fieldDef       GraphQL field definition
-     * @param parentTypeName Name of the parent type
+     * @param mappingContext   Global mapping context
+     * @param fieldDef         GraphQL field definition
+     * @param parentDefinition Parent GraphQL definition
      * @return Freemarker-understandable format of parameter (field)
      */
-    private ParameterDefinition mapField(MappingContext mappingContext, ExtendedFieldDefinition fieldDef,
-                                         String parentTypeName) {
+    private ParameterDefinition mapField(MappingContext mappingContext,
+                                         ExtendedFieldDefinition fieldDef,
+                                         ExtendedDefinition<?, ?> parentDefinition) {
         NamedDefinition namedDefinition = graphQLTypeMapper
-                .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentTypeName);
+                .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentDefinition.getName());
 
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, fieldDef.getName()));
@@ -135,13 +136,18 @@ public class FieldDefinitionToParameterMapper {
         parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition,
                 namedDefinition.getJavaName()));
         parameter.setAnnotations(
-                annotationsMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentTypeName, false));
+                annotationsMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentDefinition.getName(), false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
-        parameter.setInputParameters(inputValueDefinitionToParameterMapper.map(
-                mappingContext, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
+
+        if (mappingContext.getGenerateParameterizedFieldsResolvers()) {
+            parameter.setInputParameters(inputValueDefinitionToParameterMapper.map(
+                    mappingContext, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
+        } else {
+            parameter.setInputParameters(Collections.emptyList());
+        }
         return parameter;
     }
 
