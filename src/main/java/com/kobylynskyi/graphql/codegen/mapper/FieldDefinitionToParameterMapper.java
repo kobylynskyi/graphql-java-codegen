@@ -135,8 +135,8 @@ public class FieldDefinitionToParameterMapper {
         parameter.setOriginalName(fieldDef.getName());
         parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition,
                 namedDefinition.getJavaName()));
-        parameter.setAnnotations(
-                annotationsMapper.getAnnotations(mappingContext, fieldDef.getType(), fieldDef, parentDefinition.getName(), false));
+        parameter.setAnnotations(annotationsMapper.getAnnotations(
+                mappingContext, fieldDef.getType(), fieldDef, parentDefinition.getName(), false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         parameter.setMandatory(namedDefinition.isMandatory());
