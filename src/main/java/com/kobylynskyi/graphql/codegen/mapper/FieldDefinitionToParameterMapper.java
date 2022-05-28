@@ -142,7 +142,7 @@ public class FieldDefinitionToParameterMapper {
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
 
-        if (mappingContext.getGenerateParameterizedFieldsResolvers()) {
+        if (Boolean.TRUE.equals(mappingContext.getGenerateParameterizedFieldsResolvers())) {
             parameter.setInputParameters(inputValueDefinitionToParameterMapper.map(
                     mappingContext, fieldDef.getInputValueDefinitions(), fieldDef.getName()));
         } else {
