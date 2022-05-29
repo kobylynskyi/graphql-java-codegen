@@ -1,0 +1,16 @@
+schema {
+    query: Query
+}
+
+type Query {
+    external(name: String!): External!
+}
+
+# This is expected to be defined elsewhere and configured via a custom type mapping
+# type External {
+#     name: String!
+# }
+
+extend type External {
+    age: Int!
+}

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.ENUM_IMPORT_IT_SELF_IN_SCALA;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
@@ -32,6 +31,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_IN
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPORTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.INITIALIZE_NULLABLE_TYPES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATIONS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
@@ -225,7 +225,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
             String parentObjectParamType = graphQLTypeMapper
                     .getLanguageType(mappingContext, new TypeName(parentTypeName));
             String parentObjectParamName = dataModelMapper
-                    .capitalizeIfRestricted(mappingContext, Utils.unCapitalize(parentObjectParamType));
+                    .capitalizeIfRestricted(mappingContext, Utils.unCapitalize(parentTypeName));
             ParameterDefinition parameterDefinition = new ParameterDefinition();
             parameterDefinition.setType(parentObjectParamType);
             parameterDefinition.setName(parentObjectParamName);
