@@ -1,0 +1,62 @@
+package com.github.graphql;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class B implements java.io.Serializable, A {
+
+    private static final long serialVersionUID = 1L;
+
+    private String foo;
+
+    public B() {
+    }
+
+    public B(String foo) {
+        this.foo = foo;
+    }
+
+    public String getFoo() {
+        return foo;
+    }
+    public void setFoo(String foo) {
+        this.foo = foo;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (foo != null) {
+            joiner.add("foo: " + GraphQLRequestSerializer.getEntry(foo));
+        }
+        return joiner.toString();
+    }
+
+    public static B.Builder builder() {
+        return new B.Builder();
+    }
+
+    public static class Builder {
+
+        private String foo;
+
+        public Builder() {
+        }
+
+        public Builder setFoo(String foo) {
+            this.foo = foo;
+            return this;
+        }
+
+
+        public B build() {
+            return new B(foo);
+        }
+
+    }
+}
