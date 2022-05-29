@@ -67,6 +67,22 @@ class GraphQLCodegenFieldsResolversTest {
     }
 
     @Test
+    void generate_ParametrizedFieldsInInterface_DoNotGenerateResolvers() throws Exception {
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setGenerateApis(false);
+        mappingConfig.setGenerateParameterizedFieldsResolvers(false);
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/A.java.txt"),
+                getFileByName(files, "A.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/B.java.txt"),
+                getFileByName(files, "B.java"));
+    }
+
+    @Test
     void generate_CustomFieldsResolvers() throws Exception {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
