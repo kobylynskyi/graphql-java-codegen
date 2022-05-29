@@ -70,4 +70,23 @@ class GraphQLCodegenCustomScalarMappingTest {
                 getFileByName(files, "ResponseContainingDate.java"));
     }
 
+    /**
+     * See #964
+     */
+    @Test
+    void generate_CustomTypeMapping_ForExtensionProperty() throws Exception {
+        mappingConfig.setGenerateExtensionFieldsResolvers(true);
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("External", "com.example.External")));
+        mappingConfig.setGenerateClient(false);
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/external-type-extend.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/custom-type/ExternalResolver.java.txt"),
+                getFileByName(files, "ExternalResolver.java"));
+    }
+
 }
