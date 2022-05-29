@@ -1,0 +1,13 @@
+type Query {
+    # NonNull validation annotation should not be present here
+    nullableListReturnTypeWithMandatoryElements: [TypeWithNullableListType!]
+}
+
+type TypeWithNullableListType {
+    # NonNull validation annotation should not be present here
+    nullableListFieldWithMandatoryElements: [Type2!]
+}
+
+type Type2 {
+    id: ID!
+}

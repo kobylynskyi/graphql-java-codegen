@@ -1,0 +1,61 @@
+package com.kobylynskyi.graphql.test1;
+
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class TypeWithNullableListType implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private java.util.List<Type2> nullableListFieldWithMandatoryElements;
+
+    public TypeWithNullableListType() {
+    }
+
+    public TypeWithNullableListType(java.util.List<Type2> nullableListFieldWithMandatoryElements) {
+        this.nullableListFieldWithMandatoryElements = nullableListFieldWithMandatoryElements;
+    }
+
+    /**
+     * NonNull validation annotation should not be present here
+     */
+    public java.util.List<Type2> getNullableListFieldWithMandatoryElements() {
+        return nullableListFieldWithMandatoryElements;
+    }
+    /**
+     * NonNull validation annotation should not be present here
+     */
+    public void setNullableListFieldWithMandatoryElements(java.util.List<Type2> nullableListFieldWithMandatoryElements) {
+        this.nullableListFieldWithMandatoryElements = nullableListFieldWithMandatoryElements;
+    }
+
+
+
+    public static TypeWithNullableListType.Builder builder() {
+        return new TypeWithNullableListType.Builder();
+    }
+
+    public static class Builder {
+
+        private java.util.List<Type2> nullableListFieldWithMandatoryElements;
+
+        public Builder() {
+        }
+
+        /**
+         * NonNull validation annotation should not be present here
+         */
+        public Builder setNullableListFieldWithMandatoryElements(java.util.List<Type2> nullableListFieldWithMandatoryElements) {
+            this.nullableListFieldWithMandatoryElements = nullableListFieldWithMandatoryElements;
+            return this;
+        }
+
+
+        public TypeWithNullableListType build() {
+            return new TypeWithNullableListType(nullableListFieldWithMandatoryElements);
+        }
+
+    }
+}

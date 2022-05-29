@@ -1,0 +1,18 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * NonNull validation annotation should not be present here
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface NullableListReturnTypeWithMandatoryElementsQueryResolver {
+
+    /**
+     * NonNull validation annotation should not be present here
+     */
+    java.util.List<TypeWithNullableListType> nullableListReturnTypeWithMandatoryElements() throws Exception;
+
+}

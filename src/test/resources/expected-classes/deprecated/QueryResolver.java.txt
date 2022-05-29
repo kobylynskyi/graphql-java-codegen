@@ -8,7 +8,6 @@ package com.kobylynskyi.graphql.test1;
 public interface QueryResolver {
 
     @Deprecated
-    @javax.validation.constraints.NotNull
     java.util.List<Event> events() throws Exception;
 
 }

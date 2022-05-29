@@ -25,6 +25,9 @@ public class JavaDocBuilder {
      * Get java doc from description of the definition and it's extensions.
      * If no description is present in the definition and extension then return from comments
      *
+     * @param extendedDefinition Extended GraphQL definition
+     * @param <T>                base type
+     * @param <E>                extension type
      * @return List of java docs
      */
     public static <T extends NamedNode<T>, E extends T> List<String> build(
@@ -39,6 +42,9 @@ public class JavaDocBuilder {
     /**
      * Get java doc from description for the given definition
      *
+     * @param extendedDefinition Extended GraphQL definition
+     * @param <T>                base type
+     * @param <E>                extension type
      * @return List of java docs
      */
     public static <T extends NamedNode<T>, E extends T> List<String> buildFromDescription(
@@ -65,6 +71,9 @@ public class JavaDocBuilder {
     /**
      * Get java doc from comments for the given definition
      *
+     * @param extendedDefinition Extended GraphQL definition
+     * @param <T>                base type
+     * @param <E>                extension type
      * @return List of java docs
      */
     public static <T extends NamedNode<T>, E extends T> List<String> buildFromComments(

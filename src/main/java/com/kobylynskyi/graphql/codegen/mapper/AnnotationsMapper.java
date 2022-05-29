@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 import graphql.language.Directive;
+import graphql.language.InputValueDefinition;
 import graphql.language.ListType;
 import graphql.language.NamedNode;
 import graphql.language.NonNullType;
@@ -39,9 +40,20 @@ public abstract class AnnotationsMapper {
     public List<String> getAnnotations(MappingContext mappingContext, Type<?> type,
                                        NamedNode<?> def, String parentTypeName, boolean mandatory) {
         if (type instanceof ListType) {
-            return getAnnotations(mappingContext, ((ListType) type).getType(), def, parentTypeName, mandatory);
+            Type<?> subType = ((ListType) type).getType();
+            return getAnnotations(mappingContext, subType, def, parentTypeName, mandatory);
         } else if (type instanceof NonNullType) {
-            return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, true);
+            Type<?> parentType = null;
+            if (def instanceof ExtendedFieldDefinition) {
+                parentType = ((ExtendedFieldDefinition) def).getType();
+            } else if (def instanceof InputValueDefinition) {
+                parentType = ((InputValueDefinition) def).getType();
+            }
+            // if parent is a list, then pass a mandatory flag as is (do not override it)
+            if (!(parentType instanceof ListType)) {
+                mandatory = true;
+            }
+            return getAnnotations(mappingContext, ((NonNullType) type).getType(), def, parentTypeName, mandatory);
         } else if (type instanceof TypeName) {
             return getAnnotations(mappingContext, ((TypeName) type).getName(), def.getName(), parentTypeName,
                     getDirectives(def), mandatory, def);
