@@ -6,7 +6,7 @@ schema {
 
 # Queries related to assets
 extend type Query {
-    assets: [Asset!]
+    assets: [Asset!]!
 }
 
 extend type Mutation {
@@ -24,11 +24,11 @@ input AssetInput {
 
 extend type Event {
     # Optional list of assets
-    assets: [Asset!]
+    assets: [Asset!]!
 }
 
 extend input EventInput {
-    assets: [AssetInput!]
+    assets: [AssetInput!]!
 }
 
 extend enum Status {

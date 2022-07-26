@@ -19,6 +19,7 @@ public class Bar1 implements java.io.Serializable, Bar {
         this.id = id;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

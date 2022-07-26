@@ -10,6 +10,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     private Status status;
     @javax.validation.constraints.NotNull
     private String createdDateTime;
+    @javax.validation.constraints.NotNull
     private java.util.List<Asset> assets;
     @javax.validation.constraints.NotNull
     private String id;
@@ -26,6 +27,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.createdBy = createdBy;
     }
 
+    @javax.validation.constraints.NotNull
     public Status getStatus() {
         return status;
     }
@@ -33,6 +35,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.status = status;
     }
 
+    @javax.validation.constraints.NotNull
     public String getCreatedDateTime() {
         return createdDateTime;
     }
@@ -43,6 +46,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
     /**
      * Optional list of assets
      */
+    @javax.validation.constraints.NotNull
     public java.util.List<Asset> getAssets() {
         return assets;
     }
@@ -53,6 +57,7 @@ public class Event implements java.io.Serializable, PinnableItem, Node {
         this.assets = assets;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

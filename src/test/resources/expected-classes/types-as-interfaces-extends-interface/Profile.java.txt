@@ -22,6 +22,7 @@ public class Profile implements java.io.Serializable {
         this.lastName = lastName;
     }
 
+    @javax.validation.constraints.NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -29,6 +30,7 @@ public class Profile implements java.io.Serializable {
         this.firstName = firstName;
     }
 
+    @javax.validation.constraints.NotNull
     public String getLastName() {
         return lastName;
     }

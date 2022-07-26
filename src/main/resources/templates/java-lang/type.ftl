@@ -73,6 +73,9 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
         </#if>
+        <#list field.annotations as annotation>
+    @${annotation}
+        </#list>
     public <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>${field.definitionInParentType.type}<#else>${field.type}</#if> get${field.name?cap_first}() {
         return ${field.name};
     }

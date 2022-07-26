@@ -116,6 +116,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.zipballUrl = zipballUrl;
     }
 
+    @javax.validation.constraints.NotNull
     public String getAbbreviatedOid() {
         return abbreviatedOid;
     }
@@ -151,6 +152,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.authoredByCommitter = authoredByCommitter;
     }
 
+    @javax.validation.constraints.NotNull
     public String getAuthoredDate() {
         return authoredDate;
     }
@@ -158,6 +160,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.authoredDate = authoredDate;
     }
 
+    @javax.validation.constraints.NotNull
     public Blame getBlame() {
         return blame;
     }
@@ -172,6 +175,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.changedFiles = changedFiles;
     }
 
+    @javax.validation.constraints.NotNull
     public CommitCommentConnection getComments() {
         return comments;
     }
@@ -179,6 +183,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.comments = comments;
     }
 
+    @javax.validation.constraints.NotNull
     public String getCommitResourcePath() {
         return commitResourcePath;
     }
@@ -186,6 +191,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.commitResourcePath = commitResourcePath;
     }
 
+    @javax.validation.constraints.NotNull
     public String getCommitUrl() {
         return commitUrl;
     }
@@ -193,6 +199,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.commitUrl = commitUrl;
     }
 
+    @javax.validation.constraints.NotNull
     public String getCommittedDate() {
         return committedDate;
     }
@@ -228,6 +235,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.deployments = deployments;
     }
 
+    @javax.validation.constraints.NotNull
     public CommitHistoryConnection getHistory() {
         return history;
     }
@@ -235,6 +243,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.history = history;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }
@@ -242,6 +251,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.id = id;
     }
 
+    @javax.validation.constraints.NotNull
     public String getMessage() {
         return message;
     }
@@ -249,6 +259,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.message = message;
     }
 
+    @javax.validation.constraints.NotNull
     public String getMessageBody() {
         return messageBody;
     }
@@ -256,6 +267,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.messageBody = messageBody;
     }
 
+    @javax.validation.constraints.NotNull
     public String getMessageBodyHTML() {
         return messageBodyHTML;
     }
@@ -263,6 +275,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.messageBodyHTML = messageBodyHTML;
     }
 
+    @javax.validation.constraints.NotNull
     public String getMessageHeadline() {
         return messageHeadline;
     }
@@ -270,6 +283,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.messageHeadline = messageHeadline;
     }
 
+    @javax.validation.constraints.NotNull
     public String getMessageHeadlineHTML() {
         return messageHeadlineHTML;
     }
@@ -277,6 +291,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.messageHeadlineHTML = messageHeadlineHTML;
     }
 
+    @javax.validation.constraints.NotNull
     public String getOid() {
         return oid;
     }
@@ -284,6 +299,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.oid = oid;
     }
 
+    @javax.validation.constraints.NotNull
     public CommitConnection getParents() {
         return parents;
     }
@@ -298,6 +314,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.pushedDate = pushedDate;
     }
 
+    @javax.validation.constraints.NotNull
     public Repository getRepository() {
         return repository;
     }
@@ -305,6 +322,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.repository = repository;
     }
 
+    @javax.validation.constraints.NotNull
     public String getResourcePath() {
         return resourcePath;
     }
@@ -326,6 +344,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.status = status;
     }
 
+    @javax.validation.constraints.NotNull
     public String getTarballUrl() {
         return tarballUrl;
     }
@@ -333,6 +352,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.tarballUrl = tarballUrl;
     }
 
+    @javax.validation.constraints.NotNull
     public Tree getTree() {
         return tree;
     }
@@ -340,6 +360,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.tree = tree;
     }
 
+    @javax.validation.constraints.NotNull
     public String getTreeResourcePath() {
         return treeResourcePath;
     }
@@ -347,6 +368,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.treeResourcePath = treeResourcePath;
     }
 
+    @javax.validation.constraints.NotNull
     public String getTreeUrl() {
         return treeUrl;
     }
@@ -354,6 +376,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.treeUrl = treeUrl;
     }
 
+    @javax.validation.constraints.NotNull
     public String getUrl() {
         return url;
     }
@@ -375,6 +398,7 @@ public class Commit implements java.io.Serializable, Closer, IssueTimelineItem, 
         this.viewerSubscription = viewerSubscription;
     }
 
+    @javax.validation.constraints.NotNull
     public String getZipballUrl() {
         return zipballUrl;
     }

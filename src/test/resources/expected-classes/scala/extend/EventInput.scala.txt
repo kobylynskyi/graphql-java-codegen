@@ -8,6 +8,7 @@ import Status._
 case class EventInput(
     @javax.validation.constraints.NotNull
     status: Status,
+    @javax.validation.constraints.NotNull
     assets: scala.Seq[AssetInput]
 ) {
 

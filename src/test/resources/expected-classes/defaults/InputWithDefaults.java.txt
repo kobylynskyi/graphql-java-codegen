@@ -78,6 +78,7 @@ public class InputWithDefaults implements java.io.Serializable {
         this.enumVal = enumVal;
     }
 
+    @javax.validation.constraints.NotNull
     public MyEnum getNonNullEnumVal() {
         return nonNullEnumVal;
     }
@@ -113,6 +114,7 @@ public class InputWithDefaults implements java.io.Serializable {
         this.intListEmptyDefault = intListEmptyDefault;
     }
 
+    @javax.validation.constraints.NotNull
     public java.util.List<SomeObject> getObjectListEmptyDefault() {
         return objectListEmptyDefault;
     }

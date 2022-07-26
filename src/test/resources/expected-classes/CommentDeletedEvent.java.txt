@@ -19,6 +19,7 @@ public class CommentDeletedEvent implements java.io.Serializable, IssueTimelineI
         this.id = id;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

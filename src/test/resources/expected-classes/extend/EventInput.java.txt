@@ -8,6 +8,7 @@ public class EventInput implements java.io.Serializable {
 
     @javax.validation.constraints.NotNull
     private Status status;
+    @javax.validation.constraints.NotNull
     private java.util.List<AssetInput> assets;
 
     public EventInput() {
@@ -18,6 +19,7 @@ public class EventInput implements java.io.Serializable {
         this.assets = assets;
     }
 
+    @javax.validation.constraints.NotNull
     public Status getStatus() {
         return status;
     }
@@ -25,6 +27,7 @@ public class EventInput implements java.io.Serializable {
         this.status = status;
     }
 
+    @javax.validation.constraints.NotNull
     public java.util.List<AssetInput> getAssets() {
         return assets;
     }

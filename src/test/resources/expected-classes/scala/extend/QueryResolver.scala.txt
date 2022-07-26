@@ -12,6 +12,7 @@ trait QueryResolver {
     @throws[Exception]
     def events(): scala.Seq[Event]
 
+    @javax.validation.constraints.NotNull
     @throws[Exception]
     def assets(): scala.Seq[Asset]
 

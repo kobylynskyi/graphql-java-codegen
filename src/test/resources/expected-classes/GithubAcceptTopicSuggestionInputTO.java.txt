@@ -31,6 +31,7 @@ public class GithubAcceptTopicSuggestionInputTO implements java.io.Serializable 
         this.clientMutationId = clientMutationId;
     }
 
+    @javax.validation.constraints.NotNull
     public String getName() {
         return name;
     }
@@ -38,6 +39,7 @@ public class GithubAcceptTopicSuggestionInputTO implements java.io.Serializable 
         this.name = name;
     }
 
+    @javax.validation.constraints.NotNull
     public String getRepositoryId() {
         return repositoryId;
     }

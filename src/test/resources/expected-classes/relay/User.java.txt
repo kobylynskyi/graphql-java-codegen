@@ -19,6 +19,7 @@ public class User implements java.io.Serializable {
         this.name = name;
     }
 
+    @javax.validation.constraints.NotNull
     public String getId() {
         return id;
     }

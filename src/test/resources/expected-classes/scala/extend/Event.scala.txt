@@ -11,6 +11,7 @@ case class Event(
     status: Status,
     @javax.validation.constraints.NotNull
     createdDateTime: String,
+    @javax.validation.constraints.NotNull
     assets: scala.Seq[Asset],
     @javax.validation.constraints.NotNull
     override val id: String,
