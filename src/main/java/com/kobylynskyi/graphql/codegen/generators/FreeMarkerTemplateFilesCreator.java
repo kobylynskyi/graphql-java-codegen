@@ -9,6 +9,7 @@ import freemarker.template.Template;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Map;
 
@@ -37,14 +38,18 @@ public class FreeMarkerTemplateFilesCreator {
         String fileName = dataModel.get(DataModelFields.CLASS_NAME) + language.getFileExtension();
         File fileOutputDir = getFileTargetDirectory(dataModel, mappingContext.getOutputDirectory());
         File javaSourceFile = new File(fileOutputDir, fileName);
+
         try {
             if (!javaSourceFile.createNewFile()) {
                 throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (FileWriter fileWriter = new FileWriter(javaSourceFile)) {
             Template template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
-            FileWriter fileWriter = new FileWriter(javaSourceFile);
             template.process(dataModel, fileWriter);
-            fileWriter.close();
         } catch (Exception e) {
             throw new UnableToCreateFileException(e);
         }
