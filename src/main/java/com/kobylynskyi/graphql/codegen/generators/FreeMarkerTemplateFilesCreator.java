@@ -44,7 +44,7 @@ public class FreeMarkerTemplateFilesCreator {
                 throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UnableToCreateFileException(e);
         }
 
         try (FileWriter fileWriter = new FileWriter(javaSourceFile)) {
