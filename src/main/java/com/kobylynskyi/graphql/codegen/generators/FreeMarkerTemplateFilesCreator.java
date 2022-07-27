@@ -42,9 +42,7 @@ public class FreeMarkerTemplateFilesCreator {
                 throw new FileAlreadyExistsException("File already exists: " + javaSourceFile.getPath());
             }
             Template template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
-            FileWriter fileWriter = new FileWriter(javaSourceFile);
-            template.process(dataModel, fileWriter);
-            fileWriter.close();
+            template.process(dataModel, new FileWriter(javaSourceFile));
         } catch (Exception e) {
             throw new UnableToCreateFileException(e);
         }
