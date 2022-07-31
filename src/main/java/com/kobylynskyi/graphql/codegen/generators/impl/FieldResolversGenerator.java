@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -51,9 +52,9 @@ public class FieldResolversGenerator implements FilesGenerator {
         if (!Boolean.TRUE.equals(mappingContext.getGenerateApis())) {
             return Collections.emptyList();
         }
+        Set<String> fieldNamesWithResolvers = mappingContext.getFieldNamesWithResolvers();
         List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
-                .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(
-                        mappingContext, fieldDef, parentDefinition))
+                .filter(fieldDef -> fieldNamesWithResolvers.contains(parentDefinition.getName() + "." + fieldDef.getName()))
                 .collect(toList());
 
         List<File> generatedFiles = new ArrayList<>();

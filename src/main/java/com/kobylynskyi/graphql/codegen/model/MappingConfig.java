@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,10 +15,6 @@ import java.util.function.Function;
  * @author valinha
  */
 public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<MappingConfig> {
-
-    private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
-    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
 
     // package name configs:
     private String packageName;
@@ -76,6 +73,14 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateAllMethodInProjection;
     private Integer responseProjectionMaxDepth;
     private Set<String> useObjectMapperForRequestSerialization = new HashSet<>();
+
+    // annotations:
+    private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
+    private Set<String> resolverArgumentAnnotations = new HashSet<>();
+    private Set<String> parametrizedResolverAnnotations = new HashSet<>();
+
+    private Map<String, String> customTypesMapping = new HashMap<>();
 
     private Set<String> typesAsInterfaces = new HashSet<>();
 
@@ -179,6 +184,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
+        resolverArgumentAnnotations = combineSet(resolverArgumentAnnotations, source.resolverArgumentAnnotations);
+        parametrizedResolverAnnotations = combineSet(parametrizedResolverAnnotations, source.parametrizedResolverAnnotations);
         generateAllMethodInProjection = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGenerateAllMethodInProjection);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source,
@@ -639,6 +646,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setUseObjectMapperForRequestSerialization(Set<String> useObjectMapperForRequestSerialization) {
         this.useObjectMapperForRequestSerialization = useObjectMapperForRequestSerialization;
+    }
+
+    @Override
+    public Set<String> getResolverArgumentAnnotations() {
+        return resolverArgumentAnnotations;
+    }
+
+    public void setResolverArgumentAnnotations(Set<String> resolverArgumentAnnotations) {
+        this.resolverArgumentAnnotations = resolverArgumentAnnotations;
+    }
+
+    @Override
+    public Set<String> getParametrizedResolverAnnotations() {
+        return parametrizedResolverAnnotations;
+    }
+
+    public void setParametrizedResolverAnnotations(Set<String> parametrizedResolverAnnotations) {
+        this.parametrizedResolverAnnotations = parametrizedResolverAnnotations;
     }
 
     @Override

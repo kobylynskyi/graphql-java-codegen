@@ -1,0 +1,19 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * Create a new event.
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface CreateEventMutationResolver {
+
+    /**
+     * Create a new event.
+     */
+    @javax.validation.constraints.NotNull
+    Event createEvent(@javax.validation.constraints.NotNull @org.springframework.graphql.data.method.annotation.Argument String categoryId, @org.springframework.graphql.data.method.annotation.Argument String createdBy, graphql.schema.DataFetchingEnvironment env) throws Exception;
+
+}
