@@ -1,25 +1,16 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateFilesCreator;
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
-import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
 import graphql.language.FieldDefinition;
 import graphql.language.Type;
 import graphql.language.TypeName;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * GraphQL document that holds all extended definitions

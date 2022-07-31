@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.generators.FilesGenerator;
 import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateFilesCreator;
 import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
-import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionsToResolverDataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
