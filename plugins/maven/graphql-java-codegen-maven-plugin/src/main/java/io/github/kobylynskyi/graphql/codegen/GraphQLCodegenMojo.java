@@ -227,6 +227,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES_STRING)
     private boolean generateSealedInterfaces;
 
+    @Parameter(defaultValue = "false")
+    private boolean skip;
+
     @Override
     public void execute() throws MojoExecutionException {
         addCompileSourceRootIfConfigured();
@@ -292,6 +295,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
         mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
+
+        if (skip) {
+            getLog().info("Skipping code generation");
+            return;
+        }
 
         try {
             instantiateCodegen(mappingConfig).generate();

@@ -111,6 +111,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean supportUnknownFields = MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS;
     private String unknownFieldsPropertyName = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME;
 
+    private Boolean skip = false;
+
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
         setDescription("Generates Java POJOs and interfaces based on GraphQL schemas");
@@ -193,6 +195,11 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
         mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
         mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
+
+        if (Boolean.TRUE.equals(skip)) {
+            getLogger().info("Skipping code generation");
+            return;
+        }
 
         instantiateCodegen(mappingConfig).generate();
     }
@@ -925,6 +932,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
         this.unknownFieldsPropertyName = unknownFieldsPropertyName;
     }
-    
+
+    @Input
+    @Optional
+    public Boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(Boolean skip) {
+        this.skip = skip;
+    }
 
 }
