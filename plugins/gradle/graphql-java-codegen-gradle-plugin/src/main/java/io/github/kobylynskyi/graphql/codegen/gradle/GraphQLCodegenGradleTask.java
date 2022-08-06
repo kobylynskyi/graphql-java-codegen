@@ -87,6 +87,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Set<String> typesAsInterfaces = new HashSet<>();
+    private Set<String> resolverArgumentAnnotations = new HashSet<>();
+    private Set<String> parametrizedResolverAnnotations = new HashSet<>();
     private final RelayConfig relayConfig = new RelayConfig();
 
 
@@ -164,6 +166,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setTypesAsInterfaces(
                 typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
+        mappingConfig.setResolverArgumentAnnotations(
+                resolverArgumentAnnotations != null ? resolverArgumentAnnotations : new HashSet<>());
+        mappingConfig.setParametrizedResolverAnnotations(
+                parametrizedResolverAnnotations != null ? parametrizedResolverAnnotations : new HashSet<>());
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -687,6 +693,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setTypesAsInterfaces(Set<String> typesAsInterfaces) {
         this.typesAsInterfaces = typesAsInterfaces;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getResolverArgumentAnnotations() {
+        return resolverArgumentAnnotations;
+    }
+
+    public void setResolverArgumentAnnotations(Set<String> resolverArgumentAnnotations) {
+        this.resolverArgumentAnnotations = resolverArgumentAnnotations;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getParametrizedResolverAnnotations() {
+        return parametrizedResolverAnnotations;
+    }
+
+    public void setParametrizedResolverAnnotations(Set<String> parametrizedResolverAnnotations) {
+        this.parametrizedResolverAnnotations = parametrizedResolverAnnotations;
     }
 
     @Nested
