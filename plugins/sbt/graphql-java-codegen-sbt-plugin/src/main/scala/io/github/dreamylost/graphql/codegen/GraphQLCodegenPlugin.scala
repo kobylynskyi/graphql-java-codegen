@@ -120,7 +120,9 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     responseProjectionMaxDepth := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
 
     supportUnknownFields := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
-    unknownFieldsPropertyName := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME
+    unknownFieldsPropertyName := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
+
+    skip := false
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
@@ -234,11 +236,15 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
                 throw new LanguageNotSupportedException(language)
             }
           }
-          result = instantiateCodegen(getMappingConfig().value).generate.asScala
-          for (file ← result) {
-            sLog.value.info(s"${file.getName}")
+          if (skip.value) {
+            sLog.value.info("Skipping code generation")
+          } else {
+              result = instantiateCodegen(getMappingConfig().value).generate.asScala
+              for (file ← result) {
+                sLog.value.info(s"${file.getName}")
+              }
+              sLog.value.success(s"Total files: ${result.length}")
           }
-          sLog.value.success(s"Total files: ${result.length}")
         } catch {
           case e: Exception ⇒
             (logLevel in configuration).?.value.orElse(state.value.get(logLevel.key)) match {
