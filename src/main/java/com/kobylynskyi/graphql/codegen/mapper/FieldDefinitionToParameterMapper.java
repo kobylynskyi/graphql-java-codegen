@@ -141,6 +141,8 @@ public class FieldDefinitionToParameterMapper {
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
+        parameter.setGetterMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext,
+                "get" + Utils.capitalize(fieldDef.getName())));
 
         if (Boolean.TRUE.equals(mappingContext.getGenerateParameterizedFieldsResolvers())) {
             parameter.setInputParameters(inputValueDefinitionToParameterMapper.map(
