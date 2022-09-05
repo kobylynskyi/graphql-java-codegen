@@ -30,6 +30,7 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
             projectionDepthOnFields.put("SynchronizedResponseProjection.CharResponseProjection.Wait", projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0) + 1);
             this.Wait(new CharResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("SynchronizedResponseProjection.CharResponseProjection.Wait", 0)));
         }
+        this.Class();
         this.typename();
         return this;
     }
@@ -49,6 +50,15 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
 
     public SynchronizedResponseProjection Wait(String alias, CharResponseProjection subProjection) {
         fields.add(new GraphQLResponseField("wait").alias(alias).projection(subProjection));
+        return this;
+    }
+
+    public SynchronizedResponseProjection Class() {
+        return Class(null);
+    }
+
+    public SynchronizedResponseProjection Class(String alias) {
+        fields.add(new GraphQLResponseField("class").alias(alias));
         return this;
     }
 

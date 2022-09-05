@@ -14,13 +14,15 @@ public class Synchronized implements java.io.Serializable {
 
     private String Void;
     private Char wait;
+    private String Class;
 
     public Synchronized() {
     }
 
-    public Synchronized(String Void, Char wait) {
+    public Synchronized(String Void, Char wait, String Class) {
         this.Void = Void;
         this.wait = wait;
+        this.Class = Class;
     }
 
     public String getVoid() {
@@ -37,6 +39,13 @@ public class Synchronized implements java.io.Serializable {
         this.wait = wait;
     }
 
+    public String GetClass() {
+        return Class;
+    }
+    public void setClass(String Class) {
+        this.Class = Class;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -47,12 +56,13 @@ public class Synchronized implements java.io.Serializable {
         }
         final Synchronized that = (Synchronized) obj;
         return Objects.equals(Void, that.Void)
-            && Objects.equals(wait, that.wait);
+            && Objects.equals(wait, that.wait)
+            && Objects.equals(Class, that.Class);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Void, wait);
+        return Objects.hash(Void, wait, Class);
     }
 
     @Override
@@ -63,6 +73,9 @@ public class Synchronized implements java.io.Serializable {
         }
         if (wait != null) {
             joiner.add("wait: " + GraphQLRequestSerializer.getEntry(wait));
+        }
+        if (Class != null) {
+            joiner.add("class: " + GraphQLRequestSerializer.getEntry(Class));
         }
         return joiner.toString();
     }
@@ -75,6 +88,7 @@ public class Synchronized implements java.io.Serializable {
 
         private String Void;
         private Char wait;
+        private String Class;
 
         public Builder() {
         }
@@ -89,9 +103,14 @@ public class Synchronized implements java.io.Serializable {
             return this;
         }
 
+        public Builder setClass(String Class) {
+            this.Class = Class;
+            return this;
+        }
+
 
         public Synchronized build() {
-            return new Synchronized(Void, wait);
+            return new Synchronized(Void, wait, Class);
         }
 
     }
