@@ -32,7 +32,7 @@ data class Super(
             joiner.add("Int: " + GraphQLRequestSerializer.getEntry(Int))
         }
         if (date != null) {
-            joiner.add("date: " + GraphQLRequestSerializer.getEntry(date))
+            joiner.add("date: " + GraphQLRequestSerializer.getEntry(date, true))
         }
         return joiner.toString()
     }
