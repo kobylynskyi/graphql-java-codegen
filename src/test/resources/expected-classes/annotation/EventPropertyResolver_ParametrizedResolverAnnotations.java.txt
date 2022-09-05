@@ -1,0 +1,50 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * Resolver for EventProperty
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public interface EventPropertyResolver {
+
+    /**
+     * Float property
+     * with multiline comment
+     */
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    Double floatVal(EventPropertyTO eventProperty) throws Exception;
+
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    Boolean booleanVal(EventPropertyTO eventProperty) throws Exception;
+
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    int intVal(EventPropertyTO eventProperty) throws Exception;
+
+    /**
+     * primitive should not be generated
+     */
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    java.util.List<Integer> intVals(EventPropertyTO eventProperty) throws Exception;
+
+    /**
+     * String comment
+     */
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    String stringVal(EventPropertyTO eventProperty) throws Exception;
+
+    /**
+     * Properties
+     */
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    java.util.List<EventPropertyTO> child(EventPropertyTO eventProperty, Integer first, Integer last) throws Exception;
+
+    /**
+     * Parent event of the property
+     */
+    @org.springframework.graphql.data.method.annotation.SchemaMapping(typeName="EventProperty")
+    EventTO parent(EventPropertyTO eventProperty, EventStatusTO withStatus, String createdAfter) throws Exception;
+
+}

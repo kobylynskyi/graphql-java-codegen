@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.mapper;
 
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -118,6 +119,18 @@ public abstract class AnnotationsMapper {
             List<String> directiveAnnotations = directiveAnnotationsMapping.get(directive.getName());
             if (!Utils.isEmpty(directiveAnnotations)) {
                 annotations.addAll(getAnnotationsForDirective(mappingContext, directiveAnnotations, directive));
+            }
+        }
+        // 6. Add annotations for resolver arguments
+        if (!Utils.isEmpty(mappingContext.getResolverArgumentAnnotations())
+                && mappingContext.getOperationsName().contains(parentTypeName)) {
+            annotations.addAll(mappingContext.getResolverArgumentAnnotations());
+        }
+        // 7. Add annotations for parametrized resolvers
+        if (!Utils.isEmpty(mappingContext.getParametrizedResolverAnnotations())
+                && mappingContext.getFieldNamesWithResolvers().contains(parentTypeName + "." + name)) {
+            for (String annotation : mappingContext.getParametrizedResolverAnnotations()) {
+                annotations.add(annotation.replace(MappingConfigConstants.TYPE_NAME_PLACEHOLDER, parentTypeName));
             }
         }
         return annotations;
