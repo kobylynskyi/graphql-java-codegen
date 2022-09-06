@@ -433,6 +433,30 @@ public interface GraphQLCodegenConfiguration {
     Set<String> getTypesAsInterfaces();
 
     /**
+     * Annotations that will be added to all resolver arguments.
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code @org.springframework.graphql.data.method.annotation.Argument}</li>
+     * </ul>
+     *
+     * @return Set of annotations that every resolver argument will have.
+     */
+    Set<String> getResolverArgumentAnnotations();
+
+    /**
+     * Annotations that will be added to all parametrized resolver methods.
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code @org.springframework.graphql.data.method.annotation.Argument}</li>
+     * </ul>
+     *
+     * @return Set of annotations that every parametrized resolver method will have.
+     */
+    Set<String> getParametrizedResolverAnnotations();
+
+    /**
      * Generate code with lang
      *
      * @return GeneratedLanguage.SCALA or GeneratedLanguage.JAVA

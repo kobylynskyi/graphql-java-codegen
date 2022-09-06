@@ -185,6 +185,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter
     private String[] typesAsInterfaces;
 
+    @Parameter
+    private String[] resolverArgumentAnnotations;
+
+    @Parameter
+    private String[] parametrizedResolverAnnotations;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH_STRING)
     private int responseProjectionMaxDepth;
 
@@ -220,6 +226,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_SEALED_INTERFACES_STRING)
     private boolean generateSealedInterfaces;
+
+    @Parameter(defaultValue = "false")
+    private boolean skip;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -271,6 +280,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setResponseProjectionMaxDepth(responseProjectionMaxDepth);
         mappingConfig.setUseObjectMapperForRequestSerialization(mapToHashSet(useObjectMapperForRequestSerialization));
         mappingConfig.setTypesAsInterfaces(mapToHashSet(typesAsInterfaces));
+        mappingConfig.setResolverArgumentAnnotations(mapToHashSet(resolverArgumentAnnotations));
+        mappingConfig.setParametrizedResolverAnnotations(mapToHashSet(parametrizedResolverAnnotations));
 
         mappingConfig.setResolverParentInterface(getResolverParentInterface());
         mappingConfig.setQueryResolverParentInterface(getQueryResolverParentInterface());
@@ -284,6 +295,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
         mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
+
+        if (skip) {
+            getLog().info("Skipping code generation");
+            return;
+        }
 
         try {
             instantiateCodegen(mappingConfig).generate();
@@ -588,6 +604,16 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getTypesAsInterfaces() {
         return mapToHashSet(typesAsInterfaces);
+    }
+
+    @Override
+    public Set<String> getResolverArgumentAnnotations() {
+        return mapToHashSet(resolverArgumentAnnotations);
+    }
+
+    @Override
+    public Set<String> getParametrizedResolverAnnotations() {
+        return mapToHashSet(parametrizedResolverAnnotations);
     }
 
     @Override

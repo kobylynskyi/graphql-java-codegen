@@ -231,6 +231,8 @@ public class FieldDefinitionsToResolverDataModelMapper {
             parameterDefinition.setName(parentObjectParamName);
             parameterDefinition.setOriginalName(parentObjectParamName);
             parameterDefinition.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, resolvedField));
+            parameterDefinition.setGetterMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext,
+                    "get" + Utils.capitalize(parentObjectParamName)));
             parameters.add(parameterDefinition);
         }
 

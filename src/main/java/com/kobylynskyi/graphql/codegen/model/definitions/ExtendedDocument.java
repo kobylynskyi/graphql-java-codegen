@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model.definitions;
 
+import graphql.language.FieldDefinition;
 import graphql.language.Type;
 import graphql.language.TypeName;
 
@@ -84,6 +85,14 @@ public class ExtendedDocument {
     public Set<String> getInterfacesNames() {
         return interfaceDefinitions.stream()
                 .map(ExtendedDefinition::getName)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<String> getOperationsNames() {
+        return operationDefinitions.stream()
+                .map(ExtendedObjectTypeDefinition::getFieldDefinitions)
+                .flatMap(Collection::stream)
+                .map(FieldDefinition::getName)
                 .collect(Collectors.toSet());
     }
 

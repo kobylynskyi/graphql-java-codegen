@@ -90,4 +90,18 @@ class GraphQLCodegenCustomScalarMappingTest {
                 new File("src/test/resources/expected-classes/kt/QueryINeedQueryRequest_custom_serializer.kt.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.kt"));
     }
+
+    @Test
+    void generate_UseObjectMapperToSerializeFields_Type() throws Exception {
+        mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.LocalDateTime");
+        mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
+                        "Event_useObjectMapperForRequestSerialization.kt.txt"),
+                getFileByName(files, "Event.kt"));
+    }
 }
