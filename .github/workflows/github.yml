@@ -82,6 +82,7 @@ jobs:
 
   sonar:
     needs: build
+    if: github.event_name != 'pull_request'    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -117,4 +118,5 @@ jobs:
       - name: Generate and publish Sonar report
         run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }} --stacktrace
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}           
+          
