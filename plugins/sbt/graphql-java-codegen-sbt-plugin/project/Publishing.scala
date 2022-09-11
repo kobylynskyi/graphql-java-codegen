@@ -5,7 +5,7 @@ import xerial.sbt.Sonatype.autoImport.sonatypeProfileName
 /**
  * sbt publish setting
  *
- * @author 梦境迷离 dreamylost
+ * @author 梦境迷离
  * @since 2020-07-19
  * @version v1.0
  */

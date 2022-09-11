@@ -6,7 +6,7 @@ import com.kobylynskyi.graphql.codegen.model._
 import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedException
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
-import com.kobylynskyi.graphql.codegen.supplier.{ MergeableMappingConfigSupplier, SchemaFinder }
+import com.kobylynskyi.graphql.codegen.supplier._
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
@@ -19,7 +19,7 @@ import sbt.Def
 
 /**
  *
- * @author liguobin@growingio.com
+ * @author 梦境迷离
  * @version 1.0,2020/7/15
  */
 object GraphQLCodegenPlugin extends GraphQLCodegenPlugin(Compile, configurationPostfix = "-main") {

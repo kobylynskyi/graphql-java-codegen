@@ -9,7 +9,7 @@ import sbt.Configuration
 
 /**
  *
- * @author 梦境迷离 dreamylost
+ * @author 梦境迷离
  * @since 2020-07-18
  * @version v1.0
  */
