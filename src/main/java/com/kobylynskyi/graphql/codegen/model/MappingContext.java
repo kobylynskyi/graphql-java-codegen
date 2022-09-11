@@ -2,14 +2,17 @@ package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
+import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,11 +29,13 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final ExtendedDocument document;
     private final Set<String> typesUnionsInterfacesNames;
     private final Set<String> interfacesName;
+    private final Set<String> operationsName;
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
     private final DataModelMapperFactory dataModelMapperFactory;
     private Set<String> enumImportItSelfInScala;
     private Map<String, Set<String>> parentInterfaceProperties;
+    private Set<String> fieldNamesWithResolvers;
 
     private MappingContext(File outputDirectory,
                            MappingConfig mappingConfig,
@@ -44,6 +49,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.interfacesName = document.getInterfacesNames();
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
+        this.operationsName = document.getOperationsNames();
         this.dataModelMapperFactory = dataModelMapperFactory;
     }
 
@@ -61,7 +67,6 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     public Boolean isInitializeNullableTypes() {
         return config.isInitializeNullableTypes();
     }
-
 
 
     @Override
@@ -310,6 +315,16 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Set<String> getResolverArgumentAnnotations() {
+        return config.getResolverArgumentAnnotations();
+    }
+
+    @Override
+    public Set<String> getParametrizedResolverAnnotations() {
+        return config.getParametrizedResolverAnnotations();
+    }
+
+    @Override
     public Boolean isSupportUnknownFields() {
         return config.isSupportUnknownFields();
     }
@@ -329,6 +344,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
 
     public Set<String> getInterfacesName() {
         return interfacesName;
+    }
+
+    public Set<String> getOperationsName() {
+        return operationsName;
     }
 
     public Map<String, Set<String>> getInterfaceChildren() {
@@ -379,6 +398,33 @@ public class MappingContext implements GraphQLCodegenConfiguration {
             }
         }
         return parentInterfaceProperties;
+    }
+
+    /**
+     * Get names of all the fields that require separate resolver class.
+     * This includes fields from type definitions and interface definitions.
+     *
+     * @return a flat set of all field names that require resolver.
+     */
+    public Set<String> getFieldNamesWithResolvers() {
+        if (fieldNamesWithResolvers == null) {
+            fieldNamesWithResolvers = new HashSet<>();
+            for (ExtendedObjectTypeDefinition definition : document.getTypeDefinitions()) {
+                definition.getFieldDefinitions().stream()
+                        .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(
+                                this, fieldDef, definition))
+                        .forEach(fieldDef ->
+                                fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
+            }
+            for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
+                definition.getFieldDefinitions().stream()
+                        .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(
+                                this, fieldDef, definition))
+                        .forEach(fieldDef ->
+                                fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
+            }
+        }
+        return fieldNamesWithResolvers;
     }
 
     private String getModelClassNameWithPrefixAndSuffix(ExtendedEnumTypeDefinition extendedEnumTypeDefinition) {

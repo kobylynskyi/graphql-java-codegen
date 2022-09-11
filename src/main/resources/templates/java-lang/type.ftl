@@ -73,7 +73,11 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
         </#if>
-    public <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>${field.definitionInParentType.type}<#else>${field.type}</#if> get${field.name?cap_first}() {
+        <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>
+    public ${field.definitionInParentType.type} ${field.getterMethodName}() {
+        <#else>
+    public ${field.type} ${field.getterMethodName}() {
+        </#if>
         return ${field.name};
     }
         <#if !immutableModels>

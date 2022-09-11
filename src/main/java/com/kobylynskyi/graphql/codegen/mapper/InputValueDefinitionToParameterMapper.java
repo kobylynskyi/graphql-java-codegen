@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.InputValueDefinition;
 
 import java.util.List;
@@ -70,6 +71,8 @@ public class InputValueDefinitionToParameterMapper {
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, inputValueDefinition));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
+        parameter.setGetterMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext,
+                "get" + Utils.capitalize(inputValueDefinition.getName())));
         return parameter;
     }
 

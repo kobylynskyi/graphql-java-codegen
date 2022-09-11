@@ -17,6 +17,7 @@ import java.util.Objects;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
@@ -203,6 +204,40 @@ class GraphQLCodegenAnnotationsTest {
     }
 
     @Test
+    void generate_ResolverArgumentAnnotations() throws Exception {
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setResolverArgumentAnnotations(singleton(
+                "@org.springframework.graphql.data.method.annotation.Argument"));
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "CreateEventMutationResolver_ArgumentAnnotations.java.txt"),
+                getFileByName(files, "CreateEventMutationResolver.java"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/annotation/QueryResolver_ArgumentAnnotations.java.txt"),
+                getFileByName(files, "QueryResolver.java"));
+    }
+
+    @Test
+    void generate_ParametrizedResolverAnnotations() throws Exception {
+        mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setFieldsWithResolvers(singleton("@customResolver"));
+        mappingConfig.setParametrizedResolverAnnotations(singleton(
+                "@org.springframework.graphql.data.method.annotation.SchemaMapping(typeName=\"{{TYPE_NAME}}\")"));
+
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "EventPropertyResolver_ParametrizedResolverAnnotations.java.txt"),
+                getFileByName(files, "EventPropertyResolver.java"));
+    }
+
+    @Test
     void generate_CustomAnnotationMappings_RequestResponseClasses() throws Exception {
         Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
         // request
@@ -259,11 +294,11 @@ class GraphQLCodegenAnnotationsTest {
                 new File("src/test/resources/expected-classes/annotation/MutationResolver.java.txt"),
                 getFileByName(files, "MutationResolver.java"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/annotation/EventProperty.java.txt"),
-            getFileByName(files, "EventProperty.java"));
+                new File("src/test/resources/expected-classes/annotation/EventProperty.java.txt"),
+                getFileByName(files, "EventProperty.java"));
         assertSameTrimmedContent(
-            new File("src/test/resources/expected-classes/annotation/User.java.txt"),
-            getFileByName(files, "User.java"));
+                new File("src/test/resources/expected-classes/annotation/User.java.txt"),
+                getFileByName(files, "User.java"));
     }
 
     @Test

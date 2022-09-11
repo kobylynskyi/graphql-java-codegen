@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
+import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -21,12 +22,13 @@ public interface UnknownFieldsSupport {
      *
      * @param mappingContext The context of the mapping process.
      * @return If {@link MappingContext#isSupportUnknownFields()} is true, it returns a monad containing
-     *         the instance of {@link ParameterDefinition}. {@link Optional#empty()} otherwise.
+     * the instance of {@link ParameterDefinition}. {@link Optional#empty()} otherwise.
      */
     default Optional<ParameterDefinition> createUnknownFields(MappingContext mappingContext) {
         if (Boolean.TRUE.equals(mappingContext.isSupportUnknownFields())) {
             ParameterDefinition unknownFields = new ParameterDefinition();
             unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setGetterMethodName("get" + Utils.capitalize(mappingContext.getUnknownFieldsPropertyName()));
             unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
             unknownFields.setType("java.util.Map<String, Object>");
             unknownFields.setAnnotations(Arrays.asList(
