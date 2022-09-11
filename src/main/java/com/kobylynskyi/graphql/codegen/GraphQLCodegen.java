@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -95,6 +96,15 @@ public abstract class GraphQLCodegen {
     private static void sanitizeValues(MappingConfig mappingConfig) {
         mappingConfig.setModelValidationAnnotation(
                 Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
+
+        if (mappingConfig.getResolverArgumentAnnotations() != null) {
+            mappingConfig.setResolverArgumentAnnotations(mappingConfig.getResolverArgumentAnnotations().stream()
+                    .map(Utils::replaceLeadingAtSign).collect(Collectors.toSet()));
+        }
+        if (mappingConfig.getParametrizedResolverAnnotations() != null) {
+            mappingConfig.setParametrizedResolverAnnotations(mappingConfig.getParametrizedResolverAnnotations().stream()
+                    .map(Utils::replaceLeadingAtSign).collect(Collectors.toSet()));
+        }
 
         Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
         if (customAnnotationsMapping != null) {

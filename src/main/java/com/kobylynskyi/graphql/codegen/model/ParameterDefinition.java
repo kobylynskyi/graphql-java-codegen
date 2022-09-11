@@ -31,6 +31,7 @@ public class ParameterDefinition {
     private List<String> javaDoc = new ArrayList<>();
     private DeprecatedDefinition deprecated;
     private boolean serializeUsingObjectMapper;
+    private String getterMethodName;
     /**
      * If the type is parametrized then input parameters will be defined here
      */
@@ -119,6 +120,14 @@ public class ParameterDefinition {
 
     public void setSerializeUsingObjectMapper(boolean serializeUsingObjectMapper) {
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
+    }
+
+    public String getGetterMethodName() {
+        return getterMethodName;
+    }
+
+    public void setGetterMethodName(String getterMethodName) {
+        this.getterMethodName = getterMethodName;
     }
 
     public ParameterDefinition getDefinitionInParentType() {

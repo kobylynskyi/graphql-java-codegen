@@ -87,6 +87,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Set<String> typesAsInterfaces = new HashSet<>();
+    private Set<String> resolverArgumentAnnotations = new HashSet<>();
+    private Set<String> parametrizedResolverAnnotations = new HashSet<>();
     private final RelayConfig relayConfig = new RelayConfig();
 
 
@@ -108,6 +110,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private Boolean supportUnknownFields = MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS;
     private String unknownFieldsPropertyName = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME;
+
+    private Boolean skip = false;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -164,6 +168,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setTypesAsInterfaces(
                 typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
+        mappingConfig.setResolverArgumentAnnotations(
+                resolverArgumentAnnotations != null ? resolverArgumentAnnotations : new HashSet<>());
+        mappingConfig.setParametrizedResolverAnnotations(
+                parametrizedResolverAnnotations != null ? parametrizedResolverAnnotations : new HashSet<>());
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -187,6 +195,11 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
         mappingConfig.setSupportUnknownFields(isSupportUnknownFields());
         mappingConfig.setUnknownFieldsPropertyName(getUnknownFieldsPropertyName());
+
+        if (Boolean.TRUE.equals(skip)) {
+            getLogger().info("Skipping code generation");
+            return;
+        }
 
         instantiateCodegen(mappingConfig).generate();
     }
@@ -689,6 +702,28 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.typesAsInterfaces = typesAsInterfaces;
     }
 
+    @Input
+    @Optional
+    @Override
+    public Set<String> getResolverArgumentAnnotations() {
+        return resolverArgumentAnnotations;
+    }
+
+    public void setResolverArgumentAnnotations(Set<String> resolverArgumentAnnotations) {
+        this.resolverArgumentAnnotations = resolverArgumentAnnotations;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getParametrizedResolverAnnotations() {
+        return parametrizedResolverAnnotations;
+    }
+
+    public void setParametrizedResolverAnnotations(Set<String> parametrizedResolverAnnotations) {
+        this.parametrizedResolverAnnotations = parametrizedResolverAnnotations;
+    }
+
     @Nested
     @Optional
     @Override
@@ -897,6 +932,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
         this.unknownFieldsPropertyName = unknownFieldsPropertyName;
     }
-    
+
+    @Input
+    @Optional
+    public Boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(Boolean skip) {
+        this.skip = skip;
+    }
 
 }

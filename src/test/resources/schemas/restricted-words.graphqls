@@ -11,6 +11,7 @@ type Query {
 type Synchronized {
     void: String
     wait: char
+    class: String
 }
 
 enum TestEnum {

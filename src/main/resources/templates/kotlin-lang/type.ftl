@@ -88,7 +88,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
     <#if field.type?ends_with("?")>
         if (${field.name} != null) {
         <#if toStringForRequest>
-            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+            joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>))
         <#else>
         <#if field.type == "String?">
             joiner.add("${field.originalName}: \"" + ${field.name} + "\"");
@@ -99,7 +99,7 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
         }
     <#else>
         <#if toStringForRequest>
-        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}))
+        joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>))
         <#else>
     <#if field.type == "String">
         joiner.add("${field.originalName}: \"" + ${field.name} + "\"");

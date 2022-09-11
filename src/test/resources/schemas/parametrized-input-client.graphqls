@@ -21,3 +21,11 @@ type Client {
 }
 
 enum Data { A B C }
+
+interface A {
+    foo(arg: String): String
+}
+
+type B implements A {
+    foo(arg: String): String
+}
