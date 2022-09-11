@@ -4,7 +4,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin-example-server</artifactId>
-    <version>5.4.2-SNAPSHOT</version>
+    <version>5.5.0</version>
     <name>graphql-codegen-maven-plugin-example-server</name>
 
     <build>
