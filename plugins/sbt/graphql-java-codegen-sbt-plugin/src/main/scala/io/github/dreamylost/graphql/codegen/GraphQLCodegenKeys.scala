@@ -2,13 +2,12 @@ package io.github.dreamylost.graphql.codegen
 
 import java.util
 
-import com.kobylynskyi.graphql.codegen.model.{ ApiInterfaceStrategy, ApiNamePrefixStrategy, ApiRootInterfaceStrategy, RelayConfig }
+import com.kobylynskyi.graphql.codegen.model._
 import sbt._
-import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage
 
 /**
  *
- * @author liguobin@growingio.com
+ * @author 梦境迷离
  * @version 1.0,2020/7/15
  */
 trait GraphQLCodegenKeys {
@@ -126,11 +125,11 @@ trait GraphQLCodegenKeys {
 
   val generateSealedInterfaces = settingKey[Boolean]("If true, generate sealed interfaces for GraphQL unions and interfaces, else generate normal interfaces.")
 
-  val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package")
+  val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package.")
 
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
-  val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql java codegen version")
+  val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")
 
   //some others for sbt
   val generateCodegenTargetPath = settingKey[File]("Where to store generated files and add the generated code to the classpath, so that they can be referenced.")
