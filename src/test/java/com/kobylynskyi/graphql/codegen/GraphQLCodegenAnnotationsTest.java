@@ -213,8 +213,8 @@ class GraphQLCodegenAnnotationsTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/annotation/CreateEventMutationResolver_ArgumentAnnotations.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "CreateEventMutationResolver_ArgumentAnnotations.java.txt"),
                 getFileByName(files, "CreateEventMutationResolver.java"));
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/annotation/QueryResolver_ArgumentAnnotations.java.txt"),
@@ -232,8 +232,8 @@ class GraphQLCodegenAnnotationsTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/annotation/EventPropertyResolver_ParametrizedResolverAnnotations.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "EventPropertyResolver_ParametrizedResolverAnnotations.java.txt"),
                 getFileByName(files, "EventPropertyResolver.java"));
     }
 

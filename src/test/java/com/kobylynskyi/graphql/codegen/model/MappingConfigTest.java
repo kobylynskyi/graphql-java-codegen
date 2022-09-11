@@ -168,8 +168,10 @@ class MappingConfigTest {
                 mappingConfig.getUseOptionalForNullableReturnTypes());
         assertEquals(expectedMappingConfig.getRelayConfig(), mappingConfig.getRelayConfig());
         assertEquals(expectedMappingConfig.getTypesAsInterfaces(), mappingConfig.getTypesAsInterfaces());
-        assertEquals(expectedMappingConfig.getResolverArgumentAnnotations(), mappingConfig.getResolverArgumentAnnotations());
-        assertEquals(expectedMappingConfig.getParametrizedResolverAnnotations(), mappingConfig.getParametrizedResolverAnnotations());
+        assertEquals(expectedMappingConfig.getResolverArgumentAnnotations(),
+                mappingConfig.getResolverArgumentAnnotations());
+        assertEquals(expectedMappingConfig.getParametrizedResolverAnnotations(),
+                mappingConfig.getParametrizedResolverAnnotations());
     }
 
     @Test
@@ -327,7 +329,8 @@ class MappingConfigTest {
         assertEquals("for", mappingConfig.getRelayConfig().getDirectiveArgumentName());
         assertEquals(new HashSet<>(Arrays.asList("User", "User2")), mappingConfig.getTypesAsInterfaces());
         assertEquals(new HashSet<>(Arrays.asList("Ann1", "Ann2")), mappingConfig.getResolverArgumentAnnotations());
-        assertEquals(new HashSet<>(Arrays.asList("PAnn1", "PAnn2")), mappingConfig.getParametrizedResolverAnnotations());
+        assertEquals(new HashSet<>(Arrays.asList("PAnn1", "PAnn2")),
+                mappingConfig.getParametrizedResolverAnnotations());
     }
 
 }

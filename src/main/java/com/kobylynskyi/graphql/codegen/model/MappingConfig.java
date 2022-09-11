@@ -184,7 +184,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         resolverArgumentAnnotations = combineSet(resolverArgumentAnnotations, source.resolverArgumentAnnotations);
-        parametrizedResolverAnnotations = combineSet(parametrizedResolverAnnotations, source.parametrizedResolverAnnotations);
+        parametrizedResolverAnnotations = combineSet(parametrizedResolverAnnotations,
+                source.parametrizedResolverAnnotations);
         generateAllMethodInProjection = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGenerateAllMethodInProjection);
         responseProjectionMaxDepth = getValueOrDefaultToThis(source,

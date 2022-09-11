@@ -53,7 +53,8 @@ public class FieldResolversGenerator implements FilesGenerator {
         }
         Set<String> fieldNamesWithResolvers = mappingContext.getFieldNamesWithResolvers();
         List<ExtendedFieldDefinition> fieldDefsWithResolvers = fieldDefinitions.stream()
-                .filter(fieldDef -> fieldNamesWithResolvers.contains(parentDefinition.getName() + "." + fieldDef.getName()))
+                .filter(fieldDef ->
+                        fieldNamesWithResolvers.contains(parentDefinition.getName() + "." + fieldDef.getName()))
                 .collect(toList());
 
         List<File> generatedFiles = new ArrayList<>();

@@ -400,6 +400,12 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return parentInterfaceProperties;
     }
 
+    /**
+     * Get names of all the fields that require separate resolver class.
+     * This includes fields from type definitions and interface definitions.
+     *
+     * @return a flat set of all field names that require resolver.
+     */
     public Set<String> getFieldNamesWithResolvers() {
         if (fieldNamesWithResolvers == null) {
             fieldNamesWithResolvers = new HashSet<>();
@@ -407,13 +413,15 @@ public class MappingContext implements GraphQLCodegenConfiguration {
                 definition.getFieldDefinitions().stream()
                         .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(
                                 this, fieldDef, definition))
-                        .forEach(fieldDef -> fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
+                        .forEach(fieldDef ->
+                                fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
             }
             for (ExtendedInterfaceTypeDefinition definition : document.getInterfaceDefinitions()) {
                 definition.getFieldDefinitions().stream()
                         .filter(fieldDef -> FieldDefinitionToParameterMapper.generateResolversForField(
                                 this, fieldDef, definition))
-                        .forEach(fieldDef -> fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
+                        .forEach(fieldDef ->
+                                fieldNamesWithResolvers.add(definition.getName() + "." + fieldDef.getName()));
             }
         }
         return fieldNamesWithResolvers;
