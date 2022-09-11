@@ -6,7 +6,7 @@ plugins {
     //
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "5.5.0"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.5.1-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.product.Application"
