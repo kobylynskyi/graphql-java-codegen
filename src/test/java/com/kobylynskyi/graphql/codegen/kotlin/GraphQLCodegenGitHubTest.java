@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -186,6 +187,26 @@ class GraphQLCodegenGitHubTest {
                         "src/test/resources/expected-classes/kt/field-resolver/" +
                                 "AcceptTopicSuggestionPayloadResolver.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.kt"));
+    }
+
+    @Test
+    void generate_CustomFieldsResolversWithAnnotations() throws Exception {
+        mappingConfig.setModelNamePrefix("Github");
+        mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setApiNameSuffix("WithAnnotation");
+        mappingConfig.setResolverArgumentAnnotations(singleton("some.Annotation"));
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
+
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "AcceptTopicSuggestionMutationWithAnnotation.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionMutationWithAnnotation.kt"));
     }
 
     @Test
