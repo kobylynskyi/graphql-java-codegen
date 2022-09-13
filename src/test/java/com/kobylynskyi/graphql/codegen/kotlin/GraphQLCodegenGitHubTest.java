@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
@@ -190,7 +192,7 @@ class GraphQLCodegenGitHubTest {
     }
 
     @Test
-    void generate_CustomFieldsResolversWithAnnotations() throws Exception {
+    void generate_CustomFieldsResolversWithAnnotation() throws Exception {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
         mappingConfig.setApiNameSuffix("WithAnnotation");
@@ -207,6 +209,31 @@ class GraphQLCodegenGitHubTest {
                         "src/test/resources/expected-classes/kt/field-resolver/" +
                                 "AcceptTopicSuggestionMutationWithAnnotation.kt.txt"),
                 getFileByName(files, "AcceptTopicSuggestionMutationWithAnnotation.kt"));
+    }
+
+    @Test
+    void generate_CustomFieldsResolversWithMultipleAnnotations() throws Exception {
+
+        Set<String> annotations = new HashSet<>();
+        annotations.add("some.Annotation");
+        annotations.add("another.Annotation");
+
+        mappingConfig.setModelNamePrefix("Github");
+        mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setApiNameSuffix("WithAnnotations");
+        mappingConfig.setResolverArgumentAnnotations(annotations);
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
+
+        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File(
+                        "src/test/resources/expected-classes/kt/field-resolver/" +
+                                "AcceptTopicSuggestionMutationWithAnnotations.kt.txt"),
+                getFileByName(files, "AcceptTopicSuggestionMutationWithAnnotations.kt"));
     }
 
     @Test
