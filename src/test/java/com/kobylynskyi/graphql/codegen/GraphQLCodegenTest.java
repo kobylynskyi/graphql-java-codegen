@@ -141,11 +141,10 @@ class GraphQLCodegenTest {
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-        assertFileContainsElements(files, "Event.java", System.lineSeparator() +
-                "/**" + System.lineSeparator() +
-                " * An event that describes a thing that happens" + System
-                .lineSeparator() +
-                " */" + System.lineSeparator());
+        assertFileContainsElements(files, "Event.java", "\n" +
+                "/**\n" +
+                " * An event that describes a thing that happens\n" +
+                " */\n");
     }
 
     @Test
