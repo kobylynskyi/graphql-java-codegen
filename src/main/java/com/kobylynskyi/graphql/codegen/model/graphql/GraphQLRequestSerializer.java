@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 /**
  * Serializer of GraphQL request.
@@ -144,6 +145,10 @@ public class GraphQLRequestSerializer {
 
     public static String getEntry(Object input) {
         return getEntry(input, false);
+    }
+
+    public static String getEntry( UUID input ) {
+        return getEntry( input, true );
     }
 
     /**
