@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.InputValueDefinition;
+import graphql.language.InterfaceTypeDefinition;
 import graphql.language.ListType;
 import graphql.language.NamedNode;
 import graphql.language.NonNullType;
