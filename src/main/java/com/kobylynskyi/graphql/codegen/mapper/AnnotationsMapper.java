@@ -5,15 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.Argument;
-import graphql.language.Directive;
-import graphql.language.InputValueDefinition;
-import graphql.language.ListType;
-import graphql.language.NamedNode;
-import graphql.language.NonNullType;
-import graphql.language.Type;
-import graphql.language.TypeName;
-import graphql.language.UnionTypeDefinition;
+import graphql.language.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -204,7 +196,7 @@ public abstract class AnnotationsMapper {
     public List<String> getJacksonTypeIdAnnotations(MappingContext mappingContext, NamedNode<?> def) {
         List<String> defaults = new ArrayList<>();
         if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
-                && def instanceof UnionTypeDefinition) {
+                && (def instanceof UnionTypeDefinition || def instanceof InterfaceTypeDefinition)) {
             defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
                     "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
             String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
