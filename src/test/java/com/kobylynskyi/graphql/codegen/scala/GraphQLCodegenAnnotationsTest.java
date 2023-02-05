@@ -130,7 +130,8 @@ class GraphQLCodegenAnnotationsTest {
                 "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson" +
                         ".annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" + System.lineSeparator() +
                         "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[io.github" +
-                        ".kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver])" + System.lineSeparator() +
+                        ".kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver])" +
+                        System.lineSeparator() +
                         "case class AcceptTopicSuggestionPayload");
     }
 
