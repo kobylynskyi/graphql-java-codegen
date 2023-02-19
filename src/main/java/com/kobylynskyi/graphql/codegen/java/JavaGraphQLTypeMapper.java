@@ -101,7 +101,7 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
             serializeUsingObjectMapper = true;
         }
 
-        return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
+        return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 

@@ -177,7 +177,8 @@ public abstract class GraphQLTypeMapper {
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(),
                     name, parentTypeName, false, true);
-            if (mappedCollectionType.isInterface() && mappingContext.getInterfacesName().contains(parentTypeName)) {
+            if (mappedCollectionType.isInterfaceOrUnion() &&
+                    isInterfaceOrUnion(mappingContext, parentTypeName)) {
                 mappedCollectionType.setJavaName(
                         wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             } else {
@@ -223,7 +224,7 @@ public abstract class GraphQLTypeMapper {
                 serializeFieldsUsingObjectMapper.contains(graphQLType) ||
                         serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
-        return new NamedDefinition(langTypeName, graphQLType, mappingContext.getInterfacesName().contains(graphQLType),
+        return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
@@ -245,6 +246,11 @@ public abstract class GraphQLTypeMapper {
                                         NamedDefinition namedDefinition,
                                         String computedTypeName) {
         return computedTypeName;
+    }
+
+    protected boolean isInterfaceOrUnion(MappingContext mappingContext, String graphQLType) {
+        return mappingContext.getInterfacesName().contains(graphQLType) ||
+                mappingContext.getUnionsNames().contains(graphQLType);
     }
 
 }
