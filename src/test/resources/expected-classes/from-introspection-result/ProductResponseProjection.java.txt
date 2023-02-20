@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Response projection for Product
@@ -17,6 +18,14 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public ProductResponseProjection() {
+    }
+
+    public ProductResponseProjection(ProductResponseProjection projection) {
+        super(projection);
+    }
+
+    public ProductResponseProjection(List<ProductResponseProjection> projections) {
+        super(projections);
     }
 
     public ProductResponseProjection all$() {
@@ -40,7 +49,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection id(String alias) {
-        fields.add(new GraphQLResponseField("id").alias(alias));
+        add$(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
@@ -49,7 +58,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection title(String alias) {
-        fields.add(new GraphQLResponseField("title").alias(alias));
+        add$(new GraphQLResponseField("title").alias(alias));
         return this;
     }
 
@@ -58,7 +67,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection description(String alias) {
-        fields.add(new GraphQLResponseField("description").alias(alias));
+        add$(new GraphQLResponseField("description").alias(alias));
         return this;
     }
 
@@ -67,7 +76,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection price(String alias) {
-        fields.add(new GraphQLResponseField("price").alias(alias));
+        add$(new GraphQLResponseField("price").alias(alias));
         return this;
     }
 
@@ -76,7 +85,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection sku(String alias) {
-        fields.add(new GraphQLResponseField("sku").alias(alias));
+        add$(new GraphQLResponseField("sku").alias(alias));
         return this;
     }
 
@@ -85,7 +94,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection stockStatus(String alias) {
-        fields.add(new GraphQLResponseField("stockStatus").alias(alias));
+        add$(new GraphQLResponseField("stockStatus").alias(alias));
         return this;
     }
 
@@ -94,7 +103,7 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection addedDateTime(String alias) {
-        fields.add(new GraphQLResponseField("addedDateTime").alias(alias));
+        add$(new GraphQLResponseField("addedDateTime").alias(alias));
         return this;
     }
 
@@ -103,8 +112,13 @@ public class ProductResponseProjection extends GraphQLResponseProjection {
     }
 
     public ProductResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public ProductResponseProjection deepCopy$() {
+        return new ProductResponseProjection(this);
     }
 
 

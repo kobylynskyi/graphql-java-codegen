@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,14 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public CodeOfConductResponseProjection() {
+    }
+
+    public CodeOfConductResponseProjection(CodeOfConductResponseProjection projection) {
+        super(projection);
+    }
+
+    public CodeOfConductResponseProjection(List<CodeOfConductResponseProjection> projections) {
+        super(projections);
     }
 
     public CodeOfConductResponseProjection all$() {
@@ -40,7 +49,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection body(String alias) {
-        fields.add(new GraphQLResponseField("body").alias(alias));
+        add$(new GraphQLResponseField("body").alias(alias));
         return this;
     }
 
@@ -49,7 +58,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection id(String alias) {
-        fields.add(new GraphQLResponseField("id").alias(alias));
+        add$(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
@@ -58,7 +67,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection key(String alias) {
-        fields.add(new GraphQLResponseField("key").alias(alias));
+        add$(new GraphQLResponseField("key").alias(alias));
         return this;
     }
 
@@ -67,7 +76,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection name(String alias) {
-        fields.add(new GraphQLResponseField("name").alias(alias));
+        add$(new GraphQLResponseField("name").alias(alias));
         return this;
     }
 
@@ -76,7 +85,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection resourcePath(String alias) {
-        fields.add(new GraphQLResponseField("resourcePath").alias(alias));
+        add$(new GraphQLResponseField("resourcePath").alias(alias));
         return this;
     }
 
@@ -85,7 +94,7 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection url(String alias) {
-        fields.add(new GraphQLResponseField("url").alias(alias));
+        add$(new GraphQLResponseField("url").alias(alias));
         return this;
     }
 
@@ -94,8 +103,13 @@ public class CodeOfConductResponseProjection extends GraphQLResponseProjection {
     }
 
     public CodeOfConductResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public CodeOfConductResponseProjection deepCopy$() {
+        return new CodeOfConductResponseProjection(this);
     }
 
     @Override

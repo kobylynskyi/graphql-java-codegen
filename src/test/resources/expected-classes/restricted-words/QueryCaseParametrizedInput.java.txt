@@ -29,6 +29,13 @@ public class QueryCaseParametrizedInput implements GraphQLParametrizedInput {
     }
 
     @Override
+    public QueryCaseParametrizedInput deepCopy() {
+        QueryCaseParametrizedInput parametrizedInput = new QueryCaseParametrizedInput();
+        parametrizedInput.Final(this.Final);
+        return parametrizedInput;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

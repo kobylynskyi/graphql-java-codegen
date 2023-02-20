@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,14 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public SynchronizedResponseProjection() {
+    }
+
+    public SynchronizedResponseProjection(SynchronizedResponseProjection projection) {
+        super(projection);
+    }
+
+    public SynchronizedResponseProjection(List<SynchronizedResponseProjection> projections) {
+        super(projections);
     }
 
     public SynchronizedResponseProjection all$() {
@@ -40,7 +49,7 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     }
 
     public SynchronizedResponseProjection Void(String alias) {
-        fields.add(new GraphQLResponseField("void").alias(alias));
+        add$(new GraphQLResponseField("void").alias(alias));
         return this;
     }
 
@@ -49,7 +58,7 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     }
 
     public SynchronizedResponseProjection Wait(String alias, CharResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("wait").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("wait").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -58,7 +67,7 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     }
 
     public SynchronizedResponseProjection Class(String alias) {
-        fields.add(new GraphQLResponseField("class").alias(alias));
+        add$(new GraphQLResponseField("class").alias(alias));
         return this;
     }
 
@@ -67,8 +76,13 @@ public class SynchronizedResponseProjection extends GraphQLResponseProjection {
     }
 
     public SynchronizedResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public SynchronizedResponseProjection deepCopy$() {
+        return new SynchronizedResponseProjection(this);
     }
 
     @Override
