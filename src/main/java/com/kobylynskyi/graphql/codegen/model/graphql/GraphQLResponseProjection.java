@@ -3,6 +3,7 @@ package com.kobylynskyi.graphql.codegen.model.graphql;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -10,7 +11,7 @@ import java.util.StringJoiner;
  */
 public abstract class GraphQLResponseProjection {
 
-    protected final Map<String, GraphQLResponseField> fields = new LinkedHashMap<>();
+    protected final Map<Pair<String, String>, GraphQLResponseField> fields = new LinkedHashMap<>();
 
     public GraphQLResponseProjection() {
     }
@@ -37,26 +38,33 @@ public abstract class GraphQLResponseProjection {
     public abstract GraphQLResponseProjection deepCopy$();
 
     protected void add$(GraphQLResponseField responseField) {
-        GraphQLResponseField existingResponseField = fields.get(responseField.getName());
-        if (existingResponseField != null) {
-            if (responseField.getAlias() != null) {
-                existingResponseField.alias(responseField.getAlias());
-            }
-            if (responseField.getParameters() != null) {
-                existingResponseField.parameters(responseField.getParameters().deepCopy());
-            }
-            if (responseField.getProjection() != null) {
-                GraphQLResponseProjection projectionCopy = responseField.getProjection().deepCopy$();
-                if (existingResponseField.getProjection() != null) {
-                    for (GraphQLResponseField field : projectionCopy.fields.values()) {
-                        existingResponseField.getProjection().add$(field);
-                    }
-                } else {
-                    existingResponseField.projection(projectionCopy);
+        Pair<String, String> nameAndAlias = new Pair<>(responseField.getName(), responseField.getAlias());
+        GraphQLResponseField existingResponseField = fields.get(nameAndAlias);
+        if (existingResponseField == null) {
+            fields.put(nameAndAlias, responseField.deepCopy());
+            return;
+        }
+
+        if (!Objects.equals(responseField.getParameters(), existingResponseField.getParameters())) {
+            throw new IllegalArgumentException(
+                    String.format("Field '%s' has an argument conflict", existingResponseField.getName()));
+        }
+
+        if (responseField.getAlias() != null) {
+            existingResponseField.alias(responseField.getAlias());
+        }
+        if (responseField.getParameters() != null) {
+            existingResponseField.parameters(responseField.getParameters().deepCopy());
+        }
+        if (responseField.getProjection() != null) {
+            GraphQLResponseProjection projectionCopy = responseField.getProjection().deepCopy$();
+            if (existingResponseField.getProjection() != null) {
+                for (GraphQLResponseField field : projectionCopy.fields.values()) {
+                    existingResponseField.getProjection().add$(field);
                 }
+            } else {
+                existingResponseField.projection(projectionCopy);
             }
-        } else {
-            fields.put(responseField.getName(), responseField.deepCopy());
         }
     }
 
