@@ -24,7 +24,13 @@ import java.util.Objects
 <#list annotations as annotation>
 @${annotation}
 </#list>
-open class ${className} : GraphQLResponseProjection() {
+open class ${className} : GraphQLResponseProjection {
+
+    constructor(): super()
+
+    constructor(projection: ${className}): super(projection)
+
+    constructor(projections: List<${className}>): super(projections)
 
 <#if fields?has_content && generateAllMethodInProjection>
     private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
@@ -63,7 +69,7 @@ open class ${className} : GraphQLResponseProjection() {
     fun ${field.methodName}(<#if field.type?has_content>subProjection: ${field.type}</#if>): ${className} = ${field.methodName}(<#if field.parametrizedInputClassName?has_content></#if>null<#if field.type?has_content>, subProjection</#if>)
 
     fun ${field.methodName}(alias: String?<#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} {
-        fields.add(GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
+        `add$`(GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
         return this
     }
 
@@ -71,13 +77,15 @@ open class ${className} : GraphQLResponseProjection() {
     fun ${field.methodName}(input: ${field.parametrizedInputClassName}<#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} = ${field.methodName}(null, input<#if field.type?has_content>, subProjection</#if>)
 
     fun ${field.methodName}(alias: String?, input: ${field.parametrizedInputClassName}<#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} {
-        fields.add(GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
+        `add$`(GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
         return this
     }
 
 </#if>
 </#list>
 </#if>
+    override fun `deepCopy$`(): ${className} = ${className}(this)
+
 <#if equalsAndHashCode>
     override fun equals(other: Any?): Boolean {
         if (this === other) {

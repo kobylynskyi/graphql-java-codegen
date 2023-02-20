@@ -10,6 +10,7 @@ import java.util.Objects
 <#if fields?has_content && generateAllMethodInProjection>
 import scala.collection.mutable.HashMap
 </#if>
+import scala.collection.JavaConverters._
 
 <#if javaDoc?has_content>
 /**
@@ -27,7 +28,29 @@ import scala.collection.mutable.HashMap
 <#list annotations as annotation>
 @${annotation}
 </#list>
-class ${className} extends GraphQLResponseProjection {
+class ${className}() extends GraphQLResponseProjection() {
+
+    def this(projection: ${className}) = {
+        this()
+        if (projection != null) {
+            for (field <- projection.fields.values) {
+                add$(field)
+            }
+        }
+    }
+
+    def this(projections: scala.Seq[${className}]) = {
+        this()
+        if (projections != null) {
+            for (projection <- projections) {
+                if (projection != null) {
+                    for (field <- projection.fields.values) {
+                        add$(field)
+                    }
+                }
+            }
+        }
+    }
 
 <#if fields?has_content && generateAllMethodInProjection>
     private final lazy val projectionDepthOnFields = new HashMap[String, Int]
@@ -85,6 +108,8 @@ class ${className} extends GraphQLResponseProjection {
 </#if>
 </#list>
 </#if>
+    override def deepCopy$(): ${className} = ${className}(this)
+
 <#if equalsAndHashCode>
     override def equals(obj: Any): Boolean = {
         if (this == obj) {

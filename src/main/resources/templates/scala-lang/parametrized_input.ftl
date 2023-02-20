@@ -54,6 +54,16 @@ case class ${className}(
 </#if>
 ) extends GraphQLParametrizedInput {
 
+    override def deepCopy(): ${className} {
+        val parametrizedInput = ${className}()
+    <#if fields?has_content>
+        <#list fields as field>
+        parametrizedInput.${field.name}(this.${field.name})
+        </#list>
+    </#if>
+        parametrizedInput
+    }
+
     override def toString(): String = {<#--There is no Option[Seq[T]], Format is not supported in the generated code, so it is very difficult to write template for this format.-->
     <#if fields?has_content>
         scala.Seq(<#list fields as field><#assign getMethod = ".get"><#assign asJava = ".asJava">

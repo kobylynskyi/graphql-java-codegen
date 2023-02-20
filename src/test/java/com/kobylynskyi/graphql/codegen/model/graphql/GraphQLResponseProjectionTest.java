@@ -67,9 +67,11 @@ class GraphQLResponseProjectionTest {
         original.active();
         deepCopy.rating();
 
-        assertEquals("{ id state : status properties { intVal stringVal child (first: 1, last: 2) { booleanVal } } active }",
+        assertEquals(
+                "{ id state : status properties { intVal stringVal child (first: 1, last: 2) { booleanVal } } active }",
                 original.toString());
-        assertEquals("{ id state : status properties { intVal stringVal child (first: 1, last: 2) { booleanVal } } rating }",
+        assertEquals(
+                "{ id state : status properties { intVal stringVal child (first: 1, last: 2) { booleanVal } } rating }",
                 deepCopy.toString());
     }
 
@@ -97,7 +99,9 @@ class GraphQLResponseProjectionTest {
                                 .intVal()));
 
         EventResponseProjection projection12 = new EventResponseProjection(asList(projection1, projection2));
-        assertEquals("{ id state : status rating properties { intVal stringVal child12 : child (first: 1, last: 2) { booleanVal } floatVal child34 : child (first: 3, last: 4) { intVal } } uid : id status active }",
+        assertEquals("{ id state : status rating " +
+                        "properties { intVal stringVal child12 : child (first: 1, last: 2) { booleanVal } " +
+                        "floatVal child34 : child (first: 3, last: 4) { intVal } } uid : id status active }",
                 projection12.toString());
     }
 
@@ -196,7 +200,8 @@ class GraphQLResponseProjectionTest {
                 .child(null, null, new EventPropertyResponseProjection()
                         .child(null)));
 
-        EventResponseProjection projection123 = new EventResponseProjection(asList(projection1, projection2, projection3));
+        EventResponseProjection projection123 = new EventResponseProjection(
+                asList(projection1, projection2, projection3));
         assertEquals("{ id properties { child { child } } }",
                 projection123.toString());
     }

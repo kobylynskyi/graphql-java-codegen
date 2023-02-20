@@ -14,6 +14,12 @@ data class QueryFunParametrizedInput(
     val final: Int?
 ) : GraphQLParametrizedInput {
 
+    override fun deepCopy(): QueryFunParametrizedInput {
+        val parametrizedInput = QueryFunParametrizedInput()
+        parametrizedInput.final(this.final)
+        return parametrizedInput
+    }
+
     override fun toString(): String {
         val joiner = StringJoiner(", ", "( ", " )")
         if (final != null) {

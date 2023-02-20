@@ -1,6 +1,7 @@
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 import scala.collection.mutable.HashMap
+import scala.collection.JavaConverters._
 
 /**
  * Response projection for Event
@@ -9,7 +10,29 @@ import scala.collection.mutable.HashMap
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class EventResponseProjection extends GraphQLResponseProjection {
+class EventResponseProjection() extends GraphQLResponseProjection() {
+
+    def this(projection: EventResponseProjection) = {
+        this()
+        if (projection != null) {
+            for (field <- projection.fields.values) {
+                add$(field)
+            }
+        }
+    }
+
+    def this(projections: scala.Seq[EventResponseProjection]) = {
+        this()
+        if (projections != null) {
+            for (projection <- projections) {
+                if (projection != null) {
+                    for (field <- projection.fields.values) {
+                        add$(field)
+                    }
+                }
+            }
+        }
+    }
 
     private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
@@ -28,6 +51,8 @@ class EventResponseProjection extends GraphQLResponseProjection {
         fields.add(new GraphQLResponseField("__typename").alias(alias))
         this
     }
+
+    override def deepCopy$(): EventResponseProjection = EventResponseProjection(this)
 
 
 }

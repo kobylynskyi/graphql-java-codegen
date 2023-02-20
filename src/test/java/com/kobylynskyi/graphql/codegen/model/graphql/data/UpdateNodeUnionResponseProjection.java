@@ -34,7 +34,8 @@ public class UpdateNodeUnionResponseProjection extends GraphQLResponseProjection
         return onOrganization(null, subProjection);
     }
 
-    public UpdateNodeUnionResponseProjection onOrganization(String alias, OrganizationResponseProjection subProjection) {
+    public UpdateNodeUnionResponseProjection onOrganization(String alias,
+                                                            OrganizationResponseProjection subProjection) {
         add$(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection));
         return this;
     }
