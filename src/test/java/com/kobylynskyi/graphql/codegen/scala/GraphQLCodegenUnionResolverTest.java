@@ -32,11 +32,6 @@ class GraphQLCodegenUnionResolverTest {
         mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
     }
 
-    private List<File> generate(String s) throws IOException {
-        return new ScalaGraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
-    }
-
     @AfterEach
     void cleanup() {
         Utils.deleteDir(outputBuildDir);
@@ -50,8 +45,8 @@ class GraphQLCodegenUnionResolverTest {
         File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/unionresolver");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.scala", "UnionMemberA.scala",
-                "UnionMemberB.scala", "UnionToResolve.scala");
+        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.scala", "ResultObject.scala",
+                "UnionMemberA.scala", "UnionMemberB.scala", "UnionToResolve.scala");
         assertEquals(expectedClasses, generatedFileNames);
 
         for (File file : files) {
@@ -72,8 +67,8 @@ class GraphQLCodegenUnionResolverTest {
         File outputJavaClassesDir = new File("build/generated");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.scala", "MyUnionMemberASuffix.scala",
-                "MyUnionMemberBSuffix.scala", "MyUnionToResolveSuffix.scala");
+        List<String> expectedClasses = Arrays.asList("GraphqlJacksonTypeIdResolver.scala", "MyResultObjectSuffix.scala",
+                "MyUnionMemberASuffix.scala", "MyUnionMemberBSuffix.scala", "MyUnionToResolveSuffix.scala");
         assertEquals(expectedClasses, generatedFileNames);
 
         for (File file : files) {
@@ -85,4 +80,10 @@ class GraphQLCodegenUnionResolverTest {
                     file);
         }
     }
+
+    private void generate(String path) throws IOException {
+        new ScalaGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo()).generate();
+    }
+
 }

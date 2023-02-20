@@ -7,17 +7,17 @@ public class NamedDefinition {
 
     private String javaName;
     private String graphqlTypeName;
-    private boolean isInterface;
+    private boolean isInterfaceOrUnion;
     private boolean mandatory;
     private boolean primitiveCanBeUsed;
     private boolean serializeUsingObjectMapper;
 
     public NamedDefinition(String javaName, String graphqlTypeName,
-                           boolean isInterface, boolean mandatory,
+                           boolean isInterfaceOrUnion, boolean mandatory,
                            boolean primitiveCanBeUsed, boolean serializeUsingObjectMapper) {
         this.javaName = javaName;
         this.graphqlTypeName = graphqlTypeName;
-        this.isInterface = isInterface;
+        this.isInterfaceOrUnion = isInterfaceOrUnion;
         this.mandatory = mandatory;
         this.primitiveCanBeUsed = primitiveCanBeUsed;
         this.serializeUsingObjectMapper = serializeUsingObjectMapper;
@@ -39,12 +39,12 @@ public class NamedDefinition {
         this.graphqlTypeName = graphqlTypeName;
     }
 
-    public boolean isInterface() {
-        return isInterface;
+    public boolean isInterfaceOrUnion() {
+        return isInterfaceOrUnion;
     }
 
-    public void setInterface(boolean anInterface) {
-        isInterface = anInterface;
+    public void setInterfaceOrUnion(boolean interfaceOrUnion) {
+        isInterfaceOrUnion = interfaceOrUnion;
     }
 
     public boolean isMandatory() {
