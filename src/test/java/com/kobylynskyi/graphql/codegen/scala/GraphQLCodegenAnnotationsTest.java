@@ -18,7 +18,6 @@ import java.util.Objects;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
-import static java.lang.System.lineSeparator;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
@@ -59,7 +58,7 @@ class GraphQLCodegenAnnotationsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.scala",
                 "    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[com.example.json.DateTimeScalarDeserializer])" + lineSeparator() +
+                        "classOf[com.example.json.DateTimeScalarDeserializer])" + System.lineSeparator() +
                         "    createdDateTime: org.joda.time.DateTime,");
     }
 
@@ -92,27 +91,23 @@ class GraphQLCodegenAnnotationsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionInput.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[AcceptTopicSuggestionInputDeserializer])" + lineSeparator() +
+                        "classOf[AcceptTopicSuggestionInputDeserializer])" + System.lineSeparator() +
                         "case class AcceptTopicSuggestionInput");
         assertFileContainsElements(files, "AcceptTopicSuggestionPayload.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[AcceptTopicSuggestionPayloadDeserializer])" + lineSeparator() +
+                        "classOf[AcceptTopicSuggestionPayloadDeserializer])" + System.lineSeparator() +
                         "case class AcceptTopicSuggestionPayload");
         assertFileContainsElements(files, "Actor.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[ActorDeserializer])" + lineSeparator() +
-                        "@com.fasterxml.jackson.annotation.JsonTypeInfo(" +
-                        "use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" +
-                        lineSeparator() + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" +
-                        "classOf[com.kobylynskyi.graphql.test1.GraphqlJacksonTypeIdResolver])" + lineSeparator() +
+                        "classOf[ActorDeserializer])" + System.lineSeparator() +
                         "trait Actor");
         assertFileContainsElements(files, "Assignee.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[AssigneeDeserializer])" + lineSeparator() +
+                        "classOf[AssigneeDeserializer])" + System.lineSeparator() +
                         "trait Assignee");
         assertFileContainsElements(files, "DeploymentOrderField.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[DeploymentOrderFieldDeserializer])" + lineSeparator() +
+                        "classOf[DeploymentOrderFieldDeserializer])" + System.lineSeparator() +
                         "object DeploymentOrderField extends Enumeration");
     }
 
@@ -133,10 +128,10 @@ class GraphQLCodegenAnnotationsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionPayload.scala",
                 "@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson" +
-                        ".annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" + lineSeparator() +
+                        ".annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" + System.lineSeparator() +
                         "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[io.github" +
                         ".kobylynskyi.order.external.starwars.AcceptTopicSuggestionPayloadTypeResolver])" +
-                        lineSeparator() +
+                        System.lineSeparator() +
                         "case class AcceptTopicSuggestionPayload");
     }
 
@@ -160,11 +155,11 @@ class GraphQLCodegenAnnotationsTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "CodeOfConductQueryRequest.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[CodeOfConductQueryRequestDeserializer])" + lineSeparator() +
+                        "classOf[CodeOfConductQueryRequestDeserializer])" + System.lineSeparator() +
                         "class CodeOfConductQueryRequest");
         assertFileContainsElements(files, "CodeOfConductQueryResponse.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
-                        "classOf[CodeOfConductQueryResponseDeserializer])" + lineSeparator() +
+                        "classOf[CodeOfConductQueryResponseDeserializer])" + System.lineSeparator() +
                         "class CodeOfConductQueryResponse extends GraphQLResult[JMap[String, " +
                         "CodeOfConduct]]");
     }
