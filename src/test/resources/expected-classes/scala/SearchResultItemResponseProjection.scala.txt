@@ -51,7 +51,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onApp(alias: String, subProjection: AppResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on App").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on App").alias(alias).projection(subProjection))
         this
     }
 
@@ -60,7 +60,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onRepository(alias: String, subProjection: RepositoryResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on Repository").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on Repository").alias(alias).projection(subProjection))
         this
     }
 
@@ -69,7 +69,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onIssue(alias: String, subProjection: IssueResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on Issue").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on Issue").alias(alias).projection(subProjection))
         this
     }
 
@@ -78,7 +78,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onOrganization(alias: String, subProjection: OrganizationResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection))
         this
     }
 
@@ -87,7 +87,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onUser(alias: String, subProjection: UserResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on User").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on User").alias(alias).projection(subProjection))
         this
     }
 
@@ -96,7 +96,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onMarketplaceListing(alias: String, subProjection: MarketplaceListingResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on MarketplaceListing").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on MarketplaceListing").alias(alias).projection(subProjection))
         this
     }
 
@@ -105,7 +105,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def onPullRequest(alias: String, subProjection: PullRequestResponseProjection): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("...on PullRequest").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("...on PullRequest").alias(alias).projection(subProjection))
         this
     }
 
@@ -114,7 +114,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def typename(alias: String): SearchResultItemResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
 

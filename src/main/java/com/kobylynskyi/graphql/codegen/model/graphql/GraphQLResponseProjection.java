@@ -18,17 +18,17 @@ public abstract class GraphQLResponseProjection {
      */
     protected final Map<Pair<String, String>, GraphQLResponseField> fields = new LinkedHashMap<>();
 
-    public GraphQLResponseProjection() {
+    protected GraphQLResponseProjection() {
     }
 
-    public GraphQLResponseProjection(GraphQLResponseProjection projection) {
+    protected GraphQLResponseProjection(GraphQLResponseProjection projection) {
         if (projection == null) {
             return;
         }
         projection.fields.values().forEach(this::add$);
     }
 
-    public GraphQLResponseProjection(List<? extends GraphQLResponseProjection> projections) {
+    protected GraphQLResponseProjection(List<? extends GraphQLResponseProjection> projections) {
         if (projections == null) {
             return;
         }
@@ -40,8 +40,10 @@ public abstract class GraphQLResponseProjection {
         }
     }
 
+    @SuppressWarnings({"checkstyle:MethodName", "java:S100"})
     public abstract GraphQLResponseProjection deepCopy$();
 
+    @SuppressWarnings({"checkstyle:MethodName", "java:S100", "java:S3824"})
     protected void add$(GraphQLResponseField responseField) {
         Pair<String, String> nameAndAlias = new Pair<>(responseField.getName(), responseField.getAlias());
         GraphQLResponseField existingResponseField = fields.get(nameAndAlias);

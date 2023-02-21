@@ -91,7 +91,7 @@ class ${className}() extends GraphQLResponseProjection() {
     }
 
     def ${field.methodName}(alias: String<#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} = {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
+        add$(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
         this
     }
 
@@ -101,7 +101,7 @@ class ${className}() extends GraphQLResponseProjection() {
     }
 
     def ${field.methodName}(alias: String, input: ${field.parametrizedInputClassName} <#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} = {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
+        add$(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
         this
     }
 

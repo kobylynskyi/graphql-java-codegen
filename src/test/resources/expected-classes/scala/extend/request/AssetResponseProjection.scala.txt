@@ -52,7 +52,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def name(alias: String): AssetResponseProjection = {
-        fields.add(new GraphQLResponseField("name").alias(alias))
+        add$(new GraphQLResponseField("name").alias(alias))
         this
     }
 
@@ -61,7 +61,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def status(alias: String): AssetResponseProjection = {
-        fields.add(new GraphQLResponseField("status").alias(alias))
+        add$(new GraphQLResponseField("status").alias(alias))
         this
     }
 
@@ -70,7 +70,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def id(alias: String): AssetResponseProjection = {
-        fields.add(new GraphQLResponseField("id").alias(alias))
+        add$(new GraphQLResponseField("id").alias(alias))
         this
     }
 
@@ -79,7 +79,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def createdBy(alias: String): AssetResponseProjection = {
-        fields.add(new GraphQLResponseField("createdBy").alias(alias))
+        add$(new GraphQLResponseField("createdBy").alias(alias))
         this
     }
 
@@ -88,7 +88,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def typename(alias: String): AssetResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
 

@@ -68,7 +68,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def codeCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("codeCount").alias(alias))
+        add$(new GraphQLResponseField("codeCount").alias(alias))
         this
     }
 
@@ -77,7 +77,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def edges(alias: String, subProjection: SearchResultItemEdgeResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("edges").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("edges").alias(alias).projection(subProjection))
         this
     }
 
@@ -86,7 +86,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def issueCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("issueCount").alias(alias))
+        add$(new GraphQLResponseField("issueCount").alias(alias))
         this
     }
 
@@ -95,7 +95,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def nodes(alias: String, subProjection: SearchResultItemResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("nodes").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("nodes").alias(alias).projection(subProjection))
         this
     }
 
@@ -104,7 +104,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def pageInfo(alias: String, subProjection: PageInfoResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("pageInfo").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("pageInfo").alias(alias).projection(subProjection))
         this
     }
 
@@ -113,7 +113,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def repositoryCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("repositoryCount").alias(alias))
+        add$(new GraphQLResponseField("repositoryCount").alias(alias))
         this
     }
 
@@ -122,7 +122,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def userCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("userCount").alias(alias))
+        add$(new GraphQLResponseField("userCount").alias(alias))
         this
     }
 
@@ -131,7 +131,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def wikiCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("wikiCount").alias(alias))
+        add$(new GraphQLResponseField("wikiCount").alias(alias))
         this
     }
 
@@ -140,7 +140,7 @@ class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProj
     }
 
     def typename(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
 

@@ -56,7 +56,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def status(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("status").alias(alias))
+        add$(new GraphQLResponseField("status").alias(alias))
         this
     }
 
@@ -65,7 +65,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def createdDateTime(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("createdDateTime").alias(alias))
+        add$(new GraphQLResponseField("createdDateTime").alias(alias))
         this
     }
 
@@ -74,7 +74,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def assets(alias: String, subProjection: AssetResponseProjection): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("assets").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("assets").alias(alias).projection(subProjection))
         this
     }
 
@@ -83,7 +83,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def id(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("id").alias(alias))
+        add$(new GraphQLResponseField("id").alias(alias))
         this
     }
 
@@ -92,7 +92,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def createdBy(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("createdBy").alias(alias))
+        add$(new GraphQLResponseField("createdBy").alias(alias))
         this
     }
 
@@ -101,7 +101,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def typename(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
 

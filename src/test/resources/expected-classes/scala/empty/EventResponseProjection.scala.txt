@@ -48,7 +48,7 @@ class EventResponseProjection() extends GraphQLResponseProjection() {
     }
 
     def typename(alias: String): EventResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
 
