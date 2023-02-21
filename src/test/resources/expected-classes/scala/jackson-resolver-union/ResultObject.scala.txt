@@ -5,6 +5,8 @@ package com.kobylynskyi.graphql.unionresolver
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
+@com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
+@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[com.kobylynskyi.graphql.unionresolver.GraphqlJacksonTypeIdResolver])
 trait ResultObject {
 
     val list: scala.Seq[_ <: UnionToResolve]
