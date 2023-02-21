@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static java.util.Collections.singletonList;
 
-class GraphQLCodegenModelTest {
+class GraphQLCodegenVerifyCompileTest {
 
     private final String path = "src/test/java/com/kobylynskyi/graphql/codegen/kotlin/compile-pass";
     private final File outputBuildDir = new File(path);
