@@ -44,10 +44,10 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
     }
 
-    @AfterEach
-    void cleanup() {
-        Utils.deleteDir(outputBuildDir);
-    }
+//    @AfterEach
+//    void cleanup() {
+//        Utils.deleteDir(outputBuildDir);
+//    }
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {

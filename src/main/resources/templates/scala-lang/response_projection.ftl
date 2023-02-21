@@ -33,7 +33,7 @@ class ${className}() extends GraphQLResponseProjection() {
     def this(projection: ${className}) = {
         this()
         if (projection != null) {
-            for (field <- projection.fields.values) {
+            for (field <- projection.fields.values.asScala) {
                 add$(field)
             }
         }
@@ -44,7 +44,7 @@ class ${className}() extends GraphQLResponseProjection() {
         if (projections != null) {
             for (projection <- projections) {
                 if (projection != null) {
-                    for (field <- projection.fields.values) {
+                    for (field <- projection.fields.values.asScala) {
                         add$(field)
                     }
                 }
@@ -108,7 +108,7 @@ class ${className}() extends GraphQLResponseProjection() {
 </#if>
 </#list>
 </#if>
-    override def deepCopy$(): ${className} = ${className}(this)
+    override def deepCopy$(): ${className} = new ${className}(this)
 
 <#if equalsAndHashCode>
     override def equals(obj: Any): Boolean = {

@@ -39,13 +39,16 @@ data class ${className}(
 ) : GraphQLParametrizedInput {
 
     override fun deepCopy(): ${className} {
-        val parametrizedInput = ${className}()
     <#if fields?has_content>
+        return ${className}(
         <#list fields as field>
-        parametrizedInput.${field.name}(this.${field.name})
+            this.${field.name}<#if field_has_next>,</#if>
         </#list>
+        )
+    <#else>
+        return ${className}()
     </#if>
-        return parametrizedInput
+    
     }
 
     override fun toString(): String {

@@ -18,7 +18,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     def this(projection: SearchResultItemResponseProjection) = {
         this()
         if (projection != null) {
-            for (field <- projection.fields.values) {
+            for (field <- projection.fields.values.asScala) {
                 add$(field)
             }
         }
@@ -29,7 +29,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
         if (projections != null) {
             for (projection <- projections) {
                 if (projection != null) {
-                    for (field <- projection.fields.values) {
+                    for (field <- projection.fields.values.asScala) {
                         add$(field)
                     }
                 }
@@ -118,7 +118,7 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
         this
     }
 
-    override def deepCopy$(): SearchResultItemResponseProjection = SearchResultItemResponseProjection(this)
+    override def deepCopy$(): SearchResultItemResponseProjection = new SearchResultItemResponseProjection(this)
 
     override def equals(obj: Any): Boolean = {
         if (this == obj) {

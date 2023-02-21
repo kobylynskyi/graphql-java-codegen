@@ -22,16 +22,16 @@ case class QueryPrivateParametrizedInput(
     createdAfter: java.time.ZonedDateTime
 ) extends GraphQLParametrizedInput {
 
-    override def deepCopy(): QueryPrivateParametrizedInput {
-        val parametrizedInput = QueryPrivateParametrizedInput()
-        parametrizedInput.int(this.int)
-        parametrizedInput.intOpt(this.intOpt)
-        parametrizedInput.seq1(this.seq1)
-        parametrizedInput.seq2(this.seq2)
-        parametrizedInput.`new`(this.`new`)
-        parametrizedInput.enum(this.enum)
-        parametrizedInput.createdAfter(this.createdAfter)
-        parametrizedInput
+    override def deepCopy(): QueryPrivateParametrizedInput = {
+        QueryPrivateParametrizedInput(
+            this.int,
+            this.intOpt,
+            this.seq1,
+            this.seq2,
+            this.`new`,
+            this.enum,
+            this.createdAfter
+        )
     }
 
     override def toString(): String = {

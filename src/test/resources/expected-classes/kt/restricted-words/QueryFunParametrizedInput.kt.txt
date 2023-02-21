@@ -15,9 +15,10 @@ data class QueryFunParametrizedInput(
 ) : GraphQLParametrizedInput {
 
     override fun deepCopy(): QueryFunParametrizedInput {
-        val parametrizedInput = QueryFunParametrizedInput()
-        parametrizedInput.final(this.final)
-        return parametrizedInput
+        return QueryFunParametrizedInput(
+            this.final
+        )
+    
     }
 
     override fun toString(): String {

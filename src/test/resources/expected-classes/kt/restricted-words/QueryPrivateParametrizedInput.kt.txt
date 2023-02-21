@@ -18,12 +18,13 @@ data class QueryPrivateParametrizedInput(
 ) : GraphQLParametrizedInput {
 
     override fun deepCopy(): QueryPrivateParametrizedInput {
-        val parametrizedInput = QueryPrivateParametrizedInput()
-        parametrizedInput.int(this.int)
-        parametrizedInput.new(this.new)
-        parametrizedInput.enum(this.enum)
-        parametrizedInput.createdAfter(this.createdAfter)
-        return parametrizedInput
+        return QueryPrivateParametrizedInput(
+            this.int,
+            this.new,
+            this.enum,
+            this.createdAfter
+        )
+    
     }
 
     override fun toString(): String {
