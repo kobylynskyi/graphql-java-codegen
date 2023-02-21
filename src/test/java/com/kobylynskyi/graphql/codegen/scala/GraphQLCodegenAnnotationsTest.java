@@ -100,6 +100,10 @@ class GraphQLCodegenAnnotationsTest {
         assertFileContainsElements(files, "Actor.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +
                         "classOf[ActorDeserializer])" + System.lineSeparator() +
+                        "@com.fasterxml.jackson.annotation.JsonTypeInfo(" +
+                        "use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" +
+                        System.lineSeparator() + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" +
+                        "classOf[com.kobylynskyi.graphql.test1.GraphqlJacksonTypeIdResolver])" + System.lineSeparator() +
                         "trait Actor");
         assertFileContainsElements(files, "Assignee.scala",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = " +

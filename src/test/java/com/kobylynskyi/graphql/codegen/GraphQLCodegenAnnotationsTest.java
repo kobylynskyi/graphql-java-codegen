@@ -165,8 +165,12 @@ class GraphQLCodegenAnnotationsTest {
                         + System.lineSeparator() + "public class AcceptTopicSuggestionPayload ");
         assertFileContainsElements(files, "Actor.java",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
-                        "using = ActorDeserializer.class)"
-                        + System.lineSeparator() + "public interface Actor ");
+                        "using = ActorDeserializer.class)"  + System.lineSeparator() +
+                        "@com.fasterxml.jackson.annotation.JsonTypeInfo(" +
+                        "use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")" +
+                        System.lineSeparator() + "@com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" +
+                        "com.kobylynskyi.graphql.test1.GraphqlJacksonTypeIdResolver.class)" + System.lineSeparator() +
+                        "public interface Actor ");
         assertFileContainsElements(files, "Assignee.java",
                 "@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
                         "using = AssigneeDeserializer.class)"
