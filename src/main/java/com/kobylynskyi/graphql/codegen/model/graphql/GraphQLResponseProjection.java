@@ -13,8 +13,8 @@ public abstract class GraphQLResponseProjection {
 
     /**
      * Contains all response projection fields, where:
-     * <key> is the name+alias pair (where alias is nullable)
-     * <value> is GraphQLResponseField which represents the response projection field
+     * key - is the name+alias pair (where alias is nullable)
+     * value - is GraphQLResponseField which represents the response projection field
      */
     protected final Map<Pair<String, String>, GraphQLResponseField> fields = new LinkedHashMap<>();
 
@@ -40,10 +40,8 @@ public abstract class GraphQLResponseProjection {
         }
     }
 
-    @SuppressWarnings({"MethodNameCheck"})
     public abstract GraphQLResponseProjection deepCopy$();
 
-    @SuppressWarnings({"MethodNameCheck"})
     protected void add$(GraphQLResponseField responseField) {
         Pair<String, String> nameAndAlias = new Pair<>(responseField.getName(), responseField.getAlias());
         GraphQLResponseField existingResponseField = fields.get(nameAndAlias);
