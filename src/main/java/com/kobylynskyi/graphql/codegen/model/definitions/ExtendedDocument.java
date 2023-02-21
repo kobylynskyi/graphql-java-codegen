@@ -88,6 +88,12 @@ public class ExtendedDocument {
                 .collect(Collectors.toSet());
     }
 
+    public Set<String> getUnionsNames() {
+        return unionDefinitions.stream()
+                .map(ExtendedDefinition::getName)
+                .collect(Collectors.toSet());
+    }
+
     public Set<String> getOperationsNames() {
         return operationDefinitions.stream()
                 .map(ExtendedObjectTypeDefinition::getFieldDefinitions)

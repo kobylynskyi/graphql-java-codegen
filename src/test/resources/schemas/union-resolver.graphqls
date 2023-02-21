@@ -1,3 +1,7 @@
+interface ResultObject {
+    list: [UnionToResolve!]
+}
+
 type UnionMemberA {
     someField: Int
 }
