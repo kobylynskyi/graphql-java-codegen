@@ -54,14 +54,16 @@ case class ${className}(
 </#if>
 ) extends GraphQLParametrizedInput {
 
-    override def deepCopy(): ${className} {
-        val parametrizedInput = ${className}()
+    override def deepCopy(): ${className} = {
     <#if fields?has_content>
+        ${className}(
         <#list fields as field>
-        parametrizedInput.${field.name}(this.${field.name})
+            this.${field.name}<#if field_has_next>,</#if>
         </#list>
+        )
+    <#else>
+        ${className}()
     </#if>
-        parametrizedInput
     }
 
     override def toString(): String = {<#--There is no Option[Seq[T]], Format is not supported in the generated code, so it is very difficult to write template for this format.-->

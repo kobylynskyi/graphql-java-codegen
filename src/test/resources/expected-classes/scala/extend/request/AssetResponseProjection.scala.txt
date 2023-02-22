@@ -15,7 +15,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
     def this(projection: AssetResponseProjection) = {
         this()
         if (projection != null) {
-            for (field <- projection.fields.values) {
+            for (field <- projection.fields.values.asScala) {
                 add$(field)
             }
         }
@@ -26,7 +26,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
         if (projections != null) {
             for (projection <- projections) {
                 if (projection != null) {
-                    for (field <- projection.fields.values) {
+                    for (field <- projection.fields.values.asScala) {
                         add$(field)
                     }
                 }
@@ -92,7 +92,7 @@ class AssetResponseProjection() extends GraphQLResponseProjection() {
         this
     }
 
-    override def deepCopy$(): AssetResponseProjection = AssetResponseProjection(this)
+    override def deepCopy$(): AssetResponseProjection = new AssetResponseProjection(this)
 
 
 }
