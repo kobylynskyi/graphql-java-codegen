@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Response projection for SearchResultItem
@@ -17,6 +18,14 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public SearchResultItemResponseProjection() {
+    }
+
+    public SearchResultItemResponseProjection(SearchResultItemResponseProjection projection) {
+        super(projection);
+    }
+
+    public SearchResultItemResponseProjection(List<SearchResultItemResponseProjection> projections) {
+        super(projections);
     }
 
     public SearchResultItemResponseProjection all$() {
@@ -33,7 +42,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onApp(String alias, AppResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on App").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on App").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -42,7 +51,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onRepository(String alias, RepositoryResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on Repository").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on Repository").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -51,7 +60,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onIssue(String alias, IssueResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on Issue").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on Issue").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -60,7 +69,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onOrganization(String alias, OrganizationResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on Organization").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -69,7 +78,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onUser(String alias, UserResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on User").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on User").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -78,7 +87,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onMarketplaceListing(String alias, MarketplaceListingResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on MarketplaceListing").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on MarketplaceListing").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -87,7 +96,7 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection onPullRequest(String alias, PullRequestResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on PullRequest").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on PullRequest").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -96,8 +105,13 @@ public class SearchResultItemResponseProjection extends GraphQLResponseProjectio
     }
 
     public SearchResultItemResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public SearchResultItemResponseProjection deepCopy$() {
+        return new SearchResultItemResponseProjection(this);
     }
 
 

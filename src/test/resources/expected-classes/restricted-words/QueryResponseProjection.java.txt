@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,14 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public QueryResponseProjection() {
+    }
+
+    public QueryResponseProjection(QueryResponseProjection projection) {
+        super(projection);
+    }
+
+    public QueryResponseProjection(List<QueryResponseProjection> projections) {
+        super(projections);
     }
 
     public QueryResponseProjection all$() {
@@ -40,7 +49,7 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection Native(String alias) {
-        fields.add(new GraphQLResponseField("native").alias(alias));
+        add$(new GraphQLResponseField("native").alias(alias));
         return this;
     }
 
@@ -49,7 +58,7 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection Private(String alias, SynchronizedResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("private").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("private").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -58,7 +67,7 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection Private(String alias, QueryPrivateParametrizedInput input, SynchronizedResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("private").alias(alias).parameters(input).projection(subProjection));
+        add$(new GraphQLResponseField("private").alias(alias).parameters(input).projection(subProjection));
         return this;
     }
 
@@ -67,7 +76,7 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection Case(String alias) {
-        fields.add(new GraphQLResponseField("case").alias(alias));
+        add$(new GraphQLResponseField("case").alias(alias));
         return this;
     }
 
@@ -76,7 +85,7 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection Case(String alias, QueryCaseParametrizedInput input) {
-        fields.add(new GraphQLResponseField("case").alias(alias).parameters(input));
+        add$(new GraphQLResponseField("case").alias(alias).parameters(input));
         return this;
     }
 
@@ -85,8 +94,13 @@ public class QueryResponseProjection extends GraphQLResponseProjection {
     }
 
     public QueryResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public QueryResponseProjection deepCopy$() {
+        return new QueryResponseProjection(this);
     }
 
     @Override

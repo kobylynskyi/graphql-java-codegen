@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
 import java.util.Objects
 import scala.collection.mutable.HashMap
+import scala.collection.JavaConverters._
 
 /**
  * Response projection for SearchResultItemConnection
@@ -12,7 +13,29 @@ import scala.collection.mutable.HashMap
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
     date = "2020-12-31T23:59:59-0500"
 )
-class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjection {
+class SearchResultItemConnectionResponseProjection() extends GraphQLResponseProjection() {
+
+    def this(projection: SearchResultItemConnectionResponseProjection) = {
+        this()
+        if (projection != null) {
+            for (field <- projection.fields.values.asScala) {
+                add$(field)
+            }
+        }
+    }
+
+    def this(projections: scala.Seq[SearchResultItemConnectionResponseProjection]) = {
+        this()
+        if (projections != null) {
+            for (projection <- projections) {
+                if (projection != null) {
+                    for (field <- projection.fields.values.asScala) {
+                        add$(field)
+                    }
+                }
+            }
+        }
+    }
 
     private final lazy val projectionDepthOnFields = new HashMap[String, Int]
 
@@ -45,7 +68,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def codeCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("codeCount").alias(alias))
+        add$(new GraphQLResponseField("codeCount").alias(alias))
         this
     }
 
@@ -54,7 +77,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def edges(alias: String, subProjection: SearchResultItemEdgeResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("edges").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("edges").alias(alias).projection(subProjection))
         this
     }
 
@@ -63,7 +86,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def issueCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("issueCount").alias(alias))
+        add$(new GraphQLResponseField("issueCount").alias(alias))
         this
     }
 
@@ -72,7 +95,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def nodes(alias: String, subProjection: SearchResultItemResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("nodes").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("nodes").alias(alias).projection(subProjection))
         this
     }
 
@@ -81,7 +104,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def pageInfo(alias: String, subProjection: PageInfoResponseProjection): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("pageInfo").alias(alias).projection(subProjection))
+        add$(new GraphQLResponseField("pageInfo").alias(alias).projection(subProjection))
         this
     }
 
@@ -90,7 +113,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def repositoryCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("repositoryCount").alias(alias))
+        add$(new GraphQLResponseField("repositoryCount").alias(alias))
         this
     }
 
@@ -99,7 +122,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def userCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("userCount").alias(alias))
+        add$(new GraphQLResponseField("userCount").alias(alias))
         this
     }
 
@@ -108,7 +131,7 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def wikiCount(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("wikiCount").alias(alias))
+        add$(new GraphQLResponseField("wikiCount").alias(alias))
         this
     }
 
@@ -117,9 +140,11 @@ class SearchResultItemConnectionResponseProjection extends GraphQLResponseProjec
     }
 
     def typename(alias: String): SearchResultItemConnectionResponseProjection = {
-        fields.add(new GraphQLResponseField("__typename").alias(alias))
+        add$(new GraphQLResponseField("__typename").alias(alias))
         this
     }
+
+    override def deepCopy$(): SearchResultItemConnectionResponseProjection = new SearchResultItemConnectionResponseProjection(this)
 
     override def equals(obj: Any): Boolean = {
         if (this == obj) {

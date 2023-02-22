@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,6 +21,14 @@ public class CharResponseProjection extends GraphQLResponseProjection {
     public CharResponseProjection() {
     }
 
+    public CharResponseProjection(CharResponseProjection projection) {
+        super(projection);
+    }
+
+    public CharResponseProjection(List<CharResponseProjection> projections) {
+        super(projections);
+    }
+
     public CharResponseProjection all$() {
         return all$(3);
     }
@@ -34,8 +43,13 @@ public class CharResponseProjection extends GraphQLResponseProjection {
     }
 
     public CharResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public CharResponseProjection deepCopy$() {
+        return new CharResponseProjection(this);
     }
 
     @Override

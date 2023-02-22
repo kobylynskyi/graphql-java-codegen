@@ -38,6 +38,19 @@ data class ${className}(
 </#if>
 ) : GraphQLParametrizedInput {
 
+    override fun deepCopy(): ${className} {
+    <#if fields?has_content>
+        return ${className}(
+        <#list fields as field>
+            this.${field.name}<#if field_has_next>,</#if>
+        </#list>
+        )
+    <#else>
+        return ${className}()
+    </#if>
+    
+    }
+
     override fun toString(): String {
         val joiner = StringJoiner(", ", "( ", " )")
         <#list fields as field>

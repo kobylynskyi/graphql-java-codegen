@@ -3,6 +3,8 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
+import java.util.List;
+
 /**
  * Response projection for Event
  */
@@ -11,12 +13,20 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     public EventResponseProjection() {
     }
 
+    public EventResponseProjection(EventResponseProjection projection) {
+        super(projection);
+    }
+
+    public EventResponseProjection(List<EventResponseProjection> projections) {
+        super(projections);
+    }
+
     public EventResponseProjection id() {
         return id(null);
     }
 
     public EventResponseProjection id(String alias) {
-        fields.add(new GraphQLResponseField("id").alias(alias));
+        add$(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
@@ -25,7 +35,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection categoryId(String alias) {
-        fields.add(new GraphQLResponseField("categoryId").alias(alias));
+        add$(new GraphQLResponseField("categoryId").alias(alias));
         return this;
     }
 
@@ -34,7 +44,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection properties(String alias, EventPropertyResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("properties").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("properties").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -43,7 +53,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection status(String alias) {
-        fields.add(new GraphQLResponseField("status").alias(alias));
+        add$(new GraphQLResponseField("status").alias(alias));
         return this;
     }
 
@@ -52,7 +62,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection createdBy(String alias) {
-        fields.add(new GraphQLResponseField("createdBy").alias(alias));
+        add$(new GraphQLResponseField("createdBy").alias(alias));
         return this;
     }
 
@@ -61,7 +71,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection createdDateTime(String alias) {
-        fields.add(new GraphQLResponseField("createdDateTime").alias(alias));
+        add$(new GraphQLResponseField("createdDateTime").alias(alias));
         return this;
     }
 
@@ -70,7 +80,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection active(String alias) {
-        fields.add(new GraphQLResponseField("active").alias(alias));
+        add$(new GraphQLResponseField("active").alias(alias));
         return this;
     }
 
@@ -79,7 +89,7 @@ public class EventResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventResponseProjection rating(String alias) {
-        fields.add(new GraphQLResponseField("rating").alias(alias));
+        add$(new GraphQLResponseField("rating").alias(alias));
         return this;
     }
 
@@ -89,5 +99,10 @@ public class EventResponseProjection extends GraphQLResponseProjection {
 
     public GraphQLResponseProjection all$(int maxDepth) {
         return null;
+    }
+
+    @Override
+    public EventResponseProjection deepCopy$() {
+        return new EventResponseProjection(this);
     }
 }

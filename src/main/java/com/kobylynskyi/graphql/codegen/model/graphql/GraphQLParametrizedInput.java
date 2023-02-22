@@ -5,4 +5,6 @@ package com.kobylynskyi.graphql.codegen.model.graphql;
  */
 public interface GraphQLParametrizedInput {
 
+    GraphQLParametrizedInput deepCopy();
+
 }

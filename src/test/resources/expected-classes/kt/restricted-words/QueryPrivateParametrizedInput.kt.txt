@@ -17,6 +17,16 @@ data class QueryPrivateParametrizedInput(
     val createdAfter: java.time.ZonedDateTime?
 ) : GraphQLParametrizedInput {
 
+    override fun deepCopy(): QueryPrivateParametrizedInput {
+        return QueryPrivateParametrizedInput(
+            this.int,
+            this.new,
+            this.enum,
+            this.createdAfter
+        )
+    
+    }
+
     override fun toString(): String {
         val joiner = StringJoiner(", ", "( ", " )")
         if (int != null) {

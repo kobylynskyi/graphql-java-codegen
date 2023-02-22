@@ -36,6 +36,14 @@ public class EventPropertyChildParametrizedInput implements GraphQLParametrizedI
     }
 
     @Override
+    public EventPropertyChildParametrizedInput deepCopy() {
+        EventPropertyChildParametrizedInput parametrizedInput = new EventPropertyChildParametrizedInput();
+        parametrizedInput.first(this.first);
+        parametrizedInput.last(this.last);
+        return parametrizedInput;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
