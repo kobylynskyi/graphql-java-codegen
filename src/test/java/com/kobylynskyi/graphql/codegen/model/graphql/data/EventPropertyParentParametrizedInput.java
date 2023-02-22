@@ -62,4 +62,11 @@ public class EventPropertyParentParametrizedInput implements GraphQLParametrized
         return joiner.toString();
     }
 
+    @Override
+    public EventPropertyParentParametrizedInput deepCopy() {
+        EventPropertyParentParametrizedInput parametrizedInput = new EventPropertyParentParametrizedInput();
+        parametrizedInput.withStatus(this.withStatus);
+        parametrizedInput.createdAfter(this.createdAfter);
+        return parametrizedInput;
+    }
 }

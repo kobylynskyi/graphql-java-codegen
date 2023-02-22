@@ -10,6 +10,7 @@ import java.util.Objects
 <#if fields?has_content && generateAllMethodInProjection>
 import scala.collection.mutable.HashMap
 </#if>
+import scala.collection.JavaConverters._
 
 <#if javaDoc?has_content>
 /**
@@ -27,7 +28,29 @@ import scala.collection.mutable.HashMap
 <#list annotations as annotation>
 @${annotation}
 </#list>
-class ${className} extends GraphQLResponseProjection {
+class ${className}() extends GraphQLResponseProjection() {
+
+    def this(projection: ${className}) = {
+        this()
+        if (projection != null) {
+            for (field <- projection.fields.values.asScala) {
+                add$(field)
+            }
+        }
+    }
+
+    def this(projections: scala.Seq[${className}]) = {
+        this()
+        if (projections != null) {
+            for (projection <- projections) {
+                if (projection != null) {
+                    for (field <- projection.fields.values.asScala) {
+                        add$(field)
+                    }
+                }
+            }
+        }
+    }
 
 <#if fields?has_content && generateAllMethodInProjection>
     private final lazy val projectionDepthOnFields = new HashMap[String, Int]
@@ -68,7 +91,7 @@ class ${className} extends GraphQLResponseProjection {
     }
 
     def ${field.methodName}(alias: String<#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} = {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
+        add$(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>)
         this
     }
 
@@ -78,13 +101,15 @@ class ${className} extends GraphQLResponseProjection {
     }
 
     def ${field.methodName}(alias: String, input: ${field.parametrizedInputClassName} <#if field.type?has_content>, subProjection: ${field.type}</#if>): ${className} = {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
+        add$(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>)
         this
     }
 
 </#if>
 </#list>
 </#if>
+    override def deepCopy$(): ${className} = new ${className}(this)
+
 <#if equalsAndHashCode>
     override def equals(obj: Any): Boolean = {
         if (this == obj) {

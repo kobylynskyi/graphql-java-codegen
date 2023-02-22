@@ -70,6 +70,17 @@ public class ${className} implements GraphQLParametrizedInput {
 
 </#list>
 </#if>
+    @Override
+    public ${className} deepCopy() {
+        ${className} parametrizedInput = new ${className}();
+        <#if fields?has_content>
+        <#list fields as field>
+        parametrizedInput.${field.name}(this.${field.name});
+        </#list>
+        </#if>
+        return parametrizedInput;
+    }
+
 <#if equalsAndHashCode>
     @Override
     public boolean equals(Object obj) {

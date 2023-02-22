@@ -28,6 +28,13 @@ public class ProductLinkCodeParametrizedInput implements GraphQLParametrizedInpu
         return this;
     }
 
+    @Override
+    public ProductLinkCodeParametrizedInput deepCopy() {
+        ProductLinkCodeParametrizedInput parametrizedInput = new ProductLinkCodeParametrizedInput();
+        parametrizedInput.pid(this.pid);
+        return parametrizedInput;
+    }
+
 
     @Override
     public String toString() {

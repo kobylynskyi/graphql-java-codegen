@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
 </#if>
+import java.util.List;
 <#if equalsAndHashCode>
 import java.util.Objects;
 </#if>
@@ -35,6 +36,14 @@ public class ${className} extends GraphQLResponseProjection {
 </#if>
 
     public ${className}() {
+    }
+
+    public ${className}(${className} projection) {
+        super(projection);
+    }
+
+    public ${className}(List<${className}> projections) {
+        super(projections);
     }
 <#if fields?has_content && generateAllMethodInProjection>
 
@@ -76,7 +85,7 @@ public class ${className} extends GraphQLResponseProjection {
     }
 
     public ${className} ${field.methodName}(String alias<#if field.type?has_content>, ${field.type} subProjection</#if>) {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>);
+        add$(new GraphQLResponseField("${field.name}").alias(alias)<#if field.type?has_content>.projection(subProjection)</#if>);
         return this;
     }
 
@@ -86,13 +95,18 @@ public class ${className} extends GraphQLResponseProjection {
     }
 
     public ${className} ${field.methodName}(String alias, ${field.parametrizedInputClassName} input<#if field.type?has_content>, ${field.type} subProjection</#if>) {
-        fields.add(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>);
+        add$(new GraphQLResponseField("${field.name}").alias(alias).parameters(input)<#if field.type?has_content>.projection(subProjection)</#if>);
         return this;
     }
 
 </#if>
 </#list>
 </#if>
+    @Override
+    public ${className} deepCopy$() {
+        return new ${className}(this);
+    }
+
 <#if equalsAndHashCode>
     @Override
     public boolean equals(Object obj) {

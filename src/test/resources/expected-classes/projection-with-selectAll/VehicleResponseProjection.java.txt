@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Response projection for Vehicle
@@ -17,6 +18,14 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public VehicleResponseProjection() {
+    }
+
+    public VehicleResponseProjection(VehicleResponseProjection projection) {
+        super(projection);
+    }
+
+    public VehicleResponseProjection(List<VehicleResponseProjection> projections) {
+        super(projections);
     }
 
     public VehicleResponseProjection all$() {
@@ -39,7 +48,7 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     }
 
     public VehicleResponseProjection vehicleId(String alias) {
-        fields.add(new GraphQLResponseField("vehicleId").alias(alias));
+        add$(new GraphQLResponseField("vehicleId").alias(alias));
         return this;
     }
 
@@ -48,7 +57,7 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     }
 
     public VehicleResponseProjection registrationNumber(String alias) {
-        fields.add(new GraphQLResponseField("registrationNumber").alias(alias));
+        add$(new GraphQLResponseField("registrationNumber").alias(alias));
         return this;
     }
 
@@ -57,7 +66,7 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     }
 
     public VehicleResponseProjection location(String alias, LocationResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("location").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("location").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -66,8 +75,13 @@ public class VehicleResponseProjection extends GraphQLResponseProjection {
     }
 
     public VehicleResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public VehicleResponseProjection deepCopy$() {
+        return new VehicleResponseProjection(this);
     }
 
 
