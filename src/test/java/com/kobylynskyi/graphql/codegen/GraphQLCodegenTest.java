@@ -21,6 +21,7 @@ import java.util.Objects;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.lang.System.lineSeparator;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -141,11 +142,10 @@ class GraphQLCodegenTest {
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-        assertFileContainsElements(files, "Event.java", System.lineSeparator() +
-                "/**" + System.lineSeparator() +
-                " * An event that describes a thing that happens" + System
-                .lineSeparator() +
-                " */" + System.lineSeparator());
+        assertFileContainsElements(files, "Event.java", lineSeparator() +
+                "/**" + lineSeparator() +
+                " * An event that describes a thing that happens" + lineSeparator() +
+                " */" + lineSeparator());
     }
 
     @Test
