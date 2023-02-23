@@ -40,7 +40,8 @@ class GraphQLCodegenUnionResolverTest {
     @Test
     void generate_CheckFiles_with_model_package() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.unionresolver");
-        generate("src/test/resources/schemas/union-resolver.graphqls");
+
+        generate();
 
         File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/unionresolver");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -62,7 +63,8 @@ class GraphQLCodegenUnionResolverTest {
     void generate_CheckFiles_without_model_package_and_with_prefix_and_suffix() throws Exception {
         mappingConfig.setModelNamePrefix("My");
         mappingConfig.setModelNameSuffix("Suffix");
-        generate("src/test/resources/schemas/union-resolver.graphqls");
+
+        generate();
 
         File outputJavaClassesDir = new File("build/generated");
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -81,9 +83,10 @@ class GraphQLCodegenUnionResolverTest {
         }
     }
 
-    private void generate(String path) throws IOException {
-        new ScalaGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+    private void generate() throws IOException {
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/union-resolver.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 }

@@ -58,6 +58,7 @@ class MappingConfigTest {
         config.setGenerateModelsForRootTypes(false);
         config.setGenerateApisWithThrowsException(true);
         config.setAddGeneratedAnnotation(true);
+        config.setGeneratedAnnotation("jakarta.annotation.Generated");
         config.setParametrizedInputSuffix("9");
         config.setTypeResolverPrefix("11");
         config.setTypeResolverSuffix("12");
@@ -104,6 +105,7 @@ class MappingConfigTest {
         config.setGenerateModelsForRootTypes(true);
         config.setGenerateApisWithThrowsException(false);
         config.setAddGeneratedAnnotation(false);
+        config.setGeneratedAnnotation("javax.annotation.Generated");
         config.setParametrizedInputSuffix("99");
         config.setTypeResolverPrefix("1111");
         config.setTypeResolverSuffix("1212");
@@ -227,6 +229,7 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateModelsForRootTypes());
         assertTrue(mappingConfig.getGenerateApisWithThrowsException());
         assertTrue(mappingConfig.getAddGeneratedAnnotation());
+        assertEquals("jakarta.annotation.Generated", mappingConfig.getGeneratedAnnotation());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
         assertEquals("key", mappingConfig.getRelayConfig().getDirectiveArgumentName());
@@ -272,6 +275,7 @@ class MappingConfigTest {
         assertFalse(mappingConfig.getGenerateModelsForRootTypes());
         assertTrue(mappingConfig.getGenerateApisWithThrowsException());
         assertTrue(mappingConfig.getAddGeneratedAnnotation());
+        assertEquals("jakarta.annotation.Generated", mappingConfig.getGeneratedAnnotation());
         assertEquals("9", mappingConfig.getParametrizedInputSuffix());
         assertEquals("11", mappingConfig.getTypeResolverPrefix());
         assertEquals("12", mappingConfig.getTypeResolverSuffix());
@@ -323,6 +327,7 @@ class MappingConfigTest {
         assertTrue(mappingConfig.getGenerateModelsForRootTypes());
         assertFalse(mappingConfig.getGenerateApisWithThrowsException());
         assertFalse(mappingConfig.getAddGeneratedAnnotation());
+        assertEquals("javax.annotation.Generated", mappingConfig.getGeneratedAnnotation());
         assertEquals("99", mappingConfig.getParametrizedInputSuffix());
         assertEquals("1111", mappingConfig.getTypeResolverPrefix());
         assertEquals("1212", mappingConfig.getTypeResolverSuffix());

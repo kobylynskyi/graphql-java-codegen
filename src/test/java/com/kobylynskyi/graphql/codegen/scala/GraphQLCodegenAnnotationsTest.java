@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -52,8 +53,7 @@ class GraphQLCodegenAnnotationsTest {
                                 " classOf[com.example.json" +
                                 ".DateTimeScalarDeserializer])"))));
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.scala",
@@ -85,8 +85,7 @@ class GraphQLCodegenAnnotationsTest {
                         "classOf[DeploymentOrderFieldDeserializer])"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionInput.scala",
@@ -122,8 +121,7 @@ class GraphQLCodegenAnnotationsTest {
                         + ".external.starwars.AcceptTopicSuggestionPayloadTypeResolver])"));
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "AcceptTopicSuggestionPayload.scala",
@@ -149,8 +147,7 @@ class GraphQLCodegenAnnotationsTest {
         mappingConfig.setCustomAnnotationsMapping(customAnnotationsMapping);
         mappingConfig.setGenerateClient(true);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "CodeOfConductQueryRequest.scala",
@@ -176,8 +173,7 @@ class GraphQLCodegenAnnotationsTest {
                 singletonList("@com.example.Relationship(type = {{type}}, direction = {{direction}})"));
         mappingConfig.setDirectiveAnnotationsMapping(directiveAnnotationsMapping);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -189,6 +185,11 @@ class GraphQLCodegenAnnotationsTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/annotation/User.scala.txt"),
                 getFileByName(files, "User.scala"));
+    }
+
+    private void generate(String path) throws IOException {
+        new ScalaGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

@@ -60,6 +60,8 @@ trait GraphQLCodegenKeys {
 
   val addGeneratedAnnotation = settingKey[Boolean]("Specifies whether generated classes should be annotated with @Generated")
 
+  val generatedAnnotation = settingKey[Option[String]]("Qualified class name (with package) of the @Generated annotation that will be added on top of every generated class (if addGeneratedAnnotation is true)")
+
   val generateDataFetchingEnvironmentArgumentInApis = settingKey[Boolean]("If true, then graphql.schema.DataFetchingEnvironment env will be added as a last argument to all methods of root type resolvers and field resolvers.")
 
   val generateModelsForRootTypes = settingKey[Boolean]("generateModelsForRootTypes")

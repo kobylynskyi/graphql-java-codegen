@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -40,8 +41,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typesAsInterfaces() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface", "Order")));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/types-as-interfaces.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -61,9 +61,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typesAsInterfacesExtendsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface")));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/" +
-                "types-as-interfaces-extends-interface.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/types-as-interfaces-extends-interface.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -72,13 +70,18 @@ class GraphQLCodegenTypesAsInterfacesTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
                 "types-as-interfaces-extends-interface/Profile.kt.txt"), getFileByName(files, "Profile.kt"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
-                "types-as-interfaces-extends-interface/QueryResolver.kt.txt"),
+                        "types-as-interfaces-extends-interface/QueryResolver.kt.txt"),
                 getFileByName(files, "QueryResolver.kt"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
                 "types-as-interfaces-extends-interface/User.kt.txt"), getFileByName(files, "User.kt"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/" +
-                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.kt.txt"),
+                        "types-as-interfaces-extends-interface/UserCurrentQueryResolver.kt.txt"),
                 getFileByName(files, "UserCurrentQueryResolver.kt"));
+    }
+
+    private void generate(String o) throws IOException {
+        new KotlinGraphQLCodegen(singletonList(o),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

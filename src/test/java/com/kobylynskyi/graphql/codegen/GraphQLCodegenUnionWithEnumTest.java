@@ -32,7 +32,7 @@ class GraphQLCodegenUnionWithEnumTest {
     void generate_CheckFiles() throws Exception {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.enumunion");
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/union-with-enum.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo())
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig))
                 .generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());

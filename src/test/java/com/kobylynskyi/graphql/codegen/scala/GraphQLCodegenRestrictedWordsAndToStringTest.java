@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -26,27 +27,27 @@ class GraphQLCodegenRestrictedWordsAndToStringTest {
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/codegen/prot");
 
+    @BeforeEach
+    public void setup() {
+        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
+        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
+        mappingConfig.setGenerateEqualsAndHashCode(true);
+        mappingConfig.setGenerateModelsForRootTypes(true);
+        mappingConfig.setApiNameSuffix("API");
+    }
+
     @AfterEach
     void cleanup() {
         Utils.deleteDir(outputBuildDir);
     }
 
-    @BeforeEach
-    public void setup() {
-        mappingConfig.setGeneratedLanguage(GeneratedLanguage.SCALA);
-    }
-
     @Test
     void generate_SetGenerateBuilder_False() throws Exception {
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
         // fix an issue when generateBuilder=false => can not use object.OPERATION_NAME
         mappingConfig.setGenerateBuilder(false);
-        mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
-        mappingConfig.setGenerateModelsForRootTypes(true);
-        mappingConfig.setApiNameSuffix("API");
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName)
@@ -64,22 +65,19 @@ class GraphQLCodegenRestrictedWordsAndToStringTest {
 
     @Test
     void generate_SetGenerateClient_True() throws Exception {
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
-        mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateBuilder(true);
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("TestEnum"));
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
         mappingConfig.setGenerateApis(true);
-        mappingConfig.setGenerateModelsForRootTypes(true);
-        mappingConfig.setApiNameSuffix("API");
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).filter(
-                f -> Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(f)).sorted()
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName)
+                .filter(f -> Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala").contains(f))
+                .sorted()
                 .collect(toList());
         assertEquals(Arrays.asList("QueryPrivateParametrizedInput.scala", "Synchronized.scala"), generatedFileNames);
 
@@ -95,18 +93,13 @@ class GraphQLCodegenRestrictedWordsAndToStringTest {
 
     @Test
     void generate_SetGenerateClient_False() throws Exception {
-        mappingConfig.setPackageName("com.kobylynskyi.graphql.codegen.prot");
-        mappingConfig.setGenerateEqualsAndHashCode(true);
         mappingConfig.setGenerateClient(false);
         mappingConfig.setGenerateToString(true);
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("TestEnum"));
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
         mappingConfig.setGenerateApis(true);
-        mappingConfig.setGenerateModelsForRootTypes(true);
-        mappingConfig.setApiNameSuffix("API");
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName)
@@ -124,6 +117,11 @@ class GraphQLCodegenRestrictedWordsAndToStringTest {
                         file);
             }
         }
+    }
+
+    private void generate() throws IOException {
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/scala/restricted-words.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

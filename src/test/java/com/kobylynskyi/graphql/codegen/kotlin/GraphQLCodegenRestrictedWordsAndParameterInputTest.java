@@ -42,8 +42,9 @@ class GraphQLCodegenRestrictedWordsAndParameterInputTest {
         mappingConfig.setApiNameSuffix("API");
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
+
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/kt/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<?> filters = Arrays

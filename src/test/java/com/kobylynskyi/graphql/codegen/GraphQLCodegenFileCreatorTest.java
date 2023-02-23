@@ -47,12 +47,12 @@ class GraphQLCodegenFileCreatorTest {
         dataModel.put(DataModelFields.CLASS_NAME, "Class1");
         dataModel.put(DataModelFields.ANNOTATIONS, Collections.emptyList());
         dataModel.put(DataModelFields.GENERATED_ANNOTATION, false);
-        dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation());
+        dataModel.put(DataModelFields.GENERATED_INFO, new GeneratedInformation(mappingConfig));
 
         MappingContext mappingContext = MappingContext.builder()
                 .setMappingConfig(mappingConfig)
                 .setDocument(extendedDocument)
-                .setGeneratedInformation(new GeneratedInformation())
+                .setGeneratedInformation(new GeneratedInformation(mappingConfig))
                 .setDataModelMapperFactory(new DataModelMapperFactory(MAPPER_FACTORY))
                 .setOutputDirectory(OUTPUT_DIR)
                 .build();

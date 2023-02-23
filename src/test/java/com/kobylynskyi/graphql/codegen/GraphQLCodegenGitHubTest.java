@@ -40,8 +40,7 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -57,8 +56,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -88,8 +86,7 @@ class GraphQLCodegenGitHubTest {
     void generate_NoValidationAnnotation() throws Exception {
         mappingConfig.setModelValidationAnnotation("");
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
@@ -101,8 +98,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File(
@@ -121,12 +117,16 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_withoutPrimitives.java.txt"),
                 getFileByName(files, "Commit.java"));
+    }
+
+    private void generate() throws IOException {
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

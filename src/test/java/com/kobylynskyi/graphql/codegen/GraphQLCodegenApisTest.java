@@ -9,7 +9,6 @@ import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -27,6 +26,7 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GraphQLCodegenApisTest {
 
@@ -44,9 +44,8 @@ class GraphQLCodegenApisTest {
     void generate_FileNameAsPrefix() throws Exception {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -58,9 +57,8 @@ class GraphQLCodegenApisTest {
     void generate_FolderNameAsPrefix() throws Exception {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -72,9 +70,8 @@ class GraphQLCodegenApisTest {
     void generate_Constant() throws Exception {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -87,14 +84,13 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
         assertEquals(new HashSet<>(asList("SubProj1PingQueryResolver.java", "SubProj2PongQueryResolver.java",
-                "SubProj1QueryResolver.java", "SubProj2QueryResolver.java")),
+                        "SubProj1QueryResolver.java", "SubProj2QueryResolver.java")),
                 generatedFileNames);
     }
 
@@ -103,14 +99,13 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FILE_NAME_AS_PREFIX);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
         assertEquals(new HashSet<>(asList("SubSchema1PingQueryResolver.java", "SubSchema2PongQueryResolver.java",
-                "SubSchema1QueryResolver.java", "SubSchema2QueryResolver.java")),
+                        "SubSchema1QueryResolver.java", "SubSchema2QueryResolver.java")),
                 generatedFileNames);
     }
 
@@ -119,9 +114,9 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("sub-schema.*\\.graphqls");
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.CONSTANT);
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
-        GeneratedInformation generatedInformation = TestUtils.getStaticGeneratedInfo();
+        GeneratedInformation generatedInformation = TestUtils.getStaticGeneratedInfo(mappingConfig);
         List<String> schemas = schemaFinder.findSchemas();
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> new JavaGraphQLCodegen(schemas, outputBuildDir, mappingConfig,
                         generatedInformation));
     }
@@ -131,14 +126,12 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("test.*\\.graphqls");
         mappingConfig.setApiInterfaceStrategy(ApiInterfaceStrategy.DO_NOT_GENERATE);
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertEquals(Arrays.asList(
-                "Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
-                "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java", "User.java"),
+                        "Event.java", "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
+                        "MutationResolver.java", "QueryResolver.java", "SubscriptionResolver.java", "User.java"),
                 Arrays.stream(files).map(File::getName).sorted().collect(toList()));
     }
 
@@ -147,16 +140,14 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("test.*\\.graphqls");
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.DO_NOT_GENERATE);
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertEquals(Arrays.asList(
-                "CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java", "EventProperty.java",
-                "EventPropertyResolver.java", "EventStatus.java", "EventsByCategoryAndStatusQueryResolver.java",
-                "EventsByIdsQueryResolver.java", "EventsCreatedSubscriptionResolver.java", "User.java",
-                "VersionQueryResolver.java"),
+                        "CreateEventMutationResolver.java", "Event.java", "EventByIdQueryResolver.java",
+                        "EventProperty.java", "EventPropertyResolver.java", "EventStatus.java",
+                        "EventsByCategoryAndStatusQueryResolver.java", "EventsByIdsQueryResolver.java",
+                        "EventsCreatedSubscriptionResolver.java", "User.java", "VersionQueryResolver.java"),
                 Arrays.stream(files).map(File::getName).sorted().collect(toList()));
     }
 
@@ -165,9 +156,7 @@ class GraphQLCodegenApisTest {
         schemaFinder.setIncludePattern("github.*\\.graphqls");
         mappingConfig.setGenerateApisWithThrowsException(false);
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -177,6 +166,12 @@ class GraphQLCodegenApisTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/apis/" +
                         "MutationResolver_withoutThrowsException.java.txt"),
                 getFileByName(files, "MutationResolver.java"));
+    }
+
+    private void generate() throws IOException {
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 }

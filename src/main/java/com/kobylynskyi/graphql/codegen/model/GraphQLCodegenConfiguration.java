@@ -502,5 +502,16 @@ public interface GraphQLCodegenConfiguration {
      */
     String getUnknownFieldsPropertyName();
 
+    /**
+     * Returns a qualified class name (with package) of the Generated annotation that will be added on top of every
+     * generated class.
+     *
+     * @return The name of the class for @Generated annotation
+     * @see "jakarta.annotation.Generated"
+     * @see "javax.annotation.processing.Generated"
+     * @see "javax.annotation.Generated"
+     */
+    String getGeneratedAnnotation();
+
 
 }
