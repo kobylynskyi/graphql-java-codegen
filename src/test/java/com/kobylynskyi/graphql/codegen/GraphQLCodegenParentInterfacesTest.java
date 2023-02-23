@@ -37,7 +37,7 @@ class GraphQLCodegenParentInterfacesTest {
         mappingConfig.setResolverParentInterface("graphql.kickstart.tools.GraphQLResolver<{{TYPE}}>");
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 

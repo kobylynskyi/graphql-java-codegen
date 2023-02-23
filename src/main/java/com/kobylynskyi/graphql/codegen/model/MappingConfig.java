@@ -20,7 +20,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String apiPackageName;
     private String modelPackageName;
 
-    // suffix/prefix/strategies
+    // suffix/prefix/strategies:
     private String modelNamePrefix;
     private String modelNameSuffix;
     private String apiNamePrefix;
@@ -34,10 +34,13 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private String apiReturnType;
     private String apiReturnListType;
     private String subscriptionReturnType;
-    private RelayConfig relayConfig = new RelayConfig();
     private String unknownFieldsPropertyName;
+    private String generatedAnnotation;
 
-    // various toggles
+    // Relay config:
+    private RelayConfig relayConfig = new RelayConfig();
+
+    // various toggles:
     private Boolean generateApis;
     private Boolean generateBuilder;
     private Boolean generateEqualsAndHashCode;
@@ -204,6 +207,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::isSupportUnknownFields);
         unknownFieldsPropertyName = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getUnknownFieldsPropertyName);
+        generatedAnnotation = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getGeneratedAnnotation);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -687,6 +692,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
         this.unknownFieldsPropertyName = unknownFieldsPropertyName;
+    }
+
+    @Override
+    public String getGeneratedAnnotation() {
+        return generatedAnnotation;
+    }
+
+    public void setGeneratedAnnotation(String generatedAnnotation) {
+        this.generatedAnnotation = generatedAnnotation;
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -43,8 +44,7 @@ class GraphQLCodegenCustomScalarMappingTest {
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -61,8 +61,7 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -81,8 +80,8 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("ZonedDateTime"));
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -90,5 +89,10 @@ class GraphQLCodegenCustomScalarMappingTest {
                 new File("src/test/resources/expected-classes/scala/" +
                         "QueryINeedQueryRequest_custom_serializer.scala.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.scala"));
+    }
+
+    private void generate() throws IOException {
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 }

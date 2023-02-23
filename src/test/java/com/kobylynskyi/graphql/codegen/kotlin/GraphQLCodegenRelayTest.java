@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,8 +44,7 @@ class GraphQLCodegenRelayTest {
 
     @Test
     void generateServerSideRelayClasses() throws Exception {
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -62,8 +62,8 @@ class GraphQLCodegenRelayTest {
     void generateServerSideRelayClasses_CustomGenericsConnectionType() throws Exception {
         mappingConfig.getRelayConfig()
                 .setConnectionType("reactor.core.publisher.Mono<graphql.relay.Connection<%s>>");
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -71,6 +71,11 @@ class GraphQLCodegenRelayTest {
                 new File("src/test/resources/expected-classes/kt/relay/UsersQueryResolver_reactive.kt.txt"),
                 getFileByName(files, "UsersQueryResolver.kt"));
 
+    }
+
+    private void generate() throws IOException {
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -41,8 +42,8 @@ class GraphQLCodegenOpenclassesTest {
 
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
+
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(
@@ -53,12 +54,18 @@ class GraphQLCodegenOpenclassesTest {
     @Test
     void generate_MultipleInterfacesPerTypeVarFields() throws Exception {
         mappingConfig.setGenerateImmutableModels(false);
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
+
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/Commit_normal_class_var_fields.scala.txt"),
                 getFileByName(files, "Commit.scala"));
+    }
+
+    private void generate() throws IOException {
+        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -40,8 +41,7 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typeAsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface", "Order")));
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/types-as-interfaces.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/types-as-interfaces.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -61,25 +61,29 @@ class GraphQLCodegenTypesAsInterfacesTest {
     void generate_typeAsInterfaceExtendsInterface() throws Exception {
         mappingConfig.setTypesAsInterfaces(new HashSet<>(asList("@asInterface")));
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/" +
-                "types-as-interfaces-extends-interface.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/types-as-interfaces-extends-interface.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
                 "types-as-interfaces-extends-interface/Node.scala.txt"), getFileByName(files, "Node.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
-                "types-as-interfaces-extends-interface/Profile.scala.txt"),
+                        "types-as-interfaces-extends-interface/Profile.scala.txt"),
                 getFileByName(files, "Profile.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
-                "types-as-interfaces-extends-interface/QueryResolver.scala.txt"), 
+                        "types-as-interfaces-extends-interface/QueryResolver.scala.txt"),
                 getFileByName(files, "QueryResolver.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
                 "types-as-interfaces-extends-interface/User.scala.txt"), getFileByName(files, "User.scala"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/" +
-                "types-as-interfaces-extends-interface/UserCurrentQueryResolver.scala.txt"), 
+                        "types-as-interfaces-extends-interface/UserCurrentQueryResolver.scala.txt"),
                 getFileByName(files, "UserCurrentQueryResolver.scala"));
+    }
+
+    private void generate(String path) throws IOException {
+        new ScalaGraphQLCodegen(singletonList(path),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 }

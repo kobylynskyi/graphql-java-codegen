@@ -39,7 +39,7 @@ class GraphQLCodegenRestrictedWordsTest {
         mappingConfig.setApiNameSuffix("API");
 
         new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/restricted-words.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
