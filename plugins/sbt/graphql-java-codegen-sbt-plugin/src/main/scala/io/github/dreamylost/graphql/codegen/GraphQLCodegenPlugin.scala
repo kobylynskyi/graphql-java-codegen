@@ -172,7 +172,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateApisWithThrowsException((generateApisWithThrowsException in GraphQLCodegenConfig).value)
     mappingConfig.setAddGeneratedAnnotation((addGeneratedAnnotation in GraphQLCodegenConfig).value)
-    mappingConfig.setGeneratedAnnotation((generatedAnnotation in GraphQLCodegenConfig).value)
+    mappingConfig.setGeneratedAnnotation((generatedAnnotation in GraphQLCodegenConfig).value.orNull)
     mappingConfig.setGenerateAllMethodInProjection((generateAllMethodInProjection in GraphQLCodegenConfig).value)
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)
