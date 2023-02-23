@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -35,8 +36,8 @@ class GraphQLCodegenOptionalTest {
     @Test
     void generate_Optional() throws Exception {
         schemaFinder.setIncludePattern("github.*\\.graphqls");
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -63,8 +64,7 @@ class GraphQLCodegenOptionalTest {
         mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
         mappingConfig.setApiReturnListType("reactor.core.publisher.Flux");
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -84,8 +84,7 @@ class GraphQLCodegenOptionalTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
-        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -95,6 +94,11 @@ class GraphQLCodegenOptionalTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/" +
                         "TypeWithMandatoryField.java.txt"),
                 getFileByName(files, "TypeWithMandatoryField.java"));
+    }
+
+    private void generate() throws IOException {
+        new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

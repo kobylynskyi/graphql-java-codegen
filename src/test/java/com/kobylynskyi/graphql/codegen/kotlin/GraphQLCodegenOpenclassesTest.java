@@ -42,7 +42,7 @@ class GraphQLCodegenOpenclassesTest {
     @Test
     void generate_MultipleInterfacesPerType() throws Exception {
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/Commit_no_final_class.kt.txt"),

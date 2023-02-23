@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ class GraphQLCodegenModelsForRootTypesTest {
 
     public static final List<String> SCHEMAS = singletonList("src/test/resources/schemas/test.graphqls");
     private final MappingConfig mappingConfig = new MappingConfig();
-    private final GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
+    private final GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo(mappingConfig);
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/kobylynskyi/graphql/rootmodels");
 
@@ -67,7 +68,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_CheckFiles_generateApisFalse() throws Exception {
         mappingConfig.setGenerateApis(false);
 
-        new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -80,7 +81,7 @@ class GraphQLCodegenModelsForRootTypesTest {
     void generate_CheckFiles_generateApisTrue_CustomTypeResolverSuffix() throws Exception {
         mappingConfig.setTypeResolverSuffix("TypeResolver");
 
-        new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -91,6 +92,10 @@ class GraphQLCodegenModelsForRootTypesTest {
                 "MutationTypeResolver.java", "Query.java", "QueryResolver.java", "QueryTypeResolver.java",
                 "Subscription.java", "SubscriptionResolver.java", "User.java", "VersionQueryResolver.java"),
                 generatedFileNames);
+    }
+
+    private void generate() throws IOException {
+        new JavaGraphQLCodegen(SCHEMAS, outputBuildDir, mappingConfig, staticGeneratedInfo).generate();
     }
 
 }

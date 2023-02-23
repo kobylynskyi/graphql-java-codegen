@@ -94,6 +94,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     useOptionalForNullableReturnTypes := MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES,
     generateApisWithThrowsException := MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION,
     addGeneratedAnnotation := MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION,
+    generatedAnnotation := None,
     typesAsInterfaces := new JHashSet[String](),
     relayConfig := defaultRelayConfig,
     // package name configs:
@@ -171,6 +172,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setUseOptionalForNullableReturnTypes((useOptionalForNullableReturnTypes in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateApisWithThrowsException((generateApisWithThrowsException in GraphQLCodegenConfig).value)
     mappingConfig.setAddGeneratedAnnotation((addGeneratedAnnotation in GraphQLCodegenConfig).value)
+    mappingConfig.setGeneratedAnnotation((generatedAnnotation in GraphQLCodegenConfig).value.orNull)
     mappingConfig.setGenerateAllMethodInProjection((generateAllMethodInProjection in GraphQLCodegenConfig).value)
     mappingConfig.setResponseProjectionMaxDepth((responseProjectionMaxDepth in GraphQLCodegenConfig).value)
     mappingConfig.setRelayConfig((relayConfig in GraphQLCodegenConfig).value)

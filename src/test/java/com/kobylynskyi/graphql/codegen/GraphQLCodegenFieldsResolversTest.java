@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
@@ -41,8 +42,7 @@ class GraphQLCodegenFieldsResolversTest {
                 singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -57,8 +57,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/parametrized-input-client.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
@@ -72,8 +71,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateParameterizedFieldsResolvers(false);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/parametrized-input-client.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/A.java.txt"),
@@ -89,8 +87,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -106,8 +103,7 @@ class GraphQLCodegenFieldsResolversTest {
     void generate_ResolverForWholeType() throws Exception {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("CommentDeletedEvent"));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -122,8 +118,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setFieldsWithResolvers(Collections.singleton("@customResolver"));
         mappingConfig.setFieldsWithoutResolvers(Collections.singleton("@noResolver"));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -137,6 +132,11 @@ class GraphQLCodegenFieldsResolversTest {
                 getFileByName(files, "EventPropertyResolver.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventProperty.java.txt"),
                 getFileByName(files, "EventProperty.java"));
+    }
+
+    private void generate(String o) throws IOException {
+        new JavaGraphQLCodegen(singletonList(o),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

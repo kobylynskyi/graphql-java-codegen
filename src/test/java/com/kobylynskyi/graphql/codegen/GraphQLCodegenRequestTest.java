@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -42,8 +43,7 @@ class GraphQLCodegenRequestTest {
 
     @Test
     void generate_RequestAndResponseProjections() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -73,8 +73,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_WithModelSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -92,20 +91,18 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_WithOutAllMethods() throws Exception {
         mappingConfig.setGenerateAllMethodInProjection(false);
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-            outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
-                "EventResponseProjection.java_withoutAll.txt"),
-            getFileByName(files, "EventResponseProjection.java"));
+                        "EventResponseProjection.java_withoutAll.txt"),
+                getFileByName(files, "EventResponseProjection.java"));
     }
 
     @Test
     void generate_PrimitivesInsideParametrizedInput() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/parametrized-input-client.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/parametrized-input-client.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -116,8 +113,7 @@ class GraphQLCodegenRequestTest {
 
     @Test
     void generate_RequestAndResponseProjections_github() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -132,8 +128,7 @@ class GraphQLCodegenRequestTest {
 
     @Test
     void generate_ToStringIsEnabledForInput() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -145,8 +140,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_emptyRequestSuffix() throws Exception {
         mappingConfig.setRequestSuffix("");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -157,8 +151,7 @@ class GraphQLCodegenRequestTest {
     void generate_noApiImportForModelClasses() throws Exception {
         mappingConfig.setApiPackageName("com.github.graphql.api");
         mappingConfig.setModelPackageName("com.github.graphql");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -170,8 +163,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setApiPackageName("com.github.graphql.api");
         mappingConfig.setModelPackageName("com.github.graphql");
         mappingConfig.setFieldsWithResolvers(singleton("Event"));
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -185,8 +177,7 @@ class GraphQLCodegenRequestTest {
         mappingConfig.setApiPackageName("com.github.graphql.api");
         mappingConfig.setModelPackageName("com.github.graphql");
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -197,8 +188,7 @@ class GraphQLCodegenRequestTest {
 
     @Test
     void generate_QueriesWithSameName() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/queries-same-name.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/queries-same-name.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -214,8 +204,7 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_ClassesWithoutPrimitiveTypes() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Integer");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -228,8 +217,7 @@ class GraphQLCodegenRequestTest {
     void generate_UseObjectMapperToSerializeFields_Type() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.ZonedDateTime");
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -242,8 +230,8 @@ class GraphQLCodegenRequestTest {
     void generate_UseObjectMapperToSerializeFields_Field() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("Event.createdDateTime", "java.time.ZonedDateTime");
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -255,14 +243,20 @@ class GraphQLCodegenRequestTest {
     @Test
     void generate_UseObjectMapperToSerializeFields_Parameter() throws Exception {
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("ZonedDateTime"));
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/request/" +
                         "QueryINeedQueryRequest_custom_serializer.java.txt"),
                 getFileByName(files, "QueryINeedQueryRequest.java"));
+    }
+
+    private void generate(String o) throws IOException {
+        new JavaGraphQLCodegen(singletonList(o), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 }

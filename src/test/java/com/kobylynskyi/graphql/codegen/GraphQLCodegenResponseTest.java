@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -36,8 +37,8 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_RequestAndResponseProjections() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -55,8 +56,8 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_RequestAndResponseProjections_Interfaces() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/projection-interfaces.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -71,8 +72,8 @@ class GraphQLCodegenResponseTest {
     @Test
     void generate_projections_with_selectAll() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/projection-interfaces.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/projection-interfaces.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -86,14 +87,18 @@ class GraphQLCodegenResponseTest {
 
     @Test
     void generate_ResponseWithPrimitiveType() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/primitive-query-response-type.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/response/" +
                         "VersionQueryResponse_int.java.txt"),
                 getFileByName(files, "VersionQueryResponse.java"));
+    }
+
+    private void generate(String o) throws IOException {
+        new JavaGraphQLCodegen(singletonList(o),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

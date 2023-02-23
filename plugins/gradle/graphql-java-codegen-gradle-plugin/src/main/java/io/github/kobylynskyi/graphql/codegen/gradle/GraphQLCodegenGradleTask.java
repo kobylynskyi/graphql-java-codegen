@@ -82,8 +82,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
-    private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
     private Boolean generateJacksonTypeIdResolver = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER;
+    private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
+    private String generatedAnnotation;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Set<String> typesAsInterfaces = new HashSet<>();
@@ -153,8 +154,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
-        mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
+        mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGeneratedAnnotation(generatedAnnotation);
         mappingConfig.setApiReturnType(apiReturnType);
         mappingConfig.setApiReturnListType(apiReturnListType);
         mappingConfig.setSubscriptionReturnType(subscriptionReturnType);
@@ -650,6 +652,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    public void setGenerateJacksonTypeIdResolver(Boolean generateJacksonTypeIdResolver) {
+        this.generateJacksonTypeIdResolver = generateJacksonTypeIdResolver;
+    }
+
+    @Input
+    @Optional
+    @Override
     public Boolean getAddGeneratedAnnotation() {
         return addGeneratedAnnotation;
     }
@@ -661,12 +674,12 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     @Input
     @Optional
     @Override
-    public Boolean getGenerateJacksonTypeIdResolver() {
-        return generateJacksonTypeIdResolver;
+    public String getGeneratedAnnotation() {
+        return generatedAnnotation;
     }
 
-    public void setGenerateJacksonTypeIdResolver(Boolean generateJacksonTypeIdResolver) {
-        this.generateJacksonTypeIdResolver = generateJacksonTypeIdResolver;
+    public void setGeneratedAnnotation(String generatedAnnotation) {
+        this.generatedAnnotation = generatedAnnotation;
     }
 
     @Input

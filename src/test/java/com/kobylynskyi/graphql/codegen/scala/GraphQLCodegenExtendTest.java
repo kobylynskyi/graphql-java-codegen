@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,8 +45,7 @@ class GraphQLCodegenExtendTest {
 
     @Test
     void generateServerSideClasses() throws Exception {
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -66,8 +66,8 @@ class GraphQLCodegenExtendTest {
     void generateServerSideClasses_ExtensionFieldsResolvers_WithExclusions() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
         mappingConfig.setFieldsWithoutResolvers(new HashSet<>(asList("Node", "Event.assets")));
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -88,8 +88,8 @@ class GraphQLCodegenExtendTest {
     @Test
     void generateServerSideClasses_EmptyTypes() throws Exception {
         schemaFinder.setIncludePattern("empty-types-with-extend\\.graphqls");
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
@@ -110,8 +110,8 @@ class GraphQLCodegenExtendTest {
     void generateClientSideClasses() throws Exception {
         mappingConfig.setGenerateApis(false);
         mappingConfig.setGenerateClient(true);
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -129,8 +129,8 @@ class GraphQLCodegenExtendTest {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
         schemaFinder.setIncludePattern("null-extend1.graphqls");
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -164,8 +164,8 @@ class GraphQLCodegenExtendTest {
         // is mandatory.
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
         schemaFinder.setIncludePattern("null-extend2.graphqls");
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -184,8 +184,8 @@ class GraphQLCodegenExtendTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setUseOptionalForNullableReturnTypes(false);
         schemaFinder.setIncludePattern("null-extend2.graphqls");
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         //Therefore, when the return type is a primitive type, the return option is automatically turned on, and this
@@ -212,8 +212,8 @@ class GraphQLCodegenExtendTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
         schemaFinder.setIncludePattern("null-extend3.graphqls");
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -252,9 +252,7 @@ class GraphQLCodegenExtendTest {
         mappingConfig.setCustomTypesMapping(maps);
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
-        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -264,5 +262,11 @@ class GraphQLCodegenExtendTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/scala/optional/TypeWithMandatoryField.scala.txt"),
                 getFileByName(files, "TypeWithMandatoryField.scala"));
+    }
+
+    private void generate() throws IOException {
+        new ScalaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 }

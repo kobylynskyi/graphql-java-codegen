@@ -42,7 +42,7 @@ class GraphQLCodegenInitializeNullableTypesTest {
     @Test
     void generate_InitializeNullableTypes() throws Exception {
         new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(

@@ -149,11 +149,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING)
     private boolean generateApisWithThrowsException;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER_STRING)
+    private boolean generateJacksonTypeIdResolver;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
     private boolean addGeneratedAnnotation;
 
-    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER_STRING)
-    private boolean generateJacksonTypeIdResolver;
+    @Parameter
+    private String generatedAnnotation;
 
     @Parameter
     private String[] fieldsWithResolvers;
@@ -265,8 +268,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
-        mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
+        mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
+        mappingConfig.setGeneratedAnnotation(generatedAnnotation);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -527,13 +531,18 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
+    public Boolean getGenerateJacksonTypeIdResolver() {
+        return generateJacksonTypeIdResolver;
+    }
+
+    @Override
     public Boolean getAddGeneratedAnnotation() {
         return addGeneratedAnnotation;
     }
 
     @Override
-    public Boolean getGenerateJacksonTypeIdResolver() {
-        return generateJacksonTypeIdResolver;
+    public String getGeneratedAnnotation() {
+        return generatedAnnotation;
     }
 
     @Override

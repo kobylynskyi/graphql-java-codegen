@@ -10,26 +10,37 @@ import java.util.function.Supplier;
 public class GeneratedInformation {
 
     public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+
     private final String generatedType;
     private Supplier<ZonedDateTime> dateTimeSupplier;
 
-    public GeneratedInformation() {
-        this(ZonedDateTime::now);
+    public GeneratedInformation(MappingConfig mappingConfig) {
+        this(ZonedDateTime::now, mappingConfig);
     }
 
-    public GeneratedInformation(Supplier<ZonedDateTime> dateTimeSupplier) {
+    public GeneratedInformation(Supplier<ZonedDateTime> dateTimeSupplier, MappingConfig mappingConfig) {
         this.dateTimeSupplier = dateTimeSupplier;
-        this.generatedType = initGeneratedType();
+        this.generatedType = initGeneratedType(mappingConfig);
     }
 
-    private static String initGeneratedType() {
+    private static String initGeneratedType(MappingConfig mappingConfig) {
+        if (mappingConfig != null &&
+                mappingConfig.getGeneratedAnnotation() != null &&
+                !mappingConfig.getGeneratedAnnotation().isEmpty()) {
+            return mappingConfig.getGeneratedAnnotation();
+        }
+        // default logic if mapping config doesn't have a specific annotation
         try {
-            return Class.forName("javax.annotation.processing.Generated").getCanonicalName();
-        } catch (ClassNotFoundException ignored1) {
+            return Class.forName("jakarta.annotation.Generated").getCanonicalName();
+        } catch (ClassNotFoundException ignored0) {
             try {
-                return Class.forName("javax.annotation.Generated").getCanonicalName();
-            } catch (ClassNotFoundException ignored2) {
-                // class is not available
+                return Class.forName("javax.annotation.processing.Generated").getCanonicalName();
+            } catch (ClassNotFoundException ignored1) {
+                try {
+                    return Class.forName("javax.annotation.Generated").getCanonicalName();
+                } catch (ClassNotFoundException ignored2) {
+                    // class is not available
+                }
             }
         }
         return null;
