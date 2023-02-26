@@ -84,6 +84,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
     private Boolean generateJacksonTypeIdResolver = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER;
     private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
+    private Boolean generateNoArgsConstructorOnly = MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY;
     private String generatedAnnotation;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
@@ -155,6 +156,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
+        mappingConfig.setGenerateNoArgsConstructorOnly(generateNoArgsConstructorOnly);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGeneratedAnnotation(generatedAnnotation);
         mappingConfig.setApiReturnType(apiReturnType);
@@ -680,6 +682,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGeneratedAnnotation(String generatedAnnotation) {
         this.generatedAnnotation = generatedAnnotation;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean isGenerateNoArgsConstructorOnly() {
+        return generateNoArgsConstructorOnly;
+    }
+
+    public void setGenerateNoArgsConstructorOnly(Boolean generateNoArgsConstructorOnly) {
+        this.generateNoArgsConstructorOnly = generateNoArgsConstructorOnly;
     }
 
     @Input

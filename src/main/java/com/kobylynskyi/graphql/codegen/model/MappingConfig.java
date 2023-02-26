@@ -55,6 +55,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean addGeneratedAnnotation;
     private Boolean generateJacksonTypeIdResolver;
     private Boolean supportUnknownFields;
+    private Boolean generateNoArgsConstructorOnly;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -209,6 +210,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getUnknownFieldsPropertyName);
         generatedAnnotation = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGeneratedAnnotation);
+        generateNoArgsConstructorOnly = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::isGenerateNoArgsConstructorOnly);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
@@ -681,11 +684,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public GeneratedLanguage getGeneratedLanguage() {
-        return generatedLanguage;
-    }
-
-    @Override
     public String getUnknownFieldsPropertyName() {
         return unknownFieldsPropertyName;
     }
@@ -712,10 +710,16 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.supportUnknownFields = supportUnknownFields;
     }
 
+    @Override
+    public GeneratedLanguage getGeneratedLanguage() {
+        return generatedLanguage;
+    }
+
     public void setGeneratedLanguage(GeneratedLanguage generatedLanguage) {
         this.generatedLanguage = generatedLanguage;
     }
 
+    @Override
     public Boolean isGenerateModelOpenClasses() {
         return generateModelOpenClasses;
     }
@@ -724,6 +728,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.generateModelOpenClasses = generateModelOpenClasses;
     }
 
+    @Override
     public Boolean isInitializeNullableTypes() {
         return initializeNullableTypes;
     }
@@ -732,6 +737,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.initializeNullableTypes = initializeNullableTypes;
     }
 
+    @Override
     public Boolean isGenerateSealedInterfaces() {
         return generateSealedInterfaces;
     }
@@ -740,4 +746,12 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.generateSealedInterfaces = generateSealedInterfaces;
     }
 
+    @Override
+    public Boolean isGenerateNoArgsConstructorOnly() {
+        return generateNoArgsConstructorOnly;
+    }
+
+    public void setGenerateNoArgsConstructorOnly(Boolean generateNoArgsConstructorOnly) {
+        this.generateNoArgsConstructorOnly = generateNoArgsConstructorOnly;
+    }
 }

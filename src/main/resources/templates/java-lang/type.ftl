@@ -53,7 +53,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     public ${className}() {
     }
 
-<#if fields?has_content>
+<#if fields?has_content && !generateNoArgsConstructorOnly>
     public ${className}(<#list fields as field>${field.type} ${field.name}<#if field_has_next>, </#if></#list>) {
     <#list fields as field>
         this.${field.name} = ${field.name};
@@ -194,7 +194,15 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     </#if>
 
         public ${className} build() {
+<#if generateNoArgsConstructorOnly>
+            ${className} result = new ${className};
+    <#list fields as field>
+            result.set${field.name?cap_first}(this.${field.name});
+    </#list>
+            return result;
+<#else>
             return new ${className}(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);
+</#if>
         }
 
     }

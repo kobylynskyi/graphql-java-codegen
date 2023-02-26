@@ -129,6 +129,8 @@ trait GraphQLCodegenKeys {
 
   val generateJacksonTypeIdResolver = settingKey[Boolean]("Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package.")
 
+  val generateNoArgsConstructorOnly = settingKey[Boolean]("Specifies whether model classes should only have a no-args constructor. All-args constructor will not be generated in case value is .true.")
+
   //for version
   val javaxValidationApiVersion = settingKey[Option[String]]("javax-validation-api version")
   val graphqlJavaCodegenVersion = settingKey[Option[String]]("graphql-java-codegen version")

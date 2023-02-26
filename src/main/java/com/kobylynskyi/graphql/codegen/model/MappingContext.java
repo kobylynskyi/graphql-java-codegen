@@ -341,6 +341,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.getGeneratedAnnotation();
     }
 
+    @Override
+    public Boolean isGenerateNoArgsConstructorOnly() {
+        return config.isGenerateNoArgsConstructorOnly();
+    }
+
     public ExtendedDocument getDocument() {
         return document;
     }
