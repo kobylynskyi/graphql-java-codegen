@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Objects;
@@ -40,8 +41,8 @@ class GraphQLCodegenNullableTest {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setGenerateClient(true);
         schemaFinder.setIncludePattern("nullable-extend.graphqls");
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -81,8 +82,8 @@ class GraphQLCodegenNullableTest {
         mappingConfig.setModelNamePrefix("Test");
         mappingConfig.setModelNameSuffix("DTO");
         schemaFinder.setIncludePattern("nullable-extend.graphqls");
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -100,9 +101,7 @@ class GraphQLCodegenNullableTest {
         mappingConfig.setGenerateEqualsAndHashCode(true);
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -122,14 +121,19 @@ class GraphQLCodegenNullableTest {
 
         schemaFinder.setIncludePattern("nullable-custom-type-with-api-return-type.graphqls");
 
-        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo())
-                .generate();
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/kt/nullable/NullableCustomTypeWithApiReturnType.kt.txt"),
                 getFileByName(files, "QueryResolver.kt"));
+
+    }
+
+    private void generate() throws IOException {
+        new KotlinGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 }

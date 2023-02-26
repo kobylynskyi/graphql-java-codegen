@@ -29,6 +29,13 @@ public class ClientDataParametrizedInput implements GraphQLParametrizedInput {
     }
 
     @Override
+    public ClientDataParametrizedInput deepCopy() {
+        ClientDataParametrizedInput parametrizedInput = new ClientDataParametrizedInput();
+        parametrizedInput.ID(this.ID);
+        return parametrizedInput;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

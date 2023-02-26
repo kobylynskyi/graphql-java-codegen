@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Response projection for Location
@@ -17,6 +18,14 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
 
     public LocationResponseProjection() {
+    }
+
+    public LocationResponseProjection(LocationResponseProjection projection) {
+        super(projection);
+    }
+
+    public LocationResponseProjection(List<LocationResponseProjection> projections) {
+        super(projections);
     }
 
     public LocationResponseProjection all$() {
@@ -35,7 +44,7 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     }
 
     public LocationResponseProjection id(String alias) {
-        fields.add(new GraphQLResponseField("id").alias(alias));
+        add$(new GraphQLResponseField("id").alias(alias));
         return this;
     }
 
@@ -44,7 +53,7 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     }
 
     public LocationResponseProjection locationType(String alias) {
-        fields.add(new GraphQLResponseField("locationType").alias(alias));
+        add$(new GraphQLResponseField("locationType").alias(alias));
         return this;
     }
 
@@ -53,7 +62,7 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     }
 
     public LocationResponseProjection onCustomerLocation(String alias, CustomerLocationResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on CustomerLocation").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on CustomerLocation").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -62,7 +71,7 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     }
 
     public LocationResponseProjection onDealerLocation(String alias, DealerLocationResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("...on DealerLocation").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("...on DealerLocation").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -71,8 +80,13 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     }
 
     public LocationResponseProjection typename(String alias) {
-        fields.add(new GraphQLResponseField("__typename").alias(alias));
+        add$(new GraphQLResponseField("__typename").alias(alias));
         return this;
+    }
+
+    @Override
+    public LocationResponseProjection deepCopy$() {
+        return new LocationResponseProjection(this);
     }
 
 

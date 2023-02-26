@@ -69,7 +69,7 @@ public abstract class GraphQLCodegen {
                              MappingConfigSupplier externalMappingConfigSupplier,
                              MapperFactory mapperFactory) {
         this(schemas, introspectionResult, outputDir, mappingConfig, externalMappingConfigSupplier,
-                new GeneratedInformation(), mapperFactory);
+                new GeneratedInformation(mappingConfig), mapperFactory);
     }
 
     // used by other constructors

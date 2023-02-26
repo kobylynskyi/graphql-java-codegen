@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,7 @@ class GraphQLCodegenDefaultsTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/defaults.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -48,8 +48,7 @@ class GraphQLCodegenDefaultsTest {
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
-                    file.getName())),
-                    file);
+                    file.getName())), file);
         }
     }
 
@@ -58,8 +57,7 @@ class GraphQLCodegenDefaultsTest {
         mappingConfig.setSupportUnknownFields(true);
         mappingConfig.setUnknownFieldsPropertyName("userDefinedFields");
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/defaults.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -67,8 +65,7 @@ class GraphQLCodegenDefaultsTest {
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/unknown-fields/%s.txt",
-                            file.getName())),
-                    file);
+                    file.getName())), file);
         }
     }
 
@@ -76,8 +73,7 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_WithPrefixSuffix() throws Exception {
         mappingConfig.setModelNameSuffix("TO");
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/defaults.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
@@ -85,8 +81,7 @@ class GraphQLCodegenDefaultsTest {
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
-                    file.getName())),
-                    file);
+                    file.getName())), file);
         }
     }
 
@@ -94,16 +89,21 @@ class GraphQLCodegenDefaultsTest {
     void generate_CheckFiles_OnLongDefault() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Long", "java.lang.Long")));
         mappingConfig.setModelNameSuffix("DTO");
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/defaults-with-Long.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/defaults-with-Long.graphqls");
+
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(asList("InputWithDefaultsDTO.java", "MyEnumDTO.java", "SomeObjectDTO.java"), generatedFileNames);
 
         for (File file : files) {
             assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/defaults/%s.txt",
-                    file.getName())),
-                    file);
+                    file.getName())), file);
         }
+    }
+
+    private void generate(String path) throws IOException {
+        new JavaGraphQLCodegen(singletonList(path),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 }

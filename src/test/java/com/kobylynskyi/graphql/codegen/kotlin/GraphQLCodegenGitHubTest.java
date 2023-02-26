@@ -4,7 +4,6 @@ import com.kobylynskyi.graphql.codegen.TestUtils;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,22 +15,17 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 
 class GraphQLCodegenGitHubTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputktClassesDir = new File("build/generated/com/github/graphql");
     private final MappingConfig mappingConfig = new MappingConfig();
-
-    private static String getFileContent(File[] files, String fileName) throws IOException {
-        return Utils.getFileContent(getFileByName(files, fileName).getPath());
-    }
 
     @BeforeEach
     void init() {
@@ -55,8 +49,8 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
+
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/Commit.kt.txt"),
@@ -76,22 +70,18 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNameSuffix("TO");
         mappingConfig.setGenerateImmutableModels(false);
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
         // verify proper class name for GraphQL interface
-        assertThat(getFileContent(files, "GithubActorTO.kt"),
-                StringContains.containsString("interface GithubActorTO"));
+        assertFileContainsElements(files, "GithubActorTO.kt", "interface GithubActorTO");
 
         // verify proper class name for GraphQL enum
-        assertThat(getFileContent(files, "GithubIssueStateTO.kt"),
-                StringContains.containsString("enum class GithubIssueStateTO"));
+        assertFileContainsElements(files, "GithubIssueStateTO.kt", "enum class GithubIssueStateTO");
 
         // verify proper class name for GraphQL union
-        assertThat(getFileContent(files, "GithubAssigneeTO.kt"),
-                StringContains.containsString("interface GithubAssigneeTO"));
+        assertFileContainsElements(files, "GithubAssigneeTO.kt", "interface GithubAssigneeTO");
 
         // verify proper class name for GraphQL input
         assertSameTrimmedContent(
@@ -108,8 +98,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -124,8 +113,7 @@ class GraphQLCodegenGitHubTest {
     void generate_ResponseWithPrimitiveType() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Int?");
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/primitive-query-response-type.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
@@ -135,8 +123,7 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_ktList() throws Exception {
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/AddLabelsToLabelableInput.kt.txt"),
@@ -161,8 +148,7 @@ class GraphQLCodegenGitHubTest {
     void generate_Var_Field() throws Exception {
         mappingConfig.setGenerateImmutableModels(false);
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/Commit_Var_Field.kt.txt"),
@@ -176,8 +162,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
@@ -200,8 +185,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
@@ -213,7 +197,6 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_CustomFieldsResolversWithMultipleAnnotations() throws Exception {
-
         Set<String> annotations = new HashSet<>();
         annotations.add("some.Annotation");
         annotations.add("another.Annotation");
@@ -225,8 +208,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setFieldsWithResolvers(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
 
@@ -240,12 +222,18 @@ class GraphQLCodegenGitHubTest {
     void generate_RequestWithDefaultValue() throws Exception {
         mappingConfig.setGenerateBuilder(true);
         mappingConfig.setGenerateClient(true);
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/kt/default.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/kt/default.graphqls");
+
         File[] files = Objects.requireNonNull(outputktClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/kt/default/" +
                         "FriendsQueryRequest.kt.txt"),
                 getFileByName(files, "FriendsQueryRequest.kt"));
+    }
+
+    private void generate(String path) throws IOException {
+        new KotlinGraphQLCodegen(singletonList(path),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

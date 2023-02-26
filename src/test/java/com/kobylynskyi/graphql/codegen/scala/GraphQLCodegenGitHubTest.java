@@ -49,8 +49,8 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
+
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit.scala.txt"),
@@ -65,8 +65,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setModelNamePrefix("Github");
         mappingConfig.setModelNameSuffix("TO");
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
@@ -96,8 +95,7 @@ class GraphQLCodegenGitHubTest {
     void generate_NoValidationAnnotation() throws Exception {
         mappingConfig.setModelValidationAnnotation("");
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File commitFile = getFileByName(Objects.requireNonNull(outputScalaClassesDir.listFiles()), "Commit.scala");
         assertSameTrimmedContent(
@@ -110,8 +108,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.setGenerateClient(true);
         mappingConfig.setGenerateApis(false);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
         assertSameTrimmedContent(new File(
@@ -130,8 +127,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "java.lang.Boolean");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -146,8 +142,7 @@ class GraphQLCodegenGitHubTest {
         mappingConfig.putCustomTypeMappingIfAbsent("Boolean!", "Boolean");
         mappingConfig.setUseOptionalForNullableReturnTypes(true);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_withPrimitives.scala.txt"),
@@ -158,8 +153,8 @@ class GraphQLCodegenGitHubTest {
     void generate_ResponseWithPrimitiveType() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("Int!", "Int");
         mappingConfig.putCustomTypeMappingIfAbsent("Int", "Int");
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/primitive-query-response-type.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/primitive-query-response-type.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
@@ -170,8 +165,7 @@ class GraphQLCodegenGitHubTest {
 
     @Test
     void generate_ScalaList() throws Exception {
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
         assertSameTrimmedContent(
@@ -199,12 +193,17 @@ class GraphQLCodegenGitHubTest {
     void generate_Var_Field() throws Exception {
         mappingConfig.setGenerateImmutableModels(false);
 
-        new ScalaGraphQLCodegen(singletonList("src/test/resources/schemas/github.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/github.graphqls");
 
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Commit_Var_Field.scala.txt"),
                 getFileByName(files, "Commit.scala"));
+    }
+
+    private void generate(String path) throws IOException {
+        new ScalaGraphQLCodegen(singletonList(path),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 

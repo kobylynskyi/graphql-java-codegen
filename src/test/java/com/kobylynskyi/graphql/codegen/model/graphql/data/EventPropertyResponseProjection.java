@@ -3,12 +3,27 @@ package com.kobylynskyi.graphql.codegen.model.graphql.data;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Response projection for EventProperty
  */
 public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
+    private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
+
     public EventPropertyResponseProjection() {
+        super();
+    }
+
+    public EventPropertyResponseProjection(EventPropertyResponseProjection projection) {
+        super(projection);
+    }
+
+    public EventPropertyResponseProjection(List<EventPropertyResponseProjection> projections) {
+        super(projections);
     }
 
     public EventPropertyResponseProjection floatVal() {
@@ -16,7 +31,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection floatVal(String alias) {
-        fields.add(new GraphQLResponseField("floatVal").alias(alias));
+        add$(new GraphQLResponseField("floatVal").alias(alias));
         return this;
     }
 
@@ -25,7 +40,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection booleanVal(String alias) {
-        fields.add(new GraphQLResponseField("booleanVal").alias(alias));
+        add$(new GraphQLResponseField("booleanVal").alias(alias));
         return this;
     }
 
@@ -34,7 +49,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection intVal(String alias) {
-        fields.add(new GraphQLResponseField("intVal").alias(alias));
+        add$(new GraphQLResponseField("intVal").alias(alias));
         return this;
     }
 
@@ -43,7 +58,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection stringVal(String alias) {
-        fields.add(new GraphQLResponseField("stringVal").alias(alias));
+        add$(new GraphQLResponseField("stringVal").alias(alias));
         return this;
     }
 
@@ -52,7 +67,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection child(String alias, EventPropertyResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("child").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("child").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -63,7 +78,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public EventPropertyResponseProjection child(String alias, EventPropertyChildParametrizedInput input,
                                                  EventPropertyResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("child").alias(alias).parameters(input).projection(subProjection));
+        add$(new GraphQLResponseField("child").alias(alias).parameters(input).projection(subProjection));
         return this;
     }
 
@@ -72,7 +87,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
     }
 
     public EventPropertyResponseProjection parent(String alias, EventResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("parent").alias(alias).projection(subProjection));
+        add$(new GraphQLResponseField("parent").alias(alias).projection(subProjection));
         return this;
     }
 
@@ -83,7 +98,7 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public EventPropertyResponseProjection parent(String alias, EventPropertyParentParametrizedInput input,
                                                   EventResponseProjection subProjection) {
-        fields.add(new GraphQLResponseField("parent").alias(alias).parameters(input).projection(subProjection));
+        add$(new GraphQLResponseField("parent").alias(alias).parameters(input).projection(subProjection));
         return this;
     }
 
@@ -93,5 +108,10 @@ public class EventPropertyResponseProjection extends GraphQLResponseProjection {
 
     public GraphQLResponseProjection all$(int maxDepth) {
         return null;
+    }
+
+    @Override
+    public GraphQLResponseProjection deepCopy$() {
+        return new EventPropertyResponseProjection(this);
     }
 }

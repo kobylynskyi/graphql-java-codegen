@@ -8,7 +8,13 @@ import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection
     value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
     date = "2020-12-31T23:59:59-0500"
 )
-open class EventResponseProjection : GraphQLResponseProjection() {
+open class EventResponseProjection : GraphQLResponseProjection {
+
+    constructor(): super()
+
+    constructor(projection: EventResponseProjection): super(projection)
+
+    constructor(projections: List<EventResponseProjection>): super(projections)
 
     private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
 
@@ -22,9 +28,11 @@ open class EventResponseProjection : GraphQLResponseProjection() {
     fun typename(): EventResponseProjection = typename(null)
 
     fun typename(alias: String?): EventResponseProjection {
-        fields.add(GraphQLResponseField("__typename").alias(alias))
+        `add$`(GraphQLResponseField("__typename").alias(alias))
         return this
     }
+
+    override fun `deepCopy$`(): EventResponseProjection = EventResponseProjection(this)
 
 
 }

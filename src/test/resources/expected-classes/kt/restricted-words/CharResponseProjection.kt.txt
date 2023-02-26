@@ -11,7 +11,13 @@ import java.util.Objects
     value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
     date = "2020-12-31T23:59:59-0500"
 )
-open class CharResponseProjection : GraphQLResponseProjection() {
+open class CharResponseProjection : GraphQLResponseProjection {
+
+    constructor(): super()
+
+    constructor(projection: CharResponseProjection): super(projection)
+
+    constructor(projections: List<CharResponseProjection>): super(projections)
 
     private val projectionDepthOnFields: MutableMap<String, Int> by lazy { mutableMapOf<String, Int>() }
 
@@ -25,9 +31,11 @@ open class CharResponseProjection : GraphQLResponseProjection() {
     fun typename(): CharResponseProjection = typename(null)
 
     fun typename(alias: String?): CharResponseProjection {
-        fields.add(GraphQLResponseField("__typename").alias(alias))
+        `add$`(GraphQLResponseField("__typename").alias(alias))
         return this
     }
+
+    override fun `deepCopy$`(): CharResponseProjection = CharResponseProjection(this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

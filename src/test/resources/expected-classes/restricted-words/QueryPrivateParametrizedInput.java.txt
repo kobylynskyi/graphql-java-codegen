@@ -43,6 +43,15 @@ public class QueryPrivateParametrizedInput implements GraphQLParametrizedInput {
     }
 
     @Override
+    public QueryPrivateParametrizedInput deepCopy() {
+        QueryPrivateParametrizedInput parametrizedInput = new QueryPrivateParametrizedInput();
+        parametrizedInput.Int(this.Int);
+        parametrizedInput.New(this.New);
+        parametrizedInput.Enum(this.Enum);
+        return parametrizedInput;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

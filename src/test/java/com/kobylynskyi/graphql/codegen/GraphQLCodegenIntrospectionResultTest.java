@@ -40,16 +40,14 @@ class GraphQLCodegenIntrospectionResultTest {
 
     @Test
     void generateClientFromIntrospectionResult() throws Exception {
-        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/introspection-result/sample-introspection-query-result.json");
 
         checkGeneratedFiles();
     }
 
     @Test
     void generateClientFromIntrospectionResultWrappedInData() throws Exception {
-        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result-wrapped.json",
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/introspection-result/sample-introspection-query-result-wrapped.json");
 
         checkGeneratedFiles();
     }
@@ -59,10 +57,14 @@ class GraphQLCodegenIntrospectionResultTest {
         mappingConfig.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.INTERFACE_PER_SCHEMA);
         mappingConfig.setApiNamePrefixStrategy(ApiNamePrefixStrategy.FOLDER_NAME_AS_PREFIX);
 
-        new JavaGraphQLCodegen("src/test/resources/introspection-result/sample-introspection-query-result.json",
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/introspection-result/sample-introspection-query-result.json");
 
         checkGeneratedFiles();
+    }
+
+    private void generate(String path) throws IOException {
+        new JavaGraphQLCodegen(path,
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
     private void checkGeneratedFiles() throws IOException {

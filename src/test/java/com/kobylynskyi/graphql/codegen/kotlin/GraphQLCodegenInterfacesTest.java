@@ -32,7 +32,7 @@ class GraphQLCodegenInterfacesTest {
         mappingConfig.setPackageName("com.kobylynskyi.graphql.interfaces");
         generator = new KotlinGraphQLCodegen(
                 Collections.singletonList("src/test/resources/schemas/interfaces.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig));
     }
 
     @AfterEach

@@ -29,6 +29,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final ExtendedDocument document;
     private final Set<String> typesUnionsInterfacesNames;
     private final Set<String> interfacesName;
+    private final Set<String> unionsName;
     private final Set<String> operationsName;
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
@@ -47,6 +48,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.document = document;
         this.typesUnionsInterfacesNames = document.getTypesUnionsInterfacesNames();
         this.interfacesName = document.getInterfacesNames();
+        this.unionsName = document.getUnionsNames();
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
         this.operationsName = document.getOperationsNames();
@@ -334,6 +336,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.getUnknownFieldsPropertyName();
     }
 
+    @Override
+    public String getGeneratedAnnotation() {
+        return config.getGeneratedAnnotation();
+    }
+
     public ExtendedDocument getDocument() {
         return document;
     }
@@ -344,6 +351,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
 
     public Set<String> getInterfacesName() {
         return interfacesName;
+    }
+
+    public Set<String> getUnionsNames() {
+        return unionsName;
     }
 
     public Set<String> getOperationsName() {

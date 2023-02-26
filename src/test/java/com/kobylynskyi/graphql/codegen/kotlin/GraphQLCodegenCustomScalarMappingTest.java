@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -43,8 +44,7 @@ class GraphQLCodegenCustomScalarMappingTest {
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -61,8 +61,7 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
 
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -81,8 +80,8 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("ZonedDateTime"));
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -95,8 +94,8 @@ class GraphQLCodegenCustomScalarMappingTest {
     void generate_UseObjectMapperToSerializeFields_Type() throws Exception {
         mappingConfig.putCustomTypeMappingIfAbsent("DateTime", "java.time.LocalDateTime");
         mappingConfig.setUseObjectMapperForRequestSerialization(singleton("DateTime"));
-        new KotlinGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+
+        generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -104,4 +103,10 @@ class GraphQLCodegenCustomScalarMappingTest {
                         "Event_useObjectMapperForRequestSerialization.kt.txt"),
                 getFileByName(files, "Event.kt"));
     }
+
+    private void generate(String path) throws IOException {
+        new KotlinGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
+                TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
+    }
+
 }

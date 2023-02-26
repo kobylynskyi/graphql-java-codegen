@@ -141,10 +141,10 @@ class GraphQLCodegenTest {
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputBuildDir.listFiles());
-        assertFileContainsElements(files, "Event.java", "\n" +
-                "/**\n" +
-                " * An event that describes a thing that happens\n" +
-                " */\n");
+        assertFileContainsElements(files, "Event.java",
+                "/**",
+                " * An event that describes a thing that happens",
+                " */");
     }
 
     @Test
@@ -249,7 +249,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_NoSchemas() {
-        GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo();
+        GeneratedInformation staticGeneratedInfo = TestUtils.getStaticGeneratedInfo(mappingConfig);
         List<String> schemas = emptyList();
         JavaGraphQLCodegen codegen = new JavaGraphQLCodegen(
                 schemas, outputBuildDir, mappingConfig, staticGeneratedInfo);
@@ -260,7 +260,7 @@ class GraphQLCodegenTest {
     void generate_WrongSchema() {
         GraphQLCodegen graphQLCodegen = new JavaGraphQLCodegen(
                 singletonList("src/test/resources/schemas/wrong.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo());
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig));
 
         assertThrows(NoSuchFileException.class, graphQLCodegen::generate);
 
@@ -400,7 +400,7 @@ class GraphQLCodegenTest {
 
     private List<File> generate(String s) throws IOException {
         return new JavaGraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
-                TestUtils.getStaticGeneratedInfo()).generate();
+                TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
 }

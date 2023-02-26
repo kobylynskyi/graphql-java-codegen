@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -28,7 +29,6 @@ class GraphQLCodegenCustomScalarMappingTest {
         mappingConfig = new MappingConfig();
         mappingConfig.setPackageName("com.kobylynskyi.graphql.test1");
         mappingConfig.setGenerateClient(true);
-
     }
 
     @AfterEach
@@ -40,8 +40,7 @@ class GraphQLCodegenCustomScalarMappingTest {
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -57,8 +56,7 @@ class GraphQLCodegenCustomScalarMappingTest {
         customTypesMapping.put("ZonedDateTime", "java.time.ZonedDateTime");
         mappingConfig.setCustomTypesMapping(customTypesMapping);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/date-scalar.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/date-scalar.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
@@ -79,14 +77,19 @@ class GraphQLCodegenCustomScalarMappingTest {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("External", "com.example.External")));
         mappingConfig.setGenerateClient(false);
 
-        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/external-type-extend.graphqls"),
-                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo()).generate();
+        generate("src/test/resources/schemas/external-type-extend.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/custom-type/ExternalResolver.java.txt"),
                 getFileByName(files, "ExternalResolver.java"));
+    }
+
+    private void generate(String path) throws IOException {
+        new JavaGraphQLCodegen(singletonList(path),
+                outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig))
+                .generate();
     }
 
 }

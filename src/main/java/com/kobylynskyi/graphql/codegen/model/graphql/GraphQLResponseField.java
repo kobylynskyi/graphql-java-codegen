@@ -86,4 +86,23 @@ public class GraphQLResponseField {
     public int hashCode() {
         return Objects.hash(name, alias, parameters, projection);
     }
+
+    /**
+     * Returns a clone of the instance, having a deep copy of the parameters and projection.
+     *
+     * @return a clone (deep copy)
+     */
+    public GraphQLResponseField deepCopy() {
+        GraphQLResponseField deepCopy = new GraphQLResponseField(this.name);
+        if (this.alias != null) {
+            deepCopy.alias = this.alias;
+        }
+        if (this.parameters != null) {
+            deepCopy.parameters = this.parameters.deepCopy();
+        }
+        if (this.projection != null) {
+            deepCopy.projection = this.projection.deepCopy$();
+        }
+        return deepCopy;
+    }
 }

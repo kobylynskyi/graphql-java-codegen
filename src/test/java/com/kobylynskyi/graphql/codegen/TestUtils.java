@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.model.GeneratedInformation;
+import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.hamcrest.Matchers;
 
@@ -53,10 +54,8 @@ public class TestUtils {
         }
     }
 
-    public static GeneratedInformation getStaticGeneratedInfo() {
-        GeneratedInformation generatedInformation = new GeneratedInformation();
-        generatedInformation.setDateTimeSupplier(() -> GENERATED_DATE_TIME);
-        return generatedInformation;
+    public static GeneratedInformation getStaticGeneratedInfo(MappingConfig mappingConfig) {
+        return new GeneratedInformation(() -> GENERATED_DATE_TIME, mappingConfig);
     }
 
 }
