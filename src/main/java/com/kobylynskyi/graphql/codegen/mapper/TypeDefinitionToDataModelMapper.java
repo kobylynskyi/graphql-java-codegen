@@ -26,6 +26,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_MODEL_OPEN_CLASSES;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_NOARGS_CONSTRUCTOR_ONLY;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_SEALED_INTERFACES;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMMUTABLE_MODELS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPLEMENTS;
@@ -110,6 +111,7 @@ public class TypeDefinitionToDataModelMapper implements UnknownFieldsSupport {
         dataModel.put(GENERATE_SEALED_INTERFACES, mappingContext.isGenerateSealedInterfaces());
         dataModel.put(SUPPORT_UNKNOWN_FIELDS, mappingContext.isSupportUnknownFields());
         dataModel.put(UNKNOWN_FIELDS_PROPERTY_NAME, mappingContext.getUnknownFieldsPropertyName());
+        dataModel.put(GENERATE_NOARGS_CONSTRUCTOR_ONLY, mappingContext.isGenerateNoArgsConstructorOnly());
         return dataModel;
     }
 

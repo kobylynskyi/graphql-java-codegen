@@ -46,9 +46,11 @@ class GraphQLCodegenFieldsResolversTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noParametrizedFields.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
+                        "Commit_noParametrizedFields.java.txt"),
                 getFileByName(files, "Commit.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommitResolver.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
+                        "CommitResolver.java.txt"),
                 getFileByName(files, "CommitResolver.java"));
     }
 
@@ -94,7 +96,7 @@ class GraphQLCodegenFieldsResolversTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
                         "GithubAcceptTopicSuggestionPayloadTO.java.txt"),
                 getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
                         "AcceptTopicSuggestionPayloadResolver.java.txt"),
                 getFileByName(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
@@ -107,9 +109,11 @@ class GraphQLCodegenFieldsResolversTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEventResolver.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
+                        "CommentDeletedEventResolver.java.txt"),
                 getFileByName(files, "CommentDeletedEventResolver.java"));
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/CommentDeletedEvent.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/" +
+                        "CommentDeletedEvent.java.txt"),
                 getFileByName(files, "CommentDeletedEvent.java"));
     }
 

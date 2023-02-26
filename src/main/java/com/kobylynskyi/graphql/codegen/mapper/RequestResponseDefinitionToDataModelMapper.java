@@ -29,6 +29,7 @@ import static com.kobylynskyi.graphql.codegen.model.DataModelFields.FIELDS;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_ALL_METHOD_IN_PROJECTION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATE_NOARGS_CONSTRUCTOR_ONLY;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.JAVA_DOC;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.METHOD_NAME;
 import static com.kobylynskyi.graphql.codegen.model.DataModelFields.OPERATION_NAME;
@@ -154,6 +155,7 @@ public class RequestResponseDefinitionToDataModelMapper {
         dataModel.put(GENERATED_ANNOTATION, mappingContext.getAddGeneratedAnnotation());
         dataModel.put(GENERATED_INFO, mappingContext.getGeneratedInformation());
         dataModel.put(ENUM_IMPORT_IT_SELF_IN_SCALA, mappingContext.getEnumImportItSelfInScala());
+        dataModel.put(GENERATE_NOARGS_CONSTRUCTOR_ONLY, mappingContext.isGenerateNoArgsConstructorOnly());
         // dataModel.put(TO_STRING, mappingConfig.getGenerateToString()); always generated for serialization purposes
         return dataModel;
     }

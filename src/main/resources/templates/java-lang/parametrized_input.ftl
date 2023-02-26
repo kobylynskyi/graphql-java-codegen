@@ -43,11 +43,11 @@ public class ${className} implements GraphQLParametrizedInput {
     public ${className}() {
     }
 
-<#if fields?has_content>
+<#if fields?has_content && !generateNoArgsConstructorOnly>
     public ${className}(<#list fields as field>${field.type} ${field.name}<#if field_has_next>, </#if></#list>) {
-<#list fields as field>
+    <#list fields as field>
         this.${field.name} = ${field.name};
-</#list>
+    </#list>
     }
 </#if>
 
