@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonMap;
 
 class GraphQLCodegenNullableTest {
 
@@ -109,6 +111,24 @@ class GraphQLCodegenNullableTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/kt/optional/TypeWithMandatoryField.kt.txt"),
                 getFileByName(files, "TypeWithMandatoryField.kt"));
+    }
+
+    @Test
+    void generate_NullableCustomTypeWithApiReturnType() throws Exception {
+        mappingConfig.setGenerateApis(true);
+        mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
+        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
+
+        schemaFinder.setIncludePattern("nullable-custom-type-with-api-return-type.graphqls");
+
+        generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/kt/nullable/NullableCustomTypeWithApiReturnType.kt.txt"),
+                getFileByName(files, "QueryResolver.kt"));
+
     }
 
     private void generate() throws IOException {
