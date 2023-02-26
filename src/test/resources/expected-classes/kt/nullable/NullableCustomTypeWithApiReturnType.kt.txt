@@ -1,0 +1,13 @@
+@javax.annotation.Generated(
+    value = ["com.kobylynskyi.graphql.codegen.GraphQLCodegen"],
+    date = "2020-12-31T23:59:59-0500"
+)
+interface QueryResolver {
+
+    @Throws(Exception::class)
+    fun nullable(): reactor.core.publisher.Mono<String?>
+
+    @Throws(Exception::class)
+    fun mandatory(): reactor.core.publisher.Mono<String>
+
+}
