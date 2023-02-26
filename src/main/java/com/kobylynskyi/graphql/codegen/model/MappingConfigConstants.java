@@ -82,13 +82,14 @@ public class MappingConfigConstants {
     // There is no need to consider the possibility of switching.
     public static final String DEFAULT_SERIALIZATION_LIBRARY = "JACKSON";
 
-    //It only support in kotlin and scala.
+    // Only supported in Kotlin and Scala
     public static final boolean DEFAULT_GENERATE_MODEL_OPEN_CLASSES = false;
     public static final String DEFAULT_GENERATE_MODEL_OPEN_CLASSES_STRING = "false";
 
-    //Only supported in kotlin.
+    // Only supported in Kotlin
     public static final boolean DEFAULT_INITIALIZE_NULLABLE_TYPES = false;
     public static final String DEFAULT_INITIALIZE_NULLABLE_TYPES_STRING = "false";
+
     // Only supported in Kotlin
     public static final boolean DEFAULT_GENERATE_SEALED_INTERFACES = false;
     public static final String DEFAULT_GENERATE_SEALED_INTERFACES_STRING = "false";
@@ -96,6 +97,9 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_SUPPORT_UNKNOWN_FIELDS = false;
     public static final String DEFAULT_SUPPORT_UNKNOWN_FIELDS_STRING = "false";
     public static final String DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME = "userDefinedFields";
+
+    public static final boolean DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY = false;
+    public static final String DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY_STRING = "false";
 
     private MappingConfigConstants() {
     }

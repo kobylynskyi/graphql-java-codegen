@@ -114,6 +114,10 @@ public class MappingConfigDefaultValuesInitializer {
         if (mappingConfig.getUnknownFieldsPropertyName() == null) {
             mappingConfig.setUnknownFieldsPropertyName(MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME);
         }
+        if (mappingConfig.isGenerateNoArgsConstructorOnly() == null) {
+            mappingConfig.setGenerateNoArgsConstructorOnly(
+                    MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY);
+        }
     }
 
 }

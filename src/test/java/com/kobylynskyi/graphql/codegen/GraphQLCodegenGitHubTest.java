@@ -89,7 +89,8 @@ class GraphQLCodegenGitHubTest {
         generate();
 
         File commitFile = getFileByName(Objects.requireNonNull(outputJavaClassesDir.listFiles()), "Commit.java");
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_noValidationAnnotation.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "Commit_noValidationAnnotation.java.txt"),
                 commitFile);
     }
 
@@ -120,7 +121,8 @@ class GraphQLCodegenGitHubTest {
         generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Commit_withoutPrimitives.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/primitives/" +
+                        "Commit_withoutPrimitives.java.txt"),
                 getFileByName(files, "Commit.java"));
     }
 

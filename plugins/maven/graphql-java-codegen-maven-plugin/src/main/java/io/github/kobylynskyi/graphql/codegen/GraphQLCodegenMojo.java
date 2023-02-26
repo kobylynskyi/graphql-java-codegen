@@ -155,6 +155,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION_STRING)
     private boolean addGeneratedAnnotation;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY_STRING)
+    private boolean generateNoArgsConstructorOnly;
+
     @Parameter
     private String generatedAnnotation;
 
@@ -271,6 +274,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGeneratedAnnotation(generatedAnnotation);
+        mappingConfig.setGenerateNoArgsConstructorOnly(generateNoArgsConstructorOnly);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -665,21 +669,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateSealedInterfaces;
     }
 
-    public ParentInterfacesConfig getParentInterfaces() {
-        return parentInterfaces;
-    }
-
-    public String[] getConfigurationFiles() {
-        return configurationFiles;
-    }
-
     @Override
     public Boolean isSupportUnknownFields() {
         return supportUnknownFields;
-    }
-
-    public void setSupportUnknownFields(boolean supportUnknownFields) {
-        this.supportUnknownFields = supportUnknownFields;
     }
 
     @Override
@@ -687,8 +679,17 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return unknownFieldsPropertyName;
     }
 
-    public void setUnknownFieldsPropertyName(String unknownFieldsPropertyName) {
-        this.unknownFieldsPropertyName = unknownFieldsPropertyName;
+    @Override
+    public Boolean isGenerateNoArgsConstructorOnly() {
+        return generateNoArgsConstructorOnly;
+    }
+
+    public ParentInterfacesConfig getParentInterfaces() {
+        return parentInterfaces;
+    }
+
+    public String[] getConfigurationFiles() {
+        return configurationFiles;
     }
 
     private static Map<String, List<String>> convertToListsMap(Map<String, Properties> sourceMap) {

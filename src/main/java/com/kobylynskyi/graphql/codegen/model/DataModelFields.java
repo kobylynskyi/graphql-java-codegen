@@ -40,6 +40,7 @@ public final class DataModelFields {
     public static final String GENERATE_SEALED_INTERFACES = "generateSealedInterfaces";
     public static final String SUPPORT_UNKNOWN_FIELDS = "supportUnknownFields";
     public static final String UNKNOWN_FIELDS_PROPERTY_NAME = "unknownFieldsPropertyName";
+    public static final String GENERATE_NOARGS_CONSTRUCTOR_ONLY = "generateNoArgsConstructorOnly";
 
     private DataModelFields() {
     }

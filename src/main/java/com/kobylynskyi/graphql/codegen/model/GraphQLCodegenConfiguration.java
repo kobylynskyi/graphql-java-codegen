@@ -513,5 +513,14 @@ public interface GraphQLCodegenConfiguration {
      */
     String getGeneratedAnnotation();
 
+    /**
+     * Specifies whether model classes should only have a no-args constructor.
+     * All-args constructor will not be generated in case returned value is <b>true</b>
+     *
+     * @return <b>true</b> if only no-args constructor should be generated.
+     * <b>false</b> if both no-args and all-args constructors should be generated
+     */
+    Boolean isGenerateNoArgsConstructorOnly();
+
 
 }

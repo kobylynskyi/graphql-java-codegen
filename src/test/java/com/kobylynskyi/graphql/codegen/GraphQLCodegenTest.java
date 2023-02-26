@@ -87,7 +87,8 @@ class GraphQLCodegenTest {
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/Event_noBuilder.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/builder/" +
+                        "Event_noBuilder.java.txt"),
                 getFileByName(files, "Event.java"));
     }
 
@@ -243,8 +244,8 @@ class GraphQLCodegenTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertNotEquals(0, files.length);
 
-        assertSameTrimmedContent(
-                new File("src/test/resources/expected-classes/EventPropertyTO_withoutGeneratedAnnotation.java.txt"),
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "EventPropertyTO_withoutGeneratedAnnotation.java.txt"),
                 getFileByName(files, "EventPropertyTO.java"));
     }
 
@@ -399,8 +400,50 @@ class GraphQLCodegenTest {
                 getFileByName(files, "Person.java"));
     }
 
-    private List<File> generate(String s) throws IOException {
-        return new JavaGraphQLCodegen(singletonList(s), outputBuildDir, mappingConfig,
+    @Test
+    void generate_NoArgsConstructorOnlyWithBuilder() throws Exception {
+        mappingConfig.setGenerateNoArgsConstructorOnly(true);
+        mappingConfig.setGenerateBuilder(true);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/no-args-constructor/" +
+                        "Event_noargsconstr_builder.java.txt"),
+                getFileByName(files, "Event.java"));
+    }
+
+    @Test
+    void generate_NoArgsConstructorOnlyWithoutBuilder() throws Exception {
+        mappingConfig.setGenerateNoArgsConstructorOnly(true);
+        mappingConfig.setGenerateBuilder(false);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/no-args-constructor/" +
+                        "Event_noargsconstr_withoutbuilder.java.txt"),
+                getFileByName(files, "Event.java"));
+    }
+
+    @Test
+    void generate_NoArgsConstructor_ParametrizedInput() throws Exception {
+        mappingConfig.setGenerateNoArgsConstructorOnly(true);
+        mappingConfig.setGenerateClient(true);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/no-args-constructor/" +
+                        "EventPropertyChildParametrizedInput_noargsconstructor.java.txt"),
+                getFileByName(files, "EventPropertyChildParametrizedInput.java"));
+    }
+
+    private List<File> generate(String path) throws IOException {
+        return new JavaGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
                 TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 

@@ -122,6 +122,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
 
     supportUnknownFields := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
     unknownFieldsPropertyName := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
+    generateNoArgsConstructorOnly := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
 
     skip := false
   )
@@ -179,6 +180,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGeneratedLanguage((generatedLanguage in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateModelOpenClasses((generateModelOpenClasses in GraphQLCodegenConfig).value)
     mappingConfig.setGenerateJacksonTypeIdResolver((generateJacksonTypeIdResolver in GraphQLCodegenConfig).value);
+    mappingConfig.setGenerateNoArgsConstructorOnly((generateNoArgsConstructorOnly in GraphQLCodegenConfig).value);
 
     mappingConfig.setSupportUnknownFields((supportUnknownFields in GraphQLCodegenConfig).value)
     mappingConfig.setUnknownFieldsPropertyName((unknownFieldsPropertyName in GraphQLCodegenConfig).value)
