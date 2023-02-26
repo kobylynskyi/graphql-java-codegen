@@ -82,7 +82,8 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
     public String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                               NamedDefinition namedDefinition,
                                               String parentTypeName) {
-        String computedTypeName = namedDefinition.getJavaName();
+        String computedTypeName = getTypeConsideringPrimitive(mappingContext, namedDefinition,
+                namedDefinition.getJavaName());
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
                 Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
