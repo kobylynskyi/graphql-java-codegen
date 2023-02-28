@@ -1,0 +1,49 @@
+package com.github.graphql
+
+import CommentAuthorAssociation._
+
+@javax.annotation.Generated(
+    value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),
+    date = "2020-12-31T23:59:59-0500"
+)
+sealed trait Comment {
+
+    val author: Actor
+
+    @javax.validation.constraints.NotNull
+    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.CommentAuthorAssociationTypeRefer])
+    val authorAssociation: CommentAuthorAssociation
+
+    @javax.validation.constraints.NotNull
+    val body: String
+
+    @javax.validation.constraints.NotNull
+    val bodyHTML: String
+
+    @javax.validation.constraints.NotNull
+    val bodyText: String
+
+    @javax.validation.constraints.NotNull
+    val createdAt: String
+
+    val createdViaEmail: Boolean
+
+    val editor: Actor
+
+    @javax.validation.constraints.NotNull
+    val id: String
+
+    val includesCreatedEdit: Boolean
+
+    val lastEditedAt: String
+
+    val publishedAt: String
+
+    @javax.validation.constraints.NotNull
+    val updatedAt: String
+
+    val userContentEdits: UserContentEditConnection
+
+    val viewerDidAuthor: Boolean
+
+}
