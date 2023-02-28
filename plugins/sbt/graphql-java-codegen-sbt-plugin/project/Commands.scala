@@ -10,9 +10,7 @@ object Commands {
   val FmtSbtCommand = Command.command("fmt")(state => "scalafmtSbt" :: "scalafmtAll" :: state)
 
   val FmtSbtCheckCommand =
-    Command.command("check")(state =>
-      "scalafixEnable" :: "scalafixAll --check" :: "scalafmtSbtCheck" :: "scalafmtCheckAll" :: state
-    )
+    Command.command("check")(state => "scalafmtSbtCheck" :: "scalafmtCheckAll" :: state)
 
   val value = Seq(
     FmtSbtCommand,
