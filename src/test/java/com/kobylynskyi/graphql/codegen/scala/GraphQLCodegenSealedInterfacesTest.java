@@ -45,7 +45,9 @@ class GraphQLCodegenSealedInterfacesTest {
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
         File[] files = Objects.requireNonNull(outputScalaClassesDir.listFiles());
 
-        assertSameTrimmedContent(new File("src/test/resources/expected-classes/scala/Comment_sealed_interfaces.scala.txt"),
-                getFileByName(files, "Comment.scala"));
+        assertSameTrimmedContent(
+                new File("src/test/resources/expected-classes/scala/Comment_sealed_interfaces.scala.txt"),
+                getFileByName(files, "Comment.scala")
+        );
     }
 }
