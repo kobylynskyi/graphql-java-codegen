@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper.getDirectives;
 import static com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper.getMandatoryType;
@@ -123,9 +124,12 @@ public abstract class AnnotationsMapper {
             }
         }
         // 6. Add annotations for resolver arguments
-        if (!Utils.isEmpty(mappingContext.getResolverArgumentAnnotations())
-                && mappingContext.getOperationsName().contains(parentTypeName)) {
-            annotations.addAll(mappingContext.getResolverArgumentAnnotations());
+        if (!Utils.isEmpty(mappingContext.getResolverArgumentAnnotations())) {
+            if (mappingContext.getOperationsName().contains(parentTypeName)
+                || (def instanceof InputValueDefinition
+                && !mappingContext.getInputsName().contains(parentTypeName))) {
+                annotations.addAll(mappingContext.getResolverArgumentAnnotations());
+            }
         }
         // 7. Add annotations for parametrized resolvers
         if (!Utils.isEmpty(mappingContext.getParametrizedResolverAnnotations())

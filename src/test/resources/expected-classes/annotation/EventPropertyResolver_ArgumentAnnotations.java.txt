@@ -13,11 +13,11 @@ public interface EventPropertyResolver {
     /**
      * Properties
      */
-    java.util.List<EventProperty> child(EventProperty eventProperty, Integer first, Integer last, graphql.schema.DataFetchingEnvironment env) throws Exception;
+    java.util.List<EventProperty> child(EventProperty eventProperty, @org.springframework.graphql.data.method.annotation.Argument Integer first, @org.springframework.graphql.data.method.annotation.Argument Integer last, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
     /**
      * Parent event of the property
      */
-    Event parent(EventProperty eventProperty, EventStatus withStatus, String createdAfter, graphql.schema.DataFetchingEnvironment env) throws Exception;
+    Event parent(EventProperty eventProperty, @org.springframework.graphql.data.method.annotation.Argument EventStatus withStatus, @org.springframework.graphql.data.method.annotation.Argument String createdAfter, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
 }
