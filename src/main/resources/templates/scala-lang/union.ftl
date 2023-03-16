@@ -19,6 +19,6 @@ package ${package}
 <#list annotations as annotation>
 @${annotation}
 </#list>
-trait ${className} {
+<#if generateSealedInterfaces>sealed </#if>trait ${className} {
 
 }

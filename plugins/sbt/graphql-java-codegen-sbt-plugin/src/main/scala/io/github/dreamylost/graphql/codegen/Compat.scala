@@ -7,24 +7,24 @@ import sbt.io.{ AllPassFilter, SuffixFilter }
 import sbt.{ Def, Task }
 import sbt.Configuration
 
-/**
- *
- * @author 梦境迷离
- * @since 2020-07-18
- * @version v1.0
+/** @author
+ *    梦境迷离
+ *  @since 2020-07-18
+ *  @version v1.0
  */
 trait Compat {
   self: GraphQLCodegenPlugin =>
 
   import self.GlobalImport._
 
-  val watchSourcesSetting: Def.Setting[Task[Seq[WatchSource]]] = {
+  val watchSourcesSetting: Def.Setting[Task[Seq[WatchSource]]] =
     watchSources += new Source(
-      (sourceDirectory in graphqlCodegen).value,
+      (graphqlCodegen / sourceDirectory).value,
       new SuffixFilter(".graphql") | new SuffixFilter(".graphqls"),
-      AllPassFilter)
-  }
+      AllPassFilter
+    )
 
-  protected[this] lazy val GraphQLCodegenConfig = Configuration.of("GraphQLCodegen", "graphqlCodegen" + configurationPostfix)
+  protected[this] lazy val GraphQLCodegenConfig =
+    Configuration.of("GraphQLCodegen", "graphqlCodegen" + configurationPostfix)
 
 }

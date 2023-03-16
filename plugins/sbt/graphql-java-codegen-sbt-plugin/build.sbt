@@ -8,12 +8,13 @@ jValidationVersion := "2.0.1.Final"
 
 // keep version is equals with parent project `graphql-java-codegen`.
 // Plugin don't need to care about the scala version, just the SBT version.
-lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin", base = file(".")).
-  enablePlugins(SbtPlugin, BuildInfoPlugin).
-  settings(Publishing.publishSettings).
-  settings(
-    sbtPlugin := true,
+lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin", base = file("."))
+  .enablePlugins(SbtPlugin, BuildInfoPlugin)
+  .settings(Publishing.publishSettings)
+  .settings(
+    sbtPlugin         := true,
     scriptedBufferLog := false,
+    commands ++= Commands.value,
     scriptedLaunchOpts += s"-Dplugin.version=${version.value}",
     scalacOptions += "-target:jvm-1.8",
     releaseIgnoreUntrackedFiles := true,
@@ -31,12 +32,12 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
       pushChanges
     ),
     libraryDependencies ++= Seq(
-      "io.github.kobylynskyi" % "graphql-java-codegen" % (version in ThisBuild).value,
-      "org.freemarker" % "freemarker" % "2.3.31",
-      "com.graphql-java" % "graphql-java" % "16.2",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.12.1",
-      "com.typesafe" % "config" % "1.4.2"
+      "io.github.kobylynskyi"      % "graphql-java-codegen" % (ThisBuild / version).value,
+      "org.freemarker"             % "freemarker"           % "2.3.31",
+      "com.graphql-java"           % "graphql-java"         % "16.2",
+      "com.fasterxml.jackson.core" % "jackson-databind"     % "2.12.1",
+      "com.typesafe"               % "config"               % "1.4.2"
     ),
-    buildInfoKeys := Seq[BuildInfoKey](name, version, sbtVersion, jValidationVersion),
+    buildInfoKeys    := Seq[BuildInfoKey](name, version, sbtVersion, jValidationVersion),
     buildInfoPackage := "io.github.dreamylost.graphql.codegen"
   )
