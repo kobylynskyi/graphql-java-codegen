@@ -7,6 +7,7 @@ import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@ExtendWith(MaxQueryTokensExtension.class)
 class GraphQLCodegenGitHubTest {
 
     private final File outputBuildDir = new File("build/generated");

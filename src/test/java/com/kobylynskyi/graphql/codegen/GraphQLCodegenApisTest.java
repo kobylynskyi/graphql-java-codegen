@@ -10,6 +10,7 @@ import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +29,7 @@ import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ExtendWith(MaxQueryTokensExtension.class)
 class GraphQLCodegenApisTest {
 
     private final File outputBuildDir = new File("build/generated");
