@@ -22,9 +22,9 @@ class FreeMarkerTemplatesRegistry {
     private static final EnumMap<GeneratedLanguage, EnumMap<FreeMarkerTemplateType, Template>> templateMap =
             new EnumMap<>(GeneratedLanguage.class);
 
+    private static final Configuration configuration = buildFreeMarkerTemplateConfiguration();
+    
     static {
-        Configuration configuration = buildFreeMarkerTemplateConfiguration();
-
         try {
             templateMap.put(GeneratedLanguage.JAVA, getTemplates(configuration, GeneratedLanguage.JAVA));
             templateMap.put(GeneratedLanguage.SCALA, getTemplates(configuration, GeneratedLanguage.SCALA));
@@ -68,6 +68,14 @@ class FreeMarkerTemplatesRegistry {
         configuration.setWrapUncheckedExceptions(true);
         configuration.setSharedVariable("statics", new BeansWrapper(FREEMARKER_TEMPLATE_VERSION).getStaticModels());
         return configuration;
+    }
+
+    public static Template getCustomTemplates(String templatePath) {
+        try {
+            return configuration.getTemplate(templatePath);
+        } catch (IOException e) {
+            throw new UnableToLoadFreeMarkerTemplateException(e);
+        }
     }
 
 }

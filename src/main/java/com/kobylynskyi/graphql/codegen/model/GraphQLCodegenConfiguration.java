@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,13 @@ public interface GraphQLCodegenConfiguration {
      * @return mappings from GraphqlType to JavaType
      */
     Map<String, String> getCustomTypesMapping();
+    
+    /**
+     * Can be used to supply custom template for code generation
+     *
+     * @return template to generate sources from
+     */
+    Map<FreeMarkerTemplateType, String> getCustomTemplates();
 
     /**
      * Can be used to supply custom annotations (serializers) for scalars.

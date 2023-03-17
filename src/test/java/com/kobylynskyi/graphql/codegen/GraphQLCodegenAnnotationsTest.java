@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -327,4 +328,14 @@ class GraphQLCodegenAnnotationsTest {
                 TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
+    @Test
+    void generate_CustomTemplates_Type() throws Exception {
+        mappingConfig.putCustomTemplatesIfAbsent(FreeMarkerTemplateType.TYPE, "/template/record_type.ftl");
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "Event.java",
+                "public record Event (");
+    }
 }
