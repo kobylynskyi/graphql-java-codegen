@@ -12,8 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Objects;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 
@@ -96,6 +98,26 @@ class GraphQLCodegenOptionalTest {
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/optional/" +
                         "TypeWithMandatoryField.java.txt"),
                 getFileByName(files, "TypeWithMandatoryField.java"));
+    }
+
+    /**
+     * @see <a href="https://github.com/kobylynskyi/graphql-java-codegen/issues/1023">Related issue in GitHub</a>
+     */
+    @Test
+    void generate_ObjectsInsteadOfPrimitives() throws Exception {
+        mappingConfig.setCustomTypesMapping(new HashMap<String, String>() {{
+            put("Int!", "Integer");
+        }});
+        schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
+
+        generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        // Integer is generated instead of int
+        assertFileContainsElements(files, "TypeWithMandatoryField.java",
+                "    @javax.validation.constraints.NotNull",
+                "    private Integer test;");
     }
 
     private void generate() throws IOException {
