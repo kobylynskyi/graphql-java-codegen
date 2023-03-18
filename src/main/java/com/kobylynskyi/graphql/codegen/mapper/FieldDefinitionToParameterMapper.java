@@ -139,6 +139,7 @@ public class FieldDefinitionToParameterMapper {
                 mappingContext, fieldDef.getType(), fieldDef, parentDefinition.getName(), false));
         parameter.setJavaDoc(fieldDef.getJavaDoc());
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
+        parameter.setVisibility(Utils.getFieldVisibility(mappingContext));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
         parameter.setGetterMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext,

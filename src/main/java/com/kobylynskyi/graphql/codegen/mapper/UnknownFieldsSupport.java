@@ -30,6 +30,7 @@ public interface UnknownFieldsSupport {
             unknownFields.setName(mappingContext.getUnknownFieldsPropertyName());
             unknownFields.setGetterMethodName("get" + Utils.capitalize(mappingContext.getUnknownFieldsPropertyName()));
             unknownFields.setOriginalName(mappingContext.getUnknownFieldsPropertyName());
+            unknownFields.setVisibility(Utils.getFieldVisibility(mappingContext));
             unknownFields.setType("java.util.Map<String, Object>");
             unknownFields.setAnnotations(Arrays.asList(
                     "com.fasterxml.jackson.annotation.JsonAnyGetter",

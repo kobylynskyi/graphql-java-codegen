@@ -56,6 +56,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateJacksonTypeIdResolver;
     private Boolean supportUnknownFields;
     private Boolean generateNoArgsConstructorOnly;
+    private Boolean generateModelsWithPublicFields;
 
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
@@ -211,6 +212,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generatedAnnotation = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGeneratedAnnotation);
         generateNoArgsConstructorOnly = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::isGenerateNoArgsConstructorOnly);
+        generateModelsWithPublicFields = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isGenerateNoArgsConstructorOnly);
     }
 
@@ -753,5 +756,14 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateNoArgsConstructorOnly(Boolean generateNoArgsConstructorOnly) {
         this.generateNoArgsConstructorOnly = generateNoArgsConstructorOnly;
+    }
+
+    @Override
+    public Boolean isGenerateModelsWithPublicFields() {
+        return generateModelsWithPublicFields;
+    }
+
+    public void setGenerateModelsWithPublicFields(Boolean generateModelsWithPublicFields) {
+        this.generateModelsWithPublicFields = generateModelsWithPublicFields;
     }
 }

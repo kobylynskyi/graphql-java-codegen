@@ -1,0 +1,134 @@
+package com.kobylynskyi.graphql.test1;
+
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+/**
+ * An event that describes a thing that happens
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Event implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public String id;
+    public String categoryId;
+    public java.util.List<EventProperty> properties;
+    public EventStatus status;
+    public String createdBy;
+    public String createdDateTime;
+    public Boolean active;
+    public Integer rating;
+
+    public Event() {
+    }
+
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (id != null) {
+            joiner.add("id: " + GraphQLRequestSerializer.getEntry(id));
+        }
+        if (categoryId != null) {
+            joiner.add("categoryId: " + GraphQLRequestSerializer.getEntry(categoryId));
+        }
+        if (properties != null) {
+            joiner.add("properties: " + GraphQLRequestSerializer.getEntry(properties));
+        }
+        if (status != null) {
+            joiner.add("status: " + GraphQLRequestSerializer.getEntry(status));
+        }
+        if (createdBy != null) {
+            joiner.add("createdBy: " + GraphQLRequestSerializer.getEntry(createdBy));
+        }
+        if (createdDateTime != null) {
+            joiner.add("createdDateTime: " + GraphQLRequestSerializer.getEntry(createdDateTime));
+        }
+        if (active != null) {
+            joiner.add("active: " + GraphQLRequestSerializer.getEntry(active));
+        }
+        if (rating != null) {
+            joiner.add("rating: " + GraphQLRequestSerializer.getEntry(rating));
+        }
+        return joiner.toString();
+    }
+
+    public static Event.Builder builder() {
+        return new Event.Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String categoryId;
+        private java.util.List<EventProperty> properties;
+        private EventStatus status;
+        private String createdBy;
+        private String createdDateTime;
+        private Boolean active;
+        private Integer rating;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setProperties(java.util.List<EventProperty> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder setStatus(EventStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder setCreatedDateTime(String createdDateTime) {
+            this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder setRating(Integer rating) {
+            this.rating = rating;
+            return this;
+        }
+
+
+        public Event build() {
+            Event result = new Event;
+            result.id(this.id);
+            result.categoryId(this.categoryId);
+            result.properties(this.properties);
+            result.status(this.status);
+            result.createdBy(this.createdBy);
+            result.createdDateTime(this.createdDateTime);
+            result.active(this.active);
+            result.rating(this.rating);
+            return result;
+        }
+
+    }
+}

@@ -46,7 +46,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         <#list field.annotations as annotation>
     @${annotation}
         </#list>
-    private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
+    ${field.visibility} ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
     </#list>
 </#if>
 
@@ -63,39 +63,41 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
 <#if fields?has_content>
     <#list fields as field>
-        <#if field.javaDoc?has_content>
-    /**
-        <#list field.javaDoc as javaDocLine>
-     * ${javaDocLine}
-        </#list>
-     */
-        </#if>
-        <#if field.deprecated?has_content>
-    @${field.deprecated.annotation}
-        </#if>
-        <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>
-    public ${field.definitionInParentType.type} ${field.getterMethodName}() {
-        <#else>
-    public ${field.type} ${field.getterMethodName}() {
-        </#if>
-        return ${field.name};
-    }
-        <#if !immutableModels>
+        <#if field.visibility != 'public'>
             <#if field.javaDoc?has_content>
     /**
-                <#list field.javaDoc as javaDocLine>
+            <#list field.javaDoc as javaDocLine>
      * ${javaDocLine}
-                </#list>
+            </#list>
      */
             </#if>
             <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
             </#if>
+            <#if field.mandatory && field.definitionInParentType?has_content && !field.definitionInParentType.mandatory>
+    public ${field.definitionInParentType.type} ${field.getterMethodName}() {
+            <#else>
+    public ${field.type} ${field.getterMethodName}() {
+            </#if>
+        return ${field.name};
+    }
+            <#if !immutableModels>
+                <#if field.javaDoc?has_content>
+    /**
+                    <#list field.javaDoc as javaDocLine>
+     * ${javaDocLine}
+                    </#list>
+     */
+                </#if>
+                <#if field.deprecated?has_content>
+    @${field.deprecated.annotation}
+                </#if>
     public void set${field.name?cap_first}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
     }
-        </#if>
+            </#if>
 
+        </#if>
     </#list>
 </#if>
 <#if equalsAndHashCode>
@@ -197,7 +199,11 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 <#if generateNoArgsConstructorOnly>
             ${className} result = new ${className};
     <#list fields as field>
+        <#if field.visibility == 'public'>
+            result.${field.name}(this.${field.name});
+        <#else>
             result.set${field.name?cap_first}(this.${field.name});
+        </#if>
     </#list>
             return result;
 <#else>

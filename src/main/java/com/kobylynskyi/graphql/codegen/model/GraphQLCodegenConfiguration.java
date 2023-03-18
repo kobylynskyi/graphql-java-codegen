@@ -522,5 +522,13 @@ public interface GraphQLCodegenConfiguration {
      */
     Boolean isGenerateNoArgsConstructorOnly();
 
+    /**
+     * Specifies whether model classes should have public or private fields.
+     *
+     * @return <b>true</b> if model classes should have public fields and no getters/setters.
+     * <b>false</b> if model classes should have private fields and getters/setters.
+     */
+    Boolean isGenerateModelsWithPublicFields();
+
 
 }

@@ -36,7 +36,7 @@ public class ${className} implements GraphQLParametrizedInput {
 <#list field.annotations as annotation>
     @${annotation}
 </#list>
-    private ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
+    ${field.visibility} ${field.type} ${field.name}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if>;
 </#list>
 </#if>
 
@@ -52,32 +52,34 @@ public class ${className} implements GraphQLParametrizedInput {
 </#if>
 
 <#if fields?has_content>
-<#list fields as field>
-<#if field.javaDoc?has_content>
+    <#list fields as field>
+        <#if field.visibility != 'public'>
+            <#if field.javaDoc?has_content>
     /**
-<#list field.javaDoc as javaDocLine>
+                <#list field.javaDoc as javaDocLine>
      * ${javaDocLine}
-</#list>
+                </#list>
      */
-</#if>
-<#if field.deprecated?has_content>
+            </#if>
+            <#if field.deprecated?has_content>
     @${field.deprecated.annotation}
-</#if>
+            </#if>
     public ${className} ${field.name}(${field.type} ${field.name}) {
         this.${field.name} = ${field.name};
         return this;
     }
 
-</#list>
+        </#if>
+    </#list>
 </#if>
     @Override
     public ${className} deepCopy() {
         ${className} parametrizedInput = new ${className}();
-        <#if fields?has_content>
-        <#list fields as field>
+<#if fields?has_content>
+    <#list fields as field>
         parametrizedInput.${field.name}(this.${field.name});
-        </#list>
-        </#if>
+    </#list>
+</#if>
         return parametrizedInput;
     }
 
@@ -91,21 +93,21 @@ public class ${className} implements GraphQLParametrizedInput {
             return false;
         }
         final ${className} that = (${className}) obj;
-<#if fields?has_content>
+    <#if fields?has_content>
         return <#list fields as field>Objects.equals(${field.name}, that.${field.name})<#if field_has_next>
             && </#if></#list>;
-<#else>
+    <#else>
         return true;
-</#if>
+    </#if>
     }
 
     @Override
     public int hashCode() {
-<#if fields?has_content>
+    <#if fields?has_content>
         return Objects.hash(<#list fields as field>${field.name}<#if field_has_next>, </#if></#list>);
-<#else>
+    <#else>
         return 0;
-</#if>
+    </#if>
     }
 </#if>
 
@@ -113,15 +115,15 @@ public class ${className} implements GraphQLParametrizedInput {
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "(", ")");
 <#if fields?has_content>
-<#list fields as field>
-<#if MapperUtil.isJavaPrimitive(field.type)>
+    <#list fields as field>
+        <#if MapperUtil.isJavaPrimitive(field.type)>
         joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
-<#else>
+        <#else>
         if (${field.name} != null) {
             joiner.add("${field.originalName}: " + GraphQLRequestSerializer.getEntry(${field.name}<#if field.serializeUsingObjectMapper>, true</#if>));
         }
-</#if>
-</#list>
+        </#if>
+    </#list>
 </#if>
         return joiner.toString();
     }
