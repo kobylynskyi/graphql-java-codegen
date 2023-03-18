@@ -151,9 +151,14 @@ trait GraphQLCodegenKeys {
     "Specifies whether generated union interfaces should be annotated with a custom Jackson type id resolver generated in model package."
   )
 
-  // not support in scala
+  // not supported in scala
   val generateNoArgsConstructorOnly = settingKey[Boolean](
     "Specifies whether model classes should only have a no-args constructor. All-args constructor will not be generated in case value is .true."
+  )
+
+  // not supported in scala
+  val generateModelsWithPublicFields = settingKey[Boolean](
+    "Specifies whether model classes should have public fields and NO getters/setters. By default, fields are private and there are getters/setters for each field."
   )
 
   // for version
