@@ -200,6 +200,7 @@ class GraphQLCodegenAnnotationsTest {
     @Test
     void generate_ResolverArgumentAnnotations() throws Exception {
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setGenerateParameterizedFieldsResolvers(true);
         mappingConfig.setResolverArgumentAnnotations(singleton(
                 "@org.springframework.graphql.data.method.annotation.Argument"));
 
@@ -212,6 +213,9 @@ class GraphQLCodegenAnnotationsTest {
         assertSameTrimmedContent(
                 new File("src/test/resources/expected-classes/annotation/QueryResolver_ArgumentAnnotations.java.txt"),
                 getFileByName(files, "QueryResolver.java"));
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/annotation/" +
+                        "EventPropertyResolver_ArgumentAnnotations.java.txt"),
+                getFileByName(files, "EventPropertyResolver.java"));
     }
 
     @Test

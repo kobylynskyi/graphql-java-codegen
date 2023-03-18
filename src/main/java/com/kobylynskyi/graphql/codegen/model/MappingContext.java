@@ -31,6 +31,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     private final Set<String> interfacesName;
     private final Set<String> unionsName;
     private final Set<String> operationsName;
+    private final Set<String> inputsName;
     private final Map<String, Set<String>> interfaceChildren;
     private final GeneratedInformation generatedInformation;
     private final DataModelMapperFactory dataModelMapperFactory;
@@ -49,6 +50,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         this.typesUnionsInterfacesNames = document.getTypesUnionsInterfacesNames();
         this.interfacesName = document.getInterfacesNames();
         this.unionsName = document.getUnionsNames();
+        this.inputsName = document.getInputDefinitions().stream().map(ExtendedDefinition::getName)
+                .collect(Collectors.toSet());
         this.interfaceChildren = document.getInterfaceChildren();
         this.generatedInformation = generatedInformation;
         this.operationsName = document.getOperationsNames();
@@ -364,6 +367,10 @@ public class MappingContext implements GraphQLCodegenConfiguration {
 
     public Set<String> getOperationsName() {
         return operationsName;
+    }
+
+    public Set<String> getInputsName() {
+        return inputsName;
     }
 
     public Map<String, Set<String>> getInterfaceChildren() {
