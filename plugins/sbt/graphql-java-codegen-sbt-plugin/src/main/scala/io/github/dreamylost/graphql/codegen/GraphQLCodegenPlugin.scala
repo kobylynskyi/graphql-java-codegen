@@ -67,6 +67,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateJacksonTypeIdResolver       := MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER,
     customTypesMapping                  := new JHashMap[String, String](), // TODO use scala Map, convert to java Map
     customAnnotationsMapping            := new JHashMap[String, JList[String]](),
+    customTemplates                     := new JHashMap[FreeMarkerTemplateType, String](),
     directiveAnnotationsMapping         := new JHashMap[String, JList[String]](),
     javaxValidationApiVersion           := None,
     graphqlJavaCodegenVersion           := None,
@@ -149,6 +150,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setTypeResolverPrefix((GraphQLCodegenConfig / typeResolverPrefix).value.orNull)
     mappingConfig.setModelValidationAnnotation((GraphQLCodegenConfig / modelValidationAnnotation).value)
     mappingConfig.setCustomAnnotationsMapping((GraphQLCodegenConfig / customAnnotationsMapping).value)
+    mappingConfig.setCustomTemplates((GraphQLCodegenConfig / customTemplates).value)
     mappingConfig.setGenerateEqualsAndHashCode((GraphQLCodegenConfig / generateEqualsAndHashCode).value)
     mappingConfig.setGenerateImmutableModels((GraphQLCodegenConfig / generateImmutableModels).value)
     mappingConfig.setGenerateToString((GraphQLCodegenConfig / generateToString).value)

@@ -1,6 +1,7 @@
 package io.github.kobylynskyi.graphql.codegen.gradle;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
@@ -54,6 +55,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+    private Map<FreeMarkerTemplateType, String> customTemplates = new HashMap<>();
     private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
@@ -133,8 +135,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(
                 customTypesMapping != null ? customTypesMapping : new HashMap<>());
-        mappingConfig.setCustomAnnotationsMapping(
-                customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setCustomTemplates(
+                customTemplates != null ? customTemplates : new HashMap<>());
         mappingConfig.setDirectiveAnnotationsMapping(
                 directiveAnnotationsMapping != null ? directiveAnnotationsMapping : new HashMap<>());
         mappingConfig.setApiNameSuffix(apiNameSuffix);
@@ -331,6 +333,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
         this.customTypesMapping = customTypesMapping;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
+        return customTemplates;
+    }
+
+    public void setCustomTemplates(Map<FreeMarkerTemplateType, String> customTemplates) {
+        this.customTemplates = customTemplates;
     }
 
     @Input
