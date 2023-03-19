@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -85,6 +86,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Set<String> parametrizedResolverAnnotations = new HashSet<>();
 
     private Map<String, String> customTypesMapping = new HashMap<>();
+    private Map<FreeMarkerTemplateType, String> customTemplates = new HashMap<>();
 
     private Set<String> typesAsInterfaces = new HashSet<>();
 
@@ -94,9 +96,9 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     private GeneratedLanguage generatedLanguage;
 
-    private static <T> Map<String, T> combineMap(Map<String, T> thisMap, Map<String, T> otherMap) {
+    private static <K, T> Map<K, T> combineMap(Map<K, T> thisMap, Map<K, T> otherMap) {
         if (thisMap != null && otherMap != null) {
-            Map<String, T> resultMap = new HashMap<>();
+            Map<K, T> resultMap = new HashMap<>();
             resultMap.putAll(thisMap);
             resultMap.putAll(otherMap);
             return resultMap;
@@ -186,6 +188,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
+        customTemplates = combineMap(customTemplates, source.customTemplates);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
         directiveAnnotationsMapping = combineMap(directiveAnnotationsMapping, source.directiveAnnotationsMapping);
         resolverArgumentAnnotations = combineSet(resolverArgumentAnnotations, source.resolverArgumentAnnotations);
@@ -242,6 +245,28 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
         this.customTypesMapping = customTypesMapping;
+    }
+
+    /**
+     * Provide a path to a custom template for the specific FreeMarker template type (if absent).
+     *
+     * @param from the from
+     * @param to   the to
+     */
+    public void putCustomTemplatesIfAbsent(FreeMarkerTemplateType from, String to) {
+        if (customTemplates == null) {
+            customTemplates = new HashMap<>();
+        }
+        customTemplates.computeIfAbsent(from, k -> to);
+    }
+
+    @Override
+    public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
+        return customTemplates;
+    }
+
+    public void setCustomTemplates(Map<FreeMarkerTemplateType, String> customTemplates) {
+        this.customTemplates = customTemplates;
     }
 
     @Override

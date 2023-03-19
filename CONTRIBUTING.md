@@ -36,8 +36,7 @@ Please follow the steps below in order to make the changes:
    ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin clean build
    
    # Build Maven plugin
-   cd plugins/maven/graphql-java-codegen-maven-plugin
-   mvn clean verify 
+   mvn clean verify -f plugins/maven/graphql-java-codegen-maven-plugin/pom.xml
    ```
 
 9. Make changes to the plugin code
@@ -48,8 +47,7 @@ Please follow the steps below in order to make the changes:
    ./gradlew -p plugins/gradle/graphql-java-codegen-gradle-plugin clean build publishToMavenLocal
    
    # Install Maven plugin
-   cd plugins/maven/graphql-java-codegen-maven-plugin
-   mvn clean install 
+   mvn clean install -f plugins/maven/graphql-java-codegen-maven-plugin/pom.xml
    ```
 
 11. Make sure that `example` projects are compiling and running.

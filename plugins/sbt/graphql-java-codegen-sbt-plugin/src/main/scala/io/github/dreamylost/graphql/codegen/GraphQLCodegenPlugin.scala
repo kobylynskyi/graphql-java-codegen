@@ -7,6 +7,7 @@ import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedExcep
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.supplier._
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
@@ -67,6 +68,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateJacksonTypeIdResolver       := MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER,
     customTypesMapping                  := new JHashMap[String, String](), // TODO use scala Map, convert to java Map
     customAnnotationsMapping            := new JHashMap[String, JList[String]](),
+    customTemplates                     := new JHashMap[FreeMarkerTemplateType, String](),
     directiveAnnotationsMapping         := new JHashMap[String, JList[String]](),
     javaxValidationApiVersion           := None,
     graphqlJavaCodegenVersion           := None,
@@ -118,17 +120,17 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateBuilder                               := MappingConfigConstants.DEFAULT_BUILDER,
     generateApis                                  := MappingConfigConstants.DEFAULT_GENERATE_APIS,
     generateEqualsAndHashCode                     := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
-    generateImmutableModels                       := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS, // TODO change default value
-    generateToString                              := MappingConfigConstants.DEFAULT_TO_STRING,
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS, // TODO change default value
+    generateToString        := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
-    parentInterfaces                              := parentInterfacesConfig,
-    generateAllMethodInProjection                 := MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD,
-    responseProjectionMaxDepth                    := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
-    supportUnknownFields                          := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
-    unknownFieldsPropertyName                     := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
-    generateNoArgsConstructorOnly                 := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
-    generateModelsWithPublicFields                := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
-    skip                                          := false
+    parentInterfaces               := parentInterfacesConfig,
+    generateAllMethodInProjection  := MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD,
+    responseProjectionMaxDepth     := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
+    supportUnknownFields           := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
+    unknownFieldsPropertyName      := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
+    generateNoArgsConstructorOnly  := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
+    generateModelsWithPublicFields := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
+    skip                           := false
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
@@ -149,6 +151,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setTypeResolverPrefix((GraphQLCodegenConfig / typeResolverPrefix).value.orNull)
     mappingConfig.setModelValidationAnnotation((GraphQLCodegenConfig / modelValidationAnnotation).value)
     mappingConfig.setCustomAnnotationsMapping((GraphQLCodegenConfig / customAnnotationsMapping).value)
+    mappingConfig.setCustomTemplates((GraphQLCodegenConfig / customTemplates).value)
     mappingConfig.setGenerateEqualsAndHashCode((GraphQLCodegenConfig / generateEqualsAndHashCode).value)
     mappingConfig.setGenerateImmutableModels((GraphQLCodegenConfig / generateImmutableModels).value)
     mappingConfig.setGenerateToString((GraphQLCodegenConfig / generateToString).value)

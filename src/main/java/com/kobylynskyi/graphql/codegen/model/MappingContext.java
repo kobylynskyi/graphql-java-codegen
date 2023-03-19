@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
@@ -82,6 +83,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
+    }
+    
+    @Override
+    public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
+        return config.getCustomTemplates();
     }
 
     @Override
