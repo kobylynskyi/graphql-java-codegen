@@ -1,0 +1,30 @@
+package com.kobylynskyi.graphql.test1;
+
+
+/**
+ * An event that describes a thing that happens
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Event implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public String id;
+    public String categoryId;
+    public java.util.List<EventProperty> properties;
+    public EventStatus status;
+    public String createdBy;
+    public String createdDateTime;
+    public Boolean active;
+    public Integer rating;
+
+    public Event() {
+    }
+
+
+
+
+}

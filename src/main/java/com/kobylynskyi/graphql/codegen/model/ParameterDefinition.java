@@ -26,6 +26,7 @@ public class ParameterDefinition {
      */
     private String originalName;
     private String defaultValue;
+    private String visibility;
     private boolean isMandatory;
     private List<String> annotations = new ArrayList<>();
     private List<String> javaDoc = new ArrayList<>();
@@ -80,6 +81,14 @@ public class ParameterDefinition {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 
     public boolean isMandatory() {

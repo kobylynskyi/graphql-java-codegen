@@ -441,6 +441,60 @@ class GraphQLCodegenTest {
                 getFileByName(files, "EventPropertyChildParametrizedInput.java"));
     }
 
+    @Test
+    void generate_PublicFields() throws Exception {
+        mappingConfig.setGenerateModelsWithPublicFields(true);
+        mappingConfig.setGenerateClient(true);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/public-fields/" +
+                        "Event_publicfields.java.txt"),
+                getFileByName(files, "Event.java"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/public-fields/" +
+                        "EventPropertyChildParametrizedInput_publicfields.java.txt"),
+                getFileByName(files, "EventPropertyChildParametrizedInput.java"));
+    }
+
+    @Test
+    void generate_PublicFields_NoArgsConstructor_immutableModels() throws Exception {
+        mappingConfig.setGenerateModelsWithPublicFields(true);
+        mappingConfig.setGenerateNoArgsConstructorOnly(true);
+        mappingConfig.setGenerateImmutableModels(true);
+        mappingConfig.setGenerateClient(true);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/public-fields/" +
+                        "Event_publicfields_builder_noargsconstr.java.txt"),
+                getFileByName(files, "Event.java"));
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/public-fields/" +
+                        "EventPropertyChildParametrizedInput_publicfields_noargsconstr.java.txt"),
+                getFileByName(files, "EventPropertyChildParametrizedInput.java"));
+    }
+
+    @Test
+    void generate_PublicFields_NoBuilder_NoArgsConstructor() throws Exception {
+        mappingConfig.setGenerateModelsWithPublicFields(true);
+        mappingConfig.setGenerateNoArgsConstructorOnly(true);
+        mappingConfig.setGenerateImmutableModels(true);
+        mappingConfig.setGenerateBuilder(false);
+
+        generate("src/test/resources/schemas/test.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/public-fields/" +
+                        "Event_publicfields_nobuilder_noargsconstr.java.txt"),
+                getFileByName(files, "Event.java"));
+    }
+
     private List<File> generate(String path) throws IOException {
         return new JavaGraphQLCodegen(singletonList(path), outputBuildDir, mappingConfig,
                 TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();

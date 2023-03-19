@@ -349,6 +349,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         return config.isGenerateNoArgsConstructorOnly();
     }
 
+    @Override
+    public Boolean isGenerateModelsWithPublicFields() {
+        return config.isGenerateModelsWithPublicFields();
+    }
+
     public ExtendedDocument getDocument() {
         return document;
     }

@@ -158,6 +158,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY_STRING)
     private boolean generateNoArgsConstructorOnly;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS_STRING)
+    private boolean generateModelsWithPublicFields;
+
     @Parameter
     private String generatedAnnotation;
 
@@ -275,6 +278,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGeneratedAnnotation(generatedAnnotation);
         mappingConfig.setGenerateNoArgsConstructorOnly(generateNoArgsConstructorOnly);
+        mappingConfig.setGenerateModelsWithPublicFields(generateModelsWithPublicFields);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -682,6 +686,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Boolean isGenerateNoArgsConstructorOnly() {
         return generateNoArgsConstructorOnly;
+    }
+
+    @Override
+    public Boolean isGenerateModelsWithPublicFields() {
+        return generateModelsWithPublicFields;
     }
 
     public ParentInterfacesConfig getParentInterfaces() {
