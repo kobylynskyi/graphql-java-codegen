@@ -249,7 +249,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     /**
-     * Put custom template if absent.
+     * Provide a path to a custom template for the specific FreeMarker template type (if absent).
      *
      * @param from the from
      * @param to   the to
