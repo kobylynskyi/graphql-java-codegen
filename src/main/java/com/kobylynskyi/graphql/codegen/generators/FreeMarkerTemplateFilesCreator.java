@@ -48,18 +48,26 @@ public class FreeMarkerTemplateFilesCreator {
         }
 
         try (FileWriter fileWriter = new FileWriter(javaSourceFile)) {
-            Template template;
-            String templatePath = mappingContext.getCustomTemplates().get(templateType);
-            if (templatePath != null) {
-                template = FreeMarkerTemplatesRegistry.getCustomTemplates(templatePath);
-            } else {
-                template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
-            }
+            Template template = getTemplateForTypeAndLanguage(mappingContext, templateType, language);
             template.process(dataModel, fileWriter);
         } catch (Exception e) {
             throw new UnableToCreateFileException(e);
         }
         return javaSourceFile;
+    }
+
+    private static Template getTemplateForTypeAndLanguage(MappingContext mappingContext,
+                                                          FreeMarkerTemplateType templateType,
+                                                          GeneratedLanguage language) {
+        String templatePath = null;
+        if (mappingContext.getCustomTemplates() != null) {
+            templatePath = mappingContext.getCustomTemplates().get(templateType);
+        }
+        if (templatePath != null) {
+            return FreeMarkerTemplatesRegistry.getCustomTemplates(templatePath);
+        } else {
+            return FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
+        }
     }
 
     private static File getFileTargetDirectory(Map<String, Object> dataModel, File outputDir) {
