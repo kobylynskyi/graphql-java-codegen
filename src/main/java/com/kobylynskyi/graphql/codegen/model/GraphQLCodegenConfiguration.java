@@ -30,9 +30,9 @@ public interface GraphQLCodegenConfiguration {
     Map<String, String> getCustomTypesMapping();
     
     /**
-     * Can be used to supply custom template for code generation
+     * Can be used to supply paths to custom FreeMarker templates for code generation.
      *
-     * @return template to generate sources from
+     * @return a map, where key is a tempalte type and a value is path to a FreeMarker template
      */
     Map<FreeMarkerTemplateType, String> getCustomTemplates();
 

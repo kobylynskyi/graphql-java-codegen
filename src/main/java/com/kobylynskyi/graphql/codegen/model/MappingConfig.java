@@ -262,11 +262,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     @Override
     public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
-      return customTemplates;
+        return customTemplates;
     }
 
     public void setCustomTemplates(Map<FreeMarkerTemplateType, String> customTemplates) {
-      this.customTemplates = customTemplates;
+        this.customTemplates = customTemplates;
     }
 
     @Override
