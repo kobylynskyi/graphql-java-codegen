@@ -7,6 +7,7 @@ import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedExcep
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.supplier._
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
