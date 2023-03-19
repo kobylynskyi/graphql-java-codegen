@@ -120,17 +120,17 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateBuilder                               := MappingConfigConstants.DEFAULT_BUILDER,
     generateApis                                  := MappingConfigConstants.DEFAULT_GENERATE_APIS,
     generateEqualsAndHashCode                     := MappingConfigConstants.DEFAULT_EQUALS_AND_HASHCODE,
-    generateImmutableModels                       := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS, // TODO change default value
-    generateToString                              := MappingConfigConstants.DEFAULT_TO_STRING,
+    generateImmutableModels := MappingConfigConstants.DEFAULT_GENERATE_IMMUTABLE_MODELS, // TODO change default value
+    generateToString        := MappingConfigConstants.DEFAULT_TO_STRING,
     // parent interfaces configs:
-    parentInterfaces                              := parentInterfacesConfig,
-    generateAllMethodInProjection                 := MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD,
-    responseProjectionMaxDepth                    := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
-    supportUnknownFields                          := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
-    unknownFieldsPropertyName                     := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
-    generateNoArgsConstructorOnly                 := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
-    generateModelsWithPublicFields                := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
-    skip                                          := false
+    parentInterfaces               := parentInterfacesConfig,
+    generateAllMethodInProjection  := MappingConfigConstants.DEFAULT_GENERATE_ALL_METHOD,
+    responseProjectionMaxDepth     := MappingConfigConstants.DEFAULT_RESPONSE_PROJECTION_MAX_DEPTH,
+    supportUnknownFields           := MappingConfigConstants.DEFAULT_SUPPORT_UNKNOWN_FIELDS,
+    unknownFieldsPropertyName      := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
+    generateNoArgsConstructorOnly  := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
+    generateModelsWithPublicFields := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
+    skip                           := false
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
