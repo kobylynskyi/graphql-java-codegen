@@ -744,7 +744,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
     @Override
     public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
-      return customTemplates;
+        if (customTemplates == null) {
+            return new HashMap<>();
+        }
+        return customTemplates;
     }
 
 }

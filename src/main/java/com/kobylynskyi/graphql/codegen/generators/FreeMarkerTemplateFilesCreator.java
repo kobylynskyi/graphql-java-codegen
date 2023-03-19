@@ -49,11 +49,11 @@ public class FreeMarkerTemplateFilesCreator {
 
         try (FileWriter fileWriter = new FileWriter(javaSourceFile)) {
             Template template;
-            if (mappingContext.getCustomTemplates().containsKey(templateType)) {
-              template = FreeMarkerTemplatesRegistry.getCustomTemplates(mappingContext.getCustomTemplates().get(templateType));
+            String templatePath = mappingContext.getCustomTemplates().get(templateType);
+            if (templatePath != null) {
+			    template = FreeMarkerTemplatesRegistry.getCustomTemplates(templatePath);
             } else {
-              template =
-                  FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
+                template = FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
             }
             template.process(dataModel, fileWriter);
         } catch (Exception e) {

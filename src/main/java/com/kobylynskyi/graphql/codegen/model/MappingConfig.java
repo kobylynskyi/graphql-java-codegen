@@ -1,7 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -256,7 +255,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
      */
     public void putCustomTemplatesIfAbsent(FreeMarkerTemplateType from, String to) {
       if (customTemplates == null) {
-        customTemplates = new HashMap<>();
+          customTemplates = new HashMap<>();
       }
       customTemplates.computeIfAbsent(from, k -> to);
     }
