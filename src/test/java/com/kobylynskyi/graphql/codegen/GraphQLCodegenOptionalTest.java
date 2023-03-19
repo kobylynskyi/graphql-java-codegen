@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -105,9 +106,7 @@ class GraphQLCodegenOptionalTest {
      */
     @Test
     void generate_ObjectsInsteadOfPrimitives() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<String, String>() {{
-            put("Int!", "Integer");
-        }});
+        mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap("Int!", "Integer")));
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
         generate();
