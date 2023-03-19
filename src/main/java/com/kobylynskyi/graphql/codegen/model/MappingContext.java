@@ -87,7 +87,7 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     
     @Override
     public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
-      return config.getCustomTemplates();
+        return config.getCustomTemplates();
     }
 
     @Override

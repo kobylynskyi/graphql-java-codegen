@@ -254,10 +254,10 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
      * @param to   the to
      */
     public void putCustomTemplatesIfAbsent(FreeMarkerTemplateType from, String to) {
-      if (customTemplates == null) {
-          customTemplates = new HashMap<>();
-      }
-      customTemplates.computeIfAbsent(from, k -> to);
+        if (customTemplates == null) {
+            customTemplates = new HashMap<>();
+        }
+        customTemplates.computeIfAbsent(from, k -> to);
     }
 
     @Override
