@@ -1,7 +1,6 @@
 package io.github.kobylynskyi.graphql.codegen;
 
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.ApiInterfaceStrategy;
@@ -67,7 +66,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Map<String, Properties> customAnnotationsMapping;
 
     @Parameter
-    private Map<FreeMarkerTemplateType, String> customTemplates;
+    private Map<String, String> customTemplates;
 
     @Parameter
     private Map<String, Properties> directiveAnnotationsMapping;
@@ -743,7 +742,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     }
 
     @Override
-    public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
+    public Map<String, String> getCustomTemplates() {
         if (customTemplates == null) {
             return new HashMap<>();
         }
