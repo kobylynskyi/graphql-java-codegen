@@ -61,7 +61,7 @@ public class FreeMarkerTemplateFilesCreator {
                                                           GeneratedLanguage language) {
         String templatePath = null;
         if (mappingContext.getCustomTemplates() != null) {
-            templatePath = mappingContext.getCustomTemplates().get(templateType);
+            templatePath = mappingContext.getCustomTemplates().get(templateType.name());
         }
         if (templatePath != null) {
             return FreeMarkerTemplatesRegistry.getCustomTemplates(templatePath);

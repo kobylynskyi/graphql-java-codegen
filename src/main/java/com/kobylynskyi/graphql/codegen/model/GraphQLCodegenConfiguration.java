@@ -34,7 +34,7 @@ public interface GraphQLCodegenConfiguration {
      *
      * @return a map, where key is a tempalte type and a value is path to a FreeMarker template
      */
-    Map<FreeMarkerTemplateType, String> getCustomTemplates();
+    Map<String, String> getCustomTemplates();
 
     /**
      * Can be used to supply custom annotations (serializers) for scalars.
