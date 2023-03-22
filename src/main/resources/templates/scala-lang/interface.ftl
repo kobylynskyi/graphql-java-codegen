@@ -42,7 +42,7 @@ import ${enum}._
 <#list annotations as annotation>
 @${annotation}
 </#list>
-trait ${className}<#if implements?has_content> extends<#list implements as interface> ${interface}<#if interface_has_next> with </#if></#list></#if> {
+<#if generateSealedInterfaces>sealed </#if>trait ${className}<#if implements?has_content> extends<#list implements as interface> ${interface}<#if interface_has_next> with </#if></#list></#if> {
 
 <#if fields?has_content>
 <#list fields as field>

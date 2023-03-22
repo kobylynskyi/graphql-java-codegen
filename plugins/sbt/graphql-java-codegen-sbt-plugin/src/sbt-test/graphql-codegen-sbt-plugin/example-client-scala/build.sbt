@@ -39,3 +39,4 @@ customAnnotationsMapping := {
 generateCodegenTargetPath in GraphQLCodegenConfig := crossTarget.value / "src_managed_graphql_scala"
 generateEqualsAndHashCode := true
 generateToString := true
+generateSealedInterfaces := true

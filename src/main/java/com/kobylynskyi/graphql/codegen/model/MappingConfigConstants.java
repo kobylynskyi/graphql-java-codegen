@@ -101,6 +101,9 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY = false;
     public static final String DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY_STRING = "false";
 
+    public static final boolean DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS = false;
+    public static final String DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS_STRING = "false";
+
     private MappingConfigConstants() {
     }
 }

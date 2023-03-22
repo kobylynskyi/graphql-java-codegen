@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,13 @@ public interface GraphQLCodegenConfiguration {
      * @return mappings from GraphqlType to JavaType
      */
     Map<String, String> getCustomTypesMapping();
+    
+    /**
+     * Can be used to supply paths to custom FreeMarker templates for code generation.
+     *
+     * @return a map, where key is a tempalte type and a value is path to a FreeMarker template
+     */
+    Map<String, String> getCustomTemplates();
 
     /**
      * Can be used to supply custom annotations (serializers) for scalars.
@@ -521,6 +529,14 @@ public interface GraphQLCodegenConfiguration {
      * <b>false</b> if both no-args and all-args constructors should be generated
      */
     Boolean isGenerateNoArgsConstructorOnly();
+
+    /**
+     * Specifies whether model classes should have public or private fields.
+     *
+     * @return <b>true</b> if model classes should have public fields and no getters/setters.
+     * <b>false</b> if model classes should have private fields and getters/setters.
+     */
+    Boolean isGenerateModelsWithPublicFields();
 
 
 }

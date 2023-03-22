@@ -7,7 +7,7 @@ plugins {
 
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "5.6.0"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.6.1-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.order.Application"
@@ -22,7 +22,7 @@ dependencies {
 
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
-    implementation "io.github.kobylynskyi:graphql-java-codegen:5.6.0"
+    implementation "io.github.kobylynskyi:graphql-java-codegen:5.6.1-SNAPSHOT"
 
     implementation "org.apache.httpcomponents:httpclient:4.5.13"
     implementation "javax.validation:validation-api:2.0.1.Final"

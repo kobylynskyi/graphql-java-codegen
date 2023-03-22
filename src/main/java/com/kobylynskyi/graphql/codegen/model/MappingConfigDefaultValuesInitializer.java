@@ -118,6 +118,10 @@ public class MappingConfigDefaultValuesInitializer {
             mappingConfig.setGenerateNoArgsConstructorOnly(
                     MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY);
         }
+        if (mappingConfig.isGenerateModelsWithPublicFields() == null) {
+            mappingConfig.setGenerateModelsWithPublicFields(
+                    MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS);
+        }
     }
 
 }

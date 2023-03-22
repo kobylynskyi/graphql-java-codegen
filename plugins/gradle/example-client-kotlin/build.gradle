@@ -4,10 +4,10 @@ import io.github.kobylynskyi.graphql.codegen.gradle.GraphQLCodegenGradleTask
 plugins {
     id "java"
     id "org.jetbrains.kotlin.jvm" version "1.6.21"
-    id "io.github.kobylynskyi.graphql.codegen" version "5.6.0"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.6.1-SNAPSHOT"
 }
 
-def graphqlCodegenClientKotlinVersion = '5.6.0' // Variable used in the automatic release process
+def graphqlCodegenClientKotlinVersion = '5.6.1-SNAPSHOT' // Variable used in the automatic release process
 
 group = 'io.github.dreamylost'
 version = graphqlCodegenClientKotlinVersion
@@ -29,7 +29,7 @@ repositories {
 
 
 dependencies {
-    implementation "io.github.kobylynskyi:graphql-java-codegen:5.6.0"
+    implementation "io.github.kobylynskyi:graphql-java-codegen:5.6.1-SNAPSHOT"
     implementation "javax.validation:validation-api:2.0.1.Final"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
     implementation "com.fasterxml.jackson.core:jackson-core:2.13.3"

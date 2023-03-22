@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 
+@ExtendWith(MaxQueryTokensExtension.class)
 class GraphQLCodegenFieldsResolversTest {
 
     private final File outputBuildDir = new File("build/generated");

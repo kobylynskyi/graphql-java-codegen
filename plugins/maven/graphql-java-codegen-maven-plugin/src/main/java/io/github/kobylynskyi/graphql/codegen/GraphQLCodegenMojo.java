@@ -66,6 +66,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Map<String, Properties> customAnnotationsMapping;
 
     @Parameter
+    private Map<String, String> customTemplates;
+
+    @Parameter
     private Map<String, Properties> directiveAnnotationsMapping;
 
     @Parameter
@@ -158,6 +161,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY_STRING)
     private boolean generateNoArgsConstructorOnly;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS_STRING)
+    private boolean generateModelsWithPublicFields;
+
     @Parameter
     private String generatedAnnotation;
 
@@ -243,6 +249,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(convertToMap(customTypesMapping));
+        mappingConfig.setCustomTemplates(customTemplates);
         mappingConfig.setCustomAnnotationsMapping(convertToListsMap(customAnnotationsMapping));
         mappingConfig.setDirectiveAnnotationsMapping(convertToListsMap(directiveAnnotationsMapping));
         mappingConfig.setApiNameSuffix(apiNameSuffix);
@@ -275,6 +282,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setAddGeneratedAnnotation(addGeneratedAnnotation);
         mappingConfig.setGeneratedAnnotation(generatedAnnotation);
         mappingConfig.setGenerateNoArgsConstructorOnly(generateNoArgsConstructorOnly);
+        mappingConfig.setGenerateModelsWithPublicFields(generateModelsWithPublicFields);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
         mappingConfig.setRelayConfig(relayConfig);
@@ -684,6 +692,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         return generateNoArgsConstructorOnly;
     }
 
+    @Override
+    public Boolean isGenerateModelsWithPublicFields() {
+        return generateModelsWithPublicFields;
+    }
+
     public ParentInterfacesConfig getParentInterfaces() {
         return parentInterfaces;
     }
@@ -726,6 +739,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
             result.put(name, properties.getProperty(name));
         }
         return result;
+    }
+
+    @Override
+    public Map<String, String> getCustomTemplates() {
+        if (customTemplates == null) {
+            return new HashMap<>();
+        }
+        return customTemplates;
     }
 
 }

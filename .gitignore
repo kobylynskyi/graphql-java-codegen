@@ -6,7 +6,10 @@ build
 modules.xml
 .idea/misc.xml
 *.ipr
-
+bin/
+.classpath
+.project
+.settings/
 
 ### Maven ###
 target/

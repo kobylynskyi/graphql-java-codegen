@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -261,6 +262,10 @@ public final class Utils {
             return str;
         }
         return wrapStart + str + wrapEnd;
+    }
+
+    public static String getFieldVisibility(MappingContext mappingContext) {
+        return Boolean.TRUE.equals(mappingContext.isGenerateModelsWithPublicFields()) ? "public" : "private";
     }
 
 }

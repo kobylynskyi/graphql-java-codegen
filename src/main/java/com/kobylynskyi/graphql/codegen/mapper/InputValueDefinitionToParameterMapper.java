@@ -66,6 +66,7 @@ public class InputValueDefinitionToParameterMapper {
                 namedDefinition.getJavaName()));
         parameter.setDefaultValue(valueMapper.map(
                 mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setVisibility(Utils.getFieldVisibility(mappingContext));
         parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
                 inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, inputValueDefinition));
