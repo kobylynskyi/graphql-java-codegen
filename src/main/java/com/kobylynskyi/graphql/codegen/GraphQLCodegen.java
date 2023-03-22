@@ -148,17 +148,11 @@ public abstract class GraphQLCodegen {
 
         if (!Utils.isEmpty(schemas)) {
             ExtendedDocument document = GraphQLDocumentParser.getDocumentFromSchemas(mappingConfig, schemas);
-            List<File> generatedFiles = processDefinitions(document);
-            System.out.printf("Finished processing %d schema(s) in %d ms%n", schemas.size(),
-                    System.currentTimeMillis() - startTime);
-            return generatedFiles;
+            return processDefinitions(document, schemas.size() + " schema(s)", startTime);
         } else if (introspectionResult != null) {
             ExtendedDocument document = GraphQLDocumentParser
                     .getDocumentFromIntrospectionResult(mappingConfig, introspectionResult);
-            List<File> generatedFiles = processDefinitions(document);
-            System.out.printf("Finished processing introspection result in %d ms%n",
-                    System.currentTimeMillis() - startTime);
-            return generatedFiles;
+            return processDefinitions(document, "introspection result", startTime);
         } else {
             // either schemas or introspection result should be provided
             throw new IllegalArgumentException(
@@ -166,7 +160,7 @@ public abstract class GraphQLCodegen {
         }
     }
 
-    private List<File> processDefinitions(ExtendedDocument document) {
+    private List<File> processDefinitions(ExtendedDocument document, String source, long startTime) {
         initCustomTypeMappings(document.getScalarDefinitions());
         MappingContext context = MappingContext.builder()
                 .setMappingConfig(mappingConfig)
@@ -180,9 +174,13 @@ public abstract class GraphQLCodegen {
         for (FilesGenerator generator : FilesGeneratorsFactory.getAll(context, dataModelMapperFactory)) {
             generatedFiles.addAll(generator.generate());
         }
-        System.out.printf("Generated %d definition classes in folder %s%n", generatedFiles.size(),
-                outputDir.getAbsolutePath());
+        printOutputResult(source, generatedFiles.size(), System.currentTimeMillis() - startTime);
         return generatedFiles;
+    }
+
+    private void printOutputResult(String source, int classesGenerated, long duration) {
+        System.out.printf("Generated %d classes from %s in folder %s, took %d ms%n",
+                classesGenerated, source, outputDir.getAbsolutePath(), duration);
     }
 
     protected void initCustomTypeMappings(Collection<ExtendedScalarTypeDefinition> scalarTypeDefinitions) {
