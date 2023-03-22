@@ -86,7 +86,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Set<String> parametrizedResolverAnnotations = new HashSet<>();
 
     private Map<String, String> customTypesMapping = new HashMap<>();
-    private Map<FreeMarkerTemplateType, String> customTemplates = new HashMap<>();
+    private Map<String, String> customTemplates = new HashMap<>();
 
     private Set<String> typesAsInterfaces = new HashSet<>();
 
@@ -253,7 +253,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
      * @param from the from
      * @param to   the to
      */
-    public void putCustomTemplatesIfAbsent(FreeMarkerTemplateType from, String to) {
+    public void putCustomTemplatesIfAbsent(String from, String to) {
         if (customTemplates == null) {
             customTemplates = new HashMap<>();
         }
@@ -261,11 +261,11 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Map<FreeMarkerTemplateType, String> getCustomTemplates() {
+    public Map<String, String> getCustomTemplates() {
         return customTemplates;
     }
 
-    public void setCustomTemplates(Map<FreeMarkerTemplateType, String> customTemplates) {
+    public void setCustomTemplates(Map<String, String> customTemplates) {
         this.customTemplates = customTemplates;
     }
 

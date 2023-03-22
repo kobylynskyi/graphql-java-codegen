@@ -7,7 +7,6 @@ import com.kobylynskyi.graphql.codegen.model.exception.LanguageNotSupportedExcep
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage._
 import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.supplier._
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
@@ -68,7 +67,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateJacksonTypeIdResolver       := MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER,
     customTypesMapping                  := new JHashMap[String, String](), // TODO use scala Map, convert to java Map
     customAnnotationsMapping            := new JHashMap[String, JList[String]](),
-    customTemplates                     := new JHashMap[FreeMarkerTemplateType, String](),
+    customTemplates                     := new JHashMap[String, String](),
     directiveAnnotationsMapping         := new JHashMap[String, JList[String]](),
     javaxValidationApiVersion           := None,
     graphqlJavaCodegenVersion           := None,

@@ -3,7 +3,6 @@ package io.github.dreamylost.graphql.codegen
 import java.util
 
 import com.kobylynskyi.graphql.codegen.model._
-import com.kobylynskyi.graphql.codegen.generators._
 import sbt._
 
 /** @author
@@ -44,7 +43,7 @@ trait GraphQLCodegenKeys {
 
   val customAnnotationsMapping = settingKey[util.Map[String, util.List[String]]]("customAnnotationsMapping")
 
-  val customTemplates = settingKey[util.Map[FreeMarkerTemplateType, String]]("customTemplates")
+  val customTemplates = settingKey[util.Map[String, String]]("customTemplates")
 
   val generateEqualsAndHashCode =
     settingKey[Boolean]("Specifies whether generated model classes should have equals and hashCode methods defined.")

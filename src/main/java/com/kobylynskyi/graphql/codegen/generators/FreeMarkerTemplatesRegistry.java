@@ -3,6 +3,10 @@ package com.kobylynskyi.graphql.codegen.generators;
 import com.kobylynskyi.graphql.codegen.GraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToLoadFreeMarkerTemplateException;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.core.PlainTextOutputFormat;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
@@ -10,6 +14,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.EnumMap;
 
@@ -22,10 +27,11 @@ class FreeMarkerTemplatesRegistry {
     private static final EnumMap<GeneratedLanguage, EnumMap<FreeMarkerTemplateType, Template>> templateMap =
             new EnumMap<>(GeneratedLanguage.class);
 
-    private static final Configuration configuration = buildFreeMarkerTemplateConfiguration();
+    private static final Configuration configuration;
     
     static {
         try {
+            configuration = buildFreeMarkerTemplateConfiguration();
             templateMap.put(GeneratedLanguage.JAVA, getTemplates(configuration, GeneratedLanguage.JAVA));
             templateMap.put(GeneratedLanguage.SCALA, getTemplates(configuration, GeneratedLanguage.SCALA));
             templateMap.put(GeneratedLanguage.KOTLIN, getTemplates(configuration, GeneratedLanguage.KOTLIN));
@@ -58,9 +64,12 @@ class FreeMarkerTemplatesRegistry {
                 templateType.name().toLowerCase());
     }
 
-    private static Configuration buildFreeMarkerTemplateConfiguration() {
+    private static Configuration buildFreeMarkerTemplateConfiguration() throws IOException {
         Configuration configuration = new Configuration(FREEMARKER_TEMPLATE_VERSION);
-        configuration.setClassLoaderForTemplateLoading(GraphQLCodegen.class.getClassLoader(), "");
+        ClassTemplateLoader classTemplateLoader = new ClassTemplateLoader(GraphQLCodegen.class.getClassLoader(), "");
+        FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File("."));
+        configuration.setTemplateLoader(
+                new MultiTemplateLoader(new TemplateLoader[] {classTemplateLoader, fileTemplateLoader}));
         configuration.setDefaultEncoding(DEFAULT_ENCODING);
         configuration.setOutputFormat(PlainTextOutputFormat.INSTANCE);
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
