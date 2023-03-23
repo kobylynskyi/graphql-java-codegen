@@ -134,6 +134,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(
                 customTypesMapping != null ? customTypesMapping : new HashMap<>());
+        mappingConfig.setCustomAnnotationsMapping(
+                customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setCustomTemplates(
                 customTemplates != null ? customTemplates : new HashMap<>());
         mappingConfig.setDirectiveAnnotationsMapping(
