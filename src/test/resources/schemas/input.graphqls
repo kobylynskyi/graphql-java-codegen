@@ -1,0 +1,15 @@
+schema {
+    query: Query
+}
+
+type Query {
+    repro(input: ReproInput!): ReproOutput
+}
+
+input ReproInput {
+    reproField: [String!]!
+}
+
+type ReproOutput {
+    id: ID!
+}

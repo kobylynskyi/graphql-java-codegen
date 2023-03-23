@@ -77,6 +77,19 @@ class GraphQLCodegenAnnotationsTest {
     }
 
     @Test
+    void generate_CustomAnnotationMappings_Input() throws Exception {
+        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("ReproInput.reproField",
+                singletonList("@com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")"))));
+
+        generate("src/test/resources/schemas/input.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        assertFileContainsElements(files, "ReproInput.java",
+                "    @com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")\n" +
+                        "    private java.util.List<String> reproField;");
+    }
+
+    @Test
     void generate_CustomAnnotationMappings_Regexp() throws Exception {
         mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "org.joda.time.DateTime")));
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Date.*",
