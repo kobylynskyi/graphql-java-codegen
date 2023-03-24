@@ -4,6 +4,34 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/graphql-java-codegen-gradle-plugin/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-client/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-server/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-client-kotlin/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/graphql-java-codegen-maven-plugin/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/example-client/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/example-server/"
+    schedule:
+      interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
