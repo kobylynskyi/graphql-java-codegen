@@ -1,0 +1,73 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/graphql-java-codegen-gradle-plugin/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/graphql-java-codegen-maven-plugin/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-client/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-server/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "gradle"
+    directory: "plugins/gradle/example-client-kotlin/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/example-client/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "maven"
+    directory: "plugins/maven/example-server/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    target-branch: "develop"
+    reviewers:
+      - "kobylynskyi"
