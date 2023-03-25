@@ -27,14 +27,14 @@ dependencies {
     implementation "org.apache.httpcomponents:httpclient:4.5.13"
     implementation "javax.validation:validation-api:2.0.1.Final"
 
-    implementation "org.mapstruct:mapstruct:1.4.2.Final"
-    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    implementation "org.mapstruct:mapstruct:1.5.3.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 
-    compileOnly "org.projectlombok:lombok:1.18.18"
-    annotationProcessor "org.projectlombok:lombok:1.18.12"
+    compileOnly "org.projectlombok:lombok:1.18.26"
+    annotationProcessor "org.projectlombok:lombok:1.18.26"
 
     testImplementation "io.rest-assured:rest-assured:4.3.3"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.1"
 }
 
