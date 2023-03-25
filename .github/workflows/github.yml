@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - java-11-17
   pull_request:
     branches:
       - master
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk-version: [ 1.8 ]
+        jdk-version: [ 8, 11, 17 ]
     steps:
       - uses: actions/checkout@v2
 
