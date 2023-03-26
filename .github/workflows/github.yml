@@ -17,7 +17,7 @@ jobs:
       matrix:
         jdk-version: [ 1.8 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Java ${{ matrix.jdk-version }}
         uses: actions/setup-java@v1
@@ -84,7 +84,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
          fetch-depth: 0
       - name: Setup Java
