@@ -32,7 +32,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.release_branch }}
 
@@ -42,19 +42,19 @@ jobs:
           java-version: 1.8
 
       - name: Gradle cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.gradle
           key: gradle
 
       - name: Maven cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: m2
 
       - name: Loading ivy cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}

@@ -58,17 +58,17 @@
     <properties>
         <version.maven-plugin-api>3.8.1</version.maven-plugin-api>
         <version.maven-core>3.8.1</version.maven-core>
-        <version.maven-plugin-annotations>3.6.1</version.maven-plugin-annotations>
-        <version.maven-plugin-plugin>3.6.1</version.maven-plugin-plugin>
+        <version.maven-plugin-annotations>3.8.1</version.maven-plugin-annotations>
+        <version.maven-plugin-plugin>3.8.1</version.maven-plugin-plugin>
         <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
-        <version.maven-resources-plugin>3.2.0</version.maven-resources-plugin>
+        <version.maven-resources-plugin>3.3.0</version.maven-resources-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
-        <version.maven-javadoc-plugin>3.2.0</version.maven-javadoc-plugin>
-        <version.maven-deploy-plugin>3.0.0-M1</version.maven-deploy-plugin>
-        <version.nexus-staging-maven-plugin>1.6.8</version.nexus-staging-maven-plugin>
-        <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
-        <version.maven-build-helper-plugin>3.2.0</version.maven-build-helper-plugin>
-        <version.maven-scm-provider-gitexe>1.11.2</version.maven-scm-provider-gitexe>
+        <version.maven-javadoc-plugin>3.5.0</version.maven-javadoc-plugin>
+        <version.maven-deploy-plugin>3.1.0</version.maven-deploy-plugin>
+        <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
+        <version.maven-release-plugin>3.0.0</version.maven-release-plugin>
+        <version.maven-build-helper-plugin>3.3.0</version.maven-build-helper-plugin>
+        <version.maven-scm-provider-gitexe>2.0.0</version.maven-scm-provider-gitexe>
         <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.3.4</version.maven-shared-utils>
 
@@ -118,17 +118,17 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
-            <version>16.2</version>
+            <version>20.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <version>2.14.2</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
     </dependencies>
 
