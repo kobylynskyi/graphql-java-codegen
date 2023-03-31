@@ -17,7 +17,7 @@
 
 ```groovy
 plugins {
-  id "io.github.kobylynskyi.graphql.codegen" version "5.7.1"
+  id "io.github.kobylynskyi.graphql.codegen" version "5.7.2-SNAPSHOT"
 }
 ```
 
@@ -31,7 +31,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:5.7.1"
+    classpath "io.github.kobylynskyi.graphql.codegen:graphql-codegen-gradle-plugin:5.7.2-SNAPSHOT"
   }
 }
 
@@ -49,7 +49,7 @@ Please refer to [Codegen Options](../../docs/codegen-options.md)
 ```groovy
 graphqlCodegen {
     // all config options: 
-    // https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+    // https://github.com/kobylynskyi/graphql-java-codegen/blob/main/docs/codegen-options.md
     graphqlSchemas.includePattern = "schema\\.graphqls"
     outputDir = new File("$buildDir/generated")
     packageName = "com.example.graphql.model"
@@ -78,7 +78,7 @@ You can also refer to build.gradle files in example projects: [example-client/bu
 ```kotlin
 tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
     // all config options: 
-    // https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+    // https://github.com/kobylynskyi/graphql-java-codegen/blob/main/docs/codegen-options.md
     graphqlSchemaPaths = listOf("$projectDir/src/main/resources/graphql/schema.graphqls")
     outputDir = File("$buildDir/generated")
     packageName = "com.example.graphql.model"

@@ -34,7 +34,7 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
     libraryDependencies ++= Seq(
       "io.github.kobylynskyi"      % "graphql-java-codegen" % (ThisBuild / version).value,
       "org.freemarker"             % "freemarker"           % "2.3.31",
-      "com.graphql-java"           % "graphql-java"         % "16.2",
+      "com.graphql-java"           % "graphql-java"         % "20.1",
       "com.fasterxml.jackson.core" % "jackson-databind"     % "2.12.1",
       "com.typesafe"               % "config"               % "1.4.2"
     ),

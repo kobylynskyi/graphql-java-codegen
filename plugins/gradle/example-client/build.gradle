@@ -7,35 +7,35 @@ plugins {
 
     // use the latest available version:
     // https://plugins.gradle.org/plugin/io.github.kobylynskyi.graphql.codegen
-    id "io.github.kobylynskyi.graphql.codegen" version "5.7.1"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.7.2-SNAPSHOT"
 }
 
 mainClassName = "io.github.kobylynskyi.order.Application"
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:2.4.4"
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.4.4"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.7.10"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.7.10"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0"
-    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0"
-    implementation "com.graphql-java:graphql-java-extended-scalars:16.0.1"
+    implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0"
+    implementation "com.graphql-java:graphql-java-extended-scalars:20.0"
 
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
-    implementation "io.github.kobylynskyi:graphql-java-codegen:5.7.1"
+    implementation "io.github.kobylynskyi:graphql-java-codegen:5.7.2-SNAPSHOT"
 
     implementation "org.apache.httpcomponents:httpclient:4.5.13"
     implementation "javax.validation:validation-api:2.0.1.Final"
 
-    implementation "org.mapstruct:mapstruct:1.4.2.Final"
-    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    implementation "org.mapstruct:mapstruct:1.5.3.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 
-    compileOnly "org.projectlombok:lombok:1.18.18"
-    annotationProcessor "org.projectlombok:lombok:1.18.12"
+    compileOnly "org.projectlombok:lombok:1.18.26"
+    annotationProcessor "org.projectlombok:lombok:1.18.26"
 
-    testImplementation "io.rest-assured:rest-assured:4.3.3"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.1"
+    testImplementation "io.rest-assured:rest-assured:5.3.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.2"
 }
 
 

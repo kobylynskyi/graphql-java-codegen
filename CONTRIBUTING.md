@@ -17,7 +17,7 @@ Please follow the steps below in order to make the changes:
 
 1. Clone the repository
 2. Set the local java version to 1.8
-3. Checkout **develop** branch.
+3. Checkout **main** branch.
 4. Open repository in your favourite IDE.
 5. Enable and configure CheckStyle plugin in your IDE (for IntelliJ it is CheckStyle-IDEA).
    Import [graphql-codegen-check-style.xml](config/checkstyle/graphql-codegen-check-style.xml) as a .

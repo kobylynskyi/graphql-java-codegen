@@ -7,8 +7,8 @@ follow [3.0.0 migration guide](migration-to-3.0.0.md) first.
 
 ### 1. Update plugin and library versions
 
-As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle)
-, [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven)
+As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/gradle)
+, [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/maven)
 
 ### 2. Change GraphQL Resolvers containing non-null GraphQL types to primitive Java types
 

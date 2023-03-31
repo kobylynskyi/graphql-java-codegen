@@ -13,9 +13,9 @@ Otherwise - feel free to use graphql-java-codegen-5.0.0 without any breaking cha
 ### 1. Update plugin and library versions
 
 As per plugin description: 
-[Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle), 
-[Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven),
-[SBT](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/sbt)
+[Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/gradle), 
+[Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/maven),
+[SBT](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/sbt)
 
 ### 2. Rename jsonConfigurationFile => configurationFiles
 

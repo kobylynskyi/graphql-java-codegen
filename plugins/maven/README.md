@@ -20,7 +20,7 @@
         <plugin>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>5.7.1</version>
+            <version>5.7.2-SNAPSHOT</version>
             <executions>
                 <execution>
                     <goals>
@@ -28,7 +28,7 @@
                     </goals>
                     <configuration>
                         <!-- all config options: 
-                        https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+                        https://github.com/kobylynskyi/graphql-java-codegen/blob/main/docs/codegen-options.md
                         -->
                         <graphqlSchemas>
                             <includePattern>schema\.graphqls</includePattern>

@@ -3,41 +3,40 @@ name: Build
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
   pull_request:
     branches:
-      - master
-      - develop
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk-version: [ 1.8 ]
+        jdk-version: [ 8, 11, 17 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Java ${{ matrix.jdk-version }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.jdk-version }}
+          distribution: 'adopt'
 
       - name: Gradle cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.gradle
           key: gradle
 
       - name: Maven cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: m2
 
       - name: Loading ivy cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
@@ -82,30 +81,31 @@ jobs:
 
   sonar:
     needs: build
-    if: github.event_name != 'pull_request'    
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+        with:
+         fetch-depth: 0
       - name: Setup Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: 'adopt'
 
       - name: Gradle cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.gradle
           key: gradle
 
       - name: Maven cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: m2
 
       - name: Loading ivy cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
@@ -118,5 +118,4 @@ jobs:
       - name: Generate and publish Sonar report
         run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }} --stacktrace
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}           
-          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
