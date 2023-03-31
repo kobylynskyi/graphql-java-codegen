@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>15.0.0</version>
+            <version>11.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
@@ -125,6 +125,5 @@
             <url>https://jcenter.bintray.com</url>
         </repository>
     </repositories>
-
 
 </project>
