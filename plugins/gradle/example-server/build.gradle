@@ -13,7 +13,7 @@ mainClassName = "io.github.kobylynskyi.product.Application"
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:2.4.4"
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.4.4"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:3.0.5"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:15.0.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0"
