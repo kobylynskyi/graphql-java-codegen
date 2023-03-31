@@ -56,7 +56,7 @@
     </ciManagement>
 
     <properties>
-        <version.maven-plugin-api>3.8.1</version.maven-plugin-api>
+        <version.maven-plugin-api>3.9.1</version.maven-plugin-api>
         <version.maven-core>3.8.1</version.maven-core>
         <version.maven-plugin-annotations>3.8.1</version.maven-plugin-annotations>
         <version.maven-plugin-plugin>3.8.1</version.maven-plugin-plugin>
