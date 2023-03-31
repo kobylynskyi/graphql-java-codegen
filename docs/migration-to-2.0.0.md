@@ -6,8 +6,8 @@ version 1.x.x then please follow steps below.
 
 ### 1. Update plugin and library versions
 
-As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle)
-, [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/maven)
+As per plugin description: [Gradle](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/gradle)
+, [Maven](https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/maven)
 
 ### 2. Update plugin configuration (only for client-side codegen)
 

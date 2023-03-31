@@ -9,7 +9,7 @@ on:
         required: true
       release_branch:
         description: 'Release branch'
-        default: 'master'
+        default: 'main'
         required: true
       publish_library:
         description: 'Publish library'

@@ -3,12 +3,10 @@ name: Check Code Style
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
   pull_request:
     branches:
-      - master
-      - develop
+      - main
 
 jobs:
   check-code-style:

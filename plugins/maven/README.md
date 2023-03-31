@@ -28,7 +28,7 @@
                     </goals>
                     <configuration>
                         <!-- all config options: 
-                        https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+                        https://github.com/kobylynskyi/graphql-java-codegen/blob/main/docs/codegen-options.md
                         -->
                         <graphqlSchemas>
                             <includePattern>schema\.graphqls</includePattern>

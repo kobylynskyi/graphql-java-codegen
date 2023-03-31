@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -12,7 +12,7 @@ updates:
     directory: "plugins/gradle/graphql-java-codegen-gradle-plugin/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -20,7 +20,7 @@ updates:
     directory: "plugins/maven/graphql-java-codegen-maven-plugin/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -28,7 +28,7 @@ updates:
     directory: "plugins/gradle/example-client/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -36,7 +36,7 @@ updates:
     directory: "plugins/gradle/example-server/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -44,7 +44,7 @@ updates:
     directory: "plugins/gradle/example-client-kotlin/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -52,7 +52,7 @@ updates:
     directory: "plugins/maven/example-client/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -60,7 +60,7 @@ updates:
     directory: "plugins/maven/example-server/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"
 
@@ -68,6 +68,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "kobylynskyi"

@@ -100,7 +100,7 @@ publishing {
                 licenses {
                     license {
                         name = "MIT License"
-                        url = "https://github.com/kobylynskyi/graphql-java-codegen/blob/master/LICENSE"
+                        url = "https://github.com/kobylynskyi/graphql-java-codegen/blob/main/LICENSE"
                         distribution = "repo"
                     }
                 }
