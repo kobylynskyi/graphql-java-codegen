@@ -197,7 +197,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
 
         public ${className} build() {
 <#if generateNoArgsConstructorOnly>
-            ${className} result = new ${className};
+            ${className} result = new ${className}();
     <#list fields as field>
         <#if field.visibility == 'public'>
             result.${field.name}(this.${field.name});
