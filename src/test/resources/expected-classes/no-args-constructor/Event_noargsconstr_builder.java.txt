@@ -143,7 +143,7 @@ public class Event implements java.io.Serializable {
 
 
         public Event build() {
-            Event result = new Event;
+            Event result = new Event();
             result.setId(this.id);
             result.setCategoryId(this.categoryId);
             result.setProperties(this.properties);
