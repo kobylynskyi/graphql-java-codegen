@@ -17,7 +17,7 @@ import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
@@ -267,8 +267,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     }
 
     private java.util.Optional<Path> findDefaultResourcesDir() {
-        return getProject().getConvention()
-                .getPlugin(JavaPluginConvention.class)
+        return getProject().getExtensions()
+                .getByType(JavaPluginExtension.class)
                 .getSourceSets()
                 .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                 .getResources()
