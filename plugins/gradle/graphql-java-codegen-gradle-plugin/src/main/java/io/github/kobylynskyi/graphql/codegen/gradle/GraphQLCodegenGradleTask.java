@@ -267,7 +267,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     }
 
     private java.util.Optional<Path> findDefaultResourcesDir() {
-        return getProject().getExtensions()
+        return getExtensions()
                 .getByType(JavaPluginExtension.class)
                 .getSourceSets()
                 .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
