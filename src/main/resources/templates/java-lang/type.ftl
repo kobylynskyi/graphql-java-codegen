@@ -164,6 +164,12 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
         return new ${className}.Builder();
     }
 
+    <#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
+    @${generatedInfo.getGeneratedType()}(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "${generatedInfo.getDateTime()}"
+    )
+    </#if>
     public static class Builder {
 
     <#if fields?has_content>
