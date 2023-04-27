@@ -84,7 +84,12 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     public Map<String, String> getCustomTypesMapping() {
         return config.getCustomTypesMapping();
     }
-    
+
+    @Override
+    public File getCustomTemplatesRoot() {
+        return config.getCustomTemplatesRoot();
+    }
+
     @Override
     public Map<String, String> getCustomTemplates() {
         return config.getCustomTemplates();
