@@ -66,6 +66,10 @@ codeCoverageReport.dependsOn test
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
+javadoc {
+    options.encoding = "UTF-8"
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
