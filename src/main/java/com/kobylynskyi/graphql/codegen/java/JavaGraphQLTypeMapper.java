@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.java;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
@@ -69,7 +70,12 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         }
         if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
             // in case it is query/mutation and apiReturnType is set
-            return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
+            if (mappingContext.getApiReturnType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                return mappingContext.getApiReturnType()
+                        .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, computedTypeName);
+            } else {
+                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
+            }
         }
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
