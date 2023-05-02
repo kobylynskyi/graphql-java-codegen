@@ -53,6 +53,10 @@ public class TypeWithMandatoryField implements java.io.Serializable, InterfaceWi
         return new TypeWithMandatoryField.Builder();
     }
 
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
     public static class Builder {
 
         private int test;

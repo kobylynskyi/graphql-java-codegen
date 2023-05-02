@@ -84,6 +84,10 @@ public class Synchronized implements java.io.Serializable {
         return new Synchronized.Builder();
     }
 
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
     public static class Builder {
 
         private String Void;
