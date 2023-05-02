@@ -67,7 +67,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateJacksonTypeIdResolver       := MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER,
     customTypesMapping                  := new JHashMap[String, String](), // TODO use scala Map, convert to java Map
     customAnnotationsMapping            := new JHashMap[String, JList[String]](),
-    customTemplatesRoot                 := new File("."),
+    customTemplatesRoot                 := (configuration / baseDirectory).value,
     customTemplates                     := new JHashMap[String, String](),
     directiveAnnotationsMapping         := new JHashMap[String, JList[String]](),
     javaxValidationApiVersion           := None,
