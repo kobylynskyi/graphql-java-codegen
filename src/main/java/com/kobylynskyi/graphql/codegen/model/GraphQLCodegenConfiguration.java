@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
+
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,9 +32,16 @@ public interface GraphQLCodegenConfiguration {
     Map<String, String> getCustomTypesMapping();
     
     /**
+     * Can be used to specify the root directory for the custom FreeMaker templates
+     *
+     * @return the directory source for the root directory
+     */
+    File getCustomTemplatesRoot();
+
+    /**
      * Can be used to supply paths to custom FreeMarker templates for code generation.
      *
-     * @return a map, where key is a tempalte type and a value is path to a FreeMarker template
+     * @return a map, where key is a template type and a value is path to a FreeMarker template
      */
     Map<String, String> getCustomTemplates();
 

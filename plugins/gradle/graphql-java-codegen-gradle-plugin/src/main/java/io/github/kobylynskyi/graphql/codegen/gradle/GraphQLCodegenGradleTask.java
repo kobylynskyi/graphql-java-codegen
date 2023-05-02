@@ -54,7 +54,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     private Map<String, String> customTypesMapping = new HashMap<>();
     private Map<String, List<String>> customAnnotationsMapping = new HashMap<>();
+
+    private File customTemplatesRoot = null;
     private Map<String, String> customTemplates = new HashMap<>();
+
     private Map<String, List<String>> directiveAnnotationsMapping = new HashMap<>();
     private String packageName;
     private String apiPackageName;
@@ -136,6 +139,9 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 customTypesMapping != null ? customTypesMapping : new HashMap<>());
         mappingConfig.setCustomAnnotationsMapping(
                 customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
+        mappingConfig.setCustomTemplatesRoot(
+            customTemplatesRoot != null ? customTemplatesRoot : getProject().getProjectDir()
+        );
         mappingConfig.setCustomTemplates(
                 customTemplates != null ? customTemplates : new HashMap<>());
         mappingConfig.setDirectiveAnnotationsMapping(
@@ -334,6 +340,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setCustomTypesMapping(Map<String, String> customTypesMapping) {
         this.customTypesMapping = customTypesMapping;
+    }
+
+    @InputFile
+    @Optional
+    @Override
+    public File getCustomTemplatesRoot() {
+        return customTemplatesRoot;
+    }
+
+    public void setCustomTemplatesRoot(File customTemplatesRoot) {
+        this.customTemplatesRoot = customTemplatesRoot;
     }
 
     @Input

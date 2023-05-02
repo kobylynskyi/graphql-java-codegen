@@ -1,6 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -86,6 +88,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Set<String> parametrizedResolverAnnotations = new HashSet<>();
 
     private Map<String, String> customTypesMapping = new HashMap<>();
+
+    private File customTemplatesRoot = new File(".");
     private Map<String, String> customTemplates = new HashMap<>();
 
     private Set<String> typesAsInterfaces = new HashSet<>();
@@ -247,6 +251,24 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         this.customTypesMapping = customTypesMapping;
     }
 
+    @Override
+    public File getCustomTemplatesRoot() {
+        return customTemplatesRoot;
+    }
+
+    public void setCustomTemplatesRoot(File customTemplatesRoot) {
+        this.customTemplatesRoot = customTemplatesRoot;
+    }
+
+    @Override
+    public Map<String, String> getCustomTemplates() {
+        return customTemplates;
+    }
+
+    public void setCustomTemplates(Map<String, String> customTemplates) {
+        this.customTemplates = customTemplates;
+    }
+
     /**
      * Provide a path to a custom template for the specific FreeMarker template type (if absent).
      *
@@ -258,15 +280,6 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
             customTemplates = new HashMap<>();
         }
         customTemplates.computeIfAbsent(from, k -> to);
-    }
-
-    @Override
-    public Map<String, String> getCustomTemplates() {
-        return customTemplates;
-    }
-
-    public void setCustomTemplates(Map<String, String> customTemplates) {
-        this.customTemplates = customTemplates;
     }
 
     @Override

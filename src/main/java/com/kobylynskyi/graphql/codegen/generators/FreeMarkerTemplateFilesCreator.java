@@ -63,8 +63,9 @@ public class FreeMarkerTemplateFilesCreator {
         if (mappingContext.getCustomTemplates() != null) {
             templatePath = mappingContext.getCustomTemplates().get(templateType.name());
         }
+
         if (templatePath != null) {
-            return FreeMarkerTemplatesRegistry.getCustomTemplates(templatePath);
+            return FreeMarkerTemplatesRegistry.getCustomTemplate(mappingContext.getCustomTemplatesRoot(), templatePath);
         } else {
             return FreeMarkerTemplatesRegistry.getTemplateWithLang(language, templateType);
         }

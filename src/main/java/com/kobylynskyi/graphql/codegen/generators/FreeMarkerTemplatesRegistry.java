@@ -5,7 +5,6 @@ import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToLoadFreeMarkerTemplateException;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.PlainTextOutputFormat;
 import freemarker.ext.beans.BeansWrapper;
@@ -28,7 +27,7 @@ class FreeMarkerTemplatesRegistry {
             new EnumMap<>(GeneratedLanguage.class);
 
     private static final Configuration configuration;
-    
+
     static {
         try {
             configuration = buildFreeMarkerTemplateConfiguration();
@@ -64,24 +63,34 @@ class FreeMarkerTemplatesRegistry {
                 templateType.name().toLowerCase());
     }
 
-    private static Configuration buildFreeMarkerTemplateConfiguration() throws IOException {
-        Configuration configuration = new Configuration(FREEMARKER_TEMPLATE_VERSION);
+    private static Configuration buildFreeMarkerTemplateConfiguration() {
         ClassTemplateLoader classTemplateLoader = new ClassTemplateLoader(GraphQLCodegen.class.getClassLoader(), "");
-        FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(new File("."));
-        configuration.setTemplateLoader(
-                new MultiTemplateLoader(new TemplateLoader[] {classTemplateLoader, fileTemplateLoader}));
+
+        return buildFreeMarkerTemplateConfiguration(classTemplateLoader);
+    }
+
+    private static Configuration buildFreeMarkerTemplateConfiguration(TemplateLoader templateLoader) {
+        Configuration configuration = new Configuration(FREEMARKER_TEMPLATE_VERSION);
+        configuration.setTemplateLoader(templateLoader);
         configuration.setDefaultEncoding(DEFAULT_ENCODING);
         configuration.setOutputFormat(PlainTextOutputFormat.INSTANCE);
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setWrapUncheckedExceptions(true);
         configuration.setSharedVariable("statics", new BeansWrapper(FREEMARKER_TEMPLATE_VERSION).getStaticModels());
+
         return configuration;
     }
 
-    public static Template getCustomTemplates(String templatePath) {
+    private static Configuration buildFreeMarkerCustomTemplateConfiguration(File file) throws IOException {
+        FileTemplateLoader fileTemplateLoader = new FileTemplateLoader(file);
+
+        return buildFreeMarkerTemplateConfiguration(fileTemplateLoader);
+    }
+
+    public static Template getCustomTemplate(File templateRoot, String templatePath) {
         try {
-            return configuration.getTemplate(templatePath);
+            return buildFreeMarkerCustomTemplateConfiguration(templateRoot).getTemplate(templatePath);
         } catch (IOException e) {
             throw new UnableToLoadFreeMarkerTemplateException(e);
         }
