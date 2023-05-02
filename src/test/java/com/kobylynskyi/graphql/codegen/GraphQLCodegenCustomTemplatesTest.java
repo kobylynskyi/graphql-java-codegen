@@ -36,7 +36,10 @@ class GraphQLCodegenCustomTemplatesTest {
 
     @Test
     void generate_CustomTemplates_Type() throws Exception {
-        mappingConfig.putCustomTemplatesIfAbsent(FreeMarkerTemplateType.TYPE.name(), "src/test/resources/template/record_type.ftl");
+        mappingConfig.putCustomTemplatesIfAbsent(
+            FreeMarkerTemplateType.TYPE.name(),
+            "src/test/resources/template/record_type.ftl"
+        );
 
         generate("src/test/resources/schemas/test.graphqls");
 
