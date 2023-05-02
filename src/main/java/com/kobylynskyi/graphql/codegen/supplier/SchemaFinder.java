@@ -1,6 +1,7 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -78,7 +79,11 @@ public class SchemaFinder {
      */
     public List<String> findSchemas() throws IOException {
         int maxDepth = recursive ? Integer.MAX_VALUE : 1;
-        try (Stream<Path> paths = Files.find(rootDir, maxDepth, (path, attrs) -> shouldInclude(path))) {
+
+        try (
+            Stream<Path> paths =
+                Files.find(rootDir, maxDepth, (path, attrs) -> shouldInclude(path), FileVisitOption.FOLLOW_LINKS)
+        ) {
             return paths.map(Path::toString).sorted().collect(Collectors.toList());
         }
     }
