@@ -122,6 +122,12 @@ public class ${className} implements GraphQLOperationRequest {
         return new ${className}.Builder();
     }
 
+    <#if generatedAnnotation && generatedInfo.getGeneratedType()?has_content>
+    @${generatedInfo.getGeneratedType()}(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "${generatedInfo.getDateTime()}"
+    )
+    </#if>
     public static class Builder {
 
         private String $alias;

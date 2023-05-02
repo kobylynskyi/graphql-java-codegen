@@ -19,6 +19,7 @@ import java.util.Objects;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.lang.System.lineSeparator;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -85,7 +86,7 @@ class GraphQLCodegenAnnotationsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "ReproInput.java",
-                "    @com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")\n" +
+                "    @com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")" + lineSeparator() +
                         "    private java.util.List<String> reproField;");
     }
 

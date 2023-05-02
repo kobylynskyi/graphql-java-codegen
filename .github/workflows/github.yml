@@ -81,6 +81,7 @@ jobs:
 
   sonar:
     needs: build
+    if: github.event_name != 'pull_request'    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

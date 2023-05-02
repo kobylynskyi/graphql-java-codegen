@@ -3,7 +3,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
-    <version>5.7.2-SNAPSHOT</version>
+    <version>5.7.3-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>graphql-codegen-maven-plugin</name>
@@ -36,7 +36,7 @@
         <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
         <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/maven</url>
-        <tag>HEAD</tag>
+        <tag>v5.7.2</tag>
     </scm>
 
     <distributionManagement>
@@ -58,8 +58,8 @@
     <properties>
         <version.maven-plugin-api>3.9.1</version.maven-plugin-api>
         <version.maven-core>3.9.1</version.maven-core>
-        <version.maven-plugin-annotations>3.8.1</version.maven-plugin-annotations>
-        <version.maven-plugin-plugin>3.8.1</version.maven-plugin-plugin>
+        <version.maven-plugin-annotations>3.8.2</version.maven-plugin-annotations>
+        <version.maven-plugin-plugin>3.8.2</version.maven-plugin-plugin>
         <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
         <version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
         <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
@@ -72,7 +72,7 @@
         <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.3.4</version.maven-shared-utils>
 
-        <version.graphql-java-codegen>5.7.2-SNAPSHOT</version.graphql-java-codegen>
+        <version.graphql-java-codegen>5.7.3-SNAPSHOT</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
@@ -80,6 +80,7 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
             <version>${version.maven-plugin-api}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -91,11 +92,13 @@
                     <artifactId>maven-shared-utils</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.shared</groupId>
             <artifactId>maven-shared-utils</artifactId>
             <version>${version.maven-shared-utils}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
@@ -123,7 +126,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.14.2</version>
+            <version>2.15.0</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>
@@ -282,8 +285,7 @@
             <id>release-sign-artifacts</id>
             <activation>
                 <property>
-                    <name>performRelease</name>
-                    <value>true</value>
+                    <name>gpg.passphrase</name>
                 </property>
             </activation>
             <build>
