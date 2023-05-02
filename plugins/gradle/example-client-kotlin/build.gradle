@@ -32,10 +32,10 @@ dependencies {
 
     implementation "javax.validation:validation-api:2.0.1.Final"
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.14.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.2"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.14.2"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.15.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.0"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.3"
