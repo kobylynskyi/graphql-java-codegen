@@ -3,7 +3,6 @@ package com.kobylynskyi.graphql.codegen;
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
-import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,33 +36,69 @@ class GraphQLCodegenApiReturnTypeTest {
 
     @Test
     void generate_ApiReturnType_WithPlaceHolder() throws Exception {
-        mappingConfig.setApiReturnType("java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<{{TYPE}}>>");
+        mappingConfig.setApiReturnType(
+                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<{{TYPE}}>>"
+        );
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertFileContainsElements(files, "EventPropertyResolver.java",
-                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<java.util.List<EventProperty>>> child(EventProperty eventProperty, Integer first, Integer last) throws Exception;");
+        String requireChildText = getChildText(
+                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult" +
+                        "<java.util.List<EventProperty>>>"
+        );
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.java",
+                requireChildText
+        );
 
+        String requireParentText = getParentText(
+                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<Event>>"
+        );
         assertFileContainsElements(files, "EventPropertyResolver.java",
-                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<Event>> parent(EventProperty eventProperty, EventStatus withStatus, String createdAfter) throws Exception;");
+                requireParentText
+        );
     }
 
     @Test
     void generate_ApiReturnType_And_ApiReturnListType_WithPlaceHolder() throws Exception {
-        mappingConfig.setApiReturnType("java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<{{TYPE}}>>");
-        mappingConfig.setApiReturnListType("reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<{{TYPE}}>>");
+        mappingConfig.setApiReturnType(
+                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<{{TYPE}}>>"
+        );
+        mappingConfig.setApiReturnListType(
+                "reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<{{TYPE}}>>"
+        );
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertFileContainsElements(files, "EventPropertyResolver.java",
-                "reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<EventProperty>> child(EventProperty eventProperty, Integer first, Integer last) throws Exception;");
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.java",
+                getChildText(
+                        "reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<EventProperty>>"
+                )
+        );
 
-        assertFileContainsElements(files, "EventPropertyResolver.java",
-                "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<Event>> parent(EventProperty eventProperty, EventStatus withStatus, String createdAfter) throws Exception;");
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.java",
+                getParentText(
+                        "java.util.concurrent.CompletionStage<graphql.execution.DataFetcherResult<Event>>"
+                )
+        );
+    }
+
+    private String getChildText(String returnType) {
+        return returnType + " child(EventProperty eventProperty, Integer first, Integer last) throws Exception;";
+    }
+
+    private String getParentText(String returnType) {
+        return returnType +
+                " parent(EventProperty eventProperty, EventStatus withStatus, String createdAfter) throws Exception;";
     }
 
     private void generate(String path) throws IOException {

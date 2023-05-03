@@ -81,7 +81,9 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
                 Matcher matcher = SCALA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
                 matcher.find();
                 String listElement = matcher.group(1);
-                return mappingContext.getApiReturnListType().replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+                return mappingContext.getApiReturnListType().replace(
+                        MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER,
+                        listElement);
             } else {
                 return computedTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
             }

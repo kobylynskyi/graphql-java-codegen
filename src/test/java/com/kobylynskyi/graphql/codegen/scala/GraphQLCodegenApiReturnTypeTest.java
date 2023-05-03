@@ -1,7 +1,6 @@
 package com.kobylynskyi.graphql.codegen.scala;
 
 import com.kobylynskyi.graphql.codegen.TestUtils;
-import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.model.GeneratedLanguage;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
@@ -37,33 +36,71 @@ class GraphQLCodegenApiReturnTypeTest {
 
     @Test
     void generate_ApiReturnType_WithPlaceHolder() throws Exception {
-        mappingConfig.setApiReturnType("java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[{{TYPE}}]]");
+        mappingConfig.setApiReturnType(
+                "java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[{{TYPE}}]]"
+        );
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertFileContainsElements(files, "EventPropertyResolver.scala",
-                "def child(eventProperty: EventProperty, first: scala.Option[Int], last: scala.Option[Int]): java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[scala.Seq[EventProperty]]]");
+        String childRequireText = getChildFunction(
+                "java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[scala.Seq[EventProperty]]]"
+        );
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.scala",
+                childRequireText
+        );
 
-        assertFileContainsElements(files, "EventPropertyResolver.scala",
-                "def parent(eventProperty: EventProperty, withStatus: EventStatus, createdAfter: String): java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[Event]]");
+        String parentRequireText = getParentFunction(
+                "java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[Event]]"
+        );
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.scala",
+                parentRequireText
+        );
     }
 
     @Test
     void generate_ApiReturnType_And_ApiReturnListType_WithPlaceHolder() throws Exception {
-        mappingConfig.setApiReturnType("java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[{{TYPE}}]]");
-        mappingConfig.setApiReturnListType("reactor.core.publisher.Mono[graphql.execution.DataFetcherResult[{{TYPE}}]]");
+        mappingConfig.setApiReturnType(
+                "java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[{{TYPE}}]]"
+        );
+        mappingConfig.setApiReturnListType(
+                "reactor.core.publisher.Mono[graphql.execution.DataFetcherResult[{{TYPE}}]]"
+        );
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
 
-        assertFileContainsElements(files, "EventPropertyResolver.scala",
-                "def child(eventProperty: EventProperty, first: scala.Option[Int], last: scala.Option[Int]): reactor.core.publisher.Mono[graphql.execution.DataFetcherResult[EventProperty]]");
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.scala",
+                getChildFunction(
+                        "reactor.core.publisher.Mono[graphql.execution.DataFetcherResult[EventProperty]]"
+                )
+        );
 
-        assertFileContainsElements(files, "EventPropertyResolver.scala",
-                "def parent(eventProperty: EventProperty, withStatus: EventStatus, createdAfter: String): java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[Event]]");
+        assertFileContainsElements(
+                files,
+                "EventPropertyResolver.scala",
+                getParentFunction(
+                        "java.util.concurrent.CompletionStage[graphql.execution.DataFetcherResult[Event]]"
+                )
+        );
+    }
+
+    private String getChildFunction(String returnType) {
+        return "def child(eventProperty: EventProperty, first: scala.Option[Int], last: scala.Option[Int])" +
+                ": " + returnType;
+    }
+
+    private String getParentFunction(String returnType) {
+        return "def parent(eventProperty: EventProperty, withStatus: EventStatus, createdAfter: String)" +
+                ": " + returnType;
     }
 
     private void generate(String path) throws IOException {
