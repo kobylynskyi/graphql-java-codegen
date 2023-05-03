@@ -66,6 +66,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private Map<String, Properties> customAnnotationsMapping;
 
     @Parameter
+    private File customTemplatesRoot;
+
+    @Parameter
     private Map<String, String> customTemplates;
 
     @Parameter
@@ -249,6 +252,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setPackageName(packageName);
         mappingConfig.setCustomTypesMapping(convertToMap(customTypesMapping));
+        mappingConfig.setCustomTemplatesRoot(customTemplatesRoot);
         mappingConfig.setCustomTemplates(customTemplates);
         mappingConfig.setCustomAnnotationsMapping(convertToListsMap(customAnnotationsMapping));
         mappingConfig.setDirectiveAnnotationsMapping(convertToListsMap(directiveAnnotationsMapping));
@@ -739,6 +743,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
             result.put(name, properties.getProperty(name));
         }
         return result;
+    }   
+    
+    @Override
+    public File getCustomTemplatesRoot() {
+        return customTemplatesRoot == null ? project.getBasedir() : customTemplatesRoot;
     }
 
     @Override

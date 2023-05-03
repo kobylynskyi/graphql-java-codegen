@@ -43,6 +43,8 @@ trait GraphQLCodegenKeys {
 
   val customAnnotationsMapping = settingKey[util.Map[String, util.List[String]]]("customAnnotationsMapping")
 
+  val customTemplatesRoot = settingKey[File]("customTemplatesRoot")
+
   val customTemplates = settingKey[util.Map[String, String]]("customTemplates")
 
   val generateEqualsAndHashCode =
