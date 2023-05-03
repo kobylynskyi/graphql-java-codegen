@@ -11,6 +11,8 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -20,6 +22,7 @@ import static java.util.Arrays.asList;
 public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
     public static final String JAVA_UTIL_LIST = "java.util.List";
+    public static final Pattern JAVA_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("java\\.util\\.List<(.+)>");
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
@@ -66,7 +69,14 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         if (computedTypeName.startsWith(JAVA_UTIL_LIST) &&
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
-            return computedTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
+            if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                Matcher matcher = JAVA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
+                matcher.find();
+                String listElement = matcher.group(1);
+                return mappingContext.getApiReturnListType().replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+            } else {
+                return computedTypeName.replace(JAVA_UTIL_LIST, mappingContext.getApiReturnListType());
+            }
         }
         if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
             // in case it is query/mutation and apiReturnType is set

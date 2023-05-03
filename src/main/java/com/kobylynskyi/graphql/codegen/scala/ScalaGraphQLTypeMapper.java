@@ -9,6 +9,8 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.kobylynskyi.graphql.codegen.java.JavaGraphQLTypeMapper.JAVA_UTIL_LIST;
 import static java.util.Arrays.asList;
@@ -19,6 +21,7 @@ import static java.util.Arrays.asList;
 public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
 
     private static final String SCALA_UTIL_LIST = "scala.Seq";
+    private static final Pattern SCALA_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("scala\\.Seq\\[(.+)]");
     private static final String SCALA_UTIL_OPTIONAL = "scala.Option";
     private static final Set<String> SCALA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "Byte", "Short", "Int", "Long", "Float", "Double", "Char", "Boolean"));
@@ -73,7 +76,15 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
         if (computedTypeName.startsWith(SCALA_UTIL_LIST) &&
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
-            return computedTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
+            if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                System.out.println("computedTypeName = " + computedTypeName);
+                Matcher matcher = SCALA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
+                matcher.find();
+                String listElement = matcher.group(1);
+                return mappingContext.getApiReturnListType().replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+            } else {
+                return computedTypeName.replace(SCALA_UTIL_LIST, mappingContext.getApiReturnListType());
+            }
         }
         if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
             // in case it is query/mutation and apiReturnType is set
