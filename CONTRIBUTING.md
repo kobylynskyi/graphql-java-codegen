@@ -21,6 +21,7 @@ Please follow the steps below in order to make the changes:
 4. Open repository in your favourite IDE.
 5. Enable and configure CheckStyle plugin in your IDE (for IntelliJ it is CheckStyle-IDEA).
    Import [graphql-codegen-check-style.xml](config/checkstyle/graphql-codegen-check-style.xml) as a .
+   See CI for CheckStyle version.
 6. Make code changes to the core library of `graphql-java-codegen`.
 7. If changes are required in the plugin code, then **build** and **install** `graphql-java-codegen` first.
 
