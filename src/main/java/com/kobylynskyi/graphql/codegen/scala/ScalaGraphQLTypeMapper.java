@@ -77,7 +77,6 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
-                System.out.println("computedTypeName = " + computedTypeName);
                 Matcher matcher = SCALA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
                 matcher.find();
                 String listElement = matcher.group(1);
