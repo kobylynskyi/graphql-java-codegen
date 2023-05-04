@@ -97,12 +97,19 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                boolean isNullable = computedTypeName.endsWith(KOTLIN_UTIL_NULLABLE);
+
                 Matcher matcher = KOTLIN_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
                 matcher.find();
                 String listElement = matcher.group(1);
-                return mappingContext.getApiReturnListType().replace(
-                        MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER,
-                        listElement);
+                computedTypeName = mappingContext.getApiReturnListType()
+                        .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+
+                if (isNullable) {
+                    return computedTypeName + "?";
+                } else {
+                    return computedTypeName;
+                }
             } else {
                 return computedTypeName.replace(KOTLIN_UTIL_LIST, mappingContext.getApiReturnListType());
             }

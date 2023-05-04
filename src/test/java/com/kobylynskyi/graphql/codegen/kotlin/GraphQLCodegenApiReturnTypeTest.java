@@ -80,7 +80,7 @@ class GraphQLCodegenApiReturnTypeTest {
                 files,
                 "EventPropertyResolver.kt",
                 getChildFunction(
-                        "reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<EventProperty?>>"
+                        "reactor.core.publisher.Mono<graphql.execution.DataFetcherResult<EventProperty?>>?"
                 )
         );
 
