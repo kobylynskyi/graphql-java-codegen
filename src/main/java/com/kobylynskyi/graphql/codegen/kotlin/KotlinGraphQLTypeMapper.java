@@ -24,7 +24,7 @@ import static java.util.Arrays.asList;
 public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
 
     private static final String KOTLIN_UTIL_LIST = "List";
-    public static final Pattern KOTLIN_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("List<(.+?)>");
+    public static final Pattern KOTLIN_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("List<(.+)>");
     private static final String KOTLIN_UTIL_NULLABLE = "?";
     // Char Boolean are not primitive type, but non null equivalent jvm primitive types.
     private static final Set<String> KOTLIN_PRIMITIVE_TYPES = new HashSet<>(
