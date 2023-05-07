@@ -1,0 +1,65 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequestSerializer;
+import java.util.StringJoiner;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class Organization implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @javax.validation.constraints.NotNull
+    private String id;
+
+    public Organization() {
+    }
+
+    public Organization(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "{ ", " }");
+        if (id != null) {
+            joiner.add("id: " + GraphQLRequestSerializer.getEntry(id));
+        }
+        return joiner.toString();
+    }
+
+    public static Organization.Builder builder() {
+        return new Organization.Builder();
+    }
+
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
+    public static class Builder {
+
+        private String id;
+
+        public Builder() {
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public Organization build() {
+            return new Organization(id);
+        }
+
+    }
+}

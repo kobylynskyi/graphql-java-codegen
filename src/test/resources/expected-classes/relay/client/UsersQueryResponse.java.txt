@@ -1,0 +1,20 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
+import java.util.Map;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class UsersQueryResponse extends GraphQLResult<Map<String, graphql.relay.Connection<User>>> {
+
+    private static final String OPERATION_NAME = "users";
+
+    public UsersQueryResponse() {
+    }
+
+    public graphql.relay.Connection<User> users() {
+        Map<String, graphql.relay.Connection<User>> data = getData();
+        return data != null ? data.get(OPERATION_NAME) : null;
+    }
+
+}
