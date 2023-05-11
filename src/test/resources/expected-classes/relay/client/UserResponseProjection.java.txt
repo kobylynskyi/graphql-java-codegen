@@ -1,0 +1,73 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseField;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponseProjection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+
+/**
+ * Response projection for User
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class UserResponseProjection extends GraphQLResponseProjection {
+
+    private final Map<String, Integer> projectionDepthOnFields = new HashMap<>();
+
+    public UserResponseProjection() {
+    }
+
+    public UserResponseProjection(UserResponseProjection projection) {
+        super(projection);
+    }
+
+    public UserResponseProjection(List<UserResponseProjection> projections) {
+        super(projections);
+    }
+
+    public UserResponseProjection all$() {
+        return all$(3);
+    }
+
+    public UserResponseProjection all$(int maxDepth) {
+        this.id();
+        this.name();
+        this.typename();
+        return this;
+    }
+
+    public UserResponseProjection id() {
+        return id(null);
+    }
+
+    public UserResponseProjection id(String alias) {
+        add$(new GraphQLResponseField("id").alias(alias));
+        return this;
+    }
+
+    public UserResponseProjection name() {
+        return name(null);
+    }
+
+    public UserResponseProjection name(String alias) {
+        add$(new GraphQLResponseField("name").alias(alias));
+        return this;
+    }
+
+    public UserResponseProjection typename() {
+        return typename(null);
+    }
+
+    public UserResponseProjection typename(String alias) {
+        add$(new GraphQLResponseField("__typename").alias(alias));
+        return this;
+    }
+
+    @Override
+    public UserResponseProjection deepCopy$() {
+        return new UserResponseProjection(this);
+    }
+
+
+}

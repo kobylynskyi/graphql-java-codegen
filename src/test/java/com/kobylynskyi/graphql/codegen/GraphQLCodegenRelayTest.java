@@ -71,6 +71,26 @@ class GraphQLCodegenRelayTest {
 
     }
 
+    @Test
+    void generateClientSideRelayClasses() throws Exception {
+        mappingConfig.setGenerateClient(true);
+        mappingConfig.setGenerateApis(false);
+
+        generate();
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Set<String> generatedFileNames = Arrays.stream(files).map(File::getName).collect(toSet());
+        assertEquals(new HashSet<>(asList("Organization.java", "UserResponseProjection.java", "User.java",
+                "UsersQueryResponse.java", "OrganizationResponseProjection.java", "OrganizationsQueryResponse.java",
+                "UsersQueryRequest.java", "OrganizationsQueryRequest.java")), generatedFileNames);
+
+        for (File file : files) {
+            assertSameTrimmedContent(
+                    new File(String.format("src/test/resources/expected-classes/relay/client/%s.txt", file.getName())),
+                    file);
+        }
+    }
+
     private void generate() throws IOException {
         new JavaGraphQLCodegen(schemaFinder.findSchemas(), outputBuildDir, mappingConfig,
                 TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();

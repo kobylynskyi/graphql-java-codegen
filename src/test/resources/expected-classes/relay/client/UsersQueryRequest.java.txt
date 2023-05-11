@@ -1,0 +1,108 @@
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class UsersQueryRequest implements GraphQLOperationRequest {
+
+    public static final String OPERATION_NAME = "users";
+    public static final GraphQLOperation OPERATION_TYPE = GraphQLOperation.QUERY;
+
+    private String alias;
+    private final Map<String, Object> input = new LinkedHashMap<>();
+    private final Set<String> useObjectMapperForInputSerialization = new HashSet<>();
+
+    public UsersQueryRequest() {
+    }
+
+    public UsersQueryRequest(String alias) {
+        this.alias = alias;
+    }
+
+    public void setFirst(int first) {
+        this.input.put("first", first);
+    }
+
+    public void setAfter(String after) {
+        this.input.put("after", after);
+    }
+
+    @Override
+    public GraphQLOperation getOperationType() {
+        return OPERATION_TYPE;
+    }
+
+    @Override
+    public String getOperationName() {
+        return OPERATION_NAME;
+    }
+
+    @Override
+    public String getAlias() {
+        return alias != null ? alias : OPERATION_NAME;
+    }
+
+    @Override
+    public Map<String, Object> getInput() {
+        return input;
+    }
+
+    @Override
+    public Set<String> getUseObjectMapperForInputSerialization() {
+        return useObjectMapperForInputSerialization;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(input);
+    }
+
+    public static UsersQueryRequest.Builder builder() {
+        return new UsersQueryRequest.Builder();
+    }
+
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
+    public static class Builder {
+
+        private String $alias;
+        private int first;
+        private String after;
+
+        public Builder() {
+        }
+
+        public Builder alias(String alias) {
+            this.$alias = alias;
+            return this;
+        }
+
+        public Builder setFirst(int first) {
+            this.first = first;
+            return this;
+        }
+
+        public Builder setAfter(String after) {
+            this.after = after;
+            return this;
+        }
+
+
+        public UsersQueryRequest build() {
+            UsersQueryRequest obj = new UsersQueryRequest($alias);
+            obj.setFirst(first);
+            obj.setAfter(after);
+            return obj;
+        }
+
+    }
+}

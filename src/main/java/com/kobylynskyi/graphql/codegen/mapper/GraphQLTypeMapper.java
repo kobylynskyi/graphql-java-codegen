@@ -2,11 +2,15 @@ package com.kobylynskyi.graphql.codegen.mapper;
 
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
+import com.kobylynskyi.graphql.codegen.model.RelayConfig;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
 import graphql.language.ListType;
 import graphql.language.NamedNode;
 import graphql.language.NonNullType;
+import graphql.language.StringValue;
 import graphql.language.Type;
 import graphql.language.TypeName;
 
@@ -243,8 +247,25 @@ public abstract class GraphQLTypeMapper {
     }
 
     public String getResponseReturnType(MappingContext mappingContext,
+                                        ExtendedFieldDefinition operationDef,
                                         NamedDefinition namedDefinition,
                                         String computedTypeName) {
+        RelayConfig relayConfig = mappingContext.getRelayConfig();
+        if (relayConfig != null && relayConfig.getDirectiveName() != null) {
+            List<Directive> connectionDirective = operationDef.getDirectives(relayConfig.getDirectiveName());
+            if (!connectionDirective.isEmpty()) {
+                Argument argument = connectionDirective.get(0).getArgument(relayConfig.getDirectiveArgumentName());
+                // as of now supporting only string value of directive argument
+                if (argument != null && argument.getValue() instanceof StringValue) {
+                    String graphqlTypeName = ((StringValue) argument.getValue()).getValue();
+                    String javaTypeName = getLanguageType(mappingContext,
+                            new TypeName(graphqlTypeName),
+                            graphqlTypeName, null, false, false).getJavaName();
+                    return getGenericsString(mappingContext, relayConfig.getConnectionType(), javaTypeName);
+                }
+            }
+        }
+
         return computedTypeName;
     }
 

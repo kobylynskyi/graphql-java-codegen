@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
@@ -150,8 +151,8 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
     }
 
     @Override
-    public String getResponseReturnType(MappingContext mappingContext, NamedDefinition namedDefinition,
-                                        String computedTypeName) {
+    public String getResponseReturnType(MappingContext mappingContext, ExtendedFieldDefinition operationDef,
+                                        NamedDefinition namedDefinition, String computedTypeName) {
         // Delegate to getTypeConsideringPrimitive.
         // For kotlin such as XXXXXXResponse do not implement the mandatory function of graphql
         // correctly when returnType is not List.
