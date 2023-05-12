@@ -100,15 +100,18 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
                 boolean isNullable = computedTypeName.endsWith(KOTLIN_UTIL_NULLABLE);
 
                 Matcher matcher = KOTLIN_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
-                matcher.find();
-                String listElement = matcher.group(1);
-                computedTypeName = mappingContext.getApiReturnListType()
-                        .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+                if (matcher.find()) {
+                    String listElement = matcher.group(1);
+                    computedTypeName = mappingContext.getApiReturnListType()
+                            .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
 
-                if (isNullable) {
-                    return computedTypeName + "?";
+                    if (isNullable) {
+                        return computedTypeName + "?";
+                    } else {
+                        return computedTypeName;
+                    }
                 } else {
-                    return computedTypeName;
+                    throw new IllegalStateException();
                 }
             } else {
                 return computedTypeName.replace(KOTLIN_UTIL_LIST, mappingContext.getApiReturnListType());
