@@ -2,6 +2,7 @@ package com.kobylynskyi.graphql.codegen.kotlin;
 
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.GraphQLTypeMapper;
+import com.kobylynskyi.graphql.codegen.model.MappingConfigConstants;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
@@ -10,6 +11,8 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -22,6 +25,7 @@ import static java.util.Arrays.asList;
 public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
 
     private static final String KOTLIN_UTIL_LIST = "List";
+    public static final Pattern KOTLIN_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("List<(.+)>");
     private static final String KOTLIN_UTIL_NULLABLE = "?";
     // Char Boolean are not primitive type, but non null equivalent jvm primitive types.
     private static final Set<String> KOTLIN_PRIMITIVE_TYPES = new HashSet<>(
@@ -93,11 +97,35 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
         if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) &&
                 Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
-            return computedTypeName.replace(KOTLIN_UTIL_LIST, mappingContext.getApiReturnListType());
+            if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                boolean isNullable = computedTypeName.endsWith(KOTLIN_UTIL_NULLABLE);
+
+                Matcher matcher = KOTLIN_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
+                if (matcher.find()) {
+                    String listElement = matcher.group(1);
+                    computedTypeName = mappingContext.getApiReturnListType()
+                            .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, listElement);
+
+                    if (isNullable) {
+                        return computedTypeName + "?";
+                    } else {
+                        return computedTypeName;
+                    }
+                } else {
+                    throw new IllegalStateException();
+                }
+            } else {
+                return computedTypeName.replace(KOTLIN_UTIL_LIST, mappingContext.getApiReturnListType());
+            }
         }
         if (Utils.isNotBlank(mappingContext.getApiReturnType())) {
             // in case it is query/mutation and apiReturnType is set
-            return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
+            if (mappingContext.getApiReturnType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
+                return mappingContext.getApiReturnType()
+                        .replace(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER, computedTypeName);
+            } else {
+                return getGenericsString(mappingContext, mappingContext.getApiReturnType(), computedTypeName);
+            }
         }
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
