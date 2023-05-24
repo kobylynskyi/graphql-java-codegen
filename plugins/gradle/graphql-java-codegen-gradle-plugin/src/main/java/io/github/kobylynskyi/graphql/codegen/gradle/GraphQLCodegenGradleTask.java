@@ -19,6 +19,7 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Internal;
@@ -342,7 +343,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         this.customTypesMapping = customTypesMapping;
     }
 
-    @InputFile
+    @InputDirectory
     @Optional
     @Override
     public File getCustomTemplatesRoot() {
