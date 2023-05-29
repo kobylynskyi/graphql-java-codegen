@@ -27,7 +27,7 @@ dependencies {
     implementation "io.github.kobylynskyi:graphql-java-codegen:${version}"
 
     implementation "org.freemarker:freemarker:2.3.32"
-    implementation "com.graphql-java:graphql-java:20.2"
+    implementation "com.graphql-java:graphql-java:20.3"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.15.1"
     implementation "com.typesafe:config:1.4.2"
 
