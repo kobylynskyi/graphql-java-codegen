@@ -32,7 +32,7 @@ data class ${className}(
     <#if field.deprecated?has_content>
         @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
     </#if>
-    <#list field.annotations as annotation>@get:${annotation}
+    <#list field.annotations as annotation>@field:${annotation}
     </#list>val ${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field_has_next>,</#if>
 </#list>
 </#if>
