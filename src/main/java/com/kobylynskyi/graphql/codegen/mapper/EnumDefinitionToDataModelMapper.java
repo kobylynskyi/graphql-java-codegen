@@ -100,7 +100,8 @@ public class EnumDefinitionToDataModelMapper {
                         dataModelMapper.capitalizeIfRestricted(mappingContext, f.getName()),
                         f.getName(),
                         getJavaDoc(f),
-                        DeprecatedDefinitionBuilder.build(mappingContext, f)))
+                        DeprecatedDefinitionBuilder.build(mappingContext, f),
+                        f.getDirectives()))
                 .collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model;
 
+import graphql.language.Directive;
 import java.util.List;
 
 /**
@@ -13,13 +14,16 @@ public class EnumValueDefinition {
     private final String graphqlName;
     private final List<String> javaDoc;
     private final DeprecatedDefinition deprecated;
+    private final List<Directive> directives;
 
     public EnumValueDefinition(String javaName, String graphqlName, List<String> javaDoc,
-                               DeprecatedDefinition deprecated) {
+                               DeprecatedDefinition deprecated, 
+                               List<Directive> directives) {
         this.javaName = javaName;
         this.graphqlName = graphqlName;
         this.javaDoc = javaDoc;
         this.deprecated = deprecated;
+        this.directives = directives;
     }
 
     public String getJavaName() {
@@ -36,5 +40,9 @@ public class EnumValueDefinition {
 
     public DeprecatedDefinition getDeprecated() {
         return deprecated;
+    }
+
+    public List<Directive> getDirectives() {
+        return directives;
     }
 }
