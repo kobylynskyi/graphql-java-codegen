@@ -66,8 +66,8 @@ open class ${className}()<#if implements?has_content> : <#list implements as int
     @${field.deprecated.annotation}(message = "${field.deprecated.reason}")
     </#if><#-- Properties of multiple interfaces should not have duplicate names  -->
     <#if parentInterfaces?has_content><#list parentInterfaces as parent><#if parent == field.name>override
-    </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@get:${annotation}
-    </#list>var <#else><#list field.annotations as annotation>@get:${annotation}
+    </#if></#list></#if><#if !immutableModels><#list field.annotations as annotation>@field:${annotation}
+    </#list>var <#else><#list field.annotations as annotation>@field:${annotation}
     </#list>val </#if>${field.name}: ${field.type}<#if field.defaultValue?has_content> = ${field.defaultValue}<#elseif field.type?ends_with("?") && (initializeNullableTypes == true)> = null</#if><#if field_has_next>,</#if>
 </#list>
 </#if>
