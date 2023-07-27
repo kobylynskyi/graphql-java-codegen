@@ -4,7 +4,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin-example-client</artifactId>
-    <version>5.7.3-SNAPSHOT</version>
+    <version>5.8.1-SNAPSHOT</version>
     <name>graphql-codegen-maven-plugin-example-client</name>
 
     <build>
@@ -174,13 +174,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.28</version>
         </dependency>
 
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>5.3.0</version>
+            <version>5.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

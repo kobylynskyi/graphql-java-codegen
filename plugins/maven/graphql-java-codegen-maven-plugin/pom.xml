@@ -3,7 +3,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
-    <version>5.7.3-SNAPSHOT</version>
+    <version>5.8.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>graphql-codegen-maven-plugin</name>
@@ -36,7 +36,7 @@
         <developerConnection>scm:git:git@github.com:kobylynskyi/graphql-java-codegen.git
         </developerConnection>
         <url>https://github.com/kobylynskyi/graphql-java-codegen/tree/main/plugins/maven</url>
-        <tag>v5.7.2</tag>
+        <tag>v5.8.0</tag>
     </scm>
 
     <distributionManagement>
@@ -57,7 +57,7 @@
 
     <properties>
         <version.maven-plugin-api>3.9.3</version.maven-plugin-api>
-        <version.maven-core>3.9.2</version.maven-core>
+        <version.maven-core>3.9.3</version.maven-core>
         <version.maven-plugin-annotations>3.9.0</version.maven-plugin-annotations>
         <version.maven-plugin-plugin>3.9.0</version.maven-plugin-plugin>
         <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
@@ -66,13 +66,13 @@
         <version.maven-javadoc-plugin>3.5.0</version.maven-javadoc-plugin>
         <version.maven-deploy-plugin>3.1.1</version.maven-deploy-plugin>
         <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
-        <version.maven-release-plugin>3.0.0</version.maven-release-plugin>
+        <version.maven-release-plugin>3.0.1</version.maven-release-plugin>
         <version.maven-build-helper-plugin>3.4.0</version.maven-build-helper-plugin>
         <version.maven-scm-provider-gitexe>2.0.0</version.maven-scm-provider-gitexe>
         <version.maven-gpg-plugin>3.1.0</version.maven-gpg-plugin>
         <version.maven-shared-utils>3.4.2</version.maven-shared-utils>
 
-        <version.graphql-java-codegen>5.7.3-SNAPSHOT</version.graphql-java-codegen>
+        <version.graphql-java-codegen>5.8.1-SNAPSHOT</version.graphql-java-codegen>
     </properties>
 
     <dependencies>
