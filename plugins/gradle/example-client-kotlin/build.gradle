@@ -4,10 +4,10 @@ import io.github.kobylynskyi.graphql.codegen.gradle.GraphQLCodegenGradleTask
 plugins {
     id "java"
     id "org.jetbrains.kotlin.jvm" version "1.8.10"
-    id "io.github.kobylynskyi.graphql.codegen" version "5.7.3-SNAPSHOT"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.8.1-SNAPSHOT"
 }
 
-def graphqlCodegenClientKotlinVersion = '5.7.3-SNAPSHOT' // Variable used in the automatic release process
+def graphqlCodegenClientKotlinVersion = '5.8.1-SNAPSHOT' // Variable used in the automatic release process
 
 group = 'io.github.dreamylost'
 version = graphqlCodegenClientKotlinVersion
@@ -28,14 +28,14 @@ repositories {
 dependencies {
     // use the latest available version:
     // https://search.maven.org/artifact/io.github.kobylynskyi/graphql-java-codegen
-    implementation "io.github.kobylynskyi:graphql-java-codegen:5.7.3-SNAPSHOT"
+    implementation "io.github.kobylynskyi:graphql-java-codegen:5.8.1-SNAPSHOT"
 
     implementation "javax.validation:validation-api:2.0.1.Final"
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation "com.fasterxml.jackson.core:jackson-core:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.2"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.0"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.3"

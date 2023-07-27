@@ -9,7 +9,7 @@ plugins {
     id "org.sonarqube" version "4.0.0.2929"
 }
 
-def graphqlCodegenVersion = '5.7.3-SNAPSHOT' // This variable used in the automatic release process
+def graphqlCodegenVersion = '5.8.1-SNAPSHOT' // This variable used in the automatic release process
 
 group = "io.github.kobylynskyi"
 version = graphqlCodegenVersion
@@ -24,9 +24,9 @@ dependencies {
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.15.1"
     compileOnly "com.typesafe:config:1.4.2"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.9.3"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.3"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
     testImplementation "org.hamcrest:java-hamcrest:2.0.0.0"
 }
 
@@ -65,6 +65,7 @@ codeCoverageReport.dependsOn test
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
+javadoc.options.encoding = "UTF-8"
 
 java {
     withJavadocJar()
