@@ -1,0 +1,10 @@
+directive @NotNull(message : String, groups: ValidationGroup) on INPUT_FIELD_DEFINITION
+
+schema {
+    query: Query
+}
+
+input TrustAccountInput
+{
+  accountId: String! @NotNull(message: "test", groups: CAMS)
+}
