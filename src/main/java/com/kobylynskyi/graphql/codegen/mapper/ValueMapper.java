@@ -124,7 +124,7 @@ public class ValueMapper {
     private String mapEnum(MappingContext mappingContext, EnumValue value, Type<?> graphQLType) {
         if (graphQLType == null) {
             Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
-            if(customTypesMapping.containsKey(value.getName())) {
+            if (customTypesMapping.containsKey(value.getName())) {
                 return customTypesMapping.get(value.getName());
             }
 

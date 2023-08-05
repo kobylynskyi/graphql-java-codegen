@@ -121,7 +121,8 @@ class GraphQLCodegenAnnotationsTest {
 
     @Test
     void generate_CustomAnnotationMappings_With_Annotations() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("CAMS", "com.intuit.identity.manage.enum.CamsGroup::class")));
+        mappingConfig.setCustomTypesMapping(new HashMap<>(
+                singletonMap("CAMS", "com.intuit.identity.manage.enum.CamsGroup::class")));
         mappingConfig.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("NotNull",
                 singletonList("@javax.validation.constraints.NotNull(message = {{message}}, groups = {{groups}})"))));
 
@@ -129,7 +130,8 @@ class GraphQLCodegenAnnotationsTest {
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "TrustAccountInput.kt",
-                "@field:javax.validation.constraints.NotNull(message = \"test\", groups = com.intuit.identity.manage.enum.CamsGroup::class)");
+                "@field:javax.validation.constraints.NotNull(message = \"test\", " +
+                "groups = com.intuit.identity.manage.enum.CamsGroup::class)");
     }
     
     private void generate(String path) throws IOException {
