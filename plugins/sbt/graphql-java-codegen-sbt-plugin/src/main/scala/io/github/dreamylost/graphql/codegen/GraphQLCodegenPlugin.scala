@@ -108,8 +108,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     apiPackageName   := None,
     modelPackageName := None,
     // field resolvers configs:
-    fieldsWithResolvers    := new JHashSet[String](),
-    fieldsWithoutResolvers := new JHashSet[String](),
+    fieldsWithResolvers           := new JHashSet[String](),
+    fieldsWithoutResolvers        := new JHashSet[String](),
     fieldsToExcludeFromGeneration := new JHashSet[String](),
     // various toggles:
     generateClient                       := MappingConfigConstants.DEFAULT_GENERATE_CLIENT,
