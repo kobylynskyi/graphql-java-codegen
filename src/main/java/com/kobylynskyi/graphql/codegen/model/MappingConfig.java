@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,6 +62,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     // field resolvers configs:
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private Set<String> fieldsToExcludeFromGeneration = new HashSet<>();
 
     // parent interfaces configs:
     private String queryResolverParentInterface;
@@ -191,6 +190,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getParametrizedInputSuffix);
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
+        fieldsToExcludeFromGeneration = combineSet(fieldsToExcludeFromGeneration, source.fieldsToExcludeFromGeneration);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
         customTemplates = combineMap(customTemplates, source.customTemplates);
         customAnnotationsMapping = combineMap(customAnnotationsMapping, source.customAnnotationsMapping);
@@ -587,6 +587,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Override
+    public Set<String> getFieldsToExcludeFromGeneration() {
+        return fieldsToExcludeFromGeneration;
+    }
+
+    public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
+        this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
     }
 
     @Override

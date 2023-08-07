@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
@@ -263,6 +262,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return config.getFieldsWithoutResolvers();
+    }
+
+    @Override
+    public Set<String> getFieldsToExcludeFromGeneration() {
+        return config.getFieldsToExcludeFromGeneration();
     }
 
     @Override

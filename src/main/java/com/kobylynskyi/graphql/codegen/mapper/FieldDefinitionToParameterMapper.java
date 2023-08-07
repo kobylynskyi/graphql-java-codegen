@@ -11,6 +11,7 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -32,6 +33,22 @@ public class FieldDefinitionToParameterMapper {
         this.dataModelMapper = mapperFactory.getDataModelMapper();
         this.annotationsMapper = mapperFactory.getAnnotationsMapper();
         this.inputValueDefinitionToParameterMapper = inputValueDefToParamMapper;
+    }
+
+    /**
+     * Check whether the given field should be generated.
+     *
+     * @param mappingContext   Global mapping context
+     * @param fieldDef         GraphQL field definition
+     * @param parentDefinition Parent GraphQL definition
+     * @return <code>true</code> if field will be generated (included) in the object. <code>false</code> otherwise
+     */
+    public static boolean generateField(MappingContext mappingContext,
+                                        ExtendedFieldDefinition fieldDef,
+                                        ExtendedDefinition<?, ?> parentDefinition) {
+        String fieldDefName = parentDefinition.getName() + "." + fieldDef.getName();
+        Set<String> fieldsToExcludeFromGeneration = mappingContext.getFieldsToExcludeFromGeneration();
+        return !fieldsToExcludeFromGeneration.contains(fieldDefName);
     }
 
     /**
@@ -95,6 +112,7 @@ public class FieldDefinitionToParameterMapper {
                                                List<ExtendedFieldDefinition> fieldDefinitions,
                                                ExtendedDefinition<?, ?> parentDefinition) {
         return fieldDefinitions.stream()
+                .filter(fieldDef -> generateField(mappingContext, fieldDef, parentDefinition))
                 .filter(fieldDef -> !generateResolversForField(mappingContext, fieldDef, parentDefinition))
                 .map(fieldDef -> mapField(mappingContext, fieldDef, parentDefinition))
                 .collect(toList());

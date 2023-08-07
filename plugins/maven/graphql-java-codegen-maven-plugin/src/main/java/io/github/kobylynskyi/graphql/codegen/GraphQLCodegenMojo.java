@@ -177,6 +177,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     private String[] fieldsWithoutResolvers;
 
     @Parameter
+    private String[] fieldsToExcludeFromGeneration;
+
+    @Parameter
     private RelayConfig relayConfig = new RelayConfig();
 
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_CLIENT_STRING)
@@ -289,6 +292,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateModelsWithPublicFields(generateModelsWithPublicFields);
         mappingConfig.setFieldsWithResolvers(mapToHashSet(fieldsWithResolvers));
         mappingConfig.setFieldsWithoutResolvers(mapToHashSet(fieldsWithoutResolvers));
+        mappingConfig.setFieldsToExcludeFromGeneration(mapToHashSet(fieldsToExcludeFromGeneration));
         mappingConfig.setRelayConfig(relayConfig);
 
         mappingConfig.setGenerateClient(generateClient);
@@ -584,6 +588,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Set<String> getFieldsWithoutResolvers() {
         return mapToHashSet(fieldsWithoutResolvers);
+    }
+
+    @Override
+    public Set<String> getFieldsToExcludeFromGeneration() {
+        return mapToHashSet(fieldsToExcludeFromGeneration);
     }
 
     @Override

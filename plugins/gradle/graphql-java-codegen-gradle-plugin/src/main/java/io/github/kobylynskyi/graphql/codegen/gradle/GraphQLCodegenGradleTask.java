@@ -94,6 +94,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String generatedAnnotation;
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
+    private Set<String> fieldsToExcludeFromGeneration = new HashSet<>();
     private Set<String> typesAsInterfaces = new HashSet<>();
     private Set<String> resolverArgumentAnnotations = new HashSet<>();
     private Set<String> parametrizedResolverAnnotations = new HashSet<>();
@@ -182,6 +183,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithResolvers != null ? fieldsWithResolvers : new HashSet<>());
         mappingConfig.setFieldsWithoutResolvers(
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
+        mappingConfig.setFieldsToExcludeFromGeneration(
+                fieldsToExcludeFromGeneration != null ? fieldsToExcludeFromGeneration : new HashSet<>());
         mappingConfig.setTypesAsInterfaces(
                 typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
         mappingConfig.setResolverArgumentAnnotations(
@@ -760,6 +763,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setFieldsWithoutResolvers(Set<String> fieldsWithoutResolvers) {
         this.fieldsWithoutResolvers = fieldsWithoutResolvers;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getFieldsToExcludeFromGeneration() {
+        return fieldsToExcludeFromGeneration;
+    }
+
+    public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
+        this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
     }
 
     @Input
