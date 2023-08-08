@@ -6,7 +6,7 @@ plugins {
     id "java-library"
     id "signing"
     id "maven-publish"
-    id "org.sonarqube" version "4.3.0.3225"
+    id "org.sonarqube" version "4.0.0.2929"
 }
 
 def graphqlCodegenVersion = '5.8.1-SNAPSHOT' // This variable used in the automatic release process
@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     compileOnly "org.freemarker:freemarker:2.3.32"
-    compileOnly "com.graphql-java:graphql-java:21.0"
+    compileOnly "com.graphql-java:graphql-java:20.2"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.15.2"
     compileOnly "com.typesafe:config:1.4.2"
 
