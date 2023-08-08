@@ -17,6 +17,7 @@ import graphql.language.Value;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -122,6 +123,11 @@ public class ValueMapper {
 
     private String mapEnum(MappingContext mappingContext, EnumValue value, Type<?> graphQLType) {
         if (graphQLType == null) {
+            Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
+            if (customTypesMapping.containsKey(value.getName())) {
+                return customTypesMapping.get(value.getName());
+            }
+
             return value.getName();
         }
         if (graphQLType instanceof TypeName) {
