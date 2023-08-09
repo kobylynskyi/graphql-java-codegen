@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MaxQueryTokensExtension.class)
 class GraphQLCodegenFieldsResolversTest {
@@ -138,6 +140,24 @@ class GraphQLCodegenFieldsResolversTest {
                 getFileByName(files, "EventPropertyResolver.java"));
         assertSameTrimmedContent(new File("src/test/resources/expected-classes/resolvers/EventProperty.java.txt"),
                 getFileByName(files, "EventProperty.java"));
+    }
+
+    @Test
+    void generate_WithFieldsToExcludeFromGeneration() throws Exception {
+        mappingConfig.setModelNamePrefix("Github");
+        mappingConfig.setModelNameSuffix("TO");
+        mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
+        mappingConfig.setFieldsToExcludeFromGeneration(Collections.singleton("AcceptTopicSuggestionPayload.topic"));
+
+        generate("src/test/resources/schemas/github.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+        assertSameTrimmedContent(new File("src/test/resources/expected-classes/" +
+                        "GithubAcceptTopicSuggestionPayloadTO.java.txt"),
+                getFileByName(files, "GithubAcceptTopicSuggestionPayloadTO.java"));
+        assertThrows(FileNotFoundException.class,
+                () -> getFileByName(files, "AcceptTopicSuggestionPayloadResolver.java"));
     }
 
     private void generate(String o) throws IOException {

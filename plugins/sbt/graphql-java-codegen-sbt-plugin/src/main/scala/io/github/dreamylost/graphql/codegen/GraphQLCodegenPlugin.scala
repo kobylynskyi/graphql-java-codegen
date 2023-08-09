@@ -108,8 +108,9 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     apiPackageName   := None,
     modelPackageName := None,
     // field resolvers configs:
-    fieldsWithResolvers    := new JHashSet[String](),
-    fieldsWithoutResolvers := new JHashSet[String](),
+    fieldsWithResolvers           := new JHashSet[String](),
+    fieldsWithoutResolvers        := new JHashSet[String](),
+    fieldsToExcludeFromGeneration := new JHashSet[String](),
     // various toggles:
     generateClient                       := MappingConfigConstants.DEFAULT_GENERATE_CLIENT,
     generateParameterizedFieldsResolvers := MappingConfigConstants.DEFAULT_GENERATE_PARAMETERIZED_FIELDS_RESOLVERS,
@@ -167,6 +168,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     mappingConfig.setGenerateModelsForRootTypes((GraphQLCodegenConfig / generateModelsForRootTypes).value)
     mappingConfig.setFieldsWithResolvers((GraphQLCodegenConfig / fieldsWithResolvers).value)
     mappingConfig.setFieldsWithoutResolvers((GraphQLCodegenConfig / fieldsWithoutResolvers).value)
+    mappingConfig.setFieldsToExcludeFromGeneration((GraphQLCodegenConfig / fieldsToExcludeFromGeneration).value)
     mappingConfig.setTypesAsInterfaces((GraphQLCodegenConfig / typesAsInterfaces).value)
     mappingConfig.setGenerateClient((GraphQLCodegenConfig / generateClient).value)
     mappingConfig.setRequestSuffix((GraphQLCodegenConfig / requestSuffix).value)

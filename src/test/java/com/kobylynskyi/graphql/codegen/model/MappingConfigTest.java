@@ -51,6 +51,7 @@ class MappingConfigTest {
         config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.SINGLE_INTERFACE);
         config.setFieldsWithResolvers(new HashSet<>(singletonList("5")));
         config.setFieldsWithoutResolvers(new HashSet<>(singleton("8")));
+        config.setFieldsToExcludeFromGeneration(new HashSet<>(singleton("3")));
         config.setRequestSuffix("6");
         config.setResponseSuffix("10");
         config.setResponseProjectionSuffix("7");
@@ -98,6 +99,7 @@ class MappingConfigTest {
         config.setApiRootInterfaceStrategy(ApiRootInterfaceStrategy.DO_NOT_GENERATE);
         config.setFieldsWithResolvers(singleton("55"));
         config.setFieldsWithoutResolvers(singleton("88"));
+        config.setFieldsToExcludeFromGeneration(singleton("33"));
         config.setRequestSuffix("66");
         config.setResponseSuffix("1010");
         config.setResponseProjectionSuffix("77");
@@ -125,6 +127,7 @@ class MappingConfigTest {
         mappingConfig.setDirectiveAnnotationsMapping(null);
         mappingConfig.setFieldsWithResolvers(null);
         mappingConfig.setFieldsWithoutResolvers(null);
+        mappingConfig.setFieldsToExcludeFromGeneration(null);
         mappingConfig.setRelayConfig(null);
         return mappingConfig;
     }
@@ -156,6 +159,8 @@ class MappingConfigTest {
                 mappingConfig.getGenerateExtensionFieldsResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithResolvers(), mappingConfig.getFieldsWithResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithoutResolvers(), mappingConfig.getFieldsWithoutResolvers());
+        assertEquals(expectedMappingConfig.getFieldsToExcludeFromGeneration(),
+                mappingConfig.getFieldsToExcludeFromGeneration());
         assertEquals(expectedMappingConfig.getRequestSuffix(), mappingConfig.getRequestSuffix());
         assertEquals(expectedMappingConfig.getResponseSuffix(), mappingConfig.getResponseSuffix());
         assertEquals(expectedMappingConfig.getResponseProjectionSuffix(), mappingConfig.getResponseProjectionSuffix());
@@ -222,6 +227,7 @@ class MappingConfigTest {
         assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
+        assertEquals(singleton("3"), mappingConfig.getFieldsToExcludeFromGeneration());
         assertEquals("6", mappingConfig.getRequestSuffix());
         assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
@@ -268,6 +274,7 @@ class MappingConfigTest {
         assertEquals(ApiRootInterfaceStrategy.SINGLE_INTERFACE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(singleton("5"), mappingConfig.getFieldsWithResolvers());
         assertEquals(singleton("8"), mappingConfig.getFieldsWithoutResolvers());
+        assertEquals(singleton("3"), mappingConfig.getFieldsToExcludeFromGeneration());
         assertEquals("6", mappingConfig.getRequestSuffix());
         assertEquals("10", mappingConfig.getResponseSuffix());
         assertEquals("7", mappingConfig.getResponseProjectionSuffix());
@@ -320,6 +327,7 @@ class MappingConfigTest {
         assertEquals(ApiRootInterfaceStrategy.DO_NOT_GENERATE, mappingConfig.getApiRootInterfaceStrategy());
         assertEquals(new HashSet<>(Arrays.asList("5", "55")), mappingConfig.getFieldsWithResolvers());
         assertEquals(new HashSet<>(Arrays.asList("8", "88")), mappingConfig.getFieldsWithoutResolvers());
+        assertEquals(new HashSet<>(Arrays.asList("3", "33")), mappingConfig.getFieldsToExcludeFromGeneration());
         assertEquals("66", mappingConfig.getRequestSuffix());
         assertEquals("1010", mappingConfig.getResponseSuffix());
         assertEquals("77", mappingConfig.getResponseProjectionSuffix());

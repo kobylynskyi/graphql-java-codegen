@@ -84,6 +84,8 @@ trait GraphQLCodegenKeys {
 
   val fieldsWithoutResolvers = settingKey[util.Set[String]]("fieldsWithoutResolvers")
 
+  val fieldsToExcludeFromGeneration = settingKey[util.Set[String]]("fieldsToExcludeFromGeneration")
+
   val typesAsInterfaces = settingKey[util.Set[String]]("typesAsInterfaces")
 
   val generateClient = settingKey[Boolean]("generateClient")

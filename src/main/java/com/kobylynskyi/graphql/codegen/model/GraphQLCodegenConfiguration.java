@@ -1,7 +1,5 @@
 package com.kobylynskyi.graphql.codegen.model;
 
-import com.kobylynskyi.graphql.codegen.generators.FreeMarkerTemplateType;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -329,6 +327,20 @@ public interface GraphQLCodegenConfiguration {
      * @return Set of types and fields that should NOT have Resolver interfaces.
      */
     Set<String> getFieldsWithoutResolvers();
+
+    /**
+     * Fields that WILL NOT be generated.
+     *
+     * <p>Values should be defined here in format: TypeName.fieldName
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code Person.friends}</li>
+     * </ul>
+     *
+     * @return Set of types and fields that should NOT be generated.
+     */
+    Set<String> getFieldsToExcludeFromGeneration();
 
     /**
      * Specifies whether return types of generated API interface should be wrapped into <code>java.util.Optional</code>
