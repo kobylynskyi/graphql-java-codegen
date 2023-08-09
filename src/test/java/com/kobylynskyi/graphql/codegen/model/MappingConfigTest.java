@@ -159,7 +159,8 @@ class MappingConfigTest {
                 mappingConfig.getGenerateExtensionFieldsResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithResolvers(), mappingConfig.getFieldsWithResolvers());
         assertEquals(expectedMappingConfig.getFieldsWithoutResolvers(), mappingConfig.getFieldsWithoutResolvers());
-        assertEquals(expectedMappingConfig.getFieldsToExcludeFromGeneration(), mappingConfig.getFieldsToExcludeFromGeneration());
+        assertEquals(expectedMappingConfig.getFieldsToExcludeFromGeneration(),
+                mappingConfig.getFieldsToExcludeFromGeneration());
         assertEquals(expectedMappingConfig.getRequestSuffix(), mappingConfig.getRequestSuffix());
         assertEquals(expectedMappingConfig.getResponseSuffix(), mappingConfig.getResponseSuffix());
         assertEquals(expectedMappingConfig.getResponseProjectionSuffix(), mappingConfig.getResponseProjectionSuffix());
