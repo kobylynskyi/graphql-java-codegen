@@ -221,7 +221,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         generateNoArgsConstructorOnly = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::isGenerateNoArgsConstructorOnly);
         generateModelsWithPublicFields = getValueOrDefaultToThis(source,
-                GraphQLCodegenConfiguration::isGenerateNoArgsConstructorOnly);
+                GraphQLCodegenConfiguration::isGenerateModelsWithPublicFields);
     }
 
     private <T> T getValueOrDefaultToThis(MappingConfig source, Function<MappingConfig, T> getValueFunction) {
