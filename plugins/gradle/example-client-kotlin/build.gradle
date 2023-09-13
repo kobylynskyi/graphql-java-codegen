@@ -3,7 +3,7 @@ import io.github.kobylynskyi.graphql.codegen.gradle.GraphQLCodegenGradleTask
 
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.9.0"
+    id "org.jetbrains.kotlin.jvm" version "1.9.10"
     id "io.github.kobylynskyi.graphql.codegen" version "5.8.1-SNAPSHOT"
 }
 
