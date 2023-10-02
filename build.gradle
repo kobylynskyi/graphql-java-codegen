@@ -6,7 +6,7 @@ plugins {
     id "java-library"
     id "signing"
     id "maven-publish"
-    id "org.sonarqube" version "4.0.0.2929"
+    id "org.sonarqube" version "4.4.0.3356"
 }
 
 def graphqlCodegenVersion = '5.8.1-SNAPSHOT' // This variable used in the automatic release process
