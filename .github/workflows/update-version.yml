@@ -11,7 +11,7 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update version of Maven plugin sub-project
         working-directory: plugins/maven/graphql-java-codegen-maven-plugin
