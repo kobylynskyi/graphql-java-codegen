@@ -42,6 +42,34 @@ class SearchResultItemResponseProjection() extends GraphQLResponseProjection() {
     def all$(): SearchResultItemResponseProjection = all$(3)
 
     def all$(maxDepth: Int): SearchResultItemResponseProjection = {
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.AppResponseProjection.onApp", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.AppResponseProjection.onApp", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.AppResponseProjection.onApp", 0) + 1)
+            this.onApp(new AppResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.AppResponseProjection.onApp", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.RepositoryResponseProjection.onRepository", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.RepositoryResponseProjection.onRepository", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.RepositoryResponseProjection.onRepository", 0) + 1)
+            this.onRepository(new RepositoryResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.RepositoryResponseProjection.onRepository", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.IssueResponseProjection.onIssue", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.IssueResponseProjection.onIssue", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.IssueResponseProjection.onIssue", 0) + 1)
+            this.onIssue(new IssueResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.IssueResponseProjection.onIssue", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.OrganizationResponseProjection.onOrganization", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.OrganizationResponseProjection.onOrganization", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.OrganizationResponseProjection.onOrganization", 0) + 1)
+            this.onOrganization(new OrganizationResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.OrganizationResponseProjection.onOrganization", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.UserResponseProjection.onUser", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.UserResponseProjection.onUser", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.UserResponseProjection.onUser", 0) + 1)
+            this.onUser(new UserResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.UserResponseProjection.onUser", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.MarketplaceListingResponseProjection.onMarketplaceListing", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.MarketplaceListingResponseProjection.onMarketplaceListing", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.MarketplaceListingResponseProjection.onMarketplaceListing", 0) + 1)
+            this.onMarketplaceListing(new MarketplaceListingResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.MarketplaceListingResponseProjection.onMarketplaceListing", 0)))
+        }
+        if (projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.PullRequestResponseProjection.onPullRequest", 0) <= maxDepth) {
+            projectionDepthOnFields.put("SearchResultItemResponseProjection.PullRequestResponseProjection.onPullRequest", projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.PullRequestResponseProjection.onPullRequest", 0) + 1)
+            this.onPullRequest(new PullRequestResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrElse("SearchResultItemResponseProjection.PullRequestResponseProjection.onPullRequest", 0)))
+        }
         this.typename()
         this
     }
