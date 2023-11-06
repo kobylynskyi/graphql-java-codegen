@@ -212,6 +212,7 @@ public class FieldDefinitionsToResolverDataModelMapper {
         operation.setJavaDoc(fieldDef.getJavaDoc());
         operation.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, fieldDef));
         operation.setThrowsException(mappingContext.getGenerateApisWithThrowsException());
+        operation.setSuspend(mappingContext.getGenerateApisWithSuspendFunctions());
         return operation;
     }
 

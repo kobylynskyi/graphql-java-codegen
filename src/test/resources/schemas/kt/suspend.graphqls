@@ -1,0 +1,7 @@
+type Query {
+    friends(num: Int!): [Friend!]!
+}
+
+type Friend {
+    name: String!
+}

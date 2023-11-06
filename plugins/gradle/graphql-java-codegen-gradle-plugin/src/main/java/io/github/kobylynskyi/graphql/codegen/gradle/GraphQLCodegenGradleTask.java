@@ -87,6 +87,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
+    private Boolean generateApisWithSuspendFunctions =
+            MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS;
     private Boolean generateJacksonTypeIdResolver = MappingConfigConstants.DEFAULT_GENERATE_JACKSON_TYPE_ID_RESOLVER;
     private Boolean addGeneratedAnnotation = MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION;
     private Boolean generateNoArgsConstructorOnly = MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY;
@@ -167,6 +169,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
+        mappingConfig.setGenerateApisWithSuspendFunctions(generateApisWithSuspendFunctions);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
         mappingConfig.setGenerateNoArgsConstructorOnly(generateNoArgsConstructorOnly);
         mappingConfig.setGenerateModelsWithPublicFields(generateModelsWithPublicFields);
@@ -686,6 +689,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setGenerateApisWithThrowsException(Boolean generateApisWithThrowsException) {
         this.generateApisWithThrowsException = generateApisWithThrowsException;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getGenerateApisWithSuspendFunctions() {
+        return generateApisWithSuspendFunctions;
+    }
+
+    public void setGenerateApisWithSuspendFunctions(Boolean generateApisWithSuspendFunctions) {
+        this.generateApisWithSuspendFunctions = generateApisWithSuspendFunctions;
     }
 
     @Input

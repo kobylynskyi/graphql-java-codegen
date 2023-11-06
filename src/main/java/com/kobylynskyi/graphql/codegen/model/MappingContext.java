@@ -235,6 +235,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getGenerateApisWithSuspendFunctions() {
+        return config.getGenerateApisWithSuspendFunctions();
+    }
+
+    @Override
     public Boolean getAddGeneratedAnnotation() {
         return config.getAddGeneratedAnnotation();
     }

@@ -53,6 +53,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateModelsForRootTypes;
     private Boolean useOptionalForNullableReturnTypes;
     private Boolean generateApisWithThrowsException;
+    private Boolean generateApisWithSuspendFunctions;
     private Boolean addGeneratedAnnotation;
     private Boolean generateJacksonTypeIdResolver;
     private Boolean supportUnknownFields;
@@ -168,6 +169,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
         generateApisWithThrowsException = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
+        generateApisWithSuspendFunctions = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getGenerateApisWithSuspendFunctions);
         addGeneratedAnnotation = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getAddGeneratedAnnotation);
         generateJacksonTypeIdResolver = getValueOrDefaultToThis(source,
@@ -524,6 +527,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setGenerateApisWithThrowsException(Boolean generateApisWithThrowsException) {
         this.generateApisWithThrowsException = generateApisWithThrowsException;
+    }
+
+    @Override
+    public Boolean getGenerateApisWithSuspendFunctions() {
+        return generateApisWithSuspendFunctions;
+    }
+
+    public void setGenerateApisWithSuspendFunctions(Boolean generateApisWithSuspendFunctions) {
+        this.generateApisWithSuspendFunctions = generateApisWithSuspendFunctions;
     }
 
     @Override

@@ -41,6 +41,9 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION = true;
     public static final String DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING = "true";
 
+    public static final boolean DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS = false;
+    public static final String DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS_STRING = "false";
+
     public static final boolean DEFAULT_ADD_GENERATED_ANNOTATION = true;
     public static final String DEFAULT_ADD_GENERATED_ANNOTATION_STRING = "true";
 
