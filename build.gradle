@@ -9,7 +9,7 @@ plugins {
     id "org.sonarqube" version "4.0.0.2929"
 }
 
-def graphqlCodegenVersion = '5.8.1-SNAPSHOT' // This variable used in the automatic release process
+def graphqlCodegenVersion = '5.8.0' // This variable used in the automatic release process
 
 group = "io.github.kobylynskyi"
 version = graphqlCodegenVersion
