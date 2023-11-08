@@ -16,6 +16,7 @@ import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import graphql.parser.ParserOptions;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -248,6 +249,12 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = "false")
     private boolean skip;
 
+    /**
+     * Maximum number of GraphQL grammar tokens to process.
+     */
+    @Parameter(defaultValue = "15000")
+    private int tokenLimit;
+
     @Override
     public void execute() throws MojoExecutionException {
         addCompileSourceRootIfConfigured();
@@ -338,6 +345,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get)
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
+
+        ParserOptions.setDefaultParserOptions(ParserOptions.newParserOptions().maxTokens(tokenLimit).build());
+
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath,
