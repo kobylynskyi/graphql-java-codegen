@@ -346,7 +346,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
 
-        ParserOptions.setDefaultParserOptions(ParserOptions.newParserOptions().maxTokens(tokenLimit).build());
+        ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
+            .maxTokens(tokenLimit)
+            .maxCharacters(tokenLimit)
+            .maxWhitespaceTokens(tokenLimit);
+        ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
 
         switch (language) {
             case JAVA:
