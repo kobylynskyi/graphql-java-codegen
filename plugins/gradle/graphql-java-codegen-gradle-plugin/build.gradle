@@ -29,7 +29,7 @@ dependencies {
     implementation "org.freemarker:freemarker:2.3.32"
     implementation "com.graphql-java:graphql-java:20.2"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.15.3"
-    implementation "com.typesafe:config:1.4.2"
+    implementation "com.typesafe:config:1.4.3"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
