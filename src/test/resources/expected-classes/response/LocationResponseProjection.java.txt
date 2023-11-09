@@ -35,6 +35,14 @@ public class LocationResponseProjection extends GraphQLResponseProjection {
     public LocationResponseProjection all$(int maxDepth) {
         this.id();
         this.locationType();
+        if (projectionDepthOnFields.getOrDefault("LocationResponseProjection.CustomerLocationResponseProjection.onCustomerLocation", 0) <= maxDepth) {
+            projectionDepthOnFields.put("LocationResponseProjection.CustomerLocationResponseProjection.onCustomerLocation", projectionDepthOnFields.getOrDefault("LocationResponseProjection.CustomerLocationResponseProjection.onCustomerLocation", 0) + 1);
+            this.onCustomerLocation(new CustomerLocationResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("LocationResponseProjection.CustomerLocationResponseProjection.onCustomerLocation", 0)));
+        }
+        if (projectionDepthOnFields.getOrDefault("LocationResponseProjection.DealerLocationResponseProjection.onDealerLocation", 0) <= maxDepth) {
+            projectionDepthOnFields.put("LocationResponseProjection.DealerLocationResponseProjection.onDealerLocation", projectionDepthOnFields.getOrDefault("LocationResponseProjection.DealerLocationResponseProjection.onDealerLocation", 0) + 1);
+            this.onDealerLocation(new DealerLocationResponseProjection().all$(maxDepth - projectionDepthOnFields.getOrDefault("LocationResponseProjection.DealerLocationResponseProjection.onDealerLocation", 0)));
+        }
         this.typename();
         return this;
     }

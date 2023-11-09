@@ -268,6 +268,13 @@ public interface GraphQLCodegenConfiguration {
     Boolean getGenerateApisWithThrowsException();
 
     /**
+     * Whether signatures of API interface methods should have <code>suspend</code> modifier.
+     *
+     * @return <b>true</b> if API interfaces methods signature should contain <code>suspend</code> modifier.
+     */
+    Boolean getGenerateApisWithSuspendFunctions();
+
+    /**
      * Specifies whether generated classes should be annotated with @Generated
      *
      * @return <b>true</b> if classes should be annotated with @Generated

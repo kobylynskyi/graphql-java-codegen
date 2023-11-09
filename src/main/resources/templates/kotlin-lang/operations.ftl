@@ -38,7 +38,7 @@ interface ${className}<#if implements?has_content> : <#list implements as interf
     <#if operation.throwsException>
     @Throws(Exception::class)
     </#if>
-    fun ${operation.name}(<#list operation.parameters as param><#list param.annotations as paramAnnotation>@${paramAnnotation}<#if param.annotations?has_content> </#if></#list>${param.name}: ${param.type}<#if param_has_next>, </#if></#list>): ${operation.type}
+    <#if operation.suspend>suspend </#if>fun ${operation.name}(<#list operation.parameters as param><#list param.annotations as paramAnnotation>@${paramAnnotation}<#if param.annotations?has_content> </#if></#list>${param.name}: ${param.type}<#if param_has_next>, </#if></#list>): ${operation.type}
 
 </#list>
 }
