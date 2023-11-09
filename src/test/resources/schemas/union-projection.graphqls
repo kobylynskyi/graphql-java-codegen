@@ -1,0 +1,21 @@
+schema {
+    query: Query
+}
+
+type Query {
+    vehicleById(vehicleId: ID!): UnionToResolve
+}
+
+interface ResultObject {
+    list: [UnionToResolve!]
+}
+
+type UnionMemberA {
+    someField: Int
+}
+
+type UnionMemberB {
+    someField: String
+}
+
+union UnionToResolve = UnionMemberA | UnionMemberB

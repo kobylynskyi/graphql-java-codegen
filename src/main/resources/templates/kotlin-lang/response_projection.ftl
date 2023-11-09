@@ -40,12 +40,10 @@ open class ${className} : GraphQLResponseProjection {
     fun `all$`(maxDepth: Int): ${className} {
     <#list fields as field>
         <#if field.type?has_content>
-            <#if field.methodName?substring(0, 2) != "on">
         if (projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) <= maxDepth) {
             projectionDepthOnFields["${className}.${field.type}.${field.methodName}"] = projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0) + 1
             this.${field.methodName}(${field.type}().`all$`(maxDepth - projectionDepthOnFields.getOrDefault("${className}.${field.type}.${field.methodName}", 0)))
         }
-        </#if>
     <#else>
         this.${field.methodName}()
         </#if>
