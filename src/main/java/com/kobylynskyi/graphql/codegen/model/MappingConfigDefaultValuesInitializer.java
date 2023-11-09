@@ -72,6 +72,10 @@ public class MappingConfigDefaultValuesInitializer {
             mappingConfig.setGenerateApisWithThrowsException(
                     MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION);
         }
+        if (mappingConfig.getGenerateApisWithSuspendFunctions() == null) {
+            mappingConfig.setGenerateApisWithSuspendFunctions(
+                    MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS);
+        }
         if (mappingConfig.getAddGeneratedAnnotation() == null) {
             mappingConfig.setAddGeneratedAnnotation(MappingConfigConstants.DEFAULT_ADD_GENERATED_ANNOTATION);
         }

@@ -26,6 +26,7 @@ public class OperationDefinition {
     private List<String> javaDoc = new ArrayList<>();
     private DeprecatedDefinition deprecated;
     private boolean throwsException;
+    private boolean suspend;
 
     public String getName() {
         return name;
@@ -89,5 +90,13 @@ public class OperationDefinition {
 
     public void setThrowsException(boolean throwsException) {
         this.throwsException = throwsException;
+    }
+
+    public boolean isSuspend() {
+        return suspend;
+    }
+
+    public void setSuspend(boolean suspend) {
+        this.suspend = suspend;
     }
 }
