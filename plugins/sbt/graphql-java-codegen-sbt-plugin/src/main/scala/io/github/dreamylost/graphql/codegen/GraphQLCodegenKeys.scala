@@ -178,5 +178,6 @@ trait GraphQLCodegenKeys {
 
   val supportUnknownFields      = settingKey[Boolean]("supportUnknownFields")
   val unknownFieldsPropertyName = settingKey[String]("unknownFieldsPropertyName")
+  val skipSchemaSizeLimit       = settingKey[Boolean]("Skip schema size limit checks.")
 
 }

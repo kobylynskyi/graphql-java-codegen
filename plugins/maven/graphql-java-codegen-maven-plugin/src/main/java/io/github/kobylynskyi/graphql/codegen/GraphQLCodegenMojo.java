@@ -249,11 +249,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = "false")
     private boolean skip;
 
-    /**
-     * Maximum number of GraphQL grammar tokens to process.
-     */
-    @Parameter(defaultValue = "15000")
-    private int tokenLimit;
+    @Parameter(defaultValue = "true")
+    private boolean skipSchemaSizeLimit;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -346,11 +343,14 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
 
-        ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
-            .maxTokens(tokenLimit)
-            .maxCharacters(tokenLimit)
-            .maxWhitespaceTokens(tokenLimit);
-        ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
+        if (skipSchemaSizeLimit) {
+            ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
+                .maxTokens(Integer.MAX_VALUE)
+                .maxCharacters(Integer.MAX_VALUE)
+                .maxWhitespaceTokens(Integer.MAX_VALUE)
+                .maxRuleDepth(Integer.MAX_VALUE);
+            ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
+        }
 
         switch (language) {
             case JAVA:

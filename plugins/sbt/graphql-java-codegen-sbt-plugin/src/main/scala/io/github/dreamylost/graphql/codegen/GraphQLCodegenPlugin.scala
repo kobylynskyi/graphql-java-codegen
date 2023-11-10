@@ -1,5 +1,6 @@
 package io.github.dreamylost.graphql.codegen
 
+import graphql.parser.ParserOptions
 import com.kobylynskyi.graphql.codegen.GraphQLCodegenValidate
 import com.kobylynskyi.graphql.codegen.java.JavaGraphQLCodegen
 import com.kobylynskyi.graphql.codegen.model._
@@ -131,7 +132,8 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     unknownFieldsPropertyName      := MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME,
     generateNoArgsConstructorOnly  := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
     generateModelsWithPublicFields := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
-    skip                           := false
+    skip                           := false,
+    skipSchemaSizeLimit            := true
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
@@ -247,6 +249,16 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
       graphqlCodegen := {
         sLog.value.info(s"Generating files: ${BuildInfo.toString}")
         val mappingConfigSupplier = buildJsonSupplier(configurationFiles.value)
+
+        if (skipSchemaSizeLimit.value) {
+          val parserOptionBuilder = ParserOptions
+            .newParserOptions()
+            .maxTokens(Integer.MAX_VALUE)
+            // .maxCharacters(Integer.MAX_VALUE)
+            .maxWhitespaceTokens(Integer.MAX_VALUE)
+            .maxRuleDepth(Integer.MAX_VALUE);
+          ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
+        }
         val language = mappingConfigSupplier.map(_.get()).map(_.getGeneratedLanguage).getOrElse(generatedLanguage.value)
         var result   = Seq.empty[File]
         try {
