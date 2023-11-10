@@ -249,7 +249,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = "false")
     private boolean skip;
 
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_SKIP_SCHEMA_SIZE_LIMIT_STRING)
     private boolean skipSchemaSizeLimit;
 
     @Override

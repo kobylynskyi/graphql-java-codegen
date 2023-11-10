@@ -122,7 +122,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String unknownFieldsPropertyName = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME;
 
     private Boolean skip = false;
-    private Boolean skipSchemaSizeLimit = true;
+    private Boolean skipSchemaSizeLimit = MappingConfigConstants.DEFAULT_SKIP_SCHEMA_SIZE_LIMIT;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");

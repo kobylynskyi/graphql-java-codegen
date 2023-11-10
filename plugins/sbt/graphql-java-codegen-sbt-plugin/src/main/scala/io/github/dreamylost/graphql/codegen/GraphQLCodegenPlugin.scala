@@ -133,7 +133,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     generateNoArgsConstructorOnly  := MappingConfigConstants.DEFAULT_GENERATE_NOARGS_CONSTRUCTOR_ONLY,
     generateModelsWithPublicFields := MappingConfigConstants.DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS,
     skip                           := false,
-    skipSchemaSizeLimit            := true
+    skipSchemaSizeLimit            := MappingConfigConstants.DEFAULT_SKIP_SCHEMA_SIZE_LIMIT
   )
 
   private def getMappingConfig(): Def.Initialize[MappingConfig] = Def.setting {
@@ -254,7 +254,7 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
           val parserOptionBuilder = ParserOptions
             .newParserOptions()
             .maxTokens(Integer.MAX_VALUE)
-            // .maxCharacters(Integer.MAX_VALUE)
+            .maxCharacters(Integer.MAX_VALUE)
             .maxWhitespaceTokens(Integer.MAX_VALUE)
             .maxRuleDepth(Integer.MAX_VALUE);
           ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
