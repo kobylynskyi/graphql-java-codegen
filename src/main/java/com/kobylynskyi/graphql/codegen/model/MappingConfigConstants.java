@@ -108,6 +108,9 @@ public class MappingConfigConstants {
     public static final boolean DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS = false;
     public static final String DEFAULT_GENERATE_MODELS_WITH_PUBLIC_FIELDS_STRING = "false";
 
+    public static final boolean DEFAULT_SKIP_SCHEMA_SIZE_LIMIT = true;
+    public static final String DEFAULT_SKIP_SCHEMA_SIZE_LIMIT_STRING = "true";
+
     private MappingConfigConstants() {
     }
 }

@@ -15,6 +15,7 @@ import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import graphql.parser.ParserOptions;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.plugins.JavaPluginExtension;
@@ -123,6 +124,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private String unknownFieldsPropertyName = MappingConfigConstants.DEFAULT_UNKNOWN_FIELDS_PROPERTY_NAME;
 
     private Boolean skip = false;
+    private Boolean skipSchemaSizeLimit = MappingConfigConstants.DEFAULT_SKIP_SCHEMA_SIZE_LIMIT;
 
     public GraphQLCodegenGradleTask() {
         setGroup("codegen");
@@ -231,6 +233,15 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get)
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
+
+        if (skipSchemaSizeLimit) {
+            ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
+                  .maxTokens(Integer.MAX_VALUE)
+                  .maxCharacters(Integer.MAX_VALUE)
+                  .maxWhitespaceTokens(Integer.MAX_VALUE)
+                  .maxRuleDepth(Integer.MAX_VALUE);
+            ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
+        }
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getActualSchemaPaths(), graphqlQueryIntrospectionResultPath,

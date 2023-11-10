@@ -16,6 +16,7 @@ import com.kobylynskyi.graphql.codegen.scala.ScalaGraphQLCodegen;
 import com.kobylynskyi.graphql.codegen.supplier.MappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.MergeableMappingConfigSupplier;
 import com.kobylynskyi.graphql.codegen.supplier.SchemaFinder;
+import graphql.parser.ParserOptions;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -251,6 +252,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = "false")
     private boolean skip;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_SKIP_SCHEMA_SIZE_LIMIT_STRING)
+    private boolean skipSchemaSizeLimit;
+
     @Override
     public void execute() throws MojoExecutionException {
         addCompileSourceRootIfConfigured();
@@ -342,6 +346,16 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         GeneratedLanguage language = mappingConfigSupplier.map(Supplier::get)
                 .map(MappingConfig::getGeneratedLanguage)
                 .orElse(generatedLanguage);
+
+        if (skipSchemaSizeLimit) {
+            ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
+                .maxTokens(Integer.MAX_VALUE)
+                .maxCharacters(Integer.MAX_VALUE)
+                .maxWhitespaceTokens(Integer.MAX_VALUE)
+                .maxRuleDepth(Integer.MAX_VALUE);
+            ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
+        }
+
         switch (language) {
             case JAVA:
                 return new JavaGraphQLCodegen(getSchemas(), graphqlQueryIntrospectionResultPath,
