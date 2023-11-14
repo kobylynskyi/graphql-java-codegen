@@ -463,7 +463,7 @@ class GraphQLCodegenTest {
     void generate_PublicFields_NoArgsConstructor_immutableModels() throws Exception {
         mappingConfig.setGenerateModelsWithPublicFields(true);
         mappingConfig.setGenerateNoArgsConstructorOnly(true);
-        mappingConfig.setGenerateImmutableModels(true);
+        mappingConfig.setGenerateImmutableModels(false);
         mappingConfig.setGenerateClient(true);
 
         generate("src/test/resources/schemas/test.graphqls");
@@ -483,7 +483,7 @@ class GraphQLCodegenTest {
     void generate_PublicFields_NoBuilder_NoArgsConstructor() throws Exception {
         mappingConfig.setGenerateModelsWithPublicFields(true);
         mappingConfig.setGenerateNoArgsConstructorOnly(true);
-        mappingConfig.setGenerateImmutableModels(true);
+        mappingConfig.setGenerateImmutableModels(false);
         mappingConfig.setGenerateBuilder(false);
 
         generate("src/test/resources/schemas/test.graphqls");

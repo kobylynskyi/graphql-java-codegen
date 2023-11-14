@@ -39,4 +39,20 @@ class GraphQLCodegenImmutableTest {
                 new File("src/test/resources/expected-classes/immutable/Event.java.txt"),
                 getFileByName(files, "Event.java"));
     }
+
+    @Test
+    void generate_noArgs_CheckFiles() throws Exception {
+      mappingConfig.setPackageName("com.kobylynskyi.graphql.immutable");
+      mappingConfig.setGenerateImmutableModels(true);
+      mappingConfig.setGenerateNoArgsConstructorOnly(true);
+
+      new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/test.graphqls"),
+        outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
+
+      File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+
+      assertSameTrimmedContent(
+        new File("src/test/resources/expected-classes/immutable/Event.java.txt"),
+        getFileByName(files, "Event.java"));
+    }
 }
