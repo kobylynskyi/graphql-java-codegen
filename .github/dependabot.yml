@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "main"
     reviewers:
       - "kobylynskyi"
@@ -11,7 +11,7 @@ updates:
   - package-ecosystem: "gradle"
     directory: "plugins/gradle/graphql-java-codegen-gradle-plugin/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "main"
     reviewers:
       - "kobylynskyi"
@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "maven"
     directory: "plugins/maven/graphql-java-codegen-maven-plugin/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "main"
     reviewers:
       - "kobylynskyi"
