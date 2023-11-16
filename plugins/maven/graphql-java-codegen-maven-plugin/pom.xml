@@ -3,7 +3,7 @@
 
     <groupId>io.github.kobylynskyi</groupId>
     <artifactId>graphql-codegen-maven-plugin</artifactId>
-    <version>5.9.0-SNAPSHOT</version>
+    <version>5.9.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>graphql-codegen-maven-plugin</name>
