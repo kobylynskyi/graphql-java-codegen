@@ -38,7 +38,7 @@ class GraphQLCodegenCustomScalarMappingTest {
 
     @Test
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
+        mappingConfig.setCustomTypesMapping(singletonMap("ZonedDateTime", "String"));
 
         generate("src/test/resources/schemas/date-scalar.graphqls");
 
@@ -74,7 +74,7 @@ class GraphQLCodegenCustomScalarMappingTest {
     @Test
     void generate_CustomTypeMapping_ForExtensionProperty() throws Exception {
         mappingConfig.setGenerateExtensionFieldsResolvers(true);
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("External", "com.example.External")));
+        mappingConfig.setCustomTypesMapping(singletonMap("External", "com.example.External"));
         mappingConfig.setGenerateClient(false);
 
         generate("src/test/resources/schemas/external-type-extend.graphqls");

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,7 +86,7 @@ class GraphQLCodegenDefaultsTest {
 
     @Test
     void generate_CheckFiles_OnLongDefault() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("Long", "java.lang.Long")));
+        mappingConfig.setCustomTypesMapping(singletonMap("Long", "java.lang.Long"));
         mappingConfig.setModelNameSuffix("DTO");
 
         generate("src/test/resources/schemas/defaults-with-Long.graphqls");

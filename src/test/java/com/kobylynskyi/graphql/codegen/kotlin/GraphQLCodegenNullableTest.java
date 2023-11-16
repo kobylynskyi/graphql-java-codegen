@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
@@ -117,7 +116,7 @@ class GraphQLCodegenNullableTest {
     void generate_NullableCustomTypeWithApiReturnType() throws Exception {
         mappingConfig.setGenerateApis(true);
         mappingConfig.setApiReturnType("reactor.core.publisher.Mono");
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
+        mappingConfig.setCustomTypesMapping(singletonMap("ZonedDateTime", "String"));
 
         schemaFinder.setIncludePattern("nullable-custom-type-with-api-return-type.graphqls");
 

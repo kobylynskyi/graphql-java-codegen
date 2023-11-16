@@ -20,8 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -90,38 +93,45 @@ public abstract class GraphQLCodegen {
 
         initDefaultValues(mappingConfig);
         validateConfigs(mappingConfig);
-        sanitizeValues(mappingConfig);
+        sanitize(mappingConfig);
     }
 
-    private static void sanitizeValues(MappingConfig mappingConfig) {
+    private static void sanitize(MappingConfig mappingConfig) {
         mappingConfig.setModelValidationAnnotation(
                 Utils.replaceLeadingAtSign(mappingConfig.getModelValidationAnnotation()));
+        mappingConfig.setResolverArgumentAnnotations(sanitizeSet(mappingConfig.getResolverArgumentAnnotations()));
+        mappingConfig.setParametrizedResolverAnnotations(
+                sanitizeSet(mappingConfig.getParametrizedResolverAnnotations()));
+        mappingConfig.setCustomAnnotationsMapping(sanitizeMap(mappingConfig.getCustomAnnotationsMapping()));
+        mappingConfig.setDirectiveAnnotationsMapping(sanitizeMap(mappingConfig.getDirectiveAnnotationsMapping()));
+        if (mappingConfig.getCustomTypesMapping() != null) {
+            mappingConfig.setCustomTypesMapping(new HashMap<>(mappingConfig.getCustomTypesMapping()));
+        }
+        if (mappingConfig.getCustomTemplates() != null) {
+            mappingConfig.setCustomTemplates(new HashMap<>(mappingConfig.getCustomTemplates()));
+        }
+    }
 
-        if (mappingConfig.getResolverArgumentAnnotations() != null) {
-            mappingConfig.setResolverArgumentAnnotations(mappingConfig.getResolverArgumentAnnotations().stream()
-                    .map(Utils::replaceLeadingAtSign).collect(Collectors.toSet()));
+    private static Set<String> sanitizeSet(Set<String> originalSet) {
+        if (originalSet == null) {
+            return new HashSet<>();
         }
-        if (mappingConfig.getParametrizedResolverAnnotations() != null) {
-            mappingConfig.setParametrizedResolverAnnotations(mappingConfig.getParametrizedResolverAnnotations().stream()
-                    .map(Utils::replaceLeadingAtSign).collect(Collectors.toSet()));
-        }
+        return originalSet.stream().map(Utils::replaceLeadingAtSign).collect(Collectors.toSet());
+    }
 
-        Map<String, List<String>> customAnnotationsMapping = mappingConfig.getCustomAnnotationsMapping();
-        if (customAnnotationsMapping != null) {
-            for (Map.Entry<String, List<String>> entry : customAnnotationsMapping.entrySet()) {
-                if (entry.getValue() != null) {
-                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
-                }
-            }
+    private static Map<String, List<String>> sanitizeMap(Map<String, List<String>> multiValueMap) {
+        if (multiValueMap == null) {
+            return new HashMap<>();
         }
-        Map<String, List<String>> directiveAnnotationsMapping = mappingConfig.getDirectiveAnnotationsMapping();
-        if (directiveAnnotationsMapping != null) {
-            for (Map.Entry<String, List<String>> entry : directiveAnnotationsMapping.entrySet()) {
-                if (entry.getValue() != null) {
-                    entry.setValue(entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList()));
-                }
+        Map<String, List<String>> sanitizedMultiValueMap = new HashMap<>(multiValueMap.size());
+        for (Map.Entry<String, List<String>> entry : multiValueMap.entrySet()) {
+            List<String> sanitizedValues = null;
+            if (entry.getValue() != null) {
+                sanitizedValues = entry.getValue().stream().map(Utils::replaceLeadingAtSign).collect(toList());
             }
+            sanitizedMultiValueMap.put(entry.getKey(), sanitizedValues);
         }
+        return sanitizedMultiValueMap;
     }
 
     protected void initDefaultValues(MappingConfig mappingConfig) {
