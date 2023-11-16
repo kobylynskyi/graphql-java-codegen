@@ -47,14 +47,13 @@ class GraphQLCodegenAnnotationsTest {
 
     @Test
     void generate_CustomAnnotationMappings() throws Exception {
-        mappingConfig
-                .setCustomTypesMapping(new HashMap<>(singletonMap("Event.createdDateTime", "org.joda.time.DateTime")));
-        mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Event.createdDateTime",
+        mappingConfig.setCustomTypesMapping(singletonMap("Event.createdDateTime", "org.joda.time.DateTime"));
+        mappingConfig.setCustomAnnotationsMapping(singletonMap("Event.createdDateTime",
                 singletonList(
                         "@com.fasterxml.jackson.databind" +
                                 ".annotation.JsonDeserialize(using =" +
                                 " classOf[com.example.json" +
-                                ".DateTimeScalarDeserializer])"))));
+                                ".DateTimeScalarDeserializer])")));
 
         generate("src/test/resources/schemas/test.graphqls");
 

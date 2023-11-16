@@ -42,7 +42,7 @@ class GraphQLCodegenCustomScalarMappingTest {
 
     @Test
     void generate_CustomTypeMapping_WholeScalar() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("ZonedDateTime", "String")));
+        mappingConfig.setCustomTypesMapping(singletonMap("ZonedDateTime", "String"));
 
         generate("src/test/resources/schemas/date-scalar.graphqls");
 

@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -93,7 +92,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_CustomMappings() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(singletonMap("DateTime", "java.util.Date")));
+        mappingConfig.setCustomTypesMapping(singletonMap("DateTime", "java.util.Date"));
 
         generate("src/test/resources/schemas/test.graphqls");
 
@@ -103,8 +102,7 @@ class GraphQLCodegenTest {
 
     @Test
     void generate_CustomMappings_Nested() throws Exception {
-        mappingConfig
-                .setCustomTypesMapping(new HashMap<>(singletonMap("EventProperty.intVal", "java.math.BigInteger")));
+        mappingConfig.setCustomTypesMapping(singletonMap("EventProperty.intVal", "java.math.BigInteger"));
 
         generate("src/test/resources/schemas/test.graphqls");
 

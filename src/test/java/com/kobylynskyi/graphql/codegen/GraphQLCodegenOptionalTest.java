@@ -12,13 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Objects;
 
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertFileContainsElements;
 import static com.kobylynskyi.graphql.codegen.TestUtils.assertSameTrimmedContent;
 import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
+import static java.util.Collections.singletonMap;
 
 @ExtendWith(MaxQueryTokensExtension.class)
 class GraphQLCodegenOptionalTest {
@@ -106,7 +105,7 @@ class GraphQLCodegenOptionalTest {
      */
     @Test
     void generate_ObjectsInsteadOfPrimitives() throws Exception {
-        mappingConfig.setCustomTypesMapping(new HashMap<>(Collections.singletonMap("Int!", "Integer")));
+        mappingConfig.setCustomTypesMapping(singletonMap("Int!", "Integer"));
         schemaFinder.setIncludePattern("optional-vs-mandatory-types.graphqls");
 
         generate();

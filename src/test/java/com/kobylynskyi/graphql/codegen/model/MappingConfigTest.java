@@ -26,9 +26,9 @@ class MappingConfigTest {
 
     private static MappingConfig buildMappingConfig() {
         MappingConfig config = new MappingConfig();
-        config.setCustomTypesMapping(new HashMap<>(singletonMap("1", "2")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("3", singletonList("4"))));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("5", singletonList("6"))));
+        config.setCustomTypesMapping(singletonMap("1", "2"));
+        config.setCustomAnnotationsMapping(singletonMap("3", singletonList("4")));
+        config.setDirectiveAnnotationsMapping(singletonMap("5", singletonList("6")));
         config.setApiPackageName("ApiPackageName");
         config.setGenerateBuilder(true);
         config.setGenerateApis(true);
@@ -74,9 +74,9 @@ class MappingConfigTest {
 
     private static MappingConfig buildMappingConfig2() {
         MappingConfig config = new MappingConfig();
-        config.setCustomTypesMapping(new HashMap<>(singletonMap("11", "22")));
-        config.setCustomAnnotationsMapping(new HashMap<>(singletonMap("33", singletonList("44"))));
-        config.setDirectiveAnnotationsMapping(new HashMap<>(singletonMap("55", singletonList("66"))));
+        config.setCustomTypesMapping(singletonMap("11", "22"));
+        config.setCustomAnnotationsMapping(singletonMap("33", singletonList("44")));
+        config.setDirectiveAnnotationsMapping(singletonMap("55", singletonList("66")));
         config.setApiPackageName("ApiPackageName2");
         config.setGenerateBuilder(false);
         config.setGenerateApis(false);
