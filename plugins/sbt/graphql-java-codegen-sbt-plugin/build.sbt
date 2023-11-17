@@ -43,8 +43,8 @@ inThisBuild(
     name                   := "graphql-codegen-sbt-plugin",
     organization           := "io.github.jxnu-liguobin",
     sonatypeCredentialHost := "oss.sonatype.org",
-    sonatypeRepository     := "https://s01.oss.sonatype.org/service/local",
-    homepage               := Some(url("https://github.com/bitlap/validation-scala")),
+    sonatypeRepository     := "https://oss.sonatype.org/service/local",
+    homepage               := Some(url("https://github.com/kobylynskyi/graphql-java-codegen")),
     licenses               := Seq("MIT" -> url("https://opensource.org/licenses/MIT")),
     developers := List(
       Developer(
