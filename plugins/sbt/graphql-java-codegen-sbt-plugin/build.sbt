@@ -1,7 +1,7 @@
 import sbt.url
-import sbtrelease.ReleaseStateTransformations.*
 
-val javaValidationVersion = settingKey[String]("default Java Validation API").withRank(KeyRanks.Invisible)
+val javaValidationVersion = settingKey[String]("default Java Validation API")
+  .withRank(KeyRanks.Invisible)
 javaValidationVersion := "2.0.1.Final"
 
 // keep version is equals with parent project `graphql-java-codegen`.
@@ -14,19 +14,6 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
     commands ++= Commands.value,
     scriptedLaunchOpts += s"-Dplugin.version=${version.value}",
     scalacOptions += "-target:jvm-1.8",
-    releaseIgnoreUntrackedFiles := true,
-    releaseProcess := Seq[ReleaseStep](
-      checkSnapshotDependencies,
-      inquireVersions,
-      runClean,
-      setReleaseVersion,
-      commitReleaseVersion,
-      tagRelease,
-      releaseStepCommandAndRemaining("^ publishSigned"),
-      setNextVersion,
-      commitNextVersion,
-      pushChanges
-    ),
     libraryDependencies ++= Seq(
       "io.github.kobylynskyi"      % "graphql-java-codegen" % (ThisBuild / version).value,
       "org.freemarker"             % "freemarker"           % "2.3.31",
