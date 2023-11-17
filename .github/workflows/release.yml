@@ -203,7 +203,6 @@ jobs:
           SONATYPE_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Release SBT plugin
-        uses: olafurpg/setup-scala@v10
         if: github.event.inputs.publish_sbt_plugin == 'Y'
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt ci-release
