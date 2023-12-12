@@ -116,6 +116,12 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         } else {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
+
+        var fieldsWithWithDataFetcherResult = mappingContext.getFieldsWithDataFetcherResult();
+        if (fieldsWithWithDataFetcherResult.contains(name)) {
+            langTypeName = wrapWithDataFetcherResult(langTypeName);
+        }
+
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
                 (name != null && parentTypeName != null &&
                         serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
@@ -126,4 +132,7 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
+    private String wrapWithDataFetcherResult(String typeName) {
+        return "graphql.execution.DataFetcherResult<" + typeName + ">";
+    }
 }
