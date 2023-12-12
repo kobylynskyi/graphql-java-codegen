@@ -15,11 +15,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kobylynskyi.graphql.codegen.TestUtils.getFileByName;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GraphQLCodegenFieldsWithDataFetcherResultTest {
 
@@ -50,6 +52,12 @@ class GraphQLCodegenFieldsWithDataFetcherResultTest {
 
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(asList("Cart.java", "Order.java", "QueryResolver.java", "User.java", "UserCurrentQueryResolver.java"), generatedFileNames);
+
+        File user = getFileByName(files, "User.java");
+        String userContext = Utils.getFileContent(user.getPath()).trim();
+
+        assertTrue(userContext.contains("java.util.List<graphql.execution.DataFetcherResult<Order>>"));
+        assertTrue(userContext.contains("graphql.execution.DataFetcherResult<Cart>"));
     }
 
     private void generate(String o) throws IOException {
@@ -57,5 +65,4 @@ class GraphQLCodegenFieldsWithDataFetcherResultTest {
                 TestUtils.getStaticGeneratedInfo(mappingConfig))
                 .generate();
     }
-
 }
