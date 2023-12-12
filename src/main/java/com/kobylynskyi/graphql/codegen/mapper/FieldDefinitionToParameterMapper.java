@@ -146,7 +146,7 @@ public class FieldDefinitionToParameterMapper {
                                          ExtendedFieldDefinition fieldDef,
                                          ExtendedDefinition<?, ?> parentDefinition) {
         NamedDefinition namedDefinition = graphQLTypeMapper
-                .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentDefinition.getName());
+                .getLanguageType(mappingContext, fieldDef.getType(), fieldDef.getName(), parentDefinition.getName(), fieldDef.getDirectives());
 
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, fieldDef.getName()));

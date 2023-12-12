@@ -4,6 +4,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.RelayConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
+import graphql.com.google.common.collect.ImmutableList;
 import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
@@ -168,6 +169,21 @@ public abstract class GraphQLTypeMapper {
      * @param graphqlType    GraphQL type
      * @param name           GraphQL type name
      * @param parentTypeName Name of the parent type
+     * @param directives     GraphQL field directives
+     * @return Corresponding language-specific type (java/scala/kotlin/etc)
+     */
+    public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name,
+                                           String parentTypeName, List<Directive> directives) {
+        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false, directives);
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding language-specific type (java/scala/kotlin/etc)
+     *
+     * @param mappingContext Global mapping context
+     * @param graphqlType    GraphQL type
+     * @param name           GraphQL type name
+     * @param parentTypeName Name of the parent type
      * @param mandatory      GraphQL type is non-null
      * @param collection     GraphQL type is collection
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
@@ -175,12 +191,30 @@ public abstract class GraphQLTypeMapper {
     public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType,
                                            String name, String parentTypeName,
                                            boolean mandatory, boolean collection) {
+        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, mandatory, collection, Collections.emptyList());
+    }
+
+    /**
+     * Convert GraphQL type to a corresponding language-specific type (java/scala/kotlin/etc)
+     *
+     * @param mappingContext Global mapping context
+     * @param graphqlType    GraphQL type
+     * @param name           GraphQL type name
+     * @param parentTypeName Name of the parent type
+     * @param mandatory      GraphQL type is non-null
+     * @param collection     GraphQL type is collection
+     * @param directives     GraphQL field directives
+     * @return Corresponding language-specific type (java/scala/kotlin/etc)
+     */
+    public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType,
+                                           String name, String parentTypeName,
+                                           boolean mandatory, boolean collection, List<Directive> directives) {
         if (graphqlType instanceof TypeName) {
             return getLanguageType(mappingContext, ((TypeName) graphqlType).getName(), name, parentTypeName, mandatory,
-                    collection);
+                    collection, directives);
         } else if (graphqlType instanceof ListType) {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(),
-                    name, parentTypeName, false, true);
+                    name, parentTypeName, false, true, directives);
             if (mappedCollectionType.isInterfaceOrUnion() &&
                     isInterfaceOrUnion(mappingContext, parentTypeName)) {
                 mappedCollectionType.setJavaName(
@@ -192,7 +226,7 @@ public abstract class GraphQLTypeMapper {
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
             return getLanguageType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true,
-                    collection);
+                    collection, directives);
         }
         throw new IllegalArgumentException("Unknown type: " + graphqlType);
     }
@@ -206,10 +240,12 @@ public abstract class GraphQLTypeMapper {
      * @param parentTypeName Name of the parent type
      * @param mandatory      GraphQL type is non-null
      * @param collection     GraphQL type is collection
+     * @param directives     GraphQL field directives
      * @return Corresponding language-specific type (java/scala/kotlin/etc)
      */
     public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
-                                           String parentTypeName, boolean mandatory, boolean collection) {
+                                           String parentTypeName, boolean mandatory, boolean collection,
+                                           List<Directive> directives) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
@@ -273,5 +309,4 @@ public abstract class GraphQLTypeMapper {
         return mappingContext.getInterfacesName().contains(graphQLType) ||
                 mappingContext.getUnionsNames().contains(graphQLType);
     }
-
 }

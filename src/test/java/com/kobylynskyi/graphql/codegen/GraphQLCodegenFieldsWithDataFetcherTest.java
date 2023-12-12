@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class GraphQLCodegenFieldsWithDataFetcherResultTest {
+class GraphQLCodegenFieldsWithDataFetcherTest {
 
     private final File outputBuildDir = new File("build/generated");
     private final File outputJavaClassesDir = new File("build/generated/com/github/graphql");
