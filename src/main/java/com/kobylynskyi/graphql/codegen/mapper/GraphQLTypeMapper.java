@@ -173,7 +173,9 @@ public abstract class GraphQLTypeMapper {
      */
     public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType, String name,
                                            String parentTypeName, List<Directive> directives) {
-        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false, directives);
+        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, false, false,
+                directives
+        );
     }
 
     /**
@@ -190,7 +192,9 @@ public abstract class GraphQLTypeMapper {
     public NamedDefinition getLanguageType(MappingContext mappingContext, Type<?> graphqlType,
                                            String name, String parentTypeName,
                                            boolean mandatory, boolean collection) {
-        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, mandatory, collection, Collections.emptyList());
+        return getLanguageType(mappingContext, graphqlType, name, parentTypeName, mandatory, collection,
+                Collections.emptyList()
+        );
     }
 
     /**
@@ -224,8 +228,8 @@ public abstract class GraphQLTypeMapper {
             }
             return mappedCollectionType;
         } else if (graphqlType instanceof NonNullType) {
-            return getLanguageType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName, true,
-                    collection, directives);
+            return getLanguageType(mappingContext, ((NonNullType) graphqlType).getType(), name, parentTypeName,
+                    true, collection, directives);
         }
         throw new IllegalArgumentException("Unknown type: " + graphqlType);
     }
