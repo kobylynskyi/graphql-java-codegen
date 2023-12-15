@@ -105,7 +105,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
     @Override
     public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
-                                           String parentTypeName, boolean mandatory, boolean collection, List<Directive> directives) {
+                                           String parentTypeName, boolean mandatory, boolean collection,
+                                           List<Directive> directives) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
