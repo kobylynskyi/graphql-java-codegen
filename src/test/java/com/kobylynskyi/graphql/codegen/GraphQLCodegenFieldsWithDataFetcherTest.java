@@ -49,7 +49,8 @@ class GraphQLCodegenFieldsWithDataFetcherTest {
 
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(
-                asList("Cart.java", "Item.java", "Order.java", "QueryResolver.java", "User.java", "UserCurrentQueryResolver.java"),
+                asList("Cart.java", "Item.java", "Order.java", "QueryResolver.java", "User.java",
+                        "UserCurrentQueryResolver.java"),
                 generatedFileNames
         );
 
