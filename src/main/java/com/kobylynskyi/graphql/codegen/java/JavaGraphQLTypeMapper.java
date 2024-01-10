@@ -121,13 +121,7 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
 
-        Set<String> fieldsWithDataFetcherResult = mappingContext.getFieldsWithDataFetcherResult();
-        Set<String> directivesNames = directives.stream()
-                .map(directive -> "@" + directive.getName())
-                .collect(Collectors.toSet());
-        if (directivesNames.stream().anyMatch(fieldsWithDataFetcherResult::contains)) {
-            langTypeName = wrapWithDataFetcherResult(langTypeName);
-        }
+        langTypeName = wrapWithDataFetcherResultIfRequired(mappingContext, directives, langTypeName, name);
 
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
                 (name != null && parentTypeName != null &&
@@ -139,7 +133,26 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
     }
 
-    private String wrapWithDataFetcherResult(String typeName) {
-        return "graphql.execution.DataFetcherResult<" + typeName + ">";
+    private String wrapWithDataFetcherResultIfRequired(MappingContext mappingContext,
+                                                       List<Directive> directives,
+                                                       String langTypeName,
+                                                       String name) {
+        Set<String> fieldsWithDataFetcherResult = mappingContext.getFieldsWithDataFetcherResult();
+        Set<String> directivesNames = directives.stream()
+                .map(directive -> "@" + directive.getName())
+                .collect(Collectors.toSet());
+
+        // Create the representation of 'name'
+        String nameRepresentation = langTypeName + "." + name;
+
+        boolean shouldWrap = directivesNames.stream().anyMatch(fieldsWithDataFetcherResult::contains)
+                || fieldsWithDataFetcherResult.contains(langTypeName)
+                || fieldsWithDataFetcherResult.contains(nameRepresentation);
+
+        if (shouldWrap) {
+            langTypeName = "graphql.execution.DataFetcherResult<" + langTypeName + ">";
+        }
+
+        return langTypeName;
     }
 }
