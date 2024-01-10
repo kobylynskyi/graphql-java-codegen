@@ -22,6 +22,11 @@ type Order {
 
 type Cart {
     id: Long!
+    items: [Item!]!
+}
+
+type Item {
+    id: String
 }
 
 directive @dataFetcherResult on FIELD_DEFINITION

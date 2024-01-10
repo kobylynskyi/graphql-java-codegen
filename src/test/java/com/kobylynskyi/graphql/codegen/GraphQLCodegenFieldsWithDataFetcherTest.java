@@ -41,10 +41,7 @@ class GraphQLCodegenFieldsWithDataFetcherTest {
     }
 
     @Test
-    void generate_fieldsWithDataFetcherResult() throws Exception {
-        mappingConfig.getFieldsWithDataFetcherResult().add("orders");
-        mappingConfig.getFieldsWithDataFetcherResult().add("cart");
-
+    void generate_fieldsWithDataFetcherResult_with_directives() throws Exception {
         generate("src/test/resources/schemas/fields-with-data-fetcher-result.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
@@ -52,7 +49,7 @@ class GraphQLCodegenFieldsWithDataFetcherTest {
 
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(
-                asList("Cart.java", "Order.java", "QueryResolver.java", "User.java", "UserCurrentQueryResolver.java"),
+                asList("Cart.java", "Item.java", "Order.java", "QueryResolver.java", "User.java", "UserCurrentQueryResolver.java"),
                 generatedFileNames
         );
 
@@ -61,6 +58,50 @@ class GraphQLCodegenFieldsWithDataFetcherTest {
 
         assertTrue(userContext.contains("java.util.List<graphql.execution.DataFetcherResult<Order>>"));
         assertTrue(userContext.contains("graphql.execution.DataFetcherResult<Cart>"));
+    }
+
+    @Test
+    void generate_fieldsWithDataFetcherResult_with_typename() throws Exception {
+        mappingConfig.getFieldsWithDataFetcherResult().add("Item");
+
+        generate("src/test/resources/schemas/fields-with-data-fetcher-result.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Assertions.assertNotNull(files);
+
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(
+                asList("Cart.java", "Item.java", "Order.java", "QueryResolver.java", "User.java",
+                        "UserCurrentQueryResolver.java"),
+                generatedFileNames
+        );
+
+        File cart = getFileByName(files, "Cart.java");
+        String userContext = Utils.getFileContent(cart.getPath()).trim();
+
+        assertTrue(userContext.contains("java.util.List<graphql.execution.DataFetcherResult<Item>>"));
+    }
+
+    @Test
+    void generate_fieldsWithDataFetcherResult_with_name() throws Exception {
+        mappingConfig.getFieldsWithDataFetcherResult().add("Item.items");
+
+        generate("src/test/resources/schemas/fields-with-data-fetcher-result.graphqls");
+
+        File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
+        Assertions.assertNotNull(files);
+
+        List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
+        assertEquals(
+                asList("Cart.java", "Item.java", "Order.java", "QueryResolver.java", "User.java",
+                        "UserCurrentQueryResolver.java"),
+                generatedFileNames
+        );
+
+        File cart = getFileByName(files, "Cart.java");
+        String userContext = Utils.getFileContent(cart.getPath()).trim();
+
+        assertTrue(userContext.contains("java.util.List<graphql.execution.DataFetcherResult<Item>>"));
     }
 
     private void generate(String o) throws IOException {
