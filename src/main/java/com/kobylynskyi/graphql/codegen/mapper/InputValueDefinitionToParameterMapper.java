@@ -77,11 +77,15 @@ public class InputValueDefinitionToParameterMapper {
         return parameter;
     }
 
+    static final boolean ENABLE_OPTIONAL_INPUT = true;
+
     private String getDefaultValue(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition) {
         String value = valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType());
 
-        if (!namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {
-            if(value == null) {
+        if (ENABLE_OPTIONAL_INPUT &&
+            !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST) &&
+            value != null) {
+            if (inputValueDefinition.getDefaultValue() instanceof NullValue) {
                 return "java.util.Optional.empty()";
             } else {
                 return "java.util.Optional.of(" + value + ")";
@@ -93,7 +97,7 @@ public class InputValueDefinitionToParameterMapper {
 
     private String getInputType(MappingContext mappingContext, NamedDefinition namedDefinition) {
         String computedTypeName = namedDefinition.getJavaName();
-        if (!namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+        if (ENABLE_OPTIONAL_INPUT && !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
             computedTypeName = graphQLTypeMapper.getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
         }
 
