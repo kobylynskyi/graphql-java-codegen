@@ -8,7 +8,6 @@ import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -64,11 +63,10 @@ public class InputValueDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        parameter.setType(getInputType(mappingContext, namedDefinition));
-        parameter.setDefaultValue(getDefaultValue(mappingContext, namedDefinition, inputValueDefinition));
+        parameter.setType(getInputType(mappingContext, namedDefinition, parentTypeName));
+        parameter.setDefaultValue(getDefaultValue(mappingContext, namedDefinition, inputValueDefinition, parentTypeName));
         parameter.setVisibility(Utils.getFieldVisibility(mappingContext));
-        parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
-                inputValueDefinition, parentTypeName, false));
+        parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, inputValueDefinition));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
@@ -79,10 +77,11 @@ public class InputValueDefinitionToParameterMapper {
 
     static final boolean ENABLE_OPTIONAL_INPUT = true;
 
-    private String getDefaultValue(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition) {
+    private String getDefaultValue(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String parentTypeName) {
         String value = valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType());
 
         if (ENABLE_OPTIONAL_INPUT &&
+            mappingContext.getInputsName().contains(parentTypeName) &&
             !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST) &&
             value != null) {
             if (inputValueDefinition.getDefaultValue() instanceof NullValue) {
@@ -95,9 +94,11 @@ public class InputValueDefinitionToParameterMapper {
         }
     }
 
-    private String getInputType(MappingContext mappingContext, NamedDefinition namedDefinition) {
+    private String getInputType(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
-        if (ENABLE_OPTIONAL_INPUT && !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+        if (ENABLE_OPTIONAL_INPUT &&
+            mappingContext.getInputsName().contains(parentTypeName) &&
+            !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
             computedTypeName = graphQLTypeMapper.getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
         }
 
