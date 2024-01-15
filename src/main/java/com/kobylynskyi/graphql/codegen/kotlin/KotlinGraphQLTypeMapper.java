@@ -8,6 +8,7 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -186,5 +187,17 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
         // correctly when returnType is not List.
         // Should fix it when generate response class.
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
+
+    static final boolean ENABLE_OPTIONAL_INPUT = true;
+
+    @Override
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName());
+    }
+
+    @Override
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+        return defaultValue;
     }
 }

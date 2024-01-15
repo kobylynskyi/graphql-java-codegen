@@ -6,6 +6,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
+import graphql.language.NullValue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -114,6 +116,24 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
         } else {
             return String.format("%s[%s]", genericType, typeParameter);
         }
+    }
+
+    @Override
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+        String computedTypeName = namedDefinition.getJavaName();
+        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableInputTypes()) &&
+            mappingContext.getInputsName().contains(parentTypeName) &&
+            !namedDefinition.isMandatory() && !computedTypeName.startsWith(SCALA_UTIL_LIST) &&
+            !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+            return getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
+        }
+
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
+
+    @Override
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+        return defaultValue;
     }
 
 }

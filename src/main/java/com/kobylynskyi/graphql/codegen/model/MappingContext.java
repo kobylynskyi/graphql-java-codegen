@@ -260,6 +260,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getUseOptionalForNullableInputTypes() {
+        return config.getUseOptionalForNullableInputTypes();
+    }
+
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return config.getFieldsWithResolvers();
     }

@@ -52,6 +52,8 @@ public class MappingConfigConstants {
 
     public static final boolean DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES = false;
     public static final String DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING = "false";
+    public static final boolean DEFAULT_USE_OPTIONAL_FOR_NULLABLE_INPUT_TYPES = false;
+    public static final String DEFAULT_USE_OPTIONAL_FOR_NULLABLE_INPUT_TYPES_STRING = "false";
 
     public static final ApiNamePrefixStrategy DEFAULT_API_NAME_PREFIX_STRATEGY = ApiNamePrefixStrategy.CONSTANT;
     public static final String DEFAULT_API_NAME_PREFIX_STRATEGY_STRING = "CONSTANT";

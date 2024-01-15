@@ -7,6 +7,8 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
+import graphql.language.NullValue;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -124,6 +126,34 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
         return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+    }
+
+    @Override
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+        String computedTypeName = namedDefinition.getJavaName();
+        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableInputTypes()) &&
+            mappingContext.getInputsName().contains(parentTypeName) &&
+            !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+            return getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
+        }
+
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
+
+    @Override
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+        if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableInputTypes()) &&
+            mappingContext.getInputsName().contains(parentTypeName) &&
+            !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST) &&
+            defaultValue != null) {
+            if (inputValueDefinition.getDefaultValue() instanceof NullValue) {
+                return JAVA_UTIL_OPTIONAL + ".empty()";
+            } else {
+                return JAVA_UTIL_OPTIONAL + ".of(" + defaultValue + ")";
+            }
+        } else {
+            return defaultValue;
+        }
     }
 
 }

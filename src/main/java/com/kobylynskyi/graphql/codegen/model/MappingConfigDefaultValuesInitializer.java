@@ -87,6 +87,10 @@ public class MappingConfigDefaultValuesInitializer {
             mappingConfig.setUseOptionalForNullableReturnTypes(
                     MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES);
         }
+        if (mappingConfig.getUseOptionalForNullableInputTypes() == null) {
+            mappingConfig.setUseOptionalForNullableInputTypes(
+                    MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_INPUT_TYPES);
+        }
         if (mappingConfig.getApiNamePrefixStrategy() == null) {
             mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);
         }

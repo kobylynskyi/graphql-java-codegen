@@ -52,6 +52,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Boolean generateModelsForRootTypes;
     private Boolean useOptionalForNullableReturnTypes;
+    private Boolean useOptionalForNullableInputTypes;
     private Boolean generateApisWithThrowsException;
     private Boolean generateApisWithSuspendFunctions;
     private Boolean addGeneratedAnnotation;
@@ -167,6 +168,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
+        useOptionalForNullableInputTypes = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getUseOptionalForNullableInputTypes);
         generateApisWithThrowsException = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
         generateApisWithSuspendFunctions = getValueOrDefaultToThis(source,
@@ -581,6 +584,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
         this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
+    }
+
+    @Override
+    public Boolean getUseOptionalForNullableInputTypes() {
+        return useOptionalForNullableInputTypes;
+    }
+
+    public void setUseOptionalForNullableInputTypes(Boolean useOptionalForNullableInputTypes) {
+        this.useOptionalForNullableInputTypes = useOptionalForNullableInputTypes;
     }
 
     @Override
