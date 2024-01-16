@@ -189,8 +189,6 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
     }
 
-    static final boolean ENABLE_OPTIONAL_INPUT = true;
-
     @Override
     public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName());

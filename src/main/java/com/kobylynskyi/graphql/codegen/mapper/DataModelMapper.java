@@ -205,7 +205,7 @@ public abstract class DataModelMapper {
      * @param mappingContext Global mapping context
      * @return api package name if present. Generic package name otherwise
      */
-    public static String getApiPackageName(MappingContext mappingContext) {
+    static String getApiPackageName(MappingContext mappingContext) {
         if (Utils.isNotBlank(mappingContext.getApiPackageName())) {
             return mappingContext.getApiPackageName();
         } else {

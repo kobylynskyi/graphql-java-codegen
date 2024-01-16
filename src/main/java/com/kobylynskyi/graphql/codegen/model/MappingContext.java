@@ -6,7 +6,11 @@ import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
 import com.kobylynskyi.graphql.codegen.model.definitions.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

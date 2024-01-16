@@ -4,7 +4,16 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.RelayConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
-import graphql.language.*;
+import graphql.language.Argument;
+import graphql.language.Directive;
+import graphql.language.DirectivesContainer;
+import graphql.language.ListType;
+import graphql.language.NamedNode;
+import graphql.language.NonNullType;
+import graphql.language.StringValue;
+import graphql.language.Type;
+import graphql.language.TypeName;
+import graphql.language.InputValueDefinition;
 
 import java.util.Collections;
 import java.util.List;
@@ -174,7 +183,7 @@ public abstract class GraphQLTypeMapper {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(),
                     name, parentTypeName, false, true);
             if (mappedCollectionType.isInterfaceOrUnion() &&
-                    isInterfaceOrUnion(mappingContext, parentTypeName)) {
+                isInterfaceOrUnion(mappingContext, parentTypeName)) {
                 mappedCollectionType.setJavaName(
                         wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             } else {
@@ -218,7 +227,7 @@ public abstract class GraphQLTypeMapper {
         }
         boolean serializeUsingObjectMapper =
                 serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
+                serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
         return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
@@ -263,7 +272,7 @@ public abstract class GraphQLTypeMapper {
 
     protected boolean isInterfaceOrUnion(MappingContext mappingContext, String graphQLType) {
         return mappingContext.getInterfacesName().contains(graphQLType) ||
-                mappingContext.getUnionsNames().contains(graphQLType);
+               mappingContext.getUnionsNames().contains(graphQLType);
     }
 
     public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName);

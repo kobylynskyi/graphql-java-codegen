@@ -5,7 +5,7 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.ParameterDefinition;
 import com.kobylynskyi.graphql.codegen.model.builders.DeprecatedDefinitionBuilder;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
-import graphql.language.*;
+import graphql.language.InputValueDefinition;
 
 import java.util.List;
 
@@ -17,8 +17,6 @@ import static java.util.stream.Collectors.toList;
  * @author kobylynskyi
  */
 public class InputValueDefinitionToParameterMapper {
-    private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
-    private static final String JAVA_UTIL_LIST = "java.util.List";
     private final ValueMapper valueMapper;
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final AnnotationsMapper annotationsMapper;
