@@ -39,20 +39,26 @@ class GraphQLCodegenInputWrapperTest {
 
     @Test
     void generate_CheckFiles() throws Exception {
-        generate("src/test/resources/schemas/input-wrapper.graphqls");
+        generate();
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
-        assertEquals(asList("GraphQLInputParameter.java", "InputWithDefaults.java", "MyEnum.java", "SomeObject.java"), generatedFileNames);
+        assertEquals(asList(
+                "GraphQLInputParameter.java",
+                "InputWithDefaults.java",
+                "MyEnum.java",
+                "SomeObject.java"
+        ), generatedFileNames);
 
         for (File file : files) {
-            assertSameTrimmedContent(new File(String.format("src/test/resources/expected-classes/input-wrapper/%s.txt",
-                    file.getName())), file);
+            assertSameTrimmedContent(new File(
+                            String.format("src/test/resources/expected-classes/input-wrapper/%s.txt", file.getName())),
+                    file);
         }
     }
 
-    private void generate(String path) throws IOException {
-        new JavaGraphQLCodegen(singletonList(path),
+    private void generate() throws IOException {
+        new JavaGraphQLCodegen(singletonList("src/test/resources/schemas/input-wrapper.graphqls"),
                 outputBuildDir, mappingConfig, TestUtils.getStaticGeneratedInfo(mappingConfig)).generate();
     }
 
