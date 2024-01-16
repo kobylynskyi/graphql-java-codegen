@@ -87,6 +87,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
+    private Boolean useWrapperForNullableInputTypes = MappingConfigConstants.DEFAULT_USE_WRAPPER_FOR_NULLABLE_INPUT_TYPES;
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
     private Boolean generateApisWithSuspendFunctions =
             MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS;
@@ -170,6 +171,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setGenerateImmutableModels(generateImmutableModels);
         mappingConfig.setGenerateToString(generateToString);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
+        mappingConfig.setUseWrapperForNullableInputTypes(useWrapperForNullableInputTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setGenerateApisWithSuspendFunctions(generateApisWithSuspendFunctions);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
@@ -689,6 +691,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setUseOptionalForNullableReturnTypes(Boolean useOptionalForNullableReturnTypes) {
         this.useOptionalForNullableReturnTypes = useOptionalForNullableReturnTypes;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Boolean getUseWrapperForNullableInputTypes() {
+        return useWrapperForNullableInputTypes;
+    }
+
+    public void setUseWrapperForNullableInputTypes(Boolean useWrapperForNullableInputTypes) {
+        this.useWrapperForNullableInputTypes = useWrapperForNullableInputTypes;
     }
 
     @Input

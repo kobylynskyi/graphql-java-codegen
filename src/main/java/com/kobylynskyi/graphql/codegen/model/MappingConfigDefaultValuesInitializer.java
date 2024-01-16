@@ -89,7 +89,7 @@ public class MappingConfigDefaultValuesInitializer {
         }
         if (mappingConfig.getUseWrapperForNullableInputTypes() == null) {
             mappingConfig.setUseWrapperForNullableInputTypes(
-                    MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_INPUT_TYPES);
+                    MappingConfigConstants.DEFAULT_USE_WRAPPER_FOR_NULLABLE_INPUT_TYPES);
         }
         if (mappingConfig.getApiNamePrefixStrategy() == null) {
             mappingConfig.setApiNamePrefixStrategy(MappingConfigConstants.DEFAULT_API_NAME_PREFIX_STRATEGY);
