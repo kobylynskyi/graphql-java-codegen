@@ -1,0 +1,70 @@
+
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class SomeObject implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @javax.validation.constraints.NotNull
+    private String name;
+    private GraphQLInputParameter<String> description = GraphQLInputParameter.undefined();
+
+    public SomeObject() {
+    }
+
+    public SomeObject(String name, GraphQLInputParameter<String> description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public GraphQLInputParameter<String> getDescription() {
+        return description;
+    }
+    public void setDescription(GraphQLInputParameter<String> description) {
+        this.description = description;
+    }
+
+
+
+    public static SomeObject.Builder builder() {
+        return new SomeObject.Builder();
+    }
+
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
+    public static class Builder {
+
+        private String name;
+        private GraphQLInputParameter<String> description = GraphQLInputParameter.undefined();
+
+        public Builder() {
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(GraphQLInputParameter<String> description) {
+            this.description = description;
+            return this;
+        }
+
+
+        public SomeObject build() {
+            return new SomeObject(name, description);
+        }
+
+    }
+}
