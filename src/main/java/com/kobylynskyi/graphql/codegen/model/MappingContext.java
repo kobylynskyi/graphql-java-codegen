@@ -3,19 +3,10 @@ package com.kobylynskyi.graphql.codegen.model;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.mapper.FieldDefinitionToParameterMapper;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedEnumTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedInterfaceTypeDefinition;
-import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedObjectTypeDefinition;
+import com.kobylynskyi.graphql.codegen.model.definitions.*;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -260,8 +251,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
-    public Boolean getUseOptionalForNullableInputTypes() {
-        return config.getUseOptionalForNullableInputTypes();
+    public Boolean getUseWrapperForNullableInputTypes() {
+        return config.getUseWrapperForNullableInputTypes();
     }
 
     @Override
@@ -435,8 +426,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         // In this way, we no longer need to rely on the order in which files are created
         // Only for scala/kotlin
         if ((GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) ||
-                GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage())) &&
-                parentInterfaceProperties == null) {
+             GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage())) &&
+            parentInterfaceProperties == null) {
             parentInterfaceProperties = new HashMap<>();
             for (ExtendedInterfaceTypeDefinition interfaceDef : this.document.getInterfaceDefinitions()) {
                 String clazzName = getModelClassNameWithPrefixAndSuffix(interfaceDef);

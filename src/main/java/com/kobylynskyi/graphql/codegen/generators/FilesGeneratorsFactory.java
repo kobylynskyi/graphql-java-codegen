@@ -1,16 +1,6 @@
 package com.kobylynskyi.graphql.codegen.generators;
 
-import com.kobylynskyi.graphql.codegen.generators.impl.EnumsGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.FieldResolversGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.InputGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.InterfaceGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.JacksonTypeIdResolverGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.OperationsGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.ParametrizedInputGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.RequestResponseGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.ResponseProjectionGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.TypeGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.UnionGenerator;
+import com.kobylynskyi.graphql.codegen.generators.impl.*;
 import com.kobylynskyi.graphql.codegen.mapper.DataModelMapperFactory;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 
@@ -41,6 +31,7 @@ public class FilesGeneratorsFactory {
         generators.add(new ResponseProjectionGenerator(context, dataModelMapperFactory));
         generators.add(new ParametrizedInputGenerator(context, dataModelMapperFactory));
         generators.add(new FieldResolversGenerator(context, dataModelMapperFactory));
+        generators.add(new InputWrapperGenerator(context));
         generators.add(new InputGenerator(context, dataModelMapperFactory));
         generators.add(new UnionGenerator(context, dataModelMapperFactory));
         generators.add(new RequestResponseGenerator(context, dataModelMapperFactory));

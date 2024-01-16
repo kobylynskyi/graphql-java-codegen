@@ -1,11 +1,7 @@
 package com.kobylynskyi.graphql.codegen.model;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -52,7 +48,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Boolean generateDataFetchingEnvironmentArgumentInApis;
     private Boolean generateModelsForRootTypes;
     private Boolean useOptionalForNullableReturnTypes;
-    private Boolean useOptionalForNullableInputTypes;
+    private Boolean useWrapperForNullableInputTypes;
     private Boolean generateApisWithThrowsException;
     private Boolean generateApisWithSuspendFunctions;
     private Boolean addGeneratedAnnotation;
@@ -168,8 +164,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
                 GraphQLCodegenConfiguration::getGenerateModelsForRootTypes);
         useOptionalForNullableReturnTypes = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getUseOptionalForNullableReturnTypes);
-        useOptionalForNullableInputTypes = getValueOrDefaultToThis(source,
-                GraphQLCodegenConfiguration::getUseOptionalForNullableInputTypes);
+        useWrapperForNullableInputTypes = getValueOrDefaultToThis(source,
+                GraphQLCodegenConfiguration::getUseWrapperForNullableInputTypes);
         generateApisWithThrowsException = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getGenerateApisWithThrowsException);
         generateApisWithSuspendFunctions = getValueOrDefaultToThis(source,
@@ -587,12 +583,12 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     }
 
     @Override
-    public Boolean getUseOptionalForNullableInputTypes() {
-        return useOptionalForNullableInputTypes;
+    public Boolean getUseWrapperForNullableInputTypes() {
+        return useWrapperForNullableInputTypes;
     }
 
-    public void setUseOptionalForNullableInputTypes(Boolean useOptionalForNullableInputTypes) {
-        this.useOptionalForNullableInputTypes = useOptionalForNullableInputTypes;
+    public void setUseWrapperForNullableInputTypes(Boolean useWrapperForNullableInputTypes) {
+        this.useWrapperForNullableInputTypes = useWrapperForNullableInputTypes;
     }
 
     @Override
