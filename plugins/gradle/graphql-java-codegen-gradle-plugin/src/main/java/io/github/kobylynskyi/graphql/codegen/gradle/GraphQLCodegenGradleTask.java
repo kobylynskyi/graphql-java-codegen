@@ -87,7 +87,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Boolean generateDataFetchingEnvironmentArgumentInApis = MappingConfigConstants.DEFAULT_GENERATE_DATA_FETCHING_ENV;
     private Boolean generateModelsForRootTypes = MappingConfigConstants.DEFAULT_GENERATE_MODELS_FOR_ROOT_TYPES;
     private Boolean useOptionalForNullableReturnTypes = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES;
-    private Boolean useWrapperForNullableInputTypes = MappingConfigConstants.DEFAULT_USE_WRAPPER_FOR_NULLABLE_INPUT_TYPES;
+    private Boolean useWrapperForNullableInputTypes =
+            MappingConfigConstants.DEFAULT_USE_WRAPPER_FOR_NULLABLE_INPUT_TYPES;
     private Boolean generateApisWithThrowsException = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION;
     private Boolean generateApisWithSuspendFunctions =
             MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_SUSPEND_FUNCTIONS;
@@ -147,7 +148,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
         mappingConfig.setCustomAnnotationsMapping(
                 customAnnotationsMapping != null ? customAnnotationsMapping : new HashMap<>());
         mappingConfig.setCustomTemplatesRoot(
-            customTemplatesRoot != null ? customTemplatesRoot : getProject().getProjectDir()
+                customTemplatesRoot != null ? customTemplatesRoot : getProject().getProjectDir()
         );
         mappingConfig.setCustomTemplates(
                 customTemplates != null ? customTemplates : new HashMap<>());
@@ -238,10 +239,10 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
         if (skipSchemaSizeLimit) {
             ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
-                  .maxTokens(Integer.MAX_VALUE)
-                  .maxCharacters(Integer.MAX_VALUE)
-                  .maxWhitespaceTokens(Integer.MAX_VALUE)
-                  .maxRuleDepth(Integer.MAX_VALUE);
+                    .maxTokens(Integer.MAX_VALUE)
+                    .maxCharacters(Integer.MAX_VALUE)
+                    .maxWhitespaceTokens(Integer.MAX_VALUE)
+                    .maxRuleDepth(Integer.MAX_VALUE);
             ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
         }
         switch (language) {
