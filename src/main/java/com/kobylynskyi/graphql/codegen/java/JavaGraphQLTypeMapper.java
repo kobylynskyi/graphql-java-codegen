@@ -130,7 +130,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
     }
 
     @Override
-    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                             String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
             mappingContext.getInputsName().contains(parentTypeName) &&
@@ -142,7 +143,9 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
     }
 
     @Override
-    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                InputValueDefinition inputValueDefinition, String defaultValue,
+                                                String parentTypeName) {
         if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
             mappingContext.getInputsName().contains(parentTypeName) &&
             !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {

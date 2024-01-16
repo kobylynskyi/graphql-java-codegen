@@ -65,17 +65,17 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
         }
 
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
-                && !namedDefinition.isMandatory()
-                && !computedTypeName.startsWith(SCALA_UTIL_LIST)
-                && !computedTypeName.startsWith(JAVA_UTIL_LIST)
-                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
+            && !namedDefinition.isMandatory()
+            && !computedTypeName.startsWith(SCALA_UTIL_LIST)
+            && !computedTypeName.startsWith(JAVA_UTIL_LIST)
+            && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
             // Kotlin/Scala: primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }
 
         if (computedTypeName.startsWith(SCALA_UTIL_LIST) &&
-                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
                 Matcher matcher = SCALA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
@@ -118,12 +118,15 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
     }
 
     @Override
-    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                             String parentTypeName) {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName());
     }
 
     @Override
-    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                InputValueDefinition inputValueDefinition, String defaultValue,
+                                                String parentTypeName) {
         return defaultValue;
     }
 

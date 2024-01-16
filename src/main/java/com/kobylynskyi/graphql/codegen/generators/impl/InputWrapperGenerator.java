@@ -7,9 +7,18 @@ import com.kobylynskyi.graphql.codegen.mapper.DataModelMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static com.kobylynskyi.graphql.codegen.model.DataModelFields.*;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.CLASS_NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_ANNOTATION;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.GENERATED_INFO;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.IMPORTS;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.NAME;
+import static com.kobylynskyi.graphql.codegen.model.DataModelFields.PACKAGE;
 
 /**
  * Generates files for inputs

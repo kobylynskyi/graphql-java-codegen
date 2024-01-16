@@ -91,12 +91,12 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
         String computedTypeName = getTypeConsideringPrimitive(mappingContext, namedDefinition,
                 namedDefinition.getJavaName());
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
-                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+            Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
         if (computedTypeName.startsWith(KOTLIN_UTIL_LIST) &&
-                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
                 boolean isNullable = computedTypeName.endsWith(KOTLIN_UTIL_NULLABLE);
@@ -160,12 +160,12 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
                 String modelClassNameWithPrefixAndSuffix = DataModelMapper
                         .getModelClassNameWithPrefixAndSuffix(mappingContext, graphqlTypeName);
                 if (computedTypeName.contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) ||
-                        computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)) {
+                    computedTypeName.contains(graphqlTypeName + KOTLIN_UTIL_NULLABLE)) {
                     return computedTypeName;
                 }
                 if (!computedTypeName
                         .contains(modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE) && computedTypeName
-                        .contains(modelClassNameWithPrefixAndSuffix)) {
+                            .contains(modelClassNameWithPrefixAndSuffix)) {
                     return computedTypeName.replace(modelClassNameWithPrefixAndSuffix,
                             modelClassNameWithPrefixAndSuffix + KOTLIN_UTIL_NULLABLE);
                 }
@@ -190,12 +190,15 @@ public class KotlinGraphQLTypeMapper extends GraphQLTypeMapper {
     }
 
     @Override
-    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName) {
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                             String parentTypeName) {
         return getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName());
     }
 
     @Override
-    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName) {
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                InputValueDefinition inputValueDefinition, String defaultValue,
+                                                String parentTypeName) {
         return defaultValue;
     }
 }

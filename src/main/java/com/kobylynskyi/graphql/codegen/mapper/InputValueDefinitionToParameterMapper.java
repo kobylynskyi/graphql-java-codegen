@@ -61,10 +61,13 @@ public class InputValueDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        parameter.setType(graphQLTypeMapper.wrapApiInputTypeIfRequired(mappingContext, namedDefinition, parentTypeName));
-        parameter.setDefaultValue(getDefaultValue(mappingContext, inputValueDefinition, parentTypeName, namedDefinition));
+        parameter.setType(graphQLTypeMapper.wrapApiInputTypeIfRequired(mappingContext, namedDefinition,
+                parentTypeName));
+        parameter.setDefaultValue(getDefaultValue(mappingContext, inputValueDefinition, parentTypeName,
+                namedDefinition));
         parameter.setVisibility(Utils.getFieldVisibility(mappingContext));
-        parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(), inputValueDefinition, parentTypeName, false));
+        parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
+                inputValueDefinition, parentTypeName, false));
         parameter.setDeprecated(DeprecatedDefinitionBuilder.build(mappingContext, inputValueDefinition));
         parameter.setMandatory(namedDefinition.isMandatory());
         parameter.setSerializeUsingObjectMapper(namedDefinition.isSerializeUsingObjectMapper());
@@ -73,9 +76,12 @@ public class InputValueDefinitionToParameterMapper {
         return parameter;
     }
 
-    private String getDefaultValue(MappingContext mappingContext, InputValueDefinition inputValueDefinition, String parentTypeName, NamedDefinition namedDefinition) {
-        String value = valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType());
-        return graphQLTypeMapper.wrapApiDefaultValueIfRequired(mappingContext, namedDefinition, inputValueDefinition, value, parentTypeName);
+    private String getDefaultValue(MappingContext mappingContext, InputValueDefinition inputValueDefinition,
+                                   String parentTypeName, NamedDefinition namedDefinition) {
+        String value = valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(),
+                inputValueDefinition.getType());
+        return graphQLTypeMapper.wrapApiDefaultValueIfRequired(mappingContext, namedDefinition, inputValueDefinition,
+                value, parentTypeName);
     }
 
 }

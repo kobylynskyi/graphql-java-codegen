@@ -7,13 +7,13 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition
 import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
+import graphql.language.InputValueDefinition;
 import graphql.language.ListType;
 import graphql.language.NamedNode;
 import graphql.language.NonNullType;
 import graphql.language.StringValue;
 import graphql.language.Type;
 import graphql.language.TypeName;
-import graphql.language.InputValueDefinition;
 
 import java.util.Collections;
 import java.util.List;
@@ -275,7 +275,10 @@ public abstract class GraphQLTypeMapper {
                mappingContext.getUnionsNames().contains(graphQLType);
     }
 
-    public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, String parentTypeName);
+    public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                      String parentTypeName);
 
-    public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition, InputValueDefinition inputValueDefinition, String defaultValue, String parentTypeName);
+    public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                         InputValueDefinition inputValueDefinition, String defaultValue,
+                                                         String parentTypeName);
 }
