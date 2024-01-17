@@ -357,7 +357,8 @@ public interface GraphQLCodegenConfiguration {
     Boolean getUseOptionalForNullableReturnTypes();
 
     /**
-     * Specifies whether input types of generated Java input classes should be wrapped into <code>GraphQLInputParameter</code>
+     * Specifies whether input types of generated input classes should be wrapped into
+     * <code>GraphQLInputParameter</code>.
      *
      * @return <b>true</b> if input types should be wrapped into <code>GraphQLInputParameter</code>
      */
