@@ -3,7 +3,6 @@ package com.kobylynskyi.graphql.codegen.generators;
 import com.kobylynskyi.graphql.codegen.generators.impl.EnumsGenerator;
 import com.kobylynskyi.graphql.codegen.generators.impl.FieldResolversGenerator;
 import com.kobylynskyi.graphql.codegen.generators.impl.InputGenerator;
-import com.kobylynskyi.graphql.codegen.generators.impl.InputWrapperGenerator;
 import com.kobylynskyi.graphql.codegen.generators.impl.InterfaceGenerator;
 import com.kobylynskyi.graphql.codegen.generators.impl.JacksonTypeIdResolverGenerator;
 import com.kobylynskyi.graphql.codegen.generators.impl.OperationsGenerator;
@@ -42,7 +41,6 @@ public class FilesGeneratorsFactory {
         generators.add(new ResponseProjectionGenerator(context, dataModelMapperFactory));
         generators.add(new ParametrizedInputGenerator(context, dataModelMapperFactory));
         generators.add(new FieldResolversGenerator(context, dataModelMapperFactory));
-        generators.add(new InputWrapperGenerator(context));
         generators.add(new InputGenerator(context, dataModelMapperFactory));
         generators.add(new UnionGenerator(context, dataModelMapperFactory));
         generators.add(new RequestResponseGenerator(context, dataModelMapperFactory));

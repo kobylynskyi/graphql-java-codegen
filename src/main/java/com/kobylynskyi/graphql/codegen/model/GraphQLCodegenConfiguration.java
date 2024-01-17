@@ -358,9 +358,9 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Specifies whether input types of generated input classes should be wrapped into
-     * <code>GraphQLInputParameter</code>.
+     * <code>ArgumentValue</code>.
      *
-     * @return <b>true</b> if input types should be wrapped into <code>GraphQLInputParameter</code>
+     * @return <b>true</b> if input types should be wrapped into <code>ArgumentValue</code>
      */
     Boolean getUseWrapperForNullableInputTypes();
 

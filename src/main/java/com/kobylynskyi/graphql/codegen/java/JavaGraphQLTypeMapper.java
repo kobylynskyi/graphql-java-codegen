@@ -26,10 +26,10 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
     public static final String JAVA_UTIL_LIST = "java.util.List";
     public static final Pattern JAVA_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("java\\.util\\.List<(.+)>");
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
-    private static final String INPUT_WRAPPER_CLASS = "GraphQLInputParameter";
-    private static final String INPUT_WRAPPER_NULL = INPUT_WRAPPER_CLASS + ".withNull()";
-    private static final String INPUT_WRAPPER_UNDEFINED = INPUT_WRAPPER_CLASS + ".undefined()";
-    private static final String INPUT_WRAPPER_WITH_VALUE = INPUT_WRAPPER_CLASS + ".withValue(%s)";
+    private static final String INPUT_WRAPPER_CLASS = "org.springframework.graphql.data.ArgumentValue";
+    private static final String INPUT_WRAPPER_NULL = INPUT_WRAPPER_CLASS + ".ofNullable(null)";
+    private static final String INPUT_WRAPPER_UNDEFINED = INPUT_WRAPPER_CLASS + ".omitted()";
+    private static final String INPUT_WRAPPER_WITH_VALUE = INPUT_WRAPPER_CLASS + ".ofNullable(%s)";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
 
@@ -62,18 +62,18 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
                                               String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
-            Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
 
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
-            && !namedDefinition.isMandatory()
-            && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                && !namedDefinition.isMandatory()
+                && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
             computedTypeName = getGenericsString(mappingContext, JAVA_UTIL_OPTIONAL, computedTypeName);
         }
         if (computedTypeName.startsWith(JAVA_UTIL_LIST) &&
-            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
                 Matcher matcher = JAVA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
@@ -123,8 +123,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-            (name != null && parentTypeName != null &&
-             serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
+                (name != null && parentTypeName != null &&
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
             serializeUsingObjectMapper = true;
         }
 
@@ -137,8 +137,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
                                              String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
-            mappingContext.getInputsName().contains(parentTypeName) &&
-            !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+                mappingContext.getInputsName().contains(parentTypeName) &&
+                !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
             return getGenericsString(mappingContext, INPUT_WRAPPER_CLASS, computedTypeName);
         }
 
@@ -150,8 +150,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
                                                 InputValueDefinition inputValueDefinition, String defaultValue,
                                                 String parentTypeName) {
         if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
-            mappingContext.getInputsName().contains(parentTypeName) &&
-            !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {
+                mappingContext.getInputsName().contains(parentTypeName) &&
+                !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {
             if (defaultValue == null) {
                 return INPUT_WRAPPER_UNDEFINED;
             } else if (inputValueDefinition.getDefaultValue() instanceof NullValue) {

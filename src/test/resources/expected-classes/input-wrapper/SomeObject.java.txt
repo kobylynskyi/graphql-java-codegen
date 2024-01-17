@@ -9,12 +9,12 @@ public class SomeObject implements java.io.Serializable {
 
     @javax.validation.constraints.NotNull
     private String name;
-    private GraphQLInputParameter<String> description = GraphQLInputParameter.undefined();
+    private org.springframework.graphql.data.ArgumentValue<String> description = org.springframework.graphql.data.ArgumentValue.omitted();
 
     public SomeObject() {
     }
 
-    public SomeObject(String name, GraphQLInputParameter<String> description) {
+    public SomeObject(String name, org.springframework.graphql.data.ArgumentValue<String> description) {
         this.name = name;
         this.description = description;
     }
@@ -26,10 +26,10 @@ public class SomeObject implements java.io.Serializable {
         this.name = name;
     }
 
-    public GraphQLInputParameter<String> getDescription() {
+    public org.springframework.graphql.data.ArgumentValue<String> getDescription() {
         return description;
     }
-    public void setDescription(GraphQLInputParameter<String> description) {
+    public void setDescription(org.springframework.graphql.data.ArgumentValue<String> description) {
         this.description = description;
     }
 
@@ -46,7 +46,7 @@ public class SomeObject implements java.io.Serializable {
     public static class Builder {
 
         private String name;
-        private GraphQLInputParameter<String> description = GraphQLInputParameter.undefined();
+        private org.springframework.graphql.data.ArgumentValue<String> description = org.springframework.graphql.data.ArgumentValue.omitted();
 
         public Builder() {
         }
@@ -56,7 +56,7 @@ public class SomeObject implements java.io.Serializable {
             return this;
         }
 
-        public Builder setDescription(GraphQLInputParameter<String> description) {
+        public Builder setDescription(org.springframework.graphql.data.ArgumentValue<String> description) {
             this.description = description;
             return this;
         }

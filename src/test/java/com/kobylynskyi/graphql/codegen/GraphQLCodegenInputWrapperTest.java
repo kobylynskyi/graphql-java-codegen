@@ -44,7 +44,6 @@ class GraphQLCodegenInputWrapperTest {
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         List<String> generatedFileNames = Arrays.stream(files).map(File::getName).sorted().collect(toList());
         assertEquals(asList(
-                "GraphQLInputParameter.java",
                 "InputWithDefaults.java",
                 "MyEnum.java",
                 "SomeObject.java"

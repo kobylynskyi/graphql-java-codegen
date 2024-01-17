@@ -114,7 +114,7 @@ public abstract class GraphQLTypeMapper {
                                                        String parentTypeName);
 
     /**
-     * Wraps type into GraphQLInputParameter, if required.
+     * Wraps type into ArgumentValue, if required.
      *
      * <p>Example 1:
      * * Given GraphQL schema:                   {@code input MyInput { name: String! }}
@@ -124,7 +124,7 @@ public abstract class GraphQLTypeMapper {
      * <p>Example 2:
      * * Given GraphQL schema:                   {@code input MyInput { name: String }}
      * * Given config:                           {@code useWrapperForNullableInputTypes = true}
-     * * Return:                                 {@code GraphQLInputParameter<String>}
+     * * Return:                                 {@code ArgumentValue<String>}
      *
      * <p>Example 2:
      * * Given GraphQL schema:                   {@code input MyInput { name: String[] }}
@@ -134,35 +134,35 @@ public abstract class GraphQLTypeMapper {
      * @param mappingContext  Global mapping context
      * @param namedDefinition Named definition
      * @param parentTypeName  Name of the parent type
-     * @return Java type wrapped into GraphQLInputParameter
+     * @return Java type wrapped into ArgumentValue
      */
     public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
                                                       String parentTypeName);
 
     /**
-     * Wraps type into GraphQLInputParameter, if required.
+     * Wraps type into ArgumentValue, if required.
      *
      * <p>Example 1:
      * * Given GraphQL schema:                   {@code input MyInput { name: String }}
      * * Given config:                           {@code useWrapperForNullableInputTypes = true}
-     * * Return:                                 {@code GraphQLInputParameter.undefined()}
+     * * Return:                                 {@code ArgumentValue.omitted()}
      *
      * <p>Example 2:
      * * Given GraphQL schema:                   {@code input MyInput { name: String = null }}
      * * Given config:                           {@code useWrapperForNullableInputTypes = true}
-     * * Return:                                 {@code GraphQLInputParameter.withNull()}
+     * * Return:                                 {@code ArgumentValue.ofNullable(null)}
      *
      * <p>Example 2:
      * * Given GraphQL schema:                   {@code input MyInput { name: String = "some value" }}
      * * Given config:                           {@code useWrapperForNullableInputTypes = true}
-     * * Return:                                 {@code GraphQLInputParameter.withValue("some value")}
+     * * Return:                                 {@code ArgumentValue.ofNullable("some value")}
      *
      * @param mappingContext       Global mapping context
      * @param namedDefinition      Named definition
      * @param inputValueDefinition Input value definition
      * @param defaultValue         Default value
      * @param parentTypeName       Name of the parent type
-     * @return Java type wrapped into GraphQLInputParameter
+     * @return Java type wrapped into ArgumentValue
      */
     public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
                                                          InputValueDefinition inputValueDefinition, String defaultValue,
@@ -238,7 +238,7 @@ public abstract class GraphQLTypeMapper {
             NamedDefinition mappedCollectionType = getLanguageType(mappingContext, ((ListType) graphqlType).getType(),
                     name, parentTypeName, false, true);
             if (mappedCollectionType.isInterfaceOrUnion() &&
-                isInterfaceOrUnion(mappingContext, parentTypeName)) {
+                    isInterfaceOrUnion(mappingContext, parentTypeName)) {
                 mappedCollectionType.setJavaName(
                         wrapSuperTypeIntoList(mappingContext, mappedCollectionType.getJavaName(), mandatory));
             } else {
@@ -282,7 +282,7 @@ public abstract class GraphQLTypeMapper {
         }
         boolean serializeUsingObjectMapper =
                 serializeFieldsUsingObjectMapper.contains(graphQLType) ||
-                serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
+                        serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name);
 
         return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
@@ -327,7 +327,7 @@ public abstract class GraphQLTypeMapper {
 
     protected boolean isInterfaceOrUnion(MappingContext mappingContext, String graphQLType) {
         return mappingContext.getInterfacesName().contains(graphQLType) ||
-               mappingContext.getUnionsNames().contains(graphQLType);
+                mappingContext.getUnionsNames().contains(graphQLType);
     }
 
 }
