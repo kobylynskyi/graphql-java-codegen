@@ -114,6 +114,61 @@ public abstract class GraphQLTypeMapper {
                                                        String parentTypeName);
 
     /**
+     * Wraps type into GraphQLInputParameter, if required.
+     *
+     * <p>Example 1:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String! }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code String}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code GraphQLInputParameter<String>}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String[] }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code List<String>}
+     *
+     * @param mappingContext  Global mapping context
+     * @param namedDefinition Named definition
+     * @param parentTypeName  Name of the parent type
+     * @return Java type wrapped into GraphQLInputParameter
+     */
+    public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                      String parentTypeName);
+
+    /**
+     * Wraps type into GraphQLInputParameter, if required.
+     *
+     * <p>Example 1:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code GraphQLInputParameter.undefined()}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String = null }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code GraphQLInputParameter.withNull()}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String = "some value" }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code GraphQLInputParameter.withValue("some value")}
+     *
+     * @param mappingContext       Global mapping context
+     * @param namedDefinition      Named definition
+     * @param inputValueDefinition Input value definition
+     * @param defaultValue         Default value
+     * @param parentTypeName       Name of the parent type
+     * @return Java type wrapped into GraphQLInputParameter
+     */
+    public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                         InputValueDefinition inputValueDefinition, String defaultValue,
+                                                         String parentTypeName);
+
+    /**
      * Check if the time is primitive.
      *
      * @param possiblyPrimitiveType type to check
@@ -275,10 +330,4 @@ public abstract class GraphQLTypeMapper {
                mappingContext.getUnionsNames().contains(graphQLType);
     }
 
-    public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
-                                                      String parentTypeName);
-
-    public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
-                                                         InputValueDefinition inputValueDefinition, String defaultValue,
-                                                         String parentTypeName);
 }

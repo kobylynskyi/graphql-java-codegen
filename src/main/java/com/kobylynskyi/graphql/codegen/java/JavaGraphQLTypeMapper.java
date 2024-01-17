@@ -27,6 +27,9 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
     public static final Pattern JAVA_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("java\\.util\\.List<(.+)>");
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
     private static final String INPUT_WRAPPER_CLASS = "GraphQLInputParameter";
+    private static final String INPUT_WRAPPER_NULL = INPUT_WRAPPER_CLASS + ".withNull()";
+    private static final String INPUT_WRAPPER_UNDEFINED = INPUT_WRAPPER_CLASS + ".undefined()";
+    private static final String INPUT_WRAPPER_WITH_VALUE = INPUT_WRAPPER_CLASS + ".withValue(%s)";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
 
@@ -150,11 +153,11 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
             mappingContext.getInputsName().contains(parentTypeName) &&
             !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {
             if (defaultValue == null) {
-                return INPUT_WRAPPER_CLASS + ".undefined()";
+                return INPUT_WRAPPER_UNDEFINED;
             } else if (inputValueDefinition.getDefaultValue() instanceof NullValue) {
-                return INPUT_WRAPPER_CLASS + ".withNull()";
+                return INPUT_WRAPPER_NULL;
             } else {
-                return INPUT_WRAPPER_CLASS + ".withValue(" + defaultValue + ")";
+                return String.format(INPUT_WRAPPER_WITH_VALUE, defaultValue);
             }
         } else {
             return defaultValue;
