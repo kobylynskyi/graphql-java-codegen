@@ -24,19 +24,19 @@ jobs:
           distribution: 'adopt'
 
       - name: Gradle cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle
           key: gradle
 
       - name: Maven cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: m2
 
       - name: Loading ivy cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
@@ -94,19 +94,19 @@ jobs:
           distribution: 'adopt'
 
       - name: Gradle cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle
           key: gradle
 
       - name: Maven cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: m2
 
       - name: Loading ivy cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.ivy2/cache
           key: ${{ runner.os }}-ivy-${{ hashFiles('**/*.sbt') }}
