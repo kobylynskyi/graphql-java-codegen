@@ -11,7 +11,6 @@ import com.kobylynskyi.graphql.codegen.supplier._
 import sbt.{ AutoPlugin, PluginTrigger, _ }
 import sbt.Keys.{ sLog, sourceManaged, _ }
 import sbt.internal.util.complete.DefaultParsers.spaceDelimited
-import com.kobylynskyi.graphql.codegen.kotlin.KotlinGraphQLCodegen
 
 import java.nio.file.{ Path, Paths }
 import java.util.{ HashMap => JHashMap, HashSet => JHashSet, List => JList }
@@ -32,13 +31,13 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
     with Compat {
   self =>
 
-  private val jValidation = BuildInfo.jValidationVersion
-  private val codegen     = BuildInfo.version
+  private val javaValidation = BuildInfo.javaValidationVersion
+  private val codegen        = BuildInfo.version
 
   object GlobalImport extends GraphQLCodegenKeys {
 
     lazy val GraphQLCodegenPluginDependencies: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-      "javax.validation"      % "validation-api"       % javaxValidationApiVersion.value.getOrElse(jValidation),
+      "javax.validation"      % "validation-api"       % javaxValidationApiVersion.value.getOrElse(javaValidation),
       "io.github.kobylynskyi" % "graphql-java-codegen" % graphqlJavaCodegenVersion.value.getOrElse(codegen)
     )
 
@@ -276,14 +275,6 @@ class GraphQLCodegenPlugin(configuration: Configuration, private[codegen] val co
                 )
               case SCALA =>
                 new ScalaGraphQLCodegen(
-                  getSchemas(),
-                  _introspectionResult,
-                  _outputDir,
-                  mappingConfig,
-                  mappingConfigSupplier.orNull
-                )
-              case KOTLIN =>
-                new KotlinGraphQLCodegen(
                   getSchemas(),
                   _introspectionResult,
                   _outputDir,
