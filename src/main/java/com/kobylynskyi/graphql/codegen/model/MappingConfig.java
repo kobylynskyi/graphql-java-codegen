@@ -608,8 +608,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         return fieldsToExcludeFromGeneration;
     }
 
-    public void setFieldsWithDataFetcherResult(Set<String> fieldsWithDataFetcherResult) {
-        this.fieldsWithDataFetcherResult = fieldsWithDataFetcherResult;
+    public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
+        this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
     }
 
     @Override
@@ -617,8 +617,8 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         return fieldsWithDataFetcherResult;
     }
 
-    public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
-        this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
+    public void setFieldsWithDataFetcherResult(Set<String> fieldsWithDataFetcherResult) {
+        this.fieldsWithDataFetcherResult = fieldsWithDataFetcherResult;
     }
 
     @Override
