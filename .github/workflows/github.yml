@@ -90,7 +90,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'adopt'
 
       - name: Gradle cache
@@ -117,6 +117,6 @@ jobs:
         run: ./gradlew codeCoverageReport --stacktrace
 
       - name: Generate and publish Sonar report
-        run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_LOGIN }} --stacktrace
+        run: ./gradlew sonarqube -Dsonar.projectKey=kobylynskyi_graphql-java-codegen -Dsonar.organization=kobylynskyi -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
