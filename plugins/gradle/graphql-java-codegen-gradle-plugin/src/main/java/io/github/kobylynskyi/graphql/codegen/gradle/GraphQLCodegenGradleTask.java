@@ -103,6 +103,7 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
     private Set<String> typesAsInterfaces = new HashSet<>();
     private Set<String> resolverArgumentAnnotations = new HashSet<>();
     private Set<String> parametrizedResolverAnnotations = new HashSet<>();
+    private Set<String> fieldsWithDataFetcherResult = new HashSet<>();
     private final RelayConfig relayConfig = new RelayConfig();
 
 
@@ -193,6 +194,8 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
                 fieldsWithoutResolvers != null ? fieldsWithoutResolvers : new HashSet<>());
         mappingConfig.setFieldsToExcludeFromGeneration(
                 fieldsToExcludeFromGeneration != null ? fieldsToExcludeFromGeneration : new HashSet<>());
+        mappingConfig.setFieldsWithDataFetcherResult(
+                fieldsWithDataFetcherResult != null ? fieldsWithDataFetcherResult : new HashSet<>());
         mappingConfig.setTypesAsInterfaces(
                 typesAsInterfaces != null ? typesAsInterfaces : new HashSet<>());
         mappingConfig.setResolverArgumentAnnotations(
@@ -813,6 +816,17 @@ public class GraphQLCodegenGradleTask extends DefaultTask implements GraphQLCode
 
     public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
         this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
+    }
+
+    @Input
+    @Optional
+    @Override
+    public Set<String> getFieldsWithDataFetcherResult() {
+        return fieldsWithDataFetcherResult;
+    }
+
+    public void setFieldsWithDataFetcherResult(Set<String> fieldsWithDataFetcherResult) {
+        this.fieldsWithDataFetcherResult = fieldsWithDataFetcherResult;
     }
 
     @Input

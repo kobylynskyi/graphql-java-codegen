@@ -350,6 +350,21 @@ public interface GraphQLCodegenConfiguration {
     Set<String> getFieldsToExcludeFromGeneration();
 
     /**
+     * Fields that require DataFetcherResult.
+     *
+     * <p>Values should be defined here in format: TypeName, TypeName.fieldName, @directive
+     *
+     *
+     * <p>E.g.:
+     * <ul>
+     *   <li>{@code @dataFetcherResult}</li>
+     * </ul>
+     *
+     * @return Set of types and fields that should have DataFetcherResult.
+     */
+    Set<String> getFieldsWithDataFetcherResult();
+
+    /**
      * Specifies whether return types of generated API interface should be wrapped into <code>java.util.Optional</code>
      *
      * @return <b>true</b> if return types should be wrapped into <code>java.util.Optional</code>

@@ -65,6 +65,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
     private Set<String> fieldsWithResolvers = new HashSet<>();
     private Set<String> fieldsWithoutResolvers = new HashSet<>();
     private Set<String> fieldsToExcludeFromGeneration = new HashSet<>();
+    private Set<String> fieldsWithDataFetcherResult = new HashSet<>();
 
     // parent interfaces configs:
     private String queryResolverParentInterface;
@@ -195,6 +196,7 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
         parametrizedInputSuffix = getValueOrDefaultToThis(source,
                 GraphQLCodegenConfiguration::getParametrizedInputSuffix);
         fieldsWithResolvers = combineSet(fieldsWithResolvers, source.fieldsWithResolvers);
+        fieldsWithDataFetcherResult = combineSet(fieldsWithDataFetcherResult, source.fieldsWithDataFetcherResult);
         fieldsWithoutResolvers = combineSet(fieldsWithoutResolvers, source.fieldsWithoutResolvers);
         fieldsToExcludeFromGeneration = combineSet(fieldsToExcludeFromGeneration, source.fieldsToExcludeFromGeneration);
         customTypesMapping = combineMap(customTypesMapping, source.customTypesMapping);
@@ -620,6 +622,15 @@ public class MappingConfig implements GraphQLCodegenConfiguration, Combinable<Ma
 
     public void setFieldsToExcludeFromGeneration(Set<String> fieldsToExcludeFromGeneration) {
         this.fieldsToExcludeFromGeneration = fieldsToExcludeFromGeneration;
+    }
+
+    @Override
+    public Set<String> getFieldsWithDataFetcherResult() {
+        return fieldsWithDataFetcherResult;
+    }
+
+    public void setFieldsWithDataFetcherResult(Set<String> fieldsWithDataFetcherResult) {
+        this.fieldsWithDataFetcherResult = fieldsWithDataFetcherResult;
     }
 
     @Override

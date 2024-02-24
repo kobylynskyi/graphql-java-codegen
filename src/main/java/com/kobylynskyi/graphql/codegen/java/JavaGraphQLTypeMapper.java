@@ -7,14 +7,17 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.Directive;
 import graphql.language.InputValueDefinition;
 import graphql.language.NullValue;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -108,7 +111,8 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
     @Override
     public NamedDefinition getLanguageType(MappingContext mappingContext, String graphQLType, String name,
-                                           String parentTypeName, boolean mandatory, boolean collection) {
+                                           String parentTypeName, boolean mandatory, boolean collection,
+                                           List<Directive> directives) {
         Map<String, String> customTypesMapping = mappingContext.getCustomTypesMapping();
         Set<String> serializeFieldsUsingObjectMapper = mappingContext.getUseObjectMapperForRequestSerialization();
         String langTypeName;
@@ -122,6 +126,9 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         } else {
             langTypeName = DataModelMapper.getModelClassNameWithPrefixAndSuffix(mappingContext, graphQLType);
         }
+
+        langTypeName = wrapWithDataFetcherResultIfRequired(mappingContext, directives, langTypeName, name);
+
         if (serializeFieldsUsingObjectMapper.contains(graphQLType) ||
                 (name != null && parentTypeName != null &&
                         serializeFieldsUsingObjectMapper.contains(parentTypeName + "." + name))) {
@@ -164,4 +171,26 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
         }
     }
 
+    private String wrapWithDataFetcherResultIfRequired(MappingContext mappingContext,
+                                                       List<Directive> directives,
+                                                       String langTypeName,
+                                                       String name) {
+        Set<String> fieldsWithDataFetcherResult = mappingContext.getFieldsWithDataFetcherResult();
+        Set<String> directivesNames = directives.stream()
+                .map(directive -> "@" + directive.getName())
+                .collect(Collectors.toSet());
+
+        // Create the representation of 'name'
+        String nameRepresentation = langTypeName + "." + name;
+
+        boolean shouldWrap = directivesNames.stream().anyMatch(fieldsWithDataFetcherResult::contains)
+                || fieldsWithDataFetcherResult.contains(langTypeName)
+                || fieldsWithDataFetcherResult.contains(nameRepresentation);
+
+        if (shouldWrap) {
+            langTypeName = "graphql.execution.DataFetcherResult<" + langTypeName + ">";
+        }
+
+        return langTypeName;
+    }
 }

@@ -280,6 +280,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Set<String> getFieldsWithDataFetcherResult() {
+        return config.getFieldsWithDataFetcherResult();
+    }
+
+    @Override
     public Boolean getGenerateClient() {
         return config.getGenerateClient();
     }
