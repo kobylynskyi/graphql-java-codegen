@@ -1,0 +1,209 @@
+
+/**
+ * This input has all possible types
+ */
+@javax.annotation.Generated(
+    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+    date = "2020-12-31T23:59:59-0500"
+)
+public class InputWithDefaults implements java.io.Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private org.springframework.graphql.data.ArgumentValue<Double> floatVal = org.springframework.graphql.data.ArgumentValue.ofNullable(1.23);
+    private org.springframework.graphql.data.ArgumentValue<Boolean> booleanVal = org.springframework.graphql.data.ArgumentValue.ofNullable(false);
+    private org.springframework.graphql.data.ArgumentValue<Integer> intVal = org.springframework.graphql.data.ArgumentValue.ofNullable(42);
+    private org.springframework.graphql.data.ArgumentValue<String> stringVal = org.springframework.graphql.data.ArgumentValue.ofNullable("my-default");
+    private org.springframework.graphql.data.ArgumentValue<MyEnum> enumVal = org.springframework.graphql.data.ArgumentValue.ofNullable(MyEnum.ONE);
+    @javax.validation.constraints.NotNull
+    private MyEnum nonNullEnumVal = MyEnum.TWO;
+    private org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNullDefault = org.springframework.graphql.data.ArgumentValue.ofNullable(null);
+    private org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNonNullDefault = org.springframework.graphql.data.ArgumentValue.omitted();
+    private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+    private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+    @javax.validation.constraints.NotNull
+    private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+
+    public InputWithDefaults() {
+    }
+
+    public InputWithDefaults(org.springframework.graphql.data.ArgumentValue<Double> floatVal, org.springframework.graphql.data.ArgumentValue<Boolean> booleanVal, org.springframework.graphql.data.ArgumentValue<Integer> intVal, org.springframework.graphql.data.ArgumentValue<String> stringVal, org.springframework.graphql.data.ArgumentValue<MyEnum> enumVal, MyEnum nonNullEnumVal, org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNullDefault, org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNonNullDefault, java.util.List<Integer> intList, java.util.List<Integer> intListEmptyDefault, java.util.List<SomeObject> objectListEmptyDefault) {
+        this.floatVal = floatVal;
+        this.booleanVal = booleanVal;
+        this.intVal = intVal;
+        this.stringVal = stringVal;
+        this.enumVal = enumVal;
+        this.nonNullEnumVal = nonNullEnumVal;
+        this.objectWithNullDefault = objectWithNullDefault;
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+        this.intList = intList;
+        this.intListEmptyDefault = intListEmptyDefault;
+        this.objectListEmptyDefault = objectListEmptyDefault;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<Double> getFloatVal() {
+        return floatVal;
+    }
+    public void setFloatVal(org.springframework.graphql.data.ArgumentValue<Double> floatVal) {
+        this.floatVal = floatVal;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<Boolean> getBooleanVal() {
+        return booleanVal;
+    }
+    public void setBooleanVal(org.springframework.graphql.data.ArgumentValue<Boolean> booleanVal) {
+        this.booleanVal = booleanVal;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<Integer> getIntVal() {
+        return intVal;
+    }
+    public void setIntVal(org.springframework.graphql.data.ArgumentValue<Integer> intVal) {
+        this.intVal = intVal;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<String> getStringVal() {
+        return stringVal;
+    }
+    public void setStringVal(org.springframework.graphql.data.ArgumentValue<String> stringVal) {
+        this.stringVal = stringVal;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<MyEnum> getEnumVal() {
+        return enumVal;
+    }
+    public void setEnumVal(org.springframework.graphql.data.ArgumentValue<MyEnum> enumVal) {
+        this.enumVal = enumVal;
+    }
+
+    public MyEnum getNonNullEnumVal() {
+        return nonNullEnumVal;
+    }
+    public void setNonNullEnumVal(MyEnum nonNullEnumVal) {
+        this.nonNullEnumVal = nonNullEnumVal;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<SomeObject> getObjectWithNullDefault() {
+        return objectWithNullDefault;
+    }
+    public void setObjectWithNullDefault(org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNullDefault) {
+        this.objectWithNullDefault = objectWithNullDefault;
+    }
+
+    public org.springframework.graphql.data.ArgumentValue<SomeObject> getObjectWithNonNullDefault() {
+        return objectWithNonNullDefault;
+    }
+    public void setObjectWithNonNullDefault(org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNonNullDefault) {
+        this.objectWithNonNullDefault = objectWithNonNullDefault;
+    }
+
+    public java.util.List<Integer> getIntList() {
+        return intList;
+    }
+    public void setIntList(java.util.List<Integer> intList) {
+        this.intList = intList;
+    }
+
+    public java.util.List<Integer> getIntListEmptyDefault() {
+        return intListEmptyDefault;
+    }
+    public void setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
+        this.intListEmptyDefault = intListEmptyDefault;
+    }
+
+    public java.util.List<SomeObject> getObjectListEmptyDefault() {
+        return objectListEmptyDefault;
+    }
+    public void setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
+        this.objectListEmptyDefault = objectListEmptyDefault;
+    }
+
+
+
+    public static InputWithDefaults.Builder builder() {
+        return new InputWithDefaults.Builder();
+    }
+
+    @javax.annotation.Generated(
+        value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+        date = "2020-12-31T23:59:59-0500"
+    )
+    public static class Builder {
+
+        private org.springframework.graphql.data.ArgumentValue<Double> floatVal = org.springframework.graphql.data.ArgumentValue.ofNullable(1.23);
+        private org.springframework.graphql.data.ArgumentValue<Boolean> booleanVal = org.springframework.graphql.data.ArgumentValue.ofNullable(false);
+        private org.springframework.graphql.data.ArgumentValue<Integer> intVal = org.springframework.graphql.data.ArgumentValue.ofNullable(42);
+        private org.springframework.graphql.data.ArgumentValue<String> stringVal = org.springframework.graphql.data.ArgumentValue.ofNullable("my-default");
+        private org.springframework.graphql.data.ArgumentValue<MyEnum> enumVal = org.springframework.graphql.data.ArgumentValue.ofNullable(MyEnum.ONE);
+        private MyEnum nonNullEnumVal = MyEnum.TWO;
+        private org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNullDefault = org.springframework.graphql.data.ArgumentValue.ofNullable(null);
+        private org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNonNullDefault = org.springframework.graphql.data.ArgumentValue.omitted();
+        private java.util.List<Integer> intList = java.util.Arrays.asList(1, 2, 3);
+        private java.util.List<Integer> intListEmptyDefault = java.util.Collections.emptyList();
+        private java.util.List<SomeObject> objectListEmptyDefault = java.util.Collections.emptyList();
+
+        public Builder() {
+        }
+
+        public Builder setFloatVal(org.springframework.graphql.data.ArgumentValue<Double> floatVal) {
+            this.floatVal = floatVal;
+            return this;
+        }
+
+        public Builder setBooleanVal(org.springframework.graphql.data.ArgumentValue<Boolean> booleanVal) {
+            this.booleanVal = booleanVal;
+            return this;
+        }
+
+        public Builder setIntVal(org.springframework.graphql.data.ArgumentValue<Integer> intVal) {
+            this.intVal = intVal;
+            return this;
+        }
+
+        public Builder setStringVal(org.springframework.graphql.data.ArgumentValue<String> stringVal) {
+            this.stringVal = stringVal;
+            return this;
+        }
+
+        public Builder setEnumVal(org.springframework.graphql.data.ArgumentValue<MyEnum> enumVal) {
+            this.enumVal = enumVal;
+            return this;
+        }
+
+        public Builder setNonNullEnumVal(MyEnum nonNullEnumVal) {
+            this.nonNullEnumVal = nonNullEnumVal;
+            return this;
+        }
+
+        public Builder setObjectWithNullDefault(org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNullDefault) {
+            this.objectWithNullDefault = objectWithNullDefault;
+            return this;
+        }
+
+        public Builder setObjectWithNonNullDefault(org.springframework.graphql.data.ArgumentValue<SomeObject> objectWithNonNullDefault) {
+            this.objectWithNonNullDefault = objectWithNonNullDefault;
+            return this;
+        }
+
+        public Builder setIntList(java.util.List<Integer> intList) {
+            this.intList = intList;
+            return this;
+        }
+
+        public Builder setIntListEmptyDefault(java.util.List<Integer> intListEmptyDefault) {
+            this.intListEmptyDefault = intListEmptyDefault;
+            return this;
+        }
+
+        public Builder setObjectListEmptyDefault(java.util.List<SomeObject> objectListEmptyDefault) {
+            this.objectListEmptyDefault = objectListEmptyDefault;
+            return this;
+        }
+
+
+        public InputWithDefaults build() {
+            return new InputWithDefaults(floatVal, booleanVal, intVal, stringVal, enumVal, nonNullEnumVal, objectWithNullDefault, objectWithNonNullDefault, intList, intListEmptyDefault, objectListEmptyDefault);
+        }
+
+    }
+}

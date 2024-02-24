@@ -1,6 +1,6 @@
 # GraphQL Codegen #
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?business=V5VX4NAQT7TW8&no_recurring=0&item_name=to+help+maintaining+GraphQL+Java+Codegen+project+🙏&currency_code=USD)
+[![Donate](https://img.shields.io/badge/Donate-green.svg)](https://send.monobank.ua/jar/2bpWyBqBp3)
 
 ![Build](https://github.com/kobylynskyi/graphql-java-codegen/workflows/Build/badge.svg)
 [![Discussions](https://img.shields.io/badge/github-discussions-green)](https://github.com/kobylynskyi/graphql-java-codegen/discussions)

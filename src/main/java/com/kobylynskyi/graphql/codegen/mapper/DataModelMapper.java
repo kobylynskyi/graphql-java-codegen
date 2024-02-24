@@ -236,7 +236,7 @@ public abstract class DataModelMapper {
      * @param packageName    Package name of the generated class which will be ignored
      * @return all imports required for a generated class
      */
-    static Set<String> getImports(MappingContext mappingContext, String packageName) {
+    public static Set<String> getImports(MappingContext mappingContext, String packageName) {
         Set<String> imports = new HashSet<>();
         String modelPackageName = mappingContext.getModelPackageName();
         if (Utils.isNotBlank(modelPackageName) && !modelPackageName.equals(packageName)) {

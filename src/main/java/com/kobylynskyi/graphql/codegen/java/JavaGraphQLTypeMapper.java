@@ -8,6 +8,8 @@ import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import graphql.language.Directive;
+import graphql.language.InputValueDefinition;
+import graphql.language.NullValue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +29,10 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
     public static final String JAVA_UTIL_LIST = "java.util.List";
     public static final Pattern JAVA_UTIL_LIST_ELEMENT_REGEX = Pattern.compile("java\\.util\\.List<(.+)>");
     private static final String JAVA_UTIL_OPTIONAL = "java.util.Optional";
+    private static final String INPUT_WRAPPER_CLASS = "org.springframework.graphql.data.ArgumentValue";
+    private static final String INPUT_WRAPPER_NULL = INPUT_WRAPPER_CLASS + ".ofNullable(null)";
+    private static final String INPUT_WRAPPER_UNDEFINED = INPUT_WRAPPER_CLASS + ".omitted()";
+    private static final String INPUT_WRAPPER_WITH_VALUE = INPUT_WRAPPER_CLASS + ".ofNullable(%s)";
     private static final Set<String> JAVA_PRIMITIVE_TYPES = new HashSet<>(asList(
             "byte", "short", "int", "long", "float", "double", "char", "boolean"));
 
@@ -131,6 +137,38 @@ public class JavaGraphQLTypeMapper extends GraphQLTypeMapper {
 
         return new NamedDefinition(langTypeName, graphQLType, isInterfaceOrUnion(mappingContext, graphQLType),
                 mandatory, primitiveCanBeUsed, serializeUsingObjectMapper);
+    }
+
+    @Override
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                             String parentTypeName) {
+        String computedTypeName = namedDefinition.getJavaName();
+        if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
+                mappingContext.getInputsName().contains(parentTypeName) &&
+                !namedDefinition.isMandatory() && !computedTypeName.startsWith(JAVA_UTIL_LIST)) {
+            return getGenericsString(mappingContext, INPUT_WRAPPER_CLASS, computedTypeName);
+        }
+
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, computedTypeName);
+    }
+
+    @Override
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                InputValueDefinition inputValueDefinition, String defaultValue,
+                                                String parentTypeName) {
+        if (Boolean.TRUE.equals(mappingContext.getUseWrapperForNullableInputTypes()) &&
+                mappingContext.getInputsName().contains(parentTypeName) &&
+                !namedDefinition.isMandatory() && !namedDefinition.getJavaName().startsWith(JAVA_UTIL_LIST)) {
+            if (defaultValue == null) {
+                return INPUT_WRAPPER_UNDEFINED;
+            } else if (inputValueDefinition.getDefaultValue() instanceof NullValue) {
+                return INPUT_WRAPPER_NULL;
+            } else {
+                return String.format(INPUT_WRAPPER_WITH_VALUE, defaultValue);
+            }
+        } else {
+            return defaultValue;
+        }
     }
 
     private String wrapWithDataFetcherResultIfRequired(MappingContext mappingContext,

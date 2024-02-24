@@ -260,6 +260,11 @@ public class MappingContext implements GraphQLCodegenConfiguration {
     }
 
     @Override
+    public Boolean getUseWrapperForNullableInputTypes() {
+        return config.getUseWrapperForNullableInputTypes();
+    }
+
+    @Override
     public Set<String> getFieldsWithResolvers() {
         return config.getFieldsWithResolvers();
     }
@@ -435,8 +440,8 @@ public class MappingContext implements GraphQLCodegenConfiguration {
         // In this way, we no longer need to rely on the order in which files are created
         // Only for scala/kotlin
         if ((GeneratedLanguage.SCALA.equals(this.config.getGeneratedLanguage()) ||
-                GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage())) &&
-                parentInterfaceProperties == null) {
+             GeneratedLanguage.KOTLIN.equals(this.config.getGeneratedLanguage())) &&
+            parentInterfaceProperties == null) {
             parentInterfaceProperties = new HashMap<>();
             for (ExtendedInterfaceTypeDefinition interfaceDef : this.document.getInterfaceDefinitions()) {
                 String clazzName = getModelClassNameWithPrefixAndSuffix(interfaceDef);

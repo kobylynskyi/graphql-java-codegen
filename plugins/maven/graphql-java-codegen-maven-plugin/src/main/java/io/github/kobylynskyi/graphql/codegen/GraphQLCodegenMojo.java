@@ -153,6 +153,9 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_USE_OPTIONAL_FOR_NULLABLE_RETURN_TYPES_STRING)
     private boolean useOptionalForNullableReturnTypes;
 
+    @Parameter(defaultValue = MappingConfigConstants.DEFAULT_USE_WRAPPER_FOR_NULLABLE_INPUT_TYPES_STRING)
+    private boolean useWrapperForNullableInputTypes;
+
     @Parameter(defaultValue = MappingConfigConstants.DEFAULT_GENERATE_APIS_WITH_THROWS_EXCEPTION_STRING)
     private boolean generateApisWithThrowsException;
 
@@ -294,6 +297,7 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
         mappingConfig.setGenerateExtensionFieldsResolvers(generateExtensionFieldsResolvers);
         mappingConfig.setGenerateModelsForRootTypes(generateModelsForRootTypes);
         mappingConfig.setUseOptionalForNullableReturnTypes(useOptionalForNullableReturnTypes);
+        mappingConfig.setUseWrapperForNullableInputTypes(useWrapperForNullableInputTypes);
         mappingConfig.setGenerateApisWithThrowsException(generateApisWithThrowsException);
         mappingConfig.setGenerateApisWithSuspendFunctions(generateApisWithSuspendFunctions);
         mappingConfig.setGenerateJacksonTypeIdResolver(generateJacksonTypeIdResolver);
@@ -353,10 +357,10 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
 
         if (skipSchemaSizeLimit) {
             ParserOptions.Builder parserOptionBuilder = ParserOptions.newParserOptions()
-                .maxTokens(Integer.MAX_VALUE)
-                .maxCharacters(Integer.MAX_VALUE)
-                .maxWhitespaceTokens(Integer.MAX_VALUE)
-                .maxRuleDepth(Integer.MAX_VALUE);
+                    .maxTokens(Integer.MAX_VALUE)
+                    .maxCharacters(Integer.MAX_VALUE)
+                    .maxWhitespaceTokens(Integer.MAX_VALUE)
+                    .maxRuleDepth(Integer.MAX_VALUE);
             ParserOptions.setDefaultParserOptions(parserOptionBuilder.build());
         }
 
@@ -565,6 +569,11 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
     @Override
     public Boolean getUseOptionalForNullableReturnTypes() {
         return useOptionalForNullableReturnTypes;
+    }
+
+    @Override
+    public Boolean getUseWrapperForNullableInputTypes() {
+        return useWrapperForNullableInputTypes;
     }
 
     @Override
@@ -784,8 +793,8 @@ public class GraphQLCodegenMojo extends AbstractMojo implements GraphQLCodegenCo
             result.put(name, properties.getProperty(name));
         }
         return result;
-    }   
-    
+    }
+
     @Override
     public File getCustomTemplatesRoot() {
         return customTemplatesRoot == null ? project.getBasedir() : customTemplatesRoot;

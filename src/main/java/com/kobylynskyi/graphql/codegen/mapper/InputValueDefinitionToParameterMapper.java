@@ -17,7 +17,6 @@ import static java.util.stream.Collectors.toList;
  * @author kobylynskyi
  */
 public class InputValueDefinitionToParameterMapper {
-
     private final ValueMapper valueMapper;
     private final GraphQLTypeMapper graphQLTypeMapper;
     private final AnnotationsMapper annotationsMapper;
@@ -62,10 +61,10 @@ public class InputValueDefinitionToParameterMapper {
         ParameterDefinition parameter = new ParameterDefinition();
         parameter.setName(dataModelMapper.capitalizeIfRestricted(mappingContext, inputValueDefinition.getName()));
         parameter.setOriginalName(inputValueDefinition.getName());
-        parameter.setType(graphQLTypeMapper.getTypeConsideringPrimitive(mappingContext, namedDefinition,
-                namedDefinition.getJavaName()));
-        parameter.setDefaultValue(valueMapper.map(
-                mappingContext, inputValueDefinition.getDefaultValue(), inputValueDefinition.getType()));
+        parameter.setType(graphQLTypeMapper.wrapApiInputTypeIfRequired(mappingContext, namedDefinition,
+                parentTypeName));
+        parameter.setDefaultValue(getDefaultValue(mappingContext, inputValueDefinition, parentTypeName,
+                namedDefinition));
         parameter.setVisibility(Utils.getFieldVisibility(mappingContext));
         parameter.setAnnotations(annotationsMapper.getAnnotations(mappingContext, inputValueDefinition.getType(),
                 inputValueDefinition, parentTypeName, false));
@@ -75,6 +74,14 @@ public class InputValueDefinitionToParameterMapper {
         parameter.setGetterMethodName(dataModelMapper.capitalizeMethodNameIfRestricted(mappingContext,
                 "get" + Utils.capitalize(inputValueDefinition.getName())));
         return parameter;
+    }
+
+    private String getDefaultValue(MappingContext mappingContext, InputValueDefinition inputValueDefinition,
+                                   String parentTypeName, NamedDefinition namedDefinition) {
+        String value = valueMapper.map(mappingContext, inputValueDefinition.getDefaultValue(),
+                inputValueDefinition.getType());
+        return graphQLTypeMapper.wrapApiDefaultValueIfRequired(mappingContext, namedDefinition, inputValueDefinition,
+                value, parentTypeName);
     }
 
 }
