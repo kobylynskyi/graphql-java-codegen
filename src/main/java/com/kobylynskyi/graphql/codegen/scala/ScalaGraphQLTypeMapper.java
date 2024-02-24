@@ -6,6 +6,7 @@ import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.NamedDefinition;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperation;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
+import graphql.language.InputValueDefinition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,23 +59,23 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
                                               String parentTypeName) {
         String computedTypeName = namedDefinition.getJavaName();
         if (parentTypeName.equalsIgnoreCase(GraphQLOperation.SUBSCRIPTION.name()) &&
-                Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
+            Utils.isNotBlank(mappingContext.getSubscriptionReturnType())) {
             // in case it is subscription and subscriptionReturnType is set
             return getGenericsString(mappingContext, mappingContext.getSubscriptionReturnType(), computedTypeName);
         }
 
         if (Boolean.TRUE.equals(mappingContext.getUseOptionalForNullableReturnTypes())
-                && !namedDefinition.isMandatory()
-                && !computedTypeName.startsWith(SCALA_UTIL_LIST)
-                && !computedTypeName.startsWith(JAVA_UTIL_LIST)
-                && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
+            && !namedDefinition.isMandatory()
+            && !computedTypeName.startsWith(SCALA_UTIL_LIST)
+            && !computedTypeName.startsWith(JAVA_UTIL_LIST)
+            && !computedTypeName.startsWith(SCALA_UTIL_OPTIONAL)) {
             // Kotlin/Scala: primitive types is Option by default
             // wrap the type into scala.Option (except java list and scala list)
             computedTypeName = getGenericsString(mappingContext, SCALA_UTIL_OPTIONAL, computedTypeName);
         }
 
         if (computedTypeName.startsWith(SCALA_UTIL_LIST) &&
-                Utils.isNotBlank(mappingContext.getApiReturnListType())) {
+            Utils.isNotBlank(mappingContext.getApiReturnListType())) {
             // in case it is query/mutation, return type is list and apiReturnListType is set
             if (mappingContext.getApiReturnListType().contains(MappingConfigConstants.API_RETURN_NAME_PLACEHOLDER)) {
                 Matcher matcher = SCALA_UTIL_LIST_ELEMENT_REGEX.matcher(computedTypeName);
@@ -114,6 +115,19 @@ public class ScalaGraphQLTypeMapper extends GraphQLTypeMapper {
         } else {
             return String.format("%s[%s]", genericType, typeParameter);
         }
+    }
+
+    @Override
+    public String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                             String parentTypeName) {
+        return getTypeConsideringPrimitive(mappingContext, namedDefinition, namedDefinition.getJavaName());
+    }
+
+    @Override
+    public String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                InputValueDefinition inputValueDefinition, String defaultValue,
+                                                String parentTypeName) {
+        return defaultValue;
     }
 
 }

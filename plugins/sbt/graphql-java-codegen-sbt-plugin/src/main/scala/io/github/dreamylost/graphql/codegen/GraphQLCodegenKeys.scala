@@ -133,6 +133,8 @@ trait GraphQLCodegenKeys {
 
   val useOptionalForNullableReturnTypes = settingKey[Boolean]("useOptionalForNullableReturnTypes")
 
+  val useWrapperForNullableInputTypes = settingKey[Boolean]("useWrapperForNullableInputTypes")
+
   val generateApisWithThrowsException = settingKey[Boolean]("generateApisWithThrowsException")
 
   val graphqlQueryIntrospectionResultPath = settingKey[Option[String]]("graphqlQueryIntrospectionResultPath")

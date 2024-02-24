@@ -7,6 +7,7 @@ import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedFieldDefinition
 import graphql.language.Argument;
 import graphql.language.Directive;
 import graphql.language.DirectivesContainer;
+import graphql.language.InputValueDefinition;
 import graphql.language.ListType;
 import graphql.language.NamedNode;
 import graphql.language.NonNullType;
@@ -111,6 +112,61 @@ public abstract class GraphQLTypeMapper {
     public abstract String wrapApiReturnTypeIfRequired(MappingContext mappingContext,
                                                        NamedDefinition namedDefinition,
                                                        String parentTypeName);
+
+    /**
+     * Wraps type into ArgumentValue, if required.
+     *
+     * <p>Example 1:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String! }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code String}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code ArgumentValue<String>}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String[] }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code List<String>}
+     *
+     * @param mappingContext  Global mapping context
+     * @param namedDefinition Named definition
+     * @param parentTypeName  Name of the parent type
+     * @return Java type wrapped into ArgumentValue
+     */
+    public abstract String wrapApiInputTypeIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                      String parentTypeName);
+
+    /**
+     * Wraps type into ArgumentValue, if required.
+     *
+     * <p>Example 1:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code ArgumentValue.omitted()}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String = null }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code ArgumentValue.ofNullable(null)}
+     *
+     * <p>Example 2:
+     * * Given GraphQL schema:                   {@code input MyInput { name: String = "some value" }}
+     * * Given config:                           {@code useWrapperForNullableInputTypes = true}
+     * * Return:                                 {@code ArgumentValue.ofNullable("some value")}
+     *
+     * @param mappingContext       Global mapping context
+     * @param namedDefinition      Named definition
+     * @param inputValueDefinition Input value definition
+     * @param defaultValue         Default value
+     * @param parentTypeName       Name of the parent type
+     * @return Java type wrapped into ArgumentValue
+     */
+    public abstract String wrapApiDefaultValueIfRequired(MappingContext mappingContext, NamedDefinition namedDefinition,
+                                                         InputValueDefinition inputValueDefinition, String defaultValue,
+                                                         String parentTypeName);
 
     /**
      * Check if the time is primitive.

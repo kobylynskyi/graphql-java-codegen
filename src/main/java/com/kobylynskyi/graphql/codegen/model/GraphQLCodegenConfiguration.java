@@ -28,7 +28,7 @@ public interface GraphQLCodegenConfiguration {
      * @return mappings from GraphqlType to JavaType
      */
     Map<String, String> getCustomTypesMapping();
-    
+
     /**
      * Can be used to specify the root directory for the custom FreeMaker templates
      *
@@ -355,6 +355,14 @@ public interface GraphQLCodegenConfiguration {
      * @return <b>true</b> if return types should be wrapped into <code>java.util.Optional</code>
      */
     Boolean getUseOptionalForNullableReturnTypes();
+
+    /**
+     * Specifies whether input types of generated input classes should be wrapped into
+     * <code>ArgumentValue</code>.
+     *
+     * @return <b>true</b> if input types should be wrapped into <code>ArgumentValue</code>
+     */
+    Boolean getUseWrapperForNullableInputTypes();
 
     /**
      * Specifies whether client-side classes should be generated for each query, mutation and subscription.
