@@ -53,7 +53,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     public ${className}() {
     }
 
-<#if fields?has_content && !generateNoArgsConstructorOnly>
+<#if fields?has_content && (!generateNoArgsConstructorOnly || immutableModels)>
     public ${className}(<#list fields as field>${field.type} ${field.name}<#if field_has_next>, </#if></#list>) {
     <#list fields as field>
         this.${field.name} = ${field.name};
@@ -202,7 +202,7 @@ public class ${className} implements java.io.Serializable<#if implements?has_con
     </#if>
 
         public ${className} build() {
-<#if generateNoArgsConstructorOnly>
+<#if !immutableModels && generateNoArgsConstructorOnly>
             ${className} result = new ${className}();
     <#list fields as field>
         <#if field.visibility == 'public'>
