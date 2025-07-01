@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.freemarker:freemarker:2.3.32"
+    compileOnly "org.freemarker:freemarker:2.3.34"
     compileOnly "com.graphql-java:graphql-java:20.2"
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.15.3"
     compileOnly "com.typesafe:config:1.4.3"
