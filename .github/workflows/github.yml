@@ -16,7 +16,7 @@ jobs:
         jdk-version: [ 8, 11, 17 ]
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Setup Java ${{ matrix.jdk-version }}
         uses: actions/setup-java@v4
         with:
@@ -73,7 +73,10 @@ jobs:
       - name: Build sbt plugin
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt compile publishLocal --debug
-
+        
+      - uses: sbt/setup-sbt@v1
+      - uses: coursier/cache-action@v6
+      
       - name: Build sbt test
         working-directory: plugins/sbt/graphql-java-codegen-sbt-plugin
         run: sbt scripted
