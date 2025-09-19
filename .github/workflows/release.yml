@@ -53,7 +53,10 @@ jobs:
         with:
           path: ~/.m2
           key: m2
-
+          
+      - uses: sbt/setup-sbt@v1
+      - uses: coursier/cache-action@v6
+      
       - name: Loading ivy cache
         uses: actions/cache@v4
         with:
