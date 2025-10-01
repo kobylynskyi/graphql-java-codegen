@@ -21,8 +21,8 @@ dependencies {
 
     implementation "javax.validation:validation-api:2.0.1.Final"
 
-    compileOnly "org.projectlombok:lombok:1.18.30"
-    annotationProcessor "org.projectlombok:lombok:1.18.30"
+    compileOnly "org.projectlombok:lombok:1.18.42"
+    annotationProcessor "org.projectlombok:lombok:1.18.42"
 
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
