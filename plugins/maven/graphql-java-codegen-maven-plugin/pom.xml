@@ -124,9 +124,9 @@
             <version>20.2</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.15.3</version>
+            <version>3.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>

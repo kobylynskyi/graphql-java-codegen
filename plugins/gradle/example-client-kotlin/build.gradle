@@ -32,10 +32,10 @@ dependencies {
 
     implementation "javax.validation:validation-api:2.0.1.Final"
     implementation "com.squareup.okhttp3:okhttp:4.11.0"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.15.3"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.3"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.3"
+    implementation "tools.jackson.core:jackson-core:2.15.3"
+    implementation "tools.jackson.core:jackson-databind:2.15.3"
+    implementation "tools.jackson.module:jackson-module-kotlin:2.15.2"
+    implementation "tools.jackson.core:jackson-annotations:2.15.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.2"
@@ -60,10 +60,10 @@ task graphqlCodegenKotlinService(type: GraphQLCodegenGradleTask) {
     generateModelOpenClasses = true
     generateSealedInterfaces = true
     customAnnotationsMapping = [
-            "Character": ["@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")",
-                          "@com.fasterxml.jackson.annotation.JsonSubTypes(value = arrayOf(" + System.lineSeparator() +
-                                  "       com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanTO::class, name = \"Human\"), " + System.lineSeparator() +
-                                  "       com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidTO::class, name = \"Droid\")))"],
+            "Character": ["@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")",
+                          "@tools.jackson.annotation.JsonSubTypes(value = arrayOf(" + System.lineSeparator() +
+                                  "       tools.jackson.annotation.JsonSubTypes.Type(value = HumanTO::class, name = \"Human\"), " + System.lineSeparator() +
+                                  "       tools.jackson.annotation.JsonSubTypes.Type(value = DroidTO::class, name = \"Droid\")))"],
     ]
     modelNameSuffix = "TO"
     supportUnknownFields = true

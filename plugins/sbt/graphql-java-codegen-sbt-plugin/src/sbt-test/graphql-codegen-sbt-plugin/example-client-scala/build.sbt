@@ -10,8 +10,8 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.8.2",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.8.2",
   "com.squareup.okhttp3" % "okhttp" % "4.7.2",
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.3",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.3",
+  "tools.jackson.module" %% "jackson-module-scala" % "3.0.0",
+  "tools.jackson.core" % "jackson-databind" % "3.0.0",
   "org.json" % "json" % "20190722")
 
 enablePlugins(GraphQLCodegenPlugin)
@@ -28,11 +28,11 @@ modelNameSuffix := Some("DO")
 customAnnotationsMapping := {
   val mapping = new util.HashMap[String, util.List[String]]
   val annotations = new util.ArrayList[String]()
-  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
   annotations.add(
-    """@com.fasterxml.jackson.annotation.JsonSubTypes(value = Array(
-      |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[HumanDO], name = "Human"),
-      |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
+    """@tools.jackson.annotation.JsonSubTypes(value = Array(
+      |        new tools.jackson.annotation.JsonSubTypes.Type(value = classOf[HumanDO], name = "Human"),
+      |        new tools.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
   mapping.put("Character", annotations)
   mapping
 }

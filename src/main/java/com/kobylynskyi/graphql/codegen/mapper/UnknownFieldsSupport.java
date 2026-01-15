@@ -33,8 +33,8 @@ public interface UnknownFieldsSupport {
             unknownFields.setVisibility(Utils.getFieldVisibility(mappingContext));
             unknownFields.setType("java.util.Map<String, Object>");
             unknownFields.setAnnotations(Arrays.asList(
-                    "com.fasterxml.jackson.annotation.JsonAnyGetter",
-                    "com.fasterxml.jackson.annotation.JsonAnySetter"
+                    "tools.jackson.annotation.JsonAnyGetter",
+                    "tools.jackson.annotation.JsonAnySetter"
             ));
             return Optional.of(unknownFields);
         }

@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.supplier;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 import com.typesafe.config.Config;
@@ -10,6 +9,7 @@ import com.typesafe.config.ConfigRenderOptions;
 
 import java.io.File;
 import java.util.List;
+import tools.jackson.core.JacksonException;
 
 /**
  * Retrieve a MappingConfig from JSON or HOCON configuration file.
@@ -57,8 +57,8 @@ public class MergeableMappingConfigSupplier implements MappingConfigSupplier {
     public MappingConfig get() {
         if (jsonConfig != null && !jsonConfig.isEmpty()) {
             try {
-                return Utils.OBJECT_MAPPER.readValue(jsonConfig, MappingConfig.class);
-            } catch (ConfigException | JsonProcessingException e) {
+                return Utils.JSON_MAPPER.readValue(jsonConfig, MappingConfig.class);
+            } catch (ConfigException | JacksonException e) {
                 throw new IllegalArgumentException(e);
             }
         }

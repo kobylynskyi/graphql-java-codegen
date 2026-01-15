@@ -28,7 +28,7 @@ public class KotlinAnnotationsMapper extends AnnotationsMapper {
 
     @Override
     public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
-        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
+        return "tools.jackson.databind.annotation.JsonTypeIdResolver(" + modelPackageName +
                 "GraphqlJacksonTypeIdResolver::class)";
     }
 

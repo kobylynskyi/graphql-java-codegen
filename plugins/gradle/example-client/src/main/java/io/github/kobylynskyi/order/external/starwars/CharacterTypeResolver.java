@@ -1,9 +1,9 @@
 package io.github.kobylynskyi.order.external.starwars;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.DatabindContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
+import tools.jackson.annotation.JsonTypeInfo;
+import tools.jackson.databind.DatabindContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.jsontype.impl.TypeIdResolverBase;
 import io.github.kobylynskyi.starwars.graphql.Droid;
 import io.github.kobylynskyi.starwars.graphql.Human;
 

@@ -18,7 +18,7 @@ lazy val `graphql-codegen-sbt-plugin` = Project(id = "graphql-codegen-sbt-plugin
       "io.github.kobylynskyi"      % "graphql-java-codegen" % (ThisBuild / version).value,
       "org.freemarker"             % "freemarker"           % "2.3.31",
       "com.graphql-java"           % "graphql-java"         % "20.2",
-      "com.fasterxml.jackson.core" % "jackson-databind"     % "2.12.1",
+      "tools.jackson.core" % "jackson-databind"     % "3.0.0",
       "com.typesafe"               % "config"               % "1.4.2"
     ),
     buildInfoKeys    := Seq[BuildInfoKey](name, version, sbtVersion, javaValidationVersion),

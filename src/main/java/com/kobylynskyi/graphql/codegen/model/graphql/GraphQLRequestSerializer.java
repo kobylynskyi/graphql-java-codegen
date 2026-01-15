@@ -1,8 +1,8 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ObjectNode;
 import com.kobylynskyi.graphql.codegen.utils.Utils;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ import java.util.StringJoiner;
  */
 public class GraphQLRequestSerializer {
 
-    public static final ObjectMapper OBJECT_MAPPER = Utils.OBJECT_MAPPER;
+    public static JsonMapper JSON_MAPPER = Utils.JSON_MAPPER;
 
     private GraphQLRequestSerializer() {
     }
@@ -137,7 +137,7 @@ public class GraphQLRequestSerializer {
     }
 
     private static String jsonQuery(String queryString) {
-        ObjectNode objectNode = Utils.OBJECT_MAPPER.createObjectNode();
+        ObjectNode objectNode = Utils.JSON_MAPPER.createObjectNode();
         objectNode.put("query", queryString);
         return objectMapperWriteValueAsString(objectNode);
     }
@@ -250,8 +250,8 @@ public class GraphQLRequestSerializer {
 
     public static String objectMapperWriteValueAsString(Object input) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(input);
-        } catch (JsonProcessingException e) {
+            return JSON_MAPPER.writeValueAsString(input);
+        } catch (JacksonException e) {
             throw new UnableToBuildJsonQueryException(e);
         }
     }

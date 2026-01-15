@@ -1,24 +1,25 @@
 package com.kobylynskyi.graphql.codegen.model.graphql.data;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-public class ZonedDateTimeSerializer extends JsonSerializer<ZonedDateTime> {
+public class ZonedDateTimeSerializer extends ValueSerializer<ZonedDateTime> {
 
-    @Override
-    public void serialize(ZonedDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        ZonedDateTime utcDateTime = value.withZoneSameInstant(ZoneId.of("UTC"));
-        gen.writeString(DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(utcDateTime));
-    }
+  @Override
+  public void serialize(ZonedDateTime value, JsonGenerator gen, SerializationContext ctxt)
+      throws JacksonException {
+    ZonedDateTime utcDateTime = value.withZoneSameInstant(ZoneId.of("UTC"));
+    gen.writeString(DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(utcDateTime));
+  }
 
-    @Override
-    public Class<ZonedDateTime> handledType() {
-        return ZonedDateTime.class;
-    }
+  @Override
+  public Class<ZonedDateTime> handledType() {
+    return ZonedDateTime.class;
+  }
 }

@@ -28,7 +28,7 @@ public class ScalaAnnotationsMapper extends AnnotationsMapper {
 
     @Override
     public String getJacksonResolverTypeIdAnnotation(String modelPackageName) {
-        return "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(classOf[" + modelPackageName +
+        return "tools.jackson.databind.annotation.JsonTypeIdResolver(classOf[" + modelPackageName +
                 "GraphqlJacksonTypeIdResolver])";
     }
 
@@ -53,7 +53,7 @@ public class ScalaAnnotationsMapper extends AnnotationsMapper {
             typeNameWithPrefixAndSuffixBuilder.insert(0, modelPackageName + ".");
         }
         String annotation = String.format(
-                "com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[%sTypeRefer])",
+                "tools.jackson.module.scala.JsonScalaEnumeration(classOf[%sTypeRefer])",
                 typeNameWithPrefixAndSuffixBuilder);
         return Collections.singletonList(annotation);
     }

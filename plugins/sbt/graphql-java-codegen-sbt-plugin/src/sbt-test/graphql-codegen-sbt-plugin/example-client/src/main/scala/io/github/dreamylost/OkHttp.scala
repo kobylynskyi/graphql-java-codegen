@@ -4,7 +4,7 @@ import java.io.IOException
 import java.util
 import java.util.concurrent.TimeUnit
 
-import com.fasterxml.jackson.core.`type`.TypeReference
+import tools.jackson.core.`type`.TypeReference
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest
 import okhttp3._
 import org.json.JSONObject

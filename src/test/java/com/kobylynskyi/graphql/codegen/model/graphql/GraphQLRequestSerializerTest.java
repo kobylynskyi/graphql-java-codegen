@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.model.graphql;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.module.SimpleModule;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.DateInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyChildParametrizedInput;
 import com.kobylynskyi.graphql.codegen.model.graphql.data.EventPropertyParentParametrizedInput;
@@ -302,8 +302,7 @@ class GraphQLRequestSerializerTest {
     @MethodSource("provideAllSerializers")
     void serialize_UseObjectMapperForSomeFields(String name, Function<GraphQLRequest, String> serializer,
                                                 Function<String, String> expectedQueryDecorator) {
-        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
-                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+      GraphQLRequestSerializer.JSON_MAPPER = GraphQLRequestSerializer.JSON_MAPPER.rebuild().addModule(new SimpleModule().addSerializer(new ZonedDateTimeSerializer())).build();
 
         UpdateDateMutationRequest updateDateMutationRequest = new UpdateDateMutationRequest();
         DateInput input = new DateInput();
@@ -321,8 +320,8 @@ class GraphQLRequestSerializerTest {
     @MethodSource("provideAllSerializers")
     void serialize_UseObjectMapperForQueryParameter(String name, Function<GraphQLRequest, String> serializer,
                                                     Function<String, String> expectedQueryDecorator) {
-        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
-                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+        GraphQLRequestSerializer.JSON_MAPPER = GraphQLRequestSerializer.JSON_MAPPER.rebuild().addModule(new SimpleModule().addSerializer(new ZonedDateTimeSerializer())).build();
+
 
         UpdateDate2MutationRequest updateDateMutationRequest = new UpdateDate2MutationRequest();
         updateDateMutationRequest.setInput(ZonedDateTime.parse("2020-07-30T22:17:17.884-05:00[America/Chicago]"));
@@ -337,8 +336,7 @@ class GraphQLRequestSerializerTest {
     @MethodSource("provideAllSerializers")
     void serialize_UseObjectMapperForParameterizedInput(String name, Function<GraphQLRequest, String> serializer,
                                                         Function<String, String> expectedQueryDecorator) {
-        GraphQLRequestSerializer.OBJECT_MAPPER.registerModule(
-                new SimpleModule().addSerializer(new ZonedDateTimeSerializer()));
+      GraphQLRequestSerializer.JSON_MAPPER = GraphQLRequestSerializer.JSON_MAPPER.rebuild().addModule(new SimpleModule().addSerializer(new ZonedDateTimeSerializer())).build();
 
         EventsByCategoryAndStatusQueryRequest request = new EventsByCategoryAndStatusQueryRequest.Builder()
                 .setCategoryId("categoryIdValue1")

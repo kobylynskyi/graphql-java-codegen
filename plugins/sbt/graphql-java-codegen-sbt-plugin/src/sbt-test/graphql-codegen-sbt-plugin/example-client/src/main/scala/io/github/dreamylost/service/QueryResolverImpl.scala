@@ -2,7 +2,7 @@ package io.github.dreamylost.service
 
 import java.util
 
-import com.fasterxml.jackson.core.`type`.TypeReference
+import tools.jackson.core.`type`.TypeReference
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest
 import io.github.dreamylost.api.QueryResolver
 import io.github.dreamylost.OkHttp

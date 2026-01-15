@@ -42,7 +42,7 @@ public interface GraphQLOperationRequest {
 
     /**
      * Fields that require serialization using
-     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     * {@link tools.jackson.databind.json.JsonMapper#writeValueAsString(Object)}
      *
      * <p>Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
      *
@@ -55,7 +55,7 @@ public interface GraphQLOperationRequest {
      * </ul>
      *
      * @return Set of types and fields that should be serialized using
-     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     * {@link tools.jackson.databind.json.JsonMapper#writeValueAsString(Object)}
      */
     default Set<String> getUseObjectMapperForInputSerialization() {
         return Collections.emptySet();

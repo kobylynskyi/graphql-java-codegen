@@ -43,7 +43,7 @@ class GraphQLCodegenFieldsResolversTest {
         mappingConfig.setGenerateParameterizedFieldsResolvers(true);
         mappingConfig.setGenerateDataFetchingEnvironmentArgumentInApis(true);
         mappingConfig.setCustomAnnotationsMapping(new HashMap<>(singletonMap("Commit.blame",
-                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                singletonList("tools.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)"))));
 
         generate("src/test/resources/schemas/github.graphqls");

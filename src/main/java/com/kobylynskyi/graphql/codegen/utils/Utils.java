@@ -1,6 +1,5 @@
 package com.kobylynskyi.graphql.codegen.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.MappingContext;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToCreateDirectoryException;
 import com.kobylynskyi.graphql.codegen.model.exception.UnableToDeleteDirectoryException;
@@ -12,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Objects;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Various utilities
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public final class Utils {
 
-    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final JsonMapper JSON_MAPPER = new JsonMapper();
 
     private Utils() {
     }

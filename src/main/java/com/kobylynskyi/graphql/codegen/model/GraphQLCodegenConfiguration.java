@@ -53,7 +53,7 @@ public interface GraphQLCodegenConfiguration {
      * </ul>
      *
      * <p>E.g.:
-     * {@code EpochMillis --- @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json
+     * {@code EpochMillis --- @tools.jackson.databind.annotation.JsonDeserialize(using = com.example.json
      * .EpochMillisScalarDeserializer.class)}
      *
      * @return mappings from GraphqlType to JavaAnnotation
@@ -459,7 +459,7 @@ public interface GraphQLCodegenConfiguration {
 
     /**
      * Fields that require serialization using
-     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     * {@link tools.jackson.databind.json.JsonMapper#writeValueAsString(Object)}
      *
      * <p>Values should be defined here in format: <i>GraphqlObjectName.fieldName</i> or <i>GraphqlTypeName</i>
      *
@@ -472,7 +472,7 @@ public interface GraphQLCodegenConfiguration {
      * </ul>
      *
      * @return Set of types and fields that should be serialized using
-     * {@link com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)}
+     * {@link tools.jackson.databind.json.JsonMapper#writeValueAsString(Object)}
      */
     Set<String> getUseObjectMapperForRequestSerialization();
 
@@ -548,8 +548,8 @@ public interface GraphQLCodegenConfiguration {
      * Specifies whether api classes should support unknown fields during serialization or deserialization.
      *
      * @return <b>true</b> classes will include a property of type {@link java.util.Map} that will store unknown fields.
-     * @see com.fasterxml.jackson.annotation.JsonAnyGetter
-     * @see com.fasterxml.jackson.annotation.JsonAnySetter
+     * @see tools.jackson.annotation.JsonAnyGetter
+     * @see tools.jackson.annotation.JsonAnySetter
      */
     Boolean isSupportUnknownFields();
 

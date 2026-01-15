@@ -69,7 +69,7 @@ class Commit(
     @javax.validation.constraints.NotNull
     override var url: String,
     override var viewerCanSubscribe: Boolean,
-    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.SubscriptionStateTypeRefer])
+    @tools.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.SubscriptionStateTypeRefer])
     override var viewerSubscription: SubscriptionState,
     @javax.validation.constraints.NotNull
     var zipballUrl: String

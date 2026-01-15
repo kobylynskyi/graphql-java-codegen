@@ -210,8 +210,8 @@ public abstract class AnnotationsMapper {
         List<String> defaults = new ArrayList<>();
         if (Boolean.TRUE.equals(mappingContext.getGenerateJacksonTypeIdResolver())
                 && (def instanceof UnionTypeDefinition || def instanceof InterfaceTypeDefinition)) {
-            defaults.add("com.fasterxml.jackson.annotation.JsonTypeInfo(use = " +
-                    "com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
+            defaults.add("tools.jackson.annotation.JsonTypeInfo(use = " +
+                    "tools.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")");
             String modelPackageName = DataModelMapper.getModelPackageName(mappingContext);
             if (modelPackageName == null) {
                 modelPackageName = "";

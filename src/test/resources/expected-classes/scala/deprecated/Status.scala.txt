@@ -1,6 +1,6 @@
 package com.github.graphql
 
-import com.fasterxml.jackson.core.`type`.TypeReference
+import tools.jackson.core.`type`.TypeReference
 
 @javax.annotation.Generated(
     value = Array("com.kobylynskyi.graphql.codegen.GraphQLCodegen"),

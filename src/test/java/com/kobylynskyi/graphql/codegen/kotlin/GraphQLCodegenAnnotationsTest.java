@@ -44,14 +44,14 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings() throws Exception {
         mappingConfig.setCustomTypesMapping(singletonMap("Event.createdDateTime", "org.joda.time.DateTime"));
         mappingConfig.setCustomAnnotationsMapping(singletonMap("Event.createdDateTime",
-                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                singletonList("@tools.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.kt",
-                "@field:com.fasterxml.jackson.databind.annotation.JsonDeserialize(",
+                "@field:tools.jackson.databind.annotation.JsonDeserialize(",
                 "using = com.example.json.DateTimeScalarDeserializer.class)",
                 "    val createdDateTime: org.joda.time.DateTime?");
     }
@@ -60,14 +60,14 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Type() throws Exception {
         mappingConfig.setCustomTypesMapping(singletonMap("DateTime", "org.joda.time.DateTime"));
         mappingConfig.setCustomAnnotationsMapping(singletonMap("DateTime",
-                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                singletonList("tools.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.kt",
-                "@field:com.fasterxml.jackson.databind.annotation.JsonDeserialize(",
+                "@field:tools.jackson.databind.annotation.JsonDeserialize(",
                 "using = com.example.json.DateTimeScalarDeserializer.class)",
                 "    val createdDateTime: org.joda.time.DateTime?");
     }
@@ -75,13 +75,13 @@ class GraphQLCodegenAnnotationsTest {
     @Test
     void generate_CustomAnnotationMappings_Input() throws Exception {
         mappingConfig.setCustomAnnotationsMapping(singletonMap("ReproInput.reproField",
-                singletonList("@com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")")));
+                singletonList("@tools.jackson.annotation.JsonProperty(\"reproField\")")));
 
         generate("src/test/resources/schemas/input.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "ReproInput.kt",
-                "    @field:com.fasterxml.jackson.annotation.JsonProperty(\"reproField\")" + lineSeparator() +
+                "    @field:tools.jackson.annotation.JsonProperty(\"reproField\")" + lineSeparator() +
                         "    val reproField: List<String>");
     }
 
@@ -89,14 +89,14 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_Regexp() throws Exception {
         mappingConfig.setCustomTypesMapping(singletonMap("DateTime", "org.joda.time.DateTime"));
         mappingConfig.setCustomAnnotationsMapping(singletonMap("Date.*",
-                singletonList("com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                singletonList("tools.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.kt",
-                "@field:com.fasterxml.jackson.databind.annotation.JsonDeserialize(",
+                "@field:tools.jackson.databind.annotation.JsonDeserialize(",
                 "using = com.example.json.DateTimeScalarDeserializer.class)",
                 "    val createdDateTime: org.joda.time.DateTime?");
     }
@@ -105,14 +105,14 @@ class GraphQLCodegenAnnotationsTest {
     void generate_CustomAnnotationMappings_FieldType() throws Exception {
         mappingConfig.setCustomTypesMapping(singletonMap("DateTime", "org.joda.time.DateTime"));
         mappingConfig.setCustomAnnotationsMapping(singletonMap("Event.createdDateTime",
-                singletonList("@com.fasterxml.jackson.databind.annotation.JsonDeserialize(" +
+                singletonList("@tools.jackson.databind.annotation.JsonDeserialize(" +
                         "using = com.example.json.DateTimeScalarDeserializer.class)")));
 
         generate("src/test/resources/schemas/test.graphqls");
 
         File[] files = Objects.requireNonNull(outputJavaClassesDir.listFiles());
         assertFileContainsElements(files, "Event.kt",
-                "@field:com.fasterxml.jackson.databind.annotation.JsonDeserialize(",
+                "@field:tools.jackson.databind.annotation.JsonDeserialize(",
                 "using = com.example.json.DateTimeScalarDeserializer.class)",
                 "    val createdDateTime: org.joda.time.DateTime?");
     }

@@ -67,7 +67,7 @@
 |              `generateSealedInterfaces`               |                                Boolean                                |                             False                              | This applies to generated interfaces on unions and interfaces. If true, generate sealed interfaces, else generate normal ones. It is only supported in Kotlin and Scala.                                                                                                                                                                                                       |
 |                  `typesAsInterfaces`                  |                              Set(String)                              |                             Empty                              | Types that must generated as interfaces should be defined here in format: `TypeName` or `@directive`. E.g.: `User`, `@asInterface`.                                                                                                                                                                                                                                            |
 |             `fieldsWithDataFetcherResult`             |                              Set(String)                              |                             Empty                              | Types that must have DataFetchResult should be defined here in format: `TypeName`, or `TypeName.fieldName` or `@directive`. E.g.: `Item`, `Item.items` or `@dataFetcherResult`.                                                                                                                                                                                                |
-|       `useObjectMapperForRequestSerialization`        |                              Set(String)                              |                             Empty                              | Fields that require serialization using `com.fasterxml.jackson.databind.ObjectMapper#writeValueAsString(Object)`. Values should be defined here in the following format: `GraphqlObjectName.fieldName` or `GraphqlTypeName`. If just type is specified, then all fields of this type will be serialized using ObjectMapper. E.g.: `["Person.createdDateTime", ZonedDateTime"]` |
+|       `useObjectMapperForRequestSerialization`        |                              Set(String)                              |                             Empty                              | Fields that require serialization using `tools.jackson.databind.ObjectMapper#writeValueAsString(Object)`. Values should be defined here in the following format: `GraphqlObjectName.fieldName` or `GraphqlTypeName`. If just type is specified, then all fields of this type will be serialized using ObjectMapper. E.g.: `["Person.createdDateTime", ZonedDateTime"]` |
 |                `supportUnknownFields`                 |                                Boolean                                |                             False                              | Specifies whether api classes should support unknown fields during serialization or deserialization. If `true`, classes will include a property of type [`java.util.Map<String,Object>`](https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Map.html) that will store unknown fields.                                                                              |
 |              `unknownFieldsPropertyName`              |                                String                                 |                       userDefinedFields                        | Specifies the name of the property to be included in api classes to support unknown fields during serialization or deserialization                                                                                                                                                                                                                                             |
 |                        `skip`                         |                                Boolean                                |                             False                              | If true, then code generation will not happen                                                                                                                                                                                                                                                                                                                                  |
@@ -161,9 +161,9 @@ Can be used to supply custom annotations (serializers) for scalars.
 Supports following formats:
 
 * Map of (GraphQLObjectName.fieldName) to (JavaAnnotation).
-  E.g.: `Event.dateTime = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
+  E.g.: `Event.dateTime = @tools.jackson.databind.annotation.JsonDeserialize(using = com.example.DateDeserializer.class)`
 * Map of (GraphQLType) to (JavaAnnotation).
-  E.g.: `EpochMillis = @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
+  E.g.: `EpochMillis = @tools.jackson.databind.annotation.JsonDeserialize(using = com.example.EpochMillisDeserializer.class)`
 
 ### Option `directiveAnnotationsMapping`
 
@@ -239,7 +239,7 @@ customTypesMapping={
     Object="org.json.JSONObject"
 }
 customAnnotationsMapping={
-    "QuestionNode.metaData"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
-    "QuestionNode.envInfo"=["com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+    "QuestionNode.metaData"=["tools.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
+    "QuestionNode.envInfo"=["tools.jackson.databind.annotation.JsonDeserialize(using = com.github.dreamylost.JsonObjectDeserializer::class)"]
 } 
 ```

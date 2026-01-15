@@ -39,17 +39,17 @@ customAnnotationsMapping := {
   // in the future, maybe wrap it by scala coolection
   val mapping = new util.HashMap[String, util.List[String]]
   val annotations = new util.ArrayList[String]()
-  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
   annotations.add(
-    """@com.fasterxml.jackson.annotation.JsonSubTypes(value = Array(
-      |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[HumanDO], name = "Human"),
-      |        new com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
+    """@tools.jackson.annotation.JsonSubTypes(value = Array(
+      |        new tools.jackson.annotation.JsonSubTypes.Type(value = classOf[HumanDO], name = "Human"),
+      |        new tools.jackson.annotation.JsonSubTypes.Type(value = classOf[DroidDO], name = "Droid")))""".stripMargin)
   mapping.put("Character", annotations)
   // Note: only for Scala, please pay attention here, codegen have not generated `EpisodeDOTypeRefer.scala` class, so you should create it.
   // Since, 4.1.3, support to generate it.
   // Since, 5.1.0, It will be done automatically, no need to add this.
-  mapping.put("Droid.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
-  mapping.put("Human.appearsIn", util.Arrays.asList("@com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
+  mapping.put("Droid.appearsIn", util.Arrays.asList("@tools.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
+  mapping.put("Human.appearsIn", util.Arrays.asList("@tools.jackson.module.scala.JsonScalaEnumeration(classOf[io.github.dreamylost.model.EpisodeDOTypeRefer])"))
   mapping
 }
 generateCodegenTargetPath in GraphQLCodegenConfig := crossTarget.value / "src_managed_graphql_scala"

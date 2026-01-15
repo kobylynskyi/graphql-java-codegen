@@ -13,7 +13,7 @@ public interface CommitResolver {
     PullRequestConnection associatedPullRequests(Commit commit, String after, String before, Integer first, Integer last, PullRequestOrder orderBy, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
     @javax.validation.constraints.NotNull
-    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)
+    @tools.jackson.databind.annotation.JsonDeserialize(using = com.example.json.DateTimeScalarDeserializer.class)
     Blame blame(Commit commit, @javax.validation.constraints.NotNull String path, graphql.schema.DataFetchingEnvironment env) throws Exception;
 
     @javax.validation.constraints.NotNull

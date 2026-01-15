@@ -1,8 +1,8 @@
 package io.github.dreamylost
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include
-import com.fasterxml.jackson.databind.{ DeserializationFeature, ObjectMapper }
-import com.fasterxml.jackson.module.scala.{ DefaultScalaModule, ScalaObjectMapper }
+import tools.jackson.annotation.JsonInclude.Include
+import tools.jackson.databind.{ DeserializationFeature, ObjectMapper }
+import tools.jackson.module.scala.{ DefaultScalaModule, ScalaObjectMapper }
 
 object Jackson {
 

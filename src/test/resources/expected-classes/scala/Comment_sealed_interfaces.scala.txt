@@ -11,7 +11,7 @@ sealed trait Comment {
     val author: Actor
 
     @javax.validation.constraints.NotNull
-    @com.fasterxml.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.CommentAuthorAssociationTypeRefer])
+    @tools.jackson.module.scala.JsonScalaEnumeration(classOf[com.github.graphql.CommentAuthorAssociationTypeRefer])
     val authorAssociation: CommentAuthorAssociation
 
     @javax.validation.constraints.NotNull

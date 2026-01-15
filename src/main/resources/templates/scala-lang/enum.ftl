@@ -3,7 +3,7 @@ package ${package}
 
 </#if>
 <#if serializationLibrary == 'JACKSON'>
-import com.fasterxml.jackson.core.`type`.TypeReference
+import tools.jackson.core.`type`.TypeReference
 
 </#if>
 <#if javaDoc?has_content>

@@ -41,7 +41,7 @@
                         </customTypesMapping>
                         <customAnnotationsMapping>
                             <EpochMillis>
-                                <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
+                                <annotation>tools.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
                             </EpochMillis>
                         </customAnnotationsMapping>
                         <modelNameSuffix>TO</modelNameSuffix>

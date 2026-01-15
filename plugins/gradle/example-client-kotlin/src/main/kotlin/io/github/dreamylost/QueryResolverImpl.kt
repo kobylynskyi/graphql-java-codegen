@@ -1,10 +1,10 @@
 package io.github.dreamylost
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.module.kotlin.jsonMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.annotation.JsonInclude
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.module.kotlin.jsonMapper
+import tools.jackson.module.kotlin.kotlinModule
+import tools.jackson.module.kotlin.readValue
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest
 import io.github.dreamylost.api.QueryResolver
 import io.github.dreamylost.model.*

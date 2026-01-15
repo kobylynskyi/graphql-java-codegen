@@ -1,6 +1,6 @@
 package com.kobylynskyi.graphql.codegen.parser;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 import com.kobylynskyi.graphql.codegen.model.MappingConfig;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDefinition;
 import com.kobylynskyi.graphql.codegen.model.definitions.ExtendedDocument;
@@ -75,7 +75,7 @@ public class GraphQLDocumentParser {
     public static ExtendedDocument getDocumentFromIntrospectionResult(MappingConfig mappingConfig,
                                                                       String introspectionResult) throws IOException {
         String introspectionResultContent = Utils.getFileContent(introspectionResult);
-        Map<String, Object> introspectionResultMap = Utils.OBJECT_MAPPER.readValue(introspectionResultContent,
+        Map<String, Object> introspectionResultMap = Utils.JSON_MAPPER.readValue(introspectionResultContent,
                 new TypeReference<Map<String,
                         Object>>() {
                 });
