@@ -10,8 +10,8 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.8.2",
   "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.8.2",
   "com.squareup.okhttp3" % "okhttp" % "4.7.2",
-  "tools.jackson.module" %% "jackson-module-scala" % "3.0.0",
-  "tools.jackson.core" % "jackson-databind" % "3.0.0",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.11.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.1",
   "org.json" % "json" % "20190722",
   "com.graphql-java" % "graphql-java" % "16.2")
 
@@ -43,10 +43,10 @@ modelNameSuffix := Some("DO")
 customAnnotationsMapping := {
   val mapping = new util.HashMap[String, util.List[String]]
   val annotations = new util.ArrayList[String]()
-  annotations.add("@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
-  annotations.add("""@tools.jackson.annotation.JsonSubTypes(value = {
-                    |        @tools.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
-                    |        @tools.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
+  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("""@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
   //must add this annotation
   //property is __typename and you must with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
   //and in @JsonSubTypes.Type, name is __typename's value

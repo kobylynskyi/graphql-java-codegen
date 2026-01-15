@@ -72,8 +72,8 @@ by providing an array of annotations in the following format:
     <!--OLD APPROACH-->
     <customAnnotationsMapping>
         <Character>
-            tools.jackson.annotation.JsonTypeInfo(use = tools.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
-            tools.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)
+            com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")
+            com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)
         </Character>
     </customAnnotationsMapping>
     <directiveAnnotationsMapping>
@@ -84,8 +84,8 @@ by providing an array of annotations in the following format:
     <!--NEW APPROACH-->
     <customAnnotationsMapping>
         <Character>
-            <annotation1>tools.jackson.annotation.JsonTypeInfo(use = tools.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")</annotation1>
-            <annotation2>tools.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)</annotation2>
+            <annotation1>com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = "__typename")</annotation1>
+            <annotation2>com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)</annotation2>
         </Character>
     </customAnnotationsMapping>
     <directiveAnnotationsMapping>
@@ -102,9 +102,9 @@ by providing an array of annotations in the following format:
 ```groovy
 // OLD APPROACH
 customAnnotationsMapping = [
-    "Character": "tools.jackson.annotation.JsonTypeInfo(use = tools.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
+    "Character": "com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")"
                + System.lineSeparator()
-               + "tools.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+               + "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
 ]
 directiveAnnotationsMapping = [
     "auth": "org.springframework.security.access.annotation.Secured({{roles}})"
@@ -114,8 +114,8 @@ directiveAnnotationsMapping = [
 // NEW APPROACH
 customAnnotationsMapping = [
     "Character": [
-            "tools.jackson.annotation.JsonTypeInfo(use = tools.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
-            "tools.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
+            "com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, property = \"__typename\")",
+            "com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver(io.github.kobylynskyi.order.external.starwars.CharacterTypeResolver.class)"
     ]
 ]
 directiveAnnotationsMapping = [
@@ -134,9 +134,9 @@ customAnnotationsMapping := {
   //property is __typename and you must use with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
   //and in @JsonSubTypes.Type, name is __typename's value
   mapping.put("Character",
-    s"""@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = "__typename")${System.lineSeparator()}@tools.jackson.annotation.JsonSubTypes(value = {
-      |        @tools.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
-      |        @tools.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})
+    s"""@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = "__typename")${System.lineSeparator()}@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+      |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+      |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})
       |""".stripMargin)
   mapping
 }
@@ -146,10 +146,10 @@ customAnnotationsMapping := {
 customAnnotationsMapping := {
   val mapping = new util.HashMap[String, util.List[String]]
   val annotations = new util.ArrayList[String]()
-  annotations.add("@tools.jackson.annotation.JsonTypeInfo(use=tools.jackson.annotation.JsonTypeInfo.Id.NAME, include=tools.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
-  annotations.add("""@tools.jackson.annotation.JsonSubTypes(value = {
-                    |        @tools.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
-                    |        @tools.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
+  annotations.add("@com.fasterxml.jackson.annotation.JsonTypeInfo(use=com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME, include=com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,property = \"__typename\")")
+  annotations.add("""@com.fasterxml.jackson.annotation.JsonSubTypes(value = {
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = HumanDO.class, name = "Human"),
+                    |        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = DroidDO.class, name = "Droid")})""".stripMargin)
   //must add this annotation
   //property is __typename and you must use with __typename while invoke, like new CharacterResponseProjection().id().name().typename()
   //and in @JsonSubTypes.Type, name is __typename's value

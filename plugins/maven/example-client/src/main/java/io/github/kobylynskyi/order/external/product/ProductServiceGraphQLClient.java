@@ -1,6 +1,6 @@
 package io.github.kobylynskyi.order.external.product;
 
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequests;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResponse;
