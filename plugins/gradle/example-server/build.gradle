@@ -12,8 +12,8 @@ plugins {
 mainClassName = "io.github.kobylynskyi.product.Application"
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:2.7.18"
-    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:2.7.18"
+    implementation "org.springframework.boot:spring-boot-starter-web:4.0.3"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:4.0.3"
 
     implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0"
     implementation "com.graphql-java-kickstart:graphiql-spring-boot-starter:11.1.0"
